@@ -1,0 +1,75 @@
+# Default configuration for the DL+RL gold trading agent.
+
+data:
+  symbol: "GC=F"           # primary: gold futures continuous front-month
+  fallback_symbols: ["GLD", "XAUUSD=X"]
+  start: "2005-01-01"
+  end: "2025-12-31"
+  interval: "1d"
+  raw_path: "data/raw/gold.parquet"
+  features_path: "data/processed/features.parquet"
+  labels_path: "data/processed/labels.parquet"
+
+features:
+  seq_len: 32
+  warmup_bars: 252
+  zscore_window: 252
+
+triple_barrier:
+  horizon: 20              # max bars in a trade
+  rr_upper: 2.0            # take-profit = +2 * ATR
+  rr_lower: 1.0            # stop-loss   = -1 * ATR
+  atr_window: 14
+
+cpcv:
+  n_splits: 6
+  n_test_splits: 2
+  embargo_pct: 0.01
+
+encoder:
+  hidden_size: 128
+  n_slstm: 2
+  n_mlstm: 2
+  dropout: 0.3
+  softcap: 15.0
+  pretrain_epochs: 5
+  pretrain_lr: 3.0e-4
+  pretrain_batch: 128
+  focal_gamma: 2.0
+
+ppo:
+  total_timesteps: 60000   # budget per seed/path (fast default)
+  n_steps: 1024
+  batch_size: 128
+  gae_lambda: 0.95
+  gamma: 0.99
+  ent_coef: 0.01
+  clip_range: 0.2
+  learning_rate: 3.0e-4
+  curriculum:
+    calm_frac: 0.3
+    mixed_frac: 0.3
+    # full = remaining 0.4
+  seeds: [7, 13, 29, 53, 97]
+
+env:
+  seq_len: 32
+  spread_bps: 2.0
+  use_embedding: true      # if true, obs is 128-dim encoder embedding
+  reward_tp: 2.0
+  reward_sl: -1.0
+
+evaluation:
+  costs_bps: [0.0, 1.0, 2.0, 5.0, 10.0]
+  bootstrap_resamples: 2000
+  bootstrap_block_size: 20
+  permutation_samples: 1000
+
+finetune:
+  timesteps: 20000
+  lr: 1.0e-4
+  ent_coef: 0.003
+  holdout_frac: 0.2
+
+artefact_dir: "artefacts"
+report_dir: "reports"

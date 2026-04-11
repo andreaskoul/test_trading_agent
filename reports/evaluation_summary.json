@@ -1,0 +1,45 @@
+{
+  "n_runs": 18,
+  "sharpe_mean": -0.1338997753749811,
+  "sharpe_std": 0.2444139912442557,
+  "sharpe_p5": -0.5146529376970127,
+  "sharpe_p95": 0.16588328063281896,
+  "deflated_sharpe": 0.001812679103023033,
+  "psr_vs_zero": 0.14403134886975338,
+  "expected_max_sr": 0.20782156953112815,
+  "permutation_pvalue": 0.000999000999000999,
+  "bootstrap_lo": -0.3555912307921581,
+  "bootstrap_hi": 0.09717654878094349,
+  "cost_sweep": [
+    {
+      "cost_bps": 0.0,
+      "sharpe_mean": 0.6467893379153362,
+      "sharpe_std": 0.19576806231951832
+    },
+    {
+      "cost_bps": 1.0,
+      "sharpe_mean": 0.25644478127017784,
+      "sharpe_std": 0.21578004114101335
+    },
+    {
+      "cost_bps": 2.0,
+      "sharpe_mean": -0.1338997753749811,
+      "sharpe_std": 0.2444139912442557
+    },
+    {
+      "cost_bps": 5.0,
+      "sharpe_mean": -1.3049334453104562,
+      "sharpe_std": 0.35905069862519795
+    },
+    {
+      "cost_bps": 10.0,
+      "sharpe_mean": -3.256656228536249,
+      "sharpe_std": 0.585697618151572
+    }
+  ],
+  "red_flags": [
+    "Mean Sharpe <= 0",
+    "DSR p-value > 0.05 (deflated=0.002)",
+    "Edge collapses at >=5 bps transaction cost"
+  ]
+}
