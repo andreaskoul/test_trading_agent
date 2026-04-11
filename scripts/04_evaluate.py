@@ -107,6 +107,9 @@ def main() -> None:
     trace_by_split: dict[int, tuple[list[np.ndarray], list[int]]] = defaultdict(
         lambda: ([], [])
     )
+    # Parallel per-split list of raw trade returns, aligned row-for-row with
+    # trace_by_split[s]. Used by the fast meta-labeling filter path below.
+    returns_trace_by_split: dict[int, list[np.ndarray]] = defaultdict(list)
 
     for entry in manifest:
         model = PPO.load(entry["policy_path"], device="cpu")
@@ -126,6 +129,7 @@ def main() -> None:
             feats_list, labels_list = trace_by_split[entry["split"]]
             feats_list.append(result.trade_features)
             labels_list.append((result.trade_returns > 0).astype(np.int64))
+            returns_trace_by_split[entry["split"]].append(result.trade_returns)
         log.info(
             "split=%d seed=%d n_trades=%d sharpe=%.2f hit=%.2f dd=%.2f",
             entry["split"],
@@ -192,12 +196,16 @@ def main() -> None:
         # Pre-stack each split's trace matrix so the leave-one-out loop is cheap.
         split_X: dict[int, np.ndarray] = {}
         split_y: dict[int, np.ndarray] = {}
+        split_returns_aligned: dict[int, np.ndarray] = {}
         for s in split_keys:
             Xs_list, ys_list = trace_by_split[s]
             if not Xs_list:
                 continue
             split_X[s] = np.concatenate(Xs_list, axis=0)
             split_y[s] = np.concatenate(ys_list, axis=0)
+            ret_list = returns_trace_by_split.get(s, [])
+            if ret_list:
+                split_returns_aligned[s] = np.concatenate(ret_list, axis=0)
 
         per_split_meta: dict[int, MetaLabelModel] = {}
         for s in split_keys:
@@ -219,29 +227,40 @@ def main() -> None:
                 mm.base_rate,
             )
 
+        # Fast filter path: instead of re-running rollout_policy per threshold
+        # (which queries PPO every bar the agent stays flat -- ~25 min total),
+        # we reuse the per-trade (features, return) traces collected during
+        # the first pass with trace_entries=True. For each threshold we score
+        # the existing trades with the per-split meta model and keep only
+        # those with P(profit) >= threshold. Much faster AND a cleaner
+        # counterfactual: it measures "what would Sharpe be if we had skipped
+        # the low-confidence trades" rather than "what trades would a
+        # different agent take after we force HOLDs on it".
+        log.info("meta-labeling gate filter over %d thresholds", len(meta_thresholds))
         for thr in meta_thresholds:
             gated_returns: list[float] = []
             gated_sharpes: list[float] = []
-            for entry in manifest:
-                s = int(entry["split"])
+            for s in split_keys:
+                if s not in split_X:
+                    continue
                 mm = per_split_meta.get(s)
                 if mm is None:
                     continue
-                model = PPO.load(entry["policy_path"], device="cpu")
-                test_idx = np.concatenate(
-                    [np.arange(int(g[1]), int(g[2]) + 1) for g in entry["test_blocks"]]
+                Xs = split_X[s]
+                # The corresponding trade returns for this split, re-collected
+                # in trade order matching Xs row-for-row.
+                rets_s = split_returns_aligned.get(s)
+                if rets_s is None or len(rets_s) != len(Xs):
+                    continue
+                probs = mm.predict_proba(Xs)
+                keep = probs >= float(thr)
+                kept = rets_s[keep]
+                if len(kept) == 0:
+                    continue
+                gated_returns.extend(kept.tolist())
+                gated_sharpes.append(
+                    sharpe_ratio(kept, periods_per_year=252.0 / 5.0)
                 )
-                pc = get_precomputed(int(entry["encoder_group"]))
-                r = rollout_policy(
-                    model,
-                    pc,
-                    env_cfg,
-                    test_idx,
-                    meta_model=mm,
-                    meta_threshold=float(thr),
-                )
-                gated_sharpes.append(r.metrics.sharpe)
-                gated_returns.extend(r.trade_returns.tolist())
             if not gated_returns:
                 continue
             pooled_gated = np.asarray(gated_returns, dtype=float)
