@@ -32,6 +32,31 @@ from gymnasium import spaces
 HOLD, BUY, SELL = 0, 1, 2
 
 
+def env_config_from_yaml(cfg: dict) -> "EnvConfig":
+    """Build an EnvConfig from the parsed YAML config.
+
+    Centralising this means the 4 script entry points stay in sync on the
+    reward-shaping knobs (T1.2 / T1.3). Missing keys fall back to
+    ``EnvConfig`` defaults, so old YAMLs stay compatible.
+    """
+    env = cfg.get("env", {})
+    tb = cfg.get("triple_barrier", {})
+    return EnvConfig(
+        seq_len=env.get("seq_len", 32),
+        rr_upper=tb.get("rr_upper", 2.0),
+        rr_lower=tb.get("rr_lower", 1.0),
+        horizon=tb.get("horizon", 20),
+        spread_bps=env.get("spread_bps", 2.0),
+        reward_tp=env.get("reward_tp", 2.0),
+        reward_sl=env.get("reward_sl", -1.0),
+        reward_mode=env.get("reward_mode", "shaped"),
+        reward_return_scale=env.get("reward_return_scale", 100.0),
+        reward_cost_lambda=env.get("reward_cost_lambda", 0.0),
+        reward_dsr_eta=env.get("reward_dsr_eta", 0.01),
+        reward_dsr_scale=env.get("reward_dsr_scale", 1.0),
+    )
+
+
 @dataclass
 class EnvConfig:
     seq_len: int = 32
@@ -41,6 +66,26 @@ class EnvConfig:
     spread_bps: float = 2.0
     reward_tp: float = 2.0
     reward_sl: float = -1.0
+    # --- Tier 1 reward-shaping knobs ---
+    # reward_mode:
+    #   "shaped"     -> legacy: ±reward_tp/reward_sl fixed signal (backward compat).
+    #   "return"     -> return-proportional: scale*(ret - lambda*roundtrip_cost).
+    #                   Directly attacks the cost cliff identified in the eval
+    #                   report (T1.2).
+    #   "diff_sharpe"-> Moody & Saffell (1998) differential Sharpe increment
+    #                   on each trade fire (T1.3). Complements "return" mode
+    #                   by making risk-adjusted return the optimisation target.
+    reward_mode: str = "shaped"
+    # Scale the realised return into reward units. 100 keeps rewards roughly
+    # in [-2, +2] given ~1% per-trade returns.
+    reward_return_scale: float = 100.0
+    # Extra turnover penalty on top of realised spread cost. 0 disables; set
+    # e.g. 3.0 to penalise the agent 3x actual per-round-trip cost.
+    reward_cost_lambda: float = 0.0
+    # EWMA rate for differential Sharpe moments. Smaller = slower adaptation.
+    reward_dsr_eta: float = 0.01
+    # Scale factor on the differential Sharpe increment.
+    reward_dsr_scale: float = 1.0
 
 
 class TradingEnv(gym.Env):
@@ -94,6 +139,9 @@ class TradingEnv(gym.Env):
         self._barrier_lower = 0.0
         self._step_i = 0
         self._episode_trades: list[float] = []
+        # Differential-Sharpe running moments (Moody & Saffell 1998).
+        self._dsr_A = 0.0
+        self._dsr_B = 1e-8
 
     # ------------------------------------------------------------------
     # curriculum
@@ -118,6 +166,8 @@ class TradingEnv(gym.Env):
         self._pos = 0
         self._entry_i = -1
         self._episode_trades = []
+        self._dsr_A = 0.0
+        self._dsr_B = 1e-8
         return self._obs(), {}
 
     def step(self, action: int):  # type: ignore[override]
@@ -190,17 +240,61 @@ class TradingEnv(gym.Env):
         if hit_tp:
             ret = pos * (self._barrier_upper / self._entry_price - 1)
             ret -= 2 * cfg.spread_bps / 1e4  # entry + exit
-            return cfg.reward_tp + self._cost_penalty(), True, float(ret)
+            return self._compute_reward(float(ret), "tp"), True, float(ret)
         if hit_sl:
             ret = pos * (self._barrier_lower / self._entry_price - 1)
             ret -= 2 * cfg.spread_bps / 1e4
-            return cfg.reward_sl + self._cost_penalty(), True, float(ret)
+            return self._compute_reward(float(ret), "sl"), True, float(ret)
         if horizon_exceeded:
             raw_ret = pos * (price / self._entry_price - 1)
             raw_ret -= 2 * cfg.spread_bps / 1e4
-            shaped = float(np.sign(raw_ret)) * 0.5
-            return shaped, True, float(raw_ret)
+            return self._compute_reward(float(raw_ret), "timeout"), True, float(raw_ret)
         return 0.0, False, 0.0
 
-    def _cost_penalty(self) -> float:
-        return -2 * self.cfg.spread_bps / 1e4
+    # ------------------------------------------------------------------
+    # reward shaping
+    # ------------------------------------------------------------------
+    def _compute_reward(self, ret: float, barrier: str) -> float:
+        """Convert a realised trade return into a PPO reward.
+
+        ``ret`` is the actual fractional PnL of the trade (spread already
+        deducted once). ``barrier`` is "tp", "sl" or "timeout" and is only
+        used by the legacy shaped mode to preserve backward compatibility.
+        """
+        cfg = self.cfg
+        mode = getattr(cfg, "reward_mode", "shaped")
+        if mode == "shaped":
+            # Legacy path: fixed ±shaped signal plus tiny cost penalty.
+            cost_pen = -2 * cfg.spread_bps / 1e4
+            if barrier == "tp":
+                return float(cfg.reward_tp + cost_pen)
+            if barrier == "sl":
+                return float(cfg.reward_sl + cost_pen)
+            return float(np.sign(ret)) * 0.5
+        if mode == "return":
+            # Return-proportional with optional extra turnover penalty.
+            # lambda=0 means reward == return_scale*ret (already net of spread).
+            extra_cost = cfg.reward_cost_lambda * 2 * cfg.spread_bps / 1e4
+            return float(cfg.reward_return_scale * (ret - extra_cost))
+        if mode == "diff_sharpe":
+            # Moody & Saffell differential Sharpe increment (NeurIPS 1998).
+            # Uses EWMA first/second moments; returns the change in the
+            # running Sharpe estimate attributable to this single trade.
+            A = self._dsr_A
+            B = self._dsr_B
+            delta_a = ret - A
+            delta_b = ret * ret - B
+            var = B - A * A
+            if var > 1e-12:
+                denom = var ** 1.5
+                d = (B * delta_a - 0.5 * A * delta_b) / denom
+            else:
+                # Cold start before variance is well defined.
+                d = ret
+            self._dsr_A = A + cfg.reward_dsr_eta * delta_a
+            self._dsr_B = B + cfg.reward_dsr_eta * delta_b
+            # Penalty on turnover is still useful so the agent doesn't just
+            # hunt DSR by trading more.
+            extra_cost = cfg.reward_cost_lambda * 2 * cfg.spread_bps / 1e4
+            return float(cfg.reward_dsr_scale * d - cfg.reward_return_scale * extra_cost)
+        raise ValueError(f"unknown reward_mode: {mode!r}")

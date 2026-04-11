@@ -70,6 +70,9 @@ class EmbeddingTradingEnv(gym.Env):
         self._barrier_lower = 0.0
         self._step_i = 0
         self._episode_trades: list[float] = []
+        # Differential-Sharpe running moments (Moody & Saffell 1998).
+        self._dsr_A = 0.0
+        self._dsr_B = 1e-8
 
     # ------------------------------------------------------------------
     def set_regime(self, volatility_max_q: float) -> None:
@@ -90,6 +93,8 @@ class EmbeddingTradingEnv(gym.Env):
         self._pos = 0
         self._entry_i = -1
         self._episode_trades = []
+        self._dsr_A = 0.0
+        self._dsr_B = 1e-8
         return self._obs(), {}
 
     def step(self, action: int):  # type: ignore[override]
@@ -152,17 +157,46 @@ class EmbeddingTradingEnv(gym.Env):
         if hit_tp:
             ret = pos * (self._barrier_upper / self._entry_price - 1)
             ret -= 2 * cfg.spread_bps / 1e4
-            return cfg.reward_tp + self._cost_penalty(), True, float(ret)
+            return self._compute_reward(float(ret), "tp"), True, float(ret)
         if hit_sl:
             ret = pos * (self._barrier_lower / self._entry_price - 1)
             ret -= 2 * cfg.spread_bps / 1e4
-            return cfg.reward_sl + self._cost_penalty(), True, float(ret)
+            return self._compute_reward(float(ret), "sl"), True, float(ret)
         if horizon_exceeded:
             raw_ret = pos * (price / self._entry_price - 1)
             raw_ret -= 2 * cfg.spread_bps / 1e4
-            shaped = float(np.sign(raw_ret)) * 0.5
-            return shaped, True, float(raw_ret)
+            return self._compute_reward(float(raw_ret), "timeout"), True, float(raw_ret)
         return 0.0, False, 0.0
 
-    def _cost_penalty(self) -> float:
-        return -2 * self.cfg.spread_bps / 1e4
+    # ------------------------------------------------------------------
+    # reward shaping (mirrors TradingEnv._compute_reward)
+    # ------------------------------------------------------------------
+    def _compute_reward(self, ret: float, barrier: str) -> float:
+        cfg = self.cfg
+        mode = getattr(cfg, "reward_mode", "shaped")
+        if mode == "shaped":
+            cost_pen = -2 * cfg.spread_bps / 1e4
+            if barrier == "tp":
+                return float(cfg.reward_tp + cost_pen)
+            if barrier == "sl":
+                return float(cfg.reward_sl + cost_pen)
+            return float(np.sign(ret)) * 0.5
+        if mode == "return":
+            extra_cost = cfg.reward_cost_lambda * 2 * cfg.spread_bps / 1e4
+            return float(cfg.reward_return_scale * (ret - extra_cost))
+        if mode == "diff_sharpe":
+            A = self._dsr_A
+            B = self._dsr_B
+            delta_a = ret - A
+            delta_b = ret * ret - B
+            var = B - A * A
+            if var > 1e-12:
+                denom = var ** 1.5
+                d = (B * delta_a - 0.5 * A * delta_b) / denom
+            else:
+                d = ret
+            self._dsr_A = A + cfg.reward_dsr_eta * delta_a
+            self._dsr_B = B + cfg.reward_dsr_eta * delta_b
+            extra_cost = cfg.reward_cost_lambda * 2 * cfg.spread_bps / 1e4
+            return float(cfg.reward_dsr_scale * d - cfg.reward_return_scale * extra_cost)
+        raise ValueError(f"unknown reward_mode: {mode!r}")

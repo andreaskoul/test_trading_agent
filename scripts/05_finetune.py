@@ -13,7 +13,7 @@ from stable_baselines3 import PPO
 from _bootstrap import setup, path
 
 from src.data.features import feature_columns
-from src.env.trading_env import EnvConfig
+from src.env.trading_env import env_config_from_yaml
 from src.training.evaluate import build_precomputed, rollout_policy
 from src.training.finetune import FinetuneConfig, finetune_policy
 from src.training.pretrain_encoder import load_encoder
@@ -30,15 +30,7 @@ def main() -> None:
     train_idx = np.arange(0, n - holdout_n)
     holdout_idx = np.arange(n - holdout_n, n)
 
-    env_cfg = EnvConfig(
-        seq_len=cfg["env"]["seq_len"],
-        rr_upper=cfg["triple_barrier"]["rr_upper"],
-        rr_lower=cfg["triple_barrier"]["rr_lower"],
-        horizon=cfg["triple_barrier"]["horizon"],
-        spread_bps=cfg["env"]["spread_bps"],
-        reward_tp=cfg["env"]["reward_tp"],
-        reward_sl=cfg["env"]["reward_sl"],
-    )
+    env_cfg = env_config_from_yaml(cfg)
 
     manifest_path = path(cfg, cfg["artefact_dir"], "ppo_manifest.json")
     with open(manifest_path) as f:

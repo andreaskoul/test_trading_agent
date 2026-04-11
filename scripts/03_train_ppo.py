@@ -20,7 +20,7 @@ import pandas as pd
 from _bootstrap import setup, path
 
 from src.data.features import feature_columns
-from src.env.trading_env import EnvConfig
+from src.env.trading_env import env_config_from_yaml
 from src.models.precompute import precompute_embeddings
 from src.training.pretrain_encoder import load_encoder
 from src.training.train_ppo import PPORunConfig, train_ppo_run
@@ -64,14 +64,13 @@ def main() -> None:
         seeds = seeds[: args.max_seeds]
     log.info("running %d splits x %d seeds = %d runs, %d steps each", len(splits), len(seeds), len(splits) * len(seeds), total_steps)
 
-    env_cfg = EnvConfig(
-        seq_len=cfg["env"]["seq_len"],
-        rr_upper=cfg["triple_barrier"]["rr_upper"],
-        rr_lower=cfg["triple_barrier"]["rr_lower"],
-        horizon=cfg["triple_barrier"]["horizon"],
-        spread_bps=cfg["env"]["spread_bps"],
-        reward_tp=cfg["env"]["reward_tp"],
-        reward_sl=cfg["env"]["reward_sl"],
+    env_cfg = env_config_from_yaml(cfg)
+    log.info(
+        "reward_mode=%s return_scale=%.1f cost_lambda=%.2f dsr_eta=%.3f",
+        env_cfg.reward_mode,
+        env_cfg.reward_return_scale,
+        env_cfg.reward_cost_lambda,
+        env_cfg.reward_dsr_eta,
     )
 
     run_cfg = PPORunConfig(

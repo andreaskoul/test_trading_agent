@@ -155,6 +155,40 @@ def test_ppo_short_train():
     venv.close()
 
 
+def test_reward_modes():
+    """T1.2 / T1.3: return-mode and diff_sharpe reward modes must not
+    crash and must produce finite non-shaped rewards."""
+    from src.data.features import build_features, feature_columns
+    from src.env.trading_env import EnvConfig, TradingEnv, BUY
+    df = _synthetic_ohlcv()
+    feats = build_features(df)
+    cols = feature_columns(feats)
+
+    for mode in ("shaped", "return", "diff_sharpe"):
+        cfg = EnvConfig(
+            seq_len=16,
+            horizon=15,
+            reward_mode=mode,
+            reward_return_scale=100.0,
+            reward_cost_lambda=3.0,
+            reward_dsr_eta=0.01,
+        )
+        env = TradingEnv(feats, cols, cfg)
+        env.reset(seed=0)
+        saw_reward = False
+        # Force a BUY then HOLD until a barrier fires.
+        env.step(BUY)
+        for _ in range(40):
+            _, r, term, _, info = env.step(0)
+            assert np.isfinite(r), f"non-finite reward in mode={mode}"
+            if "trade_return" in info:
+                saw_reward = True
+                break
+            if term:
+                break
+        assert saw_reward, f"no trade fired in mode={mode}"
+
+
 def test_deflated_sharpe_reasonable():
     from src.validation.deflated_sr import deflated_sharpe_ratio, sharpe_ratio
     rng = np.random.default_rng(1)
@@ -184,6 +218,7 @@ if __name__ == "__main__":
         test_cpcv_purge_no_leakage,
         test_encoder_shape,
         test_env_runs_trade,
+        test_reward_modes,
         test_ppo_short_train,
         test_deflated_sharpe_reasonable,
         test_bootstrap_and_permutation,

@@ -18,7 +18,8 @@ from stable_baselines3 import PPO
 from _bootstrap import setup, path
 
 from src.data.features import feature_columns
-from src.env.trading_env import EnvConfig
+from src.env.trading_env import env_config_from_yaml
+from src.models.meta_label import MetaLabelConfig, MetaLabelModel
 from src.training.evaluate import build_precomputed, rollout_policy, rollout_with_cost
 from src.training.pretrain_encoder import load_encoder
 from src.validation.bootstrap import block_bootstrap_sharpe, permutation_pvalue_sharpe
@@ -77,15 +78,7 @@ def main() -> None:
     features = pd.read_parquet(path(cfg, cfg["data"]["features_path"]))
     feat_cols = feature_columns(features)
 
-    env_cfg = EnvConfig(
-        seq_len=cfg["env"]["seq_len"],
-        rr_upper=cfg["triple_barrier"]["rr_upper"],
-        rr_lower=cfg["triple_barrier"]["rr_lower"],
-        horizon=cfg["triple_barrier"]["horizon"],
-        spread_bps=cfg["env"]["spread_bps"],
-        reward_tp=cfg["env"]["reward_tp"],
-        reward_sl=cfg["env"]["reward_sl"],
-    )
+    env_cfg = env_config_from_yaml(cfg)
 
     manifest_path = path(cfg, cfg["artefact_dir"], "ppo_manifest.json")
     with open(manifest_path) as f:
@@ -108,6 +101,12 @@ def main() -> None:
     curves = []
     returns_by_split: dict[int, list[np.ndarray]] = defaultdict(list)
     pooled_returns: list[float] = []
+    # Per-split trade traces for the meta-labeling layer (T1.1). Each entry
+    # is (X=features at entry, y=1 if trade_return>0 else 0). Keyed by split
+    # so we can train a separate meta-model per split using leave-one-out.
+    trace_by_split: dict[int, tuple[list[np.ndarray], list[int]]] = defaultdict(
+        lambda: ([], [])
+    )
 
     for entry in manifest:
         model = PPO.load(entry["policy_path"], device="cpu")
@@ -115,7 +114,7 @@ def main() -> None:
             [np.arange(int(g[1]), int(g[2]) + 1) for g in entry["test_blocks"]]
         )
         pc = get_precomputed(int(entry["encoder_group"]))
-        result = rollout_policy(model, pc, env_cfg, test_idx)
+        result = rollout_policy(model, pc, env_cfg, test_idx, trace_entries=True)
         metrics = result.metrics.asdict()
         metrics["split"] = entry["split"]
         metrics["seed"] = entry["seed"]
@@ -123,6 +122,10 @@ def main() -> None:
         curves.append(result.equity)
         returns_by_split[entry["split"]].append(result.trade_returns)
         pooled_returns.extend(result.trade_returns.tolist())
+        if result.trade_features is not None and result.n_trades > 0:
+            feats_list, labels_list = trace_by_split[entry["split"]]
+            feats_list.append(result.trade_features)
+            labels_list.append((result.trade_returns > 0).astype(np.int64))
         log.info(
             "split=%d seed=%d n_trades=%d sharpe=%.2f hit=%.2f dd=%.2f",
             entry["split"],
@@ -174,6 +177,91 @@ def main() -> None:
             continue
         pooled_split = np.concatenate(arrs)
         ensemble_sharpes.append(sharpe_ratio(pooled_split, periods_per_year=252.0 / 5.0))
+
+    # ------------------------------------------------------------------
+    # T1.1 -- Meta-labeling layer (Lopez de Prado, AFML Ch. 3)
+    # ------------------------------------------------------------------
+    # Train one meta-model per split using leave-one-out on the traced
+    # trades from the OTHER splits, then rerun the rollout with the model
+    # gating low-confidence entries. Report the gated pooled Sharpe at a
+    # range of confidence thresholds.
+    meta_results: list[dict] = []
+    meta_thresholds = [0.50, 0.55, 0.60]
+    split_keys = sorted(trace_by_split.keys())
+    if split_keys:
+        # Pre-stack each split's trace matrix so the leave-one-out loop is cheap.
+        split_X: dict[int, np.ndarray] = {}
+        split_y: dict[int, np.ndarray] = {}
+        for s in split_keys:
+            Xs_list, ys_list = trace_by_split[s]
+            if not Xs_list:
+                continue
+            split_X[s] = np.concatenate(Xs_list, axis=0)
+            split_y[s] = np.concatenate(ys_list, axis=0)
+
+        per_split_meta: dict[int, MetaLabelModel] = {}
+        for s in split_keys:
+            if s not in split_X:
+                continue
+            # Train on all OTHER splits
+            X_parts = [split_X[o] for o in split_keys if o != s and o in split_X]
+            y_parts = [split_y[o] for o in split_keys if o != s and o in split_y]
+            if not X_parts:
+                continue
+            X_tr = np.concatenate(X_parts, axis=0)
+            y_tr = np.concatenate(y_parts, axis=0)
+            mm = MetaLabelModel(MetaLabelConfig()).fit(X_tr, y_tr)
+            per_split_meta[s] = mm
+            log.info(
+                "meta split=%d train_trades=%d base_rate=%.3f",
+                s,
+                len(X_tr),
+                mm.base_rate,
+            )
+
+        for thr in meta_thresholds:
+            gated_returns: list[float] = []
+            gated_sharpes: list[float] = []
+            for entry in manifest:
+                s = int(entry["split"])
+                mm = per_split_meta.get(s)
+                if mm is None:
+                    continue
+                model = PPO.load(entry["policy_path"], device="cpu")
+                test_idx = np.concatenate(
+                    [np.arange(int(g[1]), int(g[2]) + 1) for g in entry["test_blocks"]]
+                )
+                pc = get_precomputed(int(entry["encoder_group"]))
+                r = rollout_policy(
+                    model,
+                    pc,
+                    env_cfg,
+                    test_idx,
+                    meta_model=mm,
+                    meta_threshold=float(thr),
+                )
+                gated_sharpes.append(r.metrics.sharpe)
+                gated_returns.extend(r.trade_returns.tolist())
+            if not gated_returns:
+                continue
+            pooled_gated = np.asarray(gated_returns, dtype=float)
+            pooled_sr = sharpe_ratio(pooled_gated, periods_per_year=252.0 / 5.0)
+            meta_results.append(
+                dict(
+                    threshold=float(thr),
+                    mean_sharpe=float(np.mean(gated_sharpes)),
+                    pooled_sharpe=float(pooled_sr),
+                    n_trades=int(len(pooled_gated)),
+                    total_return=float((1 + pooled_gated).prod() - 1),
+                )
+            )
+            log.info(
+                "meta thr=%.2f mean_sharpe=%.3f pooled=%.3f n_trades=%d",
+                thr,
+                float(np.mean(gated_sharpes)),
+                float(pooled_sr),
+                len(pooled_gated),
+            )
 
     # Plots
     plot_dir = path(cfg, cfg["report_dir"])
@@ -250,6 +338,29 @@ def main() -> None:
     for i, s in enumerate(ensemble_sharpes):
         report_lines.append(f"| {i} | {s:+.3f} |")
 
+    if meta_results:
+        report_lines += [
+            "",
+            "## Meta-labeling gate (T1.1, Lopez de Prado)",
+            "",
+            "Per-split HistGBM classifier trained on trades from the OTHER splits,",
+            "predicting P(profit) from entry embedding+direction+vol-quantile. Actions",
+            "with P < threshold are gated to HOLD.",
+            "",
+            "| Threshold | Mean Sharpe | Pooled Sharpe | Trades | Total Return |",
+            "|----------:|------------:|--------------:|-------:|-------------:|",
+        ]
+        for mr in meta_results:
+            report_lines.append(
+                "| {thr:.2f} | {ms:+.3f} | {ps:+.3f} | {nt} | {tr:+.3f} |".format(
+                    thr=mr["threshold"],
+                    ms=mr["mean_sharpe"],
+                    ps=mr["pooled_sharpe"],
+                    nt=mr["n_trades"],
+                    tr=mr["total_return"],
+                )
+            )
+
     report_lines += [
         "",
         "## Red flags",
@@ -287,6 +398,7 @@ def main() -> None:
                 bootstrap_lo=boot.lo,
                 bootstrap_hi=boot.hi,
                 cost_sweep=cost_details,
+                meta_gate=meta_results,
                 red_flags=red_flags,
             ),
             f,

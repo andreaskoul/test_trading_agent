@@ -56,8 +56,18 @@ env:
   seq_len: 32
   spread_bps: 2.0
   use_embedding: true      # if true, obs is 128-dim encoder embedding
-  reward_tp: 2.0
-  reward_sl: -1.0
+  reward_tp: 2.0           # legacy shaped-reward TP magnitude
+  reward_sl: -1.0          # legacy shaped-reward SL magnitude
+  # --- Tier 1 reward knobs ---
+  # reward_mode:
+  #   "shaped"     -> legacy fixed ±signal (baseline for ablation)
+  #   "return"     -> T1.2 return-proportional with cost penalty
+  #   "diff_sharpe"-> T1.3 Moody-Saffell differential Sharpe increment
+  reward_mode: "return"
+  reward_return_scale: 100.0   # scales ~1% returns into ~1.0 reward magnitude
+  reward_cost_lambda: 3.0      # extra turnover penalty (3x realised spread)
+  reward_dsr_eta: 0.01         # EWMA rate for DSR moments (diff_sharpe only)
+  reward_dsr_scale: 1.0        # scale on differential Sharpe increment
 
 evaluation:
   costs_bps: [0.0, 1.0, 2.0, 5.0, 10.0]
