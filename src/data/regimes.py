@@ -49,7 +49,7 @@ log = logging.getLogger(__name__)
 @dataclass
 class HMMRegimeConfig:
     n_states: int = 3
-    covariance_type: str = "full"
+    covariance_type: str = "diag"    # "diag" is more robust than "full"
     n_iter: int = 100
     tol: float = 1e-3
     vol_window: int = 20
@@ -104,11 +104,23 @@ class HMMRegimeModel:
         return self
 
     def posterior(self, close: np.ndarray) -> np.ndarray:
-        """Compute P(state | x) for every bar. Shape: (n_bars, n_states)."""
+        """Compute P(state | x) for every bar. Shape: (n_bars, n_states).
+
+        Falls back to uniform posterior if predict_proba raises (e.g. due
+        to degenerate covariance matrices on certain CPCV splits).
+        """
         if self._hmm is None:
             raise RuntimeError("HMMRegimeModel.fit must be called first")
         feats = _build_hmm_features(close, self.cfg.vol_window)
-        post = self._hmm.predict_proba(feats)
+        try:
+            post = self._hmm.predict_proba(feats)
+        except ValueError:
+            log.warning("HMM predict_proba failed; using uniform posterior")
+            post = np.full(
+                (len(feats), self.cfg.n_states),
+                1.0 / self.cfg.n_states,
+                dtype=np.float32,
+            )
         return post.astype(np.float32)
 
     # ------------------------------------------------------------------
