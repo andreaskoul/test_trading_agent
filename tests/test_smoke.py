@@ -189,6 +189,40 @@ def test_reward_modes():
         assert saw_reward, f"no trade fired in mode={mode}"
 
 
+def test_regime_conditioned_env():
+    """T2.1: EmbeddingTradingEnv with a 3-state HMM regime posterior
+    should expose 131-dim obs (128 embedding + 3 posterior)."""
+    from src.data.features import build_features, feature_columns
+    from src.data.regimes import HMMRegimeConfig, HMMRegimeModel
+    from src.env.embedding_env import EmbeddingTradingEnv
+    from src.env.trading_env import EnvConfig
+    from src.models.xlstm_lite import XLSTMConfig, XLSTMLite
+    from src.models.precompute import precompute_embeddings
+
+    df = _synthetic_ohlcv()
+    feats = build_features(df)
+    cols = feature_columns(feats)
+    enc = XLSTMLite(XLSTMConfig(input_dim=len(cols), hidden_size=32, n_slstm=1, n_mlstm=1, dropout=0.0))
+    feat_arr = feats[cols].to_numpy(dtype=np.float32)
+    emb = precompute_embeddings(enc, feat_arr, seq_len=16)
+    close = feats["close"].to_numpy(dtype=np.float64)
+    atr = feats["atr"].to_numpy(dtype=np.float64)
+    vq = np.linspace(0, 1, len(feats))
+
+    hmm = HMMRegimeModel(HMMRegimeConfig(n_states=3))
+    hmm.fit(close, train_idx=np.arange(len(close) - 200))
+    post = hmm.posterior(close)
+    assert post.shape == (len(close), 3)
+
+    env = EmbeddingTradingEnv(
+        close=close, atr=atr, embeddings=emb, vol_quantile=vq,
+        cfg=EnvConfig(seq_len=16, horizon=15),
+        regime_posterior=post,
+    )
+    obs, _ = env.reset(seed=0)
+    assert obs.shape == (32 + 3,), f"expected 35-dim obs, got {obs.shape}"
+
+
 def test_deflated_sharpe_reasonable():
     from src.validation.deflated_sr import deflated_sharpe_ratio, sharpe_ratio
     rng = np.random.default_rng(1)
@@ -220,6 +254,7 @@ if __name__ == "__main__":
         test_env_runs_trade,
         test_reward_modes,
         test_ppo_short_train,
+        test_regime_conditioned_env,
         test_deflated_sharpe_reasonable,
         test_bootstrap_and_permutation,
     ]

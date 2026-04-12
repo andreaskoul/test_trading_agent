@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 from stable_baselines3 import PPO
 
+from ..data.regimes import fit_or_load_regime
 from ..env.embedding_env import EmbeddingTradingEnv
 from ..env.trading_env import EnvConfig, BUY, SELL, HOLD
 from ..models.meta_label import MetaLabelModel, build_trade_features
@@ -38,6 +39,7 @@ def build_precomputed(
     feature_cols: list[str],
     encoder: XLSTMLite,
     seq_len: int,
+    regime_posterior: Optional[np.ndarray] = None,
 ) -> dict:
     feats = features[feature_cols].to_numpy(dtype=np.float32)
     embeddings = precompute_embeddings(encoder, feats, seq_len=seq_len)
@@ -45,7 +47,10 @@ def build_precomputed(
     atr = features["atr"].to_numpy(dtype=np.float64)
     rv = pd.Series(atr / close).rolling(20, min_periods=1).mean()
     vol_quantile = rv.rank(pct=True).to_numpy()
-    return dict(close=close, atr=atr, embeddings=embeddings, vol_quantile=vol_quantile)
+    out = dict(close=close, atr=atr, embeddings=embeddings, vol_quantile=vol_quantile)
+    if regime_posterior is not None:
+        out["regime_posterior"] = np.asarray(regime_posterior, dtype=np.float32)
+    return out
 
 
 def _policy_action(model: PPO, obs: np.ndarray) -> int:
@@ -82,6 +87,7 @@ def rollout_policy(
         cfg=env_cfg,
         allowed_idx=test_idx,
         seed=0,
+        regime_posterior=precomputed.get("regime_posterior"),
     )
 
     trades: list[float] = []

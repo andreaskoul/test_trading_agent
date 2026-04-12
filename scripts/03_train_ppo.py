@@ -20,6 +20,7 @@ import pandas as pd
 from _bootstrap import setup, path
 
 from src.data.features import feature_columns
+from src.data.regimes import HMMRegimeConfig, fit_or_load_regime
 from src.env.trading_env import env_config_from_yaml
 from src.models.precompute import precompute_embeddings
 from src.training.pretrain_encoder import load_encoder
@@ -54,6 +55,8 @@ def main() -> None:
 
     seeds = cfg["ppo"]["seeds"]
     total_steps = cfg["ppo"]["total_timesteps"]
+    # T2.2: algorithm-diverse ensemble. One run per (split, algo, seed).
+    algorithms = cfg["ppo"].get("algorithms", ["ppo"])
     if args.fast:
         total_steps = max(8000, total_steps // 4)
         seeds = seeds[:3]
@@ -62,7 +65,11 @@ def main() -> None:
         splits = splits[: args.max_splits]
     if args.max_seeds is not None:
         seeds = seeds[: args.max_seeds]
-    log.info("running %d splits x %d seeds = %d runs, %d steps each", len(splits), len(seeds), len(splits) * len(seeds), total_steps)
+    log.info(
+        "running %d splits x %d algos x %d seeds = %d runs, %d steps each",
+        len(splits), len(algorithms), len(seeds),
+        len(splits) * len(algorithms) * len(seeds), total_steps,
+    )
 
     env_cfg = env_config_from_yaml(cfg)
     log.info(
@@ -91,7 +98,19 @@ def main() -> None:
 
     encoders_dir = path(cfg, cfg["artefact_dir"], "encoders")
     policy_dir = path(cfg, cfg["artefact_dir"], "policies")
+    regimes_dir = path(cfg, cfg["artefact_dir"], "regimes")
     os.makedirs(policy_dir, exist_ok=True)
+    os.makedirs(regimes_dir, exist_ok=True)
+
+    # T2.1: HMM regime conditioning. Fit per CPCV split on train_idx only
+    # (so test bars do not influence the HMM), then attach the full-bar
+    # posterior to the precomputed dict so EmbeddingTradingEnv can expose
+    # it as part of the observation.
+    regime_cfg = HMMRegimeConfig()
+    log.info(
+        "regime conditioning: %d-state GaussianHMM per split",
+        regime_cfg.n_states,
+    )
 
     feats_arr = features[feat_cols].to_numpy(dtype=np.float32)
     close_arr = features["close"].to_numpy(dtype=np.float64)
@@ -113,10 +132,21 @@ def main() -> None:
     manifest = []
     for s_idx, split in enumerate(splits):
         anchor_group = int(split.test_groups[0])
-        precomputed = get_precomputed(anchor_group)
+        precomputed_base = get_precomputed(anchor_group)
         train_idx = split.train_idx
         test_idx = split.test_idx
         test_blocks = [[int(g), int(groups[g][0]), int(groups[g][1] - 1)] for g in split.test_groups]
+
+        # Fit (or load cached) HMM for this split, then build a per-split
+        # precomputed dict that adds the full-bar regime posterior.
+        regime_cache = os.path.join(regimes_dir, f"hmm_split{s_idx}.pkl")
+        _, regime_post = fit_or_load_regime(
+            close=precomputed_base["close"],
+            train_idx=train_idx,
+            cache_path=regime_cache,
+            cfg=regime_cfg,
+        )
+        precomputed = {**precomputed_base, "regime_posterior": regime_post}
 
         log.info(
             "split %d: train=%d test=%d groups=%s encoder=group%d",
@@ -131,35 +161,51 @@ def main() -> None:
         # satisfy train_ppo_run's encoder argument for determinism/torch seed
         encoder = load_encoder(os.path.join(encoders_dir, f"encoder_group{anchor_group}.pt"))
 
-        for seed in seeds:
-            save_path = os.path.join(policy_dir, f"ppo_split{s_idx}_seed{seed}.zip")
-            if os.path.exists(save_path):
-                log.info("skipping split=%d seed=%d (already exists)", s_idx, seed)
-            else:
-                log.info("training split=%d seed=%d", s_idx, seed)
-                train_ppo_run(
-                    features=features,
-                    feature_cols=feat_cols,
-                    env_cfg=env_cfg,
-                    encoder=encoder,
-                    train_idx=train_idx,
-                    run_cfg=run_cfg,
-                    seed=seed,
-                    save_path=save_path,
-                    precomputed=precomputed,
-                )
-            manifest.append(
-                dict(
-                    split=int(s_idx),
-                    test_groups=list(map(int, split.test_groups)),
-                    seed=int(seed),
-                    encoder_group=anchor_group,
-                    policy_path=save_path,
-                    train_size=int(len(train_idx)),
-                    test_size=int(len(test_idx)),
-                    test_blocks=test_blocks,
-                )
+        for algo in algorithms:
+            algo_cfg = PPORunConfig(
+                total_timesteps=total_steps,
+                n_steps=run_cfg.n_steps,
+                batch_size=run_cfg.batch_size,
+                gae_lambda=run_cfg.gae_lambda,
+                gamma=run_cfg.gamma,
+                ent_coef=run_cfg.ent_coef,
+                clip_range=run_cfg.clip_range,
+                learning_rate=run_cfg.learning_rate,
+                curriculum=run_cfg.curriculum,
+                algorithm=algo,
             )
+            for seed in seeds:
+                tag = algo if algo != "ppo" else "ppo"
+                save_path = os.path.join(policy_dir, f"{tag}_split{s_idx}_seed{seed}.zip")
+                if os.path.exists(save_path):
+                    log.info("skipping %s split=%d seed=%d (already exists)", algo, s_idx, seed)
+                else:
+                    log.info("training %s split=%d seed=%d", algo, s_idx, seed)
+                    train_ppo_run(
+                        features=features,
+                        feature_cols=feat_cols,
+                        env_cfg=env_cfg,
+                        encoder=encoder,
+                        train_idx=train_idx,
+                        run_cfg=algo_cfg,
+                        seed=seed,
+                        save_path=save_path,
+                        precomputed=precomputed,
+                    )
+                manifest.append(
+                    dict(
+                        split=int(s_idx),
+                        test_groups=list(map(int, split.test_groups)),
+                        seed=int(seed),
+                        algorithm=algo,
+                        encoder_group=anchor_group,
+                        policy_path=save_path,
+                        regime_path=regime_cache,
+                        train_size=int(len(train_idx)),
+                        test_size=int(len(test_idx)),
+                        test_blocks=test_blocks,
+                    )
+                )
             # Write manifest incrementally so a mid-run OOM still leaves a
             # usable partial manifest on disk.
             manifest_path = path(cfg, cfg["artefact_dir"], "ppo_manifest.json")

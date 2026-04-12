@@ -2,24 +2,34 @@
 
 Uses precomputed encoder embeddings (see src.models.precompute) so the
 PPO rollout does NOT pay the per-step encoder cost.
+
+T2.2 also supports algorithm-diverse training: ``algorithm`` may be one of
+``"ppo"``, ``"a2c"``, or ``"recurrent_ppo"`` (sb3-contrib). Recurrent PPO
+uses an LSTM head on top of our embedding obs and tends to capture
+short-horizon temporal structure that a vanilla MLP misses.
 """
 
 from __future__ import annotations
 
 import logging
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 import pandas as pd
 import torch
-from stable_baselines3 import PPO
+from stable_baselines3 import A2C, PPO
 from stable_baselines3.common.vec_env import DummyVecEnv
 
 from ..env.embedding_env import EmbeddingTradingEnv
 from ..env.trading_env import EnvConfig
 from ..models.precompute import precompute_embeddings
 from ..models.xlstm_lite import XLSTMLite
+
+try:
+    from sb3_contrib import RecurrentPPO
+except ImportError:  # pragma: no cover
+    RecurrentPPO = None  # type: ignore[assignment]
 
 log = logging.getLogger(__name__)
 
@@ -35,6 +45,9 @@ class PPORunConfig:
     clip_range: float
     learning_rate: float
     curriculum: dict
+    # T2.2: which RL algorithm to instantiate. Defaults to vanilla PPO so
+    # existing call sites stay backward-compatible.
+    algorithm: str = "ppo"
 
 
 def _make_env(
@@ -45,6 +58,7 @@ def _make_env(
     env_cfg: EnvConfig,
     train_idx: np.ndarray,
     seed: int,
+    regime_posterior: np.ndarray | None = None,
 ):
     def thunk():
         return EmbeddingTradingEnv(
@@ -55,6 +69,7 @@ def _make_env(
             cfg=env_cfg,
             allowed_idx=train_idx,
             seed=seed,
+            regime_posterior=regime_posterior,
         )
     return thunk
 
@@ -97,24 +112,68 @@ def train_ppo_run(
             env_cfg,
             train_idx,
             seed,
+            regime_posterior=precomputed.get("regime_posterior"),
         )
     ])
 
-    model = PPO(
-        policy="MlpPolicy",
-        env=venv,
-        n_steps=run_cfg.n_steps,
-        batch_size=run_cfg.batch_size,
-        gae_lambda=run_cfg.gae_lambda,
-        gamma=run_cfg.gamma,
-        ent_coef=run_cfg.ent_coef,
-        clip_range=run_cfg.clip_range,
-        learning_rate=run_cfg.learning_rate,
-        policy_kwargs=dict(net_arch=dict(pi=[128, 64], vf=[128, 64])),
-        verbose=0,
-        seed=seed,
-        device="cpu",
-    )
+    algo = (run_cfg.algorithm or "ppo").lower()
+    if algo == "ppo":
+        model = PPO(
+            policy="MlpPolicy",
+            env=venv,
+            n_steps=run_cfg.n_steps,
+            batch_size=run_cfg.batch_size,
+            gae_lambda=run_cfg.gae_lambda,
+            gamma=run_cfg.gamma,
+            ent_coef=run_cfg.ent_coef,
+            clip_range=run_cfg.clip_range,
+            learning_rate=run_cfg.learning_rate,
+            policy_kwargs=dict(net_arch=dict(pi=[128, 64], vf=[128, 64])),
+            verbose=0,
+            seed=seed,
+            device="cpu",
+        )
+    elif algo == "a2c":
+        # A2C does not take batch_size or clip_range; it uses n_steps as the
+        # rollout size and updates after each rollout. Use a smaller n_steps
+        # for higher update frequency, which is the standard A2C recipe.
+        model = A2C(
+            policy="MlpPolicy",
+            env=venv,
+            n_steps=max(8, run_cfg.n_steps // 8),
+            gae_lambda=run_cfg.gae_lambda,
+            gamma=run_cfg.gamma,
+            ent_coef=run_cfg.ent_coef,
+            learning_rate=run_cfg.learning_rate,
+            policy_kwargs=dict(net_arch=dict(pi=[128, 64], vf=[128, 64])),
+            verbose=0,
+            seed=seed,
+            device="cpu",
+        )
+    elif algo in ("recurrent_ppo", "rppo"):
+        if RecurrentPPO is None:
+            raise RuntimeError("recurrent_ppo requires sb3-contrib; pip install sb3-contrib")
+        model = RecurrentPPO(
+            policy="MlpLstmPolicy",
+            env=venv,
+            n_steps=run_cfg.n_steps,
+            batch_size=run_cfg.batch_size,
+            gae_lambda=run_cfg.gae_lambda,
+            gamma=run_cfg.gamma,
+            ent_coef=run_cfg.ent_coef,
+            clip_range=run_cfg.clip_range,
+            learning_rate=run_cfg.learning_rate,
+            policy_kwargs=dict(
+                net_arch=dict(pi=[64], vf=[64]),
+                lstm_hidden_size=64,
+                n_lstm_layers=1,
+            ),
+            verbose=0,
+            seed=seed,
+            device="cpu",
+        )
+    else:
+        raise ValueError(f"unknown algorithm: {run_cfg.algorithm!r}")
 
     curriculum = run_cfg.curriculum
     calm_steps = int(run_cfg.total_timesteps * curriculum.get("calm_frac", 0.3))

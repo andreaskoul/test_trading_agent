@@ -36,12 +36,22 @@ class EmbeddingTradingEnv(gym.Env):
         cfg: EnvConfig,
         allowed_idx: Optional[np.ndarray] = None,
         seed: int = 0,
+        regime_posterior: Optional[np.ndarray] = None,  # (n_bars, n_states)
     ):
         super().__init__()
         self._close = np.asarray(close, dtype=np.float64)
         self._atr = np.asarray(atr, dtype=np.float64)
         self._emb = np.asarray(embeddings, dtype=np.float32)
         self._vol_quantile = np.asarray(vol_quantile, dtype=np.float64)
+        # T2.1 regime conditioning: optional per-bar HMM posterior.
+        if regime_posterior is not None:
+            self._regime = np.asarray(regime_posterior, dtype=np.float32)
+            if self._regime.ndim != 2 or len(self._regime) != len(self._close):
+                raise ValueError(
+                    f"regime_posterior must be (n_bars, n_states); got {self._regime.shape}"
+                )
+        else:
+            self._regime = None
         self.cfg = cfg
         self.n = len(self._close)
         self.rng = np.random.default_rng(seed)
@@ -56,10 +66,13 @@ class EmbeddingTradingEnv(gym.Env):
         self._update_start_pool()
 
         self.action_space = spaces.Discrete(3)
+        obs_dim = self._emb.shape[1]
+        if self._regime is not None:
+            obs_dim += self._regime.shape[1]
         self.observation_space = spaces.Box(
             low=-np.inf,
             high=np.inf,
-            shape=(self._emb.shape[1],),
+            shape=(obs_dim,),
             dtype=np.float32,
         )
 
@@ -124,7 +137,10 @@ class EmbeddingTradingEnv(gym.Env):
     # ------------------------------------------------------------------
     def _obs(self) -> np.ndarray:
         i = min(self._step_i, self.n - 1)
-        return self._emb[i].astype(np.float32)
+        emb = self._emb[i].astype(np.float32)
+        if self._regime is None:
+            return emb
+        return np.concatenate([emb, self._regime[i]]).astype(np.float32)
 
     def _open_position(self, direction: int) -> None:
         self._pos = direction
