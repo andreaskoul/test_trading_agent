@@ -1,10 +1,15 @@
-"""Gold OHLCV loader.
+"""Multi-asset OHLCV loader.
 
-Primary source is real Micro Gold Futures (MGC) 60-minute OHLCV published on
-GitHub (domzack/mgc-ohlcv-data) — the sandbox allows raw.githubusercontent.com
-but blocks Yahoo/Stooq/Tiingo/Alphavantage/FRED. We optionally try yfinance as
-a secondary path for users running outside the sandbox, and fall back to a
-synthetic GBM+GARCH series only if every network source fails.
+Supports any symbol via yfinance with synthetic GBM+GARCH fallback.
+Real Micro Gold Futures (MGC) 60-minute OHLCV from GitHub
+(domzack/mgc-ohlcv-data) is the primary source for gold; the sandbox
+allows raw.githubusercontent.com but blocks Yahoo/Stooq/Tiingo etc.
+
+For other assets the priority is:
+  1. Cached parquet (if exists)
+  2. Known GitHub CSV sources (currently MGC only)
+  3. yfinance
+  4. Synthetic GBM+GARCH calibrated to the symbol's typical dynamics
 """
 
 from __future__ import annotations
@@ -13,7 +18,7 @@ import io
 import logging
 import os
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -29,10 +34,53 @@ class LoadResult:
 
 REQUIRED_COLS = ["open", "high", "low", "close", "volume"]
 
-MGC_60M_URL = (
-    "https://raw.githubusercontent.com/domzack/mgc-ohlcv-data/"
-    "master/aggregated/continuous/ohlcv_MGC_60m_continuous.csv"
-)
+# ---------------------------------------------------------------------------
+# Known GitHub CSV sources (sandbox-reachable)
+# ---------------------------------------------------------------------------
+KNOWN_GITHUB_SOURCES: Dict[str, str] = {
+    "GC=F": (
+        "https://raw.githubusercontent.com/domzack/mgc-ohlcv-data/"
+        "master/aggregated/continuous/ohlcv_MGC_60m_continuous.csv"
+    ),
+}
+
+# Keep old constant for backward compat
+MGC_60M_URL = KNOWN_GITHUB_SOURCES["GC=F"]
+
+# ---------------------------------------------------------------------------
+# Synthetic profiles: (start_price, mu, omega, alpha, beta)
+# ---------------------------------------------------------------------------
+_SYNTHETIC_PROFILES: Dict[str, Tuple[float, float, float, float, float]] = {
+    "GC=F":      (1500.0, 0.0002,  1e-6, 0.08, 0.90),
+    "SI=F":      (25.0,   0.0002,  1e-6, 0.09, 0.89),
+    "CL=F":      (80.0,   0.0003,  2e-6, 0.10, 0.88),
+    "EURUSD=X":  (1.08,   0.00003, 5e-7, 0.05, 0.92),
+    "GBPUSD=X":  (1.27,   0.00003, 5e-7, 0.06, 0.91),
+}
+
+# Default profile (gold-calibrated) for unknown symbols
+_DEFAULT_PROFILE = (1500.0, 0.0002, 1e-6, 0.08, 0.90)
+
+
+def _synthetic_profile(symbol: str) -> Tuple[float, float, float, float, float]:
+    """Return (start_price, mu, omega, alpha, beta) for a symbol."""
+    profile = _SYNTHETIC_PROFILES.get(symbol)
+    if profile is not None:
+        return profile
+    # Try partial match (e.g. "GLD" matches gold profile)
+    sym_up = symbol.upper()
+    if any(k in sym_up for k in ("GC", "GOLD", "GLD", "XAU")):
+        return _SYNTHETIC_PROFILES["GC=F"]
+    if any(k in sym_up for k in ("SI", "SLV", "SILVER")):
+        return _SYNTHETIC_PROFILES["SI=F"]
+    if any(k in sym_up for k in ("CL", "OIL", "CRUDE", "WTI")):
+        return _SYNTHETIC_PROFILES["CL=F"]
+    if any(k in sym_up for k in ("EUR",)):
+        return _SYNTHETIC_PROFILES["EURUSD=X"]
+    if any(k in sym_up for k in ("GBP",)):
+        return _SYNTHETIC_PROFILES["GBPUSD=X"]
+    log.warning("no synthetic profile for %s; using gold defaults", symbol)
+    return _DEFAULT_PROFILE
 
 
 def _standardise(df: pd.DataFrame) -> pd.DataFrame:
@@ -49,29 +97,21 @@ def _standardise(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _try_github_mgc() -> Optional[pd.DataFrame]:
-    """Fetch real Micro Gold Futures 60-min OHLCV from GitHub.
-
-    This endpoint is on raw.githubusercontent.com, which is reachable from the
-    sandbox egress allow-list (whereas Yahoo/Stooq/etc. are not). The CSV
-    covers 2023-01 onward with ~20k hourly bars.
-    """
+def _try_github_csv(url: str) -> Optional[pd.DataFrame]:
+    """Fetch OHLCV from a known GitHub CSV URL."""
     try:
         import urllib.request
-
-        log.info("fetching real MGC 60m OHLCV from %s", MGC_60M_URL)
-        with urllib.request.urlopen(MGC_60M_URL, timeout=60) as r:
+        log.info("fetching OHLCV from %s", url)
+        with urllib.request.urlopen(url, timeout=60) as r:
             payload = r.read()
     except Exception as exc:
-        log.warning("github MGC download failed: %s", exc)
+        log.warning("github download failed: %s", exc)
         return None
-
     try:
         df = pd.read_csv(io.BytesIO(payload))
     except Exception as exc:
-        log.warning("MGC CSV parse failed: %s", exc)
+        log.warning("CSV parse failed: %s", exc)
         return None
-
     if "timestamp" not in df.columns:
         return None
     df = df.rename(columns={"timestamp": "date"})
@@ -83,7 +123,7 @@ def _try_github_mgc() -> Optional[pd.DataFrame]:
 
 def _try_yfinance(symbol: str, start: str, end: str, interval: str) -> Optional[pd.DataFrame]:
     try:
-        import yfinance as yf  # local import so tests without yfinance still run
+        import yfinance as yf
     except Exception as exc:  # pragma: no cover
         log.warning("yfinance import failed: %s", exc)
         return None
@@ -102,23 +142,38 @@ def _try_yfinance(symbol: str, start: str, end: str, interval: str) -> Optional[
         if isinstance(raw.columns, pd.MultiIndex):
             raw.columns = raw.columns.get_level_values(0)
         return _standardise(raw)
-    except Exception as exc:  # network errors, symbol not found, etc.
+    except Exception as exc:
         log.warning("yfinance download failed for %s: %s", symbol, exc)
         return None
 
 
-def _synthetic(n: int = 5000, seed: int = 7) -> pd.DataFrame:
-    """GBM + GARCH(1,1)-like volatility clustering, calibrated to gold-ish stats."""
+def _synthetic(
+    n: int = 5000,
+    seed: int = 7,
+    start_price: Optional[float] = None,
+    mu: Optional[float] = None,
+    garch_params: Optional[Tuple[float, float, float]] = None,
+) -> pd.DataFrame:
+    """GBM + GARCH(1,1)-like volatility clustering.
+
+    Parameters are optional; defaults are gold-calibrated for backward
+    compatibility.
+    """
     rng = np.random.default_rng(seed)
-    mu = 0.0002
-    omega, alpha, beta = 1e-6, 0.08, 0.90
+    _mu = mu if mu is not None else 0.0002
+    if garch_params is not None:
+        omega, alpha, beta = garch_params
+    else:
+        omega, alpha, beta = 1e-6, 0.08, 0.90
+    _price = start_price if start_price is not None else 1500.0
+
     sigma2 = np.full(n, 1e-4)
     eps = rng.standard_normal(n)
     for t in range(1, n):
         sigma2[t] = omega + alpha * (eps[t - 1] ** 2) * sigma2[t - 1] + beta * sigma2[t - 1]
     sigma = np.sqrt(sigma2)
-    rets = mu + sigma * eps
-    close = 1500.0 * np.exp(np.cumsum(rets))
+    rets = _mu + sigma * eps
+    close = _price * np.exp(np.cumsum(rets))
     noise = rng.normal(0, 0.0015, size=(n, 4))
     open_ = close * (1 + noise[:, 0])
     high = np.maximum.reduce([close, open_, close * (1 + np.abs(noise[:, 1]))])
@@ -131,16 +186,19 @@ def _synthetic(n: int = 5000, seed: int = 7) -> pd.DataFrame:
     )
 
 
-def load_gold(
+def load_ohlcv(
     symbol: str,
-    fallback_symbols: List[str],
-    start: str,
-    end: str,
+    fallback_symbols: Optional[List[str]] = None,
+    start: str = "2005-01-01",
+    end: str = "2025-12-31",
     interval: str = "1d",
     cache_path: Optional[str] = None,
     force_synthetic: bool = False,
 ) -> LoadResult:
-    """Load OHLCV gold data with primary -> fallbacks -> synthetic."""
+    """Load OHLCV data for any symbol: cache -> GitHub -> yfinance -> synthetic."""
+    if fallback_symbols is None:
+        fallback_symbols = []
+
     if cache_path and os.path.exists(cache_path) and not force_synthetic:
         log.info("loading cached OHLCV from %s", cache_path)
         df = pd.read_parquet(cache_path)
@@ -148,16 +206,18 @@ def load_gold(
         return LoadResult(df=df, source=source)
 
     if not force_synthetic:
-        # Primary: real MGC 60m OHLCV from GitHub (sandbox-reachable).
-        df = _try_github_mgc()
-        if df is not None and len(df) > 500:
-            df.attrs["source"] = "github:MGC_60m"
-            if cache_path:
-                os.makedirs(os.path.dirname(cache_path), exist_ok=True)
-                df.to_parquet(cache_path)
-            return LoadResult(df=df, source="github:MGC_60m")
+        # Try known GitHub CSV sources for this symbol
+        github_url = KNOWN_GITHUB_SOURCES.get(symbol)
+        if github_url:
+            df = _try_github_csv(github_url)
+            if df is not None and len(df) > 500:
+                df.attrs["source"] = f"github:{symbol}"
+                if cache_path:
+                    os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+                    df.to_parquet(cache_path)
+                return LoadResult(df=df, source=f"github:{symbol}")
 
-        # Secondary: yfinance (useful outside the sandbox).
+        # yfinance: try primary symbol then fallbacks
         for sym in [symbol, *fallback_symbols]:
             log.info("trying yfinance symbol %s", sym)
             df = _try_yfinance(sym, start, end, interval)
@@ -168,10 +228,19 @@ def load_gold(
                     df.to_parquet(cache_path)
                 return LoadResult(df=df, source=f"yfinance:{sym}")
 
-    log.warning("falling back to synthetic OHLCV (network failed or forced)")
-    df = _synthetic(n=5000)
-    df.attrs["source"] = "synthetic"
+    # Synthetic fallback, calibrated to this symbol's typical dynamics
+    log.warning("falling back to synthetic OHLCV for %s", symbol)
+    price, mu, omega, alpha, beta = _synthetic_profile(symbol)
+    df = _synthetic(
+        n=5000, seed=hash(symbol) % (2**31),
+        start_price=price, mu=mu, garch_params=(omega, alpha, beta),
+    )
+    df.attrs["source"] = f"synthetic:{symbol}"
     if cache_path:
         os.makedirs(os.path.dirname(cache_path), exist_ok=True)
         df.to_parquet(cache_path)
-    return LoadResult(df=df, source="synthetic")
+    return LoadResult(df=df, source=f"synthetic:{symbol}")
+
+
+# Backward-compatible alias
+load_gold = load_ohlcv

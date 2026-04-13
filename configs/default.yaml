@@ -1,14 +1,25 @@
-# Default configuration for the DL+RL gold trading agent.
+# Default configuration for the DL+RL trading agent.
+# Supports multi-asset training via the `data.assets` list.
 
 data:
-  symbol: "GC=F"           # primary: gold futures continuous front-month
-  fallback_symbols: ["GLD", "XAUUSD=X"]
+  # Multi-asset configuration. Each entry defines one instrument.
+  # The shared encoder is pretrained on concatenated features from all assets;
+  # per-asset PPO policies then specialise on each instrument's dynamics.
+  assets:
+    - symbol: "GC=F"
+      fallback_symbols: ["GLD", "XAUUSD=X"]
+      interval: "1d"
+      raw_path: "data/raw/gc.parquet"
+      features_path: "data/processed/features_gc.parquet"
+      labels_path: "data/processed/labels_gc.parquet"
+    - symbol: "SI=F"
+      fallback_symbols: ["SLV"]
+      interval: "1d"
+      raw_path: "data/raw/si.parquet"
+      features_path: "data/processed/features_si.parquet"
+      labels_path: "data/processed/labels_si.parquet"
   start: "2005-01-01"
   end: "2025-12-31"
-  interval: "1d"
-  raw_path: "data/raw/gold.parquet"
-  features_path: "data/processed/features.parquet"
-  labels_path: "data/processed/labels.parquet"
 
 features:
   seq_len: 32
@@ -61,7 +72,7 @@ env:
   reward_sl: -1.0          # legacy shaped-reward SL magnitude
   # --- Tier 1 reward knobs ---
   # reward_mode:
-  #   "shaped"     -> legacy fixed ±signal (baseline for ablation)
+  #   "shaped"     -> legacy fixed +/-signal (baseline for ablation)
   #   "return"     -> T1.2 return-proportional with cost penalty
   #   "diff_sharpe"-> T1.3 Moody-Saffell differential Sharpe increment
   reward_mode: "return"

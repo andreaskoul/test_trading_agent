@@ -245,6 +245,102 @@ def test_bootstrap_and_permutation():
     assert 0.0 <= p <= 1.0
 
 
+def test_multi_asset_config():
+    """Verify parse_asset_configs handles both new multi-asset and legacy single-asset formats."""
+    from src.data.config_utils import parse_asset_configs, freq_multiplier, scale_param
+
+    # New multi-asset format
+    cfg_new = {
+        "data": {
+            "assets": [
+                {"symbol": "GC=F", "raw_path": "data/raw/gc.parquet",
+                 "features_path": "data/processed/features_gc.parquet",
+                 "labels_path": "data/processed/labels_gc.parquet"},
+                {"symbol": "SI=F", "raw_path": "data/raw/si.parquet",
+                 "features_path": "data/processed/features_si.parquet",
+                 "labels_path": "data/processed/labels_si.parquet"},
+            ],
+            "start": "2005-01-01",
+            "end": "2025-12-31",
+        }
+    }
+    assets = parse_asset_configs(cfg_new)
+    assert len(assets) == 2
+    assert assets[0].symbol == "GC=F"
+    assert assets[1].symbol == "SI=F"
+
+    # Legacy single-asset format (backward compat)
+    cfg_old = {
+        "data": {
+            "symbol": "GC=F",
+            "fallback_symbols": ["GLD"],
+            "raw_path": "data/raw/gold.parquet",
+            "features_path": "data/processed/features.parquet",
+            "labels_path": "data/processed/labels.parquet",
+        }
+    }
+    assets_old = parse_asset_configs(cfg_old)
+    assert len(assets_old) == 1
+    assert assets_old[0].symbol == "GC=F"
+    assert assets_old[0].fallback_symbols == ["GLD"]
+
+    # Frequency scaling
+    assert freq_multiplier("1d") == 1.0
+    assert freq_multiplier("1h") == 6.5
+    assert scale_param(252, "1d") == 252
+    assert scale_param(20, "1h") == 130  # 20 * 6.5 = 130
+
+
+def test_multi_asset_loader():
+    """Verify load_ohlcv generates different synthetic data per symbol."""
+    from src.data.loader import load_ohlcv, load_gold
+
+    # load_gold is an alias for load_ohlcv
+    assert load_gold is load_ohlcv
+
+    r1 = load_ohlcv("GC=F", force_synthetic=True)
+    r2 = load_ohlcv("SI=F", force_synthetic=True)
+    assert "synthetic" in r1.source
+    assert "synthetic" in r2.source
+    # Different symbols should produce different price levels
+    assert abs(r1.df["close"].iloc[0] - r2.df["close"].iloc[0]) > 100
+    # Both should have valid OHLCV
+    assert len(r1.df) > 1000
+    assert len(r2.df) > 1000
+    for col in ["open", "high", "low", "close", "volume"]:
+        assert col in r1.df.columns
+        assert col in r2.df.columns
+
+
+def test_shared_encoder_multi_asset():
+    """Verify that a single encoder can process features from different assets
+    (since all assets share the same feature columns after z-scoring)."""
+    from src.data.features import build_features, feature_columns
+    from src.data.loader import load_ohlcv
+    from src.models.xlstm_lite import XLSTMConfig, XLSTMLite
+
+    # Build features for two different assets
+    r1 = load_ohlcv("GC=F", force_synthetic=True)
+    r2 = load_ohlcv("SI=F", force_synthetic=True)
+    f1 = build_features(r1.df)
+    f2 = build_features(r2.df)
+
+    cols1 = feature_columns(f1)
+    cols2 = feature_columns(f2)
+    assert cols1 == cols2, "feature columns must match across assets"
+
+    # One encoder handles both
+    cfg = XLSTMConfig(input_dim=len(cols1), hidden_size=32, n_slstm=1, n_mlstm=1, dropout=0.0)
+    encoder = XLSTMLite(cfg)
+    import torch
+    x1 = torch.randn(2, 16, len(cols1))
+    x2 = torch.randn(2, 16, len(cols2))
+    e1 = encoder.encode(x1)
+    e2 = encoder.encode(x2)
+    assert e1.shape == (2, 32)
+    assert e2.shape == (2, 32)
+
+
 if __name__ == "__main__":
     tests = [
         test_features_no_nans,
@@ -257,6 +353,9 @@ if __name__ == "__main__":
         test_regime_conditioned_env,
         test_deflated_sharpe_reasonable,
         test_bootstrap_and_permutation,
+        test_multi_asset_config,
+        test_multi_asset_loader,
+        test_shared_encoder_multi_asset,
     ]
     failures = 0
     for t in tests:

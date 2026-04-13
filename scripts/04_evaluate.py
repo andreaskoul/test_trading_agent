@@ -1,7 +1,7 @@
 """Evaluate all trained policies and write a statistics report.
 
-Supports algorithm-diverse ensembles (T2.2): PPO, A2C, and RecurrentPPO
-policies are loaded via the correct SB3 class and evaluated uniformly.
+Supports multi-asset evaluation with per-asset and cross-asset pooled
+metrics, cross-asset meta-labeling, and algorithm-diverse ensembles (T2.2).
 """
 
 from __future__ import annotations
@@ -21,6 +21,7 @@ from stable_baselines3 import A2C, PPO
 
 from _bootstrap import setup, path
 
+from src.data.config_utils import parse_asset_configs
 from src.data.features import feature_columns
 from src.data.regimes import HMMRegimeModel
 from src.env.trading_env import env_config_from_yaml
@@ -42,7 +43,6 @@ if RecurrentPPO is not None:
 
 
 def _load_model(entry: dict):
-    """Load the correct SB3 class based on the manifest ``algorithm`` field."""
     algo = entry.get("algorithm", "ppo").lower()
     cls = _ALGO_MAP.get(algo, PPO)
     return cls.load(entry["policy_path"], device="cpu")
@@ -54,12 +54,12 @@ def _write_report(report_path: str, lines: list[str]) -> None:
         f.write("\n".join(lines))
 
 
-def _plot_sharpe_hist(values: np.ndarray, out_path: str) -> None:
+def _plot_sharpe_hist(values: np.ndarray, out_path: str, title_suffix: str = "") -> None:
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.hist(values, bins=12, color="steelblue", alpha=0.85, edgecolor="black")
     ax.axvline(0, color="k", lw=1)
     ax.axvline(float(np.mean(values)), color="red", lw=1.5, label=f"mean={np.mean(values):.2f}")
-    ax.set_title("Sharpe distribution across CPCV runs")
+    ax.set_title(f"Sharpe distribution{title_suffix}")
     ax.set_xlabel("Annualised Sharpe (trade-based)")
     ax.set_ylabel("Count")
     ax.legend()
@@ -93,74 +93,65 @@ def _plot_cost_curve(costs: list[float], sr_means: list[float], out_path: str) -
     plt.close(fig)
 
 
-def main() -> None:
-    log = logging.getLogger("evaluate")
-    cfg = setup()
+def _evaluate_entries(
+    entries: list[dict],
+    features_map: dict[str, pd.DataFrame],
+    cfg: dict,
+    env_cfg,
+    log,
+):
+    """Run rollouts for a list of manifest entries.
 
-    features = pd.read_parquet(path(cfg, cfg["data"]["features_path"]))
-    feat_cols = feature_columns(features)
+    Returns per_run metrics, equity curves, pooled returns, and trade
+    traces keyed by split (for meta-labeling).
+    """
+    # Cache precomputed embeddings per (asset, encoder_group)
+    precomputed_cache: dict[tuple[str, int], dict] = {}
+    regime_cache: dict[tuple[str, int], np.ndarray] = {}
 
-    env_cfg = env_config_from_yaml(cfg)
-
-    manifest_path = path(cfg, cfg["artefact_dir"], "ppo_manifest.json")
-    with open(manifest_path) as f:
-        manifest = json.load(f)
-    log.info("loaded %d runs from manifest", len(manifest))
-
-    # Cache precomputed embeddings per encoder group (reused across many runs)
-    precomputed_cache: dict[int, dict] = {}
-    # Per-split regime posterior cache (T2.1). The HMM was fit during PPO
-    # training; we just load it and emit the full-bar posterior here.
-    regime_cache: dict[int, np.ndarray] = {}
-
-    def get_precomputed(encoder_group: int) -> dict:
-        if encoder_group in precomputed_cache:
-            return precomputed_cache[encoder_group]
+    def get_precomputed(asset: str, encoder_group: int) -> dict:
+        key = (asset, encoder_group)
+        if key in precomputed_cache:
+            return precomputed_cache[key]
+        features = features_map[asset]
+        feat_cols = feature_columns(features)
         enc_path = path(cfg, cfg["artefact_dir"], "encoders", f"encoder_group{encoder_group}.pt")
         encoder = load_encoder(enc_path)
         pc = build_precomputed(features, feat_cols, encoder, seq_len=env_cfg.seq_len)
-        precomputed_cache[encoder_group] = pc
+        precomputed_cache[key] = pc
         return pc
 
     def get_regime_post(entry: dict) -> np.ndarray | None:
         rp_path = entry.get("regime_path")
-        if not rp_path:
+        if not rp_path or not os.path.exists(rp_path):
             return None
+        asset = entry.get("asset", "")
         s = int(entry["split"])
-        if s in regime_cache:
-            return regime_cache[s]
-        if not os.path.exists(rp_path):
-            return None
+        key = (asset, s)
+        if key in regime_cache:
+            return regime_cache[key]
         hmm = HMMRegimeModel.load(rp_path)
-        # Use whatever close array the cached precomputed already exposes;
-        # any encoder group works because close is identical.
-        any_pc = next(iter(precomputed_cache.values()), None)
-        if any_pc is None:
-            any_pc = get_precomputed(int(entry["encoder_group"]))
-        post = hmm.posterior(any_pc["close"])
-        regime_cache[s] = post
+        pc = get_precomputed(asset, int(entry["encoder_group"]))
+        post = hmm.posterior(pc["close"])
+        regime_cache[key] = post
         return post
 
     per_run = []
     curves = []
-    returns_by_split: dict[int, list[np.ndarray]] = defaultdict(list)
+    returns_by_split: dict[tuple[str, int], list[np.ndarray]] = defaultdict(list)
     pooled_returns: list[float] = []
-    # Per-split trade traces for the meta-labeling layer (T1.1). Each entry
-    # is (X=features at entry, y=1 if trade_return>0 else 0). Keyed by split
-    # so we can train a separate meta-model per split using leave-one-out.
-    trace_by_split: dict[int, tuple[list[np.ndarray], list[int]]] = defaultdict(
+    trace_by_split: dict[tuple[str, int], tuple[list[np.ndarray], list[int]]] = defaultdict(
         lambda: ([], [])
     )
-    # Parallel per-split list of raw trade returns, aligned row-for-row with
-    # trace_by_split[s]. Used by the fast meta-labeling filter path below.
-    returns_trace_by_split: dict[int, list[np.ndarray]] = defaultdict(list)
+    returns_trace_by_split: dict[tuple[str, int], list[np.ndarray]] = defaultdict(list)
 
-    for entry in manifest:
+    for entry in entries:
+        asset = entry.get("asset", "unknown")
         model = _load_model(entry)
         test_idx = np.concatenate(
             [np.arange(int(g[1]), int(g[2]) + 1) for g in entry["test_blocks"]]
         )
-        pc_base = get_precomputed(int(entry["encoder_group"]))
+        pc_base = get_precomputed(asset, int(entry["encoder_group"]))
         regime_post = get_regime_post(entry)
         pc = {**pc_base, "regime_posterior": regime_post} if regime_post is not None else pc_base
         result = rollout_policy(model, pc, env_cfg, test_idx, trace_entries=True)
@@ -169,29 +160,142 @@ def main() -> None:
         metrics["split"] = entry["split"]
         metrics["seed"] = entry["seed"]
         metrics["algorithm"] = algo
+        metrics["asset"] = asset
         per_run.append(metrics)
         curves.append(result.equity)
-        returns_by_split[entry["split"]].append(result.trade_returns)
+        split_key = (asset, entry["split"])
+        returns_by_split[split_key].append(result.trade_returns)
         pooled_returns.extend(result.trade_returns.tolist())
         if result.trade_features is not None and result.n_trades > 0:
-            feats_list, labels_list = trace_by_split[entry["split"]]
+            feats_list, labels_list = trace_by_split[split_key]
             feats_list.append(result.trade_features)
             labels_list.append((result.trade_returns > 0).astype(np.int64))
-            returns_trace_by_split[entry["split"]].append(result.trade_returns)
+            returns_trace_by_split[split_key].append(result.trade_returns)
         log.info(
-            "%s split=%d seed=%d n_trades=%d sharpe=%.2f hit=%.2f dd=%.2f",
-            algo,
-            entry["split"],
-            entry["seed"],
-            result.n_trades,
-            metrics["sharpe"],
-            metrics["hit_rate"],
+            "%s %s split=%d seed=%d n_trades=%d sharpe=%.2f hit=%.2f dd=%.2f",
+            asset, algo, entry["split"], entry["seed"],
+            result.n_trades, metrics["sharpe"], metrics["hit_rate"],
             metrics["max_drawdown"],
         )
+
+    return per_run, curves, returns_by_split, pooled_returns, trace_by_split, returns_trace_by_split
+
+
+def _run_meta_labeling(
+    trace_by_split, returns_trace_by_split, meta_thresholds, log,
+):
+    """Cross-asset meta-labeling: train on trades from ALL other splits (across
+    all assets), test on each split. Returns list of threshold result dicts."""
+    split_X: dict[tuple, np.ndarray] = {}
+    split_y: dict[tuple, np.ndarray] = {}
+    split_returns_aligned: dict[tuple, np.ndarray] = {}
+
+    for key in trace_by_split:
+        Xs_list, ys_list = trace_by_split[key]
+        if not Xs_list:
+            continue
+        split_X[key] = np.concatenate(Xs_list, axis=0)
+        split_y[key] = np.concatenate(ys_list, axis=0)
+        ret_list = returns_trace_by_split.get(key, [])
+        if ret_list:
+            split_returns_aligned[key] = np.concatenate(ret_list, axis=0)
+
+    split_keys = sorted(split_X.keys())
+    if not split_keys:
+        return []
+
+    per_split_meta: dict[tuple, MetaLabelModel] = {}
+    for key in split_keys:
+        # Train on ALL other splits (cross-asset leave-one-out)
+        X_parts = [split_X[o] for o in split_keys if o != key]
+        y_parts = [split_y[o] for o in split_keys if o != key]
+        if not X_parts:
+            continue
+        X_tr = np.concatenate(X_parts, axis=0)
+        y_tr = np.concatenate(y_parts, axis=0)
+        mm = MetaLabelModel(MetaLabelConfig()).fit(X_tr, y_tr)
+        per_split_meta[key] = mm
+        log.info(
+            "meta split=%s train_trades=%d base_rate=%.3f",
+            key, len(X_tr), mm.base_rate,
+        )
+
+    meta_results = []
+    for thr in meta_thresholds:
+        gated_returns: list[float] = []
+        gated_sharpes: list[float] = []
+        for key in split_keys:
+            mm = per_split_meta.get(key)
+            if mm is None:
+                continue
+            Xs = split_X[key]
+            rets_s = split_returns_aligned.get(key)
+            if rets_s is None or len(rets_s) != len(Xs):
+                continue
+            probs = mm.predict_proba(Xs)
+            keep = probs >= float(thr)
+            kept = rets_s[keep]
+            if len(kept) == 0:
+                continue
+            gated_returns.extend(kept.tolist())
+            gated_sharpes.append(sharpe_ratio(kept, periods_per_year=252.0 / 5.0))
+        if not gated_returns:
+            continue
+        pooled_gated = np.asarray(gated_returns, dtype=float)
+        pooled_sr = sharpe_ratio(pooled_gated, periods_per_year=252.0 / 5.0)
+        meta_results.append(dict(
+            threshold=float(thr),
+            mean_sharpe=float(np.mean(gated_sharpes)),
+            pooled_sharpe=float(pooled_sr),
+            n_trades=int(len(pooled_gated)),
+            total_return=float((1 + pooled_gated).prod() - 1),
+        ))
+        log.info(
+            "meta thr=%.2f mean_sharpe=%.3f pooled=%.3f n_trades=%d",
+            thr, float(np.mean(gated_sharpes)), float(pooled_sr), len(pooled_gated),
+        )
+    return meta_results
+
+
+def main() -> None:
+    log = logging.getLogger("evaluate")
+    cfg = setup()
+
+    assets = parse_asset_configs(cfg)
+    env_cfg = env_config_from_yaml(cfg)
+
+    manifest_path = path(cfg, cfg["artefact_dir"], "ppo_manifest.json")
+    with open(manifest_path) as f:
+        manifest = json.load(f)
+    log.info("loaded %d runs from manifest", len(manifest))
+
+    # Load per-asset features
+    features_map: dict[str, pd.DataFrame] = {}
+    for asset in assets:
+        features_map[asset.symbol] = pd.read_parquet(path(cfg, asset.features_path))
+
+    # For backward compat: entries without "asset" field get first asset
+    default_asset = assets[0].symbol if assets else "unknown"
+    for entry in manifest:
+        if "asset" not in entry:
+            entry["asset"] = default_asset
+
+    # Group manifest by asset
+    asset_entries: dict[str, list[dict]] = defaultdict(list)
+    for entry in manifest:
+        asset_entries[entry["asset"]].append(entry)
+
+    # Evaluate all entries
+    per_run, curves, returns_by_split, pooled_returns, trace_by_split, returns_trace_by_split = (
+        _evaluate_entries(manifest, features_map, cfg, env_cfg, log)
+    )
 
     df_runs = pd.DataFrame(per_run)
     df_runs.to_csv(path(cfg, cfg["report_dir"], "per_run_metrics.csv"), index=False)
 
+    # ------------------------------------------------------------------
+    # Global pooled statistics
+    # ------------------------------------------------------------------
     sharpes = df_runs["sharpe"].to_numpy()
     pooled = np.asarray(pooled_returns, dtype=float)
 
@@ -205,52 +309,46 @@ def main() -> None:
         pooled, n_resamples=cfg["evaluation"]["permutation_samples"]
     )
 
-    # Transaction cost sweep (re-run evaluation at each cost level)
+    # Transaction cost sweep
     cost_means = []
     cost_details = []
     costs = cfg["evaluation"]["costs_bps"]
     for c in costs:
         run_sr = []
         for entry in manifest:
+            asset = entry["asset"]
             model = _load_model(entry)
             test_idx = np.concatenate(
                 [np.arange(int(g[1]), int(g[2]) + 1) for g in entry["test_blocks"]]
             )
-            pc_base = get_precomputed(int(entry["encoder_group"]))
-            regime_post = get_regime_post(entry)
-            pc = (
-                {**pc_base, "regime_posterior": regime_post}
-                if regime_post is not None
-                else pc_base
-            )
+            features = features_map[asset]
+            feat_cols = feature_columns(features)
+            enc_path = path(cfg, cfg["artefact_dir"], "encoders", f"encoder_group{entry['encoder_group']}.pt")
+            encoder = load_encoder(enc_path)
+            pc = build_precomputed(features, feat_cols, encoder, seq_len=env_cfg.seq_len)
+            rp = entry.get("regime_path")
+            if rp and os.path.exists(rp):
+                hmm = HMMRegimeModel.load(rp)
+                pc["regime_posterior"] = hmm.posterior(pc["close"])
             r = rollout_with_cost(model, pc, env_cfg, test_idx, c)
             run_sr.append(r.metrics.sharpe)
         cost_means.append(float(np.mean(run_sr)))
         cost_details.append(dict(cost_bps=c, sharpe_mean=float(np.mean(run_sr)), sharpe_std=float(np.std(run_sr))))
         log.info("cost %.1f bps -> mean sharpe=%.2f", c, np.mean(run_sr))
 
-    # Seed ensemble (per split, pool trade-returns across seeds)
-    ensemble_sharpes = []
-    for _s_idx, arrs in sorted(returns_by_split.items()):
+    # Seed ensemble (per asset+split, pool trade-returns across seeds)
+    ensemble_sharpes_by_asset: dict[str, list[float]] = defaultdict(list)
+    for (asset, s_idx), arrs in sorted(returns_by_split.items()):
         if not arrs:
             continue
         pooled_split = np.concatenate(arrs)
-        ensemble_sharpes.append(sharpe_ratio(pooled_split, periods_per_year=252.0 / 5.0))
+        ensemble_sharpes_by_asset[asset].append(sharpe_ratio(pooled_split, periods_per_year=252.0 / 5.0))
 
-    # ------------------------------------------------------------------
-    # T2.2 -- Algorithm-diverse ensemble
-    # ------------------------------------------------------------------
-    # Per-algorithm Sharpe and a rolling-Sharpe-weighted ensemble.
+    # Algorithm ensemble (T2.2)
     algo_sharpes: dict[str, list[float]] = defaultdict(list)
-    algo_returns: dict[str, list[float]] = defaultdict(list)
     for row in per_run:
         algo = row.get("algorithm", "ppo")
         algo_sharpes[algo].append(row["sharpe"])
-    # Pool returns per algorithm for Sharpe calculation
-    for entry, result_returns in zip(manifest, [
-        r for r in [None] * len(manifest)  # placeholder
-    ]):
-        pass  # already pooled above; recalculate from df_runs below
 
     algo_summary: list[dict] = []
     for algo in sorted(algo_sharpes.keys()):
@@ -261,115 +359,17 @@ def main() -> None:
             std_sharpe=float(np.std(srs)),
             n_runs=len(srs),
         ))
-        log.info(
-            "algo=%s mean_sharpe=%.3f std=%.3f n=%d",
-            algo, float(np.mean(srs)), float(np.std(srs)), len(srs),
-        )
 
-    # ------------------------------------------------------------------
-    # T1.1 -- Meta-labeling layer (Lopez de Prado, AFML Ch. 3)
-    # ------------------------------------------------------------------
-    # Train one meta-model per split using leave-one-out on the traced
-    # trades from the OTHER splits, then rerun the rollout with the model
-    # gating low-confidence entries. Report the gated pooled Sharpe at a
-    # range of confidence thresholds.
-    meta_results: list[dict] = []
+    # Cross-asset meta-labeling
     meta_thresholds = [0.50, 0.55, 0.60]
-    split_keys = sorted(trace_by_split.keys())
-    if split_keys:
-        # Pre-stack each split's trace matrix so the leave-one-out loop is cheap.
-        split_X: dict[int, np.ndarray] = {}
-        split_y: dict[int, np.ndarray] = {}
-        split_returns_aligned: dict[int, np.ndarray] = {}
-        for s in split_keys:
-            Xs_list, ys_list = trace_by_split[s]
-            if not Xs_list:
-                continue
-            split_X[s] = np.concatenate(Xs_list, axis=0)
-            split_y[s] = np.concatenate(ys_list, axis=0)
-            ret_list = returns_trace_by_split.get(s, [])
-            if ret_list:
-                split_returns_aligned[s] = np.concatenate(ret_list, axis=0)
-
-        per_split_meta: dict[int, MetaLabelModel] = {}
-        for s in split_keys:
-            if s not in split_X:
-                continue
-            # Train on all OTHER splits
-            X_parts = [split_X[o] for o in split_keys if o != s and o in split_X]
-            y_parts = [split_y[o] for o in split_keys if o != s and o in split_y]
-            if not X_parts:
-                continue
-            X_tr = np.concatenate(X_parts, axis=0)
-            y_tr = np.concatenate(y_parts, axis=0)
-            mm = MetaLabelModel(MetaLabelConfig()).fit(X_tr, y_tr)
-            per_split_meta[s] = mm
-            log.info(
-                "meta split=%d train_trades=%d base_rate=%.3f",
-                s,
-                len(X_tr),
-                mm.base_rate,
-            )
-
-        # Fast filter path: instead of re-running rollout_policy per threshold
-        # (which queries PPO every bar the agent stays flat -- ~25 min total),
-        # we reuse the per-trade (features, return) traces collected during
-        # the first pass with trace_entries=True. For each threshold we score
-        # the existing trades with the per-split meta model and keep only
-        # those with P(profit) >= threshold. Much faster AND a cleaner
-        # counterfactual: it measures "what would Sharpe be if we had skipped
-        # the low-confidence trades" rather than "what trades would a
-        # different agent take after we force HOLDs on it".
-        log.info("meta-labeling gate filter over %d thresholds", len(meta_thresholds))
-        for thr in meta_thresholds:
-            gated_returns: list[float] = []
-            gated_sharpes: list[float] = []
-            for s in split_keys:
-                if s not in split_X:
-                    continue
-                mm = per_split_meta.get(s)
-                if mm is None:
-                    continue
-                Xs = split_X[s]
-                # The corresponding trade returns for this split, re-collected
-                # in trade order matching Xs row-for-row.
-                rets_s = split_returns_aligned.get(s)
-                if rets_s is None or len(rets_s) != len(Xs):
-                    continue
-                probs = mm.predict_proba(Xs)
-                keep = probs >= float(thr)
-                kept = rets_s[keep]
-                if len(kept) == 0:
-                    continue
-                gated_returns.extend(kept.tolist())
-                gated_sharpes.append(
-                    sharpe_ratio(kept, periods_per_year=252.0 / 5.0)
-                )
-            if not gated_returns:
-                continue
-            pooled_gated = np.asarray(gated_returns, dtype=float)
-            pooled_sr = sharpe_ratio(pooled_gated, periods_per_year=252.0 / 5.0)
-            meta_results.append(
-                dict(
-                    threshold=float(thr),
-                    mean_sharpe=float(np.mean(gated_sharpes)),
-                    pooled_sharpe=float(pooled_sr),
-                    n_trades=int(len(pooled_gated)),
-                    total_return=float((1 + pooled_gated).prod() - 1),
-                )
-            )
-            log.info(
-                "meta thr=%.2f mean_sharpe=%.3f pooled=%.3f n_trades=%d",
-                thr,
-                float(np.mean(gated_sharpes)),
-                float(pooled_sr),
-                len(pooled_gated),
-            )
+    meta_results = _run_meta_labeling(
+        trace_by_split, returns_trace_by_split, meta_thresholds, log,
+    )
 
     # Plots
     plot_dir = path(cfg, cfg["report_dir"])
     os.makedirs(plot_dir, exist_ok=True)
-    _plot_sharpe_hist(sharpes, os.path.join(plot_dir, "sharpe_hist.png"))
+    _plot_sharpe_hist(sharpes, os.path.join(plot_dir, "sharpe_hist.png"), " (all assets)")
     _plot_equity_curves(curves, os.path.join(plot_dir, "equity_curves.png"))
     _plot_cost_curve(costs, cost_means, os.path.join(plot_dir, "cost_curve.png"))
 
@@ -387,14 +387,45 @@ def main() -> None:
     if costs and cost_means and cost_means[min(3, len(cost_means) - 1)] <= 0:
         red_flags.append("Edge collapses at >=5 bps transaction cost")
 
-    # Markdown report
+    # ------------------------------------------------------------------
+    # Build Markdown report
+    # ------------------------------------------------------------------
+    unique_assets = sorted(df_runs["asset"].unique()) if "asset" in df_runs.columns else []
     report_lines = [
         "# Evaluation Report",
         "",
         f"- Runs evaluated: **{len(df_runs)}**",
+        f"- Assets: **{', '.join(unique_assets) if unique_assets else 'n/a'}**",
         f"- Pooled trades: **{len(pooled)}**",
+    ]
+
+    # -- Per-asset sections --
+    if len(unique_assets) > 1:
+        for asset in unique_assets:
+            asset_df = df_runs[df_runs["asset"] == asset]
+            asset_sharpes = asset_df["sharpe"].to_numpy()
+            report_lines += [
+                "",
+                f"## Per-asset: {asset}",
+                "",
+                f"- Runs: {len(asset_df)}",
+                f"- Mean Sharpe: {np.mean(asset_sharpes):+.3f}",
+                f"- Median Sharpe: {np.median(asset_sharpes):+.3f}",
+                f"- Std: {np.std(asset_sharpes):.3f}",
+            ]
+            if asset in ensemble_sharpes_by_asset:
+                report_lines += [
+                    "",
+                    "| Split | Sharpe |",
+                    "|------:|-------:|",
+                ]
+                for i, s in enumerate(ensemble_sharpes_by_asset[asset]):
+                    report_lines.append(f"| {i} | {s:+.3f} |")
+
+    # -- Global pooled stats --
+    report_lines += [
         "",
-        "## Sharpe distribution",
+        "## Sharpe distribution (all assets pooled)",
         "",
         f"- mean   : {np.mean(sharpes):+.3f}",
         f"- median : {np.median(sharpes):+.3f}",
@@ -431,22 +462,30 @@ def main() -> None:
     ]
     for c, s in zip(costs, cost_means):
         report_lines.append(f"| {c:.1f} | {s:+.3f} |")
+
+    # Seed ensemble (per asset)
     report_lines += [
         "",
         "## Seed ensemble (pooled trades per split)",
         "",
-        "| Split | Sharpe |",
-        "|------:|-------:|",
     ]
-    for i, s in enumerate(ensemble_sharpes):
-        report_lines.append(f"| {i} | {s:+.3f} |")
+    for asset in unique_assets:
+        if asset in ensemble_sharpes_by_asset:
+            report_lines += [
+                f"### {asset}",
+                "",
+                "| Split | Sharpe |",
+                "|------:|-------:|",
+            ]
+            for i, s in enumerate(ensemble_sharpes_by_asset[asset]):
+                report_lines.append(f"| {i} | {s:+.3f} |")
+            report_lines.append("")
 
     if algo_summary and len(algo_summary) > 1:
         report_lines += [
-            "",
             "## Algorithm ensemble (T2.2)",
             "",
-            "Per-algorithm mean Sharpe across all CPCV splits and seeds.",
+            "Per-algorithm mean Sharpe across all CPCV splits, seeds, and assets.",
             "",
             "| Algorithm | Mean Sharpe | Std | Runs |",
             "|:----------|------------:|----:|-----:|",
@@ -464,11 +503,11 @@ def main() -> None:
     if meta_results:
         report_lines += [
             "",
-            "## Meta-labeling gate (T1.1, Lopez de Prado)",
+            "## Cross-asset meta-labeling gate (T1.1, Lopez de Prado)",
             "",
-            "Per-split HistGBM classifier trained on trades from the OTHER splits,",
-            "predicting P(profit) from entry embedding+direction+vol-quantile. Actions",
-            "with P < threshold are gated to HOLD.",
+            "HistGBM classifier trained on trades from ALL other splits across ALL",
+            "assets (cross-asset leave-one-out). Predicts P(profit) from entry",
+            "embedding+direction+vol-quantile. Actions with P < threshold are gated.",
             "",
             "| Threshold | Mean Sharpe | Pooled Sharpe | Trades | Total Return |",
             "|----------:|------------:|--------------:|-------:|-------------:|",
@@ -510,6 +549,8 @@ def main() -> None:
         json.dump(
             dict(
                 n_runs=len(df_runs),
+                n_assets=len(unique_assets),
+                assets=unique_assets,
                 sharpe_mean=float(np.mean(sharpes)),
                 sharpe_std=float(np.std(sharpes)),
                 sharpe_p5=float(np.percentile(sharpes, 5)),
