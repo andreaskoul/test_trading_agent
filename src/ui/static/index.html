@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trading Cockpit</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+  <style>
+    body { background: #0b1020; color: #d6deeb; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .panel { background: #0f1530; border: 1px solid #22305a; border-radius: 10px; }
+    .panel-title { color: #7dd3fc; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+    .num { font-variant-numeric: tabular-nums; }
+    .btn { background: #1e293b; border: 1px solid #334155; padding: 4px 10px; border-radius: 6px; cursor: pointer; }
+    .btn:hover { background: #334155; }
+    .btn-primary { background: #0ea5e9; border-color: #0ea5e9; color: #0b1020; font-weight: 600; }
+    .btn-primary:hover { background: #38bdf8; }
+    .btn-danger { background: #ef4444; border-color: #ef4444; color: #0b1020; font-weight: 600; }
+    .input { background: #0b1020; border: 1px solid #334155; padding: 3px 8px; border-radius: 4px; color: #d6deeb; }
+    .row-long { color: #4ade80; }
+    .row-short { color: #f87171; }
+    .regime-0 { background: rgba(74, 222, 128, 0.07); }
+    .regime-1 { background: rgba(250, 204, 21, 0.07); }
+    .regime-2 { background: rgba(248, 113, 113, 0.07); }
+    table { width: 100%; font-size: 11px; }
+    th { color: #7dd3fc; text-align: left; padding: 4px; border-bottom: 1px solid #22305a; }
+    td { padding: 4px; border-bottom: 1px solid #162041; }
+    .scroll { overflow-y: auto; }
+    .chat-user { color: #fbbf24; }
+    .chat-assistant { color: #a5f3fc; }
+    .flag-red { color: #f87171; background: rgba(248,113,113,0.08); border: 1px solid #7f1d1d; padding: 6px 10px; border-radius: 6px; }
+  </style>
+</head>
+<body x-data="cockpit()" x-init="init()" class="min-h-screen">
+  <!-- Top bar -->
+  <header class="flex items-center gap-3 p-3 border-b border-[#22305a]">
+    <div class="text-cyan-300 font-bold tracking-wider">TRADING COCKPIT</div>
+    <div class="text-xs text-slate-400" x-text="'assets: ' + assets.length + ' | runs: ' + manifest.length"></div>
+    <div class="flex-1"></div>
+    <label class="text-xs">Asset</label>
+    <select class="input" x-model="selectedAsset" @change="selectDefaultRun()">
+      <template x-for="a in assets" :key="a.symbol">
+        <option :value="a.symbol" x-text="a.symbol + ' (' + a.n_runs + ')'"></option>
+      </template>
+    </select>
+    <label class="text-xs">Run</label>
+    <select class="input" x-model.number="selectedManifestIdx">
+      <template x-for="(m, i) in manifest" :key="i">
+        <template x-if="m.asset === selectedAsset">
+          <option :value="i" x-text="'#' + i + ' ' + m.algorithm + ' split=' + m.split + ' seed=' + m.seed"></option>
+        </template>
+      </template>
+    </select>
+    <label class="text-xs">Mode</label>
+    <select class="input" x-model="mode">
+      <option value="replay">Replay</option>
+      <option value="live">Live</option>
+    </select>
+    <label class="text-xs">Speed</label>
+    <input type="number" class="input w-20 num" x-model.number="replaySpeed" min="0" step="1" />
+    <div class="flex items-center gap-1">
+      <label class="text-xs">Spread bps</label>
+      <input type="number" class="input w-16 num" x-model.number="costs.spread_bps" step="0.1" />
+    </div>
+    <div class="flex items-center gap-1">
+      <label class="text-xs">Slippage bps</label>
+      <input type="number" class="input w-16 num" x-model.number="costs.slippage_bps" step="0.1" />
+    </div>
+    <div class="flex items-center gap-1">
+      <label class="text-xs">Comm $</label>
+      <input type="number" class="input w-16 num" x-model.number="costs.commission_usd" step="0.1" />
+    </div>
+    <div class="flex items-center gap-1">
+      <label class="text-xs">Meta th.</label>
+      <input type="number" class="input w-16 num" x-model.number="metaThreshold" step="0.01" min="0" max="1" />
+    </div>
+    <button class="btn btn-primary" @click="start()" x-show="!running">START</button>
+    <button class="btn btn-danger" @click="stop()" x-show="running">STOP</button>
+    <div class="text-xs num" :class="running ? 'text-green-400' : 'text-slate-500'">
+      <span x-text="running ? 'RUNNING' : 'IDLE'"></span>
+    </div>
+  </header>
+
+  <!-- Red-flag banner (from evaluation_summary.json) -->
+  <div class="px-3 pt-2" x-show="redFlags.length > 0">
+    <template x-for="flag in redFlags" :key="flag">
+      <div class="flag-red text-xs mb-1" x-text="'Red flag: ' + flag"></div>
+    </template>
+  </div>
+
+  <!-- Grid -->
+  <main class="grid grid-cols-12 grid-rows-6 gap-3 p-3" style="height: calc(100vh - 56px)">
+    <!-- Panel 1: Price + entries + regime shading -->
+    <section class="panel p-3 col-span-8 row-span-3">
+      <div class="flex items-center justify-between mb-1">
+        <div class="panel-title">price · entries · regime</div>
+        <div class="text-xs num text-slate-400" x-text="lastPrice ? 'last ' + lastPrice.toFixed(4) + ' @ ' + lastIdx : '—'"></div>
+      </div>
+      <div id="priceChart" class="w-full h-full"></div>
+    </section>
+
+    <!-- Panel 2: Equity curve -->
+    <section class="panel p-3 col-span-4 row-span-3">
+      <div class="flex items-center justify-between mb-1">
+        <div class="panel-title">equity</div>
+        <div class="text-xs num" :class="equity >= 1 ? 'text-green-400' : 'text-red-400'" x-text="equity ? 'x' + equity.toFixed(4) : '—'"></div>
+      </div>
+      <div id="equityChart" class="w-full h-full"></div>
+    </section>
+
+    <!-- Panel 3: Trade log -->
+    <section class="panel p-3 col-span-8 row-span-2 flex flex-col min-h-0">
+      <div class="panel-title mb-1">trade log · click a row to explain</div>
+      <div class="scroll flex-1">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>side</th><th>entry</th><th>exit</th>
+              <th>pnl bps</th><th>meta p</th><th>regime</th><th>barrier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-for="t in trades" :key="t.trade_id">
+              <tr :class="'regime-' + (t.regime_idx ?? 0) + ' cursor-pointer'"
+                  @click="explain(t.trade_id)">
+                <td class="num" x-text="t.trade_id"></td>
+                <td :class="t.direction === 1 ? 'row-long' : 'row-short'" x-text="t.direction === 1 ? 'LONG' : 'SHORT'"></td>
+                <td class="num" x-text="t.entry_price.toFixed(4)"></td>
+                <td class="num" x-text="t.exit_price.toFixed(4)"></td>
+                <td class="num" :class="t.pnl >= 0 ? 'text-green-400' : 'text-red-400'" x-text="(t.pnl * 1e4).toFixed(1)"></td>
+                <td class="num" x-text="t.meta_prob != null ? t.meta_prob.toFixed(2) : '—'"></td>
+                <td class="num" x-text="t.regime_idx != null ? t.regime_idx : '—'"></td>
+                <td x-text="t.barrier"></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Panel 4: Signal gauge + regime -->
+    <section class="panel p-3 col-span-4 row-span-2">
+      <div class="panel-title mb-2">signal</div>
+      <div class="text-xs text-slate-400">position</div>
+      <div class="text-4xl num"
+           :class="position === 1 ? 'text-green-400' : (position === -1 ? 'text-red-400' : 'text-slate-500')"
+           x-text="position === 1 ? 'LONG' : (position === -1 ? 'SHORT' : 'FLAT')"></div>
+      <div class="mt-3 text-xs text-slate-400">meta-label P(profit)</div>
+      <div class="w-full bg-[#1e293b] rounded h-3 relative mt-1">
+        <div class="bg-cyan-400 h-3 rounded" :style="'width: ' + ((metaProb ?? 0) * 100) + '%'"></div>
+        <div class="absolute top-0 h-3 w-px bg-yellow-300" :style="'left: ' + (metaThreshold * 100) + '%'"></div>
+      </div>
+      <div class="flex justify-between text-xs num mt-1">
+        <span x-text="'current ' + ((metaProb ?? 0).toFixed(2))"></span>
+        <span x-text="'gate ' + metaThreshold.toFixed(2)"></span>
+      </div>
+      <div class="mt-3 text-xs text-slate-400">HMM regime posterior</div>
+      <div class="grid grid-cols-3 gap-1 mt-1">
+        <template x-for="(p, k) in (regimePost ?? [0,0,0])" :key="k">
+          <div class="h-10 rounded flex items-end justify-center text-[10px] num"
+               :class="'regime-' + k"
+               :style="'background-image: linear-gradient(to top, rgba(125,211,252,0.3) ' + (p*100) + '%, transparent ' + (p*100) + '%)'">
+            <span x-text="'r' + k + ' ' + p.toFixed(2)"></span>
+          </div>
+        </template>
+      </div>
+      <div class="mt-3 text-xs text-slate-400">engine</div>
+      <div class="text-xs num mt-1" x-text="'trades: ' + tradesCount + ' · vol_q: ' + (lastVolQ?.toFixed(2) ?? '—')"></div>
+    </section>
+
+    <!-- Panel 5: Performance overview -->
+    <section class="panel p-3 col-span-6 row-span-1 flex flex-col min-h-0">
+      <div class="panel-title mb-1">performance overview</div>
+      <div class="flex flex-wrap gap-4 text-xs" x-show="summary">
+        <div><span class="text-slate-400">assets</span> <span class="num" x-text="summary?.n_assets ?? '—'"></span></div>
+        <div><span class="text-slate-400">runs</span> <span class="num" x-text="summary?.n_runs ?? '—'"></span></div>
+        <div><span class="text-slate-400">Sharpe mean</span> <span class="num" x-text="(summary?.sharpe_mean ?? 0).toFixed(3)"></span></div>
+        <div><span class="text-slate-400">DSR</span> <span class="num" x-text="(summary?.deflated_sharpe ?? 0).toFixed(3)"></span></div>
+        <div><span class="text-slate-400">perm p</span> <span class="num" x-text="(summary?.permutation_pvalue ?? 1).toFixed(3)"></span></div>
+        <div><span class="text-slate-400">boot 95%</span> <span class="num"
+             x-text="'[' + (summary?.bootstrap_lo ?? 0).toFixed(2) + ', ' + (summary?.bootstrap_hi ?? 0).toFixed(2) + ']'"></span></div>
+      </div>
+      <div class="mt-1 scroll text-xs" style="max-height: 80px;">
+        <table>
+          <thead><tr><th>algorithm</th><th>mean Sharpe</th><th>std</th><th>runs</th></tr></thead>
+          <tbody>
+            <template x-for="row in (summary?.algo_ensemble ?? [])" :key="row.algorithm">
+              <tr>
+                <td x-text="row.algorithm"></td>
+                <td class="num" x-text="row.mean_sharpe.toFixed(3)"></td>
+                <td class="num" x-text="row.std_sharpe.toFixed(3)"></td>
+                <td class="num" x-text="row.n_runs"></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Panel 6: Explain / chat -->
+    <section class="panel p-3 col-span-6 row-span-1 flex flex-col min-h-0">
+      <div class="panel-title mb-1">explain · click a trade or ask</div>
+      <div class="scroll flex-1 text-xs" id="chatLog">
+        <template x-for="(m, i) in chat" :key="i">
+          <div class="mb-1">
+            <span :class="m.role === 'user' ? 'chat-user' : 'chat-assistant'" x-text="m.role + ':'"></span>
+            <span x-text="' ' + m.text"></span>
+          </div>
+        </template>
+      </div>
+      <form class="flex gap-2 mt-1" @submit.prevent="ask()">
+        <input type="number" class="input w-20 num" placeholder="trade_id" x-model.number="askTradeId" />
+        <button class="btn btn-primary text-xs" type="submit">EXPLAIN</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    function cockpit() {
+      return {
+        // config
+        assets: [],
+        manifest: [],
+        selectedAsset: '',
+        selectedManifestIdx: 0,
+        mode: 'replay',
+        replaySpeed: 50,
+        costs: { spread_bps: 2.0, slippage_bps: 0.5, commission_usd: 0.0 },
+        metaThreshold: 0.55,
+        // runtime
+        running: false,
+        summary: null,
+        redFlags: [],
+        trades: [],
+        chat: [],
+        askTradeId: null,
+        // live state
+        position: 0,
+        metaProb: null,
+        regimePost: null,
+        lastPrice: null,
+        lastIdx: null,
+        lastVolQ: null,
+        equity: 1.0,
+        tradesCount: 0,
+        // chart buffers
+        priceBuf: { x: [], y: [] },
+        entryBuf: { x: [], y: [], side: [] },
+        equityBuf: { x: [], y: [] },
+
+        async init() {
+          await this.loadStatic();
+          this.initCharts();
+          this.openWS();
+          setInterval(() => this.refreshTrades(), 3000);
+        },
+        async loadStatic() {
+          const [a, m, metrics, state] = await Promise.all([
+            fetch('/api/assets').then(r => r.json()),
+            fetch('/api/manifest').then(r => r.json()),
+            fetch('/api/metrics').then(r => r.json()),
+            fetch('/api/paper/state').then(r => r.json()),
+          ]);
+          this.assets = a;
+          this.manifest = m;
+          this.summary = metrics.summary || null;
+          this.redFlags = (metrics.summary?.red_flags) || [];
+          this.running = !!state.running;
+          if (!this.selectedAsset && this.assets.length) {
+            this.selectedAsset = this.assets[0].symbol;
+          }
+          this.selectDefaultRun();
+          await this.refreshTrades();
+        },
+        selectDefaultRun() {
+          const idx = this.manifest.findIndex(m => m.asset === this.selectedAsset);
+          if (idx >= 0) this.selectedManifestIdx = idx;
+        },
+        async refreshTrades() {
+          const t = await fetch('/api/trades?asset=' + encodeURIComponent(this.selectedAsset) + '&limit=200').then(r => r.json());
+          this.trades = t;
+        },
+        initCharts() {
+          const layout = {
+            paper_bgcolor: '#0f1530',
+            plot_bgcolor: '#0b1020',
+            font: { color: '#d6deeb', size: 10 },
+            margin: { l: 40, r: 10, t: 10, b: 30 },
+            xaxis: { gridcolor: '#22305a' },
+            yaxis: { gridcolor: '#22305a' },
+          };
+          Plotly.newPlot('priceChart', [
+            { x: [], y: [], mode: 'lines', name: 'close', line: { color: '#7dd3fc', width: 1 } },
+            { x: [], y: [], mode: 'markers', name: 'entries',
+              marker: { size: 9, color: [], symbol: 'triangle-up' } },
+          ], layout, { displayModeBar: false, responsive: true });
+          Plotly.newPlot('equityChart', [
+            { x: [], y: [], mode: 'lines', fill: 'tozeroy', line: { color: '#4ade80', width: 2 } },
+          ], { ...layout, yaxis: { ...layout.yaxis, title: 'equity' } }, { displayModeBar: false, responsive: true });
+        },
+        openWS() {
+          const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+          const ws = new WebSocket(proto + '//' + location.host + '/ws/stream');
+          ws.onmessage = (ev) => {
+            try {
+              const msg = JSON.parse(ev.data);
+              this.handle(msg.channel, msg.payload);
+            } catch {}
+          };
+          ws.onclose = () => setTimeout(() => this.openWS(), 1500);
+        },
+        handle(channel, p) {
+          if (channel === 'bar') {
+            this.lastPrice = p.close;
+            this.lastIdx = p.idx;
+            this.priceBuf.x.push(p.idx);
+            this.priceBuf.y.push(p.close);
+            if (this.priceBuf.x.length > 600) { this.priceBuf.x.shift(); this.priceBuf.y.shift(); }
+          } else if (channel === 'signal') {
+            this.position = p.position;
+            this.metaProb = p.meta_prob;
+            this.regimePost = p.regime_post;
+            this.lastVolQ = p.vol_q;
+            if (p.action === 1 || p.action === 2) {
+              this.entryBuf.x.push(p.idx);
+              this.entryBuf.y.push(p.price);
+              this.entryBuf.side.push(p.action === 1 ? '#4ade80' : '#f87171');
+            }
+            this.redrawPrice();
+          } else if (channel === 'equity') {
+            this.equity = p.equity;
+            this.tradesCount = p.n_trades;
+            this.equityBuf.x.push(p.idx);
+            this.equityBuf.y.push(p.equity);
+            if (this.equityBuf.x.length > 2000) { this.equityBuf.x.shift(); this.equityBuf.y.shift(); }
+            Plotly.react('equityChart', [
+              { x: this.equityBuf.x, y: this.equityBuf.y, mode: 'lines', fill: 'tozeroy',
+                line: { color: this.equity >= 1 ? '#4ade80' : '#f87171', width: 2 } }
+            ]);
+          } else if (channel === 'trade') {
+            this.refreshTrades();
+          } else if (channel === 'log') {
+            if (p.msg?.includes('finished') || p.msg?.includes('stopped')) this.running = false;
+          }
+        },
+        redrawPrice() {
+          Plotly.react('priceChart', [
+            { x: this.priceBuf.x, y: this.priceBuf.y, mode: 'lines', name: 'close',
+              line: { color: '#7dd3fc', width: 1 } },
+            { x: this.entryBuf.x, y: this.entryBuf.y, mode: 'markers', name: 'entries',
+              marker: { size: 9, color: this.entryBuf.side, symbol: 'triangle-up' } },
+          ]);
+        },
+        async start() {
+          this.priceBuf = { x: [], y: [] };
+          this.entryBuf = { x: [], y: [], side: [] };
+          this.equityBuf = { x: [], y: [] };
+          const body = {
+            asset: this.selectedAsset,
+            manifest_idx: this.selectedManifestIdx,
+            mode: this.mode,
+            replay_speed: this.replaySpeed,
+            costs: this.costs,
+            meta_threshold: this.metaThreshold,
+          };
+          const r = await fetch('/api/paper/start', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+          if (r.ok) this.running = true;
+          else this.chat.push({ role: 'assistant', text: 'start failed: ' + (await r.text()) });
+        },
+        async stop() {
+          await fetch('/api/paper/stop', { method: 'POST' });
+          this.running = false;
+        },
+        async explain(tradeId) {
+          this.chat.push({ role: 'user', text: 'explain trade #' + tradeId });
+          const r = await fetch('/api/explain', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ trade_id: tradeId }),
+          });
+          const j = await r.json();
+          this.chat.push({ role: 'assistant', text: j.explanation || '(no explanation)' });
+          this.$nextTick(() => {
+            const log = document.getElementById('chatLog');
+            if (log) log.scrollTop = log.scrollHeight;
+          });
+        },
+        ask() {
+          if (this.askTradeId == null) return;
+          this.explain(this.askTradeId);
+          this.askTradeId = null;
+        },
+      }
+    }
+  </script>
+</body>
+</html>

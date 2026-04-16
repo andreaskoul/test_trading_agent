@@ -65,10 +65,44 @@ python3 scripts/02_pretrain_encoder.py --fast    # 6 frozen encoders
 python3 scripts/03_train_ppo.py --fast           # 6 splits x 3 seeds = 18 PPO runs
 python3 scripts/04_evaluate.py                   # -> reports/evaluation_report.md
 python3 scripts/05_finetune.py                   # -> reports/finetune_report.md
+python3 scripts/06_run_cockpit.py                # -> http://localhost:8765
 ```
 
 `--fast` is the default session budget (18 runs, 15 000 steps each). Drop it
 for the full config (15 splits × 5 seeds × 60 000 steps).
+
+## Running the cockpit
+
+`scripts/06_run_cockpit.py` starts a FastAPI server that serves a
+multi-panel dark web cockpit on `http://localhost:8765/` and drives the
+trained policies live. Panels:
+
+1. **Price + entry markers + HMM regime shading** (left big panel)
+2. **Equity curve** streaming from the paper engine
+3. **Trade log** — click any row to get a Claude-generated explanation
+4. **Signal gauge** — current position, meta-label P(profit) vs gate
+   threshold, HMM regime posterior
+5. **Performance overview** — pooled Sharpe, DSR, bootstrap CI, algo
+   ensemble, and red flags from the last `evaluation_summary.json`
+6. **Explain / chat panel** — type a `trade_id`, get a short plain-English
+   explanation anchored in the stored meta-label prob, regime, and
+   extreme embedding dimensions
+
+Top-bar knobs: asset selector (GC=F, SI=F, …), manifest run selector,
+Replay vs Live mode, replay speed, **realistic cost knobs**
+(spread bps, slippage bps, commission USD per round trip), and the
+meta-label gate threshold. All cost knobs apply to *the next trade* —
+existing trades in the log were recorded under the cost model that was
+active when they fired.
+
+The paper engine reuses the exact backtester code path — same env
+config, same triple-barrier exit logic, same meta-label classifier —
+so replay output is byte-for-byte identical to `04_evaluate.py` for
+the same window (enforced by `tests/test_cockpit.py::test_paper_engine_matches_backtest`).
+
+Set `ANTHROPIC_API_KEY` before launching to enable Claude explanations.
+Without the key the cockpit falls back to a deterministic template
+that still cites the meta-label probability, regime, and P&L.
 
 ## What the reports contain
 
@@ -110,8 +144,11 @@ src/
   env/                          # trading_env, embedding_env (precomputed obs)
   validation/                   # cpcv, deflated_sr, bootstrap, metrics
   training/                     # pretrain_encoder, train_ppo, evaluate, finetune
-scripts/                        # 01..05 entry points
+  live/                         # paper_engine, feed (streaming bars)
+  ui/                           # server (FastAPI) + static/index.html cockpit
+scripts/                        # 01..06 entry points (06 = cockpit)
 tests/test_smoke.py             # end-to-end smoke test
+tests/test_cockpit.py           # paper-engine parity + API smoke test
 artefacts/                      # encoders, policies, manifest (generated)
 data/                           # raw + processed parquets (generated)
 reports/                        # markdown + png outputs (generated)
