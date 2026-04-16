@@ -95,3 +95,19 @@ finetune:
 
 artefact_dir: "artefacts"
 report_dir: "reports"
+
+ui:
+  port: 8765
+  host: "0.0.0.0"
+  paper:
+    default_asset: "GC=F"
+    costs:
+      spread_bps: 2.0
+      slippage_bps: 0.5
+      commission_usd: 0.0
+    bar_interval_seconds: 60
+    meta_threshold: 0.55
+  explain:
+    model: "claude-opus-4-7"
+    max_words: 120
+  db_path: "artefacts/paper_trades.db"
