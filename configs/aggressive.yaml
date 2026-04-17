@@ -19,15 +19,25 @@ data:
       labels_path: "data/processed/labels_gc_60m.parquet"
 
 features:
-  # ~6.5x more bars per day, so warmup + z-score windows scale up.
-  warmup_bars: 1638     # ~252d * 6.5 hours
-  zscore_window: 1638
+  # Base values stay calibrated for daily; config_utils.scale_param() will
+  # multiply by ~6.5x for 60m bars so the effective lookback stays ~1y.
+  warmup_bars: 252
+  zscore_window: 252
 
 triple_barrier:
-  horizon: 24           # 1 trading day ceiling
+  horizon: 4            # base * 6.5 -> ~26 bars (~1 trading day at 60m)
   rr_upper: 1.5         # tighter TP so profits materialise within horizon
   rr_lower: 0.75        # 2:1 RR preserved
-  atr_window: 24        # 1-day ATR at 60m
+  atr_window: 4         # base * 6.5 -> ~26 (~1-day ATR at 60m)
+
+encoder:
+  # Activate Tier 5 architectural pieces in the experimental profile so
+  # the aggressive run actually exercises VIB + TFT. Default profile keeps
+  # both off so the existing baseline policies stay reproducible.
+  vib: true
+  vib_beta: 1.0e-3
+  tft: true
+  tft_heads: 4
 
 env:
   spread_bps: 0.5       # MGC micro-gold realistic spread

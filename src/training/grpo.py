@@ -238,8 +238,18 @@ class GRPO:
                 torch.nn.utils.clip_grad_norm_(self.policy.parameters(), 1.0)
                 self.optim.step()
 
-    def learn(self, total_timesteps: int, progress_bar: bool = False) -> "GRPO":
-        del progress_bar
+    def learn(
+        self,
+        total_timesteps: int,
+        progress_bar: bool = False,
+        reset_num_timesteps: bool = True,
+        callback=None,
+        log_interval: int | None = None,
+        tb_log_name: str = "GRPO",
+    ) -> "GRPO":
+        # SB3-shaped signature so train_ppo.py can call GRPO interchangeably
+        # with PPO/A2C/RecurrentPPO. We don't use the SB3 logger or callbacks.
+        del progress_bar, reset_num_timesteps, callback, log_interval, tb_log_name
         steps_per_batch = self.cfg.group_size * self.cfg.steps_per_trajectory
         n_batches = max(1, total_timesteps // steps_per_batch)
         for _ in range(n_batches):

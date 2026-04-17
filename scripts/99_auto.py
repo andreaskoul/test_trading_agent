@@ -79,7 +79,11 @@ def _now_iso() -> str:
 def _run(cmd: list[str], cwd: str) -> bool:
     log.info("$ %s", " ".join(cmd))
     try:
-        result = subprocess.run(cmd, cwd=cwd, check=False)
+        # Propagate the parent environment so TRADING_PROFILE (and any other
+        # caller-set vars) reach the sub-script. Without this the auto loop
+        # silently runs the default profile even when launched as
+        # `TRADING_PROFILE=aggressive python scripts/99_auto.py`.
+        result = subprocess.run(cmd, cwd=cwd, env=os.environ.copy(), check=False)
         return result.returncode == 0
     except FileNotFoundError as e:
         log.error("command not found: %s", e)

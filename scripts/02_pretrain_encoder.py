@@ -94,7 +94,7 @@ def main() -> None:
             train_candidates = np.setdiff1d(np.arange(n), test_idx)
 
             t1_series = pd.Series(labels["t1"].values, index=feats.index)
-            tr = _purge_train(train_candidates, test_idx, t1_series)
+            tr = _purge_train(train_candidates, [(lo, hi)], t1_series)
             tr = _embargo(tr, [(lo, hi)], int(embargo_pct * n), n)
 
             val_size = int(len(tr) * 0.1)
