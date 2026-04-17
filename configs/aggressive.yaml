@@ -41,9 +41,15 @@ encoder:
 
 env:
   spread_bps: 0.5       # MGC micro-gold realistic spread
-  reward_mode: "return"
+  # Moody-Saffell differential Sharpe: online risk-adjusted reward.
+  # Literature (Moody & Saffell 1998; re-validated 2024-2025 meta-analysis)
+  # shows DSR reward yields more stable, cost-aware policies than raw
+  # return-proportional shaping, especially at realistic spreads.
+  reward_mode: "diff_sharpe"
   reward_return_scale: 100.0
   reward_cost_lambda: 2.0   # slightly softer cost penalty (spread already tight)
+  reward_dsr_eta: 0.01      # EWMA rate for DSR moments
+  reward_dsr_scale: 1.0     # scale on differential Sharpe increment
 
 ppo:
   total_timesteps: 120000   # more bars -> need more updates
