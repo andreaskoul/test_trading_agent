@@ -121,6 +121,26 @@ def test_vib_encoder():
     assert kl.dim() == 0 and float(kl.detach()) >= 0.0
 
 
+def test_kill_switch():
+    from src.live.kill_switch import KillSwitchConfig, evaluate, from_cfg
+    cfg = KillSwitchConfig()
+    # Catastrophe
+    r = evaluate(np.array([0.01, 0.02, -0.10]), cfg)
+    assert "catastrophe" in r.triggered and r.halt
+    # Sharpe floor requires duration >= 3 consecutive breaches
+    bad = np.random.default_rng(1).normal(-0.001, 0.01, 100)
+    single = evaluate(bad, cfg)
+    assert "sharpe_floor" not in single.triggered, "single breach should not trigger"
+    with_hist = evaluate(bad, cfg, recent_sharpe_history=[0.0, 0.1, 0.2])
+    assert "sharpe_floor" in with_hist.triggered
+    # Disabled config never triggers
+    off = evaluate(np.array([0.01, -0.20, 0.01]), KillSwitchConfig(enabled=False))
+    assert not off.halt
+    # from_cfg dict roundtrip
+    kc = from_cfg({"sharpe_floor": 0.3, "max_drawdown": 0.15})
+    assert kc.sharpe_floor == 0.3 and kc.max_drawdown == 0.15
+
+
 def test_grpo_trainer():
     import tempfile
     import gymnasium as gym
@@ -424,6 +444,7 @@ if __name__ == "__main__":
         test_vib_encoder,
         test_tft_encoder,
         test_grpo_trainer,
+        test_kill_switch,
         test_env_runs_trade,
         test_reward_modes,
         test_ppo_short_train,

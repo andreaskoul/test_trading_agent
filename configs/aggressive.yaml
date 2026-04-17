@@ -1,0 +1,58 @@
+# Aggressive hourly profile: overlay onto configs/default.yaml.
+# Enable with: TRADING_PROFILE=aggressive python scripts/NN_....py
+#
+# Goal: higher trade frequency for a $100-notional paper account. Uses 60m
+# bars (so ~6500 bars/yr vs ~252 for daily), a tighter triple-barrier, and
+# realistic micro-gold spread (~0.5 bps on MGC).
+#
+# Expected behavior: ~300-500 trades per year on gold alone (vs ~25/yr on
+# the daily config), Sharpe becomes more cost-sensitive, DSR more credible
+# thanks to the larger trade count.
+
+data:
+  assets:
+    - symbol: "GC=F"
+      fallback_symbols: ["GLD"]
+      interval: "60m"
+      raw_path: "data/raw/gc_60m.parquet"
+      features_path: "data/processed/features_gc_60m.parquet"
+      labels_path: "data/processed/labels_gc_60m.parquet"
+
+features:
+  # ~6.5x more bars per day, so warmup + z-score windows scale up.
+  warmup_bars: 1638     # ~252d * 6.5 hours
+  zscore_window: 1638
+
+triple_barrier:
+  horizon: 24           # 1 trading day ceiling
+  rr_upper: 1.5         # tighter TP so profits materialise within horizon
+  rr_lower: 0.75        # 2:1 RR preserved
+  atr_window: 24        # 1-day ATR at 60m
+
+env:
+  spread_bps: 0.5       # MGC micro-gold realistic spread
+  reward_mode: "return"
+  reward_return_scale: 100.0
+  reward_cost_lambda: 2.0   # slightly softer cost penalty (spread already tight)
+
+ppo:
+  total_timesteps: 120000   # more bars -> need more updates
+  seeds: [7, 13, 29]
+  algorithms: ["ppo", "grpo"]    # lean ensemble; GRPO handles noisy hourly reward
+
+evaluation:
+  costs_bps: [0.0, 0.5, 1.0, 2.0, 5.0]   # sweep around the realistic spread
+
+finetune:
+  timesteps: 40000
+  holdout_frac: 0.15     # ~1 year of hourly bars on a 6-year train window
+
+ui:
+  paper:
+    default_asset: "GC=F"
+    costs:
+      spread_bps: 0.5
+      slippage_bps: 0.3
+      commission_usd: 0.0
+    bar_interval_seconds: 3600     # poll hourly
+    meta_threshold: 0.55

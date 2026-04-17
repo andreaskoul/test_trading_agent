@@ -100,6 +100,23 @@ finetune:
 artefact_dir: "artefacts"
 report_dir: "reports"
 
+kill_switch:
+  enabled: true
+  sharpe_floor: 1.0
+  sharpe_window: 60            # trades
+  sharpe_duration_bars: 3
+  max_drawdown: 0.05
+  win_rate_floor: 0.5
+  win_rate_window: 100
+  catastrophe_pct: 0.05
+
+auto:
+  # Tier 6 scheduler knobs (used by scripts/99_auto.py).
+  retrain_every_days: 30       # full encoder + PPO retrain cadence
+  finetune_every_days: 7       # small-lr holdout refinement cadence
+  evaluate_every_days: 1       # re-run evaluate + regenerate reports
+  min_new_bars_before_retrain: 500   # skip retrain if not enough new data
+
 ui:
   port: 8765
   host: "0.0.0.0"
