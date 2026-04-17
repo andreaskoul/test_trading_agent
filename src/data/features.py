@@ -43,6 +43,21 @@ def _rolling_z(series: pd.Series, window: int) -> pd.Series:
     return (series - mean) / (std.replace(0, np.nan))
 
 
+def _hawkes_intensity(magnitude: pd.Series, beta: float) -> pd.Series:
+    """Causal Hawkes-process intensity with an exponential kernel.
+
+    Recursion lambda_t = exp(-beta) * lambda_{t-1} + magnitude_{t-1}. The
+    shift(1) is what makes this strictly causal: bar t's feature only reflects
+    shocks up to and including bar t-1. Implementation uses pandas EWM (alpha =
+    1 - exp(-beta)) which returns the EWMA; scale by 1/alpha to recover the
+    EWM sum that the Hawkes recursion produces.
+    """
+    decay = float(np.exp(-beta))
+    alpha = 1.0 - decay
+    ewma = magnitude.shift(1).ewm(alpha=alpha, adjust=False).mean()
+    return ewma / alpha
+
+
 def build_features(
     df: pd.DataFrame,
     warmup_bars: int = 252,
@@ -87,6 +102,15 @@ def build_features(
     # Volume z-score (log volume)
     log_vol = np.log(volume)
     out["vol_z"] = _rolling_z(log_vol, zscore_window)
+
+    # Hawkes-process intensity on |log-return| at three decay scales. Models
+    # volatility / event clustering (trade bursts around COMEX opens, macro
+    # prints). Three widely separated betas capture fast, session, and
+    # multi-session clustering; the rolling-z loop below strips the drift.
+    ret_mag = log_ret.abs().fillna(0.0)
+    out["hawkes_fast"] = _hawkes_intensity(ret_mag, beta=1.0)
+    out["hawkes_med"] = _hawkes_intensity(ret_mag, beta=0.1)
+    out["hawkes_slow"] = _hawkes_intensity(ret_mag, beta=0.02)
 
     # Price z-score (useful for regime awareness even though non-stationary)
     out["close_z"] = _rolling_z(close, zscore_window)

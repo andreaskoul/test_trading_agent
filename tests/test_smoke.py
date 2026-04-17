@@ -102,6 +102,47 @@ def test_encoder_shape():
     assert logits.shape == (4, 3)
 
 
+def test_vib_encoder():
+    from src.models.xlstm_lite import (
+        XLSTMConfig, XLSTMLite, vib_kl, vib_reparameterize,
+    )
+    cfg = XLSTMConfig(
+        input_dim=10, hidden_size=32, n_slstm=1, n_mlstm=1,
+        dropout=0.0, vib=True, vib_beta=1e-3,
+    )
+    model = XLSTMLite(cfg).eval()
+    x = torch.randn(4, 16, 10)
+    mu, logsigma = model.encode_params(x)
+    assert mu.shape == (4, 32) and logsigma.shape == (4, 32)
+    assert torch.allclose(model.encode(x), mu), "encode() should return mu"
+    z = vib_reparameterize(mu, logsigma)
+    assert z.shape == mu.shape and not torch.allclose(z, mu)
+    kl = vib_kl(mu, logsigma)
+    assert kl.dim() == 0 and float(kl.detach()) >= 0.0
+
+
+def test_tft_encoder():
+    from src.models.xlstm_lite import XLSTMConfig, XLSTMLite
+    cfg = XLSTMConfig(
+        input_dim=10, hidden_size=32, n_slstm=1, n_mlstm=1,
+        dropout=0.0, tft=True, tft_heads=4,
+    )
+    model = XLSTMLite(cfg).eval()
+    x = torch.randn(4, 16, 10)
+    emb = model.encode(x)
+    assert emb.shape == (4, 32)
+    logits = model(x)
+    assert logits.shape == (4, 3)
+    # TFT + VIB compose
+    cfg2 = XLSTMConfig(
+        input_dim=10, hidden_size=32, n_slstm=1, n_mlstm=1,
+        dropout=0.0, tft=True, tft_heads=4, vib=True, vib_beta=1e-3,
+    )
+    m2 = XLSTMLite(cfg2).eval()
+    mu, logsigma = m2.encode_params(x)
+    assert mu.shape == (4, 32) and logsigma.shape == (4, 32)
+
+
 def test_env_runs_trade():
     from src.data.features import build_features, feature_columns
     from src.env.trading_env import EnvConfig, TradingEnv, BUY
@@ -347,6 +388,8 @@ if __name__ == "__main__":
         test_triple_barrier_labels,
         test_cpcv_purge_no_leakage,
         test_encoder_shape,
+        test_vib_encoder,
+        test_tft_encoder,
         test_env_runs_trade,
         test_reward_modes,
         test_ppo_short_train,

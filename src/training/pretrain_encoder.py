@@ -16,7 +16,13 @@ import pandas as pd
 import torch
 from torch.utils.data import DataLoader, Dataset
 
-from ..models.xlstm_lite import FocalLoss, XLSTMConfig, XLSTMLite
+from ..models.xlstm_lite import (
+    FocalLoss,
+    XLSTMConfig,
+    XLSTMLite,
+    vib_kl,
+    vib_reparameterize,
+)
 
 log = logging.getLogger(__name__)
 
@@ -34,6 +40,10 @@ class PretrainConfig:
     epochs: int
     batch_size: int
     device: str = "cpu"
+    vib: bool = False
+    vib_beta: float = 1e-3
+    tft: bool = False
+    tft_heads: int = 4
 
 
 class WindowDataset(Dataset):
@@ -83,6 +93,10 @@ def pretrain_fold(
         dropout=cfg.dropout,
         softcap=cfg.softcap,
         n_classes=3,
+        vib=cfg.vib,
+        vib_beta=cfg.vib_beta,
+        tft=cfg.tft,
+        tft_heads=cfg.tft_heads,
     )
     model = XLSTMLite(model_cfg).to(device)
 
@@ -101,20 +115,33 @@ def pretrain_fold(
     best_val = float("inf")
     best_state = None
 
+    def _step_logits(xb: torch.Tensor, *, stochastic: bool) -> tuple[torch.Tensor, torch.Tensor]:
+        """Return (logits, kl). kl is zero when VIB is disabled."""
+        if not cfg.vib:
+            return model(xb), torch.zeros((), device=xb.device)
+        mu, logsigma = model.encode_params(xb)
+        z = vib_reparameterize(mu, logsigma) if stochastic else mu
+        logits = model.cls_head(z)
+        kl = vib_kl(mu, logsigma)
+        return logits, kl
+
     for epoch in range(cfg.epochs):
         model.train()
         tr_loss = 0.0
+        tr_kl = 0.0
         tr_n = 0
         for xb, yb in train_loader:
             xb = xb.to(device)
             yb = yb.to(device)
             optim.zero_grad()
-            logits = model(xb)
-            loss = loss_fn(logits, yb)
+            logits, kl = _step_logits(xb, stochastic=True)
+            task_loss = loss_fn(logits, yb)
+            loss = task_loss + cfg.vib_beta * kl
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             optim.step()
-            tr_loss += float(loss) * len(xb)
+            tr_loss += float(task_loss.detach()) * len(xb)
+            tr_kl += float(kl.detach()) * len(xb)
             tr_n += len(xb)
 
         model.eval()
@@ -125,16 +152,18 @@ def pretrain_fold(
             for xb, yb in val_loader:
                 xb = xb.to(device)
                 yb = yb.to(device)
-                logits = model(xb)
+                logits, _ = _step_logits(xb, stochastic=False)
                 loss = loss_fn(logits, yb)
                 val_loss += float(loss) * len(xb)
                 val_n += len(xb)
                 correct += int((logits.argmax(dim=-1) == yb).sum())
         tr_avg = tr_loss / max(tr_n, 1)
+        tr_kl_avg = tr_kl / max(tr_n, 1)
         val_avg = val_loss / max(val_n, 1)
         val_acc = correct / max(val_n, 1)
         log.info(
-            "epoch %d train_loss=%.4f val_loss=%.4f val_acc=%.3f", epoch, tr_avg, val_avg, val_acc
+            "epoch %d train_loss=%.4f kl=%.4f val_loss=%.4f val_acc=%.3f",
+            epoch, tr_avg, tr_kl_avg, val_avg, val_acc,
         )
         if val_avg < best_val:
             best_val = val_avg

@@ -68,6 +68,10 @@ def main() -> None:
         epochs=epochs,
         batch_size=cfg["encoder"]["pretrain_batch"],
         device="cpu",
+        vib=bool(cfg["encoder"].get("vib", False)),
+        vib_beta=float(cfg["encoder"].get("vib_beta", 1e-3)),
+        tft=bool(cfg["encoder"].get("tft", False)),
+        tft_heads=int(cfg["encoder"].get("tft_heads", 4)),
     )
 
     artefacts = path(cfg, cfg["artefact_dir"], "encoders")

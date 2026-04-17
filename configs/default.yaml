@@ -47,6 +47,10 @@ encoder:
   pretrain_lr: 3.0e-4
   pretrain_batch: 128
   focal_gamma: 2.0
+  vib: false            # Variational Information Bottleneck head
+  vib_beta: 1.0e-3      # KL weight when vib: true
+  tft: false            # TFT-style attention aggregator on xLSTM sequence
+  tft_heads: 4
 
 ppo:
   total_timesteps: 60000   # budget per seed/path (fast default)
