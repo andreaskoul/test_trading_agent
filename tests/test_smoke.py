@@ -121,6 +121,39 @@ def test_vib_encoder():
     assert kl.dim() == 0 and float(kl.detach()) >= 0.0
 
 
+def test_grpo_trainer():
+    import tempfile
+    import gymnasium as gym
+    from gymnasium import spaces
+    from src.training.grpo import GRPO, GRPOConfig
+
+    class _Toy(gym.Env):
+        observation_space = spaces.Box(low=-5, high=5, shape=(4,), dtype=np.float32)
+        action_space = spaces.Discrete(3)
+        def __init__(self): self.t = 0
+        def reset(self, seed=None, options=None):
+            super().reset(seed=seed); self.t = 0
+            return np.zeros(4, dtype=np.float32), {}
+        def step(self, a):
+            self.t += 1
+            r = 1.0 if a == (self.t % 3) else -0.5
+            return np.random.randn(4).astype(np.float32), r, self.t >= 16, False, {}
+
+    env = _Toy()
+    cfg = GRPOConfig(total_timesteps=64, group_size=2, steps_per_trajectory=16,
+                     n_epochs=1, batch_size=16, seed=0)
+    model = GRPO(env, cfg).learn(64)
+    obs, _ = env.reset()
+    a, _ = model.predict(obs, deterministic=True)
+    assert isinstance(int(a), int)
+    with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as f:
+        path = f.name
+    model.save(path)
+    loaded = GRPO.load(path, env=env)
+    a2, _ = loaded.predict(obs, deterministic=True)
+    assert int(a) == int(a2), "GRPO save/load round-trip mismatch"
+
+
 def test_tft_encoder():
     from src.models.xlstm_lite import XLSTMConfig, XLSTMLite
     cfg = XLSTMConfig(
@@ -390,6 +423,7 @@ if __name__ == "__main__":
         test_encoder_shape,
         test_vib_encoder,
         test_tft_encoder,
+        test_grpo_trainer,
         test_env_runs_trade,
         test_reward_modes,
         test_ppo_short_train,

@@ -36,7 +36,9 @@ try:
 except ImportError:  # pragma: no cover
     RecurrentPPO = None  # type: ignore[assignment]
 
-_ALGO_MAP: dict[str, type] = {"ppo": PPO, "a2c": A2C}
+from src.training.grpo import GRPO as _GRPO
+
+_ALGO_MAP: dict[str, type] = {"ppo": PPO, "a2c": A2C, "grpo": _GRPO}
 if RecurrentPPO is not None:
     _ALGO_MAP["recurrent_ppo"] = RecurrentPPO
     _ALGO_MAP["rppo"] = RecurrentPPO
