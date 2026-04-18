@@ -47,14 +47,14 @@ env:
   # return-proportional shaping, especially at realistic spreads.
   reward_mode: "diff_sharpe"
   reward_return_scale: 100.0
-  reward_cost_lambda: 4.0   # Iter-2: doubled to 4x spread to cut turnover harder
+  reward_cost_lambda: 2.0   # Iter-2 tried 4x; regressed Sharpe by 10-21%, reverted
   reward_dsr_eta: 0.01      # EWMA rate for DSR moments
   reward_dsr_scale: 1.0     # scale on differential Sharpe increment
 
 ppo:
   total_timesteps: 120000   # more bars -> need more updates
   seeds: [7, 13, 29]
-  algorithms: ["ppo", "grpo"]    # lean ensemble; GRPO handles noisy hourly reward
+  algorithms: ["ppo", "grpo", "recurrent_ppo"]   # Iter-3: +LSTM-head PPO for temporal credit
 
 evaluation:
   costs_bps: [0.0, 0.5, 1.0, 2.0, 5.0]   # sweep around the realistic spread

@@ -96,9 +96,48 @@ moving the permutation-test p-value closer to 0.
 
 | Metric | Before (iter 1) | After (iter 2) | Δ |
 |---|---|---|---|
+| Pre-meta Sharpe @ 0bps | 0.928 | 0.870 | −6.3% |
+| Pre-meta Sharpe @ 0.5bps | 0.602 | **0.544** | **−9.6%** |
+| Pre-meta Sharpe @ 1bps | 0.276 | **0.219** | **−21%** |
+| Pre-meta Sharpe @ 2bps | −0.376 | −0.431 | worse |
+| PPO mean Sharpe | 0.648 | 0.575 | −11% |
+| GRPO mean Sharpe | 0.556 | 0.514 | −7.6% |
+| Permutation p-value | 0.989 | 1.000 | worse |
+| Meta @ 0.60 Sharpe | 6.90 | 6.85 | flat |
+
+**Verdict: REVERTED.** cost_lambda=4 hurt every raw metric. DSR already
+internalises cost-awareness via its variance penalty; stacking a 4×
+cost scalar over-suppresses trades without a Sharpe payoff. Rolled
+back to `reward_cost_lambda: 2.0`; iter-1 (DSR @ cost_lambda=2) is the
+working baseline going forward.
+
+---
+
+## Iteration 3 — RecurrentPPO added to ensemble (2026-04-18)
+
+**Hypothesis:** Feed-forward MLP policies ignore within-session
+autocorrelation; the VIB+TFT encoder compresses temporal structure but
+doesn't propagate it forward at decision time. Adding SB3-contrib's
+`RecurrentPPO` (LSTM head on top of the same encoded observation) gives
+the ensemble a genuinely new axis of diversity — not another PPO seed.
+Audit confirmed `RecurrentPPO` is already imported at
+`src/training/train_ppo.py:154-175` but dropped from `aggressive.yaml`.
+
+**Change:** `configs/aggressive.yaml:57`
+
+- `algorithms: ["ppo", "grpo"]` → `["ppo", "grpo", "recurrent_ppo"]`
+- fresh 54-run retrain (3 algos × 3 seeds × 6 splits)
+
+**Metrics**
+
+| Metric | Before (iter 1, 2 algos) | After (iter 3, 3 algos) | Δ |
+|---|---|---|---|
 | Pre-meta Sharpe @ 0.5bps | 0.602 | TBD | TBD |
 | Pre-meta Sharpe @ 1bps | 0.276 | TBD | TBD |
 | Permutation p-value | 0.989 | TBD | TBD |
+| PPO mean Sharpe | 0.648 | TBD | TBD |
+| GRPO mean Sharpe | 0.556 | TBD | TBD |
+| RecurrentPPO mean Sharpe | — | TBD | TBD |
 | Meta @ 0.60 Sharpe | 6.90 | TBD | TBD |
 
 **Verdict:** TBD.
@@ -108,9 +147,11 @@ moving the permutation-test p-value closer to 0.
 ## Summary of iterations so far
 
 - **Kept:** 1 change (DSR reward) producing +14% Sharpe at 1bps.
-- **Open:** iter 2 in flight.
-- **Next candidates** if iter 2 saturates:
+- **Reverted:** 1 change (cost_lambda 2→4) regressed all raw metrics.
+- **Open:** iter 3 (RecurrentPPO ensemble) in flight.
+- **Next candidates** if iter 3 saturates:
+  - 15m bars (`interval: 15m`, full data+encoder rebuild)
+  - Intraday seasonality features (`hour_of_day_sin/cos`)
   - Minimum hold period (env-level)
   - Richer meta-gate classifier (stacking)
-  - Encoder-level feature ablation (drop Hawkes, test lift)
   - Multi-asset transfer (add SI=F 60m)
