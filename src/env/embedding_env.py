@@ -78,6 +78,7 @@ class EmbeddingTradingEnv(gym.Env):
 
         self._pos = 0
         self._entry_i = -1
+        self._flat_until = -1
         self._entry_price = 0.0
         self._barrier_upper = 0.0
         self._barrier_lower = 0.0
