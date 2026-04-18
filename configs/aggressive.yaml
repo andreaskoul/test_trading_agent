@@ -50,7 +50,7 @@ env:
   reward_cost_lambda: 2.0   # Iter-2 tried 4x; regressed Sharpe by 10-21%, reverted
   reward_dsr_eta: 0.01      # EWMA rate for DSR moments
   reward_dsr_scale: 1.0     # scale on differential Sharpe increment
-  min_flat_bars: 2          # Iter-5: 2-bar cooldown after exit, kills flip-flop turnover
+  min_flat_bars: 0          # Iter-5 tried 2; pre-meta Sharpe flat, meta-gate -19%, reverted
 
 ppo:
   total_timesteps: 120000   # more bars -> need more updates

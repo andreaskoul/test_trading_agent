@@ -219,6 +219,52 @@ re-balanced against other features.
 
 ---
 
+## Iteration 5 — Post-exit cooldown (`min_flat_bars=2`) (2026-04-18)
+
+**Hypothesis:** Iter-2's cost_lambda=4 over-suppressed trading by
+globally taxing every round-trip. A surgical alternative is a
+post-exit cooldown: after a triple-barrier trade closes, force HOLD
+for N bars before allowing a new entry. This kills flip-flop turnover
+without taxing the average-quality trade.
+
+**Change:** new env knob `EnvConfig.min_flat_bars`, wired through both
+`TradingEnv` and `EmbeddingTradingEnv` step() + __init__. Default 0
+keeps every other config neutral; `configs/aggressive.yaml` opts into
+`min_flat_bars: 2`. Bug caught & fixed in the same commit:
+`rollout_policy` in `src/training/evaluate.py` pokes `_step_i`/`_pos`
+directly without calling `reset()`, so `_flat_until` must be
+initialised in `__init__`.
+
+**Metrics**
+
+| Metric | Before (iter 4) | After (iter 5) | Δ |
+|---|---|---|---|
+| Pre-meta Sharpe @ 0bps | 0.900 | 0.881 | −2.1% |
+| Pre-meta Sharpe @ 0.5bps | 0.573 | 0.553 | −3.5% |
+| Pre-meta Sharpe @ 1bps | 0.247 | 0.225 | −8.9% |
+| Pre-meta Sharpe @ 2bps | −0.406 | −0.432 | worse |
+| PPO mean Sharpe | 0.533 | **0.569** | +6.8% |
+| GRPO mean Sharpe | 0.614 | 0.537 | −12.5% |
+| Permutation p-value | 0.986 | 0.973 | marginal |
+| Meta @ 0.60 Sharpe | **7.20** | **5.84** | **−19%** |
+| Meta @ 0.60 trades | 9429 | 3812 | −60% |
+| Meta @ 0.60 total_return | 34M | 670 | much saner |
+
+**Verdict: REVERTED** (`min_flat_bars: 2 → 0`). The cooldown halves
+trade count but Sharpe drops; it strips away good trades along with
+flip-flops. The deployed algo identity swapped (GRPO 0.614 → PPO 0.569
+now strongest), which suggests the cooldown interacts with GRPO's
+group-relative baseline less favourably than PPO's clipped critic.
+
+**Side benefit (not enough to keep):** the meta-gate's compounded
+returns collapse from 34M → 670 at thr=0.60, which is a far more
+plausible live-trading number. This validates the earlier hypothesis
+that the headline meta-gate returns are a compounding artefact, not a
+real PnL signal. When reporting results externally, per-trade Sharpe
+is the number to quote, not cumulative return.
+
+---
+
 ## Session summary (2026-04-18)
 
 Five Phase-E iterations were executed on `configs/aggressive.yaml`:
@@ -231,6 +277,7 @@ Five Phase-E iterations were executed on `configs/aggressive.yaml`:
 | 3 | +RecurrentPPO | 0.576 | 6.87 | REVERTED |
 | 4a | 15m bars | — | — | BLOCKED (no data source) |
 | 4 | +intraday seasonality | 0.573 | **7.20** | KEPT (mixed) |
+| 5 | +min_flat_bars=2 cooldown | 0.553 | 5.84 | REVERTED |
 
 **Net: 2 kept, 2 reverted, 1 blocked.** The `kept` set (DSR reward +
 seasonality features) delivered +14% pre-meta Sharpe @ 1bps early,
@@ -265,7 +312,9 @@ algo ensemble.
 ## Summary of iterations so far
 
 - **Kept:** 2 changes — DSR reward (iter-1), intraday seasonality (iter-4).
-- **Reverted:** 2 changes — cost_lambda 2→4 (iter-2), +RecurrentPPO (iter-3).
+- **Reverted:** 3 changes — cost_lambda 2→4 (iter-2), +RecurrentPPO
+  (iter-3), min_flat_bars=2 cooldown (iter-5).
 - **Blocked:** 1 change — 15m bars (iter-4a, no data source in sandbox).
-- **Session closed at iter-4.** See "Session summary" above for next-
-  session candidates.
+- **Session closed at iter-5.** Iter-5 delivered a negative result but
+  a validated insight: the meta-gate's multi-million-dollar returns
+  are a compounding artefact; Sharpe is the honest metric.
