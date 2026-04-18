@@ -54,6 +54,7 @@ def env_config_from_yaml(cfg: dict) -> "EnvConfig":
         reward_cost_lambda=env.get("reward_cost_lambda", 0.0),
         reward_dsr_eta=env.get("reward_dsr_eta", 0.01),
         reward_dsr_scale=env.get("reward_dsr_scale", 1.0),
+        min_flat_bars=env.get("min_flat_bars", 0),
     )
 
 
@@ -86,6 +87,10 @@ class EnvConfig:
     reward_dsr_eta: float = 0.01
     # Scale factor on the differential Sharpe increment.
     reward_dsr_scale: float = 1.0
+    # Minimum flat bars enforced after a trade closes, before a new entry is
+    # allowed. 0 disables. A small cooldown (1-3 bars) kills flip-flop
+    # turnover without the over-suppression iter-2's cost_lambda=4 caused.
+    min_flat_bars: int = 0
 
 
 class TradingEnv(gym.Env):
@@ -165,6 +170,7 @@ class TradingEnv(gym.Env):
         self._step_i = int(self.rng.choice(self._start_pool))
         self._pos = 0
         self._entry_i = -1
+        self._flat_until = -1
         self._episode_trades = []
         self._dsr_A = 0.0
         self._dsr_B = 1e-8
@@ -178,11 +184,14 @@ class TradingEnv(gym.Env):
         info: dict = {}
 
         if self._pos == 0:
-            if action == BUY:
-                self._open_position(+1)
-            elif action == SELL:
-                self._open_position(-1)
-            # HOLD: no-op
+            # Cooldown: after a trade exits, block new entries for
+            # cfg.min_flat_bars steps. Forces HOLD regardless of action.
+            if self._step_i >= self._flat_until:
+                if action == BUY:
+                    self._open_position(+1)
+                elif action == SELL:
+                    self._open_position(-1)
+            # HOLD (or cooldown): no-op
             self._step_i += 1
         else:
             # Advance until barrier fires or horizon expires
@@ -191,6 +200,7 @@ class TradingEnv(gym.Env):
                 self._episode_trades.append(ret)
                 info["trade_return"] = ret
                 self._pos = 0
+                self._flat_until = self._step_i + cfg.min_flat_bars + 1
             self._step_i += 1
 
         if self._step_i >= self.n - 1:
