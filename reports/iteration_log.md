@@ -132,12 +132,57 @@ Audit confirmed `RecurrentPPO` is already imported at
 
 | Metric | Before (iter 1, 2 algos) | After (iter 3, 3 algos) | Δ |
 |---|---|---|---|
+| Pre-meta Sharpe @ 0bps | 0.928 | 0.902 | −2.8% |
+| Pre-meta Sharpe @ 0.5bps | 0.602 | **0.576** | **−4.3%** |
+| Pre-meta Sharpe @ 1bps | 0.276 | 0.250 | −9.4% |
+| Pre-meta Sharpe @ 2bps | −0.376 | −0.403 | worse |
+| PPO mean Sharpe | 0.648 | 0.648 | unchanged |
+| GRPO mean Sharpe | 0.556 | 0.556 | unchanged |
+| RecurrentPPO mean Sharpe | — | **0.525** | weakest of the 3 |
+| Permutation p-value | 0.989 | **0.712** | **improved** (real edge ↑) |
+| Meta @ 0.60 Sharpe | 6.90 | 6.87 | flat |
+
+**Verdict: REVERTED** (per plan rule: require Sharpe@0.5bps > +0.05 AND
+RecurrentPPO mean ≥ 0.55; both failed). RecurrentPPO is the weakest of
+the three algos and dilutes the ensemble mean. The consolation prize is
+that permutation p dropped from 0.989 → 0.712 — the ensemble has more
+statistically defensible alpha, just spread over more dead weight. The
+weakest dimension that remains is **information content per bar**:
+60m bars appear to be too coarse to expose enough microstructure for
+any model choice to exploit. Iter-4 flips the bar frequency.
+
+---
+
+## Iteration 4 — Sub-hourly bars: 15m MGC (2026-04-18)
+
+**Hypothesis:** 60m bars smooth over London/NY session transitions and
+within-session momentum bursts that fine-grained VIB+TFT representations
+could exploit. At 15m we get ~4× the bar count (~4 bars/session over ~2y
+of yfinance depth = ~19k bars) and the triple-barrier horizon of 26 ×
+scale_param(4, "15m") = 4×26 = 104 bars still lands at ~1 day of
+calendar time. yfinance 15m is the cleanest higher-frequency path
+without adding a new loader (FMP MCP not available in this runtime).
+
+**Change:** `configs/aggressive.yaml`
+
+- `algorithms: ["ppo", "grpo", "recurrent_ppo"]` → `["ppo", "grpo"]`
+  (revert iter-3; isolate the frequency change)
+- `data.assets[0].interval: "60m"` → `"15m"`
+- `data.assets[0].raw_path/features_path/labels_path`: swap `gc_60m` → `gc_15m`
+- `ui.paper.bar_interval_seconds: 3600` → `900`
+- full rebuild: `01_build_data` → `02_pretrain_encoder` → `03_train_ppo`
+  → `04_evaluate`
+
+**Metrics**
+
+| Metric | Before (iter 1, 60m) | After (iter 4, 15m) | Δ |
+|---|---|---|---|
+| Bar count | 16390 | TBD | TBD |
 | Pre-meta Sharpe @ 0.5bps | 0.602 | TBD | TBD |
 | Pre-meta Sharpe @ 1bps | 0.276 | TBD | TBD |
 | Permutation p-value | 0.989 | TBD | TBD |
 | PPO mean Sharpe | 0.648 | TBD | TBD |
 | GRPO mean Sharpe | 0.556 | TBD | TBD |
-| RecurrentPPO mean Sharpe | — | TBD | TBD |
 | Meta @ 0.60 Sharpe | 6.90 | TBD | TBD |
 
 **Verdict:** TBD.
@@ -147,11 +192,11 @@ Audit confirmed `RecurrentPPO` is already imported at
 ## Summary of iterations so far
 
 - **Kept:** 1 change (DSR reward) producing +14% Sharpe at 1bps.
-- **Reverted:** 1 change (cost_lambda 2→4) regressed all raw metrics.
-- **Open:** iter 3 (RecurrentPPO ensemble) in flight.
-- **Next candidates** if iter 3 saturates:
-  - 15m bars (`interval: 15m`, full data+encoder rebuild)
+- **Reverted:** 2 changes (cost_lambda 2→4 regressed; RecurrentPPO
+  diluted ensemble but improved permutation p to 0.712).
+- **Open:** iter 4 (15m MGC bars) in flight.
+- **Next candidates** if iter 4 saturates:
   - Intraday seasonality features (`hour_of_day_sin/cos`)
   - Minimum hold period (env-level)
   - Richer meta-gate classifier (stacking)
-  - Multi-asset transfer (add SI=F 60m)
+  - Multi-asset transfer (add SI=F 15m)

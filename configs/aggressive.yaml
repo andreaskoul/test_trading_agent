@@ -13,10 +13,10 @@ data:
   assets:
     - symbol: "GC=F"
       fallback_symbols: ["GLD"]
-      interval: "60m"
-      raw_path: "data/raw/gc_60m.parquet"
-      features_path: "data/processed/features_gc_60m.parquet"
-      labels_path: "data/processed/labels_gc_60m.parquet"
+      interval: "15m"            # Iter-4: 4x more bars, exposes session microstructure
+      raw_path: "data/raw/gc_15m.parquet"
+      features_path: "data/processed/features_gc_15m.parquet"
+      labels_path: "data/processed/labels_gc_15m.parquet"
 
 features:
   # Base values stay calibrated for daily; config_utils.scale_param() will
@@ -54,7 +54,7 @@ env:
 ppo:
   total_timesteps: 120000   # more bars -> need more updates
   seeds: [7, 13, 29]
-  algorithms: ["ppo", "grpo", "recurrent_ppo"]   # Iter-3: +LSTM-head PPO for temporal credit
+  algorithms: ["ppo", "grpo"]   # Iter-3 tried +RecurrentPPO; mean 0.525 < PPO/GRPO, reverted
 
 evaluation:
   costs_bps: [0.0, 0.5, 1.0, 2.0, 5.0]   # sweep around the realistic spread
@@ -70,5 +70,5 @@ ui:
       spread_bps: 0.5
       slippage_bps: 0.3
       commission_usd: 0.0
-    bar_interval_seconds: 3600     # poll hourly
+    bar_interval_seconds: 900      # poll every 15 minutes (Iter-4)
     meta_threshold: 0.55
