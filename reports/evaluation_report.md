@@ -2,47 +2,47 @@
 
 - Runs evaluated: **36**
 - Assets: **GC=F**
-- Pooled trades: **73499**
+- Pooled trades: **75219**
 
 ## Sharpe distribution (all assets pooled)
 
-- mean   : +0.571
-- median : +0.636
-- std    : 0.239
-- p5     : +0.129
-- p95    : +0.849
-- min    : +0.016
-- max    : +0.939
+- mean   : +0.544
+- median : +0.541
+- std    : 0.223
+- p5     : +0.226
+- p95    : +0.867
+- min    : +0.080
+- max    : +0.929
 
 ## Deflated Sharpe Ratio (Bailey & Lopez de Prado, 2014)
 
-- Observed Sharpe (pooled)   : 1.408
+- Observed Sharpe (pooled)   : 1.316
 - Trials                     : 36
-- E[max SR] under null       : 0.126
+- E[max SR] under null       : 0.124
 - PSR vs 0                   : 1.000
 - **Deflated SR (P > null)** : **1.000**
-- Skewness                   : +1.098
-- Excess kurtosis            : +9.406
-- Min Track Record Length    : 2.257596586335547
+- Skewness                   : +1.269
+- Excess kurtosis            : +12.397
+- Min Track Record Length    : 2.4311447292406
 
 ## Bootstrap 95% CI (block bootstrap)
 
-- Point Sharpe : 1.408
-- 2.5% / 97.5% : [1.288, 1.527]  (2000 resamples)
+- Point Sharpe : 1.316
+- 2.5% / 97.5% : [1.205, 1.430]  (2000 resamples)
 
 ## Monte Carlo permutation test
 
-- One-sided p-value vs random shuffle: **0.401** (lower = more evidence of sequential edge)
+- One-sided p-value vs random shuffle: **1.000** (lower = more evidence of sequential edge)
 
 ## Transaction cost sensitivity
 
 | Cost (bps) | Mean Sharpe |
 |-----------:|-------------:|
-| 0.0 | +0.900 |
-| 0.5 | +0.571 |
-| 1.0 | +0.242 |
-| 2.0 | -0.416 |
-| 5.0 | -2.392 |
+| 0.0 | +0.870 |
+| 0.5 | +0.544 |
+| 1.0 | +0.219 |
+| 2.0 | -0.431 |
+| 5.0 | -2.382 |
 
 ## Seed ensemble (pooled trades per split)
 
@@ -50,12 +50,12 @@
 
 | Split | Sharpe |
 |------:|-------:|
-| 0 | +0.294 |
-| 1 | +0.577 |
-| 2 | +0.627 |
-| 3 | +0.559 |
-| 4 | +0.788 |
-| 5 | +0.587 |
+| 0 | +0.300 |
+| 1 | +0.515 |
+| 2 | +0.650 |
+| 3 | +0.670 |
+| 4 | +0.636 |
+| 5 | +0.488 |
 
 ## Algorithm ensemble (T2.2)
 
@@ -63,8 +63,8 @@ Per-algorithm mean Sharpe across all CPCV splits, seeds, and assets.
 
 | Algorithm | Mean Sharpe | Std | Runs |
 |:----------|------------:|----:|-----:|
-| grpo | +0.557 | 0.268 | 18 |
-| ppo | +0.585 | 0.206 | 18 |
+| grpo | +0.514 | 0.235 | 18 |
+| ppo | +0.575 | 0.206 | 18 |
 
 ## Cross-asset meta-labeling gate (T1.1, Lopez de Prado)
 
@@ -74,13 +74,13 @@ embedding+direction+vol-quantile. Actions with P < threshold are gated.
 
 | Threshold | Mean Sharpe | Pooled Sharpe | Trades | Total Return |
 |----------:|------------:|--------------:|-------:|-------------:|
-| 0.50 | +3.644 | +3.508 | 25143 | +17985833528753.801 |
-| 0.55 | +5.243 | +5.264 | 13271 | +3041153705.606 |
-| 0.60 | +6.933 | +7.266 | 6331 | +207628.914 |
+| 0.50 | +3.986 | +3.839 | 24643 | +32243724295382.230 |
+| 0.55 | +5.677 | +5.548 | 13433 | +3697420556.634 |
+| 0.60 | +6.854 | +7.337 | 6857 | +407738.921 |
 
 ## Red flags
 
-- Permutation p-value > 0.10 (p=0.401)
+- Permutation p-value > 0.10 (p=1.000)
 - Edge collapses at >=5 bps transaction cost
 
 ## Plots
