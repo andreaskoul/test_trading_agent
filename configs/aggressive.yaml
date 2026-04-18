@@ -13,10 +13,10 @@ data:
   assets:
     - symbol: "GC=F"
       fallback_symbols: ["GLD"]
-      interval: "15m"            # Iter-4: 4x more bars, exposes session microstructure
-      raw_path: "data/raw/gc_15m.parquet"
-      features_path: "data/processed/features_gc_15m.parquet"
-      labels_path: "data/processed/labels_gc_15m.parquet"
+      interval: "60m"            # 15m blocked: yfinance unavailable, github mirror is 60m-only
+      raw_path: "data/raw/gc_60m.parquet"
+      features_path: "data/processed/features_gc_60m.parquet"
+      labels_path: "data/processed/labels_gc_60m.parquet"
 
 features:
   # Base values stay calibrated for daily; config_utils.scale_param() will
@@ -70,5 +70,5 @@ ui:
       spread_bps: 0.5
       slippage_bps: 0.3
       commission_usd: 0.0
-    bar_interval_seconds: 900      # poll every 15 minutes (Iter-4)
+    bar_interval_seconds: 3600     # poll hourly
     meta_threshold: 0.55

@@ -206,9 +206,12 @@ def load_ohlcv(
         return LoadResult(df=df, source=source)
 
     if not force_synthetic:
-        # Try known GitHub CSV sources for this symbol
+        # Try known GitHub CSV sources for this symbol. Current mirror
+        # (domzack/mgc-ohlcv-data) only hosts 60m bars, so skip it when the
+        # caller asks for a different interval -- otherwise we'd silently
+        # serve 60m data under a 15m label.
         github_url = KNOWN_GITHUB_SOURCES.get(symbol)
-        if github_url:
+        if github_url and interval.lower() in ("60m", "1h"):
             df = _try_github_csv(github_url)
             if df is not None and len(df) > 500:
                 df.attrs["source"] = f"github:{symbol}"

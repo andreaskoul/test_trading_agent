@@ -124,6 +124,24 @@ def build_features(
     for col in feat_cols:
         out[col] = _rolling_z(out[col], zscore_window)
 
+    # Intraday seasonality -- cyclic encoding of UTC hour and day-of-week.
+    # Added AFTER the z-score loop so the sin/cos signal survives intact.
+    # MGC trades ~23h/day so the hour-of-day feature captures London open
+    # (~07:00 UTC), NY RTH open (~13:30), London PM fix (~14:00), COMEX
+    # close (~17:00) without the model having to rediscover them from
+    # lagged returns.
+    if isinstance(out.index, pd.DatetimeIndex):
+        hour = out.index.hour + out.index.minute / 60.0
+        dow = out.index.dayofweek.to_numpy(dtype=float)
+        out["hour_sin"] = np.sin(2 * np.pi * hour / 24.0)
+        out["hour_cos"] = np.cos(2 * np.pi * hour / 24.0)
+        out["dow_sin"] = np.sin(2 * np.pi * dow / 7.0)
+        out["dow_cos"] = np.cos(2 * np.pi * dow / 7.0)
+    else:
+        # Non-datetime index (tests, synthetic): fill zeros so schema is stable.
+        for col in ("hour_sin", "hour_cos", "dow_sin", "dow_cos"):
+            out[col] = 0.0
+
     # Drop warmup rows to guarantee everything is populated
     out = out.iloc[warmup_bars:]
     out = out.dropna()

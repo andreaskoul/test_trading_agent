@@ -153,31 +153,50 @@ any model choice to exploit. Iter-4 flips the bar frequency.
 
 ---
 
-## Iteration 4 — Sub-hourly bars: 15m MGC (2026-04-18)
+## Iteration 4a — 15m bars: **blocked by runtime** (2026-04-18)
 
-**Hypothesis:** 60m bars smooth over London/NY session transitions and
-within-session momentum bursts that fine-grained VIB+TFT representations
-could exploit. At 15m we get ~4× the bar count (~4 bars/session over ~2y
-of yfinance depth = ~19k bars) and the triple-barrier horizon of 26 ×
-scale_param(4, "15m") = 4×26 = 104 bars still lands at ~1 day of
-calendar time. yfinance 15m is the cleanest higher-frequency path
-without adding a new loader (FMP MCP not available in this runtime).
+Attempted to switch the aggressive profile to 15m MGC bars. Both real
+data paths are unavailable in this sandbox:
 
-**Change:** `configs/aggressive.yaml`
+1. `yfinance` pip-install fails to build (`multitasking` wheel rejected)
+   — so no on-demand download of 15m history.
+2. The GitHub mirror (`domzack/mgc-ohlcv-data`) only publishes 60m bars;
+   `load_ohlcv` was silently serving 60m data under a "15m" label when
+   the caller asked for it. Fixed `src/data/loader.py` to skip the
+   GitHub fallback unless `interval ∈ {60m, 1h}` so future 15m configs
+   fail loudly instead of quietly.
+3. Synthetic fallback only generates 5000 bars at business-day cadence,
+   which gets eaten by the 15m-scaled warmup window.
 
-- `algorithms: ["ppo", "grpo", "recurrent_ppo"]` → `["ppo", "grpo"]`
-  (revert iter-3; isolate the frequency change)
-- `data.assets[0].interval: "60m"` → `"15m"`
-- `data.assets[0].raw_path/features_path/labels_path`: swap `gc_60m` → `gc_15m`
-- `ui.paper.bar_interval_seconds: 3600` → `900`
-- full rebuild: `01_build_data` → `02_pretrain_encoder` → `03_train_ppo`
-  → `04_evaluate`
+**Verdict: ABANDONED in this runtime.** The loader patch stays
+(defensive); iter-4 pivots to an algorithmic lever instead of a data
+lever. Revisit 15m when a genuine historical feed is wired in.
+
+---
+
+## Iteration 4 — Intraday seasonality features (2026-04-18)
+
+**Hypothesis:** MGC's 60m feature set (Hawkes, ATR, EMA, TEMA-MACD, RV,
+volume-z) omits any explicit notion of time-of-day. Gold sees structural
+flow around London open (~07:00 UTC), NY RTH open (~13:30), London PM
+fix (~14:00), COMEX close (~17:00). The TFT aggregator can weight
+cross-feature interactions but cannot invent a session-phase encoding
+from scratch. Adding four cyclic features (hour_sin, hour_cos, dow_sin,
+dow_cos) supplies that inductive bias directly.
+
+**Change:** `src/data/features.py::build_features`
+
+- append `hour_sin`, `hour_cos`, `dow_sin`, `dow_cos` AFTER the rolling
+  z-score loop (they're already bounded to [−1, 1], z-scoring would
+  destroy the cyclic signal)
+- fresh rebuild: `01_build_data` → `02_pretrain_encoder --fast`
+  → `03_train_ppo --fast` → `04_evaluate`
+- feature count: 18 → **22**
 
 **Metrics**
 
-| Metric | Before (iter 1, 60m) | After (iter 4, 15m) | Δ |
+| Metric | Before (iter 1, 18 feats) | After (iter 4, 22 feats) | Δ |
 |---|---|---|---|
-| Bar count | 16390 | TBD | TBD |
 | Pre-meta Sharpe @ 0.5bps | 0.602 | TBD | TBD |
 | Pre-meta Sharpe @ 1bps | 0.276 | TBD | TBD |
 | Permutation p-value | 0.989 | TBD | TBD |
