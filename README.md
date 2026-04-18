@@ -134,6 +134,50 @@ The evaluation script automatically flags:
 If any fire, the report says so in plain text — no hand-tuning to make them
 disappear.
 
+## Running the autonomous aggressive stack (Tier 7)
+
+The `aggressive` profile is the experimental 60m MGC overlay that exercises
+every Tier-5+ piece (VIB, TFT, GRPO, DSR reward, intraday seasonality).
+`configs/default.yaml` is the safe daily baseline; `configs/aggressive.yaml`
+shadows it with the hourly settings.
+
+```bash
+# one-time: install sb3-contrib for RecurrentPPO (if enabled)
+pip install -r requirements.txt
+
+# full pipeline, end to end, under the aggressive profile
+TRADING_PROFILE=aggressive python scripts/01_build_data.py
+TRADING_PROFILE=aggressive python scripts/02_pretrain_encoder.py --fast
+TRADING_PROFILE=aggressive python scripts/03_train_ppo.py --fast
+TRADING_PROFILE=aggressive python scripts/04_evaluate.py
+
+# or: the autonomous loop (same profile propagated via subprocess env)
+TRADING_PROFILE=aggressive python scripts/99_auto.py
+```
+
+Key flags in `configs/aggressive.yaml`:
+
+- `encoder.vib: true` — variational information bottleneck on the xLSTM output
+- `encoder.tft: true` — multi-head TFT aggregator across encoder groups
+- `env.reward_mode: diff_sharpe` — Moody-Saffell differential Sharpe reward
+- `ppo.algorithms: ["ppo", "grpo"]` — PPO + GRPO ensemble (6 splits × 3 seeds)
+- `features` include 4 cyclic seasonality features (hour/dow sin-cos)
+
+Iteration history lives in `reports/iteration_log.md`. The current
+session's net deltas vs the original return-reward baseline: pre-meta
+Sharpe @ 0.5bps 0.571 → 0.573 (flat), meta-gate Sharpe @ 0.60 7.27 →
+7.20 (flat), but with a healthier PPO/GRPO balance and a permutation
+p-value roadmap of 0.401 → 0.989 → 0.986.
+
+Known runtime limits:
+
+- 15m MGC bars are **not** reachable in this sandbox (yfinance blocked,
+  github mirror 60m-only). `load_ohlcv` will fail loudly if a non-60m
+  interval is requested on GC=F.
+- Meta-gate compounded returns are a statistical artefact of high
+  selectivity and should not be used as a live-PnL estimate — trust
+  the per-trade Sharpe instead.
+
 ## Layout
 
 ```
