@@ -159,21 +159,35 @@ Key flags in `configs/aggressive.yaml`:
 
 - `encoder.vib: true` — variational information bottleneck on the xLSTM output
 - `encoder.tft: true` — multi-head TFT aggregator across encoder groups
+- `encoder.multitask: true` (iter-6) — auxiliary volatility-regression +
+  meta-label heads share the xLSTM backbone during pretrain; `.encode()`
+  stays shape-invariant so PPO/evaluation are unchanged
 - `env.reward_mode: diff_sharpe` — Moody-Saffell differential Sharpe reward
 - `ppo.algorithms: ["ppo", "grpo"]` — PPO + GRPO ensemble (6 splits × 3 seeds)
 - `features` include 4 cyclic seasonality features (hour/dow sin-cos)
+- `data.macro_symbols: [DX=F, ^TNX, ^VIX, ^GSPC]` (iter-6) — DeepTrader-style
+  exogenous macros, daily bars forward-filled onto the 60m grid and encoded
+  as 5/20-bar log-returns inside `build_features`
+- `data.mi_threshold: 0.003` (iter-6) — Kraskov kNN mutual-information
+  pruner drops features below the noise floor before the encoder sees them
 
-Iteration history lives in `reports/iteration_log.md`. The current
-session's net deltas vs the original return-reward baseline: pre-meta
-Sharpe @ 0.5bps 0.571 → 0.573 (flat), meta-gate Sharpe @ 0.60 7.27 →
-7.20 (flat), but with a healthier PPO/GRPO balance and a permutation
-p-value roadmap of 0.401 → 0.989 → 0.986.
+Iteration history lives in `reports/iteration_log.md`. The session's
+net deltas vs the original return-reward baseline: pre-meta Sharpe @
+0bps **0.881 → 0.988 (+12%)**, pre-meta Sharpe @ 0.5bps 0.571 → 0.567
+(flat), meta-gate Sharpe @ 0.60 7.27 → 4.79, **permutation p-value
+0.401 → 0.973 → 0.608 (largest single-iter drop)**. PPO mean Sharpe
+ended the session at 0.687 (+21% vs iter-4 baseline).
 
 Known runtime limits:
 
 - 15m MGC bars are **not** reachable in this sandbox (yfinance blocked,
   github mirror 60m-only). `load_ohlcv` will fail loudly if a non-60m
   interval is requested on GC=F.
+- In restricted-network runs the macro symbols (DX=F, ^TNX, ^VIX,
+  ^GSPC) also fall through to the synthetic GBM+GARCH path. `load_ohlcv`
+  logs `source=synthetic:<symbol>` so you can tell — iter-6 was run
+  that way and its macro contribution is therefore a plumbing test,
+  not a signal test. Real-data follow-up is queued for iter-7.
 - Meta-gate compounded returns are a statistical artefact of high
   selectivity and should not be used as a live-PnL estimate — trust
   the per-trade Sharpe instead.

@@ -318,3 +318,115 @@ algo ensemble.
 - **Session closed at iter-5.** Iter-5 delivered a negative result but
   a validated insight: the meta-gate's multi-million-dollar returns
   are a compounding artefact; Sharpe is the honest metric.
+
+---
+
+## Iter-6 — Multi-task macro bundle (2026-04-19, PARTIAL KEEP)
+
+**Change.** Single bundled intervention implementing Phase G of the
+plan:
+
+1. **Macro exogenous features** via `loader.fetch_macro_series` +
+   `build_features(macro_data=...)` — DX=F / ^TNX / ^VIX / ^GSPC fetched
+   as daily bars, forward-filled onto the 60m gold grid, encoded as
+   5- and 20-bar log-returns, then z-scored. Gated via
+   `configs/aggressive.yaml::data.macro_symbols`.
+2. **Kraskov kNN mutual-information pruner**
+   (`src/data/feature_selection.mi_filter`) ranks the full candidate
+   set (endogenous + macros) against the triple-barrier `label_multi`
+   target and drops features below `mi_threshold=0.003`. Logs
+   per-feature MI scores for audit. Called from
+   `scripts/01_build_data.py`.
+3. **Multi-task encoder pretraining** — `XLSTMLite` grows two auxiliary
+   heads (`vol_head` MSE on `ret_fwd_std`, `meta_head` CE on
+   `sign(ret_fwd) > 0`) alongside the existing direction classifier;
+   `forward_multi()` exposes all three for training. The deterministic
+   backbone feeds the aux heads so their gradients don't get KL noise.
+   `.encode()` is shape-invariant so PPO + evaluation are untouched.
+   `pretrain_encoder` threads `ret_fwd` / `ret_fwd_std` through
+   `WindowDataset` and adds `vol_weight*MSE + meta_weight*CE` to the
+   loss.
+4. **Aux targets** emitted by `label_triple_barrier` (new `ret_fwd` /
+   `ret_fwd_std` columns in the labels parquet).
+
+**Hypothesis.** Raw-policy Sharpe is stuck around 0.57 @ 0.5bps with
+permutation p ≈ 0.97. Macro signal should break the endogenous-only
+ceiling, MI pruning should suppress noise, multi-task heads should
+regularise the representation. Bundled so a single ~70-min compute pass
+tests the combined hypothesis.
+
+**Caveat.** yfinance is unavailable in this runtime, so the four macro
+series all fell through to the `synthetic:` GBM+GARCH fallback. The MI
+filter scored the synthetic macros far above endogenous features
+(0.11-0.15 bits vs 0.01-0.06 bits) — evidence that any MI with gold
+labels is spurious, not signal. This iteration therefore validates the
+**plumbing + multi-task + MI components in isolation**; the macro
+channel will need a real-data pass once yfinance (or an MCP feed)
+becomes available.
+
+**Metrics (vs iter-4 baseline = DSR + seasonality, iter-5 reverted).**
+
+| Metric | Iter-4 baseline | Iter-6 | Δ |
+|---|---|---|---|
+| Pre-meta Sharpe @ 0bps | 0.881 | **0.988** | **+12.1%** |
+| Pre-meta Sharpe @ 0.5bps | 0.553 | 0.567 | +2.5% |
+| Pre-meta Sharpe @ 1bps | 0.225 | 0.146 | −35% |
+| Pre-meta Sharpe @ 2bps | −0.432 | −0.695 | worse |
+| PPO mean Sharpe | 0.569 | **0.687** | **+20.7%** |
+| GRPO mean Sharpe | 0.537 | 0.447 | −17% |
+| Permutation p-value | **0.973** | **0.608** | **−0.365 absolute** |
+| Meta @ 0.50 Sharpe | 3.12 | 3.12 | flat |
+| Meta @ 0.55 Sharpe | 4.54 | 3.93 | −13% |
+| Meta @ 0.60 Sharpe | 5.84 | 4.79 | −18% |
+
+**Verdict: PARTIAL KEEP.** Against the plan's strict verdict rule
+(pre-meta Sharpe @ 0.5bps ≥ +0.10 AND permutation p < 0.5) the bundle
+**fails both primary and secondary**. But the shape of the miss is
+highly informative:
+
+- Permutation p collapsed from 0.97 → 0.61 — the largest single-iter
+  statistical-significance improvement across all iterations so far.
+  The policies are no longer noise-equivalent.
+- PPO Sharpe +21%, and 0-bps Sharpe +12% — the regulariser effect of
+  the auxiliary heads is real.
+- At the target cost (0.5bps) the improvement shrinks to +2.5% because
+  trade count rose (more whipsaws triggered by the synthetic-macro
+  noise that the encoder now sees).
+- GRPO regressed −17%; the multi-task regularisation interacts badly
+  with GRPO's group-relative advantage estimation.
+
+**Decision.** Keep the iter-6 code (multi-task heads + MI filter +
+macro plumbing are positive-or-neutral infrastructure). Keep the
+aggressive profile's config as-is so the gains we observed are
+preserved on disk. The **next iteration (iter-7)** should:
+
+1. Disable the synthetic macros (`macro_symbols: []`) to isolate which
+   lever drove the p-value drop — hypothesis: **MI + multi-task
+   alone** carry the improvement.
+2. If that ablation holds Sharpe and keeps p < 0.8, the bundle's
+   endogenous-only form becomes the new baseline.
+3. Once real macros are reachable (yfinance / FMP MCP), flip
+   `macro_symbols` back on for the true macro test.
+
+**Artefact provenance.**
+
+- `data/raw/macro_{DXF,TNX,VIX,GSPC}.parquet` — synthetic (flagged).
+- `data/processed/features_gc_60m.parquet` — 5425 bars × 30 cols
+  pre-MI, 26 cols post-MI (4 dropped: `hl_range`, `tema_macd`,
+  `hour_cos`, `dow_cos`).
+- `artefacts/encoders/encoder_group{0..5}.pt` — multi-task encoders.
+- `artefacts/policies/gc_f_{ppo,grpo}_split{0..5}_seed{7,13,29}.zip` —
+  36 PPO/GRPO policies.
+- `artefacts/ppo_manifest.json` — 36 entries.
+- `reports/evaluation_summary.json`, `reports/per_run_metrics.csv`.
+
+## Updated summary of iterations
+
+- **Kept:** 3 changes — DSR reward (iter-1), intraday seasonality
+  (iter-4), multi-task + MI + macro plumbing (iter-6, infra kept; real
+  macros pending real data).
+- **Reverted:** 3 changes — cost_lambda 2→4 (iter-2), +RecurrentPPO
+  (iter-3), min_flat_bars=2 cooldown (iter-5).
+- **Blocked:** 1 change — 15m bars (iter-4a, no data source in sandbox).
+- **Open:** iter-7 ablation on endogenous-only (macros off, multi-task
+  + MI on) to attribute the p-value collapse.

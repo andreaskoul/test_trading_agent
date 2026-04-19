@@ -4,82 +4,82 @@
   "assets": [
     "GC=F"
   ],
-  "sharpe_mean": 0.5530363759714143,
-  "sharpe_std": 0.21822781828334223,
-  "sharpe_p5": 0.1670574962318999,
-  "sharpe_p95": 0.8953756921432371,
+  "sharpe_mean": 0.5669297326697138,
+  "sharpe_std": 0.3699331233002249,
+  "sharpe_p5": -0.021400635537740204,
+  "sharpe_p95": 1.12235137231172,
   "deflated_sharpe": 1.0,
   "psr_vs_zero": 1.0,
-  "expected_max_sr": 0.14988427470706023,
-  "permutation_pvalue": 0.973026973026973,
-  "bootstrap_lo": 1.203651573409959,
-  "bootstrap_hi": 1.4692767381057446,
+  "expected_max_sr": 0.22495581420009622,
+  "permutation_pvalue": 0.6083916083916084,
+  "bootstrap_lo": 1.2693949805114244,
+  "bootstrap_hi": 1.698566571945372,
   "cost_sweep": [
     {
       "cost_bps": 0.0,
-      "sharpe_mean": 0.8814784906132205,
-      "sharpe_std": 0.19778410555460227
+      "sharpe_mean": 0.9875665066240118,
+      "sharpe_std": 0.35118351740423676
     },
     {
       "cost_bps": 0.5,
-      "sharpe_mean": 0.5530363759714143,
-      "sharpe_std": 0.21822781828334223
+      "sharpe_mean": 0.5669297326697138,
+      "sharpe_std": 0.3699331233002249
     },
     {
       "cost_bps": 1.0,
-      "sharpe_mean": 0.22459426132960778,
-      "sharpe_std": 0.24502689654710957
+      "sharpe_mean": 0.14629295871541587,
+      "sharpe_std": 0.3909024500914279
     },
     {
       "cost_bps": 2.0,
-      "sharpe_mean": -0.4322899679540047,
-      "sharpe_std": 0.310801692462397
+      "sharpe_mean": -0.6949805891931794,
+      "sharpe_std": 0.4381938108837781
     },
     {
       "cost_bps": 5.0,
-      "sharpe_mean": -2.402942655804843,
-      "sharpe_std": 0.5478280153136467
+      "sharpe_mean": -3.218801232918966,
+      "sharpe_std": 0.6066683229201407
     }
   ],
   "algo_ensemble": [
     {
       "algorithm": "grpo",
-      "mean_sharpe": 0.536849555220739,
-      "std_sharpe": 0.2243687733847944,
+      "mean_sharpe": 0.44656648496754336,
+      "std_sharpe": 0.2467463706430907,
       "n_runs": 18
     },
     {
       "algorithm": "ppo",
-      "mean_sharpe": 0.56922319672209,
-      "std_sharpe": 0.21066890739544042,
+      "mean_sharpe": 0.6872929803718844,
+      "std_sharpe": 0.42876874560647854,
       "n_runs": 18
     }
   ],
   "meta_gate": [
     {
       "threshold": 0.5,
-      "mean_sharpe": 3.1165882634246223,
-      "pooled_sharpe": 3.0356207514165603,
-      "n_trades": 17746,
-      "total_return": 57275727.98440543
+      "mean_sharpe": 3.1182791336817677,
+      "pooled_sharpe": 3.1116267725217925,
+      "n_trades": 9651,
+      "total_return": 1573.068232054894
     },
     {
       "threshold": 0.55,
-      "mean_sharpe": 4.536268927293593,
-      "pooled_sharpe": 4.470909684248059,
-      "n_trades": 9065,
-      "total_return": 257643.66310604053
+      "mean_sharpe": 3.934049416414194,
+      "pooled_sharpe": 4.000977602348898,
+      "n_trades": 6837,
+      "total_return": 700.9153679295431
     },
     {
       "threshold": 0.6,
-      "mean_sharpe": 5.836136332732053,
-      "pooled_sharpe": 5.921626780373285,
-      "n_trades": 3812,
-      "total_return": 669.5896692563286
+      "mean_sharpe": 4.791421440383839,
+      "pooled_sharpe": 4.994301879862563,
+      "n_trades": 4656,
+      "total_return": 212.72256397328434
     }
   ],
   "red_flags": [
-    "Permutation p-value > 0.10 (p=0.973)",
+    "Permutation p-value > 0.10 (p=0.608)",
     "Edge collapses at >=5 bps transaction cost"
   ]
 }
