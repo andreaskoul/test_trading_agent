@@ -44,15 +44,32 @@ class PretrainConfig:
     vib_beta: float = 1e-3
     tft: bool = False
     tft_heads: int = 4
+    multitask: bool = False
+    vol_weight: float = 0.3
+    meta_weight: float = 0.2
 
 
 class WindowDataset(Dataset):
-    def __init__(self, feats: np.ndarray, labels: np.ndarray, seq_len: int, idx: np.ndarray):
+    def __init__(
+        self,
+        feats: np.ndarray,
+        labels: np.ndarray,
+        seq_len: int,
+        idx: np.ndarray,
+        vol_targets: np.ndarray | None = None,
+        meta_targets: np.ndarray | None = None,
+    ):
         self.feats = feats.astype(np.float32)
         self.labels = labels.astype(np.int64)  # already mapped to 0/1/2
         self.seq_len = seq_len
         # drop indices that can't produce a full window
         self.idx = idx[idx >= seq_len - 1]
+        self.vol_targets = (
+            vol_targets.astype(np.float32) if vol_targets is not None else None
+        )
+        self.meta_targets = (
+            meta_targets.astype(np.int64) if meta_targets is not None else None
+        )
 
     def __len__(self) -> int:
         return len(self.idx)
@@ -61,7 +78,14 @@ class WindowDataset(Dataset):
         row = self.idx[i]
         start = row - self.seq_len + 1
         window = self.feats[start : row + 1]
-        return torch.from_numpy(window), torch.tensor(self.labels[row])
+        if self.vol_targets is None or self.meta_targets is None:
+            return torch.from_numpy(window), torch.tensor(self.labels[row])
+        return (
+            torch.from_numpy(window),
+            torch.tensor(self.labels[row]),
+            torch.tensor(self.vol_targets[row]),
+            torch.tensor(self.meta_targets[row]),
+        )
 
 
 def _map_labels(multi: np.ndarray) -> np.ndarray:
@@ -85,6 +109,24 @@ def pretrain_fold(
     feats = features[feature_cols].to_numpy()
     y = _map_labels(labels["label_multi"].to_numpy())
 
+    # Auxiliary multi-task targets (Phase G). We z-score the volatility
+    # regression target per-fold on train rows so loss scales are comparable
+    # to the cross-entropy task loss.
+    vol_targets = None
+    meta_targets = None
+    if cfg.multitask:
+        if "ret_fwd_std" in labels.columns and "ret_fwd" in labels.columns:
+            vol_raw = labels["ret_fwd_std"].to_numpy(dtype=np.float64)
+            ret_fwd = labels["ret_fwd"].to_numpy(dtype=np.float64)
+            train_mask = np.zeros(len(vol_raw), dtype=bool)
+            train_mask[train_idx] = True
+            mu = float(np.nanmean(vol_raw[train_mask])) if train_mask.any() else 0.0
+            sd = float(np.nanstd(vol_raw[train_mask])) if train_mask.any() else 1.0
+            vol_targets = (vol_raw - mu) / (sd if sd > 1e-8 else 1.0)
+            meta_targets = (ret_fwd > 0).astype(np.int64)
+        else:
+            log.warning("multitask requested but labels lack ret_fwd/ret_fwd_std; disabling")
+
     model_cfg = XLSTMConfig(
         input_dim=len(feature_cols),
         hidden_size=cfg.hidden_size,
@@ -97,6 +139,8 @@ def pretrain_fold(
         vib_beta=cfg.vib_beta,
         tft=cfg.tft,
         tft_heads=cfg.tft_heads,
+        multitask=cfg.multitask and vol_targets is not None,
+        meta_classes=2,
     )
     model = XLSTMLite(model_cfg).to(device)
 
@@ -106,8 +150,14 @@ def pretrain_fold(
     alpha = (counts.sum() / (3 * counts)).clip(0.1, 5.0)
     loss_fn = FocalLoss(gamma=cfg.focal_gamma, alpha=torch.tensor(alpha, dtype=torch.float32))
 
-    train_ds = WindowDataset(feats, y, cfg.seq_len, train_idx)
-    val_ds = WindowDataset(feats, y, cfg.seq_len, val_idx)
+    train_ds = WindowDataset(
+        feats, y, cfg.seq_len, train_idx,
+        vol_targets=vol_targets, meta_targets=meta_targets,
+    )
+    val_ds = WindowDataset(
+        feats, y, cfg.seq_len, val_idx,
+        vol_targets=vol_targets, meta_targets=meta_targets,
+    )
     train_loader = DataLoader(train_ds, batch_size=cfg.batch_size, shuffle=True, drop_last=True)
     val_loader = DataLoader(val_ds, batch_size=cfg.batch_size, shuffle=False)
 
@@ -125,23 +175,40 @@ def pretrain_fold(
         kl = vib_kl(mu, logsigma)
         return logits, kl
 
+    use_multitask = model.cfg.multitask
     for epoch in range(cfg.epochs):
         model.train()
         tr_loss = 0.0
         tr_kl = 0.0
+        tr_aux = 0.0
         tr_n = 0
-        for xb, yb in train_loader:
+        for batch in train_loader:
+            if use_multitask:
+                xb, yb, vb, mb = batch
+                vb = vb.to(device)
+                mb = mb.to(device)
+            else:
+                xb, yb = batch
             xb = xb.to(device)
             yb = yb.to(device)
             optim.zero_grad()
             logits, kl = _step_logits(xb, stochastic=True)
             task_loss = loss_fn(logits, yb)
             loss = task_loss + cfg.vib_beta * kl
+            aux_val = 0.0
+            if use_multitask:
+                _, vol_pred, meta_logits = model.forward_multi(xb)
+                vol_loss = torch.nn.functional.mse_loss(vol_pred, vb)
+                meta_loss = torch.nn.functional.cross_entropy(meta_logits, mb)
+                aux = cfg.vol_weight * vol_loss + cfg.meta_weight * meta_loss
+                loss = loss + aux
+                aux_val = float(aux.detach())
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             optim.step()
             tr_loss += float(task_loss.detach()) * len(xb)
             tr_kl += float(kl.detach()) * len(xb)
+            tr_aux += aux_val * len(xb)
             tr_n += len(xb)
 
         model.eval()
@@ -149,7 +216,11 @@ def pretrain_fold(
         val_n = 0
         correct = 0
         with torch.no_grad():
-            for xb, yb in val_loader:
+            for batch in val_loader:
+                if use_multitask:
+                    xb, yb, _vb, _mb = batch
+                else:
+                    xb, yb = batch
                 xb = xb.to(device)
                 yb = yb.to(device)
                 logits, _ = _step_logits(xb, stochastic=False)
@@ -159,11 +230,12 @@ def pretrain_fold(
                 correct += int((logits.argmax(dim=-1) == yb).sum())
         tr_avg = tr_loss / max(tr_n, 1)
         tr_kl_avg = tr_kl / max(tr_n, 1)
+        tr_aux_avg = tr_aux / max(tr_n, 1)
         val_avg = val_loss / max(val_n, 1)
         val_acc = correct / max(val_n, 1)
         log.info(
-            "epoch %d train_loss=%.4f kl=%.4f val_loss=%.4f val_acc=%.3f",
-            epoch, tr_avg, tr_kl_avg, val_avg, val_acc,
+            "epoch %d train_loss=%.4f kl=%.4f aux=%.4f val_loss=%.4f val_acc=%.3f",
+            epoch, tr_avg, tr_kl_avg, tr_aux_avg, val_avg, val_acc,
         )
         if val_avg < best_val:
             best_val = val_avg

@@ -247,3 +247,40 @@ def load_ohlcv(
 
 # Backward-compatible alias
 load_gold = load_ohlcv
+
+
+def fetch_macro_series(
+    symbols: List[str],
+    start: str = "2005-01-01",
+    end: str = "2025-12-31",
+    interval: str = "1d",
+    cache_dir: str = "data/raw",
+) -> Dict[str, pd.DataFrame]:
+    """Fetch exogenous macro series (daily) used as auxiliary features.
+
+    Mirrors load_ohlcv's resolution chain but skips the GitHub mirror
+    (none of our macros are hosted there). Caches each symbol under
+    ``{cache_dir}/macro_{sanitized_symbol}.parquet``. If yfinance is
+    unreachable, falls back to synthetic GBM+GARCH so the rest of the
+    pipeline still runs; the caller should verify ``LoadResult.source``
+    via the returned DataFrame's attrs if strict ingestion is required.
+    """
+    if not symbols:
+        return {}
+    out: Dict[str, pd.DataFrame] = {}
+    os.makedirs(cache_dir, exist_ok=True)
+    for sym in symbols:
+        safe = sym.replace("=", "").replace("^", "").replace(".", "_").replace("/", "_")
+        cache_path = os.path.join(cache_dir, f"macro_{safe}.parquet")
+        res = load_ohlcv(
+            symbol=sym,
+            start=start,
+            end=end,
+            interval=interval,
+            cache_path=cache_path,
+        )
+        df = res.df
+        df.attrs["source"] = res.source
+        out[sym] = df
+        log.info("macro %s: %d bars from %s", sym, len(df), res.source)
+    return out

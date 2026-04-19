@@ -72,6 +72,9 @@ def main() -> None:
         vib_beta=float(cfg["encoder"].get("vib_beta", 1e-3)),
         tft=bool(cfg["encoder"].get("tft", False)),
         tft_heads=int(cfg["encoder"].get("tft_heads", 4)),
+        multitask=bool(cfg["encoder"].get("multitask", False)),
+        vol_weight=float(cfg["encoder"].get("vol_weight", 0.3)),
+        meta_weight=float(cfg["encoder"].get("meta_weight", 0.2)),
     )
 
     artefacts = path(cfg, cfg["artefact_dir"], "encoders")
@@ -80,11 +83,15 @@ def main() -> None:
     # Pretrain one encoder per CPCV group. For each group g, the training
     # set is all bars NOT in group g (with purge+embargo), concatenated
     # across all assets.
+    aux_cols = [c for c in ("ret_fwd", "ret_fwd_std") if c in asset_labels[0].columns]
+
     for g in range(n_splits):
         all_train_feats: list[np.ndarray] = []
         all_train_labels: list[np.ndarray] = []
+        all_train_aux: list[dict[str, np.ndarray]] = []
         all_val_feats: list[np.ndarray] = []
         all_val_labels: list[np.ndarray] = []
+        all_val_aux: list[dict[str, np.ndarray]] = []
 
         for a_idx, (feats, labels) in enumerate(zip(asset_features, asset_labels)):
             n = len(feats)
@@ -105,6 +112,8 @@ def main() -> None:
             all_train_labels.append(labels["label_multi"].to_numpy()[train_idx])
             all_val_feats.append(feats[feat_cols].to_numpy(dtype=np.float32)[val_idx])
             all_val_labels.append(labels["label_multi"].to_numpy()[val_idx])
+            all_train_aux.append({c: labels[c].to_numpy()[train_idx] for c in aux_cols})
+            all_val_aux.append({c: labels[c].to_numpy()[val_idx] for c in aux_cols})
 
             log.info(
                 "group %d asset %d (%s): train=%d val=%d",
@@ -130,7 +139,12 @@ def main() -> None:
 
         # Create a temporary DataFrame with the right columns
         combined_df = pd.DataFrame(all_feats_arr, columns=feat_cols)
-        combined_labels_df = pd.DataFrame({"label_multi": all_labels_arr})
+        labels_dict: dict[str, np.ndarray] = {"label_multi": all_labels_arr}
+        for c in aux_cols:
+            train_vec = np.concatenate([d[c] for d in all_train_aux], axis=0)
+            val_vec = np.concatenate([d[c] for d in all_val_aux], axis=0)
+            labels_dict[c] = np.concatenate([train_vec, val_vec], axis=0)
+        combined_labels_df = pd.DataFrame(labels_dict)
 
         log.info(
             "group %d: total train=%d val=%d (across %d assets)",

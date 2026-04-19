@@ -20,6 +20,11 @@ data:
       labels_path: "data/processed/labels_si.parquet"
   start: "2005-01-01"
   end: "2025-12-31"
+  # Phase G: exogenous macro series (off-by-default on the daily profile).
+  # Aggressive profile enables them by listing symbols explicitly.
+  macro_symbols: []
+  macro_interval: "1d"
+  mi_threshold: 0.0   # 0 disables the MI pruner
 
 features:
   seq_len: 32
@@ -51,6 +56,10 @@ encoder:
   vib_beta: 1.0e-3      # KL weight when vib: true
   tft: false            # TFT-style attention aggregator on xLSTM sequence
   tft_heads: 4
+  # Phase G / iter-6 multi-task pretraining (off on the daily profile).
+  multitask: false
+  vol_weight: 0.3
+  meta_weight: 0.2
 
 ppo:
   total_timesteps: 60000   # budget per seed/path (fast default)

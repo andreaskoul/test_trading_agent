@@ -17,6 +17,14 @@ data:
       raw_path: "data/raw/gc_60m.parquet"
       features_path: "data/processed/features_gc_60m.parquet"
       labels_path: "data/processed/labels_gc_60m.parquet"
+  # Phase G / iter-6: DeepTrader-style macro augmentation + Kraskov kNN MI
+  # pruning. DXY via DX=F (Yahoo continuous), 10Y yield via ^TNX, VIX via
+  # ^VIX, SPX via ^GSPC. All daily bars; merged into the 60m gold feature
+  # matrix as 5/20-bar log-returns inside build_features. MI threshold
+  # matches the sklearn noise floor for ~20k samples.
+  macro_symbols: ["DX=F", "^TNX", "^VIX", "^GSPC"]
+  macro_interval: "1d"
+  mi_threshold: 0.003
 
 features:
   # Base values stay calibrated for daily; config_utils.scale_param() will
@@ -38,6 +46,14 @@ encoder:
   vib_beta: 1.0e-3
   tft: true
   tft_heads: 4
+  # Phase G / iter-6 multi-task pretraining. The encoder backbone now
+  # feeds three heads during pretrain: original 3-class triple-barrier
+  # direction, a forward-volatility MSE head, and a binary
+  # "trade worked" meta-label head. .encode() is unchanged so PPO +
+  # evaluation are untouched.
+  multitask: true
+  vol_weight: 0.3
+  meta_weight: 0.2
 
 env:
   spread_bps: 0.5       # MGC micro-gold realistic spread

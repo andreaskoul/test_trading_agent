@@ -7,7 +7,7 @@ populated windows.
 
 from __future__ import annotations
 
-from typing import List
+from typing import Dict, List, Optional
 
 import numpy as np
 import pandas as pd
@@ -58,10 +58,19 @@ def _hawkes_intensity(magnitude: pd.Series, beta: float) -> pd.Series:
     return ewma / alpha
 
 
+def _macro_symbol_slug(sym: str) -> str:
+    """Column-safe prefix for a macro ticker (e.g. '^VIX' -> 'vix')."""
+    return (
+        sym.replace("=", "").replace("^", "").replace(".", "_").replace("/", "_")
+        .replace("-", "_").lower()
+    )
+
+
 def build_features(
     df: pd.DataFrame,
     warmup_bars: int = 252,
     zscore_window: int = 252,
+    macro_data: Optional[Dict[str, pd.DataFrame]] = None,
 ) -> pd.DataFrame:
     """Return a feature DataFrame aligned to `df.index` with a `close` passthrough."""
     out = pd.DataFrame(index=df.index)
@@ -141,6 +150,26 @@ def build_features(
         # Non-datetime index (tests, synthetic): fill zeros so schema is stable.
         for col in ("hour_sin", "hour_cos", "dow_sin", "dow_cos"):
             out[col] = 0.0
+
+    # Macro exogenous features (Phase G / iter-6). DeepTrader-style state
+    # augmentation: daily macros (DXY, ^TNX, ^VIX, ^GSPC) re-sampled to bar
+    # freq via forward-fill. We encode as 5- and 20-day log-returns (roughly
+    # stationary) rather than raw levels, and z-score using the same warmup
+    # window as the endogenous features.
+    if macro_data and isinstance(out.index, pd.DatetimeIndex):
+        for sym, mdf in macro_data.items():
+            if mdf is None or mdf.empty or "close" not in mdf.columns:
+                continue
+            slug = _macro_symbol_slug(sym)
+            mclose = mdf["close"].astype(float).sort_index()
+            mlog = np.log(mclose.replace(0, np.nan)).dropna()
+            chg5 = mlog.diff(5)
+            chg20 = mlog.diff(20)
+            out[f"{slug}_chg5"] = chg5.reindex(out.index, method="ffill")
+            out[f"{slug}_chg20"] = chg20.reindex(out.index, method="ffill")
+        macro_cols = [c for c in out.columns if c.endswith("_chg5") or c.endswith("_chg20")]
+        for col in macro_cols:
+            out[col] = _rolling_z(out[col].astype(float), zscore_window)
 
     # Drop warmup rows to guarantee everything is populated
     out = out.iloc[warmup_bars:]

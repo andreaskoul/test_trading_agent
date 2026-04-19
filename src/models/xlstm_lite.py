@@ -160,6 +160,8 @@ class XLSTMConfig:
     vib_beta: float = 1e-3     # KL weight on I(Z; X) term
     tft: bool = False          # TFT-style attention aggregator over sequence
     tft_heads: int = 4
+    multitask: bool = False    # add volatility-regression + meta-label aux heads
+    meta_classes: int = 2      # binary sign-of-forward-return meta-label head
 
 
 class XLSTMLite(nn.Module):
@@ -183,6 +185,12 @@ class XLSTMLite(nn.Module):
             self.mu_head = nn.Linear(cfg.hidden_size, cfg.hidden_size)
             self.logsigma_head = nn.Linear(cfg.hidden_size, cfg.hidden_size)
         self.cls_head = nn.Linear(cfg.hidden_size, cfg.n_classes)
+        if cfg.multitask:
+            # Auxiliary heads share the deterministic encoder backbone.
+            # Volatility head: scalar regression on forward realised-vol.
+            # Meta head: binary "trade worked" sign classification.
+            self.vol_head = nn.Linear(cfg.hidden_size, 1)
+            self.meta_head = nn.Linear(cfg.hidden_size, cfg.meta_classes)
 
     def _backbone(self, x: torch.Tensor) -> torch.Tensor:
         h = self.input_proj(x)
@@ -215,6 +223,23 @@ class XLSTMLite(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Classification logits. Training-time sampling lives in the loss."""
         return self.cls_head(self.encode(x))
+
+    def forward_multi(
+        self, x: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Multi-task forward: (cls_logits, vol_pred, meta_logits).
+
+        Uses the deterministic backbone (not the VIB sample) for the auxiliary
+        heads — they're regularisers, not production heads, so we don't want
+        the KL noise feeding into their gradients.
+        """
+        if not self.cfg.multitask:
+            raise RuntimeError("forward_multi requires cfg.multitask=True")
+        h = self._backbone(x)
+        cls_logits = self.cls_head(h)
+        vol_pred = self.vol_head(h).squeeze(-1)
+        meta_logits = self.meta_head(h)
+        return cls_logits, vol_pred, meta_logits
 
 
 def vib_reparameterize(mu: torch.Tensor, logsigma: torch.Tensor) -> torch.Tensor:
