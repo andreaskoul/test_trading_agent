@@ -33,6 +33,11 @@ def main() -> None:
     macro_interval = cfg["data"].get("macro_interval", "1d")
     macro_data: dict = {}
     if macro_symbols:
+        fmp_key = os.environ.get("FMP_API_KEY") or None
+        if fmp_key:
+            log.info("FMP_API_KEY found — will use FMP for macro series")
+        else:
+            log.warning("FMP_API_KEY not set; macro series will use yfinance/synthetic fallback")
         log.info("fetching %d macro series: %s", len(macro_symbols), macro_symbols)
         macro_data = fetch_macro_series(
             list(macro_symbols),
@@ -40,6 +45,7 @@ def main() -> None:
             end=cfg["data"]["end"],
             interval=macro_interval,
             cache_dir=path(cfg, "data/raw"),
+            fmp_api_key=fmp_key,
         )
 
     mi_threshold = float(cfg["data"].get("mi_threshold", 0.0))
