@@ -22,7 +22,7 @@ data:
   # ^VIX, SPX via ^GSPC. All daily bars; merged into the 60m gold feature
   # matrix as 5/20-bar log-returns inside build_features. MI threshold
   # matches the sklearn noise floor for ~20k samples.
-  macro_symbols: []          # iter-7: disabled (yfinance blocked; synthetic fallback was spurious)
+  macro_symbols: ["^VIX", "^GSPC", "^TNX"]   # iter-7: real data via GitHub open-data (DX=F dropped — no GitHub source)
   macro_interval: "1d"
   mi_threshold: 0.003
 

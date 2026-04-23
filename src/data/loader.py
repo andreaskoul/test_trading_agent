@@ -48,6 +48,17 @@ KNOWN_GITHUB_SOURCES: Dict[str, str] = {
 # Keep old constant for backward compat
 MGC_60M_URL = KNOWN_GITHUB_SOURCES["GC=F"]
 
+# GitHub-hosted macro series reachable in restricted-network environments.
+# These are curated open-data repos; updated infrequently but real data.
+# VIX: daily OHLCV back to 1990 (datasets/finance-vix)
+# ^GSPC: monthly close back to 1871 (datasets/s-and-p-500) — forward-filled
+# ^TNX:  monthly rate back to 1953 (datasets/bond-yields-us-10y) — forward-filled
+KNOWN_GITHUB_MACRO: Dict[str, str] = {
+    "^VIX":  "https://raw.githubusercontent.com/datasets/finance-vix/main/data/vix-daily.csv",
+    "^GSPC": "https://raw.githubusercontent.com/datasets/s-and-p-500/master/data/data.csv",
+    "^TNX":  "https://raw.githubusercontent.com/datasets/bond-yields-us-10y/master/data/monthly.csv",
+}
+
 # ---------------------------------------------------------------------------
 # Synthetic profiles: (start_price, mu, omega, alpha, beta)
 # ---------------------------------------------------------------------------
@@ -120,6 +131,70 @@ def _try_github_csv(url: str) -> Optional[pd.DataFrame]:
     df = df.set_index("date").sort_index()
     df = df[~df.index.duplicated(keep="first")]
     return _standardise(df)
+
+
+def _try_github_macro(symbol: str) -> Optional[pd.DataFrame]:
+    """Fetch a macro series from a known GitHub open-data CSV.
+
+    Handles three formats:
+    - ^VIX  : DATE(MM/DD/YYYY), OPEN, HIGH, LOW, CLOSE — daily
+    - ^GSPC : Date(YYYY-MM-DD), SP500 — monthly, forward-filled to daily
+    - ^TNX  : Date(YYYY-MM-DD), Rate  — monthly, forward-filled to daily
+    """
+    url = KNOWN_GITHUB_MACRO.get(symbol)
+    if url is None:
+        return None
+    try:
+        import urllib.request
+        log.info("fetching macro %s from github: %s", symbol, url)
+        with urllib.request.urlopen(url, timeout=30) as r:
+            payload = r.read()
+        df = pd.read_csv(io.BytesIO(payload))
+    except Exception as exc:
+        log.warning("github macro fetch failed for %s: %s", symbol, exc)
+        return None
+
+    try:
+        if symbol == "^VIX":
+            # DATE format: MM/DD/YYYY
+            df.columns = [c.strip().lower() for c in df.columns]
+            df["date"] = pd.to_datetime(df["date"], format="%m/%d/%Y", utc=True)
+            df = df.set_index("date").sort_index()
+            # Has open/high/low/close already
+            return _standardise(df)
+
+        elif symbol == "^GSPC":
+            # Date: YYYY-MM-DD, SP500 column = monthly close
+            df["date"] = pd.to_datetime(df["Date"], utc=True)
+            df = df.rename(columns={"SP500": "close"}).set_index("date").sort_index()
+            df["close"] = pd.to_numeric(df["close"], errors="coerce")
+            df = df[["close"]].dropna()
+            # Forward-fill monthly to business-day daily
+            daily_idx = pd.date_range(df.index[0], df.index[-1], freq="B", tz="UTC")
+            df = df.reindex(daily_idx, method="ffill")
+            df["open"] = df["close"]
+            df["high"] = df["close"]
+            df["low"]  = df["close"]
+            df["volume"] = 0
+            return _standardise(df)
+
+        elif symbol == "^TNX":
+            # Date: YYYY-MM-DD, Rate column = monthly 10Y yield
+            df["date"] = pd.to_datetime(df["Date"], utc=True)
+            df = df.rename(columns={"Rate": "close"}).set_index("date").sort_index()
+            df["close"] = pd.to_numeric(df["close"], errors="coerce")
+            df = df[["close"]].dropna()
+            daily_idx = pd.date_range(df.index[0], df.index[-1], freq="B", tz="UTC")
+            df = df.reindex(daily_idx, method="ffill")
+            df["open"] = df["close"]
+            df["high"] = df["close"]
+            df["low"]  = df["close"]
+            df["volume"] = 0
+            return _standardise(df)
+
+    except Exception as exc:
+        log.warning("github macro parse failed for %s: %s", symbol, exc)
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -299,7 +374,16 @@ def load_ohlcv(
                     df.to_parquet(cache_path)
                 return LoadResult(df=df, source=f"github:{symbol}")
 
-        # 2. FMP REST API (daily only; requires FMP_API_KEY)
+        # 2. GitHub open-data macro CSVs (VIX daily, SPX/TNX monthly ffill)
+        df = _try_github_macro(symbol)
+        if df is not None and len(df) > 100:
+            df.attrs["source"] = f"github_macro:{symbol}"
+            if cache_path:
+                os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+                df.to_parquet(cache_path)
+            return LoadResult(df=df, source=f"github_macro:{symbol}")
+
+        # 3. FMP REST API (daily only; requires FMP_API_KEY)
         df = _try_fmp(symbol, start, end, interval, api_key=fmp_api_key)
         if df is not None and len(df) > 100:
             df.attrs["source"] = f"fmp:{symbol}"
