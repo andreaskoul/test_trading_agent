@@ -240,6 +240,45 @@ class TradeStore:
 # ---------------------------------------------------------------------------
 
 
+class KellyCalculator:
+    """Rolling fractional-Kelly sizer for the paper engine.
+
+    f* = (hit * W/L_ratio - (1 - hit)) / W/L_ratio   — the classical
+    Kelly criterion for fixed-odds bets. Capped at ``cap * f*`` to
+    dampen realised variance (quarter-Kelly = cap=0.25 is the standard
+    practitioner default).
+
+    Set ``cap=0`` to disable sizing entirely (fraction always = ``floor``).
+    With default cap=0 and floor=1.0, this is a no-op — preserving the
+    backtest parity contract in ``test_cockpit.py``.
+    """
+
+    def __init__(self, window: int = 100, cap: float = 0.0, floor: float = 1.0):
+        self._rets: list[float] = []
+        self.window = int(window)
+        self.cap = float(cap)
+        self.floor = float(floor)
+
+    def update(self, ret: float) -> None:
+        self._rets.append(float(ret))
+        if len(self._rets) > self.window:
+            self._rets.pop(0)
+
+    def fraction(self) -> float:
+        # Cap=0 short-circuits: always return floor (sizing off).
+        if self.cap <= 0.0 or len(self._rets) < 20:
+            return self.floor
+        arr = np.asarray(self._rets, dtype=float)
+        wins = arr[arr > 0]
+        losses = arr[arr <= 0]
+        if len(wins) == 0 or len(losses) == 0:
+            return self.floor
+        hit = len(wins) / len(arr)
+        wl = float(wins.mean()) / max(abs(float(losses.mean())), 1e-12)
+        f = (hit * wl - (1.0 - hit)) / wl
+        return float(np.clip(f * self.cap, self.floor, 1.0))
+
+
 class PaperEngine:
     """Stateful bar-by-bar wrapper around a frozen PPO/A2C/RecurrentPPO policy.
 
@@ -266,6 +305,9 @@ class PaperEngine:
         meta_threshold: float = 0.5,
         timestamps: Optional[pd.DatetimeIndex] = None,
         store: Optional[TradeStore] = None,
+        kelly_cap: float = 0.0,
+        kelly_floor: float = 1.0,
+        kelly_window: int = 100,
     ) -> None:
         self.asset = asset
         self.run_id = run_id
@@ -275,6 +317,12 @@ class PaperEngine:
         self.meta_model = meta_model
         self.meta_threshold = float(meta_threshold)
         self.store = store
+        # Kelly sizer. Default cap=0 → always returns floor=1.0 (no scaling),
+        # preserving byte-for-byte parity with the backtester. Enable by
+        # passing kelly_cap>0 (e.g. 0.25 for quarter-Kelly).
+        self._kelly = KellyCalculator(
+            window=kelly_window, cap=kelly_cap, floor=kelly_floor,
+        )
 
         self._close = np.asarray(precomputed["close"], dtype=np.float64)
         self._atr = np.asarray(precomputed["atr"], dtype=np.float64)
@@ -336,7 +384,15 @@ class PaperEngine:
         # is ``ui_deduction - base_spread`` which is always >= 0 so trades
         # become strictly more expensive.
         extra = max(0.0, ui_deduction - base_spread)
-        ret = raw - base_spread - extra
+        ret_unscaled = raw - base_spread - extra
+        # Kelly scaling: with default cap=0, fraction()=floor=1.0 and
+        # this is a no-op (byte-parity with backtester). When enabled
+        # via kelly_cap>0, the recorded PnL is the Kelly-scaled return
+        # while the Kelly state is updated with the UNSCALED return so
+        # the hit-rate / W-L ratio estimates remain unbiased.
+        kelly_f = self._kelly.fraction()
+        ret = ret_unscaled * kelly_f
+        self._kelly.update(ret_unscaled)
         self._trades.append(float(ret))
 
         entry_feats = (

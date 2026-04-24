@@ -110,11 +110,32 @@ def main() -> None:
 
         os.makedirs(os.path.dirname(features_path), exist_ok=True)
         os.makedirs(os.path.dirname(labels_path), exist_ok=True)
-        feats.to_parquet(features_path)
         labels_out = labels.copy()
         labels_out["t1"] = labels_out["t1"].astype("int64")
-        labels_out.to_parquet(labels_path)
-        log.info("[%s] wrote features -> %s and labels -> %s", asset.symbol, features_path, labels_path)
+
+        # Phase H: reserve the last `holdout_frac` of bars for a TRUE
+        # out-of-sample gate. CPCV/PPO training only sees the first
+        # (1 - holdout_frac) of bars; 04b_holdout_eval.py runs a single
+        # rollout on the withheld slice as the final deployment gate.
+        holdout_frac = float(cfg["data"].get("holdout_frac", 0.0))
+        if holdout_frac > 0.0:
+            cutoff = int(len(feats) * (1.0 - holdout_frac))
+            feats[:cutoff].to_parquet(features_path)
+            labels_out.iloc[:cutoff].to_parquet(labels_path)
+            ho_feats_path = features_path.replace(".parquet", "_holdout.parquet")
+            ho_labels_path = labels_path.replace(".parquet", "_holdout.parquet")
+            feats[cutoff:].to_parquet(ho_feats_path)
+            labels_out.iloc[cutoff:].to_parquet(ho_labels_path)
+            log.info(
+                "[%s] TRUE HOLD-OUT: %d train bars -> %s ; %d holdout bars -> %s",
+                asset.symbol, cutoff, features_path,
+                len(feats) - cutoff, ho_feats_path,
+            )
+        else:
+            feats.to_parquet(features_path)
+            labels_out.to_parquet(labels_path)
+            log.info("[%s] wrote features -> %s and labels -> %s",
+                     asset.symbol, features_path, labels_path)
 
     log.info("data build complete for %d assets", len(assets))
 

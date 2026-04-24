@@ -137,6 +137,11 @@ class YFinanceFeed(BarFeed):
     greater than the most recently emitted one. This is good enough for
     1-minute / 5-minute cockpit sessions; high-frequency use cases would
     need a websocket broker feed instead.
+
+    Phase H: validates each bar before emission and skips/logs bad bars
+    (NaN OHLCV, large single-bar price gaps, staleness > 2× interval).
+    ``enforce_exchange_hours=True`` also skips ticks during weekend halt
+    hours (CME gold: Saturday 17:00 CT Fri → 18:00 CT Sun).
     """
 
     def __init__(
@@ -145,13 +150,58 @@ class YFinanceFeed(BarFeed):
         interval: str = "1m",
         bar_interval_seconds: float = 60.0,
         lookback_bars: int = 5,
+        max_gap_pct: float = 0.05,
+        max_stale_seconds: Optional[float] = None,
+        enforce_exchange_hours: bool = True,
     ) -> None:
         self.asset = asset
         self.interval = interval
         self.bar_interval_seconds = float(bar_interval_seconds)
         self.lookback_bars = int(lookback_bars)
+        self.max_gap_pct = float(max_gap_pct)
+        self.max_stale_seconds = (
+            float(max_stale_seconds)
+            if max_stale_seconds is not None
+            else 2.0 * self.bar_interval_seconds
+        )
+        self.enforce_exchange_hours = bool(enforce_exchange_hours)
         self._stopped = False
         self._last_ts: Optional[pd.Timestamp] = None
+        self._last_close: Optional[float] = None
+        self._consecutive_bad: int = 0
+
+    def _validate_bar(self, bar: "Bar") -> tuple[bool, str]:
+        """Return (ok, reason_if_not_ok). Checks NaN, gap, staleness."""
+        for name, v in (("open", bar.open), ("high", bar.high),
+                        ("low", bar.low), ("close", bar.close)):
+            if v is None or not np.isfinite(v) or v <= 0:
+                return False, f"non-finite {name}={v}"
+        if self._last_close is not None and self._last_close > 0:
+            gap = abs(bar.close / self._last_close - 1.0)
+            if gap > self.max_gap_pct:
+                return False, f"gap {gap:.2%} > max {self.max_gap_pct:.2%}"
+        try:
+            age_s = (pd.Timestamp.utcnow() - pd.Timestamp(bar.ts).tz_convert("UTC")
+                     ).total_seconds()
+            if age_s > self.max_stale_seconds:
+                return False, f"bar is {age_s:.0f}s old (max {self.max_stale_seconds:.0f}s)"
+        except Exception:
+            pass   # timezone edge cases — don't reject on timestamp parsing
+        return True, ""
+
+    def _is_exchange_open(self) -> bool:
+        """CME Micro Gold trades Sun 18:00 CT → Fri 17:00 CT. Saturday halt."""
+        if not self.enforce_exchange_hours:
+            return True
+        now_ct = pd.Timestamp.now(tz="US/Central")
+        wd = now_ct.weekday()   # Mon=0 ... Sun=6
+        if wd == 5:   # Saturday — fully closed
+            return False
+        if wd == 4 and now_ct.hour >= 17:   # Friday after 17:00 CT
+            return False
+        if wd == 6 and now_ct.hour < 18:    # Sunday before 18:00 CT
+            return False
+        return True
 
     def stop(self) -> None:
         self._stopped = True
@@ -166,6 +216,11 @@ class YFinanceFeed(BarFeed):
         # yfinance 1m data is only available for the last 7 days, so start
         # with a short lookback.
         while not self._stopped:
+            # Exchange-hours gate: skip poll entirely during weekend halt
+            if not self._is_exchange_open():
+                log.debug("feed: exchange closed, skipping poll")
+                await asyncio.sleep(self.bar_interval_seconds)
+                continue
             try:
                 raw = await asyncio.to_thread(
                     yf.download,
@@ -192,8 +247,7 @@ class YFinanceFeed(BarFeed):
             for ts, row in tail.iterrows():
                 if self._last_ts is not None and ts <= self._last_ts:
                     continue
-                self._last_ts = ts
-                yield Bar(
+                candidate = Bar(
                     ts=pd.Timestamp(ts),
                     open=float(row.get("open", row["close"])),
                     high=float(row.get("high", row["close"])),
@@ -202,4 +256,18 @@ class YFinanceFeed(BarFeed):
                     volume=float(row.get("volume", 0.0)),
                     asset=self.asset,
                 )
+                ok, reason = self._validate_bar(candidate)
+                if not ok:
+                    self._consecutive_bad += 1
+                    level = (log.error if self._consecutive_bad >= 3
+                             else log.warning)
+                    level(
+                        "feed: rejecting bar %s: %s (consecutive bad=%d)",
+                        candidate.ts, reason, self._consecutive_bad,
+                    )
+                    continue
+                self._consecutive_bad = 0
+                self._last_ts = ts
+                self._last_close = candidate.close
+                yield candidate
             await asyncio.sleep(self.bar_interval_seconds)

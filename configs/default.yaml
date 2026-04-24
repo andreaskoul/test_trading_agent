@@ -25,6 +25,7 @@ data:
   macro_symbols: []
   macro_interval: "1d"
   mi_threshold: 0.0   # 0 disables the MI pruner
+  holdout_frac: 0.0   # 0 = no TRUE hold-out; aggressive profile sets 0.20 (Phase H)
 
 features:
   seq_len: 32
@@ -99,6 +100,7 @@ evaluation:
   bootstrap_resamples: 2000
   bootstrap_block_size: 20
   permutation_samples: 1000
+  permutation_block_size: 8      # ~1 trading day at ~8 trades/day (Phase H: block permutation when |ACF|>0.05)
 
 finetune:
   timesteps: 20000

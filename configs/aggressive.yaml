@@ -25,6 +25,7 @@ data:
   macro_symbols: ["^VIX", "^GSPC", "^TNX"]   # iter-7: real data via GitHub open-data (DX=F dropped — no GitHub source)
   macro_interval: "1d"
   mi_threshold: 0.003
+  holdout_frac: 0.20                         # Phase H: last 20% locked out of CPCV; gated by scripts/04b_holdout_eval.py
 
 features:
   # Base values stay calibrated for daily; config_utils.scale_param() will
@@ -75,6 +76,7 @@ ppo:
 
 evaluation:
   costs_bps: [0.0, 0.5, 1.0, 2.0, 5.0]   # sweep around the realistic spread
+  permutation_block_size: 8              # ~1 trading day at 60m (Phase H)
 
 finetune:
   timesteps: 40000

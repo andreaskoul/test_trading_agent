@@ -330,13 +330,44 @@ def test_deflated_sharpe_reasonable():
 
 
 def test_bootstrap_and_permutation():
-    from src.validation.bootstrap import block_bootstrap_sharpe, permutation_pvalue_sharpe
+    from src.validation.bootstrap import (
+        block_bootstrap_sharpe,
+        bootstrap_pvalue_sharpe,
+        permutation_pvalue_sharpe,
+        block_permutation_pvalue_sharpe,
+        acf_lag1,
+    )
     rng = np.random.default_rng(2)
     rets = 0.0005 + 0.01 * rng.standard_normal(300)
     ci = block_bootstrap_sharpe(rets, block=10, n_resamples=100)
     assert ci.lo <= ci.point <= ci.hi
     p = permutation_pvalue_sharpe(rets, n_resamples=100)
     assert 0.0 <= p <= 1.0
+
+    # PRIMARY edge test: centred block-bootstrap p-value (Phase H)
+    p_boot = bootstrap_pvalue_sharpe(rets, block=10, n_resamples=200)
+    assert 0.0 <= p_boot <= 1.0
+
+    # Block permutation + ACF diagnostic
+    p_block = block_permutation_pvalue_sharpe(rets, block_size=8, n_resamples=100)
+    assert 0.0 <= p_block <= 1.0
+    acf = acf_lag1(rets)
+    assert -1.0 <= acf <= 1.0
+    assert abs(acf) < 0.15, f"i.i.d. series unexpectedly autocorrelated: acf={acf:.4f}"
+
+    # On a deliberately-clustered positive-drift series (blocks of wins
+    # interleaved with smaller-magnitude losses so observed Sharpe > 0),
+    # ACF(1) should be clearly positive and both permutation tests
+    # should return a non-degenerate p-value in (0, 1).
+    clustered = np.concatenate([
+        np.full(8, 0.005), np.full(8, -0.002),
+        np.full(8, 0.005), np.full(8, -0.002),
+    ])
+    assert abs(acf_lag1(clustered)) > 0.05
+    p_clust_block = block_permutation_pvalue_sharpe(
+        clustered, block_size=8, n_resamples=200, seed=42
+    )
+    assert 0.0 < p_clust_block <= 1.0
 
 
 def test_multi_asset_config():
@@ -431,8 +462,53 @@ def test_shared_encoder_multi_asset():
     x2 = torch.randn(2, 16, len(cols2))
     e1 = encoder.encode(x1)
     e2 = encoder.encode(x2)
-    assert e1.shape == (2, 32)
-    assert e2.shape == (2, 32)
+    assert e1.shape == (2, 32) and e2.shape == (2, 32)
+
+
+def test_kelly_calculator():
+    """Phase H: KellyCalculator returns floor=1.0 by default (no scaling)."""
+    from src.live.paper_engine import KellyCalculator
+    # Default cap=0 -> always floor=1.0 regardless of history
+    k = KellyCalculator()
+    assert k.fraction() == 1.0
+    for _ in range(50):
+        k.update(0.001)
+    assert k.fraction() == 1.0     # cap=0 short-circuits
+
+    # Enable Kelly: positive expectancy series should produce 0 < f < 1
+    k2 = KellyCalculator(window=100, cap=0.25, floor=0.0)
+    assert k2.fraction() == 0.0    # warming up < 20 trades
+    rng = np.random.default_rng(0)
+    for _ in range(50):
+        # 60% wins of size +0.002, 40% losses of size -0.001
+        k2.update(0.002 if rng.random() < 0.6 else -0.001)
+    f = k2.fraction()
+    assert 0.0 < f <= 1.0, f"Kelly fraction out of range: {f:.4f}"
+
+
+def test_yfinance_feed_validation():
+    """Phase H: YFinanceFeed._validate_bar rejects NaN, gaps, stale bars."""
+    from src.live.feed import YFinanceFeed, Bar
+    feed = YFinanceFeed("GC=F", interval="1m", bar_interval_seconds=60)
+    feed._last_close = 2000.0
+    now = pd.Timestamp.utcnow()
+
+    good = Bar(ts=now, open=2001, high=2002, low=2000, close=2001, volume=10, asset="GC=F")
+    ok, _ = feed._validate_bar(good)
+    assert ok
+
+    nan_bar = Bar(ts=now, open=float("nan"), high=2002, low=2000, close=2001, volume=10, asset="GC=F")
+    ok, reason = feed._validate_bar(nan_bar)
+    assert not ok and "non-finite" in reason
+
+    gap_bar = Bar(ts=now, open=2200, high=2200, low=2200, close=2200, volume=10, asset="GC=F")
+    ok, reason = feed._validate_bar(gap_bar)
+    assert not ok and "gap" in reason
+
+    stale_bar = Bar(ts=now - pd.Timedelta(seconds=300), open=2001, high=2001, low=2001,
+                    close=2001, volume=10, asset="GC=F")
+    ok, reason = feed._validate_bar(stale_bar)
+    assert not ok and "old" in reason
 
 
 if __name__ == "__main__":
@@ -454,6 +530,8 @@ if __name__ == "__main__":
         test_multi_asset_config,
         test_multi_asset_loader,
         test_shared_encoder_multi_asset,
+        test_kelly_calculator,
+        test_yfinance_feed_validation,
     ]
     failures = 0
     for t in tests:
