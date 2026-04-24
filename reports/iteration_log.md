@@ -525,3 +525,76 @@ making GRPO more competitive than PPO for the first time (0.708 vs
   honest p-value under macro autocorrelation; DXY via FMP when domain
   becomes reachable; LightGBM meta-stack; multi-asset SI=F transfer.
   + MI on) to attribute the p-value collapse.
+
+---
+
+## Phase H — Pre-deployment validation stack (2026-04-24, COMPLETE)
+
+**Context.** The user asked for (1) resolution of the iter-7 permutation
+p=0.996 regression and (2) a plan for pre-deployment validation before
+paper trading. Phase H delivers both in one commit sequence.
+
+**Root cause of the permutation "regression" found.** Sharpe ratio is
+permutation-invariant (mean/std are order-independent). Element-wise
+shuffle gives `shuffled_sr == observed_sr` to within floating-point
+precision; the `>=` comparison counts ties as success → p → 1 for any
+positive-Sharpe series. This was ALWAYS a broken test. Fix: replace it
+with a centred block-bootstrap edge test (Politis & Romano 1994) that
+draws with replacement — an order-sensitive, statistically-valid
+hypothesis test for H0: E[r] ≤ 0.
+
+**Changes shipped in commits `77f9408` (code) and `a992484` (retrain).**
+
+1. **Task 1 — Permutation test fix.** `src/validation/bootstrap.py`
+   gains `bootstrap_pvalue_sharpe()`, `block_permutation_pvalue_sharpe()`,
+   `acf_lag1()`. `scripts/04_evaluate.py` switches the primary edge
+   red-flag to `bootstrap_p > 0.05`; keeps legacy permutation p as
+   soft diagnostic. Smoke test `test_bootstrap_and_permutation`
+   extended.
+2. **Task 2 — True hold-out OOS validation.** `data.holdout_frac: 0.20`
+   in aggressive config. `01_build_data.py` slices last 20% into
+   `features_*_holdout.parquet`. New script `scripts/04b_holdout_eval.py`
+   loads best-CPCV policy, runs single rollout on hold-out, computes
+   bootstrap p + DSR, exits 1 if gate fails.
+3. **Task 3 — Kelly fractional sizing.** `KellyCalculator` class in
+   `paper_engine.py`. Default cap=0 → floor=1.0 → zero-effect on parity
+   test. `kelly_cap=0.25` enables quarter-Kelly in paper trading.
+4. **Task 4 — Feed quality gates.** `YFinanceFeed._validate_bar` rejects
+   NaN/gap/staleness; `_is_exchange_open` respects CME gold halt window.
+
+**Phase H metrics vs iter-7 (note: CPCV now runs on 80% data only).**
+
+| Metric | Iter-7 (100% CPCV) | Phase H (80% CPCV + 20% hold-out) |
+|---|---|---|
+| CPCV Sharpe @ 0bps | 1.004 | 0.889 |
+| CPCV Sharpe @ 0.5bps | 0.679 | 0.533 |
+| CPCV bootstrap CI | [1.47, 1.70] | [1.13, 1.40] |
+| **Bootstrap edge p-value** | N/A (test broken) | **0.0005** |
+| Legacy permutation p | 0.996 | 0.796 (diagnostic only) |
+| Meta@0.60 Sharpe | 6.78 | 5.82 |
+| **Hold-out Sharpe (TRUE OOS)** | N/A | **1.090** |
+| **Hold-out bootstrap p** | N/A | **0.001** |
+| Hold-out DSR | N/A | 0.969 |
+| Hold-out n_trades | N/A | 635 |
+
+The 20% hold-out is the first truly out-of-sample validation this
+stack has ever had. Its Sharpe (1.09) EXCEEDS the CPCV mean (0.53 at
+0.5bps), which is a very positive sign — the model generalises out-
+of-sample rather than over-fitting the CPCV windows. Bootstrap
+edge-test p = 0.001 on the hold-out means the edge is statistically
+supported on genuinely-unseen data.
+
+**Verdict: KEPT.** Phase H gates ALL PASS:
+- Permutation test: fixed (bootstrap p=0.0005)
+- Hold-out gate: PASS (sharpe 1.09, boot_p 0.001)
+- Parity test: PASS (Kelly defaults preserve byte-for-byte match)
+- Feed validation: PASS (19/19 smoke tests)
+
+**Deferred for post-MVP (NOT in Phase H):**
+- Intra-day drawdown gate (`daily_loss_limit`)
+- Policy age enforcement (max_policy_age_days)
+- Regime-conditioned sizing multiplier
+- DSR guard on finetune delta
+- KS feature-drift detection
+- DXY via FMP (once domain reachable)
+- LightGBM meta-stack
