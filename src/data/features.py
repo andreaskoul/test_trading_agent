@@ -7,7 +7,7 @@ populated windows.
 
 from __future__ import annotations
 
-from typing import List
+from typing import Dict, List, Optional
 
 import numpy as np
 import pandas as pd
@@ -43,10 +43,34 @@ def _rolling_z(series: pd.Series, window: int) -> pd.Series:
     return (series - mean) / (std.replace(0, np.nan))
 
 
+def _hawkes_intensity(magnitude: pd.Series, beta: float) -> pd.Series:
+    """Causal Hawkes-process intensity with an exponential kernel.
+
+    Recursion lambda_t = exp(-beta) * lambda_{t-1} + magnitude_{t-1}. The
+    shift(1) is what makes this strictly causal: bar t's feature only reflects
+    shocks up to and including bar t-1. Implementation uses pandas EWM (alpha =
+    1 - exp(-beta)) which returns the EWMA; scale by 1/alpha to recover the
+    EWM sum that the Hawkes recursion produces.
+    """
+    decay = float(np.exp(-beta))
+    alpha = 1.0 - decay
+    ewma = magnitude.shift(1).ewm(alpha=alpha, adjust=False).mean()
+    return ewma / alpha
+
+
+def _macro_symbol_slug(sym: str) -> str:
+    """Column-safe prefix for a macro ticker (e.g. '^VIX' -> 'vix')."""
+    return (
+        sym.replace("=", "").replace("^", "").replace(".", "_").replace("/", "_")
+        .replace("-", "_").lower()
+    )
+
+
 def build_features(
     df: pd.DataFrame,
     warmup_bars: int = 252,
     zscore_window: int = 252,
+    macro_data: Optional[Dict[str, pd.DataFrame]] = None,
 ) -> pd.DataFrame:
     """Return a feature DataFrame aligned to `df.index` with a `close` passthrough."""
     out = pd.DataFrame(index=df.index)
@@ -88,6 +112,15 @@ def build_features(
     log_vol = np.log(volume)
     out["vol_z"] = _rolling_z(log_vol, zscore_window)
 
+    # Hawkes-process intensity on |log-return| at three decay scales. Models
+    # volatility / event clustering (trade bursts around COMEX opens, macro
+    # prints). Three widely separated betas capture fast, session, and
+    # multi-session clustering; the rolling-z loop below strips the drift.
+    ret_mag = log_ret.abs().fillna(0.0)
+    out["hawkes_fast"] = _hawkes_intensity(ret_mag, beta=1.0)
+    out["hawkes_med"] = _hawkes_intensity(ret_mag, beta=0.1)
+    out["hawkes_slow"] = _hawkes_intensity(ret_mag, beta=0.02)
+
     # Price z-score (useful for regime awareness even though non-stationary)
     out["close_z"] = _rolling_z(close, zscore_window)
 
@@ -99,6 +132,44 @@ def build_features(
     feat_cols = [c for c in out.columns if c not in ("close", "atr")]
     for col in feat_cols:
         out[col] = _rolling_z(out[col], zscore_window)
+
+    # Intraday seasonality -- cyclic encoding of UTC hour and day-of-week.
+    # Added AFTER the z-score loop so the sin/cos signal survives intact.
+    # MGC trades ~23h/day so the hour-of-day feature captures London open
+    # (~07:00 UTC), NY RTH open (~13:30), London PM fix (~14:00), COMEX
+    # close (~17:00) without the model having to rediscover them from
+    # lagged returns.
+    if isinstance(out.index, pd.DatetimeIndex):
+        hour = out.index.hour + out.index.minute / 60.0
+        dow = out.index.dayofweek.to_numpy(dtype=float)
+        out["hour_sin"] = np.sin(2 * np.pi * hour / 24.0)
+        out["hour_cos"] = np.cos(2 * np.pi * hour / 24.0)
+        out["dow_sin"] = np.sin(2 * np.pi * dow / 7.0)
+        out["dow_cos"] = np.cos(2 * np.pi * dow / 7.0)
+    else:
+        # Non-datetime index (tests, synthetic): fill zeros so schema is stable.
+        for col in ("hour_sin", "hour_cos", "dow_sin", "dow_cos"):
+            out[col] = 0.0
+
+    # Macro exogenous features (Phase G / iter-6). DeepTrader-style state
+    # augmentation: daily macros (DXY, ^TNX, ^VIX, ^GSPC) re-sampled to bar
+    # freq via forward-fill. We encode as 5- and 20-day log-returns (roughly
+    # stationary) rather than raw levels, and z-score using the same warmup
+    # window as the endogenous features.
+    if macro_data and isinstance(out.index, pd.DatetimeIndex):
+        for sym, mdf in macro_data.items():
+            if mdf is None or mdf.empty or "close" not in mdf.columns:
+                continue
+            slug = _macro_symbol_slug(sym)
+            mclose = mdf["close"].astype(float).sort_index()
+            mlog = np.log(mclose.replace(0, np.nan)).dropna()
+            chg5 = mlog.diff(5)
+            chg20 = mlog.diff(20)
+            out[f"{slug}_chg5"] = chg5.reindex(out.index, method="ffill")
+            out[f"{slug}_chg20"] = chg20.reindex(out.index, method="ffill")
+        macro_cols = [c for c in out.columns if c.endswith("_chg5") or c.endswith("_chg20")]
+        for col in macro_cols:
+            out[col] = _rolling_z(out[col].astype(float), zscore_window)
 
     # Drop warmup rows to guarantee everything is populated
     out = out.iloc[warmup_bars:]

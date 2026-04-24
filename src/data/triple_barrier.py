@@ -117,4 +117,21 @@ def label_triple_barrier(
     multi[(long_lab == 1) | (short_lab == 1)] = 1
     multi[(long_lab == -1) & (short_lab == -1)] = -1
     out["label_multi"] = multi
+
+    # Auxiliary multi-task targets (Phase G / iter-6):
+    # ret_fwd     = log-return from bar i to bar i+horizon (unsigned direction signal)
+    # ret_fwd_std = realised log-return std over the same horizon (volatility target)
+    log_close = np.log(np.clip(close, 1e-12, None))
+    log_ret = np.diff(log_close, prepend=log_close[0])
+    n = len(close)
+    ret_fwd = np.zeros(n, dtype=np.float64)
+    ret_fwd_std = np.zeros(n, dtype=np.float64)
+    for i in range(n):
+        end = min(i + cfg.horizon, n - 1)
+        if end > i:
+            ret_fwd[i] = log_close[end] - log_close[i]
+            window = log_ret[i + 1 : end + 1]
+            ret_fwd_std[i] = float(window.std(ddof=0)) if len(window) > 1 else 0.0
+    out["ret_fwd"] = ret_fwd
+    out["ret_fwd_std"] = ret_fwd_std
     return out

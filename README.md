@@ -134,6 +134,75 @@ The evaluation script automatically flags:
 If any fire, the report says so in plain text — no hand-tuning to make them
 disappear.
 
+## Running the autonomous aggressive stack (Tier 7)
+
+The `aggressive` profile is the experimental 60m MGC overlay that exercises
+every Tier-5+ piece (VIB, TFT, GRPO, DSR reward, intraday seasonality).
+`configs/default.yaml` is the safe daily baseline; `configs/aggressive.yaml`
+shadows it with the hourly settings.
+
+```bash
+# one-time: install sb3-contrib for RecurrentPPO (if enabled)
+pip install -r requirements.txt
+
+# full pipeline, end to end, under the aggressive profile
+TRADING_PROFILE=aggressive python scripts/01_build_data.py
+TRADING_PROFILE=aggressive python scripts/02_pretrain_encoder.py --fast
+TRADING_PROFILE=aggressive python scripts/03_train_ppo.py --fast
+TRADING_PROFILE=aggressive python scripts/04_evaluate.py
+
+# or: the autonomous loop (same profile propagated via subprocess env)
+TRADING_PROFILE=aggressive python scripts/99_auto.py
+```
+
+Key flags in `configs/aggressive.yaml`:
+
+- `encoder.vib: true` — variational information bottleneck on the xLSTM output
+- `encoder.tft: true` — multi-head TFT aggregator across encoder groups
+- `encoder.multitask: true` (iter-6) — auxiliary volatility-regression +
+  meta-label heads share the xLSTM backbone during pretrain; `.encode()`
+  stays shape-invariant so PPO/evaluation are unchanged
+- `env.reward_mode: diff_sharpe` — Moody-Saffell differential Sharpe reward
+- `ppo.algorithms: ["ppo", "grpo"]` — PPO + GRPO ensemble (6 splits × 3 seeds)
+- `features` include 4 cyclic seasonality features (hour/dow sin-cos)
+- `data.macro_symbols: [^VIX, ^GSPC, ^TNX]` (iter-6/7) — DeepTrader-style
+  exogenous macros fetched from GitHub open-data (VIX daily; SPX/TNX monthly
+  forward-filled), encoded as 5/20-bar log-returns; FMP REST API integrated
+  as fallback (set `FMP_API_KEY` env var). DXY (`DX=F`) pending FMP domain
+  access.
+- `data.mi_threshold: 0.003` (iter-6) — Kraskov kNN mutual-information
+  pruner drops features below the noise floor before the encoder sees them
+
+Loader resolution chain: **cache → GitHub OHLCV → GitHub macro open-data →
+FMP REST API (`FMP_API_KEY`) → yfinance → synthetic GBM+GARCH**. Each
+source logs `source=<label>:<symbol>` so provenance is always auditable.
+
+Iteration history lives in `reports/iteration_log.md`. Cumulative net deltas
+vs the original return-reward baseline (iter-0): pre-meta Sharpe @ 0bps
+**0.881 → 1.004 (+14%)**, pre-meta Sharpe @ 0.5bps **0.571 → 0.679 (+19%)**,
+meta-gate Sharpe @ 0.60 **→ 6.78**, **GRPO mean Sharpe 0.447 → 0.708 (+58%
+in iter-7)**, Sharpe std 0.370 → **0.167 (−55%, tighter ensemble)**.
+Permutation p-value 0.608 (iter-6) → 0.996 (iter-7) — macro trend-following
+introduces negative return autocorrelation; block permutation test queued
+for iter-8.
+
+Known runtime limits:
+
+- 15m MGC bars are **not** reachable in this sandbox (yfinance blocked,
+  github mirror 60m-only). `load_ohlcv` will fail loudly if a non-60m
+  interval is requested on GC=F.
+- FMP REST API domain is currently blocked in this sandbox (HTTP 403).
+  `^VIX`, `^GSPC`, `^TNX` use GitHub open-data instead; `DX=F` falls
+  through to synthetic until FMP becomes reachable. Set `FMP_API_KEY` and
+  call `fetch_macro_series(..., force_refresh=True)` to pull live data
+  in an unrestricted environment.
+- In older runs (iter-6) macro symbols fell through to the synthetic
+  GBM+GARCH path. `load_ohlcv` logs `source=synthetic:<symbol>` so you
+  can tell. Iter-7 uses real GitHub open-data for all three macro symbols.
+- Meta-gate compounded returns are a statistical artefact of high
+  selectivity and should not be used as a live-PnL estimate — trust
+  the per-trade Sharpe instead.
+
 ## Layout
 
 ```

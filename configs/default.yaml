@@ -20,6 +20,12 @@ data:
       labels_path: "data/processed/labels_si.parquet"
   start: "2005-01-01"
   end: "2025-12-31"
+  # Phase G: exogenous macro series (off-by-default on the daily profile).
+  # Aggressive profile enables them by listing symbols explicitly.
+  macro_symbols: []
+  macro_interval: "1d"
+  mi_threshold: 0.0   # 0 disables the MI pruner
+  holdout_frac: 0.0   # 0 = no TRUE hold-out; aggressive profile sets 0.20 (Phase H)
 
 features:
   seq_len: 32
@@ -47,6 +53,14 @@ encoder:
   pretrain_lr: 3.0e-4
   pretrain_batch: 128
   focal_gamma: 2.0
+  vib: false            # Variational Information Bottleneck head
+  vib_beta: 1.0e-3      # KL weight when vib: true
+  tft: false            # TFT-style attention aggregator on xLSTM sequence
+  tft_heads: 4
+  # Phase G / iter-6 multi-task pretraining (off on the daily profile).
+  multitask: false
+  vol_weight: 0.3
+  meta_weight: 0.2
 
 ppo:
   total_timesteps: 60000   # budget per seed/path (fast default)
@@ -86,6 +100,7 @@ evaluation:
   bootstrap_resamples: 2000
   bootstrap_block_size: 20
   permutation_samples: 1000
+  permutation_block_size: 8      # ~1 trading day at ~8 trades/day (Phase H: block permutation when |ACF|>0.05)
 
 finetune:
   timesteps: 20000
@@ -95,6 +110,23 @@ finetune:
 
 artefact_dir: "artefacts"
 report_dir: "reports"
+
+kill_switch:
+  enabled: true
+  sharpe_floor: 1.0
+  sharpe_window: 60            # trades
+  sharpe_duration_bars: 3
+  max_drawdown: 0.05
+  win_rate_floor: 0.5
+  win_rate_window: 100
+  catastrophe_pct: 0.05
+
+auto:
+  # Tier 6 scheduler knobs (used by scripts/99_auto.py).
+  retrain_every_days: 30       # full encoder + PPO retrain cadence
+  finetune_every_days: 7       # small-lr holdout refinement cadence
+  evaluate_every_days: 1       # re-run evaluate + regenerate reports
+  min_new_bars_before_retrain: 500   # skip retrain if not enough new data
 
 ui:
   port: 8765

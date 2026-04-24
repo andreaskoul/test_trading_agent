@@ -123,6 +123,30 @@ class MLSTMBlock(nn.Module):
         return x + self.dropout(self.out_proj(y))
 
 
+class TFTAttentionHead(nn.Module):
+    """TFT-style global aggregator on top of the xLSTM sequence output.
+
+    Applies a learned-query multi-head attention over the full (B, T, D)
+    sequence, producing a (B, D) summary. This captures which past timesteps
+    most influenced the prediction (interpretable attention weights) while
+    letting the xLSTM act as the local temporal encoder. Loosely after Lim et
+    al. 2020 — minus the quantile head + covariate VSN which don't apply here.
+    """
+
+    def __init__(self, dim: int, n_heads: int = 4, dropout: float = 0.0):
+        super().__init__()
+        self.attn = nn.MultiheadAttention(
+            dim, n_heads, dropout=dropout, batch_first=True,
+        )
+        self.query = nn.Parameter(torch.randn(1, 1, dim) * 0.02)
+        self.norm = RMSNorm(dim)
+
+    def forward(self, seq: torch.Tensor) -> torch.Tensor:  # (B, T, D) -> (B, D)
+        q = self.query.expand(seq.size(0), -1, -1)
+        out, _ = self.attn(q, seq, seq, need_weights=False)
+        return self.norm(out.squeeze(1))
+
+
 @dataclass
 class XLSTMConfig:
     input_dim: int
@@ -132,6 +156,12 @@ class XLSTMConfig:
     dropout: float = 0.3
     softcap: float = 15.0
     n_classes: int = 3  # {-1, 0, +1} -> indices 0/1/2
+    vib: bool = False          # Variational Information Bottleneck head
+    vib_beta: float = 1e-3     # KL weight on I(Z; X) term
+    tft: bool = False          # TFT-style attention aggregator over sequence
+    tft_heads: int = 4
+    multitask: bool = False    # add volatility-regression + meta-label aux heads
+    meta_classes: int = 2      # binary sign-of-forward-return meta-label head
 
 
 class XLSTMLite(nn.Module):
@@ -140,7 +170,6 @@ class XLSTMLite(nn.Module):
         self.cfg = cfg
         self.input_proj = nn.Linear(cfg.input_dim, cfg.hidden_size)
         blocks: list[nn.Module] = []
-        # Interleave sLSTM and mLSTM blocks
         for i in range(max(cfg.n_slstm, cfg.n_mlstm)):
             if i < cfg.n_slstm:
                 blocks.append(SLSTMBlock(cfg.hidden_size, cfg.softcap, cfg.dropout))
@@ -148,18 +177,82 @@ class XLSTMLite(nn.Module):
                 blocks.append(MLSTMBlock(cfg.hidden_size, cfg.softcap, cfg.dropout))
         self.blocks = nn.ModuleList(blocks)
         self.out_norm = RMSNorm(cfg.hidden_size)
+        if cfg.tft:
+            self.tft_head = TFTAttentionHead(
+                cfg.hidden_size, n_heads=cfg.tft_heads, dropout=cfg.dropout,
+            )
+        if cfg.vib:
+            self.mu_head = nn.Linear(cfg.hidden_size, cfg.hidden_size)
+            self.logsigma_head = nn.Linear(cfg.hidden_size, cfg.hidden_size)
         self.cls_head = nn.Linear(cfg.hidden_size, cfg.n_classes)
+        if cfg.multitask:
+            # Auxiliary heads share the deterministic encoder backbone.
+            # Volatility head: scalar regression on forward realised-vol.
+            # Meta head: binary "trade worked" sign classification.
+            self.vol_head = nn.Linear(cfg.hidden_size, 1)
+            self.meta_head = nn.Linear(cfg.hidden_size, cfg.meta_classes)
 
-    def encode(self, x: torch.Tensor) -> torch.Tensor:
-        """(B, T, F) -> (B, hidden_size) final-timestep embedding."""
+    def _backbone(self, x: torch.Tensor) -> torch.Tensor:
         h = self.input_proj(x)
         for block in self.blocks:
             h = block(h)
-        h = self.out_norm(h[:, -1])
-        return h
+        if self.cfg.tft:
+            return self.tft_head(h)
+        return self.out_norm(h[:, -1])
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:  # classification logits
+    def encode_params(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+        """VIB posterior: (mu, logsigma). Errors if VIB is disabled."""
+        if not self.cfg.vib:
+            raise RuntimeError("encode_params requires cfg.vib=True")
+        h = self._backbone(x)
+        mu = self.mu_head(h)
+        logsigma = self.logsigma_head(h).clamp(min=-8.0, max=4.0)
+        return mu, logsigma
+
+    def encode(self, x: torch.Tensor) -> torch.Tensor:
+        """(B, T, F) -> (B, hidden_size) deterministic embedding.
+
+        With VIB enabled this is the posterior mean mu, which is what we use
+        at inference and by PPO (no sampling at deployment).
+        """
+        if self.cfg.vib:
+            mu, _ = self.encode_params(x)
+            return mu
+        return self._backbone(x)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Classification logits. Training-time sampling lives in the loss."""
         return self.cls_head(self.encode(x))
+
+    def forward_multi(
+        self, x: torch.Tensor
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Multi-task forward: (cls_logits, vol_pred, meta_logits).
+
+        Uses the deterministic backbone (not the VIB sample) for the auxiliary
+        heads — they're regularisers, not production heads, so we don't want
+        the KL noise feeding into their gradients.
+        """
+        if not self.cfg.multitask:
+            raise RuntimeError("forward_multi requires cfg.multitask=True")
+        h = self._backbone(x)
+        cls_logits = self.cls_head(h)
+        vol_pred = self.vol_head(h).squeeze(-1)
+        meta_logits = self.meta_head(h)
+        return cls_logits, vol_pred, meta_logits
+
+
+def vib_reparameterize(mu: torch.Tensor, logsigma: torch.Tensor) -> torch.Tensor:
+    """Sample z = mu + sigma * eps, eps ~ N(0, I). Gradient flows through mu and logsigma."""
+    sigma = logsigma.exp()
+    eps = torch.randn_like(mu)
+    return mu + sigma * eps
+
+
+def vib_kl(mu: torch.Tensor, logsigma: torch.Tensor) -> torch.Tensor:
+    """KL(N(mu, sigma^2) || N(0, I)) averaged over the batch, summed over dims."""
+    kl = -0.5 * (1.0 + 2.0 * logsigma - mu.pow(2) - (2.0 * logsigma).exp())
+    return kl.sum(dim=-1).mean()
 
 
 class FocalLoss(nn.Module):

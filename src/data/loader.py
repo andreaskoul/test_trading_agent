@@ -8,8 +8,9 @@ allows raw.githubusercontent.com but blocks Yahoo/Stooq/Tiingo etc.
 For other assets the priority is:
   1. Cached parquet (if exists)
   2. Known GitHub CSV sources (currently MGC only)
-  3. yfinance
-  4. Synthetic GBM+GARCH calibrated to the symbol's typical dynamics
+  3. FMP (Financial Modeling Prep) REST API — set FMP_API_KEY env var
+  4. yfinance
+  5. Synthetic GBM+GARCH calibrated to the symbol's typical dynamics
 """
 
 from __future__ import annotations
@@ -46,6 +47,17 @@ KNOWN_GITHUB_SOURCES: Dict[str, str] = {
 
 # Keep old constant for backward compat
 MGC_60M_URL = KNOWN_GITHUB_SOURCES["GC=F"]
+
+# GitHub-hosted macro series reachable in restricted-network environments.
+# These are curated open-data repos; updated infrequently but real data.
+# VIX: daily OHLCV back to 1990 (datasets/finance-vix)
+# ^GSPC: monthly close back to 1871 (datasets/s-and-p-500) — forward-filled
+# ^TNX:  monthly rate back to 1953 (datasets/bond-yields-us-10y) — forward-filled
+KNOWN_GITHUB_MACRO: Dict[str, str] = {
+    "^VIX":  "https://raw.githubusercontent.com/datasets/finance-vix/main/data/vix-daily.csv",
+    "^GSPC": "https://raw.githubusercontent.com/datasets/s-and-p-500/master/data/data.csv",
+    "^TNX":  "https://raw.githubusercontent.com/datasets/bond-yields-us-10y/master/data/monthly.csv",
+}
 
 # ---------------------------------------------------------------------------
 # Synthetic profiles: (start_price, mu, omega, alpha, beta)
@@ -121,6 +133,145 @@ def _try_github_csv(url: str) -> Optional[pd.DataFrame]:
     return _standardise(df)
 
 
+def _try_github_macro(symbol: str) -> Optional[pd.DataFrame]:
+    """Fetch a macro series from a known GitHub open-data CSV.
+
+    Handles three formats:
+    - ^VIX  : DATE(MM/DD/YYYY), OPEN, HIGH, LOW, CLOSE — daily
+    - ^GSPC : Date(YYYY-MM-DD), SP500 — monthly, forward-filled to daily
+    - ^TNX  : Date(YYYY-MM-DD), Rate  — monthly, forward-filled to daily
+    """
+    url = KNOWN_GITHUB_MACRO.get(symbol)
+    if url is None:
+        return None
+    try:
+        import urllib.request
+        log.info("fetching macro %s from github: %s", symbol, url)
+        with urllib.request.urlopen(url, timeout=30) as r:
+            payload = r.read()
+        df = pd.read_csv(io.BytesIO(payload))
+    except Exception as exc:
+        log.warning("github macro fetch failed for %s: %s", symbol, exc)
+        return None
+
+    try:
+        if symbol == "^VIX":
+            # DATE format: MM/DD/YYYY
+            df.columns = [c.strip().lower() for c in df.columns]
+            df["date"] = pd.to_datetime(df["date"], format="%m/%d/%Y", utc=True)
+            df = df.set_index("date").sort_index()
+            # Has open/high/low/close already
+            return _standardise(df)
+
+        elif symbol == "^GSPC":
+            # Date: YYYY-MM-DD, SP500 column = monthly close
+            df["date"] = pd.to_datetime(df["Date"], utc=True)
+            df = df.rename(columns={"SP500": "close"}).set_index("date").sort_index()
+            df["close"] = pd.to_numeric(df["close"], errors="coerce")
+            df = df[["close"]].dropna()
+            # Forward-fill monthly to business-day daily
+            daily_idx = pd.date_range(df.index[0], df.index[-1], freq="B", tz="UTC")
+            df = df.reindex(daily_idx, method="ffill")
+            df["open"] = df["close"]
+            df["high"] = df["close"]
+            df["low"]  = df["close"]
+            df["volume"] = 0
+            return _standardise(df)
+
+        elif symbol == "^TNX":
+            # Date: YYYY-MM-DD, Rate column = monthly 10Y yield
+            df["date"] = pd.to_datetime(df["Date"], utc=True)
+            df = df.rename(columns={"Rate": "close"}).set_index("date").sort_index()
+            df["close"] = pd.to_numeric(df["close"], errors="coerce")
+            df = df[["close"]].dropna()
+            daily_idx = pd.date_range(df.index[0], df.index[-1], freq="B", tz="UTC")
+            df = df.reindex(daily_idx, method="ffill")
+            df["open"] = df["close"]
+            df["high"] = df["close"]
+            df["low"]  = df["close"]
+            df["volume"] = 0
+            return _standardise(df)
+
+    except Exception as exc:
+        log.warning("github macro parse failed for %s: %s", symbol, exc)
+    return None
+
+
+# ---------------------------------------------------------------------------
+# FMP symbol mapping: Yahoo-style tickers → FMP-style tickers
+# FMP uses the same Yahoo symbols for most indices, but a few differ.
+# ---------------------------------------------------------------------------
+_FMP_SYMBOL_MAP: Dict[str, str] = {
+    "DX=F":   "DX-Y.NYB",   # Dollar index continuous -> FMP ticker
+    "^VIX":   "^VIX",
+    "^TNX":   "^TNX",
+    "^GSPC":  "^GSPC",
+    "GC=F":   "GCUSD",      # Gold spot on FMP; futures use GC
+    "SI=F":   "SIUSD",
+}
+
+# FMP base URL
+_FMP_BASE = "https://financialmodelingprep.com/api/v3"
+
+
+def _try_fmp(
+    symbol: str,
+    start: str,
+    end: str,
+    interval: str = "1d",
+    api_key: Optional[str] = None,
+) -> Optional[pd.DataFrame]:
+    """Fetch OHLCV from Financial Modeling Prep REST API.
+
+    Only daily bars are reliably available for macro indices on FMP's
+    free tier.  Intraday intervals are silently skipped so the caller
+    falls through to the next source.
+
+    Set FMP_API_KEY in the environment or pass api_key explicitly.
+    """
+    key = api_key or os.environ.get("FMP_API_KEY", "")
+    if not key:
+        return None
+
+    # FMP free tier supports daily historical data; skip intraday.
+    if interval not in ("1d", "daily"):
+        return None
+
+    fmp_sym = _FMP_SYMBOL_MAP.get(symbol, symbol)
+    # URL-encode ^ prefix
+    fmp_sym_enc = fmp_sym.replace("^", "%5E")
+    url = (
+        f"{_FMP_BASE}/historical-price-full/{fmp_sym_enc}"
+        f"?from={start}&to={end}&apikey={key}"
+    )
+    try:
+        import urllib.request
+        import json as _json
+        log.info("FMP fetch: %s -> %s", symbol, url.split("apikey=")[0] + "apikey=***")
+        with urllib.request.urlopen(url, timeout=30) as r:
+            payload = _json.loads(r.read())
+    except Exception as exc:
+        log.warning("FMP request failed for %s: %s", symbol, exc)
+        return None
+
+    historical = payload.get("historical") or payload.get("historicalStockList", [])
+    if not historical:
+        log.warning("FMP returned empty historical for %s", symbol)
+        return None
+
+    # historical is a list of dicts, newest-first
+    try:
+        df = pd.DataFrame(historical)
+        df["date"] = pd.to_datetime(df["date"], utc=True)
+        df = df.set_index("date").sort_index()
+        # FMP returns camelCase: adjClose etc — standardise() lowercases
+        df = df.rename(columns={"adjClose": "adj_close"})
+        return _standardise(df)
+    except Exception as exc:
+        log.warning("FMP parse failed for %s: %s", symbol, exc)
+        return None
+
+
 def _try_yfinance(symbol: str, start: str, end: str, interval: str) -> Optional[pd.DataFrame]:
     try:
         import yfinance as yf
@@ -194,8 +345,14 @@ def load_ohlcv(
     interval: str = "1d",
     cache_path: Optional[str] = None,
     force_synthetic: bool = False,
+    fmp_api_key: Optional[str] = None,
 ) -> LoadResult:
-    """Load OHLCV data for any symbol: cache -> GitHub -> yfinance -> synthetic."""
+    """Load OHLCV: cache → GitHub → FMP → yfinance → synthetic.
+
+    FMP is used when FMP_API_KEY is set in the environment or fmp_api_key
+    is passed explicitly.  It is the preferred source for macro series
+    (DXY, VIX, TNX, SPX) because yfinance is blocked in some environments.
+    """
     if fallback_symbols is None:
         fallback_symbols = []
 
@@ -206,9 +363,9 @@ def load_ohlcv(
         return LoadResult(df=df, source=source)
 
     if not force_synthetic:
-        # Try known GitHub CSV sources for this symbol
+        # 1. Known GitHub CSV sources (currently MGC 60m only)
         github_url = KNOWN_GITHUB_SOURCES.get(symbol)
-        if github_url:
+        if github_url and interval.lower() in ("60m", "1h"):
             df = _try_github_csv(github_url)
             if df is not None and len(df) > 500:
                 df.attrs["source"] = f"github:{symbol}"
@@ -217,7 +374,25 @@ def load_ohlcv(
                     df.to_parquet(cache_path)
                 return LoadResult(df=df, source=f"github:{symbol}")
 
-        # yfinance: try primary symbol then fallbacks
+        # 2. GitHub open-data macro CSVs (VIX daily, SPX/TNX monthly ffill)
+        df = _try_github_macro(symbol)
+        if df is not None and len(df) > 100:
+            df.attrs["source"] = f"github_macro:{symbol}"
+            if cache_path:
+                os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+                df.to_parquet(cache_path)
+            return LoadResult(df=df, source=f"github_macro:{symbol}")
+
+        # 3. FMP REST API (daily only; requires FMP_API_KEY)
+        df = _try_fmp(symbol, start, end, interval, api_key=fmp_api_key)
+        if df is not None and len(df) > 100:
+            df.attrs["source"] = f"fmp:{symbol}"
+            if cache_path:
+                os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+                df.to_parquet(cache_path)
+            return LoadResult(df=df, source=f"fmp:{symbol}")
+
+        # 3. yfinance: try primary symbol then fallbacks
         for sym in [symbol, *fallback_symbols]:
             log.info("trying yfinance symbol %s", sym)
             df = _try_yfinance(sym, start, end, interval)
@@ -244,3 +419,43 @@ def load_ohlcv(
 
 # Backward-compatible alias
 load_gold = load_ohlcv
+
+
+def fetch_macro_series(
+    symbols: List[str],
+    start: str = "2005-01-01",
+    end: str = "2025-12-31",
+    interval: str = "1d",
+    cache_dir: str = "data/raw",
+    fmp_api_key: Optional[str] = None,
+    force_refresh: bool = False,
+) -> Dict[str, pd.DataFrame]:
+    """Fetch exogenous macro series (daily) used as auxiliary features.
+
+    Resolution order: cached parquet → FMP (if FMP_API_KEY set) →
+    yfinance → synthetic.  Pass fmp_api_key or set FMP_API_KEY env var.
+    Set force_refresh=True to bypass the cache and re-fetch from source.
+    """
+    if not symbols:
+        return {}
+    key = fmp_api_key or os.environ.get("FMP_API_KEY", "") or None
+    out: Dict[str, pd.DataFrame] = {}
+    os.makedirs(cache_dir, exist_ok=True)
+    for sym in symbols:
+        safe = sym.replace("=", "").replace("^", "").replace(".", "_").replace("/", "_")
+        cache_path = os.path.join(cache_dir, f"macro_{safe}.parquet")
+        if force_refresh and os.path.exists(cache_path):
+            os.remove(cache_path)
+        res = load_ohlcv(
+            symbol=sym,
+            start=start,
+            end=end,
+            interval=interval,
+            cache_path=cache_path,
+            fmp_api_key=key,
+        )
+        df = res.df
+        df.attrs["source"] = res.source
+        out[sym] = df
+        log.info("macro %s: %d bars, source=%s", sym, len(df), res.source)
+    return out

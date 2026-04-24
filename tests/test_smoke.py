@@ -102,6 +102,100 @@ def test_encoder_shape():
     assert logits.shape == (4, 3)
 
 
+def test_vib_encoder():
+    from src.models.xlstm_lite import (
+        XLSTMConfig, XLSTMLite, vib_kl, vib_reparameterize,
+    )
+    cfg = XLSTMConfig(
+        input_dim=10, hidden_size=32, n_slstm=1, n_mlstm=1,
+        dropout=0.0, vib=True, vib_beta=1e-3,
+    )
+    model = XLSTMLite(cfg).eval()
+    x = torch.randn(4, 16, 10)
+    mu, logsigma = model.encode_params(x)
+    assert mu.shape == (4, 32) and logsigma.shape == (4, 32)
+    assert torch.allclose(model.encode(x), mu), "encode() should return mu"
+    z = vib_reparameterize(mu, logsigma)
+    assert z.shape == mu.shape and not torch.allclose(z, mu)
+    kl = vib_kl(mu, logsigma)
+    assert kl.dim() == 0 and float(kl.detach()) >= 0.0
+
+
+def test_kill_switch():
+    from src.live.kill_switch import KillSwitchConfig, evaluate, from_cfg
+    cfg = KillSwitchConfig()
+    # Catastrophe
+    r = evaluate(np.array([0.01, 0.02, -0.10]), cfg)
+    assert "catastrophe" in r.triggered and r.halt
+    # Sharpe floor requires duration >= 3 consecutive breaches
+    bad = np.random.default_rng(1).normal(-0.001, 0.01, 100)
+    single = evaluate(bad, cfg)
+    assert "sharpe_floor" not in single.triggered, "single breach should not trigger"
+    with_hist = evaluate(bad, cfg, recent_sharpe_history=[0.0, 0.1, 0.2])
+    assert "sharpe_floor" in with_hist.triggered
+    # Disabled config never triggers
+    off = evaluate(np.array([0.01, -0.20, 0.01]), KillSwitchConfig(enabled=False))
+    assert not off.halt
+    # from_cfg dict roundtrip
+    kc = from_cfg({"sharpe_floor": 0.3, "max_drawdown": 0.15})
+    assert kc.sharpe_floor == 0.3 and kc.max_drawdown == 0.15
+
+
+def test_grpo_trainer():
+    import tempfile
+    import gymnasium as gym
+    from gymnasium import spaces
+    from src.training.grpo import GRPO, GRPOConfig
+
+    class _Toy(gym.Env):
+        observation_space = spaces.Box(low=-5, high=5, shape=(4,), dtype=np.float32)
+        action_space = spaces.Discrete(3)
+        def __init__(self): self.t = 0
+        def reset(self, seed=None, options=None):
+            super().reset(seed=seed); self.t = 0
+            return np.zeros(4, dtype=np.float32), {}
+        def step(self, a):
+            self.t += 1
+            r = 1.0 if a == (self.t % 3) else -0.5
+            return np.random.randn(4).astype(np.float32), r, self.t >= 16, False, {}
+
+    env = _Toy()
+    cfg = GRPOConfig(total_timesteps=64, group_size=2, steps_per_trajectory=16,
+                     n_epochs=1, batch_size=16, seed=0)
+    model = GRPO(env, cfg).learn(64)
+    obs, _ = env.reset()
+    a, _ = model.predict(obs, deterministic=True)
+    assert isinstance(int(a), int)
+    with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as f:
+        path = f.name
+    model.save(path)
+    loaded = GRPO.load(path, env=env)
+    a2, _ = loaded.predict(obs, deterministic=True)
+    assert int(a) == int(a2), "GRPO save/load round-trip mismatch"
+
+
+def test_tft_encoder():
+    from src.models.xlstm_lite import XLSTMConfig, XLSTMLite
+    cfg = XLSTMConfig(
+        input_dim=10, hidden_size=32, n_slstm=1, n_mlstm=1,
+        dropout=0.0, tft=True, tft_heads=4,
+    )
+    model = XLSTMLite(cfg).eval()
+    x = torch.randn(4, 16, 10)
+    emb = model.encode(x)
+    assert emb.shape == (4, 32)
+    logits = model(x)
+    assert logits.shape == (4, 3)
+    # TFT + VIB compose
+    cfg2 = XLSTMConfig(
+        input_dim=10, hidden_size=32, n_slstm=1, n_mlstm=1,
+        dropout=0.0, tft=True, tft_heads=4, vib=True, vib_beta=1e-3,
+    )
+    m2 = XLSTMLite(cfg2).eval()
+    mu, logsigma = m2.encode_params(x)
+    assert mu.shape == (4, 32) and logsigma.shape == (4, 32)
+
+
 def test_env_runs_trade():
     from src.data.features import build_features, feature_columns
     from src.env.trading_env import EnvConfig, TradingEnv, BUY
@@ -236,13 +330,44 @@ def test_deflated_sharpe_reasonable():
 
 
 def test_bootstrap_and_permutation():
-    from src.validation.bootstrap import block_bootstrap_sharpe, permutation_pvalue_sharpe
+    from src.validation.bootstrap import (
+        block_bootstrap_sharpe,
+        bootstrap_pvalue_sharpe,
+        permutation_pvalue_sharpe,
+        block_permutation_pvalue_sharpe,
+        acf_lag1,
+    )
     rng = np.random.default_rng(2)
     rets = 0.0005 + 0.01 * rng.standard_normal(300)
     ci = block_bootstrap_sharpe(rets, block=10, n_resamples=100)
     assert ci.lo <= ci.point <= ci.hi
     p = permutation_pvalue_sharpe(rets, n_resamples=100)
     assert 0.0 <= p <= 1.0
+
+    # PRIMARY edge test: centred block-bootstrap p-value (Phase H)
+    p_boot = bootstrap_pvalue_sharpe(rets, block=10, n_resamples=200)
+    assert 0.0 <= p_boot <= 1.0
+
+    # Block permutation + ACF diagnostic
+    p_block = block_permutation_pvalue_sharpe(rets, block_size=8, n_resamples=100)
+    assert 0.0 <= p_block <= 1.0
+    acf = acf_lag1(rets)
+    assert -1.0 <= acf <= 1.0
+    assert abs(acf) < 0.15, f"i.i.d. series unexpectedly autocorrelated: acf={acf:.4f}"
+
+    # On a deliberately-clustered positive-drift series (blocks of wins
+    # interleaved with smaller-magnitude losses so observed Sharpe > 0),
+    # ACF(1) should be clearly positive and both permutation tests
+    # should return a non-degenerate p-value in (0, 1).
+    clustered = np.concatenate([
+        np.full(8, 0.005), np.full(8, -0.002),
+        np.full(8, 0.005), np.full(8, -0.002),
+    ])
+    assert abs(acf_lag1(clustered)) > 0.05
+    p_clust_block = block_permutation_pvalue_sharpe(
+        clustered, block_size=8, n_resamples=200, seed=42
+    )
+    assert 0.0 < p_clust_block <= 1.0
 
 
 def test_multi_asset_config():
@@ -337,8 +462,53 @@ def test_shared_encoder_multi_asset():
     x2 = torch.randn(2, 16, len(cols2))
     e1 = encoder.encode(x1)
     e2 = encoder.encode(x2)
-    assert e1.shape == (2, 32)
-    assert e2.shape == (2, 32)
+    assert e1.shape == (2, 32) and e2.shape == (2, 32)
+
+
+def test_kelly_calculator():
+    """Phase H: KellyCalculator returns floor=1.0 by default (no scaling)."""
+    from src.live.paper_engine import KellyCalculator
+    # Default cap=0 -> always floor=1.0 regardless of history
+    k = KellyCalculator()
+    assert k.fraction() == 1.0
+    for _ in range(50):
+        k.update(0.001)
+    assert k.fraction() == 1.0     # cap=0 short-circuits
+
+    # Enable Kelly: positive expectancy series should produce 0 < f < 1
+    k2 = KellyCalculator(window=100, cap=0.25, floor=0.0)
+    assert k2.fraction() == 0.0    # warming up < 20 trades
+    rng = np.random.default_rng(0)
+    for _ in range(50):
+        # 60% wins of size +0.002, 40% losses of size -0.001
+        k2.update(0.002 if rng.random() < 0.6 else -0.001)
+    f = k2.fraction()
+    assert 0.0 < f <= 1.0, f"Kelly fraction out of range: {f:.4f}"
+
+
+def test_yfinance_feed_validation():
+    """Phase H: YFinanceFeed._validate_bar rejects NaN, gaps, stale bars."""
+    from src.live.feed import YFinanceFeed, Bar
+    feed = YFinanceFeed("GC=F", interval="1m", bar_interval_seconds=60)
+    feed._last_close = 2000.0
+    now = pd.Timestamp.utcnow()
+
+    good = Bar(ts=now, open=2001, high=2002, low=2000, close=2001, volume=10, asset="GC=F")
+    ok, _ = feed._validate_bar(good)
+    assert ok
+
+    nan_bar = Bar(ts=now, open=float("nan"), high=2002, low=2000, close=2001, volume=10, asset="GC=F")
+    ok, reason = feed._validate_bar(nan_bar)
+    assert not ok and "non-finite" in reason
+
+    gap_bar = Bar(ts=now, open=2200, high=2200, low=2200, close=2200, volume=10, asset="GC=F")
+    ok, reason = feed._validate_bar(gap_bar)
+    assert not ok and "gap" in reason
+
+    stale_bar = Bar(ts=now - pd.Timedelta(seconds=300), open=2001, high=2001, low=2001,
+                    close=2001, volume=10, asset="GC=F")
+    ok, reason = feed._validate_bar(stale_bar)
+    assert not ok and "old" in reason
 
 
 if __name__ == "__main__":
@@ -347,6 +517,10 @@ if __name__ == "__main__":
         test_triple_barrier_labels,
         test_cpcv_purge_no_leakage,
         test_encoder_shape,
+        test_vib_encoder,
+        test_tft_encoder,
+        test_grpo_trainer,
+        test_kill_switch,
         test_env_runs_trade,
         test_reward_modes,
         test_ppo_short_train,
@@ -356,6 +530,8 @@ if __name__ == "__main__":
         test_multi_asset_config,
         test_multi_asset_loader,
         test_shared_encoder_multi_asset,
+        test_kelly_calculator,
+        test_yfinance_feed_validation,
     ]
     failures = 0
     for t in tests:

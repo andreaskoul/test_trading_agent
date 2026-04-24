@@ -24,10 +24,13 @@ log = logging.getLogger(__name__)
 _FREQ_MULTIPLIERS = {
     "1d": 1.0,
     "4h": 1.625,     # ~6.5h trading day / 4h
+    "240m": 1.625,
     "1h": 6.5,       # 6.5 hourly bars per trading day
+    "60m": 6.5,
     "30m": 13.0,
     "15m": 26.0,
     "5m": 78.0,
+    "1m": 390.0,
 }
 
 

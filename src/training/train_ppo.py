@@ -25,6 +25,7 @@ from ..env.embedding_env import EmbeddingTradingEnv
 from ..env.trading_env import EnvConfig
 from ..models.precompute import precompute_embeddings
 from ..models.xlstm_lite import XLSTMLite
+from .grpo import GRPO, GRPOConfig
 
 try:
     from sb3_contrib import RecurrentPPO
@@ -170,6 +171,34 @@ def train_ppo_run(
             ),
             verbose=0,
             seed=seed,
+            device="cpu",
+        )
+    elif algo == "grpo":
+        # Critic-free group-relative policy gradient. Runs on a single env
+        # (not the DummyVecEnv) because the "group" is sampled via multiple
+        # trajectory restarts inside GRPO._collect_group.
+        single_env = _make_env(
+            precomputed["close"],
+            precomputed["atr"],
+            precomputed["embeddings"],
+            precomputed["vol_quantile"],
+            env_cfg,
+            train_idx,
+            seed,
+            regime_posterior=precomputed.get("regime_posterior"),
+        )()
+        model = GRPO(
+            single_env,
+            GRPOConfig(
+                total_timesteps=run_cfg.total_timesteps,
+                group_size=4,
+                steps_per_trajectory=max(64, run_cfg.n_steps // 4),
+                gamma=run_cfg.gamma,
+                clip_range=run_cfg.clip_range,
+                ent_coef=run_cfg.ent_coef,
+                learning_rate=run_cfg.learning_rate,
+                seed=seed,
+            ),
             device="cpu",
         )
     else:

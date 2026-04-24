@@ -28,7 +28,13 @@ from src.env.trading_env import env_config_from_yaml
 from src.models.meta_label import MetaLabelConfig, MetaLabelModel
 from src.training.evaluate import build_precomputed, rollout_policy, rollout_with_cost
 from src.training.pretrain_encoder import load_encoder
-from src.validation.bootstrap import block_bootstrap_sharpe, permutation_pvalue_sharpe
+from src.validation.bootstrap import (
+    block_bootstrap_sharpe,
+    bootstrap_pvalue_sharpe,
+    permutation_pvalue_sharpe,
+    block_permutation_pvalue_sharpe,
+    acf_lag1,
+)
 from src.validation.deflated_sr import deflated_sharpe_ratio, sharpe_ratio
 
 try:
@@ -36,7 +42,9 @@ try:
 except ImportError:  # pragma: no cover
     RecurrentPPO = None  # type: ignore[assignment]
 
-_ALGO_MAP: dict[str, type] = {"ppo": PPO, "a2c": A2C}
+from src.training.grpo import GRPO as _GRPO
+
+_ALGO_MAP: dict[str, type] = {"ppo": PPO, "a2c": A2C, "grpo": _GRPO}
 if RecurrentPPO is not None:
     _ALGO_MAP["recurrent_ppo"] = RecurrentPPO
     _ALGO_MAP["rppo"] = RecurrentPPO
@@ -305,8 +313,37 @@ def main() -> None:
         block=cfg["evaluation"]["bootstrap_block_size"],
         n_resamples=cfg["evaluation"]["bootstrap_resamples"],
     )
-    perm_p = permutation_pvalue_sharpe(
-        pooled, n_resamples=cfg["evaluation"]["permutation_samples"]
+    # PRIMARY edge test: centred block-bootstrap p-value (Politis & Romano).
+    # Sharpe ratio is permutation-invariant (mean/std are order-independent),
+    # so classical permutation tests give p≈1 degenerately due to
+    # floating-point ties. Centred block-bootstrap enforces the null
+    # H0: E[r]=0 and resamples with replacement, which IS order-sensitive
+    # and gives a legitimate edge-detection p-value.
+    acf1 = acf_lag1(pooled)
+    log.info("pooled trade-return ACF(1) = %.4f", acf1)
+    bootstrap_p = bootstrap_pvalue_sharpe(
+        pooled,
+        block=int(cfg["evaluation"]["bootstrap_block_size"]),
+        n_resamples=int(cfg["evaluation"]["bootstrap_resamples"]),
+    )
+    log.info("bootstrap edge-test p-value (H0: SR<=0) = %.4f", bootstrap_p)
+
+    # Legacy permutation diagnostics (kept for backward compatibility with
+    # iter-1..7 reports; NOT the primary edge test — see bootstrap_pvalue_sharpe).
+    perm_block_size = int(cfg["evaluation"].get("permutation_block_size", 8))
+    use_block_perm = abs(acf1) > 0.05
+    if use_block_perm:
+        perm_p = block_permutation_pvalue_sharpe(
+            pooled, block_size=perm_block_size,
+            n_resamples=cfg["evaluation"]["permutation_samples"],
+        )
+    else:
+        perm_p = permutation_pvalue_sharpe(
+            pooled, n_resamples=cfg["evaluation"]["permutation_samples"]
+        )
+    log.info(
+        "legacy permutation p-value = %.4f (mode=%s; diagnostic only)",
+        perm_p, "block" if use_block_perm else "elementwise",
     )
 
     # Transaction cost sweep
@@ -379,8 +416,14 @@ def main() -> None:
         red_flags.append("Mean Sharpe <= 0")
     if dsr.deflated_sharpe < 0.95:
         red_flags.append(f"DSR p-value > 0.05 (deflated={dsr.deflated_sharpe:.3f})")
-    if perm_p > 0.10:
-        red_flags.append(f"Permutation p-value > 0.10 (p={perm_p:.3f})")
+    # Primary edge-test red flag: centred block-bootstrap p-value.
+    if bootstrap_p > 0.05:
+        red_flags.append(f"Bootstrap edge-test p > 0.05 (p={bootstrap_p:.3f})")
+    # Legacy permutation diagnostic (still surfaced but softer threshold
+    # since the statistic is permutation-invariant and this test is only
+    # informative about floating-point tie structure).
+    if perm_p > 0.50:
+        red_flags.append(f"Legacy permutation p > 0.50 (p={perm_p:.3f}, diagnostic only)")
     mean_mdd = float(np.mean(df_runs["max_drawdown"]))
     if mean_mdd < -0.25:
         red_flags.append(f"Mean max drawdown < -25% ({mean_mdd:.2%})")
@@ -559,6 +602,9 @@ def main() -> None:
                 psr_vs_zero=dsr.psr_vs_zero,
                 expected_max_sr=dsr.expected_max_sr,
                 permutation_pvalue=perm_p,
+                permutation_acf1=float(acf1),
+                permutation_block_size=int(perm_block_size) if use_block_perm else None,
+                bootstrap_pvalue_sharpe=float(bootstrap_p),
                 bootstrap_lo=boot.lo,
                 bootstrap_hi=boot.hi,
                 cost_sweep=cost_details,

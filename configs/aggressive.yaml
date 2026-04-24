@@ -1,0 +1,93 @@
+# Aggressive hourly profile: overlay onto configs/default.yaml.
+# Enable with: TRADING_PROFILE=aggressive python scripts/NN_....py
+#
+# Goal: higher trade frequency for a $100-notional paper account. Uses 60m
+# bars (so ~6500 bars/yr vs ~252 for daily), a tighter triple-barrier, and
+# realistic micro-gold spread (~0.5 bps on MGC).
+#
+# Expected behavior: ~300-500 trades per year on gold alone (vs ~25/yr on
+# the daily config), Sharpe becomes more cost-sensitive, DSR more credible
+# thanks to the larger trade count.
+
+data:
+  assets:
+    - symbol: "GC=F"
+      fallback_symbols: ["GLD"]
+      interval: "60m"            # 15m blocked: yfinance unavailable, github mirror is 60m-only
+      raw_path: "data/raw/gc_60m.parquet"
+      features_path: "data/processed/features_gc_60m.parquet"
+      labels_path: "data/processed/labels_gc_60m.parquet"
+  # Phase G / iter-6: DeepTrader-style macro augmentation + Kraskov kNN MI
+  # pruning. DXY via DX=F (Yahoo continuous), 10Y yield via ^TNX, VIX via
+  # ^VIX, SPX via ^GSPC. All daily bars; merged into the 60m gold feature
+  # matrix as 5/20-bar log-returns inside build_features. MI threshold
+  # matches the sklearn noise floor for ~20k samples.
+  macro_symbols: ["^VIX", "^GSPC", "^TNX"]   # iter-7: real data via GitHub open-data (DX=F dropped — no GitHub source)
+  macro_interval: "1d"
+  mi_threshold: 0.003
+  holdout_frac: 0.20                         # Phase H: last 20% locked out of CPCV; gated by scripts/04b_holdout_eval.py
+
+features:
+  # Base values stay calibrated for daily; config_utils.scale_param() will
+  # multiply by ~6.5x for 60m bars so the effective lookback stays ~1y.
+  warmup_bars: 252
+  zscore_window: 252
+
+triple_barrier:
+  horizon: 4            # base * 6.5 -> ~26 bars (~1 trading day at 60m)
+  rr_upper: 1.5         # tighter TP so profits materialise within horizon
+  rr_lower: 0.75        # 2:1 RR preserved
+  atr_window: 4         # base * 6.5 -> ~26 (~1-day ATR at 60m)
+
+encoder:
+  # Activate Tier 5 architectural pieces in the experimental profile so
+  # the aggressive run actually exercises VIB + TFT. Default profile keeps
+  # both off so the existing baseline policies stay reproducible.
+  vib: true
+  vib_beta: 1.0e-3
+  tft: true
+  tft_heads: 4
+  # Phase G / iter-6 multi-task pretraining. The encoder backbone now
+  # feeds three heads during pretrain: original 3-class triple-barrier
+  # direction, a forward-volatility MSE head, and a binary
+  # "trade worked" meta-label head. .encode() is unchanged so PPO +
+  # evaluation are untouched.
+  multitask: true
+  vol_weight: 0.3
+  meta_weight: 0.2
+
+env:
+  spread_bps: 0.5       # MGC micro-gold realistic spread
+  # Moody-Saffell differential Sharpe: online risk-adjusted reward.
+  # Literature (Moody & Saffell 1998; re-validated 2024-2025 meta-analysis)
+  # shows DSR reward yields more stable, cost-aware policies than raw
+  # return-proportional shaping, especially at realistic spreads.
+  reward_mode: "diff_sharpe"
+  reward_return_scale: 100.0
+  reward_cost_lambda: 2.0   # Iter-2 tried 4x; regressed Sharpe by 10-21%, reverted
+  reward_dsr_eta: 0.01      # EWMA rate for DSR moments
+  reward_dsr_scale: 1.0     # scale on differential Sharpe increment
+  min_flat_bars: 0          # Iter-5 tried 2; pre-meta Sharpe flat, meta-gate -19%, reverted
+
+ppo:
+  total_timesteps: 120000   # more bars -> need more updates
+  seeds: [7, 13, 29]
+  algorithms: ["ppo", "grpo"]   # Iter-3 tried +RecurrentPPO; mean 0.525 < PPO/GRPO, reverted
+
+evaluation:
+  costs_bps: [0.0, 0.5, 1.0, 2.0, 5.0]   # sweep around the realistic spread
+  permutation_block_size: 8              # ~1 trading day at 60m (Phase H)
+
+finetune:
+  timesteps: 40000
+  holdout_frac: 0.15     # ~1 year of hourly bars on a 6-year train window
+
+ui:
+  paper:
+    default_asset: "GC=F"
+    costs:
+      spread_bps: 0.5
+      slippage_bps: 0.3
+      commission_usd: 0.0
+    bar_interval_seconds: 3600     # poll hourly
+    meta_threshold: 0.55

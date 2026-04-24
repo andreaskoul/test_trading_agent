@@ -78,6 +78,7 @@ class EmbeddingTradingEnv(gym.Env):
 
         self._pos = 0
         self._entry_i = -1
+        self._flat_until = -1
         self._entry_price = 0.0
         self._barrier_upper = 0.0
         self._barrier_lower = 0.0
@@ -105,6 +106,7 @@ class EmbeddingTradingEnv(gym.Env):
         self._step_i = int(self.rng.choice(self._start_pool))
         self._pos = 0
         self._entry_i = -1
+        self._flat_until = -1
         self._episode_trades = []
         self._dsr_A = 0.0
         self._dsr_B = 1e-8
@@ -117,10 +119,11 @@ class EmbeddingTradingEnv(gym.Env):
         info: dict = {}
 
         if self._pos == 0:
-            if action == BUY:
-                self._open_position(+1)
-            elif action == SELL:
-                self._open_position(-1)
+            if self._step_i >= self._flat_until:
+                if action == BUY:
+                    self._open_position(+1)
+                elif action == SELL:
+                    self._open_position(-1)
             self._step_i += 1
         else:
             reward, fired, ret = self._check_barrier()
@@ -128,6 +131,7 @@ class EmbeddingTradingEnv(gym.Env):
                 self._episode_trades.append(ret)
                 info["trade_return"] = ret
                 self._pos = 0
+                self._flat_until = self._step_i + self.cfg.min_flat_bars + 1
             self._step_i += 1
 
         if self._step_i >= self.n - 1:

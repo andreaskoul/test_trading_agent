@@ -49,7 +49,9 @@ log = logging.getLogger("cockpit")
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 _STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 
-_ALGO_MAP: dict[str, type] = {"ppo": PPO, "a2c": A2C}
+from ..training.grpo import GRPO as _GRPO
+
+_ALGO_MAP: dict[str, type] = {"ppo": PPO, "a2c": A2C, "grpo": _GRPO}
 if RecurrentPPO is not None:
     _ALGO_MAP["recurrent_ppo"] = RecurrentPPO
     _ALGO_MAP["rppo"] = RecurrentPPO

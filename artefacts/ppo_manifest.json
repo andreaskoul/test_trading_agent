@@ -1,5 +1,6 @@
 [
   {
+    "asset": "GC=F",
     "split": 0,
     "test_groups": [
       0,
@@ -8,76 +9,160 @@
     "seed": 7,
     "algorithm": "ppo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/ppo_split0_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split0.pkl",
-    "train_size": 12584,
-    "test_size": 6387,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split0_seed7.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split0.pkl",
+    "train_size": 10764,
+    "test_size": 5463,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         1,
-        3193,
-        6386
+        2731,
+        5462
       ]
     ]
   },
   {
+    "asset": "GC=F",
+    "split": 0,
+    "test_groups": [
+      0,
+      1
+    ],
+    "seed": 13,
+    "algorithm": "ppo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split0_seed13.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split0.pkl",
+    "train_size": 10764,
+    "test_size": 5463,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        1,
+        2731,
+        5462
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
+    "split": 0,
+    "test_groups": [
+      0,
+      1
+    ],
+    "seed": 29,
+    "algorithm": "ppo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split0_seed29.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split0.pkl",
+    "train_size": 10764,
+    "test_size": 5463,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        1,
+        2731,
+        5462
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
     "split": 0,
     "test_groups": [
       0,
       1
     ],
     "seed": 7,
-    "algorithm": "a2c",
+    "algorithm": "grpo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/a2c_split0_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split0.pkl",
-    "train_size": 12584,
-    "test_size": 6387,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split0_seed7.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split0.pkl",
+    "train_size": 10764,
+    "test_size": 5463,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         1,
-        3193,
-        6386
+        2731,
+        5462
       ]
     ]
   },
   {
+    "asset": "GC=F",
     "split": 0,
     "test_groups": [
       0,
       1
     ],
-    "seed": 7,
-    "algorithm": "recurrent_ppo",
+    "seed": 13,
+    "algorithm": "grpo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/recurrent_ppo_split0_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split0.pkl",
-    "train_size": 12584,
-    "test_size": 6387,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split0_seed13.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split0.pkl",
+    "train_size": 10764,
+    "test_size": 5463,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         1,
-        3193,
-        6386
+        2731,
+        5462
       ]
     ]
   },
   {
+    "asset": "GC=F",
+    "split": 0,
+    "test_groups": [
+      0,
+      1
+    ],
+    "seed": 29,
+    "algorithm": "grpo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split0_seed29.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split0.pkl",
+    "train_size": 10764,
+    "test_size": 5463,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        1,
+        2731,
+        5462
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
     "split": 1,
     "test_groups": [
       0,
@@ -86,76 +171,160 @@
     "seed": 7,
     "algorithm": "ppo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/ppo_split1_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split1.pkl",
-    "train_size": 12385,
-    "test_size": 6387,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split1_seed7.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split1.pkl",
+    "train_size": 10587,
+    "test_size": 5463,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         2,
-        6387,
-        9580
+        5463,
+        8194
       ]
     ]
   },
   {
+    "asset": "GC=F",
+    "split": 1,
+    "test_groups": [
+      0,
+      2
+    ],
+    "seed": 13,
+    "algorithm": "ppo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split1_seed13.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split1.pkl",
+    "train_size": 10587,
+    "test_size": 5463,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        2,
+        5463,
+        8194
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
+    "split": 1,
+    "test_groups": [
+      0,
+      2
+    ],
+    "seed": 29,
+    "algorithm": "ppo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split1_seed29.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split1.pkl",
+    "train_size": 10587,
+    "test_size": 5463,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        2,
+        5463,
+        8194
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
     "split": 1,
     "test_groups": [
       0,
       2
     ],
     "seed": 7,
-    "algorithm": "a2c",
+    "algorithm": "grpo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/a2c_split1_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split1.pkl",
-    "train_size": 12385,
-    "test_size": 6387,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split1_seed7.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split1.pkl",
+    "train_size": 10587,
+    "test_size": 5463,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         2,
-        6387,
-        9580
+        5463,
+        8194
       ]
     ]
   },
   {
+    "asset": "GC=F",
     "split": 1,
     "test_groups": [
       0,
       2
     ],
-    "seed": 7,
-    "algorithm": "recurrent_ppo",
+    "seed": 13,
+    "algorithm": "grpo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/recurrent_ppo_split1_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split1.pkl",
-    "train_size": 12385,
-    "test_size": 6387,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split1_seed13.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split1.pkl",
+    "train_size": 10587,
+    "test_size": 5463,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         2,
-        6387,
-        9580
+        5463,
+        8194
       ]
     ]
   },
   {
+    "asset": "GC=F",
+    "split": 1,
+    "test_groups": [
+      0,
+      2
+    ],
+    "seed": 29,
+    "algorithm": "grpo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split1_seed29.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split1.pkl",
+    "train_size": 10587,
+    "test_size": 5463,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        2,
+        5463,
+        8194
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
     "split": 2,
     "test_groups": [
       0,
@@ -164,76 +333,160 @@
     "seed": 7,
     "algorithm": "ppo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/ppo_split2_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split2.pkl",
-    "train_size": 12392,
-    "test_size": 6386,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split2_seed7.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split2.pkl",
+    "train_size": 10597,
+    "test_size": 5462,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         3,
-        9581,
-        12773
+        8195,
+        10925
       ]
     ]
   },
   {
+    "asset": "GC=F",
+    "split": 2,
+    "test_groups": [
+      0,
+      3
+    ],
+    "seed": 13,
+    "algorithm": "ppo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split2_seed13.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split2.pkl",
+    "train_size": 10597,
+    "test_size": 5462,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        3,
+        8195,
+        10925
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
+    "split": 2,
+    "test_groups": [
+      0,
+      3
+    ],
+    "seed": 29,
+    "algorithm": "ppo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split2_seed29.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split2.pkl",
+    "train_size": 10597,
+    "test_size": 5462,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        3,
+        8195,
+        10925
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
     "split": 2,
     "test_groups": [
       0,
       3
     ],
     "seed": 7,
-    "algorithm": "a2c",
+    "algorithm": "grpo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/a2c_split2_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split2.pkl",
-    "train_size": 12392,
-    "test_size": 6386,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split2_seed7.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split2.pkl",
+    "train_size": 10597,
+    "test_size": 5462,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         3,
-        9581,
-        12773
+        8195,
+        10925
       ]
     ]
   },
   {
+    "asset": "GC=F",
     "split": 2,
     "test_groups": [
       0,
       3
     ],
-    "seed": 7,
-    "algorithm": "recurrent_ppo",
+    "seed": 13,
+    "algorithm": "grpo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/recurrent_ppo_split2_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split2.pkl",
-    "train_size": 12392,
-    "test_size": 6386,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split2_seed13.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split2.pkl",
+    "train_size": 10597,
+    "test_size": 5462,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         3,
-        9581,
-        12773
+        8195,
+        10925
       ]
     ]
   },
   {
+    "asset": "GC=F",
+    "split": 2,
+    "test_groups": [
+      0,
+      3
+    ],
+    "seed": 29,
+    "algorithm": "grpo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split2_seed29.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split2.pkl",
+    "train_size": 10597,
+    "test_size": 5462,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        3,
+        8195,
+        10925
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
     "split": 3,
     "test_groups": [
       0,
@@ -242,76 +495,160 @@
     "seed": 7,
     "algorithm": "ppo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/ppo_split3_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split3.pkl",
-    "train_size": 12381,
-    "test_size": 6387,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split3_seed7.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split3.pkl",
+    "train_size": 10592,
+    "test_size": 5463,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         4,
-        12774,
-        15967
+        10926,
+        13657
       ]
     ]
   },
   {
+    "asset": "GC=F",
+    "split": 3,
+    "test_groups": [
+      0,
+      4
+    ],
+    "seed": 13,
+    "algorithm": "ppo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split3_seed13.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split3.pkl",
+    "train_size": 10592,
+    "test_size": 5463,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        4,
+        10926,
+        13657
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
+    "split": 3,
+    "test_groups": [
+      0,
+      4
+    ],
+    "seed": 29,
+    "algorithm": "ppo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split3_seed29.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split3.pkl",
+    "train_size": 10592,
+    "test_size": 5463,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        4,
+        10926,
+        13657
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
     "split": 3,
     "test_groups": [
       0,
       4
     ],
     "seed": 7,
-    "algorithm": "a2c",
+    "algorithm": "grpo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/a2c_split3_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split3.pkl",
-    "train_size": 12381,
-    "test_size": 6387,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split3_seed7.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split3.pkl",
+    "train_size": 10592,
+    "test_size": 5463,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         4,
-        12774,
-        15967
+        10926,
+        13657
       ]
     ]
   },
   {
+    "asset": "GC=F",
     "split": 3,
     "test_groups": [
       0,
       4
     ],
-    "seed": 7,
-    "algorithm": "recurrent_ppo",
+    "seed": 13,
+    "algorithm": "grpo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/recurrent_ppo_split3_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split3.pkl",
-    "train_size": 12381,
-    "test_size": 6387,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split3_seed13.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split3.pkl",
+    "train_size": 10592,
+    "test_size": 5463,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         4,
-        12774,
-        15967
+        10926,
+        13657
       ]
     ]
   },
   {
+    "asset": "GC=F",
+    "split": 3,
+    "test_groups": [
+      0,
+      4
+    ],
+    "seed": 29,
+    "algorithm": "grpo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split3_seed29.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split3.pkl",
+    "train_size": 10592,
+    "test_size": 5463,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        4,
+        10926,
+        13657
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
     "split": 4,
     "test_groups": [
       0,
@@ -320,76 +657,160 @@
     "seed": 7,
     "algorithm": "ppo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/ppo_split4_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split4.pkl",
-    "train_size": 12570,
-    "test_size": 6387,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split4_seed7.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split4.pkl",
+    "train_size": 10757,
+    "test_size": 5463,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         5,
-        15968,
-        19161
+        13658,
+        16389
       ]
     ]
   },
   {
+    "asset": "GC=F",
+    "split": 4,
+    "test_groups": [
+      0,
+      5
+    ],
+    "seed": 13,
+    "algorithm": "ppo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split4_seed13.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split4.pkl",
+    "train_size": 10757,
+    "test_size": 5463,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        5,
+        13658,
+        16389
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
+    "split": 4,
+    "test_groups": [
+      0,
+      5
+    ],
+    "seed": 29,
+    "algorithm": "ppo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split4_seed29.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split4.pkl",
+    "train_size": 10757,
+    "test_size": 5463,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        5,
+        13658,
+        16389
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
     "split": 4,
     "test_groups": [
       0,
       5
     ],
     "seed": 7,
-    "algorithm": "a2c",
+    "algorithm": "grpo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/a2c_split4_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split4.pkl",
-    "train_size": 12570,
-    "test_size": 6387,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split4_seed7.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split4.pkl",
+    "train_size": 10757,
+    "test_size": 5463,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         5,
-        15968,
-        19161
+        13658,
+        16389
       ]
     ]
   },
   {
+    "asset": "GC=F",
     "split": 4,
     "test_groups": [
       0,
       5
     ],
-    "seed": 7,
-    "algorithm": "recurrent_ppo",
+    "seed": 13,
+    "algorithm": "grpo",
     "encoder_group": 0,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/recurrent_ppo_split4_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split4.pkl",
-    "train_size": 12570,
-    "test_size": 6387,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split4_seed13.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split4.pkl",
+    "train_size": 10757,
+    "test_size": 5463,
     "test_blocks": [
       [
         0,
         0,
-        3192
+        2730
       ],
       [
         5,
-        15968,
-        19161
+        13658,
+        16389
       ]
     ]
   },
   {
+    "asset": "GC=F",
+    "split": 4,
+    "test_groups": [
+      0,
+      5
+    ],
+    "seed": 29,
+    "algorithm": "grpo",
+    "encoder_group": 0,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split4_seed29.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split4.pkl",
+    "train_size": 10757,
+    "test_size": 5463,
+    "test_blocks": [
+      [
+        0,
+        0,
+        2730
+      ],
+      [
+        5,
+        13658,
+        16389
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
     "split": 5,
     "test_groups": [
       1,
@@ -398,72 +819,155 @@
     "seed": 7,
     "algorithm": "ppo",
     "encoder_group": 1,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/ppo_split5_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split5.pkl",
-    "train_size": 12571,
-    "test_size": 6388,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split5_seed7.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split5.pkl",
+    "train_size": 10760,
+    "test_size": 5464,
     "test_blocks": [
       [
         1,
-        3193,
-        6386
+        2731,
+        5462
       ],
       [
         2,
-        6387,
-        9580
+        5463,
+        8194
       ]
     ]
   },
   {
+    "asset": "GC=F",
+    "split": 5,
+    "test_groups": [
+      1,
+      2
+    ],
+    "seed": 13,
+    "algorithm": "ppo",
+    "encoder_group": 1,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split5_seed13.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split5.pkl",
+    "train_size": 10760,
+    "test_size": 5464,
+    "test_blocks": [
+      [
+        1,
+        2731,
+        5462
+      ],
+      [
+        2,
+        5463,
+        8194
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
+    "split": 5,
+    "test_groups": [
+      1,
+      2
+    ],
+    "seed": 29,
+    "algorithm": "ppo",
+    "encoder_group": 1,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_ppo_split5_seed29.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split5.pkl",
+    "train_size": 10760,
+    "test_size": 5464,
+    "test_blocks": [
+      [
+        1,
+        2731,
+        5462
+      ],
+      [
+        2,
+        5463,
+        8194
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
     "split": 5,
     "test_groups": [
       1,
       2
     ],
     "seed": 7,
-    "algorithm": "a2c",
+    "algorithm": "grpo",
     "encoder_group": 1,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/a2c_split5_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split5.pkl",
-    "train_size": 12571,
-    "test_size": 6388,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split5_seed7.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split5.pkl",
+    "train_size": 10760,
+    "test_size": 5464,
     "test_blocks": [
       [
         1,
-        3193,
-        6386
+        2731,
+        5462
       ],
       [
         2,
-        6387,
-        9580
+        5463,
+        8194
       ]
     ]
   },
   {
+    "asset": "GC=F",
     "split": 5,
     "test_groups": [
       1,
       2
     ],
-    "seed": 7,
-    "algorithm": "recurrent_ppo",
+    "seed": 13,
+    "algorithm": "grpo",
     "encoder_group": 1,
-    "policy_path": "/home/user/test_trading_agent/artefacts/policies/recurrent_ppo_split5_seed7.zip",
-    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_split5.pkl",
-    "train_size": 12571,
-    "test_size": 6388,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split5_seed13.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split5.pkl",
+    "train_size": 10760,
+    "test_size": 5464,
     "test_blocks": [
       [
         1,
-        3193,
-        6386
+        2731,
+        5462
       ],
       [
         2,
-        6387,
-        9580
+        5463,
+        8194
+      ]
+    ]
+  },
+  {
+    "asset": "GC=F",
+    "split": 5,
+    "test_groups": [
+      1,
+      2
+    ],
+    "seed": 29,
+    "algorithm": "grpo",
+    "encoder_group": 1,
+    "policy_path": "/home/user/test_trading_agent/artefacts/policies/gc_f_grpo_split5_seed29.zip",
+    "regime_path": "/home/user/test_trading_agent/artefacts/regimes/hmm_gc_f_split5.pkl",
+    "train_size": 10760,
+    "test_size": 5464,
+    "test_blocks": [
+      [
+        1,
+        2731,
+        5462
+      ],
+      [
+        2,
+        5463,
+        8194
       ]
     ]
   }
