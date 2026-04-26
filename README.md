@@ -197,6 +197,22 @@ default) and live-feed quality gates (NaN/gap/staleness/exchange-hours)
 ship in `src/live/paper_engine.py` and `src/live/feed.py`. See the
 Phase H section in `reports/iteration_log.md` for the full comparison.
 
+**Phase I (2026-04-26) — paper-trading simulation.**
+`scripts/07_paper_simulation.py` drives the best CPCV policy through
+`PaperEngine` over the same 20% hold-out, twice: byte-parity baseline
+vs. quarter-Kelly (`cap=0.25, floor=0.05`). Headline: Sharpe is
+**regime-dependent** — 0.64 in the trend regime (80% of bars), 2.15 in
+the volatile regime (20% of bars). The 1.09 hold-out figure is a blend.
+Quarter-Kelly pins to floor (mean fraction 0.053) because the per-trade
+edge is too thin for a meaningful Kelly bet — the aggregate Sharpe
+comes from frequency, not conviction. Drawdown profile: −4.29% on
+unscaled notional over 6 months; −0.22% at quarter-Kelly. Reports
+land in `reports/paper_simulation_report.md` and `paper_simulation.json`.
+
+```bash
+TRADING_PROFILE=aggressive python scripts/07_paper_simulation.py
+```
+
 Known runtime limits:
 
 - 15m MGC bars are **not** reachable in this sandbox (yfinance blocked,

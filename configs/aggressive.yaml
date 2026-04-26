@@ -91,3 +91,10 @@ ui:
       commission_usd: 0.0
     bar_interval_seconds: 3600     # poll hourly
     meta_threshold: 0.55
+    # Phase H: quarter-Kelly position sizing. cap=0 disables (default).
+    # cap=0.25 + floor=0.05 = practitioner's quarter-Kelly with a 5%
+    # minimum position so a long flat streak doesn't lock the engine
+    # at zero notional permanently.
+    kelly_cap: 0.25
+    kelly_floor: 0.05
+    kelly_window: 100

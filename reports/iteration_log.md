@@ -598,3 +598,54 @@ supported on genuinely-unseen data.
 - KS feature-drift detection
 - DXY via FMP (once domain reachable)
 - LightGBM meta-stack
+
+---
+
+## Phase I — Paper-trading simulation (2026-04-26)
+
+`scripts/07_paper_simulation.py` runs the best CPCV policy through
+`PaperEngine` over the 20% hold-out, twice: (1) `kelly_cap=0` baseline
+that is byte-for-byte identical to `04b_holdout_eval.py`, and
+(2) quarter-Kelly (`cap=0.25`, `floor=0.05`).
+
+Results on the GC=F hold-out (PPO split=5 seed=29, 2025-09-09 → 2026-03-24,
+3,278 bars, ~6 months wall-clock):
+
+| run | n_trades | Sharpe | hit | max DD | total ret | trades/day | mean Kelly |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| baseline | 635 | 1.090 | 0.487 | -4.29% | +57.37% | 3.27 | 1.000 |
+| quarter-Kelly | 635 | 1.081 | 0.487 | -0.22% | +2.45% | 3.27 | 0.053 |
+
+**Headline findings (answering the user's three pre-paper concerns):**
+
+1. **Drawdown profile is benign.** Baseline equity-curve max DD is
+   −4.29% over 6 months; the worst per-regime DD is −3.76% in the
+   trend regime. Quarter-Kelly clamps DD by ~20× to −0.22%.
+
+2. **Sharpe is regime-DEPENDENT.** The 1.09 hold-out blend masks a
+   spread of 1.52 across HMM states:
+   - Trend regime (state 0, 80% of bars, 508 trades): Sharpe **0.64**
+   - Volatile regime (state 1, 20% of bars, 127 trades): Sharpe **2.15**
+   - The edge is concentrated in the volatile regime. A live deployment
+     that lands in a long trend regime would see closer to Sharpe 0.64,
+     not 1.1. This is the single biggest pre-deployment caveat.
+
+3. **Kelly pins to the floor.** Mean Kelly fraction = 0.053
+   (≈ floor=0.05). The per-trade edge (`hit×W/L − (1−hit)`) is too
+   thin to justify a meaningful Kelly bet because the aggregate
+   Sharpe comes from frequency (635 trades / 6 months), not single-
+   trade conviction. Realised leverage proxy = 5% of unit notional,
+   p95 = 0.067. Turnover is unchanged at 3.27 trades/day (Kelly
+   scales notional, not frequency).
+
+**Implications for paper trading:**
+- Realised PnL on a $10k account at quarter-Kelly is ~$245 over 6 months
+  vs ~$5,737 at full notional — Kelly is doing what it's designed to do:
+  trade sizing-down for safety at the cost of expected return.
+- Regime-conditioned sizing (deferred queue item 3) is now the highest-
+  priority post-MVP add: half-size in trend regime, full Kelly in volatile,
+  to better match the per-regime edge.
+- DD budget for paper trading: 5% on full notional, 0.5% on quarter-Kelly.
+- A reasonable production posture: run paper on quarter-Kelly until 1k+
+  realised trades accumulate, then re-fit Kelly with the live W/L data
+  (the Kelly window=100 will adapt as the rolling stats fill in).
