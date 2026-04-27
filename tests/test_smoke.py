@@ -671,6 +671,108 @@ def test_paper_engine_extend_precomputed():
     assert sig.idx == new_idx
 
 
+def test_broker_mock_idempotent_submit():
+    """Phase K: MockBroker idempotency — same client_order_id returns same order."""
+    from src.live.broker import MockBroker, OrderRequest, make_client_order_id
+
+    broker = MockBroker()
+    broker.set_price("GC=F", 2000.0)
+
+    cid = make_client_order_id("GC=F-m0-live-1234", entry_idx=42)
+    req = OrderRequest(symbol="GC=F", qty=1.0, side="buy", client_order_id=cid)
+
+    r1 = broker.submit_order(req)
+    r2 = broker.submit_order(req)
+    assert r1.order_id == r2.order_id, "same client_order_id must return same order"
+
+    # The position should reflect a single fill, not two.
+    pos = broker.get_position("GC=F")
+    assert pos is not None and abs(pos.qty - 1.0) < 1e-9, f"expected qty=1.0, got {pos}"
+
+
+def test_broker_retry_on_transient():
+    """Phase K: submit_order_with_retry recovers from transient errors."""
+    from src.live.broker import (
+        MockBroker, OrderRequest, submit_order_with_retry,
+        PermanentBrokerError,
+    )
+
+    broker = MockBroker()
+    broker.set_price("X", 100.0)
+
+    # Two transient failures, then success.
+    broker.fail_next(2, kind="transient")
+    req = OrderRequest(symbol="X", qty=1.0, side="buy", client_order_id="cid-1")
+    res = submit_order_with_retry(broker, req, max_attempts=4, base_delay=0.01)
+    assert res.status == "filled"
+
+    # Permanent error should bubble immediately (no retry).
+    broker.fail_next(1, kind="permanent")
+    req2 = OrderRequest(symbol="X", qty=1.0, side="buy", client_order_id="cid-2")
+    try:
+        submit_order_with_retry(broker, req2, max_attempts=4, base_delay=0.01)
+        raise AssertionError("permanent error should have raised")
+    except PermanentBrokerError:
+        pass
+
+
+def test_broker_reconcile_positions():
+    """Phase K: reconcile_positions detects local↔broker mismatches."""
+    from src.live.broker import (
+        MockBroker, BrokerPosition, reconcile_positions,
+    )
+
+    broker = MockBroker()
+    broker.set_position(BrokerPosition(symbol="GC=F", qty=1.0, avg_entry_price=2000.0))
+    broker.set_position(BrokerPosition(symbol="SI=F", qty=-2.0, avg_entry_price=24.0))
+
+    local = {"GC=F": 1.0, "SI=F": 0.0, "PL=F": 1.0}   # SI mismatch (flat locally),
+                                                       # PL not at broker
+    results = reconcile_positions(broker, local)
+    by_sym = {r.symbol: r for r in results}
+
+    assert by_sym["GC=F"].matched
+    assert not by_sym["SI=F"].matched
+    assert by_sym["SI=F"].broker_qty == -2.0
+    assert not by_sym["PL=F"].matched
+    assert by_sym["PL=F"].broker_qty == 0.0
+
+
+def test_drift_detector_no_drift():
+    """Phase K: drift detector reports no drift when live ~ reference."""
+    from src.validation.drift import FeatureDriftDetector
+
+    rng = np.random.default_rng(0)
+    n = 500
+    cols = ["f1", "f2", "f3", "f4"]
+    ref = pd.DataFrame(rng.standard_normal((n, len(cols))), columns=cols)
+    live = pd.DataFrame(rng.standard_normal((100, len(cols))), columns=cols)
+
+    det = FeatureDriftDetector(ref, alpha=0.05, flag_fraction=0.5)
+    rep = det.check(live)
+    # Same distribution → at most a small fraction flagged by chance.
+    assert not rep.drifted, f"unexpected drift: {rep.summary()}"
+    assert rep.fraction_flagged < 0.5
+
+
+def test_drift_detector_detects_shift():
+    """Phase K: drift detector flags a clear distribution shift."""
+    from src.validation.drift import FeatureDriftDetector
+
+    rng = np.random.default_rng(1)
+    n = 500
+    cols = ["f1", "f2", "f3", "f4"]
+    ref = pd.DataFrame(rng.standard_normal((n, len(cols))), columns=cols)
+    # Live data: shifted mean on every column (regime change).
+    live_arr = rng.standard_normal((200, len(cols))) + 1.5
+    live = pd.DataFrame(live_arr, columns=cols)
+
+    det = FeatureDriftDetector(ref, alpha=0.05, flag_fraction=0.5)
+    rep = det.check(live)
+    assert rep.drifted, f"expected drift, got: {rep.summary()}"
+    assert rep.fraction_flagged >= 0.5
+
+
 if __name__ == "__main__":
     tests = [
         test_features_no_nans,
@@ -696,6 +798,11 @@ if __name__ == "__main__":
         test_regime_size_multipliers,
         test_streaming_encoder_update,
         test_paper_engine_extend_precomputed,
+        test_broker_mock_idempotent_submit,
+        test_broker_retry_on_transient,
+        test_broker_reconcile_positions,
+        test_drift_detector_no_drift,
+        test_drift_detector_detects_shift,
     ]
     failures = 0
     for t in tests:

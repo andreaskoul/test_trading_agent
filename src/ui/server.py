@@ -16,6 +16,7 @@ import asyncio
 import json
 import logging
 import os
+import time
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from typing import Optional
@@ -236,6 +237,18 @@ class CockpitState:
         policy_path = entry["policy_path"]
         if not os.path.isabs(policy_path):
             policy_path = _path(self.cfg, policy_path)
+        # Phase K: refuse to load policies older than max_policy_age_days.
+        # 0 (default) disables the gate so historical replays still work.
+        max_age = float(self.cfg.get("ui", {}).get("paper", {})
+                        .get("max_policy_age_days", 0.0))
+        if max_age > 0.0 and os.path.exists(policy_path):
+            age_days = (time.time() - os.path.getmtime(policy_path)) / 86400.0
+            if age_days > max_age:
+                raise HTTPException(
+                    412,
+                    f"policy {policy_path} is {age_days:.1f}d old (limit "
+                    f"{max_age}d); retrain before live trading",
+                )
         return cls.load(policy_path, device="cpu")
 
     def _fit_meta_model(self, asset_symbol: str) -> Optional[MetaLabelModel]:
@@ -531,6 +544,16 @@ class CockpitState:
                 await self.hub.publish(
                     "log", {"level": "error", "msg": f"KILL-SWITCH: {reasons}"}
                 )
+                # Phase K: best-effort operator alert via webhook. Runs in a
+                # thread so the trading loop never blocks on a slow webhook.
+                webhook = self.cfg.get("ui", {}).get("paper", {}).get("alert_webhook", "")
+                if webhook:
+                    from ..live.broker import post_alert
+                    asyncio.create_task(asyncio.to_thread(
+                        post_alert, webhook, "kill_switch_halt",
+                        {"run_id": engine.run_id, "asset": engine.asset,
+                         "reasons": ks_result.reasons},
+                    ))
                 # Stop the session (feed + task) without waiting inline to
                 # avoid deadlock inside the async feed loop.
                 asyncio.create_task(self.stop_session())
