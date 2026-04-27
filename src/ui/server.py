@@ -39,7 +39,9 @@ from ..data.features import feature_columns
 from ..data.regimes import HMMRegimeModel
 from ..env.trading_env import env_config_from_yaml
 from ..live.feed import Bar, ReplayFeed, YFinanceFeed
+from ..live.kill_switch import KillSwitchConfig, evaluate as ks_evaluate, from_cfg as ks_from_cfg
 from ..live.paper_engine import CostModel, PaperEngine, Signal, TradeStore
+from ..live.streaming_encoder import StreamingEncoder
 from ..models.meta_label import MetaLabelConfig, MetaLabelModel, build_trade_features
 from ..models.precompute import precompute_embeddings
 from ..training.pretrain_encoder import load_encoder
@@ -152,6 +154,7 @@ class Session:
     feed: object  # BarFeed subclass
     task: asyncio.Task
     run_id: str
+    streaming_encoder: Optional[StreamingEncoder] = None
 
 
 class CockpitState:
@@ -167,6 +170,8 @@ class CockpitState:
         self._precomputed_cache: dict[tuple[str, int], dict] = {}
         self._meta_cache: dict[str, Optional[MetaLabelModel]] = {}
         self.session: Optional[Session] = None
+        # Kill-switch config loaded once; evaluated after every closed trade.
+        self._ks_cfg: KillSwitchConfig = ks_from_cfg(cfg.get("kill_switch", {}))
 
     # ------------------------------------------------------------------
 
@@ -337,6 +342,8 @@ class CockpitState:
         env_cfg_for_session = replace(env_cfg, spread_bps=costs.spread_bps)
 
         run_id = f"{asset_symbol}-m{manifest_idx}-{mode}-{int(asyncio.get_event_loop().time())}"
+        paper_cfg = self.cfg.get("ui", {}).get("paper", {})
+        regime_mult_raw = paper_cfg.get("regime_size_multipliers", {})
         engine = PaperEngine(
             asset=asset_symbol,
             run_id=run_id,
@@ -348,6 +355,14 @@ class CockpitState:
             meta_threshold=meta_threshold,
             timestamps=pc["timestamps"] if isinstance(pc["timestamps"], pd.DatetimeIndex) else None,
             store=self.store,
+            kelly_cap=float(paper_cfg.get("kelly_cap", 0.0)),
+            kelly_floor=float(paper_cfg.get("kelly_floor", 1.0)),
+            kelly_window=int(paper_cfg.get("kelly_window", 100)),
+            kelly_cold_start_floor=float(paper_cfg.get("kelly_cold_start_floor",
+                                                        paper_cfg.get("kelly_floor", 1.0))),
+            daily_loss_limit=float(paper_cfg.get("daily_loss_limit", 0.0)),
+            regime_size_multipliers={int(k): float(v) for k, v in regime_mult_raw.items()}
+            if regime_mult_raw else {},
         )
 
         if mode == "replay":
@@ -379,15 +394,38 @@ class CockpitState:
                     self.cfg.get("ui", {}).get("paper", {}).get("bar_interval_seconds", 60.0)
                 ),
             )
-            # Live mode still drives the engine over historical indices for
-            # now; a proper live path would extend pc arrays in real time.
-            # Emit a warning so the user knows the MVP limitation.
-            log.warning(
-                "live mode emits signals from latest precomputed bar; full "
-                "live-encoder streaming is a future tier."
-            )
         else:
             raise HTTPException(400, f"unknown mode {mode!r}")
+
+        # Phase J: build streaming encoder for live mode so each incoming
+        # bar is feature-encoded in real time and appended to the engine's
+        # precomputed arrays.  Replay mode uses the pre-built index and
+        # doesn't need this.
+        streaming_enc: Optional[StreamingEncoder] = None
+        if mode == "live":
+            try:
+                from ..training.pretrain_encoder import load_encoder as _le
+                enc_path = _path(
+                    self.cfg, self.cfg["artefact_dir"],
+                    "encoders", f"encoder_group{entry['encoder_group']}.pt",
+                )
+                raw_encoder = _le(enc_path)
+                feat_df = pc["features"]
+                zscore_w = int(self.cfg.get("features", {}).get("zscore_window", 252))
+                streaming_enc = StreamingEncoder(
+                    encoder=raw_encoder,
+                    env_seq_len=self.env_cfg.seq_len,
+                    history=feat_df,
+                    zscore_window=zscore_w,
+                )
+                log.info(
+                    "live mode: StreamingEncoder ready (buf=%d rows, feat_cols=%s)",
+                    len(streaming_enc._buf),
+                    streaming_enc._feat_cols,
+                )
+            except Exception as exc:
+                log.warning("StreamingEncoder init failed (%s); live bars will be dropped", exc)
+                streaming_enc = None
 
         task = asyncio.create_task(self._run_session(engine, feed, mode))
         self.session = Session(
@@ -398,6 +436,7 @@ class CockpitState:
             feed=feed,
             task=task,
             run_id=run_id,
+            streaming_encoder=streaming_enc,
         )
         return {"run_id": run_id, "mode": mode, "asset": asset_symbol}
 
@@ -436,11 +475,20 @@ class CockpitState:
             )
 
     async def _process_bar(self, engine: PaperEngine, bar: Bar) -> None:
-        # Replay bars carry idx; live bars don't — for now we don't
-        # advance the engine on live bars because the encoder isn't
-        # streaming yet. We still publish the bar so the UI shows it.
         await self.hub.publish("bar", bar.to_dict())
-        if bar.idx is None:
+        idx = bar.idx
+
+        # Live bars don't carry a pre-computed index. Feed them through the
+        # StreamingEncoder to produce a new embedding, then append it to the
+        # engine's arrays via extend_precomputed() so step() can run normally.
+        if idx is None and self.session is not None and self.session.streaming_encoder is not None:
+            bar_data = await asyncio.to_thread(self.session.streaming_encoder.update, bar)
+            if bar_data is not None:
+                idx = engine.extend_precomputed(bar_data)
+            else:
+                return  # warmup or bad bar — skip
+
+        if idx is None:
             return
         sig: Signal = engine.step(bar.idx)
         payload = sig.to_dict()
@@ -470,6 +518,23 @@ class CockpitState:
                         "barrier": rec.barrier,
                     },
                 )
+            # Kill-switch: evaluate after every closed trade. On halt, stop
+            # the session and notify the UI so the operator can investigate.
+            ks_result = ks_evaluate(engine.trade_returns(), self._ks_cfg)
+            if ks_result.halt:
+                reasons = "; ".join(ks_result.reasons.values())
+                log.warning("kill-switch HALT on %s: %s", engine.run_id, reasons)
+                await self.hub.publish(
+                    "halt",
+                    {"run_id": engine.run_id, "asset": engine.asset, "reasons": ks_result.reasons},
+                )
+                await self.hub.publish(
+                    "log", {"level": "error", "msg": f"KILL-SWITCH: {reasons}"}
+                )
+                # Stop the session (feed + task) without waiting inline to
+                # avoid deadlock inside the async feed loop.
+                asyncio.create_task(self.stop_session())
+                return
         await self.hub.publish(
             "equity",
             {

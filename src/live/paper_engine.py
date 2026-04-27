@@ -251,13 +251,23 @@ class KellyCalculator:
     Set ``cap=0`` to disable sizing entirely (fraction always = ``floor``).
     With default cap=0 and floor=1.0, this is a no-op — preserving the
     backtest parity contract in ``test_cockpit.py``.
+
+    ``cold_start_floor`` is returned instead of ``floor`` while the rolling
+    window has fewer than ``min_window`` trades. Defaults to the same value
+    as ``floor`` so existing tests are unaffected. Set to a smaller value
+    (e.g. 0.05) to be conservative during the early-trade warm-up period.
     """
 
-    def __init__(self, window: int = 100, cap: float = 0.0, floor: float = 1.0):
+    def __init__(self, window: int = 100, cap: float = 0.0, floor: float = 1.0,
+                 cold_start_floor: Optional[float] = None):
         self._rets: list[float] = []
         self.window = int(window)
         self.cap = float(cap)
         self.floor = float(floor)
+        # During cold start (< min_window trades), return cold_start_floor
+        # instead of floor. Defaults to floor for backward compat.
+        self.cold_start_floor = float(cold_start_floor if cold_start_floor is not None else floor)
+        self._min_window = 20
 
     def update(self, ret: float) -> None:
         self._rets.append(float(ret))
@@ -266,13 +276,16 @@ class KellyCalculator:
 
     def fraction(self) -> float:
         # Cap=0 short-circuits: always return floor (sizing off).
-        if self.cap <= 0.0 or len(self._rets) < 20:
+        if self.cap <= 0.0:
             return self.floor
+        # Cold start: use conservative floor until min_window trades filled.
+        if len(self._rets) < self._min_window:
+            return self.cold_start_floor
         arr = np.asarray(self._rets, dtype=float)
         wins = arr[arr > 0]
         losses = arr[arr <= 0]
         if len(wins) == 0 or len(losses) == 0:
-            return self.floor
+            return self.cold_start_floor
         hit = len(wins) / len(arr)
         wl = float(wins.mean()) / max(abs(float(losses.mean())), 1e-12)
         f = (hit * wl - (1.0 - hit)) / wl
@@ -290,6 +303,13 @@ class PaperEngine:
     flow: emit BUY/SELL only while flat, run meta-label gating if supplied,
     then check the triple-barrier. When a barrier fires, the trade is
     persisted to ``TradeStore`` and ``Signal.fired`` is True.
+
+    Extra safety knobs (Phase J):
+    * ``daily_loss_limit``: block new entries if session equity drops below
+      ``1 - daily_loss_limit`` from ``_session_start_equity``. 0 = disabled.
+    * ``regime_size_multipliers``: dict mapping HMM state index → Kelly
+      fraction multiplier. E.g. ``{0: 0.5, 1: 1.0}`` sizes down in the
+      low-Sharpe trend regime. Empty dict = no regime conditioning.
     """
 
     def __init__(
@@ -308,6 +328,9 @@ class PaperEngine:
         kelly_cap: float = 0.0,
         kelly_floor: float = 1.0,
         kelly_window: int = 100,
+        kelly_cold_start_floor: Optional[float] = None,
+        daily_loss_limit: float = 0.0,
+        regime_size_multipliers: Optional[dict] = None,
     ) -> None:
         self.asset = asset
         self.run_id = run_id
@@ -322,6 +345,17 @@ class PaperEngine:
         # passing kelly_cap>0 (e.g. 0.25 for quarter-Kelly).
         self._kelly = KellyCalculator(
             window=kelly_window, cap=kelly_cap, floor=kelly_floor,
+            cold_start_floor=kelly_cold_start_floor,
+        )
+        # Daily loss limit: block entries if equity drops below threshold.
+        # 0 = disabled (preserves parity with backtester).
+        self.daily_loss_limit = float(daily_loss_limit)
+        self._session_start_equity: float = 1.0
+        # Regime-conditioned sizing: dict[regime_idx (int) → multiplier (float)].
+        # Empty dict → no conditioning. Applied on top of Kelly fraction.
+        self._regime_multipliers: dict[int, float] = (
+            {int(k): float(v) for k, v in regime_size_multipliers.items()}
+            if regime_size_multipliers else {}
         )
 
         self._close = np.asarray(precomputed["close"], dtype=np.float64)
@@ -391,6 +425,14 @@ class PaperEngine:
         # while the Kelly state is updated with the UNSCALED return so
         # the hit-rate / W-L ratio estimates remain unbiased.
         kelly_f = self._kelly.fraction()
+        # Regime-conditioned sizing: scale Kelly fraction by per-regime
+        # multiplier (e.g. 0.5 in low-Sharpe trend regime). No-op when
+        # _regime_multipliers is empty (default).
+        regime_idx_entry = None
+        if self._regime is not None:
+            regime_idx_entry = int(np.argmax(self._regime[self._entry_i]))
+        if self._regime_multipliers and regime_idx_entry is not None:
+            kelly_f *= self._regime_multipliers.get(regime_idx_entry, 1.0)
         ret = ret_unscaled * kelly_f
         self._kelly.update(ret_unscaled)
         self._trades.append(float(ret))
@@ -466,6 +508,19 @@ class PaperEngine:
             obs = self._obs(i)
             raw, _ = self.model.predict(obs, deterministic=True)
             a = int(raw)
+            # Daily loss gate: block new entries when session equity has
+            # dropped more than daily_loss_limit from the session start.
+            # 0.0 disables the gate (default, preserving backtest parity).
+            if a != HOLD and self.daily_loss_limit > 0.0:
+                current_equity = float(np.prod(1.0 + np.asarray(self._trades))) if self._trades else 1.0
+                if current_equity / self._session_start_equity - 1.0 < -self.daily_loss_limit:
+                    a = HOLD
+                    log.warning(
+                        "daily loss gate triggered: equity %.4f / session_start %.4f "
+                        "(limit %.2f%%); blocking new entry at bar %d",
+                        current_equity, self._session_start_equity,
+                        self.daily_loss_limit * 100, i,
+                    )
             if a != HOLD:
                 direction = +1 if a == BUY else -1
                 feats = build_trade_features(obs, direction, vol_q)
@@ -540,6 +595,42 @@ class PaperEngine:
             fired=fired,
             open_position=open_pos,
         )
+
+    # ------------------------------------------------------------------
+    # live bar ingestion (Phase J — streaming encoder path)
+    # ------------------------------------------------------------------
+
+    def extend_precomputed(self, bar_data: dict) -> int:
+        """Append one new bar's data and return the new bar index.
+
+        ``bar_data`` must have keys: ``close``, ``atr``, ``embedding``,
+        ``vol_quantile``, and optionally ``ts``.
+
+        After calling this, ``step(new_idx)`` will observe the new bar
+        through the same code path as replay mode — no other changes needed.
+        """
+        new_close = float(bar_data["close"])
+        new_atr = float(bar_data["atr"])
+        new_emb = np.asarray(bar_data["embedding"], dtype=np.float32)
+        new_vq = float(bar_data["vol_quantile"])
+
+        self._close = np.append(self._close, new_close)
+        self._atr = np.append(self._atr, new_atr)
+        self._emb = np.vstack([self._emb, new_emb[np.newaxis]])
+        self._vol_q = np.append(self._vol_q, new_vq)
+
+        if self._timestamps is not None:
+            ts = bar_data.get("ts")
+            if ts is None:
+                ts = pd.Timestamp.now(tz="UTC")
+            self._timestamps = self._timestamps.append(pd.DatetimeIndex([ts]))
+
+        # If regime posterior exists, extend with the last known state
+        # (HMM must be re-run externally to update; this is a placeholder).
+        if self._regime is not None:
+            self._regime = np.vstack([self._regime, self._regime[-1:]])
+
+        return int(len(self._close) - 1)
 
     # ------------------------------------------------------------------
     # snapshots for the UI

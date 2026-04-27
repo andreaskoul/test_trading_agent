@@ -92,9 +92,19 @@ ui:
     bar_interval_seconds: 3600     # poll hourly
     meta_threshold: 0.55
     # Phase H: quarter-Kelly position sizing. cap=0 disables (default).
-    # cap=0.25 + floor=0.05 = practitioner's quarter-Kelly with a 5%
-    # minimum position so a long flat streak doesn't lock the engine
-    # at zero notional permanently.
     kelly_cap: 0.25
     kelly_floor: 0.05
     kelly_window: 100
+    # Phase J: cold-start Kelly — use 5% notional for first 20 trades
+    # instead of floor=1.0, preventing full-notional exposure during warmup.
+    kelly_cold_start_floor: 0.05
+    # Phase J: daily session DD gate — block new entries if equity falls
+    # more than 2% from session start. 0.0 = disabled.
+    daily_loss_limit: 0.02
+    # Phase J: regime-conditioned sizing. HMM state 0 is the trend regime
+    # (Sharpe 0.64 in Phase I); scale it down to 50%. State 1 is volatile
+    # (Sharpe 2.15); keep at 100%. Keys are HMM state indices (integers).
+    regime_size_multipliers:
+      0: 0.5
+      1: 1.0
+      2: 1.0

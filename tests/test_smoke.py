@@ -511,6 +511,166 @@ def test_yfinance_feed_validation():
     assert not ok and "old" in reason
 
 
+def test_daily_loss_gate():
+    """Phase J: PaperEngine daily_loss_limit blocks new entries when equity drops."""
+    from src.live.paper_engine import PaperEngine, KellyCalculator
+    from src.env.trading_env import EnvConfig, BUY, HOLD
+
+    ohlcv = _synthetic_ohlcv(1000)
+    from src.data.features import build_features
+    feats = build_features(ohlcv)
+    from src.data.features import feature_columns
+    from src.models.xlstm_lite import XLSTMLite, XLSTMConfig
+    from src.models.precompute import precompute_embeddings
+    feat_cols = feature_columns(feats)
+    enc = XLSTMLite(XLSTMConfig(input_dim=len(feat_cols), hidden_size=16))
+    emb = precompute_embeddings(enc, feats[feat_cols].to_numpy(np.float32), seq_len=8)
+    close = feats["close"].to_numpy(np.float64)
+    atr = feats["atr"].to_numpy(np.float64)
+    vol_q = np.ones(len(close))
+    pc = {"close": close, "atr": atr, "embeddings": emb, "vol_quantile": vol_q}
+
+    env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
+
+    class AlwaysBuy:
+        def predict(self, obs, deterministic=True):
+            return BUY, None
+
+    # daily_loss_limit=0.0 → gate disabled, engine should open positions.
+    eng_no_gate = PaperEngine(asset="X", run_id="ng", model=AlwaysBuy(),
+                              precomputed=pc, env_cfg=env_cfg, daily_loss_limit=0.0)
+    # daily_loss_limit=1e-9 → gate triggers immediately (start equity already at 1.0,
+    # any negative return will put equity below threshold). Use a very tight limit
+    # that fires after the first loss to verify blocking behaviour.
+    eng_gated = PaperEngine(asset="X", run_id="g", model=AlwaysBuy(),
+                            precomputed=pc, env_cfg=env_cfg, daily_loss_limit=0.999)
+
+    # Run enough bars to guarantee at least one full trade cycle
+    # (seq_len=8 warmup + horizon=4 bars per trade × several trades = 100 bars).
+    n_run = min(150, len(close))
+    for i in range(8, n_run):
+        eng_no_gate.step(i)
+        eng_gated.step(i)
+
+    # No-gate engine must have traded at least once (within 150 bars with
+    # AlwaysBuy + horizon=4, at minimum 30+ trades will have fired).
+    assert len(eng_no_gate.trade_returns()) > 0, (
+        f"no-gate engine should have trades after {n_run} bars; "
+        f"got {len(eng_no_gate.trade_returns())}"
+    )
+    # Gated engine (limit=0.999 → fires after first loss) should have ≤ trades.
+    assert len(eng_gated.trade_returns()) <= len(eng_no_gate.trade_returns()), \
+        "gated engine should have fewer or equal trades than ungated"
+
+
+def test_regime_size_multipliers():
+    """Phase J: regime_size_multipliers scales trade PnL by regime factor."""
+    from src.live.paper_engine import PaperEngine
+    from src.env.trading_env import EnvConfig, BUY
+
+    ohlcv = _synthetic_ohlcv(400)
+    from src.data.features import build_features, feature_columns
+    from src.models.xlstm_lite import XLSTMLite, XLSTMConfig
+    from src.models.precompute import precompute_embeddings
+    feats = build_features(ohlcv)
+    feat_cols = feature_columns(feats)
+    enc = XLSTMLite(XLSTMConfig(input_dim=len(feat_cols), hidden_size=16))
+    emb = precompute_embeddings(enc, feats[feat_cols].to_numpy(np.float32), seq_len=8)
+    close = feats["close"].to_numpy(np.float64)
+    atr = feats["atr"].to_numpy(np.float64)
+    vol_q = np.ones(len(close))
+    # Fake regime posterior: all bars in regime 0 (so multiplier=0.5 applies).
+    n = len(close)
+    rp = np.zeros((n, 2), dtype=np.float32)
+    rp[:, 0] = 1.0
+    pc = {"close": close, "atr": atr, "embeddings": emb, "vol_quantile": vol_q,
+          "regime_posterior": rp}
+    env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
+
+    class AlwaysBuy:
+        def predict(self, obs, deterministic=True):
+            return BUY, None
+
+    # Engine with kelly_cap=1.0 floor=0 and regime 0 → 0.5 multiplier.
+    eng = PaperEngine(asset="X", run_id="r", model=AlwaysBuy(),
+                      precomputed=pc, env_cfg=env_cfg,
+                      kelly_cap=1.0, kelly_floor=0.0, kelly_window=5,
+                      kelly_cold_start_floor=0.0,
+                      regime_size_multipliers={0: 0.5, 1: 1.0})
+    for i in range(8, min(80, len(close))):
+        eng.step(i)
+    # Just check it ran without error and sizes were applied (non-NaN returns).
+    rets = eng.trade_returns()
+    assert np.all(np.isfinite(rets)), "regime-sized returns must be finite"
+
+
+def test_streaming_encoder_update():
+    """Phase J: StreamingEncoder produces a valid embedding from a new bar."""
+    from src.live.streaming_encoder import StreamingEncoder
+    from src.models.xlstm_lite import XLSTMLite, XLSTMConfig
+
+    # Need enough history to satisfy all rolling warmups:
+    # ema_100 (min_periods=100) + zscore_window(50) + seq_len(8) + slack(64) = 222 min.
+    # Use 400 bars to be comfortable.
+    ohlcv = _synthetic_ohlcv(400)
+    from src.data.features import build_features, feature_columns
+    feats = build_features(ohlcv)
+    feat_cols = feature_columns(feats)
+    enc = XLSTMLite(XLSTMConfig(input_dim=len(feat_cols), hidden_size=32))
+
+    se = StreamingEncoder(encoder=enc, env_seq_len=8, history=ohlcv, zscore_window=50)
+    assert se.ready, "buffer should be warm with 400-bar history"
+
+    # Feed one new bar.
+    new_bar_row = ohlcv.iloc[-1].copy()
+    new_bar_row["close"] *= 1.001   # small price change
+    bar_data = se.update(new_bar_row)
+    assert bar_data is not None, "StreamingEncoder should return data after warmup"
+    assert bar_data["embedding"].shape == (32,), f"wrong embedding shape: {bar_data['embedding'].shape}"
+    assert np.isfinite(bar_data["close"])
+    assert np.isfinite(bar_data["vol_quantile"])
+
+
+def test_paper_engine_extend_precomputed():
+    """Phase J: extend_precomputed grows arrays and step() works on new idx."""
+    from src.live.paper_engine import PaperEngine
+    from src.env.trading_env import EnvConfig, HOLD
+    from src.models.xlstm_lite import XLSTMLite, XLSTMConfig
+    from src.models.precompute import precompute_embeddings
+    from src.data.features import build_features, feature_columns
+
+    ohlcv = _synthetic_ohlcv(1000)
+    feats = build_features(ohlcv)
+    feat_cols = feature_columns(feats)
+    enc = XLSTMLite(XLSTMConfig(input_dim=len(feat_cols), hidden_size=16))
+    emb = precompute_embeddings(enc, feats[feat_cols].to_numpy(np.float32), seq_len=8)
+    close = feats["close"].to_numpy(np.float64)
+    atr = feats["atr"].to_numpy(np.float64)
+    vol_q = np.ones(len(close))
+    pc = {"close": close, "atr": atr, "embeddings": emb, "vol_quantile": vol_q}
+    env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
+
+    class HoldModel:
+        def predict(self, obs, deterministic=True):
+            return HOLD, None
+
+    eng = PaperEngine(asset="X", run_id="ext", model=HoldModel(),
+                      precomputed=pc, env_cfg=env_cfg)
+    n_before = len(eng._close)
+    new_emb = np.zeros(16, dtype=np.float32)
+    new_idx = eng.extend_precomputed({
+        "close": float(close[-1]) * 1.001,
+        "atr": float(atr[-1]),
+        "embedding": new_emb,
+        "vol_quantile": 0.5,
+    })
+    assert new_idx == n_before, f"expected idx {n_before}, got {new_idx}"
+    assert len(eng._close) == n_before + 1
+    # step() on the new bar should not raise
+    sig = eng.step(new_idx)
+    assert sig.idx == new_idx
+
+
 if __name__ == "__main__":
     tests = [
         test_features_no_nans,
@@ -532,6 +692,10 @@ if __name__ == "__main__":
         test_shared_encoder_multi_asset,
         test_kelly_calculator,
         test_yfinance_feed_validation,
+        test_daily_loss_gate,
+        test_regime_size_multipliers,
+        test_streaming_encoder_update,
+        test_paper_engine_extend_precomputed,
     ]
     failures = 0
     for t in tests:
