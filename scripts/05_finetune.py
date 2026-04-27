@@ -23,6 +23,7 @@ from src.env.trading_env import env_config_from_yaml
 from src.training.evaluate import build_precomputed, rollout_policy
 from src.training.finetune import FinetuneConfig, finetune_policy
 from src.training.pretrain_encoder import load_encoder
+from src.validation.deflated_sr import deflated_sharpe_ratio
 
 try:
     from sb3_contrib import RecurrentPPO
@@ -151,16 +152,42 @@ def main() -> None:
         ft_model = algo_cls.load(out_path, device="cpu")
         after = rollout_policy(ft_model, precomputed, env_cfg, holdout_idx)
 
+        # Phase L: DSR guard. Reject the finetune if the deflated Sharpe
+        # delta is below ``min_dsr_delta``. We compute DSR with ``n_trials=1``
+        # because finetune is a single trial against the same holdout
+        # (no multi-test overfitting penalty needed). ``dsr_min_delta`` is
+        # configurable; default 0.0 means "must not regress".
+        ft_cfg_block = cfg.get("finetune", {})
+        min_dsr_delta = float(ft_cfg_block.get("min_dsr_delta", 0.0))
+        dsr_before = deflated_sharpe_ratio(before.trade_returns, n_trials=1).deflated_sharpe
+        dsr_after = deflated_sharpe_ratio(after.trade_returns, n_trials=1).deflated_sharpe
+        dsr_delta = dsr_after - dsr_before
+        accepted = dsr_delta >= min_dsr_delta
+        decision = "ACCEPT" if accepted else "REJECT"
+        if not accepted:
+            # Roll back: keep the base policy as the published artefact.
+            try:
+                os.remove(out_path)
+                log.warning(
+                    "[%s] finetune REJECTED: dsr_delta %+.4f < min %.4f; deleted %s",
+                    sym, dsr_delta, min_dsr_delta, out_path,
+                )
+            except OSError as exc:
+                log.warning("[%s] finetune rejected; failed to delete %s: %s",
+                            sym, out_path, exc)
+
         report_lines += [
             f"## {sym}",
             "",
             f"- Base policy : algo={best_algo}, split={int(best['split'])}, seed={int(best['seed'])}",
             f"- Holdout window: last {holdout_n} bars",
+            f"- DSR gate    : {decision} (delta={dsr_delta:+.4f}, min={min_dsr_delta:+.4f})",
             "",
             "| Metric | Before | After | Delta |",
             "|:--|---:|---:|---:|",
             f"| Trades | {before.n_trades} | {after.n_trades} | {after.n_trades - before.n_trades:+d} |",
             f"| Sharpe | {before.metrics.sharpe:+.3f} | {after.metrics.sharpe:+.3f} | {after.metrics.sharpe - before.metrics.sharpe:+.3f} |",
+            f"| DSR | {dsr_before:+.3f} | {dsr_after:+.3f} | {dsr_delta:+.3f} |",
             f"| Sortino | {before.metrics.sortino:+.3f} | {after.metrics.sortino:+.3f} | {after.metrics.sortino - before.metrics.sortino:+.3f} |",
             f"| Max DD | {before.metrics.max_drawdown:+.3f} | {after.metrics.max_drawdown:+.3f} | {after.metrics.max_drawdown - before.metrics.max_drawdown:+.3f} |",
             f"| Hit rate | {before.metrics.hit_rate:.3f} | {after.metrics.hit_rate:.3f} | {after.metrics.hit_rate - before.metrics.hit_rate:+.3f} |",
@@ -168,8 +195,9 @@ def main() -> None:
             "",
         ]
         log.info(
-            "[%s] finetune: sharpe %.3f -> %.3f",
-            sym, before.metrics.sharpe, after.metrics.sharpe,
+            "[%s] finetune %s: sharpe %.3f -> %.3f, dsr %.3f -> %.3f (delta %+.4f)",
+            sym, decision, before.metrics.sharpe, after.metrics.sharpe,
+            dsr_before, dsr_after, dsr_delta,
         )
 
     report_path = path(cfg, cfg["report_dir"], "finetune_report.md")

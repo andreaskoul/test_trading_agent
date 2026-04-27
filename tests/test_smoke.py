@@ -773,6 +773,174 @@ def test_drift_detector_detects_shift():
     assert rep.fraction_flagged >= 0.5
 
 
+def test_trade_rate_governor():
+    """Phase L: trade-rate governor blocks new entries above the cap."""
+    from src.live.paper_engine import PaperEngine
+    from src.env.trading_env import EnvConfig, BUY
+
+    ohlcv = _synthetic_ohlcv(1000)
+    from src.data.features import build_features, feature_columns
+    from src.models.xlstm_lite import XLSTMLite, XLSTMConfig
+    from src.models.precompute import precompute_embeddings
+    feats = build_features(ohlcv)
+    feat_cols = feature_columns(feats)
+    enc = XLSTMLite(XLSTMConfig(input_dim=len(feat_cols), hidden_size=16))
+    emb = precompute_embeddings(enc, feats[feat_cols].to_numpy(np.float32), seq_len=8)
+    close = feats["close"].to_numpy(np.float64)
+    atr = feats["atr"].to_numpy(np.float64)
+    vol_q = np.ones(len(close))
+    pc = {"close": close, "atr": atr, "embeddings": emb, "vol_quantile": vol_q}
+    env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
+
+    class AlwaysBuy:
+        def predict(self, obs, deterministic=True):
+            return BUY, None
+
+    # Synthesize timestamps spaced 60m apart so the 24-hour rolling window
+    # covers ~24 entries.
+    ts = pd.date_range("2024-01-01", periods=len(close), freq="h", tz="UTC")
+
+    eng_capped = PaperEngine(asset="X", run_id="cap", model=AlwaysBuy(),
+                             precomputed=pc, env_cfg=env_cfg,
+                             timestamps=ts, trade_rate_max_per_day=3)
+    eng_open = PaperEngine(asset="X", run_id="open", model=AlwaysBuy(),
+                           precomputed=pc, env_cfg=env_cfg,
+                           timestamps=ts, trade_rate_max_per_day=0)
+
+    n_run = min(200, len(close))
+    for i in range(8, n_run):
+        eng_capped.step(i)
+        eng_open.step(i)
+
+    # Capped engine must trade strictly less than the unrestricted one
+    # (or at most equal if the unrestricted run also fired few trades).
+    assert len(eng_capped.trade_returns()) <= len(eng_open.trade_returns()), \
+        "trade-rate cap should not produce more trades than the open engine"
+    # And it must respect the cap: at most 3 entries per any 24h rolling window
+    # (we test by checking total entries are bounded by horizon-aware ceiling).
+    assert len(eng_capped._entry_timestamps) <= 24, \
+        f"governor leaked: {len(eng_capped._entry_timestamps)} entries in 24h deque"
+
+
+def test_regime_run_length_confirmation():
+    """Phase L: regime_confirm_bars delays regime multiplier change."""
+    from src.live.paper_engine import PaperEngine
+    from src.env.trading_env import EnvConfig, HOLD
+
+    ohlcv = _synthetic_ohlcv(1000)
+    from src.data.features import build_features, feature_columns
+    from src.models.xlstm_lite import XLSTMLite, XLSTMConfig
+    from src.models.precompute import precompute_embeddings
+    feats = build_features(ohlcv)
+    feat_cols = feature_columns(feats)
+    enc = XLSTMLite(XLSTMConfig(input_dim=len(feat_cols), hidden_size=16))
+    emb = precompute_embeddings(enc, feats[feat_cols].to_numpy(np.float32), seq_len=8)
+    close = feats["close"].to_numpy(np.float64)
+    atr = feats["atr"].to_numpy(np.float64)
+    vol_q = np.ones(len(close))
+    # Build a regime posterior that flips on every bar except one stretch
+    # of 5 consecutive bars in regime 1 (so confirm=3 should stabilise).
+    n = len(close)
+    rp = np.zeros((n, 2), dtype=np.float32)
+    for i in range(n):
+        rp[i, i % 2] = 1.0
+    # Inject a stable run for regime 1 from bar 50..70.
+    for i in range(50, 70):
+        rp[i] = [0.0, 1.0]
+    pc = {"close": close, "atr": atr, "embeddings": emb, "vol_quantile": vol_q,
+          "regime_posterior": rp}
+    env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
+
+    class HoldModel:
+        def predict(self, obs, deterministic=True):
+            return HOLD, None
+
+    eng = PaperEngine(asset="X", run_id="rc", model=HoldModel(),
+                      precomputed=pc, env_cfg=env_cfg,
+                      regime_confirm_bars=3,
+                      regime_size_multipliers={0: 0.5, 1: 1.0})
+
+    # Step through the whipsaw region: confirmed regime should stay None.
+    for i in range(8, 50):
+        eng.step(i)
+    assert eng._confirmed_regime is None, \
+        f"confirmed regime should be None during whipsaw; got {eng._confirmed_regime}"
+
+    # Step through the stable run.
+    for i in range(50, 60):
+        eng.step(i)
+    assert eng._confirmed_regime == 1, \
+        f"confirmed regime should be 1 after stable run; got {eng._confirmed_regime}"
+
+
+def test_capacity_impact_reduces_pnl():
+    """Phase L: positive impact_coeff reduces realised PnL vs no-impact baseline."""
+    from src.live.paper_engine import PaperEngine
+    from src.env.trading_env import EnvConfig, BUY
+
+    ohlcv = _synthetic_ohlcv(1000)
+    from src.data.features import build_features, feature_columns
+    from src.models.xlstm_lite import XLSTMLite, XLSTMConfig
+    from src.models.precompute import precompute_embeddings
+    feats = build_features(ohlcv)
+    feat_cols = feature_columns(feats)
+    enc = XLSTMLite(XLSTMConfig(input_dim=len(feat_cols), hidden_size=16))
+    emb = precompute_embeddings(enc, feats[feat_cols].to_numpy(np.float32), seq_len=8)
+    close = feats["close"].to_numpy(np.float64)
+    atr = feats["atr"].to_numpy(np.float64)
+    vol_q = np.ones(len(close))
+    pc = {"close": close, "atr": atr, "embeddings": emb, "vol_quantile": vol_q}
+    env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
+
+    class AlwaysBuy:
+        def predict(self, obs, deterministic=True):
+            return BUY, None
+
+    eng_no_impact = PaperEngine(asset="X", run_id="ni", model=AlwaysBuy(),
+                                precomputed=pc, env_cfg=env_cfg,
+                                kelly_cap=1.0, kelly_floor=1.0, kelly_window=5)
+    # adv_notional very small relative to entry price so impact is meaningful.
+    eng_with_impact = PaperEngine(asset="X", run_id="wi", model=AlwaysBuy(),
+                                  precomputed=pc, env_cfg=env_cfg,
+                                  kelly_cap=1.0, kelly_floor=1.0, kelly_window=5,
+                                  adv_notional=10.0, impact_coeff=0.005)
+
+    n_run = min(150, len(close))
+    for i in range(8, n_run):
+        eng_no_impact.step(i)
+        eng_with_impact.step(i)
+
+    rets_ni = eng_no_impact.trade_returns()
+    rets_wi = eng_with_impact.trade_returns()
+    assert len(rets_ni) > 0 and len(rets_wi) > 0, "both engines should trade"
+    assert len(rets_ni) == len(rets_wi), "same model, same data → same trade count"
+    # Impact must monotonically reduce per-trade PnL.
+    assert np.sum(rets_wi) < np.sum(rets_ni), \
+        f"impact should reduce total PnL: with={np.sum(rets_wi):.4f} >= without={np.sum(rets_ni):.4f}"
+
+
+def test_lightgbm_meta_model_fallback():
+    """Phase L: LightGBMMetaModel works whether or not lightgbm is installed."""
+    from src.models.meta_label import LightGBMMetaModel, MetaLabelConfig
+
+    rng = np.random.default_rng(0)
+    n_emb = 16
+    X = rng.standard_normal((200, n_emb + 2)).astype(np.float32)
+    # Inject monotone signal: y depends positively on the direction column.
+    y = (X[:, n_emb] > 0).astype(np.int64)
+
+    model = LightGBMMetaModel(MetaLabelConfig(max_iter=20, max_depth=3),
+                              embedding_dim=n_emb)
+    model.fit(X, y)
+    probs = model.predict_proba(X)
+    assert probs.shape == (200,)
+    assert np.all((probs >= 0.0) & (probs <= 1.0))
+    # Direction-positive rows should on average score higher than direction-negative.
+    avg_pos = probs[X[:, n_emb] > 0].mean()
+    avg_neg = probs[X[:, n_emb] <= 0].mean()
+    assert avg_pos > avg_neg, f"monotone constraint violated: pos={avg_pos:.3f} neg={avg_neg:.3f}"
+
+
 if __name__ == "__main__":
     tests = [
         test_features_no_nans,
@@ -803,6 +971,10 @@ if __name__ == "__main__":
         test_broker_reconcile_positions,
         test_drift_detector_no_drift,
         test_drift_detector_detects_shift,
+        test_trade_rate_governor,
+        test_regime_run_length_confirmation,
+        test_capacity_impact_reduces_pnl,
+        test_lightgbm_meta_model_fallback,
     ]
     failures = 0
     for t in tests:

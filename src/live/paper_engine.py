@@ -30,8 +30,10 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 import sqlite3
 import time
+from collections import deque
 from dataclasses import dataclass, field
 from threading import Lock
 from typing import Optional
@@ -310,6 +312,20 @@ class PaperEngine:
     * ``regime_size_multipliers``: dict mapping HMM state index → Kelly
       fraction multiplier. E.g. ``{0: 0.5, 1: 1.0}`` sizes down in the
       low-Sharpe trend regime. Empty dict = no regime conditioning.
+
+    Live-tier safety knobs (Phase L):
+    * ``regime_confirm_bars``: require the regime to be stable for N
+      consecutive bars before its multiplier is applied; before then,
+      keep the previous regime's multiplier. Reduces whipsaw sizing on
+      single-bar regime flickers. 0 = disabled (default).
+    * ``trade_rate_max_per_day``: throttle new entries when the rolling
+      24-hour trade count exceeds this. 0 = disabled (default).
+    * ``adv_notional``: estimated average daily volume in $ notional for
+      this asset. Combined with ``impact_coeff``, applies a square-root
+      market-impact deduction so larger size pays more slippage.
+      0 = disabled (default).
+    * ``impact_coeff``: coefficient on the sqrt-impact model
+      ``slippage = coeff * sqrt(notional / adv_notional)`` (in fraction).
     """
 
     def __init__(
@@ -331,6 +347,10 @@ class PaperEngine:
         kelly_cold_start_floor: Optional[float] = None,
         daily_loss_limit: float = 0.0,
         regime_size_multipliers: Optional[dict] = None,
+        regime_confirm_bars: int = 0,
+        trade_rate_max_per_day: int = 0,
+        adv_notional: float = 0.0,
+        impact_coeff: float = 0.0,
     ) -> None:
         self.asset = asset
         self.run_id = run_id
@@ -357,6 +377,21 @@ class PaperEngine:
             {int(k): float(v) for k, v in regime_size_multipliers.items()}
             if regime_size_multipliers else {}
         )
+        # Phase L: run-length confirmation on regime switches. The
+        # multiplier reflects the *confirmed* regime (the last regime
+        # that was stable for >= ``regime_confirm_bars`` bars).
+        self.regime_confirm_bars = int(regime_confirm_bars)
+        self._confirmed_regime: Optional[int] = None
+        self._candidate_regime: Optional[int] = None
+        self._candidate_run: int = 0
+        # Phase L: trade-rate governor. Counts entries (not bars) in the
+        # last 24h; blocks new entries when the count exceeds the cap.
+        self.trade_rate_max_per_day = int(trade_rate_max_per_day)
+        self._entry_timestamps: deque[pd.Timestamp] = deque(maxlen=1024)
+        # Phase L: capacity/impact model. Square-root impact on top of
+        # the spread/slippage already deducted by CostModel.
+        self.adv_notional = float(adv_notional)
+        self.impact_coeff = float(impact_coeff)
 
         self._close = np.asarray(precomputed["close"], dtype=np.float64)
         self._atr = np.asarray(precomputed["atr"], dtype=np.float64)
@@ -431,8 +466,24 @@ class PaperEngine:
         regime_idx_entry = None
         if self._regime is not None:
             regime_idx_entry = int(np.argmax(self._regime[self._entry_i]))
-        if self._regime_multipliers and regime_idx_entry is not None:
-            kelly_f *= self._regime_multipliers.get(regime_idx_entry, 1.0)
+        if self._regime_multipliers:
+            # Phase L: prefer the *confirmed* regime over the raw bar regime
+            # so single-bar flickers don't flap the multiplier.
+            applied_regime = (
+                self._confirmed_regime
+                if self.regime_confirm_bars > 0 and self._confirmed_regime is not None
+                else regime_idx_entry
+            )
+            if applied_regime is not None:
+                kelly_f *= self._regime_multipliers.get(applied_regime, 1.0)
+        # Phase L: square-root market-impact deduction. slippage as a fraction
+        # of price = impact_coeff * sqrt(notional / adv). Notional is approx.
+        # Kelly-scaled exposure × entry price; we use the unscaled return's
+        # absolute Kelly fraction for the notional estimate.
+        if self.adv_notional > 0.0 and self.impact_coeff > 0.0:
+            notional = abs(kelly_f) * self._entry_price
+            impact = self.impact_coeff * math.sqrt(notional / self.adv_notional)
+            ret_unscaled -= impact
         ret = ret_unscaled * kelly_f
         self._kelly.update(ret_unscaled)
         self._trades.append(float(ret))
@@ -504,6 +555,19 @@ class PaperEngine:
         pnl = 0.0
         meta_prob_for_signal: Optional[float] = None
 
+        # Phase L: update regime run-length tracker so _fire_trade can use
+        # the confirmed regime (a multi-bar majority) instead of this bar's
+        # raw regime.
+        if self._regime is not None and self.regime_confirm_bars > 0:
+            cur = int(np.argmax(self._regime[i]))
+            if cur == self._candidate_regime:
+                self._candidate_run += 1
+            else:
+                self._candidate_regime = cur
+                self._candidate_run = 1
+            if self._candidate_run >= self.regime_confirm_bars:
+                self._confirmed_regime = cur
+
         if self._pos == 0:
             obs = self._obs(i)
             raw, _ = self.model.predict(obs, deterministic=True)
@@ -521,6 +585,21 @@ class PaperEngine:
                         current_equity, self._session_start_equity,
                         self.daily_loss_limit * 100, i,
                     )
+            # Phase L: trade-rate governor. Block new entries when the
+            # rolling 24-hour entry count exceeds the cap. 0 = disabled.
+            if a != HOLD and self.trade_rate_max_per_day > 0:
+                ts_now = self._ts(i) or pd.Timestamp.now(tz="UTC")
+                cutoff = ts_now - pd.Timedelta(hours=24)
+                # Drop expired entries from the deque (cheap when capped at 1024).
+                while self._entry_timestamps and self._entry_timestamps[0] < cutoff:
+                    self._entry_timestamps.popleft()
+                if len(self._entry_timestamps) >= self.trade_rate_max_per_day:
+                    a = HOLD
+                    log.warning(
+                        "trade-rate governor triggered: %d entries in last 24h "
+                        "(limit %d); blocking new entry at bar %d",
+                        len(self._entry_timestamps), self.trade_rate_max_per_day, i,
+                    )
             if a != HOLD:
                 direction = +1 if a == BUY else -1
                 feats = build_trade_features(obs, direction, vol_q)
@@ -536,6 +615,10 @@ class PaperEngine:
                     self._open_position(direction, i)
                     action = a
                     meta_prob_for_signal = p_profit
+                    # Phase L: record entry timestamp for the trade-rate governor.
+                    if self.trade_rate_max_per_day > 0:
+                        ts_entry = self._ts(i) or pd.Timestamp.now(tz="UTC")
+                        self._entry_timestamps.append(ts_entry)
                 else:
                     self._pending_entry = None
                     meta_prob_for_signal = p_profit
