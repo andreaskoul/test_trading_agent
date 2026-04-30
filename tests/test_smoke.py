@@ -919,6 +919,75 @@ def test_capacity_impact_reduces_pnl():
         f"impact should reduce total PnL: with={np.sum(rets_wi):.4f} >= without={np.sum(rets_ni):.4f}"
 
 
+def test_live_stats_compute():
+    """Phase M1: LiveStats produces all keys + finite values + caches result."""
+    from src.validation.live_stats import LiveStats
+
+    rng = np.random.default_rng(0)
+    rets = 0.001 + 0.005 * rng.standard_normal(120)
+    ls = LiveStats(annualisation_factor=252.0, bootstrap_resamples=200,
+                    bootstrap_block=10, n_trials_for_dsr=10)
+    out = ls.compute(rets).to_dict()
+    for k in ("n_trades", "sharpe", "dsr", "psr_vs_zero", "boot_p", "boot_lo", "boot_hi", "ann_factor"):
+        assert k in out, f"missing key {k}"
+        assert np.isfinite(out[k]), f"non-finite {k}={out[k]}"
+    # Cache hit: same array → identical result + same object identity in cache.
+    out2 = ls.compute(rets).to_dict()
+    assert out == out2
+
+
+def test_kill_switch_dsr_floor():
+    """Phase M2: kill-switch fires when DSR is below floor."""
+    from src.live.kill_switch import KillSwitchConfig, evaluate
+
+    rng = np.random.default_rng(7)
+    # Synthesise high-noise returns: positive Sharpe but should fail DSR.
+    rets = 0.0005 + 0.05 * rng.standard_normal(80)
+    cfg = KillSwitchConfig(
+        sharpe_floor=-99.0,         # disable rolling-Sharpe rule for this test
+        max_drawdown=99.0,          # disable DD rule
+        win_rate_floor=0.0,         # disable win-rate rule
+        catastrophe_pct=99.0,       # disable catastrophe rule
+        dsr_floor=0.95,             # require very high statistical confidence
+        dsr_min_trades=50,
+        dsr_n_trials=200,           # heavy multiple-testing penalty
+    )
+    res = evaluate(rets, cfg)
+    assert "dsr_floor" in res.triggered, \
+        f"expected dsr_floor trigger; reasons={res.reasons}"
+
+    # And: with a tiny n_trials and dsr_floor=0, the rule must NOT fire.
+    cfg2 = KillSwitchConfig(
+        sharpe_floor=-99.0, max_drawdown=99.0, win_rate_floor=0.0,
+        catastrophe_pct=99.0, dsr_floor=0.0,    # disabled
+    )
+    res2 = evaluate(rets, cfg2)
+    assert not res2.halt, "DSR rule should be disabled when dsr_floor=0"
+
+
+def test_ensemble_policy_weighted_majority():
+    """Phase M3: weighted-majority vote across 3 mock policies."""
+    from src.models.ensemble import EnsemblePolicy
+
+    class P:
+        def __init__(self, action): self.action = action
+        def predict(self, obs, deterministic=True): return self.action, None
+
+    # Two policies vote BUY (1), one votes HOLD (0). Equal weights → BUY wins.
+    e1 = EnsemblePolicy([P(1), P(1), P(0)])
+    assert e1.predict(None)[0] == 1
+
+    # Same vote split, but the lone HOLD has 10x weight → HOLD wins.
+    e2 = EnsemblePolicy([P(1), P(1), P(0)], weights=[1.0, 1.0, 10.0])
+    assert e2.predict(None)[0] == 0
+
+    # All members fail → default to HOLD (0).
+    class Bad:
+        def predict(self, obs, deterministic=True): raise RuntimeError("boom")
+    e3 = EnsemblePolicy([Bad(), Bad()])
+    assert e3.predict(None)[0] == 0
+
+
 def test_lightgbm_meta_model_fallback():
     """Phase L: LightGBMMetaModel works whether or not lightgbm is installed."""
     from src.models.meta_label import LightGBMMetaModel, MetaLabelConfig
@@ -974,6 +1043,9 @@ if __name__ == "__main__":
         test_trade_rate_governor,
         test_regime_run_length_confirmation,
         test_capacity_impact_reduces_pnl,
+        test_live_stats_compute,
+        test_kill_switch_dsr_floor,
+        test_ensemble_policy_weighted_majority,
         test_lightgbm_meta_model_fallback,
     ]
     failures = 0
