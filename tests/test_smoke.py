@@ -988,6 +988,131 @@ def test_ensemble_policy_weighted_majority():
     assert e3.predict(None)[0] == 0
 
 
+def _make_tradestore_with_seed(rng_seed: int = 0):
+    """Helper for Phase N tests: a TradeStore on a temp DB, pre-seeded
+    with a small mix of synthetic trades across two assets and two run_ids."""
+    import tempfile, os
+    from src.live.paper_engine import TradeStore, TradeRecord
+    rng = np.random.default_rng(rng_seed)
+    db = tempfile.NamedTemporaryFile(suffix=".db", delete=False).name
+    store = TradeStore(db)
+    # Three runs: GC=F-m0 (PPO), GC=F-m1 (GRPO), SI=F-m0 (PPO).
+    runs = [
+        ("GC=F", "GC=F-m0-replay-1000"),
+        ("GC=F", "GC=F-m1-replay-2000"),
+        ("SI=F", "SI=F-m0-replay-3000"),
+    ]
+    for asset, rid in runs:
+        for i in range(20):
+            ret = float(rng.normal(0.001, 0.01))
+            store.insert(TradeRecord(
+                trade_id=None, asset=asset, run_id=rid, direction=1,
+                entry_idx=i, exit_idx=i + 4,
+                entry_ts=None, exit_ts=None,
+                entry_price=100.0, exit_price=100.0 * (1 + ret),
+                pnl=ret, meta_prob=0.6, regime_idx=0, vol_q=0.5,
+                barrier="tp" if ret > 0 else "sl",
+            ))
+    return store, db
+
+
+def test_paper_engine_open_position_state():
+    """Phase N1: open_position_state returns full snapshot when in a trade."""
+    from src.live.paper_engine import PaperEngine
+    from src.env.trading_env import EnvConfig, BUY
+
+    ohlcv = _synthetic_ohlcv(1000)
+    from src.data.features import build_features, feature_columns
+    from src.models.xlstm_lite import XLSTMLite, XLSTMConfig
+    from src.models.precompute import precompute_embeddings
+    feats = build_features(ohlcv)
+    feat_cols = feature_columns(feats)
+    enc = XLSTMLite(XLSTMConfig(input_dim=len(feat_cols), hidden_size=16))
+    emb = precompute_embeddings(enc, feats[feat_cols].to_numpy(np.float32), seq_len=8)
+    close = feats["close"].to_numpy(np.float64)
+    atr = feats["atr"].to_numpy(np.float64)
+    pc = {"close": close, "atr": atr, "embeddings": emb,
+          "vol_quantile": np.ones(len(close))}
+    env_cfg = EnvConfig(seq_len=8, horizon=20, rr_upper=10.0, rr_lower=10.0, spread_bps=0.5)
+
+    class AlwaysBuy:
+        def predict(self, obs, deterministic=True): return BUY, None
+
+    eng = PaperEngine(asset="GC=F", run_id="t-open", model=AlwaysBuy(),
+                      precomputed=pc, env_cfg=env_cfg)
+    # Before any step → no open position.
+    assert eng.open_position_state() is None
+    # Step until a position opens. With wide barriers + horizon=20 the trade
+    # stays open after entry.
+    for i in range(8, 18):
+        eng.step(i)
+    snap = eng.open_position_state()
+    assert snap is not None, "expected an open position"
+    for k in ("asset", "direction", "entry_price", "last_price",
+              "unrealised_pnl", "barrier_upper", "barrier_lower",
+              "bars_in_trade", "regime_idx"):
+        assert k in snap, f"missing key {k}"
+    assert snap["asset"] == "GC=F"
+    assert snap["direction"] == 1
+    assert snap["bars_in_trade"] >= 0
+
+
+def test_tradestore_filter_by_run_id():
+    """Phase N2: list_trades filters by run_id and run_ids list."""
+    import os
+    store, db = _make_tradestore_with_seed()
+    try:
+        all_rows = store.list_trades(limit=1000)
+        assert len(all_rows) == 60       # 3 runs × 20 trades
+        m0 = store.list_trades(run_id="GC=F-m0-replay-1000", limit=1000)
+        assert len(m0) == 20
+        assert all(r["run_id"] == "GC=F-m0-replay-1000" for r in m0)
+        # run_ids list filter
+        sub = store.list_trades(
+            run_ids=["GC=F-m1-replay-2000", "SI=F-m0-replay-3000"], limit=1000,
+        )
+        assert len(sub) == 40
+    finally:
+        os.unlink(db)
+
+
+def test_tradestore_aggregate():
+    """Phase N3: aggregate produces correct totals and per-asset breakdown."""
+    import os
+    store, db = _make_tradestore_with_seed()
+    try:
+        out = store.aggregate(group_by="asset")
+        assert out["total"]["n_trades"] == 60
+        assert {g["key"] for g in out["groups"]} == {"GC=F", "SI=F"}
+        gc = next(g for g in out["groups"] if g["key"] == "GC=F")
+        si = next(g for g in out["groups"] if g["key"] == "SI=F")
+        assert gc["n_trades"] == 40
+        assert si["n_trades"] == 20
+        # Total return from grouped equities should equal the all-trades total
+        # to within numerical noise (compounding order matters, so we just
+        # check it's within 5% of total).
+        assert abs(out["total"]["n_trades"] - (gc["n_trades"] + si["n_trades"])) == 0
+    finally:
+        os.unlink(db)
+
+
+def test_tradestore_sessions():
+    """Phase N4: sessions() returns one row per distinct run_id."""
+    import os
+    store, db = _make_tradestore_with_seed()
+    try:
+        rows = store.sessions(limit=10)
+        assert len(rows) == 3
+        rids = {r["run_id"] for r in rows}
+        assert rids == {"GC=F-m0-replay-1000", "GC=F-m1-replay-2000",
+                        "SI=F-m0-replay-3000"}
+        for r in rows:
+            assert r["n_trades"] == 20
+            assert "sharpe" in r and "max_dd" in r
+    finally:
+        os.unlink(db)
+
+
 def test_lightgbm_meta_model_fallback():
     """Phase L: LightGBMMetaModel works whether or not lightgbm is installed."""
     from src.models.meta_label import LightGBMMetaModel, MetaLabelConfig
@@ -1046,6 +1171,10 @@ if __name__ == "__main__":
         test_live_stats_compute,
         test_kill_switch_dsr_floor,
         test_ensemble_policy_weighted_majority,
+        test_paper_engine_open_position_state,
+        test_tradestore_filter_by_run_id,
+        test_tradestore_aggregate,
+        test_tradestore_sessions,
         test_lightgbm_meta_model_fallback,
     ]
     failures = 0

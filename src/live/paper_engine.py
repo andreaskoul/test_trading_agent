@@ -214,18 +214,37 @@ class TradeStore:
                 (text, int(trade_id)),
             )
 
-    def list_trades(self, asset: Optional[str] = None, limit: int = 500) -> list[dict]:
+    def list_trades(
+        self,
+        asset: Optional[str] = None,
+        limit: int = 500,
+        run_id: Optional[str] = None,
+        run_ids: Optional[list[str]] = None,
+        since: Optional[float] = None,
+        until: Optional[float] = None,
+    ) -> list[dict]:
+        """Filterable trade list. ``since`` / ``until`` are unix seconds
+        (compared against ``created_at``). Pass ``run_ids`` (list) to
+        filter by an algorithm-resolved subset."""
+        clauses: list[str] = []
+        args: list = []
+        if asset:
+            clauses.append("asset=?"); args.append(asset)
+        if run_id:
+            clauses.append("run_id=?"); args.append(run_id)
+        if run_ids:
+            placeholders = ",".join("?" * len(run_ids))
+            clauses.append(f"run_id IN ({placeholders})")
+            args.extend(run_ids)
+        if since is not None:
+            clauses.append("created_at >= ?"); args.append(float(since))
+        if until is not None:
+            clauses.append("created_at <= ?"); args.append(float(until))
+        where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
+        sql = f"SELECT * FROM trades {where} ORDER BY trade_id DESC LIMIT ?"
+        args.append(int(limit))
         with self._lock, self._connect() as conn:
-            if asset:
-                cur = conn.execute(
-                    "SELECT * FROM trades WHERE asset=? ORDER BY trade_id DESC LIMIT ?",
-                    (asset, int(limit)),
-                )
-            else:
-                cur = conn.execute(
-                    "SELECT * FROM trades ORDER BY trade_id DESC LIMIT ?",
-                    (int(limit),),
-                )
+            cur = conn.execute(sql, args)
             return [dict(r) for r in cur.fetchall()]
 
     def get(self, trade_id: int) -> Optional[dict]:
@@ -235,6 +254,103 @@ class TradeStore:
             )
             row = cur.fetchone()
             return dict(row) if row else None
+
+    def sessions(self, limit: int = 200) -> list[dict]:
+        """Phase N4: one summary row per distinct ``run_id``.
+
+        Returns the most recent ``limit`` sessions ordered by ``ended_at``
+        descending, with per-session PnL/Sharpe/DD already computed.
+        """
+        with self._lock, self._connect() as conn:
+            cur = conn.execute(
+                "SELECT run_id, asset, MIN(created_at) AS started_at, "
+                "MAX(created_at) AS ended_at, COUNT(*) AS n_trades, "
+                "GROUP_CONCAT(pnl) AS pnls "
+                "FROM trades GROUP BY run_id "
+                "ORDER BY ended_at DESC LIMIT ?",
+                (int(limit),),
+            )
+            rows = cur.fetchall()
+        out: list[dict] = []
+        for r in rows:
+            pnls = np.array([float(x) for x in r["pnls"].split(",")], dtype=float)
+            equity = np.cumprod(1.0 + pnls)
+            peak = np.maximum.accumulate(equity)
+            dd = float(((equity - peak) / peak).min()) if pnls.size else 0.0
+            std = float(pnls.std(ddof=1)) if pnls.size > 1 else 0.0
+            out.append({
+                "run_id": r["run_id"],
+                "asset": r["asset"],
+                "started_at": float(r["started_at"]),
+                "ended_at": float(r["ended_at"]),
+                "n_trades": int(r["n_trades"]),
+                "total_return": float(equity[-1] - 1.0) if pnls.size else 0.0,
+                "sharpe": float(pnls.mean() / std) if std > 1e-12 else 0.0,
+                "max_dd": dd,
+                "hit_rate": float((pnls > 0).mean()) if pnls.size else 0.0,
+            })
+        return out
+
+    def aggregate(
+        self,
+        group_by: Optional[str] = None,
+        since: Optional[float] = None,
+        until: Optional[float] = None,
+    ) -> dict:
+        """Phase N3: aggregate PnL/Sharpe/DD/hit-rate, optionally grouped.
+
+        ``group_by`` may be ``"asset"`` or ``"run_id"`` (None = grand total
+        only). Algorithm-grouped aggregation is layered on top by the
+        cockpit (which has access to the manifest); the SQL layer doesn't
+        know the manifest.
+
+        Returns ``{"total": {...}, "groups": [{"key": ..., **stats}, ...]}``.
+        """
+        clauses, args = [], []
+        if since is not None:
+            clauses.append("created_at >= ?"); args.append(float(since))
+        if until is not None:
+            clauses.append("created_at <= ?"); args.append(float(until))
+        where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
+
+        def _stats(pnls: list[float]) -> dict:
+            arr = np.asarray(pnls, dtype=float)
+            n = int(arr.size)
+            if n == 0:
+                return {"n_trades": 0, "total_return": 0.0, "sharpe": 0.0,
+                        "max_dd": 0.0, "hit_rate": 0.0}
+            equity = np.cumprod(1.0 + arr)
+            peak = np.maximum.accumulate(equity)
+            dd = float(((equity - peak) / peak).min())
+            std = float(arr.std(ddof=1)) if n > 1 else 0.0
+            sr = float(arr.mean() / std) if std > 1e-12 else 0.0
+            return {
+                "n_trades": n,
+                "total_return": float(equity[-1] - 1.0),
+                "sharpe": sr,
+                "max_dd": dd,
+                "hit_rate": float((arr > 0).mean()),
+            }
+
+        with self._lock, self._connect() as conn:
+            cur = conn.execute(
+                f"SELECT pnl, asset, run_id, created_at FROM trades "
+                f"{where} ORDER BY trade_id ASC",
+                args,
+            )
+            rows = cur.fetchall()
+        all_pnls = [float(r["pnl"]) for r in rows]
+        total = _stats(all_pnls)
+        groups: list[dict] = []
+        if group_by in ("asset", "run_id"):
+            buckets: dict[str, list[float]] = {}
+            for r in rows:
+                buckets.setdefault(str(r[group_by]), []).append(float(r["pnl"]))
+            for k, pnls in sorted(buckets.items()):
+                g = _stats(pnls)
+                g["key"] = k
+                groups.append(g)
+        return {"total": total, "groups": groups}
 
 
 # ---------------------------------------------------------------------------
@@ -740,4 +856,34 @@ class PaperEngine:
                 "commission_usd": self.cost.commission_usd,
             },
             "meta_threshold": self.meta_threshold,
+        }
+
+    def open_position_state(self) -> Optional[dict]:
+        """Phase N1: snapshot of the currently-open position, or None.
+
+        Includes unrealised PnL (mark-to-market against the latest close),
+        regime index, bars-in-trade and the active barrier prices so the
+        UI active-trades panel can render without extra round-trips.
+        """
+        if self._pos == 0 or self._entry_i < 0:
+            return None
+        last_idx = len(self._close) - 1
+        last_price = float(self._close[last_idx]) if last_idx >= 0 else self._entry_price
+        unrealised = self._pos * (last_price / self._entry_price - 1.0)
+        regime_idx = None
+        if self._regime is not None and 0 <= self._entry_i < len(self._regime):
+            regime_idx = int(np.argmax(self._regime[self._entry_i]))
+        return {
+            "asset": self.asset,
+            "run_id": self.run_id,
+            "direction": int(self._pos),
+            "entry_idx": int(self._entry_i),
+            "entry_ts": str(self._ts(self._entry_i)) if self._ts(self._entry_i) is not None else None,
+            "entry_price": float(self._entry_price),
+            "last_price": last_price,
+            "unrealised_pnl": float(unrealised),
+            "barrier_upper": float(self._barrier_upper),
+            "barrier_lower": float(self._barrier_lower),
+            "bars_in_trade": int(last_idx - self._entry_i),
+            "regime_idx": regime_idx,
         }

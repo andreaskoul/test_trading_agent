@@ -668,6 +668,11 @@ class CockpitState:
         payload = sig.to_dict()
         payload["asset"] = engine.asset
         await self.hub.publish("signal", payload)
+        # Phase N1: publish open-position state so the active-trades panel
+        # updates on every bar (not just on entry/exit). Cheap: just reads
+        # existing engine state.
+        active_snap = engine.open_position_state()
+        await self.hub.publish("active", {"asset": engine.asset, "snapshot": active_snap})
         if sig.fired:
             records = engine.trade_records()
             if records:
@@ -833,10 +838,57 @@ async def api_metrics():
     return {"summary": summary, "per_run": per_run}
 
 
+def _runids_for_algorithm(manifest: list[dict], algorithm: str,
+                           store_run_ids: list[str]) -> list[str]:
+    """Phase N2: resolve which run_ids belong to a given algorithm.
+
+    The on-disk run_id format is ``{asset}-m{idx}-{mode}-{ts}``. We pluck
+    the manifest_idx out of each run_id and look up the matching manifest
+    entry's algorithm. Falls back to substring match (e.g. "ppo" in run_id)
+    when a run_id doesn't match the conventional shape (manual / legacy).
+    """
+    algo = algorithm.lower()
+    out: list[str] = []
+    for rid in store_run_ids:
+        try:
+            mtag = next(p for p in rid.split("-") if p.startswith("m"))
+            midx = int(mtag[1:])
+            entry = manifest[midx]
+            if str(entry.get("algorithm", "")).lower() == algo:
+                out.append(rid)
+                continue
+        except (StopIteration, ValueError, IndexError):
+            pass
+        if algo in rid.lower():
+            out.append(rid)
+    return out
+
+
 @app.get("/api/trades")
-async def api_trades(asset: Optional[str] = None, limit: int = 500):
+async def api_trades(
+    asset: Optional[str] = None,
+    limit: int = 500,
+    algorithm: Optional[str] = None,
+    run_id: Optional[str] = None,
+    since: Optional[float] = None,
+    until: Optional[float] = None,
+):
     s = _state(app)
-    return s.store.list_trades(asset=asset, limit=int(limit))
+    selected_run_ids: Optional[list[str]] = None
+    if algorithm:
+        # Discover all run_ids known to the store, then filter to the
+        # requested algorithm via the manifest mapping. Cheap: a single
+        # DISTINCT query.
+        with s.store._lock, s.store._connect() as conn:
+            cur = conn.execute("SELECT DISTINCT run_id FROM trades")
+            store_run_ids = [r["run_id"] for r in cur.fetchall()]
+        selected_run_ids = _runids_for_algorithm(s.manifest, algorithm, store_run_ids)
+        if not selected_run_ids:
+            return []
+    return s.store.list_trades(
+        asset=asset, limit=int(limit), run_id=run_id,
+        run_ids=selected_run_ids, since=since, until=until,
+    )
 
 
 @app.get("/api/trades/{trade_id}")
@@ -892,6 +944,108 @@ async def api_paper_state():
         "run_id": s.session.run_id,
         "engine": s.session.engine.state(),
     }
+
+
+@app.get("/api/paper/sessions")
+async def api_paper_sessions(limit: int = 200):
+    """Phase N4: list every distinct run_id with its summary stats."""
+    s = _state(app)
+    rows = s.store.sessions(limit=int(limit))
+    # Resolve algorithm via manifest for each run.
+    for r in rows:
+        try:
+            mtag = next(p for p in r["run_id"].split("-") if p.startswith("m"))
+            midx = int(mtag[1:])
+            r["algorithm"] = str(s.manifest[midx].get("algorithm", "unknown"))
+        except (StopIteration, ValueError, IndexError):
+            r["algorithm"] = "unknown"
+    return rows
+
+
+@app.get("/api/paper/sessions/{run_id}/replay")
+async def api_paper_session_replay(run_id: str):
+    """Phase N4: full trade list + cumulative equity curve for one run_id."""
+    s = _state(app)
+    trades = s.store.list_trades(run_id=run_id, limit=10_000)
+    trades.reverse()  # chronological for the equity curve
+    pnls = np.array([float(t["pnl"]) for t in trades], dtype=float)
+    equity = np.cumprod(1.0 + pnls).tolist() if pnls.size else []
+    return {"run_id": run_id, "trades": trades, "equity": equity}
+
+
+@app.get("/api/paper/aggregate")
+async def api_paper_aggregate(
+    group_by: Optional[str] = None,
+    since: Optional[float] = None,
+    until: Optional[float] = None,
+):
+    """Phase N3: aggregate PnL since installation, optionally grouped.
+
+    ``group_by``: ``asset`` | ``run_id`` | ``algorithm`` | ``None``.
+    For ``algorithm`` we run an asset-level aggregate then re-bucket by
+    algorithm via the manifest mapping.
+    """
+    s = _state(app)
+    if group_by == "algorithm":
+        # Aggregate by run_id, then re-bucket by algorithm.
+        raw = s.store.aggregate(group_by="run_id", since=since, until=until)
+        algo_pnls: dict[str, list[float]] = {}
+        # Re-pull pnls per run_id so we can compute per-algo stats correctly.
+        rid_to_algo: dict[str, str] = {}
+        for g in raw["groups"]:
+            try:
+                mtag = next(p for p in g["key"].split("-") if p.startswith("m"))
+                midx = int(mtag[1:])
+                algo = str(s.manifest[midx].get("algorithm", "unknown")).lower()
+            except (StopIteration, ValueError, IndexError):
+                algo = "unknown"
+            rid_to_algo[g["key"]] = algo
+        # Pull all rows once and bucket.
+        clauses, args = [], []
+        if since is not None: clauses.append("created_at >= ?"); args.append(float(since))
+        if until is not None: clauses.append("created_at <= ?"); args.append(float(until))
+        where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
+        with s.store._lock, s.store._connect() as conn:
+            cur = conn.execute(
+                f"SELECT pnl, run_id FROM trades {where} ORDER BY trade_id ASC",
+                args,
+            )
+            for r in cur.fetchall():
+                algo = rid_to_algo.get(str(r["run_id"]), "unknown")
+                algo_pnls.setdefault(algo, []).append(float(r["pnl"]))
+        groups = []
+        for algo, pnls in sorted(algo_pnls.items()):
+            arr = np.asarray(pnls, dtype=float)
+            equity = np.cumprod(1.0 + arr) if arr.size else np.array([1.0])
+            peak = np.maximum.accumulate(equity)
+            dd = float(((equity - peak) / peak).min()) if arr.size else 0.0
+            std = float(arr.std(ddof=1)) if arr.size > 1 else 0.0
+            groups.append({
+                "key": algo,
+                "n_trades": int(arr.size),
+                "total_return": float(equity[-1] - 1.0) if arr.size else 0.0,
+                "sharpe": float(arr.mean() / std) if std > 1e-12 else 0.0,
+                "max_dd": dd,
+                "hit_rate": float((arr > 0).mean()) if arr.size else 0.0,
+            })
+        return {"total": raw["total"], "groups": groups}
+    return s.store.aggregate(group_by=group_by, since=since, until=until)
+
+
+@app.get("/api/paper/active")
+async def api_paper_active():
+    """Phase N1: list currently-open positions across all running sessions.
+
+    Today the cockpit holds at most one session at a time, but the API is
+    list-shaped so a future multi-session cockpit is a drop-in extension.
+    """
+    s = _state(app)
+    out: list[dict] = []
+    if s.session is not None:
+        snap = s.session.engine.open_position_state()
+        if snap is not None:
+            out.append(snap)
+    return {"active": out}
 
 
 @app.get("/api/paper/stats")
