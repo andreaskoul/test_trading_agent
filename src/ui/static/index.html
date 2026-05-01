@@ -465,7 +465,13 @@
           else this.chat.push({ role: 'assistant', text: 'start failed: ' + (await r.text()) });
         },
         async stop() {
-          await fetch('/api/paper/stop', { method: 'POST' });
+          // Phase P2: prompt the operator for an optional halt reason; the
+          // reason is logged + broadcast on the halt channel.
+          const reason = window.prompt('Reason for stopping? (optional)') || '';
+          await fetch('/api/paper/stop', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reason }),
+          });
           this.running = false;
         },
         async explain(tradeId) {

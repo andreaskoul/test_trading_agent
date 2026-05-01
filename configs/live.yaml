@@ -1,0 +1,67 @@
+# Live paper-trading profile: overlay onto configs/default.yaml.
+# Enable with: TRADING_PROFILE=live python scripts/run_cockpit.py
+#
+# Goal: run the cockpit on a real-time YFinance feed (no real money).
+# Inherits the aggressive 60m gold setup but tightens safety knobs and
+# turns on every Phase J/K/L/M monitoring rail.
+
+data:
+  assets:
+    - symbol: "GC=F"
+      fallback_symbols: ["GLD"]
+      interval: "60m"
+      raw_path: "data/raw/gc_60m.parquet"
+      features_path: "data/processed/features_gc_60m.parquet"
+      labels_path: "data/processed/labels_gc_60m.parquet"
+
+features:
+  warmup_bars: 252
+  zscore_window: 252
+
+# Phase L: tighter kill-switch for live trading; halt on any of:
+#   * rolling Sharpe < 0.5 for 3 consecutive 60-trade windows
+#   * cumulative DD > 3%
+#   * win-rate < 45% over last 100 trades
+#   * single trade < -3%
+#   * deflated Sharpe < 0.5 with >= 50 trades (statistical-real check)
+kill_switch:
+  enabled: true
+  sharpe_floor: 0.5
+  sharpe_window: 60
+  sharpe_duration_bars: 3
+  max_drawdown: 0.03
+  win_rate_floor: 0.45
+  win_rate_window: 100
+  catastrophe_pct: 0.03
+  dsr_floor: 0.5
+  dsr_min_trades: 50
+  dsr_n_trials: 36
+
+ui:
+  paper:
+    default_asset: "GC=F"
+    costs:
+      spread_bps: 0.5
+      slippage_bps: 0.3
+      commission_usd: 0.0
+    bar_interval_seconds: 3600          # poll hourly (matches 60m bars)
+    meta_threshold: -1                  # M4: auto-pick threshold per session
+    kelly_cap: 0.25
+    kelly_floor: 0.05
+    kelly_window: 100
+    kelly_cold_start_floor: 0.05
+    daily_loss_limit: 0.02
+    regime_size_multipliers:
+      0: 0.5
+      1: 1.0
+      2: 1.0
+    # Phase L safety
+    max_policy_age_days: 14             # refuse policies older than 2 weeks
+    # Phase M live stats annualisation factor for hourly bars (~252 * 6.5).
+    ann_factor: 1638.0
+    stats_bootstrap_resamples: 1000
+    meta_refit_every_n_trades: 50
+    meta_max_history: 2000
+    # Phase K: optional webhook for halt notifications.
+    # Set ALERT_WEBHOOK env var or hardcode here.
+    alert_webhook: ""

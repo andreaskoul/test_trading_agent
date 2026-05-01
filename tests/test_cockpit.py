@@ -352,6 +352,169 @@ def test_api_smoke_endpoints():
         assert isinstance(r.json(), list)
 
 
+def test_api_monitoring_endpoints_json_shape():
+    """Phase P1: monitoring endpoints (/active, /stats, /aggregate, /sessions)
+    must return well-formed JSON even on a cold install with no trades.
+
+    These are the contracts the UI's static JS depends on; a regression
+    here breaks every monitoring panel silently."""
+    try:
+        from fastapi.testclient import TestClient
+    except ImportError:
+        import warnings
+        warnings.warn("fastapi not installed; skipping monitoring smoke", stacklevel=2)
+        return
+    from src.ui.server import app
+
+    with TestClient(app) as client:
+        r = client.get("/api/paper/active")
+        assert r.status_code == 200
+        body = r.json()
+        assert "active" in body and isinstance(body["active"], list)
+
+        r = client.get("/api/paper/stats")
+        assert r.status_code == 200
+        stats = r.json()
+        for k in ("n_trades", "sharpe", "dsr", "psr_vs_zero",
+                  "boot_p", "boot_lo", "boot_hi", "ann_factor"):
+            assert k in stats, f"stats missing key {k}: {stats}"
+
+        r = client.get("/api/paper/aggregate")
+        assert r.status_code == 200
+        agg = r.json()
+        assert "total" in agg and "groups" in agg
+        assert "n_trades" in agg["total"]
+
+        r = client.get("/api/paper/aggregate?group_by=algorithm")
+        assert r.status_code == 200
+        assert "groups" in r.json()
+
+        r = client.get("/api/paper/sessions")
+        assert r.status_code == 200
+        assert isinstance(r.json(), list)
+
+        r = client.get("/api/trades?algorithm=ppo&limit=5")
+        assert r.status_code == 200
+        assert isinstance(r.json(), list)
+
+
+def test_e2e_process_bar_publishes_all_channels():
+    """Phase P1: drive PaperEngine + CockpitState.hub directly and verify
+    every monitoring WebSocket channel emits at least once during a short
+    synthetic session. Catches channel-name/shape regressions that would
+    silently break the UI."""
+    try:
+        from fastapi.testclient import TestClient   # noqa: F401
+    except ImportError:
+        import warnings
+        warnings.warn("fastapi not installed; skipping e2e channels", stacklevel=2)
+        return
+
+    from src.data.features import build_features, feature_columns
+    from src.env.trading_env import EnvConfig, BUY
+    from src.live.feed import Bar
+    from src.live.paper_engine import PaperEngine, TradeStore
+    from src.models.precompute import precompute_embeddings
+    from src.models.xlstm_lite import XLSTMConfig, XLSTMLite
+    from src.ui.server import CockpitState, Session
+
+    # Build synthetic precomputed.
+    rng = np.random.default_rng(0)
+    n = 800
+    rets = 0.0002 + 0.01 * rng.standard_normal(n)
+    close = 1500 * np.exp(np.cumsum(rets))
+    df = pd.DataFrame({
+        "open": close, "high": close * 1.001, "low": close * 0.999,
+        "close": close, "volume": np.abs(rng.normal(1e5, 1e4, n)).astype(np.int64),
+    }, index=pd.date_range("2020-01-01", periods=n, freq="h", tz="UTC"))
+    feats = build_features(df)
+    feat_cols = feature_columns(feats)
+    enc = XLSTMLite(XLSTMConfig(input_dim=len(feat_cols), hidden_size=16))
+    emb = precompute_embeddings(enc, feats[feat_cols].to_numpy(np.float32), seq_len=8)
+    pc = {
+        "close": feats["close"].to_numpy(np.float64),
+        "atr": feats["atr"].to_numpy(np.float64),
+        "embeddings": emb,
+        "vol_quantile": np.ones(len(feats), dtype=np.float64),
+        "timestamps": feats.index,
+    }
+
+    cfg = {
+        "ui": {"paper": {"ann_factor": 252.0, "stats_bootstrap_resamples": 50,
+                          "meta_refit_every_n_trades": 0}},
+        "kill_switch": {"enabled": False},
+        "evaluation": {"permutation_block_size": 5},
+        "data": {"assets": [{"symbol": "X", "interval": "1h"}]},
+        "artefact_dir": tempfile.mkdtemp(),
+        "report_dir": tempfile.mkdtemp(),
+        "trade_db_path": tempfile.NamedTemporaryFile(suffix=".db", delete=False).name,
+        "env": {"seq_len": 8, "horizon": 4, "rr_upper": 1.5, "rr_lower": 0.75,
+                 "spread_bps": 0.5},
+    }
+
+    class AlwaysBuy:
+        def predict(self, obs, deterministic=True): return BUY, None
+
+    env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
+    eng = PaperEngine(asset="X", run_id="e2e", model=AlwaysBuy(),
+                      precomputed=pc, env_cfg=env_cfg,
+                      timestamps=pc["timestamps"])
+
+    # Build CockpitState (skip __init__ — it expects on-disk artefacts).
+    state = CockpitState.__new__(CockpitState)
+    state.cfg = cfg
+    state.assets = []
+    state.manifest = []
+    state.env_cfg = env_cfg
+    from src.ui.server import Hub
+    state.hub = Hub()
+    state.store = TradeStore(cfg["trade_db_path"])
+    state._precomputed_cache = {}
+    state._meta_cache = {}
+    state._meta_train_data = {}
+    state._meta_pending = {}
+    state._meta_max_history = 2000
+    state._meta_refit_every = 0
+    from src.live.kill_switch import KillSwitchConfig
+    state._ks_cfg = KillSwitchConfig(enabled=False)
+    from src.validation.live_stats import LiveStats
+    state._live_stats = LiveStats(annualisation_factor=252.0,
+                                   bootstrap_resamples=50, bootstrap_block=5,
+                                   n_trials_for_dsr=4)
+    state.session = Session(asset="X", manifest_idx=0, mode="replay",
+                             run_id="e2e", engine=eng, feed=None, task=None)
+
+    seen_channels: set[str] = set()
+
+    async def drive() -> set[str]:
+        q = await state.hub.subscribe()
+
+        async def consume() -> None:
+            try:
+                while True:
+                    msg = await asyncio.wait_for(q.get(), timeout=2.0)
+                    seen_channels.add(json.loads(msg)["channel"])
+            except asyncio.TimeoutError:
+                return
+
+        consumer = asyncio.create_task(consume())
+        # Drive enough bars to enter, exit, and emit a closed-trade stats burst.
+        for i in range(8, 80):
+            ts = pc["timestamps"][i]
+            cls = float(pc["close"][i])
+            bar = Bar(asset="X", ts=ts, idx=i, open=cls, high=cls, low=cls,
+                      close=cls, volume=1.0)
+            await state._process_bar(eng, bar)
+        await consumer
+        await state.hub.unsubscribe(q)
+        return seen_channels
+
+    channels = asyncio.run(drive())
+    for required in ("bar", "signal", "active", "equity", "trade", "stats"):
+        assert required in channels, \
+            f"channel {required!r} never published; saw {channels}"
+
+
 # ---------------------------------------------------------------------------
 # Manual runner
 # ---------------------------------------------------------------------------
@@ -365,6 +528,8 @@ if __name__ == "__main__":
         test_trade_store_roundtrip,
         test_explain_fallback_without_api_key,
         test_api_smoke_endpoints,
+        test_api_monitoring_endpoints_json_shape,
+        test_e2e_process_bar_publishes_all_channels,
     ]
     failures = 0
     for t in tests:

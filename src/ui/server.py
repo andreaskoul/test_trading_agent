@@ -68,10 +68,33 @@ if RecurrentPPO is not None:
 # ---------------------------------------------------------------------------
 
 
+def _deep_merge(base: dict, overlay: dict) -> dict:
+    """Recursive in-place dict merge; overlay wins."""
+    for k, v in overlay.items():
+        if isinstance(v, dict) and isinstance(base.get(k), dict):
+            _deep_merge(base[k], v)
+        else:
+            base[k] = v
+    return base
+
+
 def _load_config(path: Optional[str] = None) -> dict:
     path = path or os.path.join(_REPO_ROOT, "configs", "default.yaml")
     with open(path, "r") as f:
         cfg = yaml.safe_load(f)
+    # Phase P4: honour TRADING_PROFILE so the cockpit picks up the same
+    # aggressive/live overlays that the offline scripts use.
+    profile = os.environ.get("TRADING_PROFILE", "").strip()
+    if profile:
+        prof_path = os.path.join(_REPO_ROOT, "configs", f"{profile}.yaml")
+        if os.path.exists(prof_path):
+            with open(prof_path) as f:
+                overlay = yaml.safe_load(f) or {}
+            _deep_merge(cfg, overlay)
+            log.info("loaded profile overlay: %s", prof_path)
+        else:
+            log.warning("TRADING_PROFILE=%s but %s missing; using default",
+                        profile, prof_path)
     cfg["__repo_root__"] = _REPO_ROOT
     return cfg
 
@@ -612,9 +635,57 @@ class CockpitState:
             run_id=run_id,
             streaming_encoder=streaming_enc,
         )
+        # Phase P3: persist enough metadata that an unexpected restart
+        # can warn the operator that an active session was abandoned.
+        self._persist_session(
+            self.session,
+            replay_start=replay_start, replay_end=replay_end,
+            meta_threshold=meta_threshold,
+            costs={"spread_bps": costs.spread_bps,
+                   "slippage_bps": costs.slippage_bps,
+                   "commission_usd": costs.commission_usd},
+        )
         return {"run_id": run_id, "mode": mode, "asset": asset_symbol}
 
-    async def stop_session(self) -> dict:
+    # ------------------------------------------------------------------
+    # Phase P3: persistent session state
+    # ------------------------------------------------------------------
+    def _session_state_path(self) -> str:
+        return _path(self.cfg, self.cfg["artefact_dir"], "active_session.json")
+
+    def _persist_session(self, session: "Session", **extra) -> None:
+        try:
+            payload = {
+                "run_id": session.run_id, "asset": session.asset,
+                "manifest_idx": session.manifest_idx, "mode": session.mode,
+                "started_at": time.time(), **extra,
+            }
+            os.makedirs(os.path.dirname(self._session_state_path()), exist_ok=True)
+            with open(self._session_state_path(), "w") as f:
+                json.dump(payload, f, indent=2)
+        except OSError as exc:
+            log.warning("failed to persist session state: %s", exc)
+
+    def _clear_persisted_session(self) -> None:
+        try:
+            os.remove(self._session_state_path())
+        except FileNotFoundError:
+            pass
+        except OSError as exc:
+            log.warning("failed to clear session state: %s", exc)
+
+    def load_persisted_session(self) -> Optional[dict]:
+        path = self._session_state_path()
+        if not os.path.exists(path):
+            return None
+        try:
+            with open(path) as f:
+                return json.load(f)
+        except (OSError, json.JSONDecodeError) as exc:
+            log.warning("could not read persisted session %s: %s", path, exc)
+            return None
+
+    async def stop_session(self, reason: Optional[str] = None) -> dict:
         sess = self.session
         if sess is None:
             return {"stopped": False}
@@ -628,8 +699,23 @@ class CockpitState:
         except (asyncio.CancelledError, Exception):
             pass
         self.session = None
-        await self.hub.publish("log", {"level": "info", "msg": f"session {sess.run_id} stopped"})
-        return {"stopped": True, "run_id": sess.run_id}
+        self._clear_persisted_session()
+        # Phase P2: surface the operator's stop reason on the halt channel
+        # alongside the existing log message so the UI banner can render it.
+        if reason:
+            log.warning("session %s manually halted: %s", sess.run_id, reason)
+            await self.hub.publish(
+                "halt",
+                {"run_id": sess.run_id, "asset": sess.asset,
+                 "reasons": {"manual": reason}, "manual": True},
+            )
+        await self.hub.publish(
+            "log",
+            {"level": "info" if not reason else "warning",
+             "msg": f"session {sess.run_id} stopped"
+                    + (f": {reason}" if reason else "")},
+        )
+        return {"stopped": True, "run_id": sess.run_id, "reason": reason}
 
     async def _run_session(self, engine: PaperEngine, feed, mode: str) -> None:
         await self.hub.publish(
@@ -768,9 +854,21 @@ async def lifespan(app: FastAPI):
         len(app.state.cockpit.manifest),
         app.state.cockpit.store.db_path,
     )
+    # Phase P3: a stale active_session.json means the previous process
+    # exited without a clean stop. We don't auto-resume (open positions
+    # belong to a process that no longer exists); just warn loudly so the
+    # operator can investigate via /api/paper/orphan.
+    orphan = app.state.cockpit.load_persisted_session()
+    if orphan:
+        log.warning(
+            "ORPHANED SESSION DETECTED on startup: run_id=%s asset=%s mode=%s; "
+            "previous process did not stop cleanly. Inspect via "
+            "/api/paper/orphan and clear via /api/paper/orphan/clear",
+            orphan.get("run_id"), orphan.get("asset"), orphan.get("mode"),
+        )
     yield
     if app.state.cockpit.session is not None:
-        await app.state.cockpit.stop_session()
+        await app.state.cockpit.stop_session(reason="server_shutdown")
 
 
 app = FastAPI(title="Trading Cockpit", lifespan=lifespan)
@@ -927,8 +1025,28 @@ async def api_paper_start(body: dict):
 
 
 @app.post("/api/paper/stop")
-async def api_paper_stop():
-    return await _state(app).stop_session()
+async def api_paper_stop(body: Optional[dict] = None):
+    """Phase P2: optional ``{"reason": "..."}`` body lets the operator
+    record why they halted; the reason is broadcast on ``halt`` so the UI
+    can surface it next to auto-halts from the kill-switch."""
+    reason = (body or {}).get("reason") if body else None
+    return await _state(app).stop_session(reason=reason)
+
+
+@app.get("/api/paper/orphan")
+async def api_paper_orphan():
+    """Phase P3: read the persisted session metadata (if any). The
+    cockpit writes this on every start_session and clears it on stop;
+    a non-empty result means the previous process crashed mid-session."""
+    s = _state(app)
+    return {"orphan": s.load_persisted_session()}
+
+
+@app.post("/api/paper/orphan/clear")
+async def api_paper_orphan_clear():
+    s = _state(app)
+    s._clear_persisted_session()
+    return {"cleared": True}
 
 
 @app.get("/api/paper/state")
