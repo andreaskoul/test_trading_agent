@@ -1,0 +1,104 @@
+name: Paper trade · hourly cron
+
+# Phase Q: hourly paper-trading on a fully-free GitHub Actions runner.
+#
+# Each invocation:
+#   1. Restores the previous run's state (live_bars.parquet + paper_trades.db)
+#      from the persistent `state` branch.
+#   2. Fetches the latest bar via yfinance, runs scripts/step_one_bar.py.
+#   3. Exports docs/data.json for the static GitHub Pages dashboard.
+#   4. Commits both back to the `state` branch.
+#
+# The exit code from step_one_bar.py is the workflow status:
+#   0 = success, 2 = halt or feed failure (failure surfaces in the GH UI).
+
+on:
+  schedule:
+    - cron: '5 * * * *'      # 5 minutes past every hour (after most exchanges close their bar)
+  workflow_dispatch:          # manual trigger button
+
+permissions:
+  contents: write             # need to push state back to the `state` branch
+
+concurrency:
+  group: paper-trade          # never run two cron jobs at once
+  cancel-in-progress: false
+
+jobs:
+  trade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout main code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 1
+
+      - name: Restore state from `state` branch (if it exists)
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code origin state >/dev/null 2>&1; then
+            git fetch origin state:state
+            git checkout state -- artefacts/live_bars.parquet artefacts/paper_trades.db artefacts/engine_state.json artefacts/kill_switch_halt.json 2>/dev/null || true
+            echo "Restored prior state from state branch"
+          else
+            echo "No state branch yet; starting fresh"
+          fi
+        continue-on-error: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install runtime deps
+        run: |
+          pip install --upgrade pip
+          # Slim runtime: skip torch+SB3 only if you precompute embeddings
+          # offline. For now we install the full set so step_one_bar.py
+          # can call .predict() on PPO/GRPO policies.
+          pip install -r requirements.txt
+
+      - name: Step one bar
+        env:
+          TRADING_PROFILE: live
+        run: |
+          python scripts/step_one_bar.py --asset GC=F
+          echo "EXIT_CODE=$?" >> $GITHUB_ENV
+
+      - name: Export dashboard data
+        if: always()
+        env:
+          TRADING_PROFILE: live
+        run: python scripts/export_dashboard_data.py --out docs/data.json
+
+      - name: Commit state + dashboard data back
+        if: always()
+        run: |
+          set -euo pipefail
+          git config user.name 'paper-trade-bot'
+          git config user.email 'paper-trade-bot@users.noreply.github.com'
+
+          # Switch to (or create) the state branch in a worktree so we don't
+          # clobber the main checkout.
+          git worktree add /tmp/state state 2>/dev/null \
+            || git worktree add -b state /tmp/state
+
+          mkdir -p /tmp/state/artefacts /tmp/state/docs
+          [ -f artefacts/live_bars.parquet ]   && cp artefacts/live_bars.parquet   /tmp/state/artefacts/
+          [ -f artefacts/paper_trades.db ]     && cp artefacts/paper_trades.db     /tmp/state/artefacts/
+          [ -f artefacts/engine_state.json ]   && cp artefacts/engine_state.json   /tmp/state/artefacts/
+          [ -f artefacts/kill_switch_halt.json ] && cp artefacts/kill_switch_halt.json /tmp/state/artefacts/
+          [ -f docs/data.json ] && cp docs/data.json /tmp/state/docs/
+
+          cd /tmp/state
+          git add artefacts/ docs/ || true
+          if ! git diff --cached --quiet; then
+            git commit -m "paper-trade tick · $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push origin state
+          else
+            echo "no state changes to commit"
+          fi

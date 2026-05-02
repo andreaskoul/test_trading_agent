@@ -1,0 +1,42 @@
+{
+  "name": "Trading Agent · Cockpit",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11-bookworm",
+
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": {
+      "label": "Cockpit (FastAPI + WebSocket)",
+      "onAutoForward": "openBrowser"
+    }
+  },
+
+  "postCreateCommand": "pip install --upgrade pip && pip install -r requirements.txt",
+
+  "postAttachCommand": {
+    "fetch-state": "git fetch origin state:state 2>/dev/null && git checkout state -- artefacts/live_bars.parquet artefacts/paper_trades.db artefacts/engine_state.json 2>/dev/null || echo 'no state branch yet'"
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "terminal.integrated.env.linux": {
+          "TRADING_PROFILE": "live",
+          "PYTHONPATH": "${containerWorkspaceFolder}"
+        }
+      }
+    }
+  },
+
+  "remoteEnv": {
+    "TRADING_PROFILE": "live"
+  }
+}

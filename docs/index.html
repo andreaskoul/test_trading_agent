@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Trading Agent · Live Paper Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --bg: #0b1020; --panel: #111a2e; --border: #1f2a44; --muted: #64748b;
+    --green: #4ade80; --red: #f87171; --yellow: #facc15; --blue: #38bdf8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background: var(--bg); color: #e2e8f0; font-size: 13px; line-height: 1.4;
+  }
+  header {
+    padding: 10px 16px; display: flex; gap: 16px; align-items: baseline;
+    border-bottom: 1px solid var(--border); background: var(--panel);
+  }
+  header h1 { margin: 0; font-size: 14px; font-weight: 600; }
+  header .stamp { color: var(--muted); font-size: 11px; }
+  .grid {
+    display: grid; gap: 12px; padding: 12px;
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .panel {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px;
+  }
+  .panel h2 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase;
+              letter-spacing: 0.05em; color: var(--muted); font-weight: 600; }
+  .col-4 { grid-column: span 4; }
+  .col-6 { grid-column: span 6; }
+  .col-12 { grid-column: span 12; }
+  .num { font-variant-numeric: tabular-nums; }
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+  .yellow { color: var(--yellow); }
+  .muted { color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { color: var(--muted); text-align: left; font-weight: 500;
+       border-bottom: 1px solid var(--border); padding: 4px 6px; }
+  td { padding: 3px 6px; border-bottom: 1px solid #0f172a; }
+  .grid-kv { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; }
+  .halt-banner {
+    background: #7f1d1d; color: #fee2e2; padding: 8px 16px; font-weight: 600;
+    border-bottom: 2px solid var(--red);
+  }
+  canvas { display: block; max-width: 100%; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Trading Agent · Paper Dashboard</h1>
+  <span id="stamp" class="stamp">loading…</span>
+  <span class="muted">Auto-refreshes every 60 s · data via GitHub Actions cron</span>
+</header>
+
+<div id="halt" class="halt-banner" hidden></div>
+
+<main class="grid">
+
+  <section class="panel col-4">
+    <h2>active trade</h2>
+    <div id="active"><span class="muted">—</span></div>
+  </section>
+
+  <section class="panel col-4">
+    <h2>statistical confidence</h2>
+    <div id="stats"><span class="muted">—</span></div>
+  </section>
+
+  <section class="panel col-4">
+    <h2>aggregate PnL · by algorithm</h2>
+    <div id="agg-algo"><span class="muted">—</span></div>
+  </section>
+
+  <section class="panel col-6">
+    <h2>equity curve · last 1000 trades</h2>
+    <canvas id="equity" width="600" height="180"></canvas>
+  </section>
+
+  <section class="panel col-6">
+    <h2>recent trades · last 50</h2>
+    <div style="max-height: 180px; overflow-y: auto;">
+      <table>
+        <thead><tr>
+          <th>#</th><th>asset</th><th>side</th><th>entry</th><th>exit</th>
+          <th>PnL</th><th>barrier</th><th>at</th>
+        </tr></thead>
+        <tbody id="trades"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel col-12">
+    <h2>aggregate PnL · by asset</h2>
+    <div id="agg-asset"><span class="muted">—</span></div>
+  </section>
+
+</main>
+
+<script>
+function pct(x) { return (x * 100).toFixed(2) + "%"; }
+function fixed(x, n=3) { return Number(x).toFixed(n); }
+function colorize(v, good) {
+  return Number(v) >= good ? "green" : (Number(v) >= 0 ? "yellow" : "red");
+}
+
+function renderActive(snap) {
+  const el = document.getElementById("active");
+  if (!snap || !snap.engine) { el.innerHTML = '<span class="muted">no engine state yet</span>'; return; }
+  const op = snap.engine.open_position;
+  if (!op) {
+    el.innerHTML = `<div class="muted">flat · last bar idx ${snap.engine.last_idx ?? '?'}</div>
+      <div class="num">equity x${fixed(snap.engine.equity, 4)} · ${snap.engine.n_trades} trades</div>`;
+    return;
+  }
+  el.innerHTML = `
+    <div class="grid-kv num">
+      <div>asset</div><div>${op.asset}</div>
+      <div>direction</div><div class="${op.direction > 0 ? 'green' : 'red'}">${op.direction > 0 ? 'LONG' : 'SHORT'}</div>
+      <div>entry</div><div>${fixed(op.entry_price, 4)}</div>
+      <div>last</div><div>${fixed(op.last_price, 4)}</div>
+      <div>unrealised</div><div class="${op.unrealised_pnl >= 0 ? 'green' : 'red'}">${pct(op.unrealised_pnl)}</div>
+      <div>bars in</div><div>${op.bars_in_trade}</div>
+      <div>regime</div><div>${op.regime_idx ?? '—'}</div>
+    </div>`;
+}
+
+function renderStats(snap) {
+  const el = document.getElementById("stats");
+  const s = snap?.stats;
+  if (!s || s.n_trades < 5) { el.innerHTML = '<span class="muted">awaiting trades…</span>'; return; }
+  el.innerHTML = `<div class="grid-kv num">
+    <div>n trades</div><div>${s.n_trades}</div>
+    <div>Sharpe</div><div>${fixed(s.sharpe)}</div>
+    <div>DSR</div><div class="${colorize(s.dsr, 0.95)}">${fixed(s.dsr)}</div>
+    <div>P(SR&gt;0)</div><div>${fixed(s.psr_vs_zero)}</div>
+    <div>boot p</div><div class="${s.boot_p < 0.05 ? 'green' : 'red'}">${fixed(s.boot_p, 4)}</div>
+    <div>boot CI</div><div>[${fixed(s.boot_lo, 2)}, ${fixed(s.boot_hi, 2)}]</div>
+  </div>`;
+}
+
+function renderAggregate(elId, agg) {
+  const el = document.getElementById(elId);
+  if (!agg || !agg.groups || agg.groups.length === 0) { el.innerHTML = '<span class="muted">—</span>'; return; }
+  let html = '<table><thead><tr><th>group</th><th>trades</th><th>return</th><th>Sh</th><th>DD</th><th>hit</th></tr></thead><tbody>';
+  for (const g of agg.groups) {
+    html += `<tr>
+      <td>${g.key}</td>
+      <td class="num">${g.n_trades}</td>
+      <td class="num ${g.total_return >= 0 ? 'green' : 'red'}">${pct(g.total_return)}</td>
+      <td class="num">${fixed(g.sharpe)}</td>
+      <td class="num red">${pct(g.max_dd)}</td>
+      <td class="num">${pct(g.hit_rate)}</td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+  el.innerHTML = html;
+}
+
+function renderTrades(rows) {
+  const tb = document.getElementById("trades");
+  if (!rows || rows.length === 0) { tb.innerHTML = '<tr><td colspan="8" class="muted">no trades yet</td></tr>'; return; }
+  tb.innerHTML = rows.slice(0, 50).map(t => `<tr>
+    <td>${t.trade_id}</td>
+    <td>${t.asset}</td>
+    <td class="${t.direction > 0 ? 'green' : 'red'}">${t.direction > 0 ? 'L' : 'S'}</td>
+    <td class="num">${fixed(t.entry_price, 4)}</td>
+    <td class="num">${fixed(t.exit_price, 4)}</td>
+    <td class="num ${t.pnl >= 0 ? 'green' : 'red'}">${pct(t.pnl)}</td>
+    <td>${t.barrier}</td>
+    <td class="muted">${t.entry_ts ? t.entry_ts.slice(0, 16) : '—'}</td>
+  </tr>`).join("");
+}
+
+function renderEquity(curve) {
+  const c = document.getElementById("equity");
+  const ctx = c.getContext("2d");
+  const W = c.width, H = c.height;
+  ctx.clearRect(0, 0, W, H);
+  if (!curve || curve.length < 2) {
+    ctx.fillStyle = "#64748b"; ctx.font = "12px monospace";
+    ctx.fillText("awaiting equity data…", 10, H / 2);
+    return;
+  }
+  const lo = Math.min(...curve), hi = Math.max(...curve);
+  const pad = (hi - lo) * 0.05 + 1e-9;
+  const ymin = lo - pad, ymax = hi + pad;
+  const dx = W / (curve.length - 1);
+  const yof = v => H - ((v - ymin) / (ymax - ymin)) * H;
+
+  // baseline at equity = 1
+  ctx.strokeStyle = "#1f2a44"; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, yof(1)); ctx.lineTo(W, yof(1)); ctx.stroke();
+
+  // line
+  const last = curve[curve.length - 1];
+  ctx.strokeStyle = last >= 1 ? "#4ade80" : "#f87171";
+  ctx.lineWidth = 1.6;
+  ctx.beginPath();
+  curve.forEach((v, i) => i === 0 ? ctx.moveTo(0, yof(v)) : ctx.lineTo(i * dx, yof(v)));
+  ctx.stroke();
+
+  // last value tag
+  ctx.fillStyle = last >= 1 ? "#4ade80" : "#f87171";
+  ctx.font = "11px monospace";
+  ctx.fillText("x" + last.toFixed(4), W - 60, 14);
+}
+
+function renderHalt(snap) {
+  const el = document.getElementById("halt");
+  if (snap?.halt) {
+    const reasons = Object.values(snap.halt.reasons || {}).join("; ");
+    el.textContent = `KILL-SWITCH HALT · ${snap.halt.run_id} · ${reasons}`;
+    el.hidden = false;
+  } else {
+    el.hidden = true;
+  }
+}
+
+async function refresh() {
+  try {
+    const r = await fetch("data.json?ts=" + Date.now());
+    const snap = await r.json();
+    document.getElementById("stamp").textContent =
+      "snapshot generated · " + (snap.generated_at || "—");
+    renderHalt(snap);
+    renderActive(snap);
+    renderStats(snap);
+    renderAggregate("agg-algo", snap.aggregate?.by_algorithm);
+    renderAggregate("agg-asset", snap.aggregate?.by_asset);
+    renderTrades(snap.trades);
+    renderEquity(snap.equity_curve);
+  } catch (e) {
+    console.error("refresh failed:", e);
+    document.getElementById("stamp").textContent = "fetch failed: " + e.message;
+  }
+}
+
+refresh();
+setInterval(refresh, 60_000);
+</script>
+</body>
+</html>
