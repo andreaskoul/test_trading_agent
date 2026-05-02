@@ -57,10 +57,12 @@ jobs:
       - name: Install runtime deps
         run: |
           pip install --upgrade pip
-          # Slim runtime: skip torch+SB3 only if you precompute embeddings
-          # offline. For now we install the full set so step_one_bar.py
-          # can call .predict() on PPO/GRPO policies.
-          pip install -r requirements.txt
+          # torch==2.3.1+cpu lives on the PyTorch CPU index, not PyPI;
+          # --extra-index-url makes pip resolve both. Order matters: PyPI
+          # for everything else, then fall back to PyTorch's index for
+          # the +cpu wheel.
+          pip install -r requirements.txt \
+            --extra-index-url https://download.pytorch.org/whl/cpu
 
       - name: Step one bar
         env:
