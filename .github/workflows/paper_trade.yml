@@ -97,6 +97,14 @@ jobs:
           [ -f artefacts/kill_switch_halt.json ] && cp artefacts/kill_switch_halt.json /tmp/state/artefacts/
           [ -f docs/data.json ] && cp docs/data.json /tmp/state/docs/
 
+          # Phase Q self-healing: GitHub runs the workflow file from the
+          # branch being pushed to. If the state branch has a stale
+          # pages_deploy.yml, every push triggers the broken old version.
+          # Sync the latest from the default branch on every tick so the
+          # state branch is always one cron cycle behind, never frozen.
+          mkdir -p /tmp/state/.github/workflows
+          cp .github/workflows/pages_deploy.yml /tmp/state/.github/workflows/
+
           # First-tick marker so the very first commit isn't empty when
           # step_one_bar.py exits early ("no live bars yet"). Pages deploy
           # needs the state branch to exist before it can run.
@@ -108,6 +116,7 @@ jobs:
           # main (so they don't leak there). They MUST live on the state
           # branch though, hence -f.
           git add -f .last_tick
+          git add -f .github/workflows/pages_deploy.yml
           [ -f artefacts/live_bars.parquet ]     && git add -f artefacts/live_bars.parquet     || true
           [ -f artefacts/paper_trades.db ]       && git add -f artefacts/paper_trades.db       || true
           [ -f artefacts/engine_state.json ]     && git add -f artefacts/engine_state.json     || true
