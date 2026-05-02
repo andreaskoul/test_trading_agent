@@ -38,7 +38,6 @@ from _bootstrap import setup, path
 
 from src.data.config_utils import parse_asset_configs
 from src.data.features import build_features, feature_columns
-from src.data.regimes import HMMRegimeModel
 from src.env.trading_env import env_config_from_yaml
 from src.live.kill_switch import KillSwitchConfig, evaluate as ks_evaluate, from_cfg as ks_from_cfg
 from src.live.paper_engine import CostModel, PaperEngine, TradeStore
@@ -220,15 +219,20 @@ def main() -> int:
     pc: dict = {"close": close, "atr": atr, "embeddings": emb,
                 "vol_quantile": vol_q}
 
-    # Optional regime posterior.
+    # Optional regime posterior. Lazy-import HMMRegimeModel so a missing
+    # hmmlearn install degrades gracefully (no regime conditioning) instead
+    # of crashing the whole trading loop.
     regime_post = None
     rp_rel = entry.get("regime_path") or "artefacts/regimes/hmm_gc_60m.pkl"
     rp_abs = path(cfg, rp_rel)
     if os.path.exists(rp_abs):
         try:
+            from src.data.regimes import HMMRegimeModel
             hmm = HMMRegimeModel.load(rp_abs)
             regime_post = hmm.posterior(close)
             pc["regime_posterior"] = regime_post
+        except ImportError as exc:
+            log.warning("hmmlearn not installed; regime conditioning disabled (%s)", exc)
         except Exception as exc:
             log.warning("regime model load failed: %s", exc)
 
