@@ -89,8 +89,75 @@
     </template>
   </div>
 
+  <!-- Phase N: monitoring strip (active trades, statistical confidence, aggregate PnL) -->
+  <div class="px-3 py-2 grid grid-cols-12 gap-3 text-xs">
+    <div class="panel p-2 col-span-4">
+      <div class="panel-title mb-1">active trades</div>
+      <template x-if="!activeTrades.length">
+        <div class="text-slate-500 italic">no open positions</div>
+      </template>
+      <template x-for="t in activeTrades" :key="t.run_id + '-' + t.entry_idx">
+        <div class="flex justify-between gap-2 num">
+          <span x-text="t.asset"></span>
+          <span :class="t.direction > 0 ? 'text-green-400' : 'text-red-400'" x-text="(t.direction > 0 ? 'LONG' : 'SHORT')"></span>
+          <span x-text="'@' + t.entry_price.toFixed(4)"></span>
+          <span :class="t.unrealised_pnl >= 0 ? 'text-green-400' : 'text-red-400'" x-text="(t.unrealised_pnl * 100).toFixed(2) + '%'"></span>
+          <span class="text-slate-400" x-text="'bar+' + t.bars_in_trade"></span>
+        </div>
+      </template>
+    </div>
+    <div class="panel p-2 col-span-4">
+      <div class="panel-title mb-1">statistical confidence (live session)</div>
+      <template x-if="liveStats.n_trades < 5">
+        <div class="text-slate-500 italic">awaiting trades…</div>
+      </template>
+      <template x-if="liveStats.n_trades >= 5">
+        <div class="grid grid-cols-2 gap-x-3 gap-y-0.5 num">
+          <div>n trades</div><div x-text="liveStats.n_trades"></div>
+          <div>Sharpe</div><div x-text="liveStats.sharpe.toFixed(3)"></div>
+          <div>DSR</div><div :class="liveStats.dsr >= 0.95 ? 'text-green-400' : (liveStats.dsr >= 0.5 ? 'text-yellow-400' : 'text-red-400')" x-text="liveStats.dsr.toFixed(3)"></div>
+          <div>P(SR&gt;0)</div><div x-text="liveStats.psr_vs_zero.toFixed(3)"></div>
+          <div>boot p</div><div :class="liveStats.boot_p < 0.05 ? 'text-green-400' : 'text-red-400'" x-text="liveStats.boot_p.toFixed(4)"></div>
+          <div>boot CI</div><div x-text="'[' + liveStats.boot_lo.toFixed(2) + ', ' + liveStats.boot_hi.toFixed(2) + ']'"></div>
+        </div>
+      </template>
+    </div>
+    <div class="panel p-2 col-span-4">
+      <div class="panel-title mb-1 flex items-center justify-between">
+        <span>aggregate PnL</span>
+        <select class="input num text-xs" style="height: 22px" x-model="aggGroupBy" @change="refreshAggregate()">
+          <option value="">total</option>
+          <option value="asset">by asset</option>
+          <option value="algorithm">by algorithm</option>
+          <option value="run_id">by run</option>
+        </select>
+      </div>
+      <template x-if="!aggregate.total">
+        <div class="text-slate-500 italic">no trades yet</div>
+      </template>
+      <template x-if="aggregate.total">
+        <div class="num">
+          <div class="flex justify-between">
+            <span>TOTAL ({{ aggregate.total.n_trades }})</span>
+            <span :class="aggregate.total.total_return >= 0 ? 'text-green-400' : 'text-red-400'" x-text="(aggregate.total.total_return * 100).toFixed(2) + '%'"></span>
+            <span x-text="'Sh ' + aggregate.total.sharpe.toFixed(2)"></span>
+            <span class="text-red-400" x-text="(aggregate.total.max_dd * 100).toFixed(2) + '%'"></span>
+          </div>
+          <template x-for="g in aggregate.groups" :key="g.key">
+            <div class="flex justify-between text-slate-300">
+              <span x-text="g.key"></span>
+              <span :class="g.total_return >= 0 ? 'text-green-400' : 'text-red-400'" x-text="(g.total_return * 100).toFixed(2) + '%'"></span>
+              <span x-text="'Sh ' + g.sharpe.toFixed(2)"></span>
+              <span class="text-slate-400" x-text="g.n_trades"></span>
+            </div>
+          </template>
+        </div>
+      </template>
+    </div>
+  </div>
+
   <!-- Grid -->
-  <main class="grid grid-cols-12 grid-rows-6 gap-3 p-3" style="height: calc(100vh - 56px)">
+  <main class="grid grid-cols-12 grid-rows-6 gap-3 p-3" style="height: calc(100vh - 200px)">
     <!-- Panel 1: Price + entries + regime shading -->
     <section class="panel p-3 col-span-8 row-span-3">
       <div class="flex items-center justify-between mb-1">
@@ -244,6 +311,12 @@
         lastVolQ: null,
         equity: 1.0,
         tradesCount: 0,
+        // Phase N: monitoring state
+        activeTrades: [],
+        liveStats: { n_trades: 0, sharpe: 0, dsr: 0.5, psr_vs_zero: 0.5,
+                     boot_p: 1.0, boot_lo: 0, boot_hi: 0, ann_factor: 252 },
+        aggregate: { total: null, groups: [] },
+        aggGroupBy: '',
         // chart buffers
         priceBuf: { x: [], y: [] },
         entryBuf: { x: [], y: [], side: [] },
@@ -254,6 +327,8 @@
           this.initCharts();
           this.openWS();
           setInterval(() => this.refreshTrades(), 3000);
+          this.refreshAggregate();
+          setInterval(() => this.refreshAggregate(), 15000);
         },
         async loadStatic() {
           const [a, m, metrics, state] = await Promise.all([
@@ -340,9 +415,27 @@
             ]);
           } else if (channel === 'trade') {
             this.refreshTrades();
+            this.refreshAggregate();
+          } else if (channel === 'active') {
+            // Single-session today; multi-session: replace by run_id key.
+            this.activeTrades = p.snapshot ? [p.snapshot] : [];
+          } else if (channel === 'stats') {
+            this.liveStats = {
+              n_trades: p.n_trades, sharpe: p.sharpe, dsr: p.dsr,
+              psr_vs_zero: p.psr_vs_zero, boot_p: p.boot_p,
+              boot_lo: p.boot_lo, boot_hi: p.boot_hi, ann_factor: p.ann_factor,
+            };
           } else if (channel === 'log') {
             if (p.msg?.includes('finished') || p.msg?.includes('stopped')) this.running = false;
           }
+        },
+        async refreshAggregate() {
+          const url = '/api/paper/aggregate' +
+                       (this.aggGroupBy ? '?group_by=' + this.aggGroupBy : '');
+          try {
+            const r = await fetch(url);
+            if (r.ok) this.aggregate = await r.json();
+          } catch {}
         },
         redrawPrice() {
           Plotly.react('priceChart', [
@@ -372,7 +465,13 @@
           else this.chat.push({ role: 'assistant', text: 'start failed: ' + (await r.text()) });
         },
         async stop() {
-          await fetch('/api/paper/stop', { method: 'POST' });
+          // Phase P2: prompt the operator for an optional halt reason; the
+          // reason is logged + broadcast on the halt channel.
+          const reason = window.prompt('Reason for stopping? (optional)') || '';
+          await fetch('/api/paper/stop', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reason }),
+          });
           this.running = false;
         },
         async explain(tradeId) {

@@ -162,11 +162,23 @@ def _iteration(cfg: dict, state: AutoState, *, dry_run: bool) -> AutoState:
     log.info("bars total=%d (delta=%d since last iter)", new_bar_count, bar_delta)
 
     # 2) Full retrain path (pretrain + PPO)
+    # Phase K: max_policy_age_days is a HARD upper bound. Once exceeded,
+    # we override the min_new_bars gate and force a retrain so live
+    # trading never runs on a stale policy.
+    max_policy_age = float(auto_cfg.get("max_policy_age_days", 0.0))
+    forced_by_age = (
+        max_policy_age > 0.0
+        and state.last_train_ppo != ""
+        and _age_days(state.last_train_ppo) >= max_policy_age
+    )
     retrain_due = (
         _age_days(state.last_train_ppo) >= retrain_days
         or state.last_train_ppo == ""
     )
-    if retrain_due and bar_delta >= min_new_bars:
+    if forced_by_age:
+        log.warning("policy age exceeds max_policy_age_days=%.1f (age=%.1fd); forcing retrain",
+                    max_policy_age, _age_days(state.last_train_ppo))
+    if retrain_due and (bar_delta >= min_new_bars or forced_by_age):
         log.info("full retrain due (age=%.1fd, new_bars=%d)",
                  _age_days(state.last_train_ppo), bar_delta)
         if not dry_run:

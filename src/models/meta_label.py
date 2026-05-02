@@ -110,3 +110,100 @@ class MetaLabelModel:
     @property
     def base_rate(self) -> float:
         return self._base_rate
+
+
+# ---------------------------------------------------------------------------
+# Phase L: LightGBM meta-stack with monotone constraints
+# ---------------------------------------------------------------------------
+
+class LightGBMMetaModel:
+    """LightGBM meta-labeler with monotone constraints on the side/vol_q.
+
+    Design rationale
+    ----------------
+    The vanilla ``MetaLabelModel`` (HistGradientBoostingClassifier) makes no
+    structural assumptions about features. For the *side* (+1 long / -1 short)
+    and *vol_q* features that get concatenated to the encoder embedding, that
+    is wasteful: economic priors say profitability is **monotone** in those
+    inputs (a higher confidence "long" should not raise the probability of a
+    profitable short, and very low or very high vol-quantile bars are
+    consistently more cost-sensitive). LightGBM exposes per-feature
+    ``monotone_constraints`` that bake these priors into the splits.
+
+    Falls back to the base ``MetaLabelModel`` if ``lightgbm`` is unavailable
+    so the import never blocks the rest of the repo.
+
+    Feature layout (must match ``build_trade_features``):
+      ``[embedding (E dims), direction (1), vol_q (1)]``
+    Default constraint vector is therefore ``[0]*E + [+1, +1]`` which forbids
+    direction- or vol-q-driven splits from working *against* a positive-label
+    monotone relationship. Set ``vol_q_monotone=-1`` if your prior is the
+    opposite (likelier-profitable in low-vol bars).
+    """
+
+    def __init__(
+        self,
+        cfg: Optional[MetaLabelConfig] = None,
+        embedding_dim: Optional[int] = None,
+        direction_monotone: int = +1,
+        vol_q_monotone: int = +1,
+    ) -> None:
+        self.cfg = cfg or MetaLabelConfig()
+        self.embedding_dim = embedding_dim
+        self.direction_monotone = int(direction_monotone)
+        self.vol_q_monotone = int(vol_q_monotone)
+        self._model = None
+        self._fallback: Optional[MetaLabelModel] = None
+        self._base_rate: float = 0.5
+
+    def _build_constraints(self, n_features: int) -> list[int]:
+        emb_dim = self.embedding_dim if self.embedding_dim is not None else n_features - 2
+        emb_dim = max(0, min(emb_dim, n_features - 2))
+        return [0] * emb_dim + [self.direction_monotone, self.vol_q_monotone] + \
+               [0] * (n_features - emb_dim - 2)
+
+    def fit(self, X: np.ndarray, y: np.ndarray) -> "LightGBMMetaModel":
+        X = np.asarray(X, dtype=np.float32)
+        y = np.asarray(y, dtype=np.int64)
+        if len(X) == 0 or len(np.unique(y)) < 2:
+            self._fallback = MetaLabelModel(self.cfg).fit(X, y)
+            self._base_rate = self._fallback.base_rate
+            return self
+        self._base_rate = float(np.mean(y))
+
+        try:
+            import lightgbm as lgb
+        except ImportError:
+            # No LightGBM installed → use the existing HistGradientBoosting
+            # fallback so callers don't need to special-case the deployment env.
+            self._fallback = MetaLabelModel(self.cfg).fit(X, y)
+            return self
+
+        constraints = self._build_constraints(X.shape[1])
+        self._model = lgb.LGBMClassifier(
+            n_estimators=self.cfg.max_iter,
+            max_depth=self.cfg.max_depth,
+            learning_rate=self.cfg.learning_rate,
+            min_child_samples=self.cfg.min_samples_leaf,
+            reg_lambda=self.cfg.l2_regularization,
+            monotone_constraints=constraints,
+            random_state=0,
+            verbosity=-1,
+        )
+        self._model.fit(X, y)
+        return self
+
+    def predict_proba(self, X: np.ndarray) -> np.ndarray:
+        X = np.asarray(X, dtype=np.float32)
+        if X.ndim == 1:
+            X = X.reshape(1, -1)
+        if self._fallback is not None:
+            return self._fallback.predict_proba(X)
+        if self._model is None:
+            return np.full(X.shape[0], self._base_rate, dtype=np.float32)
+        probs = self._model.predict_proba(X)
+        return probs[:, 1].astype(np.float32)
+
+    @property
+    def base_rate(self) -> float:
+        return self._base_rate

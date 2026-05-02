@@ -37,6 +37,12 @@ class KillSwitchConfig:
     win_rate_floor: float = 0.5
     win_rate_window: int = 100
     catastrophe_pct: float = 0.05     # any single trade worse than -5%
+    # Phase M: deflated-Sharpe gate. Fires when DSR < dsr_floor with at
+    # least dsr_min_trades samples — i.e. rolling Sharpe is "fine" but
+    # the result is unlikely to be statistically real. 0.0 = disabled.
+    dsr_floor: float = 0.0
+    dsr_min_trades: int = 50
+    dsr_n_trials: int = 36            # matches the 36-run training corpus
 
 
 @dataclass
@@ -136,6 +142,22 @@ def evaluate(
             f"single-trade loss {worst*100:.1f}% exceeds {cfg.catastrophe_pct*100:.1f}%"
         )
 
+    # Rule 5 (Phase M): deflated-Sharpe floor. Catches the case where
+    # rolling Sharpe is OK but the result is unlikely to be statistically
+    # real (low DSR ⇒ overfit to noise). Disabled when dsr_floor == 0.
+    if cfg.dsr_floor > 0.0 and arr.size >= cfg.dsr_min_trades:
+        # Lazy import: keeps kill_switch importable without scipy.
+        from ..validation.deflated_sr import deflated_sharpe_ratio
+        dsr_val = float(
+            deflated_sharpe_ratio(arr, n_trials=cfg.dsr_n_trials).deflated_sharpe
+        )
+        if dsr_val < cfg.dsr_floor:
+            result.triggered.append("dsr_floor")
+            result.reasons["dsr_floor"] = (
+                f"deflated Sharpe {dsr_val:.3f} < {cfg.dsr_floor:.3f} "
+                f"on {arr.size} trades (n_trials={cfg.dsr_n_trials})"
+            )
+
     return result
 
 
@@ -152,4 +174,7 @@ def from_cfg(cfg_dict: dict) -> KillSwitchConfig:
         win_rate_floor=float(cfg_dict.get("win_rate_floor", 0.5)),
         win_rate_window=int(cfg_dict.get("win_rate_window", 100)),
         catastrophe_pct=float(cfg_dict.get("catastrophe_pct", 0.05)),
+        dsr_floor=float(cfg_dict.get("dsr_floor", 0.0)),
+        dsr_min_trades=int(cfg_dict.get("dsr_min_trades", 50)),
+        dsr_n_trials=int(cfg_dict.get("dsr_n_trials", 36)),
     )

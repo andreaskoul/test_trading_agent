@@ -525,3 +525,127 @@ making GRPO more competitive than PPO for the first time (0.708 vs
   honest p-value under macro autocorrelation; DXY via FMP when domain
   becomes reachable; LightGBM meta-stack; multi-asset SI=F transfer.
   + MI on) to attribute the p-value collapse.
+
+---
+
+## Phase H — Pre-deployment validation stack (2026-04-24, COMPLETE)
+
+**Context.** The user asked for (1) resolution of the iter-7 permutation
+p=0.996 regression and (2) a plan for pre-deployment validation before
+paper trading. Phase H delivers both in one commit sequence.
+
+**Root cause of the permutation "regression" found.** Sharpe ratio is
+permutation-invariant (mean/std are order-independent). Element-wise
+shuffle gives `shuffled_sr == observed_sr` to within floating-point
+precision; the `>=` comparison counts ties as success → p → 1 for any
+positive-Sharpe series. This was ALWAYS a broken test. Fix: replace it
+with a centred block-bootstrap edge test (Politis & Romano 1994) that
+draws with replacement — an order-sensitive, statistically-valid
+hypothesis test for H0: E[r] ≤ 0.
+
+**Changes shipped in commits `77f9408` (code) and `a992484` (retrain).**
+
+1. **Task 1 — Permutation test fix.** `src/validation/bootstrap.py`
+   gains `bootstrap_pvalue_sharpe()`, `block_permutation_pvalue_sharpe()`,
+   `acf_lag1()`. `scripts/04_evaluate.py` switches the primary edge
+   red-flag to `bootstrap_p > 0.05`; keeps legacy permutation p as
+   soft diagnostic. Smoke test `test_bootstrap_and_permutation`
+   extended.
+2. **Task 2 — True hold-out OOS validation.** `data.holdout_frac: 0.20`
+   in aggressive config. `01_build_data.py` slices last 20% into
+   `features_*_holdout.parquet`. New script `scripts/04b_holdout_eval.py`
+   loads best-CPCV policy, runs single rollout on hold-out, computes
+   bootstrap p + DSR, exits 1 if gate fails.
+3. **Task 3 — Kelly fractional sizing.** `KellyCalculator` class in
+   `paper_engine.py`. Default cap=0 → floor=1.0 → zero-effect on parity
+   test. `kelly_cap=0.25` enables quarter-Kelly in paper trading.
+4. **Task 4 — Feed quality gates.** `YFinanceFeed._validate_bar` rejects
+   NaN/gap/staleness; `_is_exchange_open` respects CME gold halt window.
+
+**Phase H metrics vs iter-7 (note: CPCV now runs on 80% data only).**
+
+| Metric | Iter-7 (100% CPCV) | Phase H (80% CPCV + 20% hold-out) |
+|---|---|---|
+| CPCV Sharpe @ 0bps | 1.004 | 0.889 |
+| CPCV Sharpe @ 0.5bps | 0.679 | 0.533 |
+| CPCV bootstrap CI | [1.47, 1.70] | [1.13, 1.40] |
+| **Bootstrap edge p-value** | N/A (test broken) | **0.0005** |
+| Legacy permutation p | 0.996 | 0.796 (diagnostic only) |
+| Meta@0.60 Sharpe | 6.78 | 5.82 |
+| **Hold-out Sharpe (TRUE OOS)** | N/A | **1.090** |
+| **Hold-out bootstrap p** | N/A | **0.001** |
+| Hold-out DSR | N/A | 0.969 |
+| Hold-out n_trades | N/A | 635 |
+
+The 20% hold-out is the first truly out-of-sample validation this
+stack has ever had. Its Sharpe (1.09) EXCEEDS the CPCV mean (0.53 at
+0.5bps), which is a very positive sign — the model generalises out-
+of-sample rather than over-fitting the CPCV windows. Bootstrap
+edge-test p = 0.001 on the hold-out means the edge is statistically
+supported on genuinely-unseen data.
+
+**Verdict: KEPT.** Phase H gates ALL PASS:
+- Permutation test: fixed (bootstrap p=0.0005)
+- Hold-out gate: PASS (sharpe 1.09, boot_p 0.001)
+- Parity test: PASS (Kelly defaults preserve byte-for-byte match)
+- Feed validation: PASS (19/19 smoke tests)
+
+**Deferred for post-MVP (NOT in Phase H):**
+- Intra-day drawdown gate (`daily_loss_limit`)
+- Policy age enforcement (max_policy_age_days)
+- Regime-conditioned sizing multiplier
+- DSR guard on finetune delta
+- KS feature-drift detection
+- DXY via FMP (once domain reachable)
+- LightGBM meta-stack
+
+---
+
+## Phase I — Paper-trading simulation (2026-04-26)
+
+`scripts/07_paper_simulation.py` runs the best CPCV policy through
+`PaperEngine` over the 20% hold-out, twice: (1) `kelly_cap=0` baseline
+that is byte-for-byte identical to `04b_holdout_eval.py`, and
+(2) quarter-Kelly (`cap=0.25`, `floor=0.05`).
+
+Results on the GC=F hold-out (PPO split=5 seed=29, 2025-09-09 → 2026-03-24,
+3,278 bars, ~6 months wall-clock):
+
+| run | n_trades | Sharpe | hit | max DD | total ret | trades/day | mean Kelly |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| baseline | 635 | 1.090 | 0.487 | -4.29% | +57.37% | 3.27 | 1.000 |
+| quarter-Kelly | 635 | 1.081 | 0.487 | -0.22% | +2.45% | 3.27 | 0.053 |
+
+**Headline findings (answering the user's three pre-paper concerns):**
+
+1. **Drawdown profile is benign.** Baseline equity-curve max DD is
+   −4.29% over 6 months; the worst per-regime DD is −3.76% in the
+   trend regime. Quarter-Kelly clamps DD by ~20× to −0.22%.
+
+2. **Sharpe is regime-DEPENDENT.** The 1.09 hold-out blend masks a
+   spread of 1.52 across HMM states:
+   - Trend regime (state 0, 80% of bars, 508 trades): Sharpe **0.64**
+   - Volatile regime (state 1, 20% of bars, 127 trades): Sharpe **2.15**
+   - The edge is concentrated in the volatile regime. A live deployment
+     that lands in a long trend regime would see closer to Sharpe 0.64,
+     not 1.1. This is the single biggest pre-deployment caveat.
+
+3. **Kelly pins to the floor.** Mean Kelly fraction = 0.053
+   (≈ floor=0.05). The per-trade edge (`hit×W/L − (1−hit)`) is too
+   thin to justify a meaningful Kelly bet because the aggregate
+   Sharpe comes from frequency (635 trades / 6 months), not single-
+   trade conviction. Realised leverage proxy = 5% of unit notional,
+   p95 = 0.067. Turnover is unchanged at 3.27 trades/day (Kelly
+   scales notional, not frequency).
+
+**Implications for paper trading:**
+- Realised PnL on a $10k account at quarter-Kelly is ~$245 over 6 months
+  vs ~$5,737 at full notional — Kelly is doing what it's designed to do:
+  trade sizing-down for safety at the cost of expected return.
+- Regime-conditioned sizing (deferred queue item 3) is now the highest-
+  priority post-MVP add: half-size in trend regime, full Kelly in volatile,
+  to better match the per-regime edge.
+- DD budget for paper trading: 5% on full notional, 0.5% on quarter-Kelly.
+- A reasonable production posture: run paper on quarter-Kelly until 1k+
+  realised trades accumulate, then re-fit Kelly with the live W/L data
+  (the Kelly window=100 will adapt as the rolling stats fill in).

@@ -28,6 +28,7 @@ from _bootstrap import setup, path
 
 from src.data.config_utils import parse_asset_configs
 from src.data.features import feature_columns
+from src.data.regimes import HMMRegimeModel
 from src.env.trading_env import env_config_from_yaml
 from src.training.evaluate import build_precomputed, rollout_policy
 from src.training.pretrain_encoder import load_encoder
@@ -68,14 +69,14 @@ def _load_model(algo: str, policy_path: str):
     raise ValueError(f"unknown algorithm: {algo}")
 
 
-def _best_entry_per_asset(manifest: list[dict], log) -> dict[str, dict]:
+def _best_entry_per_asset(manifest: list[dict], cfg: dict, log) -> dict[str, dict]:
     """Select the manifest entry with highest per_run Sharpe per asset.
 
     Falls back to reports/per_run_metrics.csv if the manifest does not
     itself carry Sharpe values. Otherwise uses the order-of-appearance
     as a tie-break (first encountered wins).
     """
-    per_run_csv = path({}, "reports/per_run_metrics.csv")
+    per_run_csv = path(cfg, cfg["report_dir"], "per_run_metrics.csv")
     runs_df = None
     if os.path.exists(per_run_csv):
         runs_df = pd.read_csv(per_run_csv)
@@ -141,7 +142,7 @@ def main() -> int:
 
     assets = parse_asset_configs(cfg)
     env_cfg = env_config_from_yaml(cfg)
-    best = _best_entry_per_asset(manifest, log)
+    best = _best_entry_per_asset(manifest, cfg, log)
 
     per_asset: dict[str, dict] = {}
     all_pooled: list[float] = []
@@ -169,6 +170,13 @@ def main() -> int:
                         f"encoder_group{entry['encoder_group']}.pt")
         encoder = load_encoder(enc_path)
         pc = build_precomputed(features, feat_cols, encoder, seq_len=env_cfg.seq_len)
+        # Attach regime posterior if the policy was trained with one so
+        # the SB3 observation shape matches (else obs is 128-dim vs 131-dim).
+        rp_path = entry.get("regime_path")
+        if rp_path and os.path.exists(path(cfg, rp_path)):
+            hmm = HMMRegimeModel.load(path(cfg, rp_path))
+            pc["regime_posterior"] = hmm.posterior(pc["close"])
+            log.info("[%s] attached regime posterior from %s", sym, rp_path)
 
         algo = entry.get("algorithm", "ppo")
         model = _load_model(algo, path(cfg, entry["policy_path"]))

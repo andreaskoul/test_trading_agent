@@ -16,6 +16,7 @@ import asyncio
 import json
 import logging
 import os
+import time
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from typing import Optional
@@ -39,9 +40,14 @@ from ..data.features import feature_columns
 from ..data.regimes import HMMRegimeModel
 from ..env.trading_env import env_config_from_yaml
 from ..live.feed import Bar, ReplayFeed, YFinanceFeed
+from ..live.kill_switch import KillSwitchConfig, evaluate as ks_evaluate, from_cfg as ks_from_cfg
 from ..live.paper_engine import CostModel, PaperEngine, Signal, TradeStore
-from ..models.meta_label import MetaLabelConfig, MetaLabelModel, build_trade_features
+from ..live.streaming_encoder import StreamingEncoder
+from ..models.meta_label import (
+    LightGBMMetaModel, MetaLabelConfig, MetaLabelModel, build_trade_features,
+)
 from ..models.precompute import precompute_embeddings
+from ..validation.live_stats import LiveStats
 from ..training.pretrain_encoder import load_encoder
 
 log = logging.getLogger("cockpit")
@@ -62,10 +68,33 @@ if RecurrentPPO is not None:
 # ---------------------------------------------------------------------------
 
 
+def _deep_merge(base: dict, overlay: dict) -> dict:
+    """Recursive in-place dict merge; overlay wins."""
+    for k, v in overlay.items():
+        if isinstance(v, dict) and isinstance(base.get(k), dict):
+            _deep_merge(base[k], v)
+        else:
+            base[k] = v
+    return base
+
+
 def _load_config(path: Optional[str] = None) -> dict:
     path = path or os.path.join(_REPO_ROOT, "configs", "default.yaml")
     with open(path, "r") as f:
         cfg = yaml.safe_load(f)
+    # Phase P4: honour TRADING_PROFILE so the cockpit picks up the same
+    # aggressive/live overlays that the offline scripts use.
+    profile = os.environ.get("TRADING_PROFILE", "").strip()
+    if profile:
+        prof_path = os.path.join(_REPO_ROOT, "configs", f"{profile}.yaml")
+        if os.path.exists(prof_path):
+            with open(prof_path) as f:
+                overlay = yaml.safe_load(f) or {}
+            _deep_merge(cfg, overlay)
+            log.info("loaded profile overlay: %s", prof_path)
+        else:
+            log.warning("TRADING_PROFILE=%s but %s missing; using default",
+                        profile, prof_path)
     cfg["__repo_root__"] = _REPO_ROOT
     return cfg
 
@@ -152,6 +181,7 @@ class Session:
     feed: object  # BarFeed subclass
     task: asyncio.Task
     run_id: str
+    streaming_encoder: Optional[StreamingEncoder] = None
 
 
 class CockpitState:
@@ -166,7 +196,31 @@ class CockpitState:
         self.store = TradeStore(db_path)
         self._precomputed_cache: dict[tuple[str, int], dict] = {}
         self._meta_cache: dict[str, Optional[MetaLabelModel]] = {}
+        # Phase M4: cached (X, y, returns) per asset so start_session can
+        # sweep meta_threshold candidates without rerunning rollout_policy.
+        self._meta_train_data: dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
+        # Phase M5: pending closed trades since the last meta refit, per asset.
+        self._meta_pending: dict[str, list[tuple[np.ndarray, int, float]]] = {}
+        # Cap the rolling training set so refit time stays bounded.
+        self._meta_max_history: int = int(
+            cfg.get("ui", {}).get("paper", {}).get("meta_max_history", 2000)
+        )
+        self._meta_refit_every: int = int(
+            cfg.get("ui", {}).get("paper", {}).get("meta_refit_every_n_trades", 50)
+        )
         self.session: Optional[Session] = None
+        # Kill-switch config loaded once; evaluated after every closed trade.
+        self._ks_cfg: KillSwitchConfig = ks_from_cfg(cfg.get("kill_switch", {}))
+        # Phase M: live statistical-confidence helper (DSR + bootstrap CI).
+        # 252 ann factor matches the ks default; aggressive.yaml overrides
+        # via ui.paper.ann_factor for hourly bars (e.g. 252*6.5 = 1638).
+        ann_factor = float(cfg.get("ui", {}).get("paper", {}).get("ann_factor", 252.0))
+        self._live_stats: LiveStats = LiveStats(
+            annualisation_factor=ann_factor,
+            bootstrap_block=int(cfg.get("evaluation", {}).get("permutation_block_size", 20)),
+            bootstrap_resamples=int(cfg.get("ui", {}).get("paper", {})
+                                    .get("stats_bootstrap_resamples", 1000)),
+        )
 
     # ------------------------------------------------------------------
 
@@ -226,11 +280,40 @@ class CockpitState:
         return hmm.posterior(pc["close"])
 
     def _load_model(self, entry: dict):
+        # Phase M3: ensemble entries name member manifest indices and an
+        # optional weights vector. Build EnsemblePolicy by recursively
+        # loading each member; weights default to per-member validation
+        # Sharpe from the manifest.
+        if entry.get("ensemble"):
+            from ..models.ensemble import EnsemblePolicy
+            member_idxs = list(entry.get("members", []))
+            if not member_idxs:
+                raise HTTPException(400, "ensemble entry missing members[]")
+            members = [self._load_model(self.manifest[int(i)])
+                       for i in member_idxs]
+            weights = entry.get("weights")
+            if weights is None:
+                weights = [float(self.manifest[int(i)].get("sharpe", 1.0))
+                           for i in member_idxs]
+            return EnsemblePolicy(members=members, weights=weights)
+
         algo = entry.get("algorithm", "ppo").lower()
         cls = _ALGO_MAP.get(algo, PPO)
         policy_path = entry["policy_path"]
         if not os.path.isabs(policy_path):
             policy_path = _path(self.cfg, policy_path)
+        # Phase K: refuse to load policies older than max_policy_age_days.
+        # 0 (default) disables the gate so historical replays still work.
+        max_age = float(self.cfg.get("ui", {}).get("paper", {})
+                        .get("max_policy_age_days", 0.0))
+        if max_age > 0.0 and os.path.exists(policy_path):
+            age_days = (time.time() - os.path.getmtime(policy_path)) / 86400.0
+            if age_days > max_age:
+                raise HTTPException(
+                    412,
+                    f"policy {policy_path} is {age_days:.1f}d old (limit "
+                    f"{max_age}d); retrain before live trading",
+                )
         return cls.load(policy_path, device="cpu")
 
     def _fit_meta_model(self, asset_symbol: str) -> Optional[MetaLabelModel]:
@@ -262,6 +345,7 @@ class CockpitState:
         feat_cols = feature_columns(features)
         X_parts: list[np.ndarray] = []
         y_parts: list[np.ndarray] = []
+        ret_parts: list[np.ndarray] = []
         for entry in entries[: min(4, len(entries))]:
             try:
                 enc_path = _path(
@@ -280,6 +364,7 @@ class CockpitState:
                 if result.trade_features is not None and len(result.trade_features) > 0:
                     X_parts.append(result.trade_features)
                     y_parts.append((result.trade_returns > 0).astype(np.int64))
+                    ret_parts.append(np.asarray(result.trade_returns, dtype=np.float64))
             except Exception as exc:  # pragma: no cover - defensive
                 log.warning("meta training rollout failed for %s: %s", entry, exc)
         if not X_parts:
@@ -287,9 +372,122 @@ class CockpitState:
             return None
         X = np.concatenate(X_parts, axis=0)
         y = np.concatenate(y_parts, axis=0)
-        mm = MetaLabelModel(MetaLabelConfig()).fit(X, y)
+        # Phase M4: keep per-trade returns alongside (X, y) so start_session
+        # can sweep meta-thresholds and pick the best Sharpe.
+        rets = np.concatenate(ret_parts, axis=0) if ret_parts else np.zeros(0)
+        self._meta_train_data[asset_symbol] = (X, y, rets)
+        # Phase M6: prefer LightGBM with monotone constraints on the
+        # (direction, vol_q) tail; falls back to HGB if lightgbm is missing.
+        # The trade-feature layout is [embedding..., direction, vol_q] so
+        # embedding_dim = X.shape[1] - 2.
+        mm = LightGBMMetaModel(
+            MetaLabelConfig(), embedding_dim=max(0, X.shape[1] - 2),
+        ).fit(X, y)
         self._meta_cache[asset_symbol] = mm
         return mm
+
+    def _pick_meta_threshold(
+        self,
+        asset_symbol: str,
+        candidates: Optional[list[float]] = None,
+        default: float = 0.55,
+    ) -> float:
+        """Phase M4: choose the meta_threshold that maximises in-sample
+        Sharpe of the gated trade-return series.
+
+        Acknowledged caveat: this is *in-sample* on the same trades the
+        meta-model was fitted on, so it's biased toward thresholds that
+        keep more trades. We still prefer it over the hardcoded 0.55
+        because:
+          (a) per-asset edge varies and 0.55 is a one-size guess;
+          (b) the threshold sweep is cheap (5 evaluations);
+          (c) the bias direction (more trades = lower per-trade Sharpe)
+              is benign — we tend to slightly under-filter.
+        """
+        if candidates is None:
+            candidates = [0.45, 0.50, 0.55, 0.60, 0.65]
+        mm = self._meta_cache.get(asset_symbol)
+        data = self._meta_train_data.get(asset_symbol)
+        if mm is None or data is None:
+            return default
+        X, _y, rets = data
+        if rets.size == 0:
+            return default
+        probs = mm.predict_proba(X)
+        best_t = default
+        best_sr = -np.inf
+        for t in candidates:
+            mask = probs >= t
+            if mask.sum() < 5:                 # too few gated trades
+                continue
+            r = rets[mask]
+            std = float(r.std(ddof=1)) if r.size > 1 else 0.0
+            if std <= 1e-12:
+                continue
+            sr = float(r.mean() / std)
+            if sr > best_sr:
+                best_sr = sr
+                best_t = float(t)
+        log.info("meta-threshold sweep for %s → %.2f (sharpe %.3f)",
+                 asset_symbol, best_t, best_sr if np.isfinite(best_sr) else 0.0)
+        return best_t
+
+    def _note_closed_trade(
+        self, asset_symbol: str, feats: np.ndarray, win: int, ret: float,
+    ) -> None:
+        """Phase M5: queue a closed trade and trigger a meta refit when
+        the queue passes ``meta_refit_every_n_trades``.
+
+        The refit runs in a background thread so the live loop never
+        blocks on it; on completion we swap the new model into
+        ``_meta_cache`` and the engine's ``meta_model`` (engine reads it
+        by attribute, so the swap is observed on the next entry).
+        """
+        if self._meta_refit_every <= 0:
+            return
+        pend = self._meta_pending.setdefault(asset_symbol, [])
+        pend.append((feats.astype(np.float32, copy=False), int(win), float(ret)))
+        if len(pend) < self._meta_refit_every:
+            return
+        # Drain the pending list and assemble the new training set.
+        new_X = np.stack([p[0] for p in pend], axis=0)
+        new_y = np.array([p[1] for p in pend], dtype=np.int64)
+        new_r = np.array([p[2] for p in pend], dtype=np.float64)
+        pend.clear()
+        cur = self._meta_train_data.get(asset_symbol)
+        if cur is None:
+            X, y, r = new_X, new_y, new_r
+        else:
+            X = np.concatenate([cur[0], new_X], axis=0)
+            y = np.concatenate([cur[1], new_y], axis=0)
+            r = np.concatenate([cur[2], new_r], axis=0)
+        # Cap to last meta_max_history rows.
+        if len(X) > self._meta_max_history:
+            X = X[-self._meta_max_history:]
+            y = y[-self._meta_max_history:]
+            r = r[-self._meta_max_history:]
+        self._meta_train_data[asset_symbol] = (X, y, r)
+        log.info("meta refit triggered for %s (%d trades)", asset_symbol, len(X))
+        asyncio.create_task(asyncio.to_thread(
+            self._refit_meta_in_background, asset_symbol, X, y,
+        ))
+
+    def _refit_meta_in_background(
+        self, asset_symbol: str, X: np.ndarray, y: np.ndarray,
+    ) -> None:
+        try:
+            mm = LightGBMMetaModel(
+                MetaLabelConfig(), embedding_dim=max(0, X.shape[1] - 2),
+            ).fit(X, y)
+        except Exception as exc:  # pragma: no cover — defensive
+            log.warning("meta refit failed for %s: %s", asset_symbol, exc)
+            return
+        self._meta_cache[asset_symbol] = mm
+        # Swap the live engine's reference so the new model takes effect
+        # on the next entry decision.
+        if self.session is not None and self.session.asset == asset_symbol:
+            self.session.engine.meta_model = mm
+        log.info("meta refit complete for %s (n=%d)", asset_symbol, len(X))
 
     # ------------------------------------------------------------------
     # session control
@@ -336,7 +534,13 @@ class CockpitState:
 
         env_cfg_for_session = replace(env_cfg, spread_bps=costs.spread_bps)
 
+        # Phase M4: meta_threshold < 0 means "auto-pick by in-sample Sharpe sweep".
+        if meta_threshold < 0:
+            meta_threshold = self._pick_meta_threshold(asset_symbol)
+
         run_id = f"{asset_symbol}-m{manifest_idx}-{mode}-{int(asyncio.get_event_loop().time())}"
+        paper_cfg = self.cfg.get("ui", {}).get("paper", {})
+        regime_mult_raw = paper_cfg.get("regime_size_multipliers", {})
         engine = PaperEngine(
             asset=asset_symbol,
             run_id=run_id,
@@ -348,6 +552,14 @@ class CockpitState:
             meta_threshold=meta_threshold,
             timestamps=pc["timestamps"] if isinstance(pc["timestamps"], pd.DatetimeIndex) else None,
             store=self.store,
+            kelly_cap=float(paper_cfg.get("kelly_cap", 0.0)),
+            kelly_floor=float(paper_cfg.get("kelly_floor", 1.0)),
+            kelly_window=int(paper_cfg.get("kelly_window", 100)),
+            kelly_cold_start_floor=float(paper_cfg.get("kelly_cold_start_floor",
+                                                        paper_cfg.get("kelly_floor", 1.0))),
+            daily_loss_limit=float(paper_cfg.get("daily_loss_limit", 0.0)),
+            regime_size_multipliers={int(k): float(v) for k, v in regime_mult_raw.items()}
+            if regime_mult_raw else {},
         )
 
         if mode == "replay":
@@ -379,15 +591,38 @@ class CockpitState:
                     self.cfg.get("ui", {}).get("paper", {}).get("bar_interval_seconds", 60.0)
                 ),
             )
-            # Live mode still drives the engine over historical indices for
-            # now; a proper live path would extend pc arrays in real time.
-            # Emit a warning so the user knows the MVP limitation.
-            log.warning(
-                "live mode emits signals from latest precomputed bar; full "
-                "live-encoder streaming is a future tier."
-            )
         else:
             raise HTTPException(400, f"unknown mode {mode!r}")
+
+        # Phase J: build streaming encoder for live mode so each incoming
+        # bar is feature-encoded in real time and appended to the engine's
+        # precomputed arrays.  Replay mode uses the pre-built index and
+        # doesn't need this.
+        streaming_enc: Optional[StreamingEncoder] = None
+        if mode == "live":
+            try:
+                from ..training.pretrain_encoder import load_encoder as _le
+                enc_path = _path(
+                    self.cfg, self.cfg["artefact_dir"],
+                    "encoders", f"encoder_group{entry['encoder_group']}.pt",
+                )
+                raw_encoder = _le(enc_path)
+                feat_df = pc["features"]
+                zscore_w = int(self.cfg.get("features", {}).get("zscore_window", 252))
+                streaming_enc = StreamingEncoder(
+                    encoder=raw_encoder,
+                    env_seq_len=self.env_cfg.seq_len,
+                    history=feat_df,
+                    zscore_window=zscore_w,
+                )
+                log.info(
+                    "live mode: StreamingEncoder ready (buf=%d rows, feat_cols=%s)",
+                    len(streaming_enc._buf),
+                    streaming_enc._feat_cols,
+                )
+            except Exception as exc:
+                log.warning("StreamingEncoder init failed (%s); live bars will be dropped", exc)
+                streaming_enc = None
 
         task = asyncio.create_task(self._run_session(engine, feed, mode))
         self.session = Session(
@@ -398,10 +633,59 @@ class CockpitState:
             feed=feed,
             task=task,
             run_id=run_id,
+            streaming_encoder=streaming_enc,
+        )
+        # Phase P3: persist enough metadata that an unexpected restart
+        # can warn the operator that an active session was abandoned.
+        self._persist_session(
+            self.session,
+            replay_start=replay_start, replay_end=replay_end,
+            meta_threshold=meta_threshold,
+            costs={"spread_bps": costs.spread_bps,
+                   "slippage_bps": costs.slippage_bps,
+                   "commission_usd": costs.commission_usd},
         )
         return {"run_id": run_id, "mode": mode, "asset": asset_symbol}
 
-    async def stop_session(self) -> dict:
+    # ------------------------------------------------------------------
+    # Phase P3: persistent session state
+    # ------------------------------------------------------------------
+    def _session_state_path(self) -> str:
+        return _path(self.cfg, self.cfg["artefact_dir"], "active_session.json")
+
+    def _persist_session(self, session: "Session", **extra) -> None:
+        try:
+            payload = {
+                "run_id": session.run_id, "asset": session.asset,
+                "manifest_idx": session.manifest_idx, "mode": session.mode,
+                "started_at": time.time(), **extra,
+            }
+            os.makedirs(os.path.dirname(self._session_state_path()), exist_ok=True)
+            with open(self._session_state_path(), "w") as f:
+                json.dump(payload, f, indent=2)
+        except OSError as exc:
+            log.warning("failed to persist session state: %s", exc)
+
+    def _clear_persisted_session(self) -> None:
+        try:
+            os.remove(self._session_state_path())
+        except FileNotFoundError:
+            pass
+        except OSError as exc:
+            log.warning("failed to clear session state: %s", exc)
+
+    def load_persisted_session(self) -> Optional[dict]:
+        path = self._session_state_path()
+        if not os.path.exists(path):
+            return None
+        try:
+            with open(path) as f:
+                return json.load(f)
+        except (OSError, json.JSONDecodeError) as exc:
+            log.warning("could not read persisted session %s: %s", path, exc)
+            return None
+
+    async def stop_session(self, reason: Optional[str] = None) -> dict:
         sess = self.session
         if sess is None:
             return {"stopped": False}
@@ -415,8 +699,23 @@ class CockpitState:
         except (asyncio.CancelledError, Exception):
             pass
         self.session = None
-        await self.hub.publish("log", {"level": "info", "msg": f"session {sess.run_id} stopped"})
-        return {"stopped": True, "run_id": sess.run_id}
+        self._clear_persisted_session()
+        # Phase P2: surface the operator's stop reason on the halt channel
+        # alongside the existing log message so the UI banner can render it.
+        if reason:
+            log.warning("session %s manually halted: %s", sess.run_id, reason)
+            await self.hub.publish(
+                "halt",
+                {"run_id": sess.run_id, "asset": sess.asset,
+                 "reasons": {"manual": reason}, "manual": True},
+            )
+        await self.hub.publish(
+            "log",
+            {"level": "info" if not reason else "warning",
+             "msg": f"session {sess.run_id} stopped"
+                    + (f": {reason}" if reason else "")},
+        )
+        return {"stopped": True, "run_id": sess.run_id, "reason": reason}
 
     async def _run_session(self, engine: PaperEngine, feed, mode: str) -> None:
         await self.hub.publish(
@@ -436,16 +735,30 @@ class CockpitState:
             )
 
     async def _process_bar(self, engine: PaperEngine, bar: Bar) -> None:
-        # Replay bars carry idx; live bars don't — for now we don't
-        # advance the engine on live bars because the encoder isn't
-        # streaming yet. We still publish the bar so the UI shows it.
         await self.hub.publish("bar", bar.to_dict())
-        if bar.idx is None:
+        idx = bar.idx
+
+        # Live bars don't carry a pre-computed index. Feed them through the
+        # StreamingEncoder to produce a new embedding, then append it to the
+        # engine's arrays via extend_precomputed() so step() can run normally.
+        if idx is None and self.session is not None and self.session.streaming_encoder is not None:
+            bar_data = await asyncio.to_thread(self.session.streaming_encoder.update, bar)
+            if bar_data is not None:
+                idx = engine.extend_precomputed(bar_data)
+            else:
+                return  # warmup or bad bar — skip
+
+        if idx is None:
             return
         sig: Signal = engine.step(bar.idx)
         payload = sig.to_dict()
         payload["asset"] = engine.asset
         await self.hub.publish("signal", payload)
+        # Phase N1: publish open-position state so the active-trades panel
+        # updates on every bar (not just on entry/exit). Cheap: just reads
+        # existing engine state.
+        active_snap = engine.open_position_state()
+        await self.hub.publish("active", {"asset": engine.asset, "snapshot": active_snap})
         if sig.fired:
             records = engine.trade_records()
             if records:
@@ -470,6 +783,51 @@ class CockpitState:
                         "barrier": rec.barrier,
                     },
                 )
+            # Phase M5: online meta-label refit. Append the new closed
+            # trade to the cached training set; once we have ≥ N new trades
+            # since the last fit, retrain in a thread.
+            if engine.meta_model is not None and rec.entry_features.size > 0:
+                self._note_closed_trade(
+                    engine.asset, rec.entry_features,
+                    int(rec.pnl > 0), float(rec.pnl),
+                )
+            # Phase M: live statistical-confidence publish. Bootstrap is
+            # ~0.3s for 60 trades × 1000 resamples — push it to a worker
+            # thread so the trading loop never blocks on stats.
+            stats = await asyncio.to_thread(
+                self._live_stats.compute, engine.trade_returns(),
+            )
+            await self.hub.publish("stats", {
+                "asset": engine.asset, "run_id": engine.run_id,
+                **stats.to_dict(),
+            })
+            # Kill-switch: evaluate after every closed trade. On halt, stop
+            # the session and notify the UI so the operator can investigate.
+            ks_result = ks_evaluate(engine.trade_returns(), self._ks_cfg)
+            if ks_result.halt:
+                reasons = "; ".join(ks_result.reasons.values())
+                log.warning("kill-switch HALT on %s: %s", engine.run_id, reasons)
+                await self.hub.publish(
+                    "halt",
+                    {"run_id": engine.run_id, "asset": engine.asset, "reasons": ks_result.reasons},
+                )
+                await self.hub.publish(
+                    "log", {"level": "error", "msg": f"KILL-SWITCH: {reasons}"}
+                )
+                # Phase K: best-effort operator alert via webhook. Runs in a
+                # thread so the trading loop never blocks on a slow webhook.
+                webhook = self.cfg.get("ui", {}).get("paper", {}).get("alert_webhook", "")
+                if webhook:
+                    from ..live.broker import post_alert
+                    asyncio.create_task(asyncio.to_thread(
+                        post_alert, webhook, "kill_switch_halt",
+                        {"run_id": engine.run_id, "asset": engine.asset,
+                         "reasons": ks_result.reasons},
+                    ))
+                # Stop the session (feed + task) without waiting inline to
+                # avoid deadlock inside the async feed loop.
+                asyncio.create_task(self.stop_session())
+                return
         await self.hub.publish(
             "equity",
             {
@@ -496,9 +854,21 @@ async def lifespan(app: FastAPI):
         len(app.state.cockpit.manifest),
         app.state.cockpit.store.db_path,
     )
+    # Phase P3: a stale active_session.json means the previous process
+    # exited without a clean stop. We don't auto-resume (open positions
+    # belong to a process that no longer exists); just warn loudly so the
+    # operator can investigate via /api/paper/orphan.
+    orphan = app.state.cockpit.load_persisted_session()
+    if orphan:
+        log.warning(
+            "ORPHANED SESSION DETECTED on startup: run_id=%s asset=%s mode=%s; "
+            "previous process did not stop cleanly. Inspect via "
+            "/api/paper/orphan and clear via /api/paper/orphan/clear",
+            orphan.get("run_id"), orphan.get("asset"), orphan.get("mode"),
+        )
     yield
     if app.state.cockpit.session is not None:
-        await app.state.cockpit.stop_session()
+        await app.state.cockpit.stop_session(reason="server_shutdown")
 
 
 app = FastAPI(title="Trading Cockpit", lifespan=lifespan)
@@ -566,10 +936,57 @@ async def api_metrics():
     return {"summary": summary, "per_run": per_run}
 
 
+def _runids_for_algorithm(manifest: list[dict], algorithm: str,
+                           store_run_ids: list[str]) -> list[str]:
+    """Phase N2: resolve which run_ids belong to a given algorithm.
+
+    The on-disk run_id format is ``{asset}-m{idx}-{mode}-{ts}``. We pluck
+    the manifest_idx out of each run_id and look up the matching manifest
+    entry's algorithm. Falls back to substring match (e.g. "ppo" in run_id)
+    when a run_id doesn't match the conventional shape (manual / legacy).
+    """
+    algo = algorithm.lower()
+    out: list[str] = []
+    for rid in store_run_ids:
+        try:
+            mtag = next(p for p in rid.split("-") if p.startswith("m"))
+            midx = int(mtag[1:])
+            entry = manifest[midx]
+            if str(entry.get("algorithm", "")).lower() == algo:
+                out.append(rid)
+                continue
+        except (StopIteration, ValueError, IndexError):
+            pass
+        if algo in rid.lower():
+            out.append(rid)
+    return out
+
+
 @app.get("/api/trades")
-async def api_trades(asset: Optional[str] = None, limit: int = 500):
+async def api_trades(
+    asset: Optional[str] = None,
+    limit: int = 500,
+    algorithm: Optional[str] = None,
+    run_id: Optional[str] = None,
+    since: Optional[float] = None,
+    until: Optional[float] = None,
+):
     s = _state(app)
-    return s.store.list_trades(asset=asset, limit=int(limit))
+    selected_run_ids: Optional[list[str]] = None
+    if algorithm:
+        # Discover all run_ids known to the store, then filter to the
+        # requested algorithm via the manifest mapping. Cheap: a single
+        # DISTINCT query.
+        with s.store._lock, s.store._connect() as conn:
+            cur = conn.execute("SELECT DISTINCT run_id FROM trades")
+            store_run_ids = [r["run_id"] for r in cur.fetchall()]
+        selected_run_ids = _runids_for_algorithm(s.manifest, algorithm, store_run_ids)
+        if not selected_run_ids:
+            return []
+    return s.store.list_trades(
+        asset=asset, limit=int(limit), run_id=run_id,
+        run_ids=selected_run_ids, since=since, until=until,
+    )
 
 
 @app.get("/api/trades/{trade_id}")
@@ -608,8 +1025,28 @@ async def api_paper_start(body: dict):
 
 
 @app.post("/api/paper/stop")
-async def api_paper_stop():
-    return await _state(app).stop_session()
+async def api_paper_stop(body: Optional[dict] = None):
+    """Phase P2: optional ``{"reason": "..."}`` body lets the operator
+    record why they halted; the reason is broadcast on ``halt`` so the UI
+    can surface it next to auto-halts from the kill-switch."""
+    reason = (body or {}).get("reason") if body else None
+    return await _state(app).stop_session(reason=reason)
+
+
+@app.get("/api/paper/orphan")
+async def api_paper_orphan():
+    """Phase P3: read the persisted session metadata (if any). The
+    cockpit writes this on every start_session and clears it on stop;
+    a non-empty result means the previous process crashed mid-session."""
+    s = _state(app)
+    return {"orphan": s.load_persisted_session()}
+
+
+@app.post("/api/paper/orphan/clear")
+async def api_paper_orphan_clear():
+    s = _state(app)
+    s._clear_persisted_session()
+    return {"cleared": True}
 
 
 @app.get("/api/paper/state")
@@ -625,6 +1062,126 @@ async def api_paper_state():
         "run_id": s.session.run_id,
         "engine": s.session.engine.state(),
     }
+
+
+@app.get("/api/paper/sessions")
+async def api_paper_sessions(limit: int = 200):
+    """Phase N4: list every distinct run_id with its summary stats."""
+    s = _state(app)
+    rows = s.store.sessions(limit=int(limit))
+    # Resolve algorithm via manifest for each run.
+    for r in rows:
+        try:
+            mtag = next(p for p in r["run_id"].split("-") if p.startswith("m"))
+            midx = int(mtag[1:])
+            r["algorithm"] = str(s.manifest[midx].get("algorithm", "unknown"))
+        except (StopIteration, ValueError, IndexError):
+            r["algorithm"] = "unknown"
+    return rows
+
+
+@app.get("/api/paper/sessions/{run_id}/replay")
+async def api_paper_session_replay(run_id: str):
+    """Phase N4: full trade list + cumulative equity curve for one run_id."""
+    s = _state(app)
+    trades = s.store.list_trades(run_id=run_id, limit=10_000)
+    trades.reverse()  # chronological for the equity curve
+    pnls = np.array([float(t["pnl"]) for t in trades], dtype=float)
+    equity = np.cumprod(1.0 + pnls).tolist() if pnls.size else []
+    return {"run_id": run_id, "trades": trades, "equity": equity}
+
+
+@app.get("/api/paper/aggregate")
+async def api_paper_aggregate(
+    group_by: Optional[str] = None,
+    since: Optional[float] = None,
+    until: Optional[float] = None,
+):
+    """Phase N3: aggregate PnL since installation, optionally grouped.
+
+    ``group_by``: ``asset`` | ``run_id`` | ``algorithm`` | ``None``.
+    For ``algorithm`` we run an asset-level aggregate then re-bucket by
+    algorithm via the manifest mapping.
+    """
+    s = _state(app)
+    if group_by == "algorithm":
+        # Aggregate by run_id, then re-bucket by algorithm.
+        raw = s.store.aggregate(group_by="run_id", since=since, until=until)
+        algo_pnls: dict[str, list[float]] = {}
+        # Re-pull pnls per run_id so we can compute per-algo stats correctly.
+        rid_to_algo: dict[str, str] = {}
+        for g in raw["groups"]:
+            try:
+                mtag = next(p for p in g["key"].split("-") if p.startswith("m"))
+                midx = int(mtag[1:])
+                algo = str(s.manifest[midx].get("algorithm", "unknown")).lower()
+            except (StopIteration, ValueError, IndexError):
+                algo = "unknown"
+            rid_to_algo[g["key"]] = algo
+        # Pull all rows once and bucket.
+        clauses, args = [], []
+        if since is not None: clauses.append("created_at >= ?"); args.append(float(since))
+        if until is not None: clauses.append("created_at <= ?"); args.append(float(until))
+        where = ("WHERE " + " AND ".join(clauses)) if clauses else ""
+        with s.store._lock, s.store._connect() as conn:
+            cur = conn.execute(
+                f"SELECT pnl, run_id FROM trades {where} ORDER BY trade_id ASC",
+                args,
+            )
+            for r in cur.fetchall():
+                algo = rid_to_algo.get(str(r["run_id"]), "unknown")
+                algo_pnls.setdefault(algo, []).append(float(r["pnl"]))
+        groups = []
+        for algo, pnls in sorted(algo_pnls.items()):
+            arr = np.asarray(pnls, dtype=float)
+            equity = np.cumprod(1.0 + arr) if arr.size else np.array([1.0])
+            peak = np.maximum.accumulate(equity)
+            dd = float(((equity - peak) / peak).min()) if arr.size else 0.0
+            std = float(arr.std(ddof=1)) if arr.size > 1 else 0.0
+            groups.append({
+                "key": algo,
+                "n_trades": int(arr.size),
+                "total_return": float(equity[-1] - 1.0) if arr.size else 0.0,
+                "sharpe": float(arr.mean() / std) if std > 1e-12 else 0.0,
+                "max_dd": dd,
+                "hit_rate": float((arr > 0).mean()) if arr.size else 0.0,
+            })
+        return {"total": raw["total"], "groups": groups}
+    return s.store.aggregate(group_by=group_by, since=since, until=until)
+
+
+@app.get("/api/paper/active")
+async def api_paper_active():
+    """Phase N1: list currently-open positions across all running sessions.
+
+    Today the cockpit holds at most one session at a time, but the API is
+    list-shaped so a future multi-session cockpit is a drop-in extension.
+    """
+    s = _state(app)
+    out: list[dict] = []
+    if s.session is not None:
+        snap = s.session.engine.open_position_state()
+        if snap is not None:
+            out.append(snap)
+    return {"active": out}
+
+
+@app.get("/api/paper/stats")
+async def api_paper_stats():
+    """Phase M: live statistical-confidence snapshot for the running session.
+
+    Returns DSR, Sharpe, P(SR>0), block-bootstrap p-value and 95% CI on
+    the trade-return series of the current session. When no session is
+    running we fall back to the all-time TradeStore returns so the panel
+    is never empty.
+    """
+    s = _state(app)
+    if s.session is not None:
+        rets = s.session.engine.trade_returns()
+    else:
+        rows = s.store.list_trades(limit=10_000)
+        rets = np.array([r["pnl"] for r in rows], dtype=float)
+    return s._live_stats.compute(rets).to_dict()
 
 
 @app.post("/api/explain")

@@ -182,9 +182,36 @@ vs the original return-reward baseline (iter-0): pre-meta Sharpe @ 0bps
 **0.881 → 1.004 (+14%)**, pre-meta Sharpe @ 0.5bps **0.571 → 0.679 (+19%)**,
 meta-gate Sharpe @ 0.60 **→ 6.78**, **GRPO mean Sharpe 0.447 → 0.708 (+58%
 in iter-7)**, Sharpe std 0.370 → **0.167 (−55%, tighter ensemble)**.
-Permutation p-value 0.608 (iter-6) → 0.996 (iter-7) — macro trend-following
-introduces negative return autocorrelation; block permutation test queued
-for iter-8.
+
+**Phase H (2026-04-24) — pre-deployment validation stack.** The apparent
+"permutation p-value regression" (0.608 → 0.996 across iter-6/7) turned out
+to be a broken test: Sharpe ratio is permutation-invariant, so the
+element-wise shuffle test reports p ≈ 1 trivially via tie-comparisons.
+Phase H replaces it with a centred block-bootstrap edge test (Politis &
+Romano) that draws with replacement and tests H0: E[r] ≤ 0. On iter-7
+data the new test reports **p = 0.0005** — the edge is real. Phase H
+also adds a TRUE hold-out gate (`scripts/04b_holdout_eval.py`) on a
+20%-tail window never seen by CPCV or PPO: **Sharpe 1.090, bootstrap
+p = 0.001, DSR 0.969** on 635 trades. Kelly fractional sizing (off by
+default) and live-feed quality gates (NaN/gap/staleness/exchange-hours)
+ship in `src/live/paper_engine.py` and `src/live/feed.py`. See the
+Phase H section in `reports/iteration_log.md` for the full comparison.
+
+**Phase I (2026-04-26) — paper-trading simulation.**
+`scripts/07_paper_simulation.py` drives the best CPCV policy through
+`PaperEngine` over the same 20% hold-out, twice: byte-parity baseline
+vs. quarter-Kelly (`cap=0.25, floor=0.05`). Headline: Sharpe is
+**regime-dependent** — 0.64 in the trend regime (80% of bars), 2.15 in
+the volatile regime (20% of bars). The 1.09 hold-out figure is a blend.
+Quarter-Kelly pins to floor (mean fraction 0.053) because the per-trade
+edge is too thin for a meaningful Kelly bet — the aggregate Sharpe
+comes from frequency, not conviction. Drawdown profile: −4.29% on
+unscaled notional over 6 months; −0.22% at quarter-Kelly. Reports
+land in `reports/paper_simulation_report.md` and `paper_simulation.json`.
+
+```bash
+TRADING_PROFILE=aggressive python scripts/07_paper_simulation.py
+```
 
 Known runtime limits:
 

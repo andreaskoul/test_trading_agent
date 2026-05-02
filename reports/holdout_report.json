@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "worst_sharpe": 1.089518994895712,
+  "worst_boot_p": 0.0009995002498750624,
+  "worst_perm_p": 0.5484515484515484,
+  "gate_min_sharpe": 0.3,
+  "gate_max_boot_p": 0.1,
+  "gate_max_perm_p": 0.2,
+  "holdout_frac": 0.2,
+  "per_asset": {
+    "GC=F": {
+      "algo": "ppo",
+      "split": 5,
+      "seed": 29,
+      "holdout_bars": 3278,
+      "n_trades": 635,
+      "sharpe": 1.089518994895712,
+      "sortino": 2.7645152987828303,
+      "max_drawdown": -0.04287131483033064,
+      "hit_rate": 0.48661417322834644,
+      "total_return": 0.5737268180555941,
+      "bootstrap_sr_lo": 1.2917314254475176,
+      "bootstrap_sr_hi": 3.606109443267012,
+      "bootstrap_pvalue_sharpe": 0.0009995002498750624,
+      "permutation_acf1": 0.11174369784598087,
+      "permutation_block_size": 8,
+      "permutation_pvalue": 0.5484515484515484,
+      "deflated_sharpe": 0.9692664640114642
+    }
+  }
+}

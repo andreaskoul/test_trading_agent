@@ -1,0 +1,106 @@
+{
+  "policy": "ppo",
+  "split": 5,
+  "seed": 29,
+  "holdout_bars": 3278,
+  "holdout_start": "2025-09-09 09:00:00+00:00",
+  "holdout_end": "2026-03-24 00:00:00+00:00",
+  "periods_per_year": 50.4,
+  "baseline": {
+    "label": "baseline",
+    "n_trades": 635,
+    "sharpe": 1.089518994895712,
+    "hit_rate": 0.48661417322834644,
+    "max_drawdown": -0.04287131483033069,
+    "total_return": 0.5737268180555941,
+    "mean_kelly_fraction": 1.0,
+    "median_kelly_fraction": 1.0,
+    "p5_kelly_fraction": 1.0,
+    "p95_kelly_fraction": 1.0,
+    "trades_per_day": 3.270386266094421,
+    "sim_days": 194.16666666666666,
+    "per_regime": {
+      "0": {
+        "n_trades": 508,
+        "n_bars": 2615,
+        "sharpe": 0.636190890562168,
+        "mean_pnl": 0.0002947829129518965,
+        "std_pnl": 0.0032895017975065025,
+        "hit_rate": 0.46062992125984253,
+        "max_drawdown": -0.037561863999168055,
+        "total_return": 0.15834179911092883
+      },
+      "1": {
+        "n_trades": 127,
+        "n_bars": 662,
+        "sharpe": 2.153175781454098,
+        "mean_pnl": 0.002448106165013415,
+        "std_pnl": 0.008071718908116182,
+        "hit_rate": 0.5905511811023622,
+        "max_drawdown": -0.03558266347085226,
+        "total_return": 0.3586031508691929
+      },
+      "2": {
+        "n_trades": 0,
+        "n_bars": 1,
+        "sharpe": 0.0,
+        "mean_pnl": 0.0,
+        "std_pnl": 0.0,
+        "hit_rate": 0.0,
+        "max_drawdown": 0.0,
+        "total_return": 0.0
+      }
+    }
+  },
+  "quarter_kelly": {
+    "label": "quarter_kelly",
+    "n_trades": 635,
+    "sharpe": 1.0811017394064004,
+    "hit_rate": 0.48661417322834644,
+    "max_drawdown": -0.002188995806724603,
+    "total_return": 0.02445069367415642,
+    "mean_kelly_fraction": 0.053007772994133964,
+    "median_kelly_fraction": 0.05,
+    "p5_kelly_fraction": 0.05,
+    "p95_kelly_fraction": 0.06691270304575925,
+    "trades_per_day": 3.270386266094421,
+    "sim_days": 194.16666666666666,
+    "per_regime": {
+      "0": {
+        "n_trades": 508,
+        "n_bars": 2615,
+        "sharpe": 0.6590253324832425,
+        "mean_pnl": 1.671326470206836e-05,
+        "std_pnl": 0.0001800422579343199,
+        "hit_rate": 0.46062992125984253,
+        "max_drawdown": -0.001985980984515412,
+        "total_return": 0.008518125626792328
+      },
+      "1": {
+        "n_trades": 127,
+        "n_bars": 662,
+        "sharpe": 2.096709593910275,
+        "mean_pnl": 0.0001235156897375757,
+        "std_pnl": 0.0004182145264605566,
+        "hit_rate": 0.5905511811023622,
+        "max_drawdown": -0.0020925878118551733,
+        "total_return": 0.015797998709700778
+      },
+      "2": {
+        "n_trades": 0,
+        "n_bars": 1,
+        "sharpe": 0.0,
+        "mean_pnl": 0.0,
+        "std_pnl": 0.0,
+        "hit_rate": 0.0,
+        "max_drawdown": 0.0,
+        "total_return": 0.0
+      }
+    }
+  },
+  "regime_realised_vol": {
+    "0": 0.002287400932687679,
+    "1": 0.0069054711822717175,
+    "2": 0.0
+  }
+}
