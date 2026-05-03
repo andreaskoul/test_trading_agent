@@ -20,7 +20,7 @@ Usage::
     python scripts/08_backtest_windows.py \\
         --n-windows 20 --window-bars 1100 \\
         --notional 100000 --seed 42 --asset GC=F \\
-        --branch-tag claude/trading-agent-finetune-nX76I \\
+        --branch-tag main \\
         --commit-sha abcd1234
 
 Outputs:
