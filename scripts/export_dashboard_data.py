@@ -17,6 +17,7 @@ load and re-fetches every 60 s. Updated each hour by the cron workflow.
 from __future__ import annotations
 
 import argparse
+import datetime as _dt
 import json
 import logging
 import os
@@ -30,6 +31,15 @@ from src.live.paper_engine import TradeStore
 from src.validation.live_stats import LiveStats
 
 log = logging.getLogger("export_dashboard_data")
+
+
+def _empty_stats() -> dict:
+    """Stats payload that renders as 'awaiting trades…' on the dashboard
+    instead of literal NaN/undefined. Mirrors LiveStatsResult.to_dict()."""
+    return {
+        "n_trades": 0, "sharpe": 0.0, "dsr": 0.0, "psr_vs_zero": 0.0,
+        "boot_p": 1.0, "boot_lo": 0.0, "boot_hi": 0.0, "ann_factor": 252.0,
+    }
 
 
 def _bucket_by_algorithm(rows: list[dict], manifest: list[dict]) -> dict:
@@ -69,10 +79,21 @@ def main() -> int:
 
     cfg = setup()
     db_path = path(cfg, cfg.get("trade_db_path", "artefacts/paper_trades.db"))
+    now_iso = _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
     if not os.path.exists(db_path):
         log.warning("trade DB missing: %s", db_path)
-        snapshot = {"trades": [], "aggregate": {"groups": [], "total": {}},
-                    "stats": {}, "engine": None, "halt": None}
+        snapshot = {
+            "generated_at": now_iso,
+            "trades": [],
+            "aggregate": {
+                "by_asset": {"groups": [], "total": _empty_stats()},
+                "by_algorithm": {"groups": []},
+            },
+            "stats": _empty_stats(),
+            "engine": None,
+            "halt": None,
+            "equity_curve": [],
+        }
     else:
         store = TradeStore(db_path)
         rows = store.list_trades(limit=2000)
@@ -118,7 +139,7 @@ def main() -> int:
             equity_curve = [float(x) for x in eq]
 
         snapshot = {
-            "generated_at": cfg.get("__now__", ""),
+            "generated_at": now_iso,
             "trades": [
                 {k: v for k, v in r.items()
                  if k not in ("entry_features_json", "embedding_json", "explanation")}
