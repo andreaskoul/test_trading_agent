@@ -52,16 +52,42 @@ except ImportError:    # pragma: no cover
 log = logging.getLogger("step_one_bar")
 
 
-def _fetch_latest_bar(asset: str, interval: str) -> pd.DataFrame:
-    """Fetch the latest yfinance bar; returns empty DataFrame on failure."""
+def _fetch_bars_since(
+    asset: str, interval: str, since: pd.Timestamp,
+    max_lookback_days: int = 700,
+) -> pd.DataFrame:
+    """Fetch all yfinance bars from ``since`` (exclusive) up to now.
+
+    On first cron run with empty live_bars, ``since`` will be the last
+    training bar (potentially weeks/months ago) and this fetches the whole
+    gap in one call — the system can start trading immediately instead of
+    waiting ~10 days for live_bars to accumulate organically.
+
+    On steady-state runs, ``since`` is the previous tick's last bar so
+    this returns at most one new bar.
+
+    yfinance enforces a 730-day lookback cap for 60m intervals; we cap at
+    700 to stay well within bounds.
+    """
     try:
         import yfinance as yf
     except ImportError:
         log.warning("yfinance not installed; skipping fetch")
         return pd.DataFrame()
+
+    end = pd.Timestamp.now(tz="UTC")
+    cap = end - pd.Timedelta(days=max_lookback_days)
+    start = max(since + pd.Timedelta(hours=1), cap).floor("h")
+    if start >= end:
+        return pd.DataFrame()
+    log.info("yfinance fetch: %s [%s -> %s] interval=%s",
+             asset, start.isoformat(), end.isoformat(), interval)
+
     try:
-        raw = yf.download(asset, period="2d", interval=interval, progress=False,
-                           auto_adjust=False, threads=False)
+        raw = yf.download(
+            asset, start=start, end=end, interval=interval,
+            progress=False, auto_adjust=False, threads=False,
+        )
     except Exception as exc:
         log.warning("yfinance fetch failed for %s: %s", asset, exc)
         return pd.DataFrame()
@@ -149,20 +175,23 @@ def main() -> int:
     live_path = path(cfg, "artefacts", "live_bars.parquet")
     live = _load_or_init_live_bars(live_path)
 
-    # Fetch + append latest bar.
+    # Fetch + append every bar since the last known one. On the very
+    # first cron run this backfills the entire gap between training-end
+    # and now (so the system can start trading immediately, not after a
+    # 10-day organic warmup); subsequent runs return at most one new bar.
     if not args.offline:
-        new = _fetch_latest_bar(asset.symbol, asset.interval)
+        cutoff = max(
+            train_ohlcv.index.max() if len(train_ohlcv) else pd.Timestamp.min.tz_localize("UTC"),
+            live.index.max() if len(live) else pd.Timestamp.min.tz_localize("UTC"),
+        )
+        new = _fetch_bars_since(asset.symbol, asset.interval, cutoff)
         if not new.empty:
-            # Drop any bar we already have, plus any older than the last
-            # training bar (keeps live segment monotonic and disjoint).
-            cutoff = max(
-                train_ohlcv.index.max() if len(train_ohlcv) else pd.Timestamp.min.tz_localize("UTC"),
-                live.index.max() if len(live) else pd.Timestamp.min.tz_localize("UTC"),
-            )
-            new = new[new.index > cutoff]
+            new = new[new.index > cutoff]   # belt-and-braces dedupe
             if len(new):
                 live = pd.concat([live, new])
                 log.info("appended %d new bar(s); live=%d total", len(new), len(live))
+            else:
+                log.info("no new bar after dedupe; live=%d", len(live))
         else:
             log.info("no new bar from yfinance; live=%d", len(live))
     else:
