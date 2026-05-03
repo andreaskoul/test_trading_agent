@@ -1,4 +1,4 @@
-# Statistically Robust DL+RL Gold Trading Agent
+# DL+RL Gold Trading Agent
 
 A reference implementation of an xLSTM-encoder + PPO trading agent on gold,
 wrapped in the **Minimum Viable Robustness** statistical stack that most
