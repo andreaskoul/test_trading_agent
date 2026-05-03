@@ -1,0 +1,178 @@
+name: Multi-window backtest
+
+# Phase R: backtest a branch's policy across N independent random
+# 6-month windows of pre-training market data. Reports per-window and
+# aggregate PnL on $100k notional. Result is committed to the
+# `backtest_history` branch so iterations stack chronologically.
+#
+# Setup (one-time):
+#   1. Settings -> Actions -> General -> Workflow permissions: Read+Write
+#   2. (Optional) Set BACKTEST_DATA_BRANCH secret/variable to override
+#      the data branch name (default: 'data').
+#
+# Trigger manually from Actions tab; no scheduled runs.
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to backtest (defaults to repo default branch)"
+        required: false
+        default: ""
+      n_windows:
+        description: "Number of independent windows"
+        required: false
+        default: "20"
+      seed:
+        description: "Random seed for window sampling"
+        required: false
+        default: "42"
+      notional:
+        description: "USD notional per trade"
+        required: false
+        default: "100000"
+      window_bars:
+        description: "Bars per window (~1100 = 6 months at 60m)"
+        required: false
+        default: "1100"
+
+permissions:
+  contents: write          # commit pre-training data + backtest_history
+
+concurrency:
+  group: backtest          # only one backtest at a time
+  cancel-in-progress: false
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Resolve branch input
+        id: resolve
+        run: |
+          set -euo pipefail
+          REQUESTED='${{ github.event.inputs.branch }}'
+          if [ -z "$REQUESTED" ]; then
+            REQUESTED='${{ github.event.repository.default_branch }}'
+          fi
+          echo "branch=$REQUESTED" >> "$GITHUB_OUTPUT"
+          echo "Backtesting branch: $REQUESTED"
+
+      - name: Checkout requested branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.resolve.outputs.branch }}
+          fetch-depth: 0   # need full history for git log + multi-branch ops
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install runtime deps
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt \
+            --extra-index-url https://download.pytorch.org/whl/cpu
+
+      - name: Restore pre-training data from `data` branch
+        id: restore_data
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code origin data >/dev/null 2>&1; then
+            git fetch origin data --depth=1
+            mkdir -p data/raw
+            if git cat-file -e "origin/data:data/raw/gold_pretraining.parquet" 2>/dev/null; then
+              git show "origin/data:data/raw/gold_pretraining.parquet" > data/raw/gold_pretraining.parquet
+              echo "Restored gold_pretraining.parquet from data branch"
+              echo "needs_fetch=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "data branch exists but no parquet; will fetch"
+              echo "needs_fetch=true" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "no data branch yet; will fetch"
+            echo "needs_fetch=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Fetch pre-training data from Stooq (if missing)
+        if: steps.restore_data.outputs.needs_fetch == 'true'
+        env:
+          TRADING_PROFILE: aggressive
+        run: |
+          python scripts/fetch_pretraining_data.py \
+            --asset GC=F --interval 60m \
+            --out data/raw/gold_pretraining.parquet
+
+      - name: Run multi-window backtest
+        env:
+          TRADING_PROFILE: aggressive
+          GITHUB_REF_NAME: ${{ steps.resolve.outputs.branch }}
+        run: |
+          python scripts/08_backtest_windows.py \
+            --asset GC=F \
+            --n-windows ${{ github.event.inputs.n_windows }} \
+            --window-bars ${{ github.event.inputs.window_bars }} \
+            --notional ${{ github.event.inputs.notional }} \
+            --seed ${{ github.event.inputs.seed }} \
+            --branch-tag '${{ steps.resolve.outputs.branch }}' \
+            --commit-sha '${{ github.sha }}'
+
+      - name: Upload backtest report as workflow artefact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backtest-${{ github.sha }}
+          path: reports/backtest/
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Persist pre-training data to `data` branch (first run only)
+        if: steps.restore_data.outputs.needs_fetch == 'true' && success()
+        run: |
+          set -euo pipefail
+          git config user.name 'backtest-bot'
+          git config user.email 'backtest-bot@users.noreply.github.com'
+
+          git fetch origin data 2>/dev/null || true
+          git worktree add /tmp/data data 2>/dev/null \
+            || git worktree add -b data /tmp/data
+
+          mkdir -p /tmp/data/data/raw
+          cp data/raw/gold_pretraining.parquet /tmp/data/data/raw/
+
+          cd /tmp/data
+          git add -f data/raw/gold_pretraining.parquet
+          if ! git diff --cached --quiet; then
+            git commit -m "data: gold_pretraining.parquet ($(date -u +%Y-%m-%d))"
+            git push origin data
+          else
+            echo "no data changes to commit"
+          fi
+
+      - name: Commit report to `backtest_history` branch
+        if: always()
+        run: |
+          set -euo pipefail
+          git config user.name 'backtest-bot'
+          git config user.email 'backtest-bot@users.noreply.github.com'
+
+          git fetch origin backtest_history 2>/dev/null || true
+          git worktree add /tmp/hist backtest_history 2>/dev/null \
+            || git worktree add -b backtest_history /tmp/hist
+
+          mkdir -p /tmp/hist/reports/backtest
+          cp -n reports/backtest/*.json /tmp/hist/reports/backtest/ 2>/dev/null || true
+          cp -n reports/backtest/*.md   /tmp/hist/reports/backtest/ 2>/dev/null || true
+
+          cd /tmp/hist
+          git add -f reports/backtest/
+          if ! git diff --cached --quiet; then
+            git commit -m "backtest: ${{ steps.resolve.outputs.branch }}@${{ github.sha }}"
+            git push origin backtest_history
+          else
+            echo "no report changes to commit"
+          fi
