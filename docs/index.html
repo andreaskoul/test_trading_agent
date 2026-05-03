@@ -132,7 +132,8 @@ function renderActive(snap) {
 function renderStats(snap) {
   const el = document.getElementById("stats");
   const s = snap?.stats;
-  if (!s || s.n_trades < 5) { el.innerHTML = '<span class="muted">awaiting trades…</span>'; return; }
+  // (s.n_trades || 0) — undefined < 5 is false, so we'd otherwise render NaN cells.
+  if (!s || (s.n_trades || 0) < 5) { el.innerHTML = '<span class="muted">awaiting trades…</span>'; return; }
   el.innerHTML = `<div class="grid-kv num">
     <div>n trades</div><div>${s.n_trades}</div>
     <div>Sharpe</div><div>${fixed(s.sharpe)}</div>
