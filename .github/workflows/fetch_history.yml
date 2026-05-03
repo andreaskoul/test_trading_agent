@@ -1,0 +1,129 @@
+name: Fetch historical data
+
+# Phase S: pull a long-history OHLCV corpus (asset + macros) and commit
+# the parquets to the `data` branch so subsequent training runs pick
+# them up. Runs on a manually-triggered workflow_dispatch only — never
+# scheduled, never auto. Network from Actions runners can reach Stooq;
+# the sandbox where we develop cannot.
+#
+# Setup (one-time):
+#   Settings -> Actions -> General -> Workflow permissions: Read and write
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: "ISO date YYYY-MM-DD; corpus start (default 2016-01-01)"
+        required: false
+        default: "2016-01-01"
+      end_date:
+        description: "ISO date YYYY-MM-DD; empty = today UTC"
+        required: false
+        default: ""
+      asset:
+        description: "Trading asset symbol"
+        required: false
+        default: "GC=F"
+      interval:
+        description: "60m for hourly, 1d for daily fallback"
+        required: false
+        default: "60m"
+      macros:
+        description: "Comma-separated macro symbols (without ^ prefix)"
+        required: false
+        default: "VIX,GSPC,TNX"
+      source:
+        description: "auto | stooq | yfinance"
+        required: false
+        default: "auto"
+      commit_to_data_branch:
+        description: "Commit fetched parquets to the `data` branch"
+        required: false
+        default: "true"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-fetch
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history so we can write to other branches cleanly
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install runtime deps
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt \
+            --extra-index-url https://download.pytorch.org/whl/cpu
+
+      - name: Fetch historical data
+        env:
+          TRADING_PROFILE: aggressive
+        run: |
+          python scripts/fetch_historical_data.py \
+            --asset '${{ github.event.inputs.asset }}' \
+            --interval '${{ github.event.inputs.interval }}' \
+            --start '${{ github.event.inputs.start_date }}' \
+            --end '${{ github.event.inputs.end_date }}' \
+            --macros '${{ github.event.inputs.macros }}' \
+            --source '${{ github.event.inputs.source }}'
+
+      - name: List fetched parquets
+        if: always()
+        run: |
+          echo "===== fetched files ====="
+          ls -la data/raw/ | grep -E '\.parquet$' || true
+
+      - name: Upload parquets as workflow artefact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: historical-data-${{ github.run_id }}
+          path: data/raw/*.parquet
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Commit to `data` branch
+        if: |
+          success() &&
+          github.event.inputs.commit_to_data_branch == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name 'data-fetch-bot'
+          git config user.email 'data-fetch-bot@users.noreply.github.com'
+
+          git fetch origin data 2>/dev/null || true
+          git worktree add /tmp/data data 2>/dev/null \
+            || git worktree add -b data /tmp/data
+
+          mkdir -p /tmp/data/data/raw
+          # Copy every parquet we just produced. Force-overwrite — the
+          # whole point of this action is to publish the latest snapshot.
+          for f in data/raw/*.parquet; do
+            [ -f "$f" ] && cp "$f" /tmp/data/data/raw/
+          done
+
+          cd /tmp/data
+          git add -f data/raw/
+          if ! git diff --cached --quiet; then
+            git commit -m "data: historical fetch ${{ github.event.inputs.start_date }}..${{ github.event.inputs.end_date || 'today' }} ($(date -u +%Y-%m-%dT%H:%MZ))"
+            git push origin data
+            echo "::notice::Committed to data branch. Pull locally with: git fetch origin data && git checkout data -- data/raw/"
+          else
+            echo "no changes to commit"
+          fi
