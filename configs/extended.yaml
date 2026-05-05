@@ -1,0 +1,104 @@
+# Extended training profile: 10-year corpus + explicit OOS dataset.
+#
+# Training  : data/raw/gold_xauusd_h1.parquet  2012-05-17 → 2022-03-04
+#             ejtraderLabs XAUUSD spot hourly (57 600 bars, prices USD/oz)
+#
+# OOS       : data/raw/gc_60m.parquet  2023-01-02 → 2026-03-24
+#             original MGC 60m corpus used as the held-out test set
+#
+# Gap       : 2022-03-04 → 2023-01-02 (~10 months) intentionally excluded;
+#             neither training nor OOS data overlaps it.
+#
+# Usage     : TRADING_PROFILE=extended python scripts/NN_....py
+#             or: python scripts/build_extended_data.py  (produces parquets)
+
+data:
+  assets:
+    - symbol: "GC=F"
+      fallback_symbols: ["GLD"]
+      interval: "60m"
+      raw_path: "data/raw/gold_xauusd_h1.parquet"
+      features_path: "data/processed/features_gc_extended.parquet"
+      labels_path: "data/processed/labels_gc_extended.parquet"
+  start: "2012-05-17"
+  end: "2022-03-04"
+  # All 4 macro series — DX=F now live via FRED DTWEXBGS (fixed).
+  macro_symbols: ["^VIX", "^GSPC", "^TNX", "DX=F"]
+  macro_interval: "1d"
+  mi_threshold: 0.003
+  # holdout_frac=0: no fraction-based split on the training set.
+  # OOS is the explicit gc_60m.parquet dataset; build_extended_data.py
+  # writes it to *_holdout.parquet so 04b_holdout_eval.py can consume it.
+  holdout_frac: 0.0
+
+features:
+  warmup_bars: 252
+  zscore_window: 252
+
+triple_barrier:
+  horizon: 4
+  rr_upper: 1.5
+  rr_lower: 0.75
+  atr_window: 4
+
+encoder:
+  vib: true
+  vib_beta: 1.0e-3
+  tft: true
+  tft_heads: 4
+  multitask: true
+  vol_weight: 0.3
+  meta_weight: 0.2
+  pretrain_epochs: 10       # more data → more pretraining epochs
+
+ppo:
+  total_timesteps: 150000   # 3× more bars → proportionally more updates
+  seeds: [7, 13, 29]
+  algorithms: ["ppo", "grpo"]
+
+cpcv:
+  n_splits: 8               # more data enables more CPCV folds (was 6)
+  n_test_splits: 2
+  embargo_pct: 0.01
+
+env:
+  spread_bps: 0.5
+  reward_mode: "diff_sharpe"
+  reward_return_scale: 100.0
+  reward_cost_lambda: 2.0
+  reward_dsr_eta: 0.01
+  reward_dsr_scale: 1.0
+
+evaluation:
+  costs_bps: [0.0, 0.5, 1.0, 2.0, 5.0]
+  bootstrap_resamples: 2000
+  bootstrap_block_size: 20
+  permutation_samples: 1000
+  permutation_block_size: 8
+  holdout_gate:
+    min_sharpe: 0.30
+    max_boot_p: 0.10
+    max_perm_p: 0.20
+
+finetune:
+  timesteps: 40000
+  holdout_frac: 0.15
+
+ui:
+  paper:
+    default_asset: "GC=F"
+    costs:
+      spread_bps: 0.5
+      slippage_bps: 0.3
+      commission_usd: 0.0
+    bar_interval_seconds: 3600
+    meta_threshold: 0.55
+    kelly_cap: 0.25
+    kelly_floor: 0.05
+    kelly_window: 100
+    kelly_cold_start_floor: 0.05
+    daily_loss_limit: 0.02
+    regime_size_multipliers:
+      0: 0.5
+      1: 1.0
+      2: 1.0
