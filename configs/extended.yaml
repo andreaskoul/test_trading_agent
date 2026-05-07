@@ -43,7 +43,7 @@ triple_barrier:
 
 encoder:
   vib: true
-  vib_beta: 1.0e-3
+  vib_beta: 1.0e-4           # reduced from 1e-3 to prevent KL explosion with new features
   tft: true
   tft_heads: 4
   multitask: true

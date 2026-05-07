@@ -204,7 +204,7 @@ def pretrain_fold(
                 loss = loss + aux
                 aux_val = float(aux.detach())
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 0.5)
             optim.step()
             tr_loss += float(task_loss.detach()) * len(xb)
             tr_kl += float(kl.detach()) * len(xb)
