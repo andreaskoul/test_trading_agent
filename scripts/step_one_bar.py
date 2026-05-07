@@ -111,8 +111,12 @@ def _fetch_bars_since(
 def _load_or_init_live_bars(live_path: str) -> pd.DataFrame:
     if os.path.exists(live_path):
         df = pd.read_parquet(live_path)
-        if df.index.tz is None:
-            df.index = df.index.tz_localize("UTC")
+        if isinstance(df.index, pd.DatetimeIndex):
+            if df.index.tz is None:
+                df.index = df.index.tz_localize("UTC")
+        elif len(df) > 0:
+            log.warning("live_bars has non-DatetimeIndex; re-creating")
+            return pd.DataFrame(columns=["open", "high", "low", "close", "volume"])
         return df
     return pd.DataFrame(columns=["open", "high", "low", "close", "volume"])
 
