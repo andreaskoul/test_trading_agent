@@ -196,25 +196,35 @@ def _build_features_labels(
     raw: pd.DataFrame,
     macro: dict[str, pd.DataFrame],
     name: str,
+    kept_cols_override: list[str] | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     log.info("[%s] building features (%d raw bars)…", name, len(raw))
     feats = build_features(raw, warmup_bars=WARMUP, zscore_window=ZSCORE_WIN,
                            macro_data=macro or None)
     log.info("[%s] features before MI: %d bars × %d cols", name, len(feats), feats.shape[1])
 
-    # MI prune (same threshold as aggressive.yaml)
-    drop_cols = [c for c in ("close", "atr") if c in feats.columns]
-    y_mi = label_triple_barrier(feats, TB_CFG)["label_multi"].to_numpy().astype(int) + 1
-    kept, _ = mi_filter(
-        feats.drop(columns=drop_cols, errors="ignore"),
-        y_mi,
-        threshold=MI_THRESHOLD,
-    )
-    kept_cols = list(dict.fromkeys(list(kept) + drop_cols))
-    dropped = [c for c in feats.columns if c not in kept_cols]
-    if dropped:
-        log.info("[%s] MI pruned %d cols: %s", name, len(dropped), dropped)
-    feats = feats[kept_cols]
+    if kept_cols_override is not None:
+        # Use the same columns as training — do NOT re-run MI on OOS data.
+        available = [c for c in kept_cols_override if c in feats.columns]
+        missing = [c for c in kept_cols_override if c not in feats.columns]
+        if missing:
+            log.warning("[%s] %d training cols absent from OOS features: %s", name, len(missing), missing)
+        feats = feats[available]
+        log.info("[%s] applied training feature set: %d cols", name, len(available))
+    else:
+        # MI prune (same threshold as aggressive.yaml)
+        drop_cols = [c for c in ("close", "atr") if c in feats.columns]
+        y_mi = label_triple_barrier(feats, TB_CFG)["label_multi"].to_numpy().astype(int) + 1
+        kept, _ = mi_filter(
+            feats.drop(columns=drop_cols, errors="ignore"),
+            y_mi,
+            threshold=MI_THRESHOLD,
+        )
+        kept_cols = list(dict.fromkeys(list(kept) + drop_cols))
+        dropped = [c for c in feats.columns if c not in kept_cols]
+        if dropped:
+            log.info("[%s] MI pruned %d cols: %s", name, len(dropped), dropped)
+        feats = feats[kept_cols]
 
     labels = label_triple_barrier(feats, TB_CFG)
     labels["t1"] = labels["t1"].astype("int64")
@@ -285,9 +295,13 @@ def main() -> None:
     log.info("wrote %s  (%d bars)", TRAIN_LABELS, len(train_labels))
 
     # 3. OOS set — GC=F 60m 2023-2026 (full, no further split)
+    # Use the exact feature columns selected for training to avoid dimension mismatch.
+    from src.data.features import feature_columns as _feat_cols
+    train_kept = list(train_feats.columns)
     log.info("loading OOS raw: %s", OOS_RAW)
     oos_raw = pd.read_parquet(OOS_RAW)
-    oos_feats, oos_labels = _build_features_labels(oos_raw, macro, "OOS")
+    oos_feats, oos_labels = _build_features_labels(oos_raw, macro, "OOS",
+                                                   kept_cols_override=train_kept)
     oos_feats.to_parquet(OOS_FEATS)
     oos_labels.to_parquet(OOS_LABELS)
     log.info("wrote %s  (%d bars)", OOS_FEATS, len(oos_feats))
