@@ -208,6 +208,11 @@ def pretrain_fold(
                 optim.zero_grad()
                 continue
             loss.backward()
+            # Sanitize NaN/Inf gradients before clipping to protect Adam state.
+            # Backward through exponential gates can overflow on MPS/float32.
+            for p in model.parameters():
+                if p.grad is not None:
+                    p.grad = p.grad.nan_to_num(nan=0.0, posinf=0.5, neginf=-0.5)
             torch.nn.utils.clip_grad_norm_(model.parameters(), 0.5)
             optim.step()
             tr_loss += float(task_loss.detach()) * len(xb)
