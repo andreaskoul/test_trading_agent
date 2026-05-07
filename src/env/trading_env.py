@@ -54,6 +54,8 @@ def env_config_from_yaml(cfg: dict) -> "EnvConfig":
         reward_cost_lambda=env.get("reward_cost_lambda", 0.0),
         reward_dsr_eta=env.get("reward_dsr_eta", 0.01),
         reward_dsr_scale=env.get("reward_dsr_scale", 1.0),
+        reward_trend_weight=env.get("reward_trend_weight", 0.0),
+        reward_trend_lookback=int(env.get("reward_trend_lookback", 200)),
         min_flat_bars=env.get("min_flat_bars", 0),
     )
 
@@ -91,6 +93,11 @@ class EnvConfig:
     # allowed. 0 disables. A small cooldown (1-3 bars) kills flip-flop
     # turnover without the over-suppression iter-2's cost_lambda=4 caused.
     min_flat_bars: int = 0
+    # Trend-alignment reward bonus. When >0, trades aligned with the N-bar
+    # momentum get a bonus proportional to trend strength; counter-trend
+    # trades get an equivalent penalty. 0 disables (backward compat).
+    reward_trend_weight: float = 0.0
+    reward_trend_lookback: int = 200
 
 
 class TradingEnv(gym.Env):
@@ -148,6 +155,8 @@ class TradingEnv(gym.Env):
         # Differential-Sharpe running moments (Moody & Saffell 1998).
         self._dsr_A = 0.0
         self._dsr_B = 1e-8
+        # Trend signal at most recent entry (for trend-alignment reward).
+        self._trend_at_entry = 0.0
 
     # ------------------------------------------------------------------
     # curriculum
@@ -175,6 +184,7 @@ class TradingEnv(gym.Env):
         self._episode_trades = []
         self._dsr_A = 0.0
         self._dsr_B = 1e-8
+        self._trend_at_entry = 0.0
         return self._obs(), {}
 
     def step(self, action: int):  # type: ignore[override]
@@ -231,6 +241,14 @@ class TradingEnv(gym.Env):
         else:
             self._barrier_upper = self._entry_price - self.cfg.rr_upper * atr_now
             self._barrier_lower = self._entry_price + self.cfg.rr_lower * atr_now
+        # Capture N-bar log-return as trend signal at entry for reward shaping.
+        lb = max(0, self._step_i - self.cfg.reward_trend_lookback)
+        if self._step_i > lb:
+            self._trend_at_entry = float(np.log(
+                self._close[self._step_i] / max(self._close[lb], 1e-12)
+            ))
+        else:
+            self._trend_at_entry = 0.0
 
     def _check_barrier(self) -> tuple[float, bool, float]:
         cfg = self.cfg
@@ -307,5 +325,13 @@ class TradingEnv(gym.Env):
             # Penalty on turnover is still useful so the agent doesn't just
             # hunt DSR by trading more.
             extra_cost = cfg.reward_cost_lambda * 2 * cfg.spread_bps / 1e4
-            return float(cfg.reward_dsr_scale * d - cfg.reward_return_scale * extra_cost)
+            base = float(cfg.reward_dsr_scale * d - cfg.reward_return_scale * extra_cost)
+            # Trend-alignment bonus: reward trades in the direction of the
+            # N-bar momentum captured at entry; penalise counter-trend trades.
+            # Clamped so one strong trend signal can't dominate the reward.
+            trend_w = getattr(cfg, "reward_trend_weight", 0.0)
+            if trend_w > 0.0:
+                alignment = float(self._pos) * max(-3.0, min(3.0, self._trend_at_entry))
+                base += trend_w * alignment
+            return base
         raise ValueError(f"unknown reward_mode: {mode!r}")

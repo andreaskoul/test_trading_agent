@@ -98,6 +98,52 @@
       }
     }
   },
+  "regime_gated": {
+    "label": "regime_gated",
+    "n_trades": 338,
+    "sharpe": 0.8643644035350507,
+    "hit_rate": 0.4822485207100592,
+    "max_drawdown": -0.06479782302751425,
+    "total_return": 0.2439221179769464,
+    "mean_kelly_fraction": 1.0,
+    "median_kelly_fraction": 1.0,
+    "p5_kelly_fraction": 1.0,
+    "p95_kelly_fraction": 1.0,
+    "trades_per_day": 0.3487232396182615,
+    "sim_days": 969.25,
+    "per_regime": {
+      "1": {
+        "n_trades": 295,
+        "n_bars": 3816,
+        "sharpe": 0.7935963518892375,
+        "mean_pnl": 0.00047221382980244505,
+        "std_pnl": 0.004224295666395704,
+        "hit_rate": 0.4711864406779661,
+        "max_drawdown": -0.04653639445544078,
+        "total_return": 0.14643265681334738
+      },
+      "2": {
+        "n_trades": 43,
+        "n_bars": 345,
+        "sharpe": 1.3259374734931715,
+        "mean_pnl": 0.001952657455640327,
+        "std_pnl": 0.010454861585168375,
+        "hit_rate": 0.5581395348837209,
+        "max_drawdown": -0.062333187360723685,
+        "total_return": 0.08503723318086753
+      },
+      "0": {
+        "n_trades": 0,
+        "n_bars": 12229,
+        "sharpe": 0.0,
+        "mean_pnl": 0.0,
+        "std_pnl": 0.0,
+        "hit_rate": 0.0,
+        "max_drawdown": 0.0,
+        "total_return": 0.0
+      }
+    }
+  },
   "regime_realised_vol": {
     "0": 0.0014670933501456632,
     "1": 0.003012988555485991,
