@@ -244,14 +244,16 @@ class XLSTMLite(nn.Module):
 
 def vib_reparameterize(mu: torch.Tensor, logsigma: torch.Tensor) -> torch.Tensor:
     """Sample z = mu + sigma * eps, eps ~ N(0, I). Gradient flows through mu and logsigma."""
-    sigma = logsigma.exp()
+    sigma = logsigma.clamp(-8.0, 4.0).exp()
     eps = torch.randn_like(mu)
     return mu + sigma * eps
 
 
 def vib_kl(mu: torch.Tensor, logsigma: torch.Tensor) -> torch.Tensor:
     """KL(N(mu, sigma^2) || N(0, I)) averaged over the batch, summed over dims."""
-    kl = -0.5 * (1.0 + 2.0 * logsigma - mu.pow(2) - (2.0 * logsigma).exp())
+    ls = logsigma.clamp(-8.0, 4.0)
+    # Clamp the exponent separately to prevent exp() overflow on MPS/float32.
+    kl = -0.5 * (1.0 + 2.0 * ls - mu.pow(2) - (2.0 * ls).clamp(max=8.0).exp())
     return kl.sum(dim=-1).mean()
 
 

@@ -14,6 +14,7 @@ import os
 
 import numpy as np
 import pandas as pd
+import torch
 
 from _bootstrap import setup, path
 
@@ -67,7 +68,11 @@ def main() -> None:
         lr=cfg["encoder"]["pretrain_lr"],
         epochs=epochs,
         batch_size=cfg["encoder"]["pretrain_batch"],
-        device="cpu",
+        device=(
+            "cuda" if torch.cuda.is_available()
+            else "mps" if torch.backends.mps.is_available()
+            else "cpu"
+        ),
         vib=bool(cfg["encoder"].get("vib", False)),
         vib_beta=float(cfg["encoder"].get("vib_beta", 1e-3)),
         tft=bool(cfg["encoder"].get("tft", False)),
