@@ -69,8 +69,8 @@ def main() -> None:
         epochs=epochs,
         batch_size=cfg["encoder"]["pretrain_batch"],
         device=(
-            "cuda" if torch.cuda.is_available()
-            else "mps" if torch.backends.mps.is_available()
+            "mps" if torch.backends.mps.is_available()
+            else "cuda" if torch.cuda.is_available()
             else "cpu"
         ),
         vib=bool(cfg["encoder"].get("vib", False)),
