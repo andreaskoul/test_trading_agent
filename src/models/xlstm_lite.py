@@ -64,9 +64,9 @@ class SLSTMBlock(nn.Module):
             f = _softcap_exp(f_raw, self.softcap)
             o = torch.sigmoid(o_raw)
             z = torch.tanh(z)
-            c = f * c + i * z
-            n = f * n + i
-            h = o * (c / n.clamp(min=1e-6))
+            c = (f * c + i * z).clamp(-1e4, 1e4)
+            n = (f * n + i).clamp(min=1e-6)
+            h = o * (c / n)
             outs.append(h)
         y = torch.stack(outs, dim=1)
         return x + self.dropout(self.out_proj(y))
@@ -113,8 +113,8 @@ class MLSTMBlock(nn.Module):
             f_t = f_gate[:, t].mean(dim=-1, keepdim=True)
             # Update covariance memory: C <- f * C + i * v k^T
             outer = torch.einsum("bhi,bhj->bhij", v_t, k_t)
-            C = f_t.unsqueeze(-1) * C + i_t.unsqueeze(-1) * outer
-            n = f_t * n + i_t * k_t
+            C = (f_t.unsqueeze(-1) * C + i_t.unsqueeze(-1) * outer).clamp(-1e4, 1e4)
+            n = (f_t * n + i_t * k_t).clamp(-1e4, 1e4)
             # Query: h = C q / max(|n^T q|, eps)
             num = torch.einsum("bhij,bhj->bhi", C, q_t)
             denom = (n * q_t).sum(dim=-1, keepdim=True).abs().clamp(min=1e-6)

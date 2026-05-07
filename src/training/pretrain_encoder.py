@@ -203,6 +203,10 @@ def pretrain_fold(
                 aux = cfg.vol_weight * vol_loss + cfg.meta_weight * meta_loss
                 loss = loss + aux
                 aux_val = float(aux.detach())
+            if not torch.isfinite(loss):
+                log.warning("epoch %d: non-finite loss, skipping batch", epoch)
+                optim.zero_grad()
+                continue
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 0.5)
             optim.step()
