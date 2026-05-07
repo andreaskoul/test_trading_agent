@@ -73,8 +73,8 @@ jobs:
         env:
           TRADING_PROFILE: live
         run: |
+          set -euo pipefail
           python scripts/step_one_bar.py --asset GC=F
-          echo "EXIT_CODE=$?" >> $GITHUB_ENV
 
       - name: Export dashboard data
         if: always()
