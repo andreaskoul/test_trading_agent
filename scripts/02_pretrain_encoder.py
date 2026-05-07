@@ -14,6 +14,7 @@ import os
 
 import numpy as np
 import pandas as pd
+import torch
 
 from _bootstrap import setup, path
 
@@ -26,6 +27,8 @@ from src.validation.cpcv import CombinatorialPurgedKFold, _group_bounds, _purge_
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--fast", action="store_true", help="Use a reduced training budget")
+    ap.add_argument("--start-group", type=int, default=0, metavar="G",
+                    help="Skip groups 0..G-1 (resume after a partial run)")
     args = ap.parse_args()
 
     log = logging.getLogger("pretrain")
@@ -67,7 +70,11 @@ def main() -> None:
         lr=cfg["encoder"]["pretrain_lr"],
         epochs=epochs,
         batch_size=cfg["encoder"]["pretrain_batch"],
-        device="cpu",
+        device=(
+            "mps" if torch.backends.mps.is_available()
+            else "cuda" if torch.cuda.is_available()
+            else "cpu"
+        ),
         vib=bool(cfg["encoder"].get("vib", False)),
         vib_beta=float(cfg["encoder"].get("vib_beta", 1e-3)),
         tft=bool(cfg["encoder"].get("tft", False)),
@@ -86,6 +93,9 @@ def main() -> None:
     aux_cols = [c for c in ("ret_fwd", "ret_fwd_std") if c in asset_labels[0].columns]
 
     for g in range(n_splits):
+        if g < args.start_group:
+            log.info("skipping group %d (--start-group %d)", g, args.start_group)
+            continue
         all_train_feats: list[np.ndarray] = []
         all_train_labels: list[np.ndarray] = []
         all_train_aux: list[dict[str, np.ndarray]] = []

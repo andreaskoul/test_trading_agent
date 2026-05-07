@@ -5,12 +5,17 @@ Real Micro Gold Futures (MGC) 60-minute OHLCV from GitHub
 (domzack/mgc-ohlcv-data) is the primary source for gold; the sandbox
 allows raw.githubusercontent.com but blocks Yahoo/Stooq/Tiingo etc.
 
+Historical pre-training gold spot data (2012-2022) is available in
+data/raw/gold_xauusd_h1.parquet (ejtraderLabs/historical-data on GitHub).
+Use scripts/fetch_free_data.py to regenerate all free-source parquets.
+
 For other assets the priority is:
   1. Cached parquet (if exists)
   2. Known GitHub CSV sources (currently MGC only)
-  3. FMP (Financial Modeling Prep) REST API — set FMP_API_KEY env var
-  4. yfinance
-  5. Synthetic GBM+GARCH calibrated to the symbol's typical dynamics
+  3. FRED direct CSV (VIX, 10Y yield, DXY, S&P 500 — no API key needed)
+  4. FMP (Financial Modeling Prep) REST API — set FMP_API_KEY env var
+  5. yfinance
+  6. Synthetic GBM+GARCH calibrated to the symbol's typical dynamics
 """
 
 from __future__ import annotations
@@ -57,6 +62,19 @@ KNOWN_GITHUB_MACRO: Dict[str, str] = {
     "^VIX":  "https://raw.githubusercontent.com/datasets/finance-vix/main/data/vix-daily.csv",
     "^GSPC": "https://raw.githubusercontent.com/datasets/s-and-p-500/master/data/data.csv",
     "^TNX":  "https://raw.githubusercontent.com/datasets/bond-yields-us-10y/master/data/monthly.csv",
+}
+
+# FRED direct CSV downloads (no API key required, always current).
+# Format: observation_date,<SERIES_ID>  — missing values encoded as '.'
+# Preferred over the GitHub monthly CSVs above because they are daily and
+# updated to T-1.  data/raw/macro_*.parquet are pre-seeded by
+# scripts/fetch_free_data.py so these URLs are only hit when the cache is
+# absent or force_refresh=True.
+KNOWN_FRED_MACRO: Dict[str, str] = {
+    "^VIX":  "https://fred.stlouisfed.org/graph/fredgraph.csv?id=VIXCLS",
+    "^TNX":  "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10",
+    "DX=F":  "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS",
+    "^GSPC": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=SP500",
 }
 
 # ---------------------------------------------------------------------------
@@ -194,6 +212,36 @@ def _try_github_macro(symbol: str) -> Optional[pd.DataFrame]:
 
     except Exception as exc:
         log.warning("github macro parse failed for %s: %s", symbol, exc)
+    return None
+
+
+def _try_fred_macro(symbol: str) -> Optional[pd.DataFrame]:
+    """Fetch a macro series from FRED's direct CSV endpoint (no API key).
+
+    FRED CSV format: two columns — observation_date, <SERIES_ID>.
+    Missing observations are encoded as '.' and dropped.
+    Returns a daily OHLCV frame where open=high=low=close=value, volume=0.
+    """
+    url = KNOWN_FRED_MACRO.get(symbol)
+    if url is None:
+        return None
+    try:
+        import urllib.request
+        log.info("fetching macro %s from FRED: %s", symbol, url)
+        with urllib.request.urlopen(url, timeout=30) as r:
+            payload = r.read()
+        df = pd.read_csv(io.BytesIO(payload), na_values=".")
+        df.columns = ["date", "close"]
+        df["date"] = pd.to_datetime(df["date"], utc=True)
+        df = df.set_index("date").sort_index()
+        df = df.dropna(subset=["close"])
+        df["open"] = df["close"]
+        df["high"] = df["close"]
+        df["low"]  = df["close"]
+        df["volume"] = 0.0
+        return _standardise(df)
+    except Exception as exc:
+        log.warning("FRED macro fetch failed for %s: %s", symbol, exc)
     return None
 
 
@@ -374,7 +422,16 @@ def load_ohlcv(
                     df.to_parquet(cache_path)
                 return LoadResult(df=df, source=f"github:{symbol}")
 
-        # 2. GitHub open-data macro CSVs (VIX daily, SPX/TNX monthly ffill)
+        # 2a. FRED direct CSV (daily, always current, no API key)
+        df = _try_fred_macro(symbol)
+        if df is not None and len(df) > 100:
+            df.attrs["source"] = f"fred:{symbol}"
+            if cache_path:
+                os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+                df.to_parquet(cache_path)
+            return LoadResult(df=df, source=f"fred:{symbol}")
+
+        # 2b. GitHub open-data macro CSVs (VIX daily, SPX/TNX monthly ffill)
         df = _try_github_macro(symbol)
         if df is not None and len(df) > 100:
             df.attrs["source"] = f"github_macro:{symbol}"

@@ -79,11 +79,14 @@ def build_features(
     low = df["low"].astype(float)
     volume = df["volume"].astype(float).replace(0, np.nan)
 
-    # Log returns
+    # Log returns — short (mean-reversion) and long (trend-following)
     log_ret = np.log(close).diff()
     out["ret_1"] = log_ret
     out["ret_5"] = log_ret.rolling(5).sum()
     out["ret_20"] = log_ret.rolling(20).sum()
+    out["ret_50"]  = log_ret.rolling(50).sum()
+    out["ret_100"] = log_ret.rolling(100).sum()
+    out["ret_200"] = log_ret.rolling(200).sum()
 
     # ATR and normalised range
     atr = _atr(df, window=14)
@@ -91,7 +94,7 @@ def build_features(
     out["hl_range"] = ((high - low) / atr).replace([np.inf, -np.inf], np.nan)
 
     # EMAs expressed as distance to close normalised by ATR
-    for span in (10, 30, 100):
+    for span in (10, 30, 100, 200):
         ema = _ema(close, span)
         out[f"ema_{span}_dist"] = ((close - ema) / atr).replace([np.inf, -np.inf], np.nan)
 

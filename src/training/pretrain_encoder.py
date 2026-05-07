@@ -144,6 +144,16 @@ def pretrain_fold(
     )
     model = XLSTMLite(model_cfg).to(device)
 
+    # torch.compile fuses elementwise ops and removes Python-dispatch overhead.
+    # aot_eager works on MPS and CPU; inductor is CUDA-only.
+    if str(device) != "cpu" or True:  # compile on all devices for op fusion
+        _backend = "inductor" if str(device) == "cuda" else "aot_eager"
+        try:
+            model = torch.compile(model, backend=_backend)  # type: ignore[assignment]
+            log.info("torch.compile enabled (backend=%s)", _backend)
+        except Exception as exc:
+            log.warning("torch.compile unavailable (%s), running eager", exc)
+
     # Class-balanced alpha (inverse frequency, clipped)
     counts = np.bincount(y[train_idx], minlength=3).astype(np.float32)
     counts = np.where(counts == 0, 1.0, counts)
@@ -162,7 +172,7 @@ def pretrain_fold(
     val_loader = DataLoader(val_ds, batch_size=cfg.batch_size, shuffle=False)
 
     optim = torch.optim.Adam(model.parameters(), lr=cfg.lr)
-    best_val = float("inf")
+    best_val = 0.0  # maximise balanced accuracy
     best_state = None
 
     def _step_logits(xb: torch.Tensor, *, stochastic: bool) -> tuple[torch.Tensor, torch.Tensor]:
@@ -203,8 +213,17 @@ def pretrain_fold(
                 aux = cfg.vol_weight * vol_loss + cfg.meta_weight * meta_loss
                 loss = loss + aux
                 aux_val = float(aux.detach())
+            if not torch.isfinite(loss):
+                log.warning("epoch %d: non-finite loss, skipping batch", epoch)
+                optim.zero_grad()
+                continue
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            # Sanitize NaN/Inf gradients before clipping to protect Adam state.
+            # Backward through exponential gates can overflow on MPS/float32.
+            for p in model.parameters():
+                if p.grad is not None:
+                    p.grad = p.grad.nan_to_num(nan=0.0, posinf=0.5, neginf=-0.5)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 0.5)
             optim.step()
             tr_loss += float(task_loss.detach()) * len(xb)
             tr_kl += float(kl.detach()) * len(xb)
@@ -215,6 +234,8 @@ def pretrain_fold(
         val_loss = 0.0
         val_n = 0
         correct = 0
+        per_class_correct = np.zeros(3, dtype=np.int64)
+        per_class_total = np.zeros(3, dtype=np.int64)
         with torch.no_grad():
             for batch in val_loader:
                 if use_multitask:
@@ -227,18 +248,30 @@ def pretrain_fold(
                 loss = loss_fn(logits, yb)
                 val_loss += float(loss) * len(xb)
                 val_n += len(xb)
-                correct += int((logits.argmax(dim=-1) == yb).sum())
+                preds = logits.argmax(dim=-1).cpu().numpy()
+                labels_np = yb.cpu().numpy()
+                correct += int((preds == labels_np).sum())
+                for c in range(3):
+                    mask = labels_np == c
+                    per_class_total[c] += mask.sum()
+                    per_class_correct[c] += (preds[mask] == c).sum()
         tr_avg = tr_loss / max(tr_n, 1)
         tr_kl_avg = tr_kl / max(tr_n, 1)
         tr_aux_avg = tr_aux / max(tr_n, 1)
         val_avg = val_loss / max(val_n, 1)
         val_acc = correct / max(val_n, 1)
+        # Balanced accuracy: mean per-class recall (invariant to class imbalance).
+        recalls = [
+            per_class_correct[c] / per_class_total[c]
+            for c in range(3) if per_class_total[c] > 0
+        ]
+        bal_acc = float(np.mean(recalls)) if recalls else 0.0
         log.info(
-            "epoch %d train_loss=%.4f kl=%.4f aux=%.4f val_loss=%.4f val_acc=%.3f",
-            epoch, tr_avg, tr_kl_avg, tr_aux_avg, val_avg, val_acc,
+            "epoch %d train_loss=%.4f kl=%.4f aux=%.4f val_loss=%.4f val_acc=%.3f bal_acc=%.3f",
+            epoch, tr_avg, tr_kl_avg, tr_aux_avg, val_avg, val_acc, bal_acc,
         )
-        if val_avg < best_val:
-            best_val = val_avg
+        if bal_acc > best_val:
+            best_val = bal_acc
             best_state = {k: v.detach().clone() for k, v in model.state_dict().items()}
 
     if best_state is not None:

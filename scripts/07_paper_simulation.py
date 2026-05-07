@@ -112,9 +112,14 @@ class SimRecord:
 
 def _run_one(label: str, *, model, pc, env_cfg, timestamps, kelly_cap: float,
              kelly_floor: float, kelly_window: int, cost_model: CostModel,
-             log) -> tuple[list[SimRecord], list[float]]:
+             log, gated_regimes: frozenset[int] = frozenset()) -> tuple[list[SimRecord], list[float]]:
     """Run PaperEngine over the full precomputed window and capture each
-    trade plus the Kelly fraction at the moment of fire."""
+    trade plus the Kelly fraction at the moment of fire.
+
+    ``gated_regimes``: HMM state indices where new entries are suppressed.
+    Existing open positions are still allowed to close naturally so the
+    gate never creates a stuck trade.
+    """
     eng = PaperEngine(
         asset="GC=F",
         run_id=f"sim_{label}",
@@ -131,14 +136,19 @@ def _run_one(label: str, *, model, pc, env_cfg, timestamps, kelly_cap: float,
         kelly_window=kelly_window,
     )
 
+    regime_post = pc.get("regime_posterior")
     seq = env_cfg.seq_len
     n = len(pc["close"])
     records: list[SimRecord] = []
     fractions_at_fire: list[float] = []
-    last_trade_count = 0
     for i in range(seq, n):
-        # Capture Kelly fraction the engine WILL use BEFORE _fire_trade
-        # mutates internal state (it updates and pops state on fire).
+        # Regime gate: skip new entries in blocked regimes, but still step
+        # when a position is already open so it can be closed normally.
+        if gated_regimes and regime_post is not None:
+            cur_regime = int(np.argmax(regime_post[i]))
+            if cur_regime in gated_regimes and eng._pos == 0:  # noqa: SLF001
+                continue
+
         frac_before = eng._kelly.fraction()  # noqa: SLF001
         sig = eng.step(i)
         if sig.fired:
@@ -382,10 +392,8 @@ def main() -> int:
     log = logging.getLogger("paper_sim")
     cfg = setup()
     holdout_frac = float(cfg["data"].get("holdout_frac", 0.0))
-    if holdout_frac <= 0.0:
-        log.error("data.holdout_frac=0 — no hold-out window. "
-                  "Run scripts/01_build_data.py with TRADING_PROFILE=aggressive first.")
-        return 2
+    # holdout_frac=0 is allowed when _holdout.parquet files were written
+    # explicitly (e.g. by scripts/build_extended_data.py).
 
     manifest_path = path(cfg, cfg["artefact_dir"], "ppo_manifest.json")
     with open(manifest_path) as f:
@@ -458,11 +466,21 @@ def main() -> int:
         cost_model=cost_model, log=log,
     )
 
+    log.info("=== PASS 3: regime-gated baseline (skip calm regime 0) ===")
+    rec_rg, frac_rg = _run_one(
+        "regime_gated", model=model, pc=pc, env_cfg=env_cfg,
+        timestamps=timestamps, kelly_cap=0.0, kelly_floor=1.0,
+        kelly_window=100, cost_model=cost_model, log=log,
+        gated_regimes=frozenset({0}),
+    )
+
     rp = pc.get("regime_posterior")
     summary_baseline = _summarise("baseline", rec_b, frac_b, timestamps,
                                   periods_per_year, regime_posterior=rp)
     summary_kelly = _summarise("quarter_kelly", rec_q, frac_q, timestamps,
                                periods_per_year, regime_posterior=rp)
+    summary_rg = _summarise("regime_gated", rec_rg, frac_rg, timestamps,
+                            periods_per_year, regime_posterior=rp)
 
     # Characterise each regime by realised hourly log-return volatility on
     # the hold-out window so the report can label states meaningfully
@@ -490,6 +508,7 @@ def main() -> int:
         periods_per_year=periods_per_year,
         baseline=summary_baseline,
         quarter_kelly=summary_kelly,
+        regime_gated=summary_rg,
         regime_realised_vol=regime_vol,
     )
 
@@ -511,6 +530,10 @@ def main() -> int:
           f"max_dd={summary_kelly['max_drawdown']:.3f}  "
           f"total_ret={summary_kelly['total_return']*100:.2f}%  "
           f"mean_frac={summary_kelly['mean_kelly_fraction']:.3f}")
+    print(f"REGIME-GATED  : sharpe={summary_rg['sharpe']:.3f}  "
+          f"trades={summary_rg['n_trades']}  "
+          f"max_dd={summary_rg['max_drawdown']:.3f}  "
+          f"total_ret={summary_rg['total_return']*100:.2f}%")
     print("=" * 60)
     return 0
 

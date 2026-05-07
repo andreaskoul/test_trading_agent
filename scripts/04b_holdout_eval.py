@@ -118,12 +118,9 @@ def main() -> int:
     cfg = setup()
 
     holdout_frac = float(cfg["data"].get("holdout_frac", 0.0))
-    if holdout_frac <= 0.0:
-        log.error(
-            "data.holdout_frac=0 — no hold-out window exists. "
-            "Set holdout_frac > 0 in config and re-run scripts/01_build_data.py."
-        )
-        return 2
+    # holdout_frac=0 is allowed when _holdout.parquet files were written
+    # explicitly (e.g. by scripts/build_extended_data.py).  We defer the
+    # missing-file check to the per-asset loop below.
 
     gate_cfg = cfg.get("evaluation", {}).get("holdout_gate", {})
     min_sharpe = float(gate_cfg.get("min_sharpe", DEFAULT_MIN_SHARPE))
