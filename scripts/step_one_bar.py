@@ -131,14 +131,34 @@ def _select_best_entry(manifest: list[dict], asset: str) -> dict:
     return candidates[0]
 
 
+def _normalize_artefact_path(cfg: dict, p: str) -> str:
+    """Return a usable absolute path for an artefact stored in the manifest.
+
+    Manifests written on one machine store absolute paths that won't resolve
+    on a different machine (e.g. GitHub Actions runner).  If the stored path
+    doesn't exist, re-root it at the repo root by extracting the relative
+    portion starting at 'artefacts/'.
+    """
+    if not os.path.isabs(p):
+        return path(cfg, p)
+    if os.path.exists(p):
+        return p
+    try:
+        rel = p[p.index("artefacts/"):]
+        candidate = path(cfg, rel)
+        if os.path.exists(candidate):
+            return candidate
+    except ValueError:
+        pass
+    return p  # return original; caller will surface a clear FileNotFoundError
+
+
 def _load_policy(cfg: dict, entry: dict):
     algo = entry.get("algorithm", "ppo").lower()
     cls = PPO if algo in ("ppo", "grpo") else A2C
     if cls is None:
         raise RuntimeError("stable_baselines3 not installed")
-    p = entry["policy_path"]
-    if not os.path.isabs(p):
-        p = path(cfg, p)
+    p = _normalize_artefact_path(cfg, entry["policy_path"])
     return cls.load(p, device="cpu")
 
 
@@ -253,7 +273,7 @@ def main() -> int:
     # of crashing the whole trading loop.
     regime_post = None
     rp_rel = entry.get("regime_path") or "artefacts/regimes/hmm_gc_60m.pkl"
-    rp_abs = path(cfg, rp_rel)
+    rp_abs = _normalize_artefact_path(cfg, rp_rel)
     if os.path.exists(rp_abs):
         try:
             from src.data.regimes import HMMRegimeModel
