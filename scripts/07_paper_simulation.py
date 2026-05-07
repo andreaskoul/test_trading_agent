@@ -382,10 +382,8 @@ def main() -> int:
     log = logging.getLogger("paper_sim")
     cfg = setup()
     holdout_frac = float(cfg["data"].get("holdout_frac", 0.0))
-    if holdout_frac <= 0.0:
-        log.error("data.holdout_frac=0 — no hold-out window. "
-                  "Run scripts/01_build_data.py with TRADING_PROFILE=aggressive first.")
-        return 2
+    # holdout_frac=0 is allowed when _holdout.parquet files were written
+    # explicitly (e.g. by scripts/build_extended_data.py).
 
     manifest_path = path(cfg, cfg["artefact_dir"], "ppo_manifest.json")
     with open(manifest_path) as f:
