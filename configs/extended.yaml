@@ -49,7 +49,7 @@ encoder:
   multitask: true
   vol_weight: 0.3
   meta_weight: 0.2
-  pretrain_epochs: 10       # more data → more pretraining epochs
+  pretrain_epochs: 50       # more data → more pretraining epochs
 
 ppo:
   total_timesteps: 150000   # 3× more bars → proportionally more updates
