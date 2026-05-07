@@ -41,7 +41,12 @@ jobs:
           set -euo pipefail
           if git ls-remote --exit-code origin state >/dev/null 2>&1; then
             git fetch origin state:state
+            # Runtime state files
             git checkout state -- artefacts/live_bars.parquet artefacts/paper_trades.db artefacts/engine_state.json artefacts/kill_switch_halt.json 2>/dev/null || true
+            # ML artefacts: policies, encoders, regimes, manifest.
+            # These are committed to state (not the default branch) because they
+            # are large binaries; the cron job needs them to load the policy.
+            git checkout state -- artefacts/policies artefacts/encoders artefacts/regimes artefacts/ppo_manifest.json 2>/dev/null || true
             echo "Restored prior state from state branch"
           else
             echo "No state branch yet; starting fresh"
@@ -68,8 +73,8 @@ jobs:
         env:
           TRADING_PROFILE: live
         run: |
+          set -euo pipefail
           python scripts/step_one_bar.py --asset GC=F
-          echo "EXIT_CODE=$?" >> $GITHUB_ENV
 
       - name: Export dashboard data
         if: always()

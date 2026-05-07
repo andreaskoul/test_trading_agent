@@ -131,15 +131,101 @@ def _select_best_entry(manifest: list[dict], asset: str) -> dict:
     return candidates[0]
 
 
+def _normalize_artefact_path(cfg: dict, p: str) -> str:
+    """Return a usable absolute path for an artefact stored in the manifest.
+
+    Manifests written on one machine store absolute paths that won't resolve
+    on a different machine (e.g. GitHub Actions runner).  If the stored path
+    doesn't exist, re-root it at the repo root by extracting the relative
+    portion starting at 'artefacts/'.
+    """
+    if not os.path.isabs(p):
+        return path(cfg, p)
+    if os.path.exists(p):
+        return p
+    try:
+        rel = p[p.index("artefacts/"):]
+        candidate = path(cfg, rel)
+        if os.path.exists(candidate):
+            return candidate
+    except ValueError:
+        pass
+    return p  # return original; caller will surface a clear FileNotFoundError
+
+
 def _load_policy(cfg: dict, entry: dict):
     algo = entry.get("algorithm", "ppo").lower()
     cls = PPO if algo in ("ppo", "grpo") else A2C
     if cls is None:
         raise RuntimeError("stable_baselines3 not installed")
-    p = entry["policy_path"]
-    if not os.path.isabs(p):
-        p = path(cfg, p)
+    p = _normalize_artefact_path(cfg, entry["policy_path"])
     return cls.load(p, device="cpu")
+
+
+_MACRO_SLUG_TO_SYMBOL: dict[str, str] = {
+    "vix": "^VIX",
+    "gspc": "^GSPC",
+    "tnx": "^TNX",
+    "dxy": "DX-Y.NYB",
+}
+
+
+def _fetch_macro_data(ref_cols: list[str], start: pd.Timestamp) -> dict:
+    """Fetch daily macro closes for every slug referenced in *ref_cols*.
+
+    Detects required symbols from column names ending in ``_chg5`` /
+    ``_chg20`` (e.g. ``vix_chg5`` → ``^VIX``), fetches 1 year of history
+    before *start* so the rolling z-score is pre-warmed, and returns a dict
+    suitable for passing directly to ``build_features(macro_data=...)``.
+    """
+    slugs = {c.rsplit("_chg", 1)[0] for c in ref_cols
+             if c.endswith("_chg5") or c.endswith("_chg20")}
+    if not slugs:
+        return {}
+
+    try:
+        import yfinance as yf
+    except ImportError:
+        log.warning("yfinance not installed; macro data unavailable")
+        return {}
+
+    # Give a 1-year pre-start buffer so the 252-bar z-score is populated.
+    fetch_start = (start - pd.Timedelta(days=365)).normalize()
+    fetch_end = pd.Timestamp.now(tz="UTC")
+
+    result: dict = {}
+    for slug in sorted(slugs):
+        sym = _MACRO_SLUG_TO_SYMBOL.get(slug)
+        if sym is None:
+            log.warning("unknown macro slug '%s'; skipping", slug)
+            continue
+        try:
+            raw = yf.download(
+                sym, start=fetch_start, end=fetch_end, interval="1d",
+                progress=False, auto_adjust=False, threads=False,
+            )
+        except Exception as exc:
+            log.warning("macro fetch failed for %s: %s", sym, exc)
+            continue
+        if raw is None or len(raw) == 0:
+            log.warning("no macro data for %s", sym)
+            continue
+        if isinstance(raw.columns, pd.MultiIndex):
+            raw.columns = raw.columns.get_level_values(0)
+        raw = raw.rename(columns={"Close": "close"})
+        if "close" not in raw.columns:
+            log.warning("no Close column for %s", sym)
+            continue
+        if not isinstance(raw.index, pd.DatetimeIndex):
+            raw.index = pd.to_datetime(raw.index, utc=True)
+        elif raw.index.tz is None:
+            raw.index = raw.index.tz_localize("UTC")
+        else:
+            raw.index = raw.index.tz_convert("UTC")
+        result[sym] = raw[["close"]]
+        log.info("macro %s: %d daily bars", sym, len(raw))
+
+    return result
 
 
 def main() -> int:
@@ -202,6 +288,21 @@ def main() -> int:
         _save_live_bars(live, live_path)
         return 0
 
+    # Load reference feature columns from the training parquet so the live
+    # recomputation produces the same schema (MI-pruned, with macros) that
+    # the encoder was trained on.
+    ref_feats = pd.read_parquet(feats_path)
+    ref_cols = feature_columns(ref_feats)
+    log.info("reference feature set: %d columns (%s…)", len(ref_cols), ref_cols[:3])
+
+    # Fetch macro data required by the reference feature set (e.g. VIX, GSPC,
+    # TNX) so build_features can reproduce the macro columns.
+    macro_data: dict | None = None
+    if not args.offline:
+        macro_data = _fetch_macro_data(ref_cols, train_ohlcv.index.min())
+        if not macro_data:
+            log.warning("no macro data fetched; macro columns will be absent")
+
     # Recompute features on (training + live) OHLCV.
     combined = pd.concat([train_ohlcv, live])
     combined = combined[~combined.index.duplicated(keep="last")].sort_index()
@@ -209,10 +310,22 @@ def main() -> int:
         combined,
         warmup_bars=int(cfg.get("features", {}).get("warmup_bars", 252)),
         zscore_window=int(cfg.get("features", {}).get("zscore_window", 252)),
+        macro_data=macro_data,
     )
     if len(feats) == 0:
         log.error("feature recomputation produced 0 rows; check warmup config")
         return 2
+
+    # Select only the columns the encoder was trained on, in the same order.
+    # This handles MI-pruning (encoder input_dim matches ref_cols, not the
+    # full build_features output) and ensures macro columns are present.
+    missing_cols = [c for c in ref_cols if c not in feats.columns]
+    if missing_cols:
+        log.error("live features missing reference columns: %s", missing_cols)
+        return 2
+    passthrough = [c for c in ("close", "atr") if c in feats.columns]
+    feats = feats[ref_cols + passthrough]
+    log.info("live feature shape after column selection: %s", feats.shape)
 
     # Identify the live segment within feats so we know which indices the
     # engine should step through.
@@ -253,7 +366,7 @@ def main() -> int:
     # of crashing the whole trading loop.
     regime_post = None
     rp_rel = entry.get("regime_path") or "artefacts/regimes/hmm_gc_60m.pkl"
-    rp_abs = path(cfg, rp_rel)
+    rp_abs = _normalize_artefact_path(cfg, rp_rel)
     if os.path.exists(rp_abs):
         try:
             from src.data.regimes import HMMRegimeModel
