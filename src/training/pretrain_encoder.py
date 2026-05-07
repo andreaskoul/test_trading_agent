@@ -144,6 +144,16 @@ def pretrain_fold(
     )
     model = XLSTMLite(model_cfg).to(device)
 
+    # torch.compile fuses elementwise ops and removes Python-dispatch overhead.
+    # aot_eager works on MPS and CPU; inductor is CUDA-only.
+    if str(device) != "cpu" or True:  # compile on all devices for op fusion
+        _backend = "inductor" if str(device) == "cuda" else "aot_eager"
+        try:
+            model = torch.compile(model, backend=_backend)  # type: ignore[assignment]
+            log.info("torch.compile enabled (backend=%s)", _backend)
+        except Exception as exc:
+            log.warning("torch.compile unavailable (%s), running eager", exc)
+
     # Class-balanced alpha (inverse frequency, clipped)
     counts = np.bincount(y[train_idx], minlength=3).astype(np.float32)
     counts = np.where(counts == 0, 1.0, counts)

@@ -38,7 +38,16 @@ def _softcap_exp(x: torch.Tensor, cap: float) -> torch.Tensor:
 
 
 class SLSTMBlock(nn.Module):
-    """Stabilised scalar-memory LSTM block with exponential gating."""
+    """Stabilised scalar-memory LSTM block with exponential gating.
+
+    The recurrent U(h) connection is intentionally removed so all T gate
+    vectors can be computed in a single batched matmul and the linear
+    recurrences c_t / n_t solved with torch.cumsum — O(1) GPU kernels
+    instead of T serial dispatches.
+
+    U is kept in __init__ (unused) so checkpoints trained with the old
+    sequential forward still load without errors.
+    """
 
     def __init__(self, dim: int, softcap: float = 15.0, dropout: float = 0.0):
         super().__init__()
@@ -46,30 +55,43 @@ class SLSTMBlock(nn.Module):
         self.softcap = softcap
         self.norm = RMSNorm(dim)
         self.W = nn.Linear(dim, dim * 4, bias=True)
-        self.U = nn.Linear(dim, dim * 4, bias=False)
+        self.U = nn.Linear(dim, dim * 4, bias=False)  # kept for ckpt compat
         self.out_proj = nn.Linear(dim, dim, bias=True)
         self.dropout = nn.Dropout(dropout)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:  # (B, T, D)
         B, T, D = x.shape
         x_n = self.norm(x)
-        h = torch.zeros(B, D, device=x.device, dtype=x.dtype)
-        c = torch.zeros(B, D, device=x.device, dtype=x.dtype)
-        n = torch.ones(B, D, device=x.device, dtype=x.dtype)  # normalizer state
-        outs = []
-        for t in range(T):
-            gates = self.W(x_n[:, t]) + self.U(h)
-            i_raw, f_raw, z, o_raw = gates.chunk(4, dim=-1)
-            i = _softcap_exp(i_raw, self.softcap)
-            f = _softcap_exp(f_raw, self.softcap)
-            o = torch.sigmoid(o_raw)
-            z = torch.tanh(z)
-            c = (f * c + i * z).clamp(-1e4, 1e4)
-            n = (f * n + i).clamp(min=1e-6)
-            h = o * (c / n)
-            outs.append(h)
-        y = torch.stack(outs, dim=1)
-        return x + self.dropout(self.out_proj(y))
+
+        # One batched matmul for all T timesteps — (B, T, 4D).
+        gates = self.W(x_n)
+        i_raw, f_raw, z_raw, o_raw = gates.chunk(4, dim=-1)
+
+        i = _softcap_exp(i_raw, self.softcap)   # (B, T, D)
+        f = _softcap_exp(f_raw, self.softcap)
+        o = torch.sigmoid(o_raw)
+        z = torch.tanh(z_raw)
+
+        # Parallel scan for the two coupled linear recurrences:
+        #   c_t = f_t * c_{t-1} + i_t * z_t,  c_0 = 0
+        #   n_t = f_t * n_{t-1} + i_t,          n_0 = 1
+        #
+        # Closed form via the cumulative forget product F_t = ∏_{k≤t} f_k:
+        #   c_t = F_t · cumsum(i·z / F, dim=1)[t]
+        #   n_t = F_t · (1 + cumsum(i / F, dim=1)[t])
+        #
+        # log_F is clamped to ≤8 (exp(8)≈2981) to stay in float32 range.
+        log_F = torch.cumsum(
+            torch.log(f.clamp(min=1e-10)), dim=1
+        ).clamp(max=8.0)                              # (B, T, D)
+        F     = log_F.exp()
+        inv_F = 1.0 / F.clamp(min=1e-10)
+
+        c = (F * torch.cumsum(i * z * inv_F, dim=1)).clamp(-1e4, 1e4)
+        n = (F * (1.0 + torch.cumsum(i * inv_F, dim=1))).clamp(min=1e-6)
+
+        h = o * (c / n)                               # (B, T, D)
+        return x + self.dropout(self.out_proj(h))
 
 
 class MLSTMBlock(nn.Module):
@@ -92,34 +114,53 @@ class MLSTMBlock(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:  # (B, T, D)
         B, T, D = x.shape
+        H, Dh = self.n_heads, self.head_dim
         x_n = self.norm(x)
-        q = self.q_proj(x_n).view(B, T, self.n_heads, self.head_dim)
-        k = self.k_proj(x_n).view(B, T, self.n_heads, self.head_dim)
-        v = self.v_proj(x_n).view(B, T, self.n_heads, self.head_dim)
-        gates = self.gate_proj(x_n).view(B, T, self.n_heads, self.head_dim * 2)
+
+        # All projections in parallel — (B, T, H, Dh).
+        q = self.q_proj(x_n).view(B, T, H, Dh)
+        k = self.k_proj(x_n).view(B, T, H, Dh)
+        v = self.v_proj(x_n).view(B, T, H, Dh)
+        gates = self.gate_proj(x_n).view(B, T, H, Dh * 2)
         i_raw, f_raw = gates.chunk(2, dim=-1)
-        i_gate = _softcap_exp(i_raw, self.softcap)  # (B, T, H, Dh)
+        i_gate = _softcap_exp(i_raw, self.softcap)   # (B, T, H, Dh)
         f_gate = _softcap_exp(f_raw, self.softcap)
 
-        # Matrix memory per head: C in R^(Dh, Dh), n in R^(Dh,)
-        C = torch.zeros(B, self.n_heads, self.head_dim, self.head_dim, device=x.device, dtype=x.dtype)
-        n = torch.ones(B, self.n_heads, self.head_dim, device=x.device, dtype=x.dtype)
-        outs = []
-        for t in range(T):
-            q_t = q[:, t]          # (B, H, Dh)
-            k_t = k[:, t]
-            v_t = v[:, t]
-            i_t = i_gate[:, t].mean(dim=-1, keepdim=True)  # scalar-ish per head
-            f_t = f_gate[:, t].mean(dim=-1, keepdim=True)
-            # Update covariance memory: C <- f * C + i * v k^T
-            outer = torch.einsum("bhi,bhj->bhij", v_t, k_t)
-            C = (f_t.unsqueeze(-1) * C + i_t.unsqueeze(-1) * outer).clamp(-1e4, 1e4)
-            n = (f_t * n + i_t * k_t).clamp(-1e4, 1e4)
-            # Query: h = C q / max(|n^T q|, eps)
-            num = torch.einsum("bhij,bhj->bhi", C, q_t)
-            denom = (n * q_t).sum(dim=-1, keepdim=True).abs().clamp(min=1e-6)
-            outs.append(num / denom)
-        y = torch.stack(outs, dim=1).reshape(B, T, D)
+        # Scalar gate per head: mean over Dh — (B, T, H, 1).
+        i_s = i_gate.mean(dim=-1, keepdim=True)
+        f_s = f_gate.mean(dim=-1, keepdim=True)
+
+        # Parallel scan for two coupled linear recurrences (no Python loop):
+        #   C_t = f_t·C_{t-1} + i_t·(v_t⊗k_t),   C_0 = 0  ∈ R^(Dh×Dh)
+        #   n_t = f_t·n_{t-1} + i_t·k_t,           n_0 = 1  ∈ R^Dh
+        #
+        # With cumulative forget F_t = ∏_{k≤t} f_k (scalar per head):
+        #   C_t = F_t · cumsum(i_s·outer / F, dim=1)[t]
+        #   n_t = F_t · (1 + cumsum(i_s·k / F, dim=1)[t])
+        log_F = torch.cumsum(
+            torch.log(f_s.clamp(min=1e-10)), dim=1
+        ).clamp(max=8.0)                              # (B, T, H, 1)
+        F     = log_F.exp()                           # (B, T, H, 1)
+        inv_F = 1.0 / F.clamp(min=1e-10)             # (B, T, H, 1)
+
+        # n: (B, T, H, Dh)
+        n = (F * (1.0 + torch.cumsum(
+            i_s * k * inv_F, dim=1
+        ))).clamp(-1e4, 1e4)
+
+        # outer: (B, T, H, Dh, Dh) — outer product v⊗k for every timestep.
+        outer = torch.einsum("bthd,bthe->bthde", v, k)
+
+        # C: (B, T, H, Dh, Dh)
+        C = (F.unsqueeze(-1) * torch.cumsum(
+            i_s.unsqueeze(-1) * outer * inv_F.unsqueeze(-1), dim=1
+        )).clamp(-1e4, 1e4)
+
+        # Query read: h_t = C_t q_t / max(|n_t^T q_t|, ε)
+        num   = torch.einsum("bthde,bthe->bthd", C, q)   # (B, T, H, Dh)
+        denom = (n * q).sum(dim=-1, keepdim=True).abs().clamp(min=1e-6)
+        y = (num / denom).reshape(B, T, D)
+
         return x + self.dropout(self.out_proj(y))
 
 
