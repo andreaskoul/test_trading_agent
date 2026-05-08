@@ -77,7 +77,10 @@ def build_features(
     close = df["close"].astype(float)
     high = df["high"].astype(float)
     low = df["low"].astype(float)
-    volume = df["volume"].astype(float).replace(0, np.nan)
+    # Clip to 1 so log(volume) is defined for zero-volume bars (log(1)=0).
+    # Using replace(0, NaN) caused the rolling z-score to propagate NaN
+    # across the next 252 bars every time a zero-volume bar appeared.
+    volume = df["volume"].astype(float).clip(lower=1)
 
     # Log returns — short (mean-reversion) and long (trend-following)
     log_ret = np.log(close).diff()
@@ -176,6 +179,10 @@ def build_features(
 
     # Drop warmup rows to guarantee everything is populated
     out = out.iloc[warmup_bars:]
+    # Forward-fill sparse NaN (e.g., vol_z at tail from incomplete rolling window)
+    # Limit to 10 rows to avoid corrupting signal in sparse-NaN regions
+    out = out.ffill(limit=10)
+    # Drop remaining rows with NaN (these indicate genuine data gaps)
     out = out.dropna()
     return out
 

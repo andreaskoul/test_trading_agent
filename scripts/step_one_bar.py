@@ -109,12 +109,24 @@ def _fetch_bars_since(
 
 
 def _load_or_init_live_bars(live_path: str) -> pd.DataFrame:
+    _OHLCV = ["open", "high", "low", "close", "volume"]
     if os.path.exists(live_path):
         df = pd.read_parquet(live_path)
-        if df.index.tz is None:
-            df.index = df.index.tz_localize("UTC")
+        # Flatten MultiIndex columns saved by older yfinance (('open','GC=F') → 'open')
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = df.columns.get_level_values(0).str.lower()
+        else:
+            df.columns = df.columns.str.lower()
+        # Keep only OHLCV; drop any unknown extra columns
+        df = df[[c for c in _OHLCV if c in df.columns]].copy()
+        if isinstance(df.index, pd.DatetimeIndex):
+            if df.index.tz is None:
+                df.index = df.index.tz_localize("UTC")
+        elif len(df) > 0:
+            log.warning("live_bars has non-DatetimeIndex; re-creating")
+            return pd.DataFrame(columns=_OHLCV)
         return df
-    return pd.DataFrame(columns=["open", "high", "low", "close", "volume"])
+    return pd.DataFrame(columns=_OHLCV)
 
 
 def _save_live_bars(live: pd.DataFrame, live_path: str) -> None:
@@ -167,6 +179,7 @@ _MACRO_SLUG_TO_SYMBOL: dict[str, str] = {
     "gspc": "^GSPC",
     "tnx": "^TNX",
     "dxy": "DX-Y.NYB",
+    "dxf": "DX-Y.NYB",   # DXF slug comes from old FRED-sourced macro_DXF.parquet
 }
 
 
@@ -222,8 +235,13 @@ def _fetch_macro_data(ref_cols: list[str], start: pd.Timestamp) -> dict:
             raw.index = raw.index.tz_localize("UTC")
         else:
             raw.index = raw.index.tz_convert("UTC")
-        result[sym] = raw[["close"]]
-        log.info("macro %s: %d daily bars", sym, len(raw))
+        # Key must produce the right slug when passed through _macro_symbol_slug.
+        # For slugs like "dxf" we need the key "DXF" (not "DX-Y.NYB" which
+        # would slug to "dx_y_nyb").  Use the slug itself (upper-cased) so the
+        # round-trip is always correct regardless of which yfinance symbol we
+        # fetched from.
+        result[slug.upper()] = raw[["close"]]
+        log.info("macro %s (%s): %d daily bars", sym, slug, len(raw))
 
     return result
 

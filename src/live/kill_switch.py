@@ -123,9 +123,10 @@ def evaluate(
             f"equity drawdown {mdd*100:.1f}% exceeds {cfg.max_drawdown*100:.1f}%"
         )
 
-    # Rule 3: win-rate floor
+    # Rule 3: win-rate floor (requires at least 50 trades before firing so
+    # the cold-start period doesn't trigger a premature halt)
     wr_window = arr[-cfg.win_rate_window:] if arr.size >= cfg.win_rate_window else arr
-    if wr_window.size >= min(20, cfg.win_rate_window):
+    if wr_window.size >= min(50, cfg.win_rate_window):
         win_rate = float((wr_window > 0).mean())
         if win_rate < cfg.win_rate_floor:
             result.triggered.append("win_rate_floor")
