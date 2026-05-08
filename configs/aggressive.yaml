@@ -68,6 +68,8 @@ env:
   reward_dsr_eta: 0.01      # EWMA rate for DSR moments
   reward_dsr_scale: 1.0     # scale on differential Sharpe increment
   min_flat_bars: 0          # Iter-5 tried 2; pre-meta Sharpe flat, meta-gate -19%, reverted
+  reward_trend_weight: 0.5  # penalise counter-trend entries (gold is a trending asset)
+  reward_trend_lookback: 200
 
 ppo:
   total_timesteps: 120000   # more bars -> need more updates
