@@ -467,6 +467,7 @@ class PaperEngine:
         trade_rate_max_per_day: int = 0,
         adv_notional: float = 0.0,
         impact_coeff: float = 0.0,
+        trend_filter_min_dist: float = 0.0,
     ) -> None:
         self.asset = asset
         self.run_id = run_id
@@ -508,6 +509,16 @@ class PaperEngine:
         # the spread/slippage already deducted by CostModel.
         self.adv_notional = float(adv_notional)
         self.impact_coeff = float(impact_coeff)
+        # Trend-direction gate: if trend_filter_min_dist > 0, short entries are
+        # blocked when ema_200_dist > threshold (price clearly above 200-bar
+        # EMA), and long entries are blocked when ema_200_dist < -threshold.
+        # ema_200_dist is z-scored so 0 = at the EMA; positive = above.
+        # 0.0 disables the filter (default, preserves parity with backtester).
+        self.trend_filter_min_dist = float(trend_filter_min_dist)
+        _ema_dist = precomputed.get("ema_200_dist")
+        self._ema_200_dist: Optional[np.ndarray] = (
+            np.asarray(_ema_dist, dtype=np.float64) if _ema_dist is not None else None
+        )
 
         self._close = np.asarray(precomputed["close"], dtype=np.float64)
         self._atr = np.asarray(precomputed["atr"], dtype=np.float64)
@@ -718,10 +729,22 @@ class PaperEngine:
                     )
             if a != HOLD:
                 direction = +1 if a == BUY else -1
-                feats = build_trade_features(obs, direction, vol_q)
-                gated = False
+                # Trend-direction gate: block entries that fight the 200-bar
+                # EMA trend.  ema_200_dist > +threshold → uptrend → no shorts.
+                # ema_200_dist < -threshold → downtrend → no longs.
+                if (self.trend_filter_min_dist > 0.0
+                        and self._ema_200_dist is not None):
+                    d = float(self._ema_200_dist[i])
+                    if direction == -1 and d > self.trend_filter_min_dist:
+                        a = HOLD
+                        log.debug("trend gate: blocked short (ema_200_dist=%.2f > %.2f)", d, self.trend_filter_min_dist)
+                    elif direction == +1 and d < -self.trend_filter_min_dist:
+                        a = HOLD
+                        log.debug("trend gate: blocked long (ema_200_dist=%.2f < -%.2f)", d, self.trend_filter_min_dist)
+                gated = a == HOLD   # trend gate may have already blocked
+                feats = build_trade_features(obs, direction, vol_q) if not gated else None
                 p_profit: Optional[float] = None
-                if self.meta_model is not None:
+                if not gated and self.meta_model is not None:
                     p_profit = float(self.meta_model.predict_proba(feats)[0])
                     if p_profit < self.meta_threshold:
                         a = HOLD

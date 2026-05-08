@@ -376,8 +376,16 @@ def main() -> int:
     rv = atr / np.maximum(close, 1e-12)
     vol_q = pd.Series(rv).rank(pct=True).to_numpy(np.float64)
 
+    # ema_200_dist is z-scored in build_features: positive = price above EMA.
+    # Pass it through so paper_engine can block counter-trend entries.
+    ema_200_dist: np.ndarray | None = None
+    if "ema_200_dist" in feats.columns:
+        ema_200_dist = feats["ema_200_dist"].to_numpy(np.float64)
+
     pc: dict = {"close": close, "atr": atr, "embeddings": emb,
                 "vol_quantile": vol_q}
+    if ema_200_dist is not None:
+        pc["ema_200_dist"] = ema_200_dist
 
     # Optional regime posterior. Lazy-import HMMRegimeModel so a missing
     # hmmlearn install degrades gracefully (no regime conditioning) instead
@@ -429,6 +437,7 @@ def main() -> int:
                                    for k, v in paper_cfg.get("regime_size_multipliers", {}).items()},
         regime_confirm_bars=int(paper_cfg.get("regime_confirm_bars", 0)),
         trade_rate_max_per_day=int(paper_cfg.get("trade_rate_max_per_day", 0)),
+        trend_filter_min_dist=float(paper_cfg.get("trend_filter_min_dist", 0.0)),
     )
 
     # Step through the live segment. The policy is deterministic, so

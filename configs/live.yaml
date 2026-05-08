@@ -55,6 +55,10 @@ ui:
       0: 0.5
       1: 1.0
       2: 1.0
+    regime_confirm_bars: 5              # require 5 stable bars before sizing flip
+    trade_rate_max_per_day: 6           # cap at 1 entry per 4h on 60m bars
+    trend_filter_min_dist: 0.5          # block trades fighting the 200-bar EMA
+                                        # (z-scored: 0.5 ≈ half-ATR above/below EMA)
     # Phase L safety
     max_policy_age_days: 14             # refuse policies older than 2 weeks
     # Phase M live stats annualisation factor for hourly bars (~252 * 6.5).
