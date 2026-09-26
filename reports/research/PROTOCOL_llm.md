@@ -166,3 +166,10 @@ score) with a Newey–West t on the LLM coefficient. Power with 20 names and
 4+4 books is low. The 52/104-week reads stand, and a pre-registered option,
 not a requirement, is to widen the dashboard's firm list, which restarts the
 clock as a new protocol.
+
+## Superseded (2026-09-27, before any decision)
+
+Protocol 6 (`PROTOCOL_fund.md`) replaces this workflow. The per-firm
+narrative scoring of Amendment 2 lives on as the fund's analyst desk, and this
+protocol's book survives as the fund's logged `core20` book. No Protocol 5
+decision was ever made.
