@@ -123,6 +123,34 @@ class HMMRegimeModel:
             )
         return post.astype(np.float32)
 
+    def filtered_posterior(self, close: np.ndarray) -> np.ndarray:
+        """Causal P(state_t | x_1..x_t) via the forward recursion.
+
+        ``posterior`` calls hmmlearn's ``predict_proba``, which is the
+        forward-backward *smoother* P(state_t | x_1..x_T): every bar's regime
+        uses the whole sample, future bars included. That is look-ahead in a
+        live replay, and it also means past decisions change as new bars
+        arrive. Live trading must use this filter instead.
+        """
+        if self._hmm is None:
+            raise RuntimeError("HMMRegimeModel.fit must be called first")
+        from scipy.special import logsumexp
+        feats = _build_hmm_features(close, self.cfg.vol_window)
+        # _build_hmm_features back-fills the first vol_window rv values from
+        # the future; forward-fill from a causal expanding std instead.
+        lr = feats[:, 0]
+        rv = pd.Series(lr).rolling(self.cfg.vol_window, min_periods=2).std(ddof=0)
+        feats[:, 1] = np.nan_to_num(rv.to_numpy(), nan=0.0)
+        loglik = self._hmm._compute_log_likelihood(feats)
+        log_A = np.log(np.maximum(self._hmm.transmat_, 1e-300))
+        la = np.log(np.maximum(self._hmm.startprob_, 1e-300)) + loglik[0]
+        out = np.empty_like(loglik)
+        out[0] = la - logsumexp(la)
+        for t in range(1, len(loglik)):
+            la = logsumexp(out[t - 1][:, None] + log_A, axis=0) + loglik[t]
+            out[t] = la - logsumexp(la)
+        return np.exp(out).astype(np.float32)
+
     # ------------------------------------------------------------------
     def save(self, path: str) -> None:
         os.makedirs(os.path.dirname(path), exist_ok=True)

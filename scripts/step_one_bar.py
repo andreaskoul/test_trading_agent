@@ -131,6 +131,9 @@ def _select_best_entry(manifest: list[dict], asset: str) -> dict:
     if not candidates:
         raise RuntimeError(f"no manifest entry for {asset}")
     # Highest validation Sharpe wins; falls back to the first entry.
+    if not any("sharpe" in e for e in candidates):
+        log.warning("manifest has no 'sharpe' field; 'best' entry is just the "
+                    "first one (%s)", os.path.basename(candidates[0]["policy_path"]))
     candidates.sort(key=lambda e: float(e.get("sharpe", 0.0)), reverse=True)
     return candidates[0]
 
@@ -159,76 +162,71 @@ def _normalize_artefact_path(cfg: dict, p: str) -> str:
 
 def _load_policy(cfg: dict, entry: dict):
     algo = entry.get("algorithm", "ppo").lower()
-    cls = PPO if algo in ("ppo", "grpo") else A2C
+    if algo == "grpo":
+        # GRPO zips hold a bare grpo.pt, not an SB3 archive; PPO.load fails.
+        from src.training.grpo import GRPO
+        return GRPO.load(_normalize_artefact_path(cfg, entry["policy_path"]), device="cpu")
+    cls = PPO if algo == "ppo" else A2C
     if cls is None:
         raise RuntimeError("stable_baselines3 not installed")
     p = _normalize_artefact_path(cfg, entry["policy_path"])
     return cls.load(p, device="cpu")
 
 
-_MACRO_SLUG_TO_SYMBOL: dict[str, str] = {
-    "vix": "^VIX",
-    "gspc": "^GSPC",
-    "tnx": "^TNX",
-    "dxy": "DX-Y.NYB",
+# Training (scripts/build_extended_data.py) built the macro features from
+# FRED daily series, so live uses the same series: same levels, same holiday
+# calendar, same revisions policy. yfinance is only a fallback.
+_MACRO_SLUG_TO_SOURCE: dict[str, tuple[str, str, str]] = {
+    # slug: (training symbol key, FRED id, yfinance fallback)
+    "vix":  ("^VIX",  "VIXCLS",   "^VIX"),
+    "tnx":  ("^TNX",  "DGS10",    "^TNX"),
+    "dxf":  ("DX=F",  "DTWEXBGS", "DX-Y.NYB"),
+    "gspc": ("^GSPC", "SP500",    "^GSPC"),
 }
 
 
 def _fetch_macro_data(ref_cols: list[str], start: pd.Timestamp) -> dict:
-    """Fetch daily macro closes for every slug referenced in *ref_cols*.
+    """Daily macro closes for every slug referenced in *ref_cols*.
 
-    Detects required symbols from column names ending in ``_chg5`` /
-    ``_chg20`` (e.g. ``vix_chg5`` → ``^VIX``), fetches 1 year of history
-    before *start* so the rolling z-score is pre-warmed, and returns a dict
-    suitable for passing directly to ``build_features(macro_data=...)``.
+    Returns ``{training_symbol: DataFrame[close]}`` for
+    ``build_features(macro_data=...)``. Raises if any required series is
+    unavailable: silently dropping one makes build_features emit a
+    different schema and the run fail later with a confusing error.
     """
+    import io
+    import urllib.request
+
     slugs = {c.rsplit("_chg", 1)[0] for c in ref_cols
              if c.endswith("_chg5") or c.endswith("_chg20")}
-    if not slugs:
-        return {}
-
-    try:
-        import yfinance as yf
-    except ImportError:
-        log.warning("yfinance not installed; macro data unavailable")
-        return {}
-
-    # Give a 1-year pre-start buffer so the 252-bar z-score is populated.
     fetch_start = (start - pd.Timedelta(days=365)).normalize()
-    fetch_end = pd.Timestamp.now(tz="UTC")
-
     result: dict = {}
     for slug in sorted(slugs):
-        sym = _MACRO_SLUG_TO_SYMBOL.get(slug)
-        if sym is None:
-            log.warning("unknown macro slug '%s'; skipping", slug)
-            continue
+        sym, fred_id, yf_sym = _MACRO_SLUG_TO_SOURCE[slug]
+        s = None
         try:
-            raw = yf.download(
-                sym, start=fetch_start, end=fetch_end, interval="1d",
-                progress=False, auto_adjust=False, threads=False,
-            )
+            url = f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={fred_id}"
+            with urllib.request.urlopen(url, timeout=60) as r:
+                df = pd.read_csv(io.BytesIO(r.read()), na_values=".")
+            df.columns = ["date", "close"]
+            df["date"] = pd.to_datetime(df["date"], utc=True)
+            s = df.set_index("date")["close"].dropna().sort_index()
+            src = f"FRED {fred_id}"
         except Exception as exc:
-            log.warning("macro fetch failed for %s: %s", sym, exc)
-            continue
-        if raw is None or len(raw) == 0:
-            log.warning("no macro data for %s", sym)
-            continue
-        if isinstance(raw.columns, pd.MultiIndex):
-            raw.columns = raw.columns.get_level_values(0)
-        raw = raw.rename(columns={"Close": "close"})
-        if "close" not in raw.columns:
-            log.warning("no Close column for %s", sym)
-            continue
-        if not isinstance(raw.index, pd.DatetimeIndex):
-            raw.index = pd.to_datetime(raw.index, utc=True)
-        elif raw.index.tz is None:
-            raw.index = raw.index.tz_localize("UTC")
-        else:
-            raw.index = raw.index.tz_convert("UTC")
-        result[sym] = raw[["close"]]
-        log.info("macro %s: %d daily bars", sym, len(raw))
-
+            log.warning("FRED fetch failed for %s (%s); trying yfinance", fred_id, exc)
+            import yfinance as yf
+            raw = yf.download(yf_sym, start=fetch_start, interval="1d",
+                              progress=False, auto_adjust=False, threads=False)
+            if raw is not None and len(raw):
+                if isinstance(raw.columns, pd.MultiIndex):
+                    raw.columns = raw.columns.get_level_values(0)
+                s = raw["Close"].dropna()
+                s.index = pd.to_datetime(s.index, utc=True)
+                src = f"yfinance {yf_sym}"
+        if s is None or len(s) == 0:
+            raise RuntimeError(f"macro series for {slug} unavailable")
+        s = s[s.index >= fetch_start]
+        result[sym] = s.to_frame("close")
+        log.info("macro %s: %d daily bars from %s (last %s)", sym, len(s), src, s.index[-1].date())
     return result
 
 
@@ -336,9 +334,14 @@ def main() -> int:
     live_start_ts = live.index.min()
     live_mask = feats.index >= live_start_ts
     if not live_mask.any():
-        log.info("live bars not yet through warmup; %d feature rows total", len(feats))
+        # Used to exit 0 here, which hid five months of zero trades behind
+        # green cron runs. Live bars existing but producing no feature rows
+        # is a pipeline fault, not a warmup state.
+        log.error("live bars %s..%s produced 0 feature rows (corpus ends %s); "
+                  "check NaNs in build_features", live.index.min(), live.index.max(),
+                  feats.index.max())
         _save_live_bars(live, live_path)
-        return 0
+        return 2
     live_idx_start = int(np.argmax(live_mask))    # first True
     log.info("feature corpus: %d rows; live segment starts at idx=%d", len(feats), live_idx_start)
 
@@ -358,9 +361,10 @@ def main() -> int:
     close = feats["close"].to_numpy(np.float64)
     atr = feats["atr"].to_numpy(np.float64)
 
-    # Volatility quantile = rolling rank of (atr/close).
+    # Volatility quantile of (atr/close). Expanding (causal) rank: the old
+    # full-sample rank(pct=True) let future bars set today's quantile.
     rv = atr / np.maximum(close, 1e-12)
-    vol_q = pd.Series(rv).rank(pct=True).to_numpy(np.float64)
+    vol_q = pd.Series(rv).expanding().rank(pct=True).to_numpy(np.float64)
 
     pc: dict = {"close": close, "atr": atr, "embeddings": emb,
                 "vol_quantile": vol_q}
@@ -375,7 +379,8 @@ def main() -> int:
         try:
             from src.data.regimes import HMMRegimeModel
             hmm = HMMRegimeModel.load(rp_abs)
-            regime_post = hmm.posterior(close)
+            # Forward filter, not predict_proba's smoother (look-ahead).
+            regime_post = hmm.filtered_posterior(close)
             pc["regime_posterior"] = regime_post
         except ImportError as exc:
             log.warning("hmmlearn not installed; regime conditioning disabled (%s)", exc)
@@ -450,6 +455,10 @@ def main() -> int:
                         "asset": asset.symbol}, f, indent=2)
         _save_live_bars(live, live_path)
         return 2
+
+    halt_path = path(cfg, "artefacts", "kill_switch_halt.json")
+    if os.path.exists(halt_path):     # condition cleared; don't let a stale marker persist
+        os.remove(halt_path)
 
     # Snapshot engine state for the dashboard exporter.
     snap = engine.state()

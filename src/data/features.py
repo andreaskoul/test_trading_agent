@@ -71,13 +71,19 @@ def build_features(
     warmup_bars: int = 252,
     zscore_window: int = 252,
     macro_data: Optional[Dict[str, pd.DataFrame]] = None,
+    macro_lag: pd.Timedelta = pd.Timedelta(days=1),
 ) -> pd.DataFrame:
     """Return a feature DataFrame aligned to `df.index` with a `close` passthrough."""
     out = pd.DataFrame(index=df.index)
     close = df["close"].astype(float)
     high = df["high"].astype(float)
     low = df["low"].astype(float)
-    volume = df["volume"].astype(float).replace(0, np.nan)
+    # yfinance reports volume=0 on the session-open bar (22:00 UTC) almost
+    # every day. A single NaN voids every 252-bar rolling window that
+    # contains it, which silently wiped vol_z (and so every live row) after
+    # dropna. Treat zero as missing and carry the previous bar's volume;
+    # training data (no zeros) is unchanged.
+    volume = df["volume"].astype(float).replace(0, np.nan).ffill()
 
     # Log returns — short (mean-reversion) and long (trend-following)
     log_ret = np.log(close).diff()
@@ -165,6 +171,11 @@ def build_features(
                 continue
             slug = _macro_symbol_slug(sym)
             mclose = mdf["close"].astype(float).sort_index()
+            # Daily closes are stamped 00:00 UTC of the trade date but are
+            # only known after the US close (~21:00 UTC). Without a lag,
+            # every hourly bar of day D sees day D's close: look-ahead.
+            # Shift to availability time (next day 00:00 by default).
+            mclose.index = mclose.index + macro_lag
             mlog = np.log(mclose.replace(0, np.nan)).dropna()
             chg5 = mlog.diff(5)
             chg20 = mlog.diff(20)
