@@ -70,3 +70,50 @@ A change restarts the clock under a new protocol number.
 
 `deepseek-v4.1-flash`: $0.035 per M input tokens, $0.29 per M output. About
 150k input tokens per week, so under $0.01 a week.
+
+## Amendment 1 (2026-09-27, before the first decision)
+
+Requested design change: all of the week's dated news per firm, de-duplicated
+with embeddings, scored firm by firm.
+
+**News source.** Yahoo's feed returns only a firm's 10 most recent items
+(about one day for large caps), so it can't provide a week. Source:
+**Finnhub `company-news`**, window Thursday → Wednesday (the 7 days ending at
+the as-of close), items timestamped after the as-of Wednesday 23:59 UTC
+dropped. A firm whose Finnhub call fails gets no news that week (logged); there
+is no fallback source, so the input stays comparable across weeks.
+
+**De-duplication, per firm.**
+1. Exact duplicates after normalising the headline (lower case, punctuation
+   and whitespace stripped) are merged.
+2. `google/gemini-embedding-2` (OpenRouter) embeds "headline. summary".
+   Greedy in chronological order: an item joins the earliest kept item with
+   cosine ≥ τ. Each cluster keeps the **earliest** timestamp and headline (when
+   the information arrived), the longest summary, and records `n_sources` and
+   the publishers (coverage intensity is itself information).
+3. τ is fixed once by `scripts/llm/calibrate_dedup.py` on the first
+   available week. It prints the cosine distribution and 30 pairs around the
+   candidate threshold for inspection, and the chosen τ is committed to
+   `artefacts/llm/dedup.json` **before the first decision**. It is never
+   changed during the window.
+
+**Per-firm decision.** One call per firm with at least one news item
+(`deepseek/deepseek-v4.1-flash`, temperature 0). Input: that firm's signal
+z-scores, ridge forecast and rank, and every de-duplicated dated item of the
+week. Output: `score` ∈ {−2, −1, 0, +1, +2} (expected relative return next
+week versus the other members), `confidence` ∈ [0, 1], and a reason (≤ 25
+words). Firms without news, or whose call fails twice, get score 0.
+
+**Books.** LLM book: longs = top 25 by (score, then ridge forecast), shorts =
+bottom 25 by the same key. The quant and random books are unchanged, so the
+LLM book differs from the quant book **only where the news moved a score**.
+That is exactly the contrast under test.
+
+**Evaluation.** The primary test stays LLM-book minus quant-book weekly
+returns. Added as pre-registered secondary: weekly cross-sectional regression
+over all members of next-week return on (ridge rank scaled to [−0.5, 0.5],
+LLM score), with a Newey–West t (lags 2) on the LLM coefficient across weeks.
+It uses all ~500 names each week, so it has far more power than the 50-name
+book.
+
+FX is unchanged (one call, no news).
