@@ -125,7 +125,9 @@ def main() -> None:
                 return precomputed_cache[anchor_group]
             encoder = load_encoder(os.path.join(encoders_dir, f"encoder_group{anchor_group}.pt"))
             emb = precompute_embeddings(encoder, feats_arr, seq_len=env_cfg.seq_len)
-            pc = dict(close=close_arr, atr=atr_arr, embeddings=emb, vol_quantile=vol_quantile)
+            pc = dict(close=close_arr, atr=atr_arr, embeddings=emb, vol_quantile=vol_quantile,
+                      **{k: features[k].to_numpy(np.float64) for k in ("open", "high", "low")
+                         if k in features})
             precomputed_cache[anchor_group] = pc
             return pc
 

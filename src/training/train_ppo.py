@@ -60,6 +60,9 @@ def _make_env(
     train_idx: np.ndarray,
     seed: int,
     regime_posterior: np.ndarray | None = None,
+    open_: np.ndarray | None = None,
+    high: np.ndarray | None = None,
+    low: np.ndarray | None = None,
 ):
     def thunk():
         return EmbeddingTradingEnv(
@@ -71,6 +74,7 @@ def _make_env(
             allowed_idx=train_idx,
             seed=seed,
             regime_posterior=regime_posterior,
+            open_=open_, high=high, low=low,
         )
     return thunk
 
@@ -102,7 +106,9 @@ def train_ppo_run(
         atr = features["atr"].to_numpy(dtype=np.float64)
         rv = pd.Series(atr / close).rolling(20, min_periods=1).mean()
         vol_quantile = rv.rank(pct=True).to_numpy()
-        precomputed = dict(close=close, atr=atr, embeddings=embeddings, vol_quantile=vol_quantile)
+        precomputed = dict(close=close, atr=atr, embeddings=embeddings, vol_quantile=vol_quantile,
+                           **{k: features[k].to_numpy(np.float64) for k in ("open", "high", "low")
+                              if k in features})
 
     venv = DummyVecEnv([
         _make_env(
@@ -114,6 +120,7 @@ def train_ppo_run(
             train_idx,
             seed,
             regime_posterior=precomputed.get("regime_posterior"),
+            open_=precomputed.get("open"), high=precomputed.get("high"), low=precomputed.get("low"),
         )
     ])
 
@@ -186,6 +193,7 @@ def train_ppo_run(
             train_idx,
             seed,
             regime_posterior=precomputed.get("regime_posterior"),
+            open_=precomputed.get("open"), high=precomputed.get("high"), low=precomputed.get("low"),
         )()
         model = GRPO(
             single_env,

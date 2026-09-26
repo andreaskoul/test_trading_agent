@@ -86,6 +86,9 @@ def _build_precomputed():
         atr=atr,
         embeddings=emb,
         vol_quantile=vol_q,
+        open=feats["open"].to_numpy(np.float64),
+        high=feats["high"].to_numpy(np.float64),
+        low=feats["low"].to_numpy(np.float64),
         features=feats,
         feat_cols=cols,
     )
@@ -121,7 +124,7 @@ def test_paper_engine_matches_backtest():
             "close": pc["close"],
             "atr": pc["atr"],
             "embeddings": pc["embeddings"],
-            "vol_quantile": pc["vol_quantile"],
+            "vol_quantile": pc["vol_quantile"], "open": pc["open"], "high": pc["high"], "low": pc["low"],
         },
         env_cfg=env_cfg,
         test_idx=test_idx,
@@ -135,7 +138,7 @@ def test_paper_engine_matches_backtest():
             "close": pc["close"],
             "atr": pc["atr"],
             "embeddings": pc["embeddings"],
-            "vol_quantile": pc["vol_quantile"],
+            "vol_quantile": pc["vol_quantile"], "open": pc["open"], "high": pc["high"], "low": pc["low"],
         },
         env_cfg=env_cfg,
         cost_model=CostModel(spread_bps=env_cfg.spread_bps),  # zero extras => parity
@@ -171,7 +174,7 @@ def test_paper_engine_respects_extra_costs():
             model=_DeterministicBuyModel(),
             precomputed={
                 "close": pc["close"], "atr": pc["atr"],
-                "embeddings": pc["embeddings"], "vol_quantile": pc["vol_quantile"],
+                "embeddings": pc["embeddings"], "vol_quantile": pc["vol_quantile"], "open": pc["open"], "high": pc["high"], "low": pc["low"],
             },
             env_cfg=env_cfg,
             cost_model=cost,
@@ -433,6 +436,7 @@ def test_e2e_process_bar_publishes_all_channels():
     emb = precompute_embeddings(enc, feats[feat_cols].to_numpy(np.float32), seq_len=8)
     pc = {
         "close": feats["close"].to_numpy(np.float64),
+        **{k: feats[k].to_numpy(np.float64) for k in ("open", "high", "low")},
         "atr": feats["atr"].to_numpy(np.float64),
         "embeddings": emb,
         "vol_quantile": np.ones(len(feats), dtype=np.float64),

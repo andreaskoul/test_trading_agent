@@ -28,6 +28,8 @@ import numpy as np
 import pandas as pd
 from gymnasium import spaces
 
+from .fills import as_array, check_exit, open_trade, require_ohlc
+
 
 HOLD, BUY, SELL = 0, 1, 2
 
@@ -57,6 +59,7 @@ def env_config_from_yaml(cfg: dict) -> "EnvConfig":
         reward_trend_weight=env.get("reward_trend_weight", 0.0),
         reward_trend_lookback=int(env.get("reward_trend_lookback", 200)),
         min_flat_bars=env.get("min_flat_bars", 0),
+        fill_model=env.get("fill_model", "bracket"),
     )
 
 
@@ -98,6 +101,9 @@ class EnvConfig:
     # trades get an equivalent penalty. 0 disables (backward compat).
     reward_trend_weight: float = 0.0
     reward_trend_lookback: int = 200
+    # Execution rule, see src/env/fills.py. "close" is the legacy rule under
+    # which random entries are profitable; keep it only to reproduce old runs.
+    fill_model: str = "bracket"
 
 
 class TradingEnv(gym.Env):
@@ -121,6 +127,10 @@ class TradingEnv(gym.Env):
         self._feat_mat = self.features[self.feature_cols].to_numpy(dtype=np.float32)
         self._close = self.features["close"].to_numpy(dtype=np.float64)
         self._atr = self.features["atr"].to_numpy(dtype=np.float64)
+        self._open, self._high, self._low = (
+            as_array(self.features[k]) if k in self.features else None
+            for k in ("open", "high", "low"))
+        require_ohlc(cfg.fill_model, self._open, self._high, self._low)
 
         # Per-bar realized vol quantile for curriculum filtering.
         rv = pd.Series(self._atr / self._close).rolling(20, min_periods=1).mean()
@@ -231,16 +241,13 @@ class TradingEnv(gym.Env):
         return window.astype(np.float32)
 
     def _open_position(self, direction: int) -> None:
+        t = open_trade(self._step_i, direction, self._close, self._atr, self._open,
+                       self.cfg.rr_upper, self.cfg.rr_lower, self.cfg.fill_model)
+        if t is None:                  # no next bar to enter on
+            return
         self._pos = direction
-        self._entry_i = self._step_i
-        self._entry_price = self._close[self._step_i]
-        atr_now = max(self._atr[self._step_i], 1e-8)
-        if direction == +1:
-            self._barrier_upper = self._entry_price + self.cfg.rr_upper * atr_now
-            self._barrier_lower = self._entry_price - self.cfg.rr_lower * atr_now
-        else:
-            self._barrier_upper = self._entry_price - self.cfg.rr_upper * atr_now
-            self._barrier_lower = self._entry_price + self.cfg.rr_lower * atr_now
+        self._entry_i = self._step_i   # signal bar; horizon counts from here
+        self._entry_price, self._barrier_upper, self._barrier_lower = t
         # Capture N-bar log-return as trend signal at entry for reward shaping.
         lb = max(0, self._step_i - self.cfg.reward_trend_lookback)
         if self._step_i > lb:
@@ -252,33 +259,14 @@ class TradingEnv(gym.Env):
 
     def _check_barrier(self) -> tuple[float, bool, float]:
         cfg = self.cfg
-        i = self._step_i
-        price = self._close[i]
-        horizon_exceeded = (i - self._entry_i) >= cfg.horizon
-        pos = self._pos
-
-        hit_tp = False
-        hit_sl = False
-        if pos == +1:
-            hit_tp = price >= self._barrier_upper
-            hit_sl = price <= self._barrier_lower
-        elif pos == -1:
-            hit_tp = price <= self._barrier_upper
-            hit_sl = price >= self._barrier_lower
-
-        if hit_tp:
-            ret = pos * (self._barrier_upper / self._entry_price - 1)
-            ret -= 2 * cfg.spread_bps / 1e4  # entry + exit
-            return self._compute_reward(float(ret), "tp"), True, float(ret)
-        if hit_sl:
-            ret = pos * (self._barrier_lower / self._entry_price - 1)
-            ret -= 2 * cfg.spread_bps / 1e4
-            return self._compute_reward(float(ret), "sl"), True, float(ret)
-        if horizon_exceeded:
-            raw_ret = pos * (price / self._entry_price - 1)
-            raw_ret -= 2 * cfg.spread_bps / 1e4
-            return self._compute_reward(float(raw_ret), "timeout"), True, float(raw_ret)
-        return 0.0, False, 0.0
+        hit = check_exit(self._step_i, self._entry_i, self._pos, self._barrier_upper,
+                         self._barrier_lower, cfg.horizon, self._open, self._high,
+                         self._low, self._close, cfg.fill_model)
+        if hit is None:
+            return 0.0, False, 0.0
+        barrier, px = hit
+        ret = self._pos * (px / self._entry_price - 1) - 2 * cfg.spread_bps / 1e4
+        return self._compute_reward(float(ret), barrier), True, float(ret)
 
     # ------------------------------------------------------------------
     # reward shaping

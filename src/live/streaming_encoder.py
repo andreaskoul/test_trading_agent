@@ -214,6 +214,9 @@ class StreamingEncoder:
         vol_q = float(np.sum(rv <= rv[-1]) / max(len(rv), 1))
 
         return {
+            "open": float(feats_df["open"].iat[-1]),
+            "high": float(feats_df["high"].iat[-1]),
+            "low": float(feats_df["low"].iat[-1]),
             "close": float(close_arr[-1]),
             "atr": float(atr_arr[-1]),
             "embedding": emb,

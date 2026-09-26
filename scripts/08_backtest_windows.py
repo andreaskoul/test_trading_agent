@@ -43,7 +43,7 @@ import pandas as pd
 from _bootstrap import path, setup
 
 from src.data.config_utils import parse_asset_configs
-from src.data.features import build_features, feature_columns
+from src.data.features import PASSTHROUGH, build_features, feature_columns
 from src.env.trading_env import env_config_from_yaml
 from src.training.evaluate import build_precomputed, rollout_policy
 from src.training.pretrain_encoder import load_encoder
@@ -305,7 +305,7 @@ def main() -> int:
             if col not in feats.columns:
                 feats[col] = 0.0
         # Keep close + atr (required by build_precomputed) and the canonical features.
-        keep = list(dict.fromkeys(["close", "atr"] + canonical_cols))
+        keep = list(dict.fromkeys(list(PASSTHROUGH) + canonical_cols))
         feats = feats[keep]
         log.info("features aligned to %d training cols", len(canonical_cols))
     log.info("features: %d rows × %d cols", len(feats), len(feature_columns(feats)))

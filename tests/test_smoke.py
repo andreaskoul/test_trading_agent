@@ -312,6 +312,7 @@ def test_regime_conditioned_env():
         close=close, atr=atr, embeddings=emb, vol_quantile=vq,
         cfg=EnvConfig(seq_len=16, horizon=15),
         regime_posterior=post,
+        open_=feats["open"].to_numpy(), high=feats["high"].to_numpy(), low=feats["low"].to_numpy(),
     )
     obs, _ = env.reset(seed=0)
     assert obs.shape == (32 + 3,), f"expected 35-dim obs, got {obs.shape}"
@@ -528,7 +529,7 @@ def test_daily_loss_gate():
     close = feats["close"].to_numpy(np.float64)
     atr = feats["atr"].to_numpy(np.float64)
     vol_q = np.ones(len(close))
-    pc = {"close": close, "atr": atr, "embeddings": emb, "vol_quantile": vol_q}
+    pc = {"close": close, "atr": atr, **{k: feats[k].to_numpy(np.float64) for k in ("open", "high", "low")}, "embeddings": emb, "vol_quantile": vol_q}
 
     env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
 
@@ -583,7 +584,7 @@ def test_regime_size_multipliers():
     n = len(close)
     rp = np.zeros((n, 2), dtype=np.float32)
     rp[:, 0] = 1.0
-    pc = {"close": close, "atr": atr, "embeddings": emb, "vol_quantile": vol_q,
+    pc = {"close": close, "atr": atr, **{k: feats[k].to_numpy(np.float64) for k in ("open", "high", "low")}, "embeddings": emb, "vol_quantile": vol_q,
           "regime_posterior": rp}
     env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
 
@@ -647,7 +648,7 @@ def test_paper_engine_extend_precomputed():
     close = feats["close"].to_numpy(np.float64)
     atr = feats["atr"].to_numpy(np.float64)
     vol_q = np.ones(len(close))
-    pc = {"close": close, "atr": atr, "embeddings": emb, "vol_quantile": vol_q}
+    pc = {"close": close, "atr": atr, **{k: feats[k].to_numpy(np.float64) for k in ("open", "high", "low")}, "embeddings": emb, "vol_quantile": vol_q}
     env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
 
     class HoldModel:
@@ -659,6 +660,8 @@ def test_paper_engine_extend_precomputed():
     n_before = len(eng._close)
     new_emb = np.zeros(16, dtype=np.float32)
     new_idx = eng.extend_precomputed({
+        "open": float(close[-1]), "high": float(close[-1]) * 1.002,
+        "low": float(close[-1]) * 0.999,
         "close": float(close[-1]) * 1.001,
         "atr": float(atr[-1]),
         "embedding": new_emb,
@@ -789,7 +792,7 @@ def test_trade_rate_governor():
     close = feats["close"].to_numpy(np.float64)
     atr = feats["atr"].to_numpy(np.float64)
     vol_q = np.ones(len(close))
-    pc = {"close": close, "atr": atr, "embeddings": emb, "vol_quantile": vol_q}
+    pc = {"close": close, "atr": atr, **{k: feats[k].to_numpy(np.float64) for k in ("open", "high", "low")}, "embeddings": emb, "vol_quantile": vol_q}
     env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
 
     class AlwaysBuy:
@@ -847,7 +850,7 @@ def test_regime_run_length_confirmation():
     # Inject a stable run for regime 1 from bar 50..70.
     for i in range(50, 70):
         rp[i] = [0.0, 1.0]
-    pc = {"close": close, "atr": atr, "embeddings": emb, "vol_quantile": vol_q,
+    pc = {"close": close, "atr": atr, **{k: feats[k].to_numpy(np.float64) for k in ("open", "high", "low")}, "embeddings": emb, "vol_quantile": vol_q,
           "regime_posterior": rp}
     env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
 
@@ -889,7 +892,7 @@ def test_capacity_impact_reduces_pnl():
     close = feats["close"].to_numpy(np.float64)
     atr = feats["atr"].to_numpy(np.float64)
     vol_q = np.ones(len(close))
-    pc = {"close": close, "atr": atr, "embeddings": emb, "vol_quantile": vol_q}
+    pc = {"close": close, "atr": atr, **{k: feats[k].to_numpy(np.float64) for k in ("open", "high", "low")}, "embeddings": emb, "vol_quantile": vol_q}
     env_cfg = EnvConfig(seq_len=8, horizon=4, rr_upper=1.5, rr_lower=0.75, spread_bps=0.5)
 
     class AlwaysBuy:
@@ -1031,7 +1034,7 @@ def test_paper_engine_open_position_state():
     emb = precompute_embeddings(enc, feats[feat_cols].to_numpy(np.float32), seq_len=8)
     close = feats["close"].to_numpy(np.float64)
     atr = feats["atr"].to_numpy(np.float64)
-    pc = {"close": close, "atr": atr, "embeddings": emb,
+    pc = {"close": close, "atr": atr, **{k: feats[k].to_numpy(np.float64) for k in ("open", "high", "low")}, "embeddings": emb,
           "vol_quantile": np.ones(len(close))}
     env_cfg = EnvConfig(seq_len=8, horizon=20, rr_upper=10.0, rr_lower=10.0, spread_bps=0.5)
 

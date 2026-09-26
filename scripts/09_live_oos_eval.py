@@ -37,7 +37,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import importlib
 sob = importlib.import_module("step_one_bar")
 
-from src.data.features import build_features, feature_columns
+from src.data.features import PASSTHROUGH, build_features, feature_columns
 from src.data.regimes import HMMRegimeModel
 from src.env.trading_env import env_config_from_yaml
 from src.live.paper_engine import CostModel, PaperEngine
@@ -70,7 +70,7 @@ trades = []
 for info in ("causal", "leaky"):
     lag = pd.Timedelta(days=1) if info == "causal" else pd.Timedelta(0)
     feats = build_features(ohlcv, warmup_bars=w, zscore_window=zw, macro_data=macro, macro_lag=lag)
-    feats = feats[ref_cols + ["close", "atr"]]
+    feats = feats[ref_cols + list(PASSTHROUGH)]
     i0 = int(np.argmax(feats.index >= LIVE_START))
     # Embeddings only need the last seq_len rows before the live window.
     lo = i0 - env_cfg.seq_len + 1
@@ -100,6 +100,7 @@ for info in ("causal", "leaky"):
             post_cache[rp] = (hmm.filtered_posterior(close) if info == "causal"
                               else hmm.posterior(close))[lo:]
         pc = {"close": close[lo:], "atr": atr[lo:], "embeddings": emb_cache[g],
+              **{k: feats[k].to_numpy(np.float64)[lo:] for k in ("open", "high", "low")},
               "vol_quantile": vol_q[lo:], "regime_posterior": post_cache[rp]}
         eng = PaperEngine(asset=asset.symbol, run_id=f"m{m_idx}", model=sob._load_policy(cfg, e),
                           precomputed=pc, env_cfg=env_cfg, cost_model=cost,
@@ -116,8 +117,8 @@ for info in ("causal", "leaky"):
                 info=info, model=m_idx, algo=e["algorithm"], split=e["split"], seed=e["seed"],
                 group=g, direction=r.direction, entry_ts=feats.index[a], exit_ts=feats.index[b],
                 bars=b - a, barrier=r.barrier, regime=r.regime_idx,
-                ret_engine=r.direction * (r.exit_price / r.entry_price - 1) - max(c, base),
-                ret_next=r.direction * (nxt_out / nxt_in - 1) - max(c, base),
+                ret_booked=r.direction * (r.exit_price / r.entry_price - 1) - max(c, base),
+                ret_next_open=r.direction * (nxt_out / nxt_in - 1) - max(c, base),
                 # passive benchmark over the identical holding period
                 mkt=close[b] / close[a] - 1,
             ))

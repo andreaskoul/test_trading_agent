@@ -22,7 +22,7 @@ def mi_filter(
     feats: pd.DataFrame,
     labels: np.ndarray,
     threshold: float = 0.003,
-    always_keep: Sequence[str] = ("close", "atr"),
+    always_keep: Sequence[str] = ("open", "high", "low", "close", "atr"),
     always_score: Sequence[str] = (),
     random_state: int = 7,
 ) -> Tuple[List[str], List[Tuple[str, float]]]:

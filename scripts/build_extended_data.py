@@ -34,7 +34,7 @@ if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
 from src.data.config_utils import scale_param
-from src.data.features import build_features, feature_columns
+from src.data.features import PASSTHROUGH, build_features, feature_columns
 from src.data.feature_selection import mi_filter
 from src.data.triple_barrier import TBConfig, label_triple_barrier
 
@@ -213,7 +213,7 @@ def _build_features_labels(
         log.info("[%s] applied training feature set: %d cols", name, len(available))
     else:
         # MI prune (same threshold as aggressive.yaml)
-        drop_cols = [c for c in ("close", "atr") if c in feats.columns]
+        drop_cols = [c for c in PASSTHROUGH if c in feats.columns]
         y_mi = label_triple_barrier(feats, TB_CFG)["label_multi"].to_numpy().astype(int) + 1
         kept, _ = mi_filter(
             feats.drop(columns=drop_cols, errors="ignore"),

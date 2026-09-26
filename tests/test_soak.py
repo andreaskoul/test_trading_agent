@@ -71,6 +71,7 @@ def _build_state_and_engine(n_bars: int):
     emb = precompute_embeddings(enc, feats[feat_cols].to_numpy(np.float32), seq_len=8)
     pc = {
         "close": feats["close"].to_numpy(np.float64),
+        **{k: feats[k].to_numpy(np.float64) for k in ("open", "high", "low")},
         "atr": feats["atr"].to_numpy(np.float64),
         "embeddings": emb,
         "vol_quantile": np.ones(len(feats), dtype=np.float64),

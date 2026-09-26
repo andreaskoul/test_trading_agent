@@ -37,7 +37,7 @@ import pandas as pd
 from _bootstrap import setup, path
 
 from src.data.config_utils import parse_asset_configs
-from src.data.features import build_features, feature_columns
+from src.data.features import PASSTHROUGH, build_features, feature_columns
 from src.env.trading_env import env_config_from_yaml
 from src.live.kill_switch import KillSwitchConfig, evaluate as ks_evaluate, from_cfg as ks_from_cfg
 from src.live.paper_engine import CostModel, PaperEngine, TradeStore
@@ -325,7 +325,7 @@ def main() -> int:
     if missing_cols:
         log.error("live features missing reference columns: %s", missing_cols)
         return 2
-    passthrough = [c for c in ("close", "atr") if c in feats.columns]
+    passthrough = [c for c in PASSTHROUGH if c in feats.columns]
     feats = feats[ref_cols + passthrough]
     log.info("live feature shape after column selection: %s", feats.shape)
 
@@ -367,7 +367,8 @@ def main() -> int:
     vol_q = pd.Series(rv).expanding().rank(pct=True).to_numpy(np.float64)
 
     pc: dict = {"close": close, "atr": atr, "embeddings": emb,
-                "vol_quantile": vol_q}
+                "vol_quantile": vol_q,
+                **{k: feats[k].to_numpy(np.float64) for k in ("open", "high", "low")}}
 
     # Optional regime posterior. Lazy-import HMMRegimeModel so a missing
     # hmmlearn install degrades gracefully (no regime conditioning) instead

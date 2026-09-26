@@ -41,6 +41,7 @@ from typing import Optional
 import numpy as np
 import pandas as pd
 
+from ..env.fills import as_array, check_exit, open_trade, require_ohlc
 from ..env.trading_env import BUY, HOLD, SELL, EnvConfig
 from ..models.meta_label import MetaLabelModel, build_trade_features
 
@@ -513,6 +514,11 @@ class PaperEngine:
         self._atr = np.asarray(precomputed["atr"], dtype=np.float64)
         self._emb = np.asarray(precomputed["embeddings"], dtype=np.float32)
         self._vol_q = np.asarray(precomputed["vol_quantile"], dtype=np.float64)
+        self._open, self._high, self._low = (as_array(precomputed.get(k)) for k in ("open", "high", "low"))
+        require_ohlc(env_cfg.fill_model, self._open, self._high, self._low)
+        # Bracket fills enter on the NEXT bar's open. A signal on the newest
+        # bar (streaming mode) waits here until that bar exists.
+        self._deferred: Optional[tuple[int, int, float, Optional[float], np.ndarray]] = None
         rp = precomputed.get("regime_posterior")
         self._regime = None if rp is None else np.asarray(rp, dtype=np.float32)
         self._timestamps = timestamps
@@ -542,17 +548,15 @@ class PaperEngine:
     # trade bookkeeping
     # ------------------------------------------------------------------
 
-    def _open_position(self, direction: int, i: int) -> None:
+    def _open_position(self, direction: int, i: int) -> bool:
+        t = open_trade(i, direction, self._close, self._atr, self._open,
+                       self.env_cfg.rr_upper, self.env_cfg.rr_lower, self.env_cfg.fill_model)
+        if t is None:
+            return False
         self._pos = direction
-        self._entry_i = i
-        self._entry_price = float(self._close[i])
-        atr_now = max(float(self._atr[i]), 1e-8)
-        if direction == +1:
-            self._barrier_upper = self._entry_price + self.env_cfg.rr_upper * atr_now
-            self._barrier_lower = self._entry_price - self.env_cfg.rr_lower * atr_now
-        else:
-            self._barrier_upper = self._entry_price - self.env_cfg.rr_upper * atr_now
-            self._barrier_lower = self._entry_price + self.env_cfg.rr_lower * atr_now
+        self._entry_i = i                  # signal bar; horizon counts from here
+        self._entry_price, self._barrier_upper, self._barrier_lower = t
+        return True
 
     def _fire_trade(self, i: int, exit_price: float, barrier: str) -> float:
         """Compute realised return using the CURRENT cost model and persist."""
@@ -684,6 +688,12 @@ class PaperEngine:
             if self._candidate_run >= self.regime_confirm_bars:
                 self._confirmed_regime = cur
 
+        if self._deferred is not None and self._pos == 0:
+            di, dd = self._deferred
+            self._deferred = None
+            if i == di + 1:
+                self._open_position(dd, di)   # entry at this bar's open
+
         if self._pos == 0:
             obs = self._obs(i)
             raw, _ = self.model.predict(obs, deterministic=True)
@@ -728,7 +738,8 @@ class PaperEngine:
                         gated = True
                 if not gated:
                     self._pending_entry = (feats, direction, price, p_profit)
-                    self._open_position(direction, i)
+                    if not self._open_position(direction, i):
+                        self._deferred = (i, direction)
                     action = a
                     meta_prob_for_signal = p_profit
                     # Phase L: record entry timestamp for the trade-rate governor.
@@ -741,24 +752,11 @@ class PaperEngine:
         else:
             # We hold until a barrier fires; meta-prob is only meaningful
             # at entry, not mid-trade.
-            horizon_exceeded = (i - self._entry_i) >= self.env_cfg.horizon
-            hit_tp = False
-            hit_sl = False
-            if self._pos == +1:
-                hit_tp = price >= self._barrier_upper
-                hit_sl = price <= self._barrier_lower
-            else:
-                hit_tp = price <= self._barrier_upper
-                hit_sl = price >= self._barrier_lower
-
-            if hit_tp:
-                pnl = self._fire_trade(i, self._barrier_upper, "tp")
-                fired = True
-            elif hit_sl:
-                pnl = self._fire_trade(i, self._barrier_lower, "sl")
-                fired = True
-            elif horizon_exceeded:
-                pnl = self._fire_trade(i, price, "timeout")
+            hit = check_exit(i, self._entry_i, self._pos, self._barrier_upper,
+                             self._barrier_lower, self.env_cfg.horizon, self._open,
+                             self._high, self._low, self._close, self.env_cfg.fill_model)
+            if hit is not None:
+                pnl = self._fire_trade(i, hit[1], hit[0])
                 fired = True
 
         equity = float(np.prod(1.0 + np.asarray(self._trades))) if self._trades else 1.0
@@ -817,6 +815,13 @@ class PaperEngine:
         self._atr = np.append(self._atr, new_atr)
         self._emb = np.vstack([self._emb, new_emb[np.newaxis]])
         self._vol_q = np.append(self._vol_q, new_vq)
+        if self._open is not None:
+            for k in ("open", "high", "low"):
+                if k not in bar_data:
+                    raise ValueError(f"extend_precomputed: bar_data missing {k!r} (needed for fills)")
+            self._open = np.append(self._open, float(bar_data["open"]))
+            self._high = np.append(self._high, float(bar_data["high"]))
+            self._low = np.append(self._low, float(bar_data["low"]))
 
         if self._timestamps is not None:
             ts = bar_data.get("ts")
