@@ -1,8 +1,10 @@
 name: LLM selector · weekly forward test
 
-# PROTOCOL_llm.md. Every Wednesday after the US close: build inputs as of
-# the Wednesday close, ask the LLM for a long/short selection, score any week
-# that has finished, and commit everything to the `llm-forward` branch.
+# PROTOCOL_llm.md (Amendment 2). Every Thursday 13:00 UTC: price signals as
+# of Wednesday's close, narratives from the last my-website commit before
+# Thursday 12:00 UTC, one LLM call per firm, FX book, score finished weeks,
+# and commit everything to the `llm-forward` branch before the Thursday close
+# at which the positions are set.
 # The commit time is the evidence that each decision predates its outcome.
 #
 # Setup: Settings -> Secrets and variables -> Actions -> OPENROUTER_API_KEY.
@@ -10,7 +12,7 @@ name: LLM selector · weekly forward test
 
 on:
   schedule:
-    - cron: '30 22 * * 3'        # Wednesday 22:30 UTC
+    - cron: '0 13 * * 4'         # Thursday 13:00 UTC (deadline in select.py: 19:00 UTC)
   workflow_dispatch:
 
 permissions:

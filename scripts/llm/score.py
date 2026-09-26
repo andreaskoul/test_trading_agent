@@ -46,7 +46,7 @@ def fred(fid):
     return s.assign(date=pd.to_datetime(s.date)).set_index("date")["v"].dropna() / 100
 
 
-rows, prev = [], {}
+rows, prev, xs_rows = [], {}, []
 for f in sorted(glob.glob(os.path.join(DEC, "*.json"))):
     d = json.load(open(f))
     asof = pd.Timestamp(d["asof"])
@@ -57,7 +57,7 @@ for f in sorted(glob.glob(os.path.join(DEC, "*.json"))):
         e = d[universe]
         books = {"llm": e["llm"] if e["status"] == "ok" else None, "quant": e["quant"], "random": e["random"]}
         names = sorted({x if isinstance(x, str) else x["id"] for b in books.values() if b
-                        for side in ("longs", "shorts") for x in b[side]})
+                        for side in ("longs", "shorts") for x in b[side]} | set(e.get("ridge_forecast_bp", {})))
         if universe == "stocks":
             p = yf.download([n.replace(".", "-") for n in names], start=t0 - pd.Timedelta(days=7),
                             end=t1 + pd.Timedelta(days=1), progress=False, auto_adjust=True)["Close"]
@@ -73,6 +73,12 @@ for f in sorted(glob.glob(os.path.join(DEC, "*.json"))):
             acc = pd.Series({c: (fred(f"IR3TIB01{FXT[c][2]}M156N").asof(t1) - usd.asof(t1)) / 52 for c in names})
             ret = np.log(px_at(s, t1) / px_at(s, t0)) + acc
             cost = pd.Series(FX_COST)[names]
+        if universe == "stocks" and "llm_score" in e:        # pre-registered secondary: cross-section over all firms
+            x = pd.DataFrame({"r": ret, "ridge": pd.Series(e["ridge_forecast_bp"]), "llm": pd.Series(e["llm_score"])}).dropna()
+            rk = (x.ridge.rank() - 1) / (len(x) - 1) - 0.5
+            X = np.column_stack([np.ones(len(x)), rk, x.llm])
+            b_ = np.linalg.lstsq(X, x.r.to_numpy(), rcond=None)[0]
+            xs_rows.append(dict(asof=d["asof"], n=len(x), b_ridge=b_[1], b_llm=b_[2], llm_nonzero=int((x.llm != 0).sum())))
         for book, b in books.items():
             if b is None:                                   # no_decision week counts as flat
                 rows.append(dict(asof=d["asof"], universe=universe, book=book, gross=0.0, cost=0.0, net=0.0, n_missing=0))
@@ -91,6 +97,13 @@ for f in sorted(glob.glob(os.path.join(DEC, "*.json"))):
 
 R = pd.DataFrame(rows)
 R.to_csv(OUTF, index=False)
+XS = pd.DataFrame(xs_rows)
+XS.to_csv(OUTF.replace(".csv", "_xs.csv"), index=False)
+if len(XS) > 2:
+    b = XS.b_llm.to_numpy(); e_ = b - b.mean(); v = e_ @ e_ / len(b)
+    for k in (1, 2):
+        v += 2 * (1 - k / 3) * (e_[k:] @ e_[:-k]) / len(b) if len(b) > k else 0
+    print(f"secondary: mean LLM-score slope {b.mean() * 1e4:.1f} bp per score point, NW t {b.mean() / np.sqrt(v / len(b)):.2f}, {len(b)} weeks")
 if len(R):
     P = R.pivot_table(index=["universe", "asof"], columns="book", values="net")
     for u, g in P.groupby(level=0):
