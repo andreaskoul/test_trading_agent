@@ -1,0 +1,73 @@
+name: LLM selector · weekly forward test
+
+# PROTOCOL_llm.md. Every Wednesday after the US close: build inputs as of
+# the Wednesday close, ask the LLM for a long/short selection, score any week
+# that has finished, and commit everything to the `llm-forward` branch.
+# The commit time is the evidence that each decision predates its outcome.
+#
+# Setup: Settings -> Secrets and variables -> Actions -> OPENROUTER_API_KEY.
+# Without it the run fails loudly (it does not skip silently).
+
+on:
+  schedule:
+    - cron: '30 22 * * 3'        # Wednesday 22:30 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: llm-selector
+  cancel-in-progress: false
+
+jobs:
+  select:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install
+        run: pip install "numpy<2" pandas pyarrow yfinance
+
+      - name: Restore forward-test history
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code origin llm-forward >/dev/null 2>&1; then
+            git fetch origin llm-forward
+            git checkout origin/llm-forward -- reports/llm_forward 2>/dev/null || true
+          fi
+
+      - name: Build inputs, select, score
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          set -euo pipefail
+          ASOF=$(python -c "import pandas as pd; t=pd.Timestamp.now(tz='UTC').tz_localize(None).normalize(); print((t - pd.Timedelta(days=(t.dayofweek - 2) % 7)).date())")
+          echo "asof=$ASOF"
+          python scripts/llm/build_inputs.py --asof "$ASOF"
+          python scripts/llm/select.py --asof "$ASOF"
+          python scripts/llm/score.py
+
+      - name: Commit to llm-forward
+        if: always()
+        run: |
+          set -euo pipefail
+          git config user.name 'llm-selector-bot'
+          git config user.email 'llm-selector-bot@users.noreply.github.com'
+          git fetch origin llm-forward 2>/dev/null || true
+          git worktree add /tmp/fwd llm-forward 2>/dev/null || git worktree add -b llm-forward /tmp/fwd
+          mkdir -p /tmp/fwd/reports
+          rsync -a reports/llm_forward/ /tmp/fwd/reports/llm_forward/
+          cd /tmp/fwd
+          git add -f reports/llm_forward
+          if ! git diff --cached --quiet; then
+            git commit -m "llm-forward $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push origin llm-forward
+          fi
