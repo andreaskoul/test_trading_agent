@@ -9,6 +9,8 @@ from __future__ import annotations
 import os
 import warnings
 
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+
 import numpy as np
 import pandas as pd
 from pandas.tseries.offsets import BDay
@@ -96,6 +98,8 @@ def fwd(H):
 # ---------------------------------------------------------------- helpers
 def nw_t(x, L):
     x = np.asarray(x, float); x = x[~np.isnan(x)]
+    if len(x) < 3 or x.std() == 0:
+        return np.nan
     e = x - x.mean(); s = e @ e / len(x)
     for k in range(1, min(L, len(x) - 1) + 1):
         s += 2 * (1 - k / (L + 1)) * (e[k:] @ e[:-k]) / len(x)
@@ -164,7 +168,8 @@ def fit_predict(rule, tr, te, H):
         m = Ridge(alpha=10.0).fit(sc.transform(Xtr), ytr)
         okte = Xte.notna().all(1)
         p = pd.Series(np.nan, index=Xte.index)
-        p[okte] = m.predict(sc.transform(Xte[okte]))
+        if okte.any():
+            p[okte] = m.predict(sc.transform(Xte[okte]))
         return p
     m = HistGradientBoostingRegressor(max_depth=3, max_iter=200, learning_rate=0.05, random_state=0).fit(Xtr, ytr)
     return pd.Series(m.predict(Xte), index=Xte.index)
