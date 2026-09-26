@@ -86,3 +86,22 @@ DSR > 0.95 and IC t > 2. No pass means gold at a daily horizon is not
 predictable from these sources, and the next step is the news-geometry
 features, pre-registered separately. A pass gets one look at the live window
 and a pre-registered paper-trading spec before any cron is re-enabled.
+
+## Amendment 1 (committed before any feature is built)
+
+COT reports were published late during the three federal funding lapses.
+The +6-day rule would use them before release, so reports dated inside
+these windows are available only from a conservative date after the
+catch-up ended (later availability can only make the signal staler, never
+leaky):
+
+| report dates | available from | basis |
+|---|---|---|
+| 2013-09-24 → 2013-11-26 | 2013-12-30 | Oct 2013 lapse, catch-up through Dec 2013 |
+| 2018-12-18 → 2019-02-26 | 2019-03-11 | Dec 2018–Jan 2019 lapse, catch-up through early Mar 2019 |
+| 2025-09-30 → 2025-12-16 | 2025-12-29 | CFTC catch-up schedule (last backlog report published 2025-12-23) |
+
+The instrument stays GC=F. Checked before any return analysis: the Yahoo
+continuous series differs from GLD by 0.35%/yr on average (roll yield plus
+GLD's fee), and the largest daily differences are close-time mismatches on
+event days (GC 17:00 ET vs GLD 16:00 ET), not roll jumps.
