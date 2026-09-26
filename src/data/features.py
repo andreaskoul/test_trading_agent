@@ -13,6 +13,11 @@ import numpy as np
 import pandas as pd
 
 
+
+# Price columns carried alongside features for the env / engine; never
+# fed to the encoder.
+PASSTHROUGH = ("open", "high", "low", "close", "atr")
+
 def _ema(series: pd.Series, span: int) -> pd.Series:
     return series.ewm(span=span, adjust=False, min_periods=span).mean()
 
@@ -71,13 +76,19 @@ def build_features(
     warmup_bars: int = 252,
     zscore_window: int = 252,
     macro_data: Optional[Dict[str, pd.DataFrame]] = None,
+    macro_lag: pd.Timedelta = pd.Timedelta(days=1),
 ) -> pd.DataFrame:
     """Return a feature DataFrame aligned to `df.index` with a `close` passthrough."""
     out = pd.DataFrame(index=df.index)
     close = df["close"].astype(float)
     high = df["high"].astype(float)
     low = df["low"].astype(float)
-    volume = df["volume"].astype(float).replace(0, np.nan)
+    # yfinance reports volume=0 on the session-open bar (22:00 UTC) almost
+    # every day. A single NaN voids every 252-bar rolling window that
+    # contains it, which silently wiped vol_z (and so every live row) after
+    # dropna. Treat zero as missing and carry the previous bar's volume;
+    # training data (no zeros) is unchanged.
+    volume = df["volume"].astype(float).replace(0, np.nan).ffill()
 
     # Log returns — short (mean-reversion) and long (trend-following)
     log_ret = np.log(close).diff()
@@ -130,9 +141,13 @@ def build_features(
     # Passthrough price columns the env needs
     out["close"] = close
     out["atr"] = atr
+    # OHLC passthrough for bracket fills (src/env/fills.py). Not features.
+    out["open"] = df["open"].astype(float)
+    out["high"] = high
+    out["low"] = low
 
     # Rolling z-score normalise numeric features (excluding passthroughs)
-    feat_cols = [c for c in out.columns if c not in ("close", "atr")]
+    feat_cols = [c for c in out.columns if c not in PASSTHROUGH]
     for col in feat_cols:
         out[col] = _rolling_z(out[col], zscore_window)
 
@@ -165,6 +180,11 @@ def build_features(
                 continue
             slug = _macro_symbol_slug(sym)
             mclose = mdf["close"].astype(float).sort_index()
+            # Daily closes are stamped 00:00 UTC of the trade date but are
+            # only known after the US close (~21:00 UTC). Without a lag,
+            # every hourly bar of day D sees day D's close: look-ahead.
+            # Shift to availability time (next day 00:00 by default).
+            mclose.index = mclose.index + macro_lag
             mlog = np.log(mclose.replace(0, np.nan)).dropna()
             chg5 = mlog.diff(5)
             chg20 = mlog.diff(20)
@@ -181,4 +201,4 @@ def build_features(
 
 
 def feature_columns(df: pd.DataFrame) -> List[str]:
-    return [c for c in df.columns if c not in ("close", "atr")]
+    return [c for c in df.columns if c not in PASSTHROUGH]

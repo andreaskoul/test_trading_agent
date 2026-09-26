@@ -11,12 +11,28 @@ data:
       fallback_symbols: ["GLD"]
       interval: "60m"
       raw_path: "data/raw/gc_60m.parquet"
-      features_path: "data/processed/features_gc_60m.parquet"
-      labels_path: "data/processed/labels_gc_60m.parquet"
+      # Reference schema = what the encoders/policies were trained on
+      # (configs/extended.yaml via scripts/build_extended_data.py): 22 cols,
+      # incl. dxf_* macros. The old features_gc_60m (17 cols) crashed the
+      # 22-dim encoder input layer.
+      features_path: "data/processed/features_gc_extended.parquet"
+      labels_path: "data/processed/labels_gc_extended.parquet"
 
+# Must match build_extended_data.py: scale_param(252, "60m") = 1638.
 features:
-  warmup_bars: 252
-  zscore_window: 252
+  warmup_bars: 1638
+  zscore_window: 1638
+
+# Must match the env the policies were trained in (configs/extended.yaml).
+triple_barrier:
+  horizon: 4
+  rr_upper: 1.5
+  rr_lower: 0.75
+  atr_window: 4
+
+env:
+  spread_bps: 0.5
+  fill_model: "bracket"   # next-open entry, TP/SL on high/low; see src/env/fills.py
 
 # Phase L: tighter kill-switch for live trading; halt on any of:
 #   * rolling Sharpe < 0.5 for 3 consecutive 60-trade windows

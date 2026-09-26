@@ -41,6 +41,8 @@ from typing import Optional
 import numpy as np
 import pandas as pd
 
+from ..data.features import PASSTHROUGH
+
 log = logging.getLogger(__name__)
 
 
@@ -125,7 +127,7 @@ class FeatureDriftDetector:
     ) -> None:
         if columns is None:
             columns = [c for c in reference.columns
-                       if c not in ("close", "atr")
+                       if c not in PASSTHROUGH
                        and pd.api.types.is_numeric_dtype(reference[c])]
         if not columns:
             raise ValueError("FeatureDriftDetector: no numeric columns to monitor")

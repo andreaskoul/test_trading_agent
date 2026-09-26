@@ -42,8 +42,11 @@ jobs:
           if git ls-remote --exit-code origin state >/dev/null 2>&1; then
             git fetch origin state:state
             # Runtime state only (policies/encoders/regimes live on main checkout).
-            git checkout state -- artefacts/live_bars.parquet artefacts/paper_trades.db artefacts/engine_state.json artefacts/kill_switch_halt.json 2>/dev/null || true
-            echo "Restored prior state from state branch"
+            # One file per checkout: a single missing pathspec (e.g. no halt
+            # marker yet) makes a multi-path checkout restore nothing.
+            for f in artefacts/live_bars.parquet artefacts/paper_trades.db artefacts/engine_state.json artefacts/kill_switch_halt.json; do
+              if git checkout state -- "$f" 2>/dev/null; then echo "restored $f"; else echo "not on state branch: $f"; fi
+            done
           else
             echo "No state branch yet; starting fresh"
           fi
