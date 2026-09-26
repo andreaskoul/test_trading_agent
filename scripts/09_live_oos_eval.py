@@ -98,7 +98,7 @@ for info in ("causal", "leaky"):
         if rp not in post_cache:
             hmm = HMMRegimeModel.load(rp)
             post_cache[rp] = (hmm.filtered_posterior(close) if info == "causal"
-                              else hmm.posterior(close))[lo:]
+                              else hmm.smoothed_posterior(close))[lo:]
         pc = {"close": close[lo:], "atr": atr[lo:], "embeddings": emb_cache[g],
               **{k: feats[k].to_numpy(np.float64)[lo:] for k in ("open", "high", "low")},
               "vol_quantile": vol_q[lo:], "regime_posterior": post_cache[rp]}
