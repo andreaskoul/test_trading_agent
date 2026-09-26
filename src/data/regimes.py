@@ -104,7 +104,17 @@ class HMMRegimeModel:
         return self
 
     def posterior(self, close: np.ndarray) -> np.ndarray:
-        """Compute P(state | x) for every bar. Shape: (n_bars, n_states).
+        """Causal P(state_t | x_1..x_t) for every bar. Shape (n_bars, n_states).
+
+        This used to return the forward-backward smoother, which lets every
+        bar's regime depend on future bars. Every training, evaluation and
+        live path calls this method, so it is now the forward filter.
+        """
+        return self.filtered_posterior(close)
+
+    def smoothed_posterior(self, close: np.ndarray) -> np.ndarray:
+        """Smoothed P(state_t | x_1..x_T): uses the whole sample (look-ahead).
+        Kept only to reproduce and measure the old behaviour.
 
         Falls back to uniform posterior if predict_proba raises (e.g. due
         to degenerate covariance matrices on certain CPCV splits).

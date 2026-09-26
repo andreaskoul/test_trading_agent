@@ -140,51 +140,29 @@ def _build_macro(force_refresh: bool) -> dict[str, pd.DataFrame]:
                 if os.path.exists(cpath):
                     macro[sym] = pd.read_parquet(cpath)
 
-    # ^GSPC: combine GitHub monthly (pre-2016) with FRED daily (2016+).
+    # ^GSPC: daily closes from Yahoo. The previous cache spliced the GitHub
+    # s-and-p-500 *monthly average* (stamped on the 1st, forward-filled) in
+    # front of FRED SP500: for 2012-2015 every bar saw the average of the
+    # month it was in, i.e. up to a month of look-ahead. FRED SP500 only
+    # covers the last 10 years, so Yahoo is the daily source for the span.
     gspc_path = cache_paths["^GSPC"]
-    if not force_refresh and os.path.exists(gspc_path):
-        existing = pd.read_parquet(gspc_path)
-        # If cache starts before 2015, it already has the extended range.
-        if len(existing) > 0 and existing.index[0].year < 2015:
-            log.info("macro ^GSPC: using extended cache (%d rows)", len(existing))
-            macro["^GSPC"] = existing
-        else:
-            force_refresh = True  # trigger rebuild below
-
-    if "^GSPC" not in macro:
-        log.info("macro ^GSPC: building combined GitHub monthly + FRED daily")
-        try:
-            # GitHub monthly (1871+): provides pre-2016 coverage.
-            raw = pd.read_csv(io.BytesIO(_fetch(_GSPC_GITHUB)))
-            raw["date"] = pd.to_datetime(raw["Date"], utc=True)
-            raw = raw.rename(columns={"SP500": "close"}).set_index("date").sort_index()
-            raw["close"] = pd.to_numeric(raw["close"], errors="coerce")
-            monthly = raw[["close"]].dropna()
-            # Forward-fill monthly to business-day daily.
-            daily_idx = pd.date_range(monthly.index[0], monthly.index[-1], freq="B", tz="UTC")
-            monthly_daily = monthly.reindex(daily_idx, method="ffill")
-
-            # FRED daily (2016+): higher resolution, splice on top.
-            fred_daily = _load_fred_series(_GSPC_FRED)
-            fred_df = fred_daily.rename("close").to_frame()
-
-            # Combine: use monthly_daily where FRED is absent, FRED elsewhere.
-            combined = monthly_daily.copy()
-            combined.update(fred_df)
-            # Also extend past the monthly series end using FRED.
-            extra = fred_df[fred_df.index > monthly_daily.index[-1]]
-            if len(extra):
-                combined = pd.concat([combined, extra])
-
-            gspc = _to_ohlcv(combined["close"])
-            gspc.to_parquet(gspc_path)
-            log.info("macro ^GSPC: %d rows %s → %s (combined)",
-                     len(gspc), gspc.index[0].date(), gspc.index[-1].date())
-            macro["^GSPC"] = gspc
-        except Exception as exc:
-            log.warning("macro ^GSPC: rebuild failed (%s), falling back to cache", exc)
-            if os.path.exists(gspc_path):
-                macro["^GSPC"] = pd.read_parquet(gspc_path)
+    cached = pd.read_parquet(gspc_path) if os.path.exists(gspc_path) else None
+    daily_ok = (cached is not None and len(cached) > 0 and
+                cached.loc["2013-01-02":"2013-01-31", "close"].nunique() > 5)
+    if force_refresh or not daily_ok:
+        import yfinance as yf
+        raw = yf.download("^GSPC", start="2005-01-01", interval="1d",
+                          progress=False, auto_adjust=False, threads=False)
+        if isinstance(raw.columns, pd.MultiIndex):
+            raw.columns = raw.columns.get_level_values(0)
+        s_ = raw["Close"].dropna()
+        s_.index = pd.to_datetime(s_.index, utc=True)
+        macro["^GSPC"] = _to_ohlcv(s_)
+        macro["^GSPC"].to_parquet(gspc_path)
+        log.info("macro ^GSPC: %d daily rows from Yahoo %s -> %s", len(s_),
+                 s_.index[0].date(), s_.index[-1].date())
+    else:
+        macro["^GSPC"] = cached
 
     return macro
 
@@ -278,6 +256,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Build extended training + OOS datasets")
     parser.add_argument("--force-macro-refresh", action="store_true",
                         help="re-fetch all macro series from source even if cached")
+    parser.add_argument("--reselect", action="store_true",
+                        help="re-run MI feature selection instead of keeping the current schema")
     args = parser.parse_args()
 
     os.makedirs(PROC_DIR, exist_ok=True)
@@ -288,7 +268,15 @@ def main() -> None:
     # 2. Training set — XAUUSD spot hourly 2012-2022
     log.info("loading training raw: %s", TRAIN_RAW)
     train_raw = pd.read_parquet(TRAIN_RAW)
-    train_feats, train_labels = _build_features_labels(train_raw, macro, "TRAIN")
+    # Keep the column set the encoders/policies were trained on unless asked
+    # to re-run MI selection (MI on the old, leaky macros picked this set).
+    schema = None
+    if not args.reselect and os.path.exists(TRAIN_FEATS):
+        from src.data.features import feature_columns as _fc
+        schema = _fc(pd.read_parquet(TRAIN_FEATS)) + list(PASSTHROUGH)
+        log.info("keeping existing %d-feature schema", len(schema) - len(PASSTHROUGH))
+    train_feats, train_labels = _build_features_labels(train_raw, macro, "TRAIN",
+                                                       kept_cols_override=schema)
     train_feats.to_parquet(TRAIN_FEATS)
     train_labels.to_parquet(TRAIN_LABELS)
     log.info("wrote %s  (%d bars)", TRAIN_FEATS, len(train_feats))
