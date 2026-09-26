@@ -117,3 +117,52 @@ It uses all ~500 names each week, so it has far more power than the 50-name
 book.
 
 FX is unchanged (one call, no news).
+
+## Amendment 2 (2026-09-27, before the first decision; supersedes Amendment 1's news, universe and book sections)
+
+Requested design change: feed the LLM the **narrative dashboard's final
+output**, not raw headlines: whole stories with their continuity, plus
+dated events.
+
+**Source.** `andreaskoul/my-website`, `site/data/<TICKER>.json`, produced by
+its `pipeline/build.py`. That pipeline covers Finnhub + Polygon news, exact
+and near-duplicate removal (`gemini-embedding-2`, cos > 0.95), relevance
+tests, stories with stable identity across refits (weekly share series,
+one headline per week), emerging stories, and LLM-named dated events.
+This replaces Amendment 1's Finnhub fetch and in-house de-duplication: the
+embedding de-duplication now happens upstream, with the same model.
+
+**Point in time.** Every run of the site commits `site/data`. For a given
+as-of Wednesday, the snapshot is the **last my-website commit before Thursday
+12:00 UTC**. Its SHA is recorded in the inputs, and later commits are never
+read. Price signals stay as of the Wednesday close. News through Thursday
+morning is known before the Thursday-close entry, so this is not look-ahead.
+The weekly job moves to Thursday 13:00 UTC; the Thursday 19:00 UTC deadline
+still holds.
+
+**Universe.** The firms in the snapshot's `config/firms.json` (currently 20;
+19 are S&P 500 members, TSM is an ADR). Signal z-scores stay standardised
+against the full S&P 500 cross-section, and TSM is standardised with the
+members' mean and standard deviation. The ridge forecast and its rank are
+reported both within the S&P 500 and within the 20.
+
+**Per-firm decision** (unchanged format). Input: signals, ridge forecast and
+ranks, and the firm's narrative state:
+* every story, with name, blurb, `new` flag, the last 8 weeks of
+  (articles, share), the last 4 weekly representative headlines, and all of
+  this week's listed articles (date, publisher, headline, summary);
+* every event whose end date falls in the 7 days to the cutoff, with name,
+  parent story, start/end, article count and top headlines.
+
+Output: `score` ∈ {−2, …, +2}, `confidence`, and a reason.
+
+**Books.** Within the 20: LLM longs = top 4 by (score, ridge), shorts =
+bottom 4. The quant book is the top/bottom 4 by ridge within the 20. Random
+as before.
+
+**Evaluation.** Primary: LLM − quant weekly return difference. Secondary:
+the weekly cross-sectional regression over the 20 names (ridge rank, LLM
+score) with a Newey–West t on the LLM coefficient. Power with 20 names and
+4+4 books is low. The 52/104-week reads stand, and a pre-registered option,
+not a requirement, is to widen the dashboard's firm list, which restarts the
+clock as a new protocol.
