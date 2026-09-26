@@ -59,6 +59,7 @@ def finetune_policy(
             train_idx,
             seed,
             regime_posterior=precomputed.get("regime_posterior"),
+            open_=precomputed.get("open"), high=precomputed.get("high"), low=precomputed.get("low"),
         )
     ])
     algo_cls = _ALGO_MAP.get(algorithm.lower(), PPO)

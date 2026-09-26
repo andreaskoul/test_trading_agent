@@ -21,6 +21,7 @@ import numpy as np
 import pandas as pd
 from gymnasium import spaces
 
+from .fills import as_array, check_exit, open_trade, require_ohlc
 from .trading_env import EnvConfig, HOLD, BUY, SELL
 
 
@@ -37,12 +38,17 @@ class EmbeddingTradingEnv(gym.Env):
         allowed_idx: Optional[np.ndarray] = None,
         seed: int = 0,
         regime_posterior: Optional[np.ndarray] = None,  # (n_bars, n_states)
+        open_: Optional[np.ndarray] = None,
+        high: Optional[np.ndarray] = None,
+        low: Optional[np.ndarray] = None,
     ):
         super().__init__()
         self._close = np.asarray(close, dtype=np.float64)
         self._atr = np.asarray(atr, dtype=np.float64)
         self._emb = np.asarray(embeddings, dtype=np.float32)
         self._vol_quantile = np.asarray(vol_quantile, dtype=np.float64)
+        self._open, self._high, self._low = as_array(open_), as_array(high), as_array(low)
+        require_ohlc(cfg.fill_model, self._open, self._high, self._low)
         # T2.1 regime conditioning: optional per-bar HMM posterior.
         if regime_posterior is not None:
             self._regime = np.asarray(regime_posterior, dtype=np.float32)
@@ -147,46 +153,24 @@ class EmbeddingTradingEnv(gym.Env):
         return np.concatenate([emb, self._regime[i]]).astype(np.float32)
 
     def _open_position(self, direction: int) -> None:
+        t = open_trade(self._step_i, direction, self._close, self._atr, self._open,
+                       self.cfg.rr_upper, self.cfg.rr_lower, self.cfg.fill_model)
+        if t is None:                  # no next bar to enter on
+            return
         self._pos = direction
-        self._entry_i = self._step_i
-        self._entry_price = self._close[self._step_i]
-        atr_now = max(self._atr[self._step_i], 1e-8)
-        if direction == +1:
-            self._barrier_upper = self._entry_price + self.cfg.rr_upper * atr_now
-            self._barrier_lower = self._entry_price - self.cfg.rr_lower * atr_now
-        else:
-            self._barrier_upper = self._entry_price - self.cfg.rr_upper * atr_now
-            self._barrier_lower = self._entry_price + self.cfg.rr_lower * atr_now
+        self._entry_i = self._step_i   # signal bar; horizon counts from here
+        self._entry_price, self._barrier_upper, self._barrier_lower = t
 
     def _check_barrier(self) -> tuple[float, bool, float]:
         cfg = self.cfg
-        i = self._step_i
-        price = self._close[i]
-        horizon_exceeded = (i - self._entry_i) >= cfg.horizon
-        pos = self._pos
-
-        hit_tp = False
-        hit_sl = False
-        if pos == +1:
-            hit_tp = price >= self._barrier_upper
-            hit_sl = price <= self._barrier_lower
-        elif pos == -1:
-            hit_tp = price <= self._barrier_upper
-            hit_sl = price >= self._barrier_lower
-
-        if hit_tp:
-            ret = pos * (self._barrier_upper / self._entry_price - 1)
-            ret -= 2 * cfg.spread_bps / 1e4
-            return self._compute_reward(float(ret), "tp"), True, float(ret)
-        if hit_sl:
-            ret = pos * (self._barrier_lower / self._entry_price - 1)
-            ret -= 2 * cfg.spread_bps / 1e4
-            return self._compute_reward(float(ret), "sl"), True, float(ret)
-        if horizon_exceeded:
-            raw_ret = pos * (price / self._entry_price - 1)
-            raw_ret -= 2 * cfg.spread_bps / 1e4
-            return self._compute_reward(float(raw_ret), "timeout"), True, float(raw_ret)
-        return 0.0, False, 0.0
+        hit = check_exit(self._step_i, self._entry_i, self._pos, self._barrier_upper,
+                         self._barrier_lower, cfg.horizon, self._open, self._high,
+                         self._low, self._close, cfg.fill_model)
+        if hit is None:
+            return 0.0, False, 0.0
+        barrier, px = hit
+        ret = self._pos * (px / self._entry_price - 1) - 2 * cfg.spread_bps / 1e4
+        return self._compute_reward(float(ret), barrier), True, float(ret)
 
     # ------------------------------------------------------------------
     # reward shaping (mirrors TradingEnv._compute_reward)

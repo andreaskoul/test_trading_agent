@@ -259,6 +259,7 @@ class CockpitState:
             "atr": atr,
             "embeddings": emb,
             "vol_quantile": vol_q,
+            **{k: features[k].to_numpy(np.float64) for k in ("open", "high", "low") if k in features},
             "timestamps": features.index,
             "features": features,
         }

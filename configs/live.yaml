@@ -32,6 +32,7 @@ triple_barrier:
 
 env:
   spread_bps: 0.5
+  fill_model: "bracket"   # next-open entry, TP/SL on high/low; see src/env/fills.py
 
 # Phase L: tighter kill-switch for live trading; halt on any of:
 #   * rolling Sharpe < 0.5 for 3 consecutive 60-trade windows

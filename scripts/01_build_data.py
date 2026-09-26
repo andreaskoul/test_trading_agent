@@ -15,7 +15,7 @@ from _bootstrap import setup, path
 
 from src.data.config_utils import parse_asset_configs, scale_param
 from src.data.loader import load_ohlcv, fetch_macro_series
-from src.data.features import build_features, feature_columns
+from src.data.features import PASSTHROUGH, build_features, feature_columns
 from src.data.feature_selection import mi_filter
 from src.data.triple_barrier import TBConfig, label_triple_barrier
 
@@ -91,11 +91,11 @@ def main() -> None:
             # Map to {0,1,2} for MI estimator (labels are {-1,0,1}).
             y_mi = labels["label_multi"].to_numpy().astype(int) + 1
             kept, ranking = mi_filter(
-                feats.drop(columns=[c for c in ("close", "atr") if c in feats.columns], errors="ignore"),
+                feats.drop(columns=[c for c in PASSTHROUGH if c in feats.columns], errors="ignore"),
                 y_mi,
                 threshold=mi_threshold,
             )
-            kept_cols = list(dict.fromkeys(list(kept) + [c for c in ("close", "atr") if c in feats.columns]))
+            kept_cols = list(dict.fromkeys(list(kept) + [c for c in PASSTHROUGH if c in feats.columns]))
             dropped = [c for c in feats.columns if c not in kept_cols]
             log.info("[%s] MI pruned %d cols (threshold=%.4f): %s",
                      asset.symbol, len(dropped), mi_threshold, dropped)

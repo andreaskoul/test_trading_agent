@@ -47,7 +47,8 @@ def build_precomputed(
     atr = features["atr"].to_numpy(dtype=np.float64)
     rv = pd.Series(atr / close).rolling(20, min_periods=1).mean()
     vol_quantile = rv.rank(pct=True).to_numpy()
-    out = dict(close=close, atr=atr, embeddings=embeddings, vol_quantile=vol_quantile)
+    out = dict(close=close, atr=atr, embeddings=embeddings, vol_quantile=vol_quantile,
+               **{k: features[k].to_numpy(np.float64) for k in ("open", "high", "low") if k in features})
     if regime_posterior is not None:
         out["regime_posterior"] = np.asarray(regime_posterior, dtype=np.float32)
     return out
@@ -88,6 +89,7 @@ def rollout_policy(
         allowed_idx=test_idx,
         seed=0,
         regime_posterior=precomputed.get("regime_posterior"),
+        open_=precomputed.get("open"), high=precomputed.get("high"), low=precomputed.get("low"),
     )
 
     trades: list[float] = []

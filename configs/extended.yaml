@@ -63,6 +63,7 @@ cpcv:
 
 env:
   spread_bps: 0.5
+  fill_model: "bracket"   # next-open entry, TP/SL on high/low; see src/env/fills.py
   reward_mode: "diff_sharpe"
   reward_return_scale: 100.0
   reward_cost_lambda: 2.0

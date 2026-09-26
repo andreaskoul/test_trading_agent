@@ -13,6 +13,11 @@ import numpy as np
 import pandas as pd
 
 
+
+# Price columns carried alongside features for the env / engine; never
+# fed to the encoder.
+PASSTHROUGH = ("open", "high", "low", "close", "atr")
+
 def _ema(series: pd.Series, span: int) -> pd.Series:
     return series.ewm(span=span, adjust=False, min_periods=span).mean()
 
@@ -136,9 +141,13 @@ def build_features(
     # Passthrough price columns the env needs
     out["close"] = close
     out["atr"] = atr
+    # OHLC passthrough for bracket fills (src/env/fills.py). Not features.
+    out["open"] = df["open"].astype(float)
+    out["high"] = high
+    out["low"] = low
 
     # Rolling z-score normalise numeric features (excluding passthroughs)
-    feat_cols = [c for c in out.columns if c not in ("close", "atr")]
+    feat_cols = [c for c in out.columns if c not in PASSTHROUGH]
     for col in feat_cols:
         out[col] = _rolling_z(out[col], zscore_window)
 
@@ -192,4 +201,4 @@ def build_features(
 
 
 def feature_columns(df: pd.DataFrame) -> List[str]:
-    return [c for c in df.columns if c not in ("close", "atr")]
+    return [c for c in df.columns if c not in PASSTHROUGH]
