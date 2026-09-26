@@ -105,3 +105,10 @@ The instrument stays GC=F. Checked before any return analysis: the Yahoo
 continuous series differs from GLD by 0.35%/yr on average (roll yield plus
 GLD's fee), and the largest daily differences are close-time mismatches on
 event days (GC 17:00 ET vs GLD 16:00 ET), not roll jumps.
+
+## Amendment 2 (committed before any result)
+
+Holiday weeks can push the Friday COT release to the following Monday or
+Tuesday. The COT availability lag is raised from +6 to **+7 calendar days**
+(the Tuesday after the report's Tuesday), so no report is ever used before
+it was published.
