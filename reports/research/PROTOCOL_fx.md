@@ -88,3 +88,27 @@ Holding H ∈ {1, 4} weeks via H overlapping weekly tranches.
 Passes on holdout at base costs if Sharpe HAC t > 2, DSR > 0.95,
 Fama–MacBeth t > 2 and alpha-vs-DOL t > 2. A pass gets one look at the live
 window, then a pre-registered paper-trading spec.
+
+## Amendment 1 (data quality; committed before any return analysis)
+
+A first look at the raw Yahoo spot series (levels and single-day moves only,
+nothing lined up against signals) showed prints the registered filter
+misses:
+* EUR on 2008-02-08 at 1.557 between 1.448 and 1.450 (+7.5% and back);
+* IDR in Nov–Dec 2013 alternating between two levels 20% apart for weeks;
+* one-day jumps in JPY and EUR in 2008 that the Fed's H.10 series doesn't show.
+
+Changes:
+1. **Source:** the Fed H.10 noon-NY rates from FRED (`DEXUSEU, DEXJPUS,
+   DEXUSUK, DEXSZUS, DEXUSAL, DEXUSNZ, DEXCAUS, DEXSDUS, DEXNOUS, DEXMXUS,
+   DEXSFUS, DEXKOUS`) for the 12 currencies they cover. Yahoo stays only
+   for PLN, HUF, CZK, ILS, CLP.
+2. **IDR is dropped** (corrupt for weeks at a time). Universe: 17 currencies.
+3. **Filter on the 5 Yahoo series:** remove a print whose move from the
+   previous print exceeds 5% and is at least half reversed within the next 3
+   prints. This replaces the 8% two-sided rule for these series. Removed
+   prints are logged in `data/raw/fx/spike_log.csv`.
+
+Weekly sampling stays Wednesday (for H.10 the Wednesday noon-NY fix). Each
+currency's signals and returns come from the same source, so mixing
+sources adds timing noise across currencies but no look-ahead.
