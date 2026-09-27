@@ -90,23 +90,44 @@ def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 2):
 
 
 def narrative_text(d: dict | None, cutoff: pd.Timestamp) -> str:
-    """The dashboard's per-firm output as prompt text: every story with its
-    8-week continuity, weekly headlines and this week's articles; events that
-    ended in the 7 days to the cutoff."""
+    """Hybrid narrative input (PROTOCOL_fund.md, Amendment 1): structure first, evidence second.
+
+    Structure: every story over the full dashboard window (~13 weeks): weekly share of the
+    firm's relevant coverage, rising/fading/new label vs its own 4-week average, and every
+    dated event in the window (* = active in the 7 days to the cutoff).
+    Evidence: this week's articles under each story (date, publisher, headline, summary cut
+    to 200 characters) and the top headlines of this week's events, because direction and
+    specifics (downgrades, deal sizes, guidance) mostly live in the text, not the structure."""
     if not d:
         return "NARRATIVES: none available this week (no research output)."
+    weeks = d.get("weeks", [])
     names = {s["id"]: s["name"] for s in d.get("stories", [])}
-    out = [f"Coverage: {d.get('n_articles')} articles in the window, {d.get('n_relevant')} judged relevant; "
-           f"latest week {d.get('latest_from')} to {d.get('latest_to')} (updated {d.get('updated')}).", "", "STORIES:"]
+    lo = (cutoff - pd.Timedelta(days=7)).normalize()
+    out = [f"NARRATIVE STRUCTURE: {d.get('n_relevant')} relevant articles of {d.get('n_articles')} over {len(weeks)} weeks "
+           f"({weeks[0] if weeks else '?'} to {weeks[-1] if weeks else '?'}); latest week {d.get('latest_from')}-{d.get('latest_to')}.",
+           "Story share = % of the firm's relevant coverage per week, oldest to newest, weeks: "
+           + " ".join(w[5:] for w in weeks), "", "STORIES (most active this week first):"]
     for s in sorted(d.get("stories", []), key=lambda x: -x.get("latest_n", 0)):
-        wk = ", ".join(f"{x['week']}: n={x['n']} share={x['share']:.2f}" for x in s.get("series", [])[-8:])
-        out += [f"## {s['name']}{' [NEW]' if s.get('new') else ''}: {s.get('blurb')}",
-                f"   total {s.get('n')}, this week {s.get('latest_n')}; weekly: {wk}"]
-        out += [f"   {x['week']} headline: {x.get('h')} ({x.get('p')})" for x in s.get("evolution", [])[-4:]]
-        out += [f"   this week [{x.get('date')}, {x.get('p')}] {x.get('t')} :: {(x.get('d') or '')[:400]}"
+        ser = {x["week"]: x for x in s.get("series", [])}
+        sh = [ser.get(w, {}).get("share", 0.0) * 100 for w in weeks]
+        prev4 = sh[-5:-1] if len(sh) >= 5 else sh[:-1]
+        base = sum(prev4) / len(prev4) if prev4 else 0.0
+        delta = (sh[-1] if sh else 0.0) - base
+        trend = "NEW" if s.get("new") else "rising" if delta > 5 else "fading" if delta < -5 else "stable"
+        out += [f"## [{s['id']}] {s['name']} ({trend}; {s.get('n')} articles, {s.get('latest_n')} this week; "
+                f"share now {sh[-1] if sh else 0:.0f}% vs 4-week avg {base:.0f}%)",
+                f"   about: {s.get('blurb')}",
+                "   share by week: " + " ".join(f"{v:.0f}" for v in sh)]
+        out += [f"   this week [{x.get('date')}, {x.get('p')}] {x.get('t')} :: {(x.get('d') or '')[:200]}"
                 for x in s.get("latest", [])]
-    ev = [e for e in d.get("events", []) if pd.Timestamp(e["end"]) >= (cutoff - pd.Timedelta(days=7)).normalize()]
-    out += ["", "EVENTS (last 7 days):"] + ([
-        f"- {e['name']} (story: {names.get(e.get('story'))}) {e['start']} to {e['end']}, {e['n']} articles: "
-        + " | ".join(f"[{x.get('date')}, {x.get('p')}] {x.get('t')}" for x in e.get("top", [])) for e in ev] or ["- none"])
+    ev = sorted(d.get("events", []), key=lambda e: e["start"])
+    out += ["", f"EVENTS in the window ({len(ev)}; * = active in the last 7 days):"]
+    for e in ev:
+        now = pd.Timestamp(e["end"]) >= lo
+        out.append(f"- {'*' if now else ' '} {e['start']} to {e['end']}: {e['name']} (story: {names.get(e.get('story'), 'other')}; "
+                   f"{e['n']} articles; weekly: " + ", ".join(f"{k[5:]}={v}" for k, v in sorted(e.get("weeks", {}).items())) + ")")
+        if now:
+            out += [f"     [{x.get('date')}, {x.get('p')}] {x.get('t')}" for x in e.get("top", [])]
+    if not ev:
+        out.append("- none")
     return "\n".join(out)

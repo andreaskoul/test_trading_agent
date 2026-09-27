@@ -83,3 +83,25 @@ decision (crashes, retries, logging) are allowed and are logged in
 `OPENROUTER_API_KEY` (LLM and embeddings), `FINNHUB_API_KEY` (attention
 and research), `POLYGON_API_KEY` (optional, research). If a required
 secret is missing, the run fails loudly.
+
+## Amendment 1 (2026-09-27, before any live decision): hybrid narrative input
+
+The analyst and red-team desks receive the research output **structure first,
+evidence second** (`fund/common.py: narrative_text`):
+
+* Structure: every story over the full dashboard window (about 13 weeks), with
+  its weekly share of the firm's relevant coverage, a label (NEW / rising /
+  fading / stable: share now vs its own 4-week average, ±5 points), and every
+  dated event in the window (* = active in the 7 days to the cutoff).
+* Evidence: this week's articles under each story (date, publisher,
+  headline, summary cut to 200 characters) and the top headlines of the
+  events active this week.
+
+Previously the input had 8 weeks of counts and shares, 4 weekly representative
+headlines, this week's articles with 400-character summaries, and only this
+week's events. Structure-only input was considered and rejected before any
+use. On the dashboard's 20 firms this week, material news (Netflix's two
+broker downgrades, JPMorgan's $20B QIA partnership and dividend increase)
+appeared only in article text, not as detected events; direction words
+appear in 30% of headlines against 36% of event names and 38% of story
+blurbs, and 8 of 20 firms had no event at all.
