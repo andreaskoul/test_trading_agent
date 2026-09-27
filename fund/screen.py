@@ -102,7 +102,7 @@ else:
             except Exception:
                 time.sleep(3)
         time.sleep(1.05)                        # free tier: 60 calls / minute
-Z["news_7d"] = pd.Series(counts).reindex(Z.index)
+Z["news_7d"] = pd.Series(counts, dtype=float).reindex(Z.index)
 la = np.log1p(Z["news_7d"])
 Z["attention_z"] = (la - la.mean()) / la.std()
 os.makedirs(os.path.join(STATE, MODE), exist_ok=True)
