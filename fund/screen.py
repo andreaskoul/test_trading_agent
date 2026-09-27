@@ -110,7 +110,7 @@ hist_p = os.path.join(STATE, MODE, "attention_history.parquet")
 hist = pd.read_parquet(hist_p) if os.path.exists(hist_p) else pd.DataFrame(columns=["asof", "ticker", "attention_z"])
 past = hist[pd.to_datetime(hist["asof"]) < asof].groupby("ticker").attention_z.agg(["mean", "count"])
 own = past["mean"].where(past["count"] >= 4)
-Z["attention_shock"] = Z["attention_z"] - own.reindex(Z.index).fillna(0.0)
+Z["attention_shock"] = (Z["attention_z"] - own.reindex(Z.index).fillna(0.0)).astype(float)
 new_hist = pd.concat([hist[pd.to_datetime(hist["asof"]) != asof],
                       pd.DataFrame({"asof": str(asof.date()), "ticker": Z.index, "attention_z": Z["attention_z"].to_numpy()})])
 new_hist.to_parquet(hist_p)
