@@ -2,6 +2,7 @@
 
 import json
 import os
+import time
 from concurrent.futures import ThreadPoolExecutor
 
 import pandas as pd
@@ -55,7 +56,14 @@ def check(o):
     return None if isinstance(c, (int, float)) and 0 <= c <= 1 else f"bad confidence {c!r}"
 
 
+END = time.time() + 75 * 60                          # desk budget: names not started by then score 0
+
+
 def one(t):
+    if time.time() > END:
+        print(f"analyst {t}: skipped (desk time budget spent)", flush=True)
+        return t, {"status": "failed", "error": "desk time budget spent", "meta": {}, "memo": None,
+                   "has_narratives": None, "prompt_chars": 0}
     p = os.path.join(week_dir(asof), "research", f"{t}.json")
     narr = json.load(open(p)) if os.path.exists(p) else None
     r = S.loc[t] if t in S.index else None
@@ -67,6 +75,7 @@ def one(t):
     ms = 0 if r is None else int(max(-2, min(2, round(float(r["ridge_bp"]) / 15))))     # mock: a ridge echo
     status, out, meta, err = llm(SYSTEM, user, {"score": ms, "confidence": 0.5, "thesis": "mock", "catalysts": [],
                                                 "risks": [], "drivers": []}, check)
+    print(f"analyst {t}: {status}" + (f" score {out['score']}" if out else f" ({err})"), flush=True)
     return t, {"status": status, "error": err, "meta": meta, "memo": out, "has_narratives": narr is not None,
                "prompt_chars": len(user)}
 

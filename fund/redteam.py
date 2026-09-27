@@ -6,6 +6,7 @@ the same inputs, who upholds it or weakens it for a named flaw (Amendment 2: no 
 """
 
 import json
+import time
 import os
 from concurrent.futures import ThreadPoolExecutor
 
@@ -59,7 +60,13 @@ def check(o, score=None):
 todo = [t for t, m in memos.items() if m["status"] == "ok" and abs(m["memo"]["score"]) >= 1]
 
 
+END = time.time() + 45 * 60                          # desk budget: unreviewed names keep the analyst's score
+
+
 def one(t):
+    if time.time() > END:
+        print(f"red team {t}: skipped (desk time budget spent)", flush=True)
+        return t, {"status": "failed", "error": "desk time budget spent", "meta": {}, "review": None}
     p = os.path.join(week_dir(asof), "research", f"{t}.json")
     narr = json.load(open(p)) if os.path.exists(p) else None
     r = S.loc[t] if t in S.index else None
@@ -69,6 +76,7 @@ def one(t):
     s = memos[t]["memo"]["score"]
     status, out, meta, err = llm(SYSTEM, user, {"verdict": "uphold", "flaw": None, "adjusted_score": s, "critique": "mock"},
                                  lambda o: check(o, s))
+    print(f"red team {t}: {status}" + (f" {out['verdict']} {s}->{out['adjusted_score']}" if out else f" ({err})"), flush=True)
     return t, {"status": status, "error": err, "meta": meta, "review": out}
 
 

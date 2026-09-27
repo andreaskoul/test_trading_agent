@@ -23,6 +23,7 @@ MODEL = "deepseek/deepseek-v4.1-flash"
 SITE_REPO = "https://github.com/andreaskoul/my-website"
 SITE_PIN = "2c8723905b7977ccabf335bb2565e69775b06cc3"      # pipeline code pinned for the protocol window
 STATE = os.path.join(ROOT, "fund_state")
+CALL_LIMIT = 240                                    # seconds per LLM call, all tries of a call <= 3 x this
 # What the analyst and red-team desks see about price: facts, not a forecast (Amendment 2).
 PRICE_FACTS = ["GICS Sector", "GICS Sub-Industry", "beta60", "vol60_ann_pct", "ret_1w_pct", "ret_1m_pct",
                "ret_12_1_pct", "pct_below_52w_high", "news_7d", "attention_shock", "earnings_in_holding_week"]
@@ -78,8 +79,16 @@ def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 3):
                 req = urllib.request.Request("https://openrouter.ai/api/v1/chat/completions", data=body, headers={
                     "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}", "Content-Type": "application/json",
                     "HTTP-Referer": "https://github.com/andreaskoul/test_trading_agent", "X-Title": "fund-pipeline"})
-                with urllib.request.urlopen(req, timeout=300) as r:
-                    resp = json.load(r)
+                # Hard deadline per call. OpenRouter keeps a slow request alive with whitespace, so a
+                # socket timeout alone never fires on a hung generation (dry run 5: analysts stalled
+                # for 80+ minutes). Read in chunks and give up after CALL_LIMIT seconds.
+                t0, buf = time.time(), b""
+                with urllib.request.urlopen(req, timeout=90) as r:
+                    while chunk := r.read1(65536):              # whatever has arrived, not a full block
+                        buf += chunk
+                        if time.time() - t0 > CALL_LIMIT:
+                            raise TimeoutError(f"LLM call exceeded {CALL_LIMIT} s")
+                resp = json.loads(buf)
                 txt = (resp["choices"][0]["message"].get("content") or "").strip()
                 if not txt:                          # reasoning spent the budget: nothing to parse, retry
                     raise ValueError("empty content")
