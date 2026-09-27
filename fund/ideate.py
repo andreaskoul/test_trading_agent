@@ -70,7 +70,13 @@ status, out, meta, err = llm(SYSTEM, user, mock, check)
 noms = ([x["ticker"] for x in out["long_ideas"][:N_IDEAS]] + [x["ticker"] for x in out["short_ideas"][:N_IDEAS]]) if out else []
 rule = (list(S.nsmallest(N_RULE, "ridge_rank").index) + list(S.nlargest(N_RULE, "ridge_rank").index)
         + list(S["attention_shock"].dropna().nlargest(N_RULE).index))
-coverage = list(dict.fromkeys(core + noms + rule))[:max(CAP, len(core))]
+# one share class per issuer (GOOG/GOOGL, FOX/FOXA, NWS/NWSA): same news, twice the research cost
+issuer = S["Security"].astype(str).str.replace(r"\s*\(.*?\)", "", regex=True).str.strip()
+coverage, seen = list(core), set(issuer.get(t, t) for t in core)
+for t in dict.fromkeys(noms + rule):
+    if t not in coverage and issuer.get(t, t) not in seen:
+        coverage.append(t); seen.add(issuer.get(t, t))
+coverage = coverage[:max(CAP, len(core))]
 why = {t: [k for k, grp in (("core", core), ("nominated", noms), ("rule", rule)) if t in grp] for t in coverage}
 save(asof, "ideation.json", {"asof": str(asof.date()), "status": status, "error": err, "meta": meta, "llm": out,
                               "core": core, "nominated": noms, "rule_based": rule, "coverage": coverage, "why": why,

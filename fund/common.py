@@ -64,7 +64,7 @@ def deadline_ok(asof) -> bool:
     return MOCK or DRYRUN or time.time() < calendar.timegm(pd.Timestamp(asof).timetuple()) + 86400 + 19 * 3600
 
 
-def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 2):
+def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 3):
     """JSON-mode chat call. Returns (status, output, meta, error)."""
     err = None
     for _ in range(tries):
@@ -80,7 +80,9 @@ def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 2):
                     "HTTP-Referer": "https://github.com/andreaskoul/test_trading_agent", "X-Title": "fund-pipeline"})
                 with urllib.request.urlopen(req, timeout=300) as r:
                     resp = json.load(r)
-                txt = resp["choices"][0]["message"]["content"].strip()
+                txt = (resp["choices"][0]["message"].get("content") or "").strip()
+                if not txt:                          # reasoning spent the budget: nothing to parse, retry
+                    raise ValueError("empty content")
                 txt = txt.removeprefix("```json").removeprefix("```").removesuffix("```")
                 out, meta = json.loads(txt), {"model": resp.get("model"), "usage": resp.get("usage")}
             err = check(out) if check else None
