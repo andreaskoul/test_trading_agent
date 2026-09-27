@@ -1,0 +1,105 @@
+name: Fund · weekly desks
+
+# PROTOCOL_fund.md. Wednesday after the US close, one run through the desks:
+# screen -> ideation -> research (narrative-dashboard pipeline on the coverage
+# list) -> analysts -> red team -> PM/risk -> macro FX -> [commit decisions]
+# -> IC memo -> performance -> [commit]. Decisions are committed to the
+# `fund-data` branch before the Thursday close at which positions are set;
+# the PM desk refuses after Thursday 19:00 UTC.
+#
+# Secrets: OPENROUTER_API_KEY, FINNHUB_API_KEY (required), POLYGON_API_KEY (optional).
+
+on:
+  schedule:
+    - cron: '15 22 * * 3'        # Wednesday 22:15 UTC
+  workflow_dispatch:
+    inputs:
+      asof:
+        description: "as-of Wednesday (YYYY-MM-DD); empty = latest"
+        default: ""
+      dry_run:
+        description: "Dry run: real calls, no deadline, results only as a run artifact (never committed, never counted)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fund-weekly
+  cancel-in-progress: false
+
+jobs:
+  desks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    env:
+      FUND_ASOF: ${{ inputs.asof }}
+      FUND_DRYRUN: ${{ inputs.dry_run && '1' || '0' }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+      POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install
+        run: pip install "numpy<2" pandas pyarrow yfinance scipy scikit-learn umap-learn
+
+      - name: Restore fund state (weeks, attention history, research feeds and story state)
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code origin fund-data >/dev/null 2>&1; then
+            git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
+            git checkout origin/fund-data -- fund_state fund_research 2>/dev/null || true
+          fi
+
+      - name: Restore embedding cache
+        uses: actions/cache@v4
+        with:
+          path: fund_research/data/cache
+          key: fund-emb-${{ github.run_id }}
+          restore-keys: fund-emb-
+
+      - name: Desk 1 · screen
+        run: python fund/screen.py
+      - name: Desk 2 · ideation
+        run: python fund/ideate.py
+      - name: Desk 3 · research
+        run: python fund/research.py
+      - name: Desk 4 · analysts
+        run: python fund/analysts.py
+      - name: Desk 5 · red team
+        run: python fund/redteam.py
+      - name: Desk 6 · PM + risk
+        run: python fund/pm_risk.py
+      - name: Desk 8 · macro FX
+        run: python fund/fx_desk.py
+
+      - name: Commit decisions (before the Thursday close)
+        if: ${{ !inputs.dry_run }}
+        run: bash fund/commit_state.sh "fund decisions"
+
+      - name: Desk 7 · IC memo
+        if: always()
+        run: python fund/ic_memo.py
+      - name: Desk 9 · performance
+        if: always()
+        run: python fund/score.py
+
+      - name: Commit memo and performance
+        if: ${{ always() && !inputs.dry_run }}
+        run: bash fund/commit_state.sh "fund memo + performance"
+
+      - name: Dry-run artifact
+        if: ${{ always() && inputs.dry_run }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: fund-dryrun-${{ github.run_id }}
+          path: fund_state/dryrun
+          retention-days: 30

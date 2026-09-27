@@ -1,0 +1,81 @@
+"""Desk 3 · Research (PROTOCOL_fund.md).
+
+Runs the narrative-dashboard pipeline (my-website pipeline/fetch.py +
+build.py at the pinned commit) on this week's coverage list in its own
+workspace, fund_research/. Feeds (data/raw) and story state (data/state)
+persist across weeks on the fund-data branch, so a name keeps its stories'
+identity and history. New names backfill the dashboard window (91 days).
+-> research/<TICKER>.json (the dashboard's per-firm output) + research.json
+"""
+
+import json
+import os
+import re
+import shutil
+import subprocess
+
+import pandas as pd
+
+from common import MOCK, ROOT, SITE_PIN, SITE_REPO, asof_from_env, load, require, save, week_dir
+
+require("OPENROUTER_API_KEY", "FINNHUB_API_KEY")
+asof = asof_from_env()
+cov = load(asof, "ideation.json")["coverage"]
+S = pd.DataFrame(load(asof, "screen.json")["rows"]).set_index("ticker")
+site = os.path.join(ROOT, ".cache", "my-website")
+work = os.path.join(ROOT, "fund_research")
+out_dir = os.path.join(week_dir(asof), "research")
+os.makedirs(out_dir, exist_ok=True)
+
+# firm list: the dashboard's curated entries where they exist, generated ones otherwise
+curated = {f["ticker"]: f for f in json.loads(subprocess.run(
+    ["git", "-C", site, "show", f"{SITE_PIN}:config/firms.json"], capture_output=True, text=True, check=True).stdout)["firms"]}
+SUFFIX = r"\b(incorporated|inc|corporation|corp|company|co|holdings?|group|plc|ltd|limited|the|class [a-z]|n\.?v|s\.?a)\b\.?"
+firms = []
+for t in cov:
+    if t in curated:
+        firms.append(curated[t]); continue
+    name = str(S.loc[t, "Security"]) if t in S.index else t
+    core = re.sub(r"\s+", " ", re.sub(SUFFIX, "", re.sub(r"\(.*?\)|[,.]", " ", name.lower()))).strip()
+    alts = [re.escape(core) if len(core) >= 5 else rf"\b{re.escape(core)}\b"] + ([rf"\b{re.escape(t.lower())}\b"] if len(t) >= 3 else [])
+    firms.append({"ticker": t, "name": name, "match": "|".join(a for a in alts if a)})
+
+status = {}
+if MOCK:
+    # no keys in mock mode: reuse the dashboard's published output where it exists
+    for t in cov:
+        r = subprocess.run(["git", "-C", site, "show", f"origin/HEAD:site/data/{t}.json"], capture_output=True, text=True)
+        if r.returncode == 0:
+            open(os.path.join(out_dir, f"{t}.json"), "w").write(r.stdout); status[t] = "ok (mock: dashboard copy)"
+        else:
+            status[t] = "no_data (mock)"
+else:
+    os.makedirs(work, exist_ok=True)
+    for sub in ("pipeline",):                      # pinned pipeline code
+        shutil.rmtree(os.path.join(work, sub), ignore_errors=True)
+        subprocess.run(f"git -C {site} archive {SITE_PIN} {sub} | tar -x -C {work}", shell=True, check=True)
+    # seed a first-time name's feed from the dashboard's own feed when it has one (saves the backfill;
+    # the dashboard only holds articles published before its latest commit, so nothing is from the future)
+    os.makedirs(os.path.join(work, "data", "raw"), exist_ok=True)
+    for t in cov:
+        dst = os.path.join(work, "data", "raw", f"{t}.jsonl")
+        if not os.path.exists(dst):
+            r = subprocess.run(["git", "-C", site, "show", f"origin/HEAD:data/raw/{t}.jsonl"], capture_output=True, text=True)
+            if r.returncode == 0:
+                open(dst, "w").write(r.stdout)
+    os.makedirs(os.path.join(work, "config"), exist_ok=True)
+    json.dump({"window_days": 91, "firms": firms}, open(os.path.join(work, "config", "firms.json"), "w"), indent=1)
+    env = {**os.environ, "EMBED_MODEL": "openrouter:google/gemini-embedding-2",
+           "OPENROUTER_MODEL": "deepseek/deepseek-v4.1-flash"}
+    f = subprocess.run(["python", "pipeline/fetch.py", "--days", "8"], cwd=work, env=env)
+    b = subprocess.run(["python", "pipeline/build.py", "--refit"], cwd=work, env=env)
+    for t in cov:
+        p = os.path.join(work, "site", "data", f"{t}.json")
+        if os.path.exists(p):
+            shutil.copy(p, os.path.join(out_dir, f"{t}.json")); status[t] = "ok"
+        else:
+            status[t] = f"no_output (fetch rc={f.returncode}, build rc={b.returncode})"
+
+save(asof, "research.json", {"asof": str(asof.date()), "pipeline": SITE_REPO, "pipeline_commit": SITE_PIN,
+                             "firms": firms, "status": status})
+print(f"research: {sum(v.startswith('ok') for v in status.values())}/{len(cov)} firms with narratives")
