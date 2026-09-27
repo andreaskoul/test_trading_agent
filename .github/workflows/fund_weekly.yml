@@ -39,6 +39,7 @@ jobs:
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
       POLYGON_API_KEY: ${{ secrets.POLYGON_API_KEY }}
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}           # embedding store + S&P 500 news archive
     steps:
       - uses: actions/checkout@v4
         with:

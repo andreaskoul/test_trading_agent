@@ -59,22 +59,51 @@ else:
     # Firms the dashboard already tracks are topped up from its feed first (it updates daily), so
     # their gap is usually zero Finnhub calls. Union by (source, id); nothing is ever overwritten.
     os.makedirs(os.path.join(work, "data", "raw"), exist_ok=True)
-    merged = {}
-    for t in cov:
-        r = subprocess.run(["git", "-C", site, "show", f"origin/HEAD:data/raw/{t}.jsonl"], capture_output=True, text=True)
-        if r.returncode != 0:
-            continue
+
+    def union(t, add):
+        """Add rows to fund_research/data/raw/<t>.jsonl by (source, id); nothing is overwritten."""
         dst = os.path.join(work, "data", "raw", f"{t}.jsonl")
         mine = [json.loads(l) for l in open(dst)] if os.path.exists(dst) else []
         have = {(x["src"], str(x["id"])) for x in mine}
-        add = [x for x in (json.loads(l) for l in r.stdout.splitlines() if l.strip()) if (x["src"], str(x["id"])) not in have]
+        add = [x for x in add if (x["src"], str(x["id"])) not in have]
         if add:
-            rows = sorted(mine + add, key=lambda x: x["published"])
             with open(dst, "w") as fh:
-                for x in rows:
+                for x in sorted(mine + add, key=lambda x: x["published"]):
                     fh.write(json.dumps(x, ensure_ascii=False) + "\n")
-        merged[t] = len(add)
+        return len(add)
+
+    merged = {}
+    for t in cov:
+        r = subprocess.run(["git", "-C", site, "show", f"origin/HEAD:data/raw/{t}.jsonl"], capture_output=True, text=True)
+        if r.returncode == 0:
+            merged[t] = union(t, [json.loads(l) for l in r.stdout.splitlines() if l.strip()])
     print("research: merged from the dashboard's feeds:", merged)
+    # The S&P 500 news archive (fund/archive.py, updated daily): every covered name arrives with its
+    # window already stored, so fetch.py only asks for the hours since the archive's last run.
+    try:
+        from huggingface_hub import HfApi, snapshot_download
+        api = HfApi(token=os.environ["HF_TOKEN"])
+        arepo = f"{api.whoami()['name']}/fund-news-archive"
+        d_ = snapshot_download(arepo, repo_type="dataset", allow_patterns=["manifest.json"],
+                               local_dir=os.path.join(ROOT, "fund_archive"), token=os.environ["HF_TOKEN"])
+        man = json.load(open(os.path.join(d_, "manifest.json")))["days"]
+        today = pd.Timestamp.now(tz="UTC").normalize()
+        gaps = [str(d.date()) for d in pd.date_range(today - pd.Timedelta(days=92), today - pd.Timedelta(days=2))
+                if not man.get(str(d.date()), {}).get("complete")]
+        # a partial window would hide the gap from fetch.py (it only looks at the newest stored article)
+        if gaps:
+            raise RuntimeError(f"archive window incomplete ({len(gaps)} days, e.g. {gaps[:3]})")
+        lo = str((today - pd.Timedelta(days=121)).date())
+        want = [f for f in api.list_repo_files(arepo, repo_type="dataset") if f.startswith("days/") and f[5:15] >= lo]
+        d_ = snapshot_download(arepo, repo_type="dataset", allow_patterns=want,
+                               local_dir=os.path.join(ROOT, "fund_archive"), token=os.environ["HF_TOKEN"])
+        A = pd.concat([pd.read_parquet(os.path.join(d_, f)) for f in want])
+        A = A[A["sym"].isin(cov)]
+        got = {t: union(t, [{k: (list(v) if k == "tickers" else v) for k, v in r.items() if k != "sym"}
+                            for r in g.to_dict("records")]) for t, g in A.groupby("sym")}
+        print(f"research: merged from the S&P 500 archive ({len(want)} days):", got)
+    except Exception as exc:                                          # never block research on the archive
+        print(f"research: archive unavailable ({exc!r}); fetch.py backfills new names itself")
     # build.py expects these to exist (it writes per-firm story state and site files)
     for d_ in ("data/state", "data/cache", "site/data"):
         os.makedirs(os.path.join(work, d_), exist_ok=True)

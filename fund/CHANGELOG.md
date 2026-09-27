@@ -17,3 +17,4 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   - ideation: one share class per issuer (GOOG and GOOGL both got covered, which cost 6,384 articles of duplicate research).
   - LLM: an empty `content` (reasoning used up the budget) is retried; 3 tries instead of 2. EXPE's red-team review failed this way.
   - PM: floating-point tolerance on the sector and dollar caps (spurious "+0.30 -> +0.30" log).
+- 2026-09-27: data desk: a daily S&P 500 news archive (fund/archive.py, Finnhub, one file per UTC day) in a private Hugging Face dataset. Research merges it for the coverage list once the 91-day window is complete. Rows are cleaned exactly as pipeline/fetch.py cleans them. Data plumbing only; the articles are the ones fetch.py would have fetched, and Polygon still comes from fetch.py.

@@ -14,6 +14,7 @@ Wed 22:15 UTC ─ 1 screen ─▶ 2 ideation ─▶ 3 research ─▶ 4 analysts
 
 | desk | file | LLM? | output (`fund_state/live/<asof>/`) |
 |---|---|---|---|
+| 0 Data (daily) | `archive.py` | no | Hugging Face `<you>/fund-news-archive`: every S&P 500 member's Finnhub news, one file per UTC day, 91-day window |
 | 1 Screen | `screen.py` | no | `screen.json`: signals, frozen ridge, beta, sector, news attention for every S&P 500 member |
 | 2 Ideation | `ideate.py` | yes | `ideation.json`: nominated ideas with hypotheses, the coverage list and why each name is on it |
 | 3 Research | `research.py` | via the dashboard pipeline | `research/<T>.json`: your narrative dashboard's output (stories with continuity, events) for every covered name |
@@ -33,7 +34,9 @@ match regexes; new names get one built from the S&P 500 security name.
 raw feeds and story state to the `fund-data` branch. Each week `fetch.py` asks
 Finnhub only for the gap since a firm's newest stored article. The dashboard's
 own 20 feeds (updated daily on my-website) are merged in first, so those usually
-need no calls at all. Only a firm covered for the very first time pulls 91 days.
+need no calls at all. Names new to coverage come from the S&P 500 news archive (desk 0,
+`.github/workflows/fund_archive.yml`, daily 21:20 UTC), so no name pulls 91 days on
+Wednesday once the archive's window is complete (until then fetch.py backfills as before).
 A firm that drops out keeps its archive and catches up when it returns.
 Embeddings are stored permanently in a private Hugging Face dataset
 (`<you>/fund-embeddings`, via `fund/emb_store.py` and the `HF_TOKEN` secret), with
