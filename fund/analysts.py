@@ -24,8 +24,10 @@ do NEXT WEEK relative to the other names the fund covers this week.
 You get: sector, quantitative signals as z-scores against the S&P 500 (mom12_1 momentum, rev1m /
 rev1w reversal, lowvol, high52), a frozen ridge forecast (bp) with its S&P 500 rank, 60-day beta,
 last week's return, news attention, the ideation desk's hypothesis if any, and the firm's news
-NARRATIVES: stories with stable identity over time (weekly counts and share: growing, fading,
-new?), a representative headline per week, this week's articles, and dated events.
+NARRATIVES over the last ~13 weeks: stories with a stable identity (what each is about, its weekly
+share of the firm's coverage, whether it is new, rising or fading) with this week's articles under
+each as evidence, and the dated events in the window (* = active in the last 7 days, with their
+headlines). Read the structure for what is changing; read the articles for direction and specifics.
 
 Rules:
 - Use ONLY this material. Ignore anything you believe happened after the as-of date.
