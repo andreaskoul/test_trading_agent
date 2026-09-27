@@ -116,6 +116,23 @@ new_hist = pd.concat([hist[pd.to_datetime(hist["asof"]) != asof],
 new_hist.to_parquet(hist_p)
 Z["latest_headlines"] = pd.Series(heads).reindex(Z.index)
 
+# ---- earnings inside the holding period (Thursday close -> next Thursday close), Amendment 3:
+# after the close on entry day, any day in between, or before the open on exit day
+t0, t1 = asof + pd.Timedelta(days=1), asof + pd.Timedelta(days=8)
+earn = {}
+if not MOCK:
+    try:
+        with urllib.request.urlopen(f"https://finnhub.io/api/v1/calendar/earnings?from={t0.date()}&to={t1.date()}"
+                                    f"&token={os.environ['FINNHUB_API_KEY']}", timeout=60) as r:
+            for e in json.load(r).get("earningsCalendar", []):
+                d, h = pd.Timestamp(e["date"]), (e.get("hour") or "").lower()
+                if (t0 < d < t1) or (d == t0 and h != "bmo") or (d == t1 and h not in ("amc",)):
+                    earn[e["symbol"].replace("-", ".")] = f"{e['date']} {h or 'time n/a'}"
+    except Exception as exc:
+        print(f"screen: earnings calendar unavailable ({exc!r})")
+Z["earnings_in_holding_week"] = pd.Series(earn, dtype=object).reindex(Z.index).fillna("none")
+print(f"screen: {int((Z['earnings_in_holding_week'] != 'none').sum())} members report earnings in the holding week")
+
 save(asof, "screen.json", {"asof": str(asof.date()), "n": int(len(Z)), "news_window": [str(lo), str(hi)],
                            "ridge_spec": spec, "rows": json.loads(Z.reset_index(names="ticker").to_json(orient="records"))})
 print(f"screen {asof.date()}: {len(Z)} members, attention for {Z.news_7d.notna().sum()}, "

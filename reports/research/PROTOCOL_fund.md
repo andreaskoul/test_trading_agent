@@ -174,3 +174,75 @@ against.
 
 The primary test, fund − quant, and the 52/104-week reads are unchanged. The
 clock starts at the first live decision under this amendment.
+
+## Amendment 3 (2026-09-27, before any live decision): execution, the go-live rule, and what counts as a result
+
+**Why now.** Paper trading starts with the first live week (as-of 2026-09-30). The
+rule for deciding whether to trade real money is fixed before any result exists.
+Otherwise a good or bad quarter would decide it after the fact.
+
+**Execution (desk 10, `fund/execute.py`, Alpaca paper account).**
+* The fund book is traded at the close of the first trading day after the as-of
+  Wednesday, the same price the performance desk scores at. That is normally
+  Thursday; after a Thursday holiday it is the next session.
+* Orders are market-on-close (`cls`), sent while the market is open, whole shares at
+  the account's equity.
+* Alpaca rejects an order that takes a position through zero. A name that flips side
+  is therefore closed with a market order first and reopened on the close; these are
+  logged as flips.
+* Pre-trade rules:
+  * no valid book after the Thursday 19:00 UTC deadline, a risk halt, or a book that
+    fails sanity checks (gross including SPY > 3, any stock > 12% of NAV) means the
+    target is flat;
+  * longs must be tradable, and shorts shortable and easy to borrow. A dropped
+    name's beta goes back to the SPY hedge;
+  * gross is scaled to at most 1.8× equity (Reg T 2×).
+* Idempotent: one execution per week, and client order ids are fixed per week,
+  symbol and leg.
+* Reconciliation after the close records each fill against the official close
+  (slippage in bp; positive means worse), realised against target weights, and the
+  broker's daily NAV.
+
+**Risk halts.** If the broker NAV falls 10% from its peak, or 5% over the last five
+sessions, a HALT file is written. From the next execution the fund is flat until a
+person reviews it and resumes (`fund_execute.yml`, input `resume`).
+
+**What is measured.**
+* Weekly returns are now measured from the close of the execution day to the first
+  close on or after the next Thursday. Before, a holiday Thursday fell back to the
+  Wednesday price.
+* A week without a book is recorded as flat, with the cost of closing out.
+* Each stock book also reports its return **in excess of cash**:
+  gross − 5 bp/side costs − r_f × net dollar exposure, with r_f the 3-month T-bill
+  (FRED DTB3). The book is a beta-hedged overlay, so "beats the market" means
+  SPY plus the overlay beats SPY, which is exactly an overlay excess return above 0.
+* The screen adds whether a member reports earnings inside the holding week (Finnhub
+  earnings calendar). Analysts and the red team see it as a price fact.
+
+**The go-live rule (`performance/gate.md`, recomputed every week).**
+
+| look (scored weeks) | 13 | 26 | 39 | 52 |
+|---|---:|---:|---:|---:|
+| GO if the NW t (lags 2) of the fund's weekly excess return ≥ | 4.05 | 2.86 | 2.34 | 2.02 |
+
+These are O'Brien–Fleming boundaries for four looks at an overall two-sided α of 5%.
+Early looks need overwhelming evidence, so looking early does not inflate the false
+positive rate. At each look, in order:
+
+1. **HALTED** if a risk halt is active.
+2. **STOP** if any of these NW t-statistics is ≤ −2: the fund's excess return,
+   fund − quant, or the weekly analyst-score slope.
+3. **GO** if the boundary is crossed and operations pass. Operations pass means:
+   * decisions on time in ≥ 90% of weeks;
+   * weeks fully executed (every order filled) ≥ 90%;
+   * median absolute slippage against the close ≤ 10 bp.
+4. **NO-GO** at 52 weeks with no boundary crossed: no edge shown.
+5. **GO-SMALL** (from 13 weeks) if operations pass, nothing has stopped it, and the
+   mean excess return is positive. This permits a small live allocation sized as if
+   the edge were zero (tuition, not an allocation). It is not evidence of an edge.
+6. **CONTINUE** otherwise.
+
+The verdict only changes at a look, except for a risk halt. The primary test of
+Protocol 6 (fund − quant) is unchanged and remains a stop condition. Going live
+with real money is still the owner's decision; the gate says what the evidence
+allows.

@@ -1,0 +1,148 @@
+name: Fund · execution (Alpaca paper)
+
+# Desk 10 (fund/execute.py, PROTOCOL_fund.md Amendment 3). Trades the week's fund book,
+# committed to `fund-data` by the weekly desks, into the closing auction of the first
+# trading day after the as-of Wednesday, then reconciles the fills after the close.
+# Thursday runs: 17:37 and 18:37 UTC trade the book if it exists; 19:17 UTC (after the
+# PM deadline) trades it or goes flat. Friday runs only act when Thursday was a holiday.
+# All runs are idempotent: a week is traded once.
+#
+# Secrets: ALPACA_API_KEY, ALPACA_SECRET_KEY (paper account, dedicated to the fund).
+
+on:
+  schedule:
+    - cron: '37 17 * * 4'
+    - cron: '37 18 * * 4'
+    - cron: '17 19 * * 4'
+    - cron: '37 15 * * 5'
+    - cron: '37 16 * * 5'
+    - cron: '7 1 * * 5'          # reconcile a Thursday execution
+    - cron: '7 1 * * 6'          # reconcile a Friday execution
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "plan (no orders) | trade | reconcile"
+        default: plan
+      asof:
+        description: "as-of Wednesday (YYYY-MM-DD); empty = latest"
+        default: ""
+      mock_book:
+        description: "plan against a book from the mock desks (end-to-end test of the broker path)"
+        type: boolean
+        default: false
+      test_order:
+        description: "plan mode: also send and cancel one 1-share SPY closing-auction order"
+        type: boolean
+        default: false
+      resume:
+        description: "remove the HALT file after a risk stop (you have reviewed it)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: fund-execute
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+      ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+      FUND_ASOF: ${{ inputs.asof }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install "numpy<2" pandas pyarrow yfinance scipy scikit-learn
+
+      - name: Restore fund state
+        run: |
+          set -euo pipefail
+          if git ls-remote --exit-code origin fund-data >/dev/null 2>&1; then
+            git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
+            git checkout origin/fund-data -- fund_state 2>/dev/null || echo "fund-data has no fund_state yet"
+          fi
+
+      - name: Mode
+        id: m
+        run: |
+          case "${{ github.event.schedule }}" in
+            "7 1 * * 5"|"7 1 * * 6") echo "mode=reconcile" >> "$GITHUB_OUTPUT" ;;
+            "") echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT" ;;
+            *) echo "mode=trade" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - name: Resume after a risk stop
+        if: ${{ inputs.resume }}
+        run: rm -f fund_state/live/HALT && echo "HALT removed by ${{ github.actor }}"
+
+      - name: Mock desks (end-to-end test only)
+        if: ${{ inputs.mock_book }}
+        env:
+          FUND_MOCK: '1'
+        run: |
+          for d in screen ideate research analysts redteam pm_risk; do python fund/$d.py; done
+
+      - name: Execute (${{ steps.m.outputs.mode }})
+        env:
+          FUND_MOCK: ${{ inputs.mock_book && '1' || '0' }}
+        run: python fund/execute.py ${{ steps.m.outputs.mode }}
+
+      - name: Test order (send and cancel one closing-auction order)
+        if: ${{ inputs.test_order }}
+        run: |
+          python - <<'EOF'
+          import json, os, time, urllib.request
+          H = {"APCA-API-KEY-ID": os.environ["ALPACA_API_KEY"], "APCA-API-SECRET-KEY": os.environ["ALPACA_SECRET_KEY"], "Content-Type": "application/json"}
+          B = "https://paper-api.alpaca.markets"
+          def call(m, p, b=None):
+              r = urllib.request.Request(B + p, method=m, headers=H, data=json.dumps(b).encode() if b else None)
+              try:
+                  with urllib.request.urlopen(r) as x: t = x.read(); return x.status, json.loads(t) if t else None
+              except urllib.error.HTTPError as e: return e.code, json.loads(e.read() or b"{}")
+          s, o = call("POST", "/v2/orders", {"symbol": "SPY", "qty": "1", "side": "buy", "type": "market", "time_in_force": "cls",
+                                             "client_order_id": f"fund-test-{int(time.time())}"})
+          print("submit:", s, o.get("status"), o.get("message"))
+          if s in (200, 201):
+              time.sleep(3); print("cancel:", call("DELETE", f"/v2/orders/{o['id']}")[0])
+              time.sleep(2); print("after cancel:", call("GET", f"/v2/orders/{o['id']}")[1].get("status"))
+          else:
+              raise SystemExit("closing-auction order refused by the paper account")
+          EOF
+
+      - name: Commit execution records
+        if: ${{ always() && !inputs.mock_book && (steps.m.outputs.mode != 'plan' || inputs.resume) }}
+        run: |
+          set -euo pipefail
+          git config user.name 'fund-bot'; git config user.email 'fund-bot@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
+            rm -rf /tmp/fd && git worktree prune && git worktree add -q --detach /tmp/fd origin/fund-data
+            mkdir -p /tmp/fd/fund_state/live/execution
+            [ -d fund_state/live/execution ] && cp -a fund_state/live/execution/. /tmp/fd/fund_state/live/execution/
+            for f in fund_state/live/20*/execution.json; do [ -f "$f" ] && mkdir -p "/tmp/fd/$(dirname "$f")" && cp "$f" "/tmp/fd/$f"; done
+            if [ -f fund_state/live/HALT ]; then cp fund_state/live/HALT /tmp/fd/fund_state/live/HALT; else rm -f /tmp/fd/fund_state/live/HALT; fi
+            cd /tmp/fd && git add -A fund_state/live
+            if git diff --cached --quiet; then cd - >/dev/null; break; fi
+            git commit -q -m "execution ${{ steps.m.outputs.mode }} $(date -u +%Y-%m-%dT%H:%MZ)"
+            if git push -q origin HEAD:fund-data; then cd - >/dev/null; break; fi
+            cd - >/dev/null; sleep 5
+          done
+
+      - name: Alert
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          body="Execution ${{ steps.m.outputs.mode }} needs attention: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          [ -f fund_state/live/execution/problems.txt ] && body="$body"$'\n\n'"$(cat fund_state/live/execution/problems.txt)"
+          gh issue create --title "Fund execution: ${{ steps.m.outputs.mode }} problem $(date -u +%F)" --body "$body @${{ github.repository_owner }}"

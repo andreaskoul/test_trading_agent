@@ -17,7 +17,8 @@ on:
 
 permissions:
   contents: read
-  actions: write          # to chain the next backfill run
+  actions: write
+  issues: write          # to chain the next backfill run
 
 concurrency:
   group: fund-archive
@@ -52,3 +53,11 @@ jobs:
           fi
           gh workflow run fund_archive.yml --ref "${{ github.ref_name }}" -f minutes=330
           echo "backlog ${{ steps.arch.outputs.backlog }} days: next backfill run dispatched"
+
+      - name: Alert
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "Fund: ${{ github.workflow }} failed $(date -u +%F)" \
+            --body "Run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} @${{ github.repository_owner }}"

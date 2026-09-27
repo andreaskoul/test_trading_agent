@@ -24,7 +24,9 @@ in its stories and events. Market beta, sector and style exposures (momentum, re
 are handled by the risk desk and hedged out, so do not bet on them.
 
 You get: sector, 60-day beta and volatility, recent returns (1 week, 1 month, 12-1 months, distance
-from the 52-week high) so you can judge what is already priced, news attention, the ideation
+from the 52-week high) so you can judge what is already priced, news attention, whether the firm
+reports earnings inside the holding week (a binary event: take a side only if the news gives you
+an edge on it, and lower your confidence otherwise), the ideation
 desk's hypothesis if any, and the firm's news NARRATIVES over the last ~13 weeks: stories with a
 stable identity (what each is about, its weekly share of the firm's coverage, whether it is new,
 rising or fading) with this week's articles under each as evidence, and the dated events in the
