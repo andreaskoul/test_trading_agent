@@ -63,6 +63,16 @@ else:
             r = subprocess.run(["git", "-C", site, "show", f"origin/HEAD:data/raw/{t}.jsonl"], capture_output=True, text=True)
             if r.returncode == 0:
                 open(dst, "w").write(r.stdout)
+    # build.py expects these to exist (it writes per-firm story state and site files)
+    for d_ in ("data/state", "data/cache", "site/data"):
+        os.makedirs(os.path.join(work, d_), exist_ok=True)
+    # a firm the dashboard already tracks keeps its fitted stories (ids, names, history) on first coverage
+    for t in cov:
+        dst = os.path.join(work, "data", "state", f"{t}.json")
+        if not os.path.exists(dst):
+            r = subprocess.run(["git", "-C", site, "show", f"origin/HEAD:data/state/{t}.json"], capture_output=True, text=True)
+            if r.returncode == 0:
+                open(dst, "w").write(r.stdout)
     os.makedirs(os.path.join(work, "config"), exist_ok=True)
     json.dump({"window_days": 91, "firms": firms}, open(os.path.join(work, "config", "firms.json"), "w"), indent=1)
     env = {**os.environ, "EMBED_MODEL": "openrouter:google/gemini-embedding-2",
@@ -78,4 +88,7 @@ else:
 
 save(asof, "research.json", {"asof": str(asof.date()), "pipeline": SITE_REPO, "pipeline_commit": SITE_PIN,
                              "firms": firms, "status": status})
-print(f"research: {sum(v.startswith('ok') for v in status.values())}/{len(cov)} firms with narratives")
+n_ok = sum(v.startswith('ok') for v in status.values())
+print(f"research: {n_ok}/{len(cov)} firms with narratives")
+if n_ok == 0 and not MOCK:        # never let the analysts run blind without saying so
+    raise SystemExit("research produced no narratives for any covered firm; see the pipeline output above")
