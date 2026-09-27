@@ -1,0 +1,54 @@
+name: Fund · news archive (daily)
+
+# Data desk (fund/archive.py): Finnhub company news for every S&P 500 member, one
+# UTC day per file, in the private Hugging Face dataset <you>/fund-news-archive.
+# Research reads it, so names new to coverage need no 91-day fetch on Wednesday.
+# Daily at 21:20 UTC (after the US close, before the Wednesday 22:15 desks).
+# While the 91-day window is incomplete, a run re-dispatches itself to continue.
+
+on:
+  schedule:
+    - cron: '20 21 * * *'
+  workflow_dispatch:
+    inputs:
+      minutes:
+        description: "Finnhub budget for this run (minutes); backfill runs use ~330"
+        default: "330"
+
+permissions:
+  contents: read
+  actions: write          # to chain the next backfill run
+
+concurrency:
+  group: fund-archive
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      ARCHIVE_MINUTES: ${{ inputs.minutes || '40' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas pyarrow huggingface_hub
+      - id: arch
+        run: python fund/archive.py
+      - name: Continue the backfill in a new run
+        if: steps.arch.outputs.backlog != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # not on a Wednesday afternoon/evening: the weekly desks need Finnhub from 22:15 UTC
+          if [ "$(date -u +%u)" = "3" ] && [ "$(date -u +%H)" -ge 12 ]; then
+            echo "backlog ${{ steps.arch.outputs.backlog }} days: left for the daily runs"; exit 0
+          fi
+          gh workflow run fund_archive.yml --ref "${{ github.ref_name }}" -f minutes=330
+          echo "backlog ${{ steps.arch.outputs.backlog }} days: next backfill run dispatched"
