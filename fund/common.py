@@ -23,6 +23,9 @@ MODEL = "deepseek/deepseek-v4.1-flash"
 SITE_REPO = "https://github.com/andreaskoul/my-website"
 SITE_PIN = "2c8723905b7977ccabf335bb2565e69775b06cc3"      # pipeline code pinned for the protocol window
 STATE = os.path.join(ROOT, "fund_state")
+# What the analyst and red-team desks see about price: facts, not a forecast (Amendment 2).
+PRICE_FACTS = ["GICS Sector", "GICS Sub-Industry", "beta60", "vol60_ann_pct", "ret_1w_pct", "ret_1m_pct",
+               "ret_12_1_pct", "pct_below_52w_high", "news_7d", "attention_shock"]
 
 
 def asof_from_env() -> pd.Timestamp:

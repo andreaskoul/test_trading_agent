@@ -4,6 +4,10 @@ The LLM reads one line per S&P 500 member and nominates <= 12 long and <= 12
 short ideas with a falsifiable hypothesis. Coverage = dashboard core 20 +
 nominations + ridge top/bottom 6 + attention-shock top 6, capped at 45
 (nominations first). -> ideation.json
+
+Amendment 2: the LLM sees price facts, attention and headlines, not the ridge
+forecast (its hypotheses reach the analysts, so the ridge would leak back in).
+The ridge still directs research time through the rule-based coverage slots.
 """
 
 import json
@@ -28,20 +32,21 @@ core = [f["ticker"] for f in json.loads(subprocess.run(["git", "-C", site, "show
 
 SYSTEM = """You are the head of research at an equity long-short fund. Research time is scarce:
 choose which S&P 500 names deserve a full analyst workup THIS week. You see, per stock: sector,
-ridge forecast of next-week relative return (bp) and its rank, momentum / reversal / low-vol /
-52w-high z-scores, 60-day beta, last week's return, news count over 7 days, attention_shock
-(unusual news flow vs its own history and peers), and the two latest headlines.
+60-day beta, annualised 60-day volatility, returns over 1 week, 1 month and 12-1 months,
+% below the 52-week high, news count over 7 days, attention_shock (unusual news flow vs its own
+history and peers), and the two latest headlines.
 
-Pick names where a workup could plausibly change the view: unusual attention, a headline that
-suggests a catalyst, or a strong quantitative signal that news might confirm or contradict.
+Pick names where news could plausibly drive the stock next week: unusual attention, a headline
+that suggests a catalyst, or a large move that news may explain or reverse. Beta and style
+exposures are hedged by the risk desk, so a move without a story is not an idea.
 Do not pick names just because they are large. Use only the data given; ignore anything you
 think you know about events after the as-of date.
 
 Return JSON only: {"long_ideas": [{"ticker": str, "hypothesis": str <= 30 words}, ... up to 12],
 "short_ideas": [...up to 12], "themes": [str <= 15 words, ... up to 5]}"""
 
-cols = ["GICS Sector", "ridge_bp", "ridge_rank", "mom12_1", "rev1m", "rev1w", "lowvol", "high52", "beta60",
-        "ret_1w_pct", "news_7d", "attention_shock"]
+cols = ["GICS Sector", "beta60", "vol60_ann_pct", "ret_1w_pct", "ret_1m_pct", "ret_12_1_pct", "pct_below_52w_high",
+        "news_7d", "attention_shock"]
 lines = [f"As-of Wednesday close {asof.date()}. {len(S)} members. Columns: ticker | " + " | ".join(cols) + " | headlines"]
 for t, r in S.iterrows():
     vals = [str(r[c]) if isinstance(r[c], str) else ("" if pd.isna(r[c]) else f"{r[c]:.2f}") for c in cols]

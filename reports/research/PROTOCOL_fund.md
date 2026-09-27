@@ -105,3 +105,72 @@ broker downgrades, JPMorgan's $20B QIA partnership and dividend increase)
 appeared only in article text, not as detected events; direction words
 appear in 30% of headlines against 36% of event names and 38% of story
 blurbs, and 8 of 20 firms had no event at all.
+
+## Amendment 2 (2026-09-27, before any live decision): the news desk makes the views, the quant desk measures them
+
+**What the evidence said.** Dry run 2 (asof 2026-09-23) showed the time-series
+forecast steering the news desk. Analyst scores correlated 0.54 with the ridge
+forecast they were shown, and the book was 67% net long before the beta scaling.
+The red team, allowed to reverse views, upheld none of 43: 37 weakened, 6
+reversed, and 32 of 43 final scores were zero. After the ridge fill, the fund
+book was mostly the ridge's book. The ridge does not deserve that weight:
+
+| frozen ridge, weekly top/bottom decile | gross bp/wk | beta to EW market | alpha bp/wk | alpha t |
+|---|---:|---:|---:|---:|
+| 2016–26 holdout | 19.3 | 0.61 | 2.8 | 0.38 |
+| 2026 live (Apr–Sep, IC 0.063, t 1.84) | 67.5 | 0.06 | 65.4 | 1.46 |
+
+Over ten years the ridge's return is mostly market beta. Its good 2026 is 24
+weeks at t 1.46. It is a weak, style-loaded signal, so as an input it anchors
+the analysts on exposures the risk desk then has to hedge away, and it crowds
+out the one thing only the news desk can add. It is kept where it is useful: as a
+benchmark and as the factor model that the news desk's returns are measured
+against.
+
+**Changes (replacing desks 4–6 above and the book definitions):**
+
+0. *Ideation*'s LLM sees the same price facts plus attention and the latest
+   headlines, not the ridge, because its hypotheses reach the analysts. The
+   ridge top/bottom 6 keep their rule-based coverage slots: the quant screen
+   decides where research time goes, not which way the view points.
+1. *Analysts* no longer see the ridge forecast, its rank, or the signal
+   z-scores. They see price facts: sector, sub-industry, 60-day beta,
+   annualised 60-day volatility, 1-week, 1-month and 12-1-month returns, % below
+   the 52-week high, 7-day article count and attention shock. These are for
+   judging what is already priced. The score is 0 unless the view comes from
+   news. A large move on its own is not a view, and beta and style are hedged
+   by the risk desk.
+2. *Red team* is a filter for mistakes, not a second analyst. Its verdict is
+   `uphold` (score unchanged) or `weaken`. A weaken must name its flaw
+   (`factual`, `stale`, `recycled`, `contra`, `priced`) and moves the score one
+   step toward 0; two steps only for a thesis-killing factual error. It never
+   crosses 0. The code rejects any answer that breaks these rules; a rejected
+   review falls back to the analyst's score. Counts of verdicts and flaws are
+   logged every week.
+3. *PM + risk*: only non-zero scores enter, at most 10 per side ranked by
+   |score| × confidence. Each name's weight is score × confidence / 20 of NAV, so
+   the name cap is 10% of NAV and the stock gross is at most 2. There is no ridge
+   fill: a week with few views is a small book and a week with none is flat.
+   Risk rules, in order:
+   * sector net ≤ 30% of NAV, with the heavy side shrunk pro rata;
+   * stock dollar net ≤ 20% of stock gross, with the heavy leg shrunk pro rata,
+     so a one-sided week is flat;
+   * an SPY position that brings the 60-day beta to zero.
+4. *Books*:
+   * fund and analyst as in 3.
+   * quant: the ridge top/bottom 10 over the S&P 500 at 10% each.
+   * random: 10/10 from the covered set at 10% each.
+   * quant and random go through the same risk rules as fund and analyst.
+   * core20: top/bottom 4 non-zero analyst scores among the dashboard's 20, at
+     25% each, with no fill.
+5. *Evaluation additions*, all pre-registered secondaries:
+   * **Attribution.** Each book's weekly net return is regressed on the S&P
+     members' equal-weight market return and rank-weighted long-short returns
+     on rev1w, mom12_1 and lowvol. The intercept, with NW t, is the fund's
+     alpha beyond the exposures the quant signals already explain. Reported
+     from 8 weeks.
+   * **Red-team calibration.** The mean excess return, signed in the analyst's
+     direction, is compared for upheld and for weakened names.
+
+The primary test, fund − quant, and the 52/104-week reads are unchanged. The
+clock starts at the first live decision under this amendment.

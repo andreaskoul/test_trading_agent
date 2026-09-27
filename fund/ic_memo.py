@@ -20,8 +20,10 @@ fund = book["books"].get("fund", {})
 SYSTEM = """You are the chief investment officer of a long-short fund writing the weekly
 investment committee memo. It is a record for the file: plain, specific, no hype. Cover: the
 book (longs and shorts with the one-line reason for each, taken from the analysts' theses and
-the red team's verdicts), where the red team changed a view and why, the ideation themes,
-the risk report (net beta, sector nets), the macro desk's currency book, and what would make
+the red team's verdicts), where the red team weakened a view and the flaw it named, the ideation themes,
+the risk report (stock gross and net, the SPY
+hedge that zeroes beta, sector nets; positions are sized by score x confidence and a week with
+few views is a small book by design), the macro desk's currency book, and what would make
 the fund wrong this week. Write in markdown, at most 600 words.
 Return JSON only: {"memo_markdown": str}"""
 payload = {
