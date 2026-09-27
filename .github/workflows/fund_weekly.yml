@@ -65,6 +65,8 @@ jobs:
           path: fund_research/data/cache
           key: fund-emb-${{ github.run_id }}
           restore-keys: fund-emb-
+      # GitHub evicts caches unused for 7 days; a weekly run sits right on that line, so
+      # fund_cache_keepalive.yml touches this cache mid-week.
 
       - name: Desk 1 · screen
         run: python fund/screen.py
@@ -72,6 +74,10 @@ jobs:
         run: python fund/ideate.py
       - name: Desk 3 · research
         run: python fund/research.py
+      - name: Save news archive and story state (every run, dry runs included)
+        if: always()
+        run: bash fund/commit_state.sh "research data" research
+
       - name: Desk 4 · analysts
         run: python fund/analysts.py
       - name: Desk 5 · red team

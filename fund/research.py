@@ -54,15 +54,27 @@ else:
     for sub in ("pipeline",):                      # pinned pipeline code
         shutil.rmtree(os.path.join(work, sub), ignore_errors=True)
         subprocess.run(f"git -C {site} archive {SITE_PIN} {sub} | tar -x -C {work}", shell=True, check=True)
-    # seed a first-time name's feed from the dashboard's own feed when it has one (saves the backfill;
-    # the dashboard only holds articles published before its latest commit, so nothing is from the future)
+    # News archive: fund_research/data/raw persists on `fund-data`, so each week only the gap since a
+    # firm's newest stored article is fetched (fetch.py catches up from there; --days 1 below).
+    # Firms the dashboard already tracks are topped up from its feed first (it updates daily), so
+    # their gap is usually zero Finnhub calls. Union by (source, id); nothing is ever overwritten.
     os.makedirs(os.path.join(work, "data", "raw"), exist_ok=True)
+    merged = {}
     for t in cov:
+        r = subprocess.run(["git", "-C", site, "show", f"origin/HEAD:data/raw/{t}.jsonl"], capture_output=True, text=True)
+        if r.returncode != 0:
+            continue
         dst = os.path.join(work, "data", "raw", f"{t}.jsonl")
-        if not os.path.exists(dst):
-            r = subprocess.run(["git", "-C", site, "show", f"origin/HEAD:data/raw/{t}.jsonl"], capture_output=True, text=True)
-            if r.returncode == 0:
-                open(dst, "w").write(r.stdout)
+        mine = [json.loads(l) for l in open(dst)] if os.path.exists(dst) else []
+        have = {(x["src"], str(x["id"])) for x in mine}
+        add = [x for x in (json.loads(l) for l in r.stdout.splitlines() if l.strip()) if (x["src"], str(x["id"])) not in have]
+        if add:
+            rows = sorted(mine + add, key=lambda x: x["published"])
+            with open(dst, "w") as fh:
+                for x in rows:
+                    fh.write(json.dumps(x, ensure_ascii=False) + "\n")
+        merged[t] = len(add)
+    print("research: merged from the dashboard's feeds:", merged)
     # build.py expects these to exist (it writes per-firm story state and site files)
     for d_ in ("data/state", "data/cache", "site/data"):
         os.makedirs(os.path.join(work, d_), exist_ok=True)
@@ -77,7 +89,7 @@ else:
     json.dump({"window_days": 91, "firms": firms}, open(os.path.join(work, "config", "firms.json"), "w"), indent=1)
     env = {**os.environ, "EMBED_MODEL": "openrouter:google/gemini-embedding-2",
            "OPENROUTER_MODEL": "deepseek/deepseek-v4.1-flash"}
-    f = subprocess.run(["python", "pipeline/fetch.py", "--days", "8"], cwd=work, env=env)
+    f = subprocess.run(["python", "pipeline/fetch.py", "--days", "1"], cwd=work, env=env)
     b = subprocess.run(["python", "pipeline/build.py", "--refit"], cwd=work, env=env)
     for t in cov:
         p = os.path.join(work, "site", "data", f"{t}.json")
