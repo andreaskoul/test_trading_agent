@@ -53,20 +53,33 @@ def nw_t(x, L=2):
 
 
 FACTORS = ["rev1w", "mom12_1", "lowvol"]      # from the screen's z-scores (Amendment 2 attribution)
+STOCK_BOOKS = ("fund", "analyst", "quant", "core20", "random")
+rf = fred("DTB3")                                   # 3-month T-bill, for returns in excess of cash (Amendment 3)
 rows, prev, ideas_rows, xs_rows, fac_rows, rt_rows = [], {}, [], [], [], []
 for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     asof = pd.Timestamp(os.path.basename(wd))
-    t0, t1 = asof + pd.Timedelta(days=1), asof + pd.Timedelta(days=8)
-    if now < t1 + pd.Timedelta(hours=23) or not os.path.exists(os.path.join(wd, "book.json")):
+    if now < asof + pd.Timedelta(days=8, hours=23) or not os.path.exists(os.path.join(wd, "book.json")):
         continue
     book = json.load(open(os.path.join(wd, "book.json")))
+    if book.get("status") != "ok":                  # missed deadline: the week is flat, so every book sells out
+        for k in [k for k in prev if k in STOCK_BOOKS]:
+            rows.append(dict(asof=str(asof.date()), book=k, gross=0.0, cost=float(prev[k].abs().sum() * 5e-4),
+                             net=-float(prev[k].abs().sum() * 5e-4), excess=-float(prev[k].abs().sum() * 5e-4), n_missing=0))
+            prev[k] = pd.Series(dtype=float)
+        continue
     fx = json.load(open(os.path.join(wd, "fx.json"))) if os.path.exists(os.path.join(wd, "fx.json")) else {"books": {}}
     screen = pd.DataFrame(json.load(open(os.path.join(wd, "screen.json")))["rows"]).set_index("ticker")
     names = sorted(set(screen.index) | {t for b in book.get("books", {}).values() for t in b})
-    p = yf.download([n.replace(".", "-") for n in names], start=t0 - pd.Timedelta(days=7), end=t1 + pd.Timedelta(days=1),
+    p = yf.download([n.replace(".", "-") for n in names], start=asof - pd.Timedelta(days=7), end=asof + pd.Timedelta(days=14),
                     progress=False, auto_adjust=True, threads=True)["Close"]
     p = p.rename(columns=lambda c: c.replace("-", ".")); p.index = pd.to_datetime(p.index).tz_localize(None)
-    ret = at(p, t1) / at(p, t0) - 1
+    # entry at the close of the first trading day after the as-of Wednesday (the execution day),
+    # exit at the first close on or after the next Thursday: holidays move both, never backwards
+    if p.index.max() < asof + pd.Timedelta(days=8):
+        continue
+    t0, t1 = p.index[p.index > asof][0], p.index[p.index >= asof + pd.Timedelta(days=8)][0]
+    ret = p.loc[t1] / p.loc[t0] - 1
+    rf_w = float(rf.asof(t0)) * (t1 - t0).days / 360
     fxn = sorted({c for b in fx.get("books", {}).values() for c in b})
     if fxn:
         raw = yf.download([FXT[c][0] for c in fxn], start=t0 - pd.Timedelta(days=7), end=t1 + pd.Timedelta(days=1),
@@ -86,6 +99,7 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
         gross = float((w * r.reindex(w.index).fillna(0)).sum()) if len(w) else 0.0
         cost = float((to * c.reindex(idx).fillna(c.mean())).sum())
         rows.append(dict(asof=str(asof.date()), book=k, gross=gross, cost=cost, net=gross - cost,
+                         excess=gross - cost - (rf_w * float(w.sum()) if k in STOCK_BOOKS else 0.0),
                          n_missing=int(r.reindex(w.index).isna().sum()) if len(w) else 0))
         prev[k] = w
     # ideation: do nominated names move more, and in the hypothesised direction?
@@ -170,3 +184,70 @@ if len(R) and len(F) >= 8:
         lines.append(f"| {k} | {len(d)} | {b[0] * 100:.3f} | {nw_t(resid):.2f} | " + " | ".join(f"{x:.2f}" for x in b[1:]) + " |")
 open(os.path.join(OUT, "summary.md"), "w").write("\n".join(lines) + "\n")
 print("\n".join(lines))
+
+# ---- Go-live gate (Amendment 3). Four pre-registered looks with O'Brien-Fleming boundaries
+# (K = 4, two-sided alpha 0.05) on the NW t of the fund book's weekly return in excess of cash,
+# after model costs. Between looks the verdict does not change, except for a risk halt.
+LOOKS = {13: 4.049, 26: 2.863, 39: 2.337, 52: 2.024}
+EXEC = os.path.join(base, "execution")
+books_ok = {os.path.basename(d): json.load(open(os.path.join(d, "book.json"))).get("status") == "ok"
+            for d in sorted(glob.glob(os.path.join(base, "20*"))) if os.path.exists(os.path.join(d, "book.json"))}
+first = min([a for a, ok in books_ok.items() if ok], default=None)
+Pe = R[R.book == "fund"].set_index("asof")["excess"].sort_index() if len(R) else pd.Series(dtype=float, index=pd.Index([], dtype=str))
+Pe = Pe[Pe.index >= first] if first else Pe.iloc[:0]
+n = len(Pe)
+Z = nw_t(Pe) if n >= 3 else np.nan
+Pn = R.pivot_table(index="asof", columns="book", values="net") if len(R) else pd.DataFrame()
+dq = nw_t((Pn["fund"] - Pn["quant"]).dropna()) if {"fund", "quant"} <= set(Pn) else np.nan
+xs_t = nw_t(X.b_analyst) if len(X) else np.nan
+weeks = [a for a in books_ok if first and a >= first and pd.Timestamp(a) + pd.Timedelta(days=8, hours=23) <= now]
+on_time = np.mean([books_ok[a] for a in weeks]) if weeks else np.nan
+exs = {a: json.load(open(os.path.join(base, a, "execution.json"))) for a in weeks if os.path.exists(os.path.join(base, a, "execution.json"))}
+executed = np.mean([exs.get(a, {}).get("status") == "submitted" and (exs[a].get("reconciled") or {}).get("n_not_filled", 1) == 0
+                    for a in weeks]) if weeks else np.nan
+fills = pd.read_csv(os.path.join(EXEC, "fills.csv")) if os.path.exists(os.path.join(EXEC, "fills.csv")) else pd.DataFrame()
+slip = float(fills.loc[fills["leg"] != "flatten", "slip_bp"].abs().median()) if len(fills) else np.nan
+halted = os.path.exists(os.path.join(base, "HALT"))
+ops_ok = bool(on_time >= 0.9 and executed >= 0.9 and slip <= 10)
+look = max([L for L in LOOKS if n >= L], default=None)
+if look:                                            # the verdict uses exactly the first `look` weeks
+    cut = Pe.index[look - 1]
+    Z_l = nw_t(Pe.iloc[:look])
+    dq_l = nw_t((Pn["fund"] - Pn["quant"]).dropna().loc[:cut]) if {"fund", "quant"} <= set(Pn) else np.nan
+    xs_l = nw_t(X.set_index("asof").b_analyst.loc[:cut]) if len(X) else np.nan
+    mean_l = Pe.iloc[:look].mean()
+if halted:
+    verdict = "HALTED: a risk stop fired (see fund_state/live/HALT). Review, then resume by hand."
+elif look and min(Z_l, dq_l, xs_l) <= -2:
+    verdict = f"STOP (look at {look} weeks): the fund is significantly worse than cash, the quant book, or its own scores."
+elif look and Z_l >= LOOKS[look] and ops_ok:
+    verdict = f"GO (look at {look} weeks): t {Z_l:.2f} crosses the {LOOKS[look]:.2f} boundary and operations pass."
+elif look == 52:
+    verdict = "NO-GO at 52 weeks: no boundary crossed. The fund has not shown an edge; redesign or retire."
+elif look and ops_ok and mean_l > 0:
+    verdict = f"GO-SMALL allowed (look at {look} weeks): operations pass, no stop, positive mean. Tuition capital only."
+else:
+    verdict = f"CONTINUE ({n} weeks scored; next look at {min([L for L in LOOKS if L > n], default='-')} weeks)."
+g = [f"# Go-live gate ({MODE})", "", f"**{verdict}**", "",
+     (f"At the {look}-week look: t {Z_l:.2f}, fund − quant t {dq_l:.2f}, analyst slope t {xs_l:.2f}. "
+      "The rows below are running values; only a look changes the verdict." if look else
+      "No look yet. The rows below are running values and change no decision."), "",
+     "| item | value | rule |", "|---|---:|---|",
+     f"| weeks scored since first live book ({first}) | {n} | looks at 13 / 26 / 39 / 52 |",
+     f"| fund excess return, mean %/wk | {Pe.mean() * 100 if n else float('nan'):.3f} | after 5 bp/side and cash |",
+     f"| NW t (lags 2) | {Z:.2f} | GO if ≥ {LOOKS[look] if look else LOOKS[13]:.2f} at this look; STOP if ≤ −2 |",
+     f"| fund − quant NW t | {dq:.2f} | STOP if ≤ −2 |",
+     f"| analyst-score slope NW t | {xs_t:.2f} | STOP if ≤ −2 |",
+     f"| decisions on time | {on_time:.0%} | ≥ 90% |",
+     f"| weeks fully executed | {executed:.0%} | ≥ 90% |",
+     f"| median abs slippage vs close | {slip:.1f} bp | ≤ 10 bp |",
+     f"| risk halt | {'yes' if halted else 'no'} | 10% drawdown or 5% weekly loss on broker NAV |"]
+nav_p = os.path.join(EXEC, "nav.csv")
+if os.path.exists(nav_p) and n:
+    N_ = pd.read_csv(nav_p)
+    g += ["", f"Broker (paper) NAV {N_['equity'].iloc[-1]:,.0f} vs {N_['equity'].iloc[0]:,.0f} at the start of its history; "
+          f"model fund net cumulative {((1 + Pn['fund'].fillna(0)).prod() - 1) * 100:.2f}%."]
+open(os.path.join(OUT, "gate.md"), "w").write("\n".join(g) + "\n")
+json.dump({"verdict": verdict.split(" ")[0].rstrip(":"), "n": n, "t": Z, "look": look, "ops_ok": ops_ok},
+          open(os.path.join(OUT, "gate.json"), "w"), default=float)
+print("\n".join(g))

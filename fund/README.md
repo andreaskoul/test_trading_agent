@@ -23,7 +23,8 @@ Wed 22:15 UTC ─ 1 screen ─▶ 2 ideation ─▶ 3 research ─▶ 4 analysts
 | 6 PM + risk | `pm_risk.py` | no | `book.json`: conviction-sized books (fund, analyst), benchmarks (quant, core20, random), sector and dollar caps, SPY beta hedge |
 | 7 IC memo | `ic_memo.py` | yes | `ic_memo.md`: the week's written record |
 | 8 Macro | `fx_desk.py` | yes | `fx.json`: 17-currency book plus quant and random |
-| 9 Performance | `score.py` | no | `performance/`: weekly P&L per book, stage tests, `summary.md` |
+| 10 Execution | `execute.py` | no | `execution.json`: orders for the Thursday closing auction on the Alpaca paper account; after the close `execution/fills.csv` (slippage vs the close), `nav.csv`, risk halts |
+| 9 Performance | `score.py` | no | `performance/`: weekly P&L per book (net and in excess of cash), stage tests, attribution, `summary.md`, and the go-live gate `gate.md` |
 
 **Research reuses the narrative dashboard.** `research.py` runs
 `andreaskoul/my-website`'s `pipeline/fetch.py` and `build.py` at a pinned
@@ -64,4 +65,6 @@ formal read at 52 weeks.
   dashboard's published files): `FUND_MOCK=1 FUND_ASOF=2026-09-23 python fund/<desk>.py`
   in desk order.
 
-Secrets: `OPENROUTER_API_KEY`, `FINNHUB_API_KEY`, `HF_TOKEN`, and optionally `POLYGON_API_KEY`.
+Secrets: `OPENROUTER_API_KEY`, `FINNHUB_API_KEY`, `HF_TOKEN`, `ALPACA_API_KEY`, `ALPACA_SECRET_KEY` (a paper account used only by the fund), and optionally `POLYGON_API_KEY`.
+
+**Going live** is decided by `fund_state/live/performance/gate.md` (Amendment 3), not by a good month. Problems, risk halts and gate verdicts other than CONTINUE open a GitHub issue.

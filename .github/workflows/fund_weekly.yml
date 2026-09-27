@@ -24,6 +24,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: fund-weekly
@@ -117,6 +118,19 @@ jobs:
         if: ${{ always() && !inputs.dry_run }}
         run: bash fund/commit_state.sh "fund memo + performance"
 
+      - name: Gate verdict (issue when it is not CONTINUE)
+        if: ${{ always() && !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          f=fund_state/live/performance/gate.json
+          [ -f "$f" ] || exit 0
+          v=$(python -c "import json;print(json.load(open('$f'))['verdict'])")
+          echo "gate: $v"; cat fund_state/live/performance/gate.md >> "$GITHUB_STEP_SUMMARY"
+          if [ "$v" != "CONTINUE" ]; then
+            gh issue create --title "Fund gate: $v ($(date -u +%F))" --body "$(cat fund_state/live/performance/gate.md) @${{ github.repository_owner }}"
+          fi
+
       - name: Dry-run artifact
         if: ${{ always() && inputs.dry_run }}
         uses: actions/upload-artifact@v4
@@ -124,3 +138,11 @@ jobs:
           name: fund-dryrun-${{ github.run_id }}
           path: fund_state/dryrun
           retention-days: 30
+
+      - name: Alert
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "Fund: ${{ github.workflow }} failed $(date -u +%F)" \
+            --body "Run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} @${{ github.repository_owner }}"
