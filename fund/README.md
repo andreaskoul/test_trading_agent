@@ -27,9 +27,16 @@ Wed 22:15 UTC ─ 1 screen ─▶ 2 ideation ─▶ 3 research ─▶ 4 analysts
 **Research reuses the narrative dashboard.** `research.py` runs
 `andreaskoul/my-website`'s `pipeline/fetch.py` and `build.py` at a pinned
 commit on whatever this week's coverage list is. Curated firms keep your
-match regexes; new names get one built from the S&P 500 security name. Feeds and
-story state persist on the `fund-data` branch, so a name that stays covered
-keeps its stories' identity and history. A new name backfills 91 days.
+match regexes; new names get one built from the S&P 500 security name.
+
+**The news is stored, not re-fetched.** Every run (dry runs included) saves the
+raw feeds and story state to the `fund-data` branch. Each week `fetch.py` asks
+Finnhub only for the gap since a firm's newest stored article. The dashboard's
+own 20 feeds (updated daily on my-website) are merged in first, so those usually
+need no calls at all. Only a firm covered for the very first time pulls 91 days.
+A firm that drops out keeps its archive and catches up when it returns.
+Embeddings are cached in the Actions cache (kept warm by
+`fund_cache_keepalive.yml`), so only new articles are embedded.
 
 **Why the extra books.** Every stage has to earn its place against the one
 before it. analyst − quant asks whether research and judgement beat the

@@ -1,0 +1,22 @@
+name: Fund · embedding cache keep-alive
+
+# The research desk's embedding cache (about 50k article embeddings) lives in the
+# Actions cache, which GitHub evicts after 7 days without access. The weekly fund
+# run is exactly 7 days apart, so this touches the cache every Sunday.
+
+on:
+  schedule:
+    - cron: '0 12 * * 0'
+  workflow_dispatch:
+
+jobs:
+  touch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/cache/restore@v4
+        with:
+          path: fund_research/data/cache
+          key: fund-emb-keepalive-${{ github.run_id }}
+          restore-keys: fund-emb-
+      - run: du -sh fund_research/data/cache 2>/dev/null || echo "no cache yet"
