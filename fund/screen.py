@@ -65,7 +65,11 @@ Z["ridge_bp"] = Z[spec["features"]].to_numpy() @ np.asarray(spec["coef"]) * 1e4 
 Z["ridge_rank"] = Z["ridge_bp"].rank(ascending=False).astype(int)
 last60 = lr.loc[:asof].tail(60)
 Z["beta60"] = last60[Z.index].apply(lambda s: s.cov(last60["SPY"]) / last60["SPY"].var())
-Z["ret_1w_pct"] = -sig["rev1w"] * 100
+Z["ret_1w_pct"] = (np.exp(-sig["rev1w"]) - 1) * 100
+Z["ret_1m_pct"] = (np.exp(-sig["rev1m"]) - 1) * 100
+Z["ret_12_1_pct"] = (np.exp(sig["mom12_1"]) - 1) * 100
+Z["pct_below_52w_high"] = (1 - sig["high52"]) * 100
+Z["vol60_ann_pct"] = -sig["lowvol"] * np.sqrt(252) * 100
 Z = Z.join(meta, how="left")
 
 # ---- attention: Finnhub article count, 7 days to the cutoff (one call per firm;

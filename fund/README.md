@@ -17,9 +17,9 @@ Wed 22:15 UTC ─ 1 screen ─▶ 2 ideation ─▶ 3 research ─▶ 4 analysts
 | 1 Screen | `screen.py` | no | `screen.json`: signals, frozen ridge, beta, sector, news attention for every S&P 500 member |
 | 2 Ideation | `ideate.py` | yes | `ideation.json`: nominated ideas with hypotheses, the coverage list and why each name is on it |
 | 3 Research | `research.py` | via the dashboard pipeline | `research/<T>.json`: your narrative dashboard's output (stories with continuity, events) for every covered name |
-| 4 Analysts | `analysts.py` | yes, one per name | `analysts.json`: thesis, catalysts, risks, score, confidence |
-| 5 Red team | `redteam.py` | yes, per conviction | `redteam.json`: uphold / weaken / reverse, adjusted score |
-| 6 PM + risk | `pm_risk.py` | no | `book.json`: fund, analyst, quant, core20 and random books, plus the risk report |
+| 4 Analysts | `analysts.py` | yes, one per name | `analysts.json`: news-driven thesis, catalysts, risks, score, confidence (blind to the quant forecast) |
+| 5 Red team | `redteam.py` | yes, per conviction | `redteam.json`: uphold, or weaken with a named flaw; weekly calibration counts |
+| 6 PM + risk | `pm_risk.py` | no | `book.json`: conviction-sized books (fund, analyst), benchmarks (quant, core20, random), sector and dollar caps, SPY beta hedge |
 | 7 IC memo | `ic_memo.py` | yes | `ic_memo.md`: the week's written record |
 | 8 Macro | `fx_desk.py` | yes | `fx.json`: 17-currency book plus quant and random |
 | 9 Performance | `score.py` | no | `performance/`: weekly P&L per book, stage tests, `summary.md` |
@@ -39,6 +39,10 @@ Embeddings are stored permanently in a private Hugging Face dataset
 (`<you>/fund-embeddings`, via `fund/emb_store.py` and the `HF_TOKEN` secret), with
 the Actions cache as a fast path, so only new articles are ever embedded.
 
+**Quant for risk and attribution, news for views** (Amendment 2). The ridge forecast is
+mostly market beta out of sample, so it is not shown to the analysts: it is a benchmark
+book, and its signals are the factors the fund's returns are attributed to.
+
 **Why the extra books.** Every stage has to earn its place against the one
 before it. analyst − quant asks whether research and judgement beat the
 screen; fund − analyst asks whether the red team helps. The ideation test asks
@@ -57,4 +61,4 @@ formal read at 52 weeks.
   dashboard's published files): `FUND_MOCK=1 FUND_ASOF=2026-09-23 python fund/<desk>.py`
   in desk order.
 
-Secrets: `OPENROUTER_API_KEY`, `FINNHUB_API_KEY`, and optionally `POLYGON_API_KEY`.
+Secrets: `OPENROUTER_API_KEY`, `FINNHUB_API_KEY`, `HF_TOKEN`, and optionally `POLYGON_API_KEY`.

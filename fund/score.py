@@ -52,7 +52,8 @@ def nw_t(x, L=2):
     return x.mean() / np.sqrt(s / len(x))
 
 
-rows, prev, ideas_rows, xs_rows = [], {}, [], []
+FACTORS = ["rev1w", "mom12_1", "lowvol"]      # from the screen's z-scores (Amendment 2 attribution)
+rows, prev, ideas_rows, xs_rows, fac_rows, rt_rows = [], {}, [], [], [], []
 for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     asof = pd.Timestamp(os.path.basename(wd))
     t0, t1 = asof + pd.Timedelta(days=1), asof + pd.Timedelta(days=8)
@@ -96,6 +97,25 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     ideas_rows.append(dict(asof=str(asof.date()), n_nom=int(nom.sum()),
                            abs_nom=float(xr[nom].abs().mean()) if nom.any() else np.nan, abs_rest=float(xr[~nom].abs().mean()),
                            signed_nom=float(np.mean([side[t] * xr.get(t, np.nan) for t in side if t in xr.index])) if side else np.nan))
+    # factor returns over the S&P members: equal-weight market, and rank-weighted long-short
+    # (sum |w| = 2) on each screen signal. The attribution regresses each book on these.
+    rm = ret.reindex(screen.index).dropna()
+    fr = {"asof": str(asof.date()), "mkt": float(rm.mean())}
+    for f in FACTORS:
+        if f in screen:
+            z = screen[f].reindex(rm.index).rank(); z = z - z.mean()
+            fr[f] = float((z / z.abs().sum() * 2 * rm).sum())
+    fac_rows.append(fr)
+    # red team calibration: did upheld views do better than weakened ones (in the analyst's direction)?
+    rp = os.path.join(wd, "redteam.json")
+    if os.path.exists(rp):
+        rt = json.load(open(rp)); memos = json.load(open(os.path.join(wd, "analysts.json")))["memos"]
+        for t, v in rt.get("reviews", {}).items():
+            if v.get("status") == "ok" and t in xr.index and not np.isnan(xr.get(t, np.nan)):
+                s0 = memos[t]["memo"]["score"]
+                rt_rows.append(dict(asof=str(asof.date()), ticker=t, score=s0, verdict=v["review"]["verdict"],
+                                    flaw=v["review"].get("flaw"), adjusted=v["review"]["adjusted_score"],
+                                    signed_xret=float(np.sign(s0) * xr[t])))
     # cross-section over covered S&P names: return on (ridge rank, analyst score)
     sc = pd.Series(book.get("scores", {}).get("analyst", {}), dtype=float)
     x = pd.DataFrame({"r": ret.reindex(sc.index), "ridge": screen["ridge_bp"].reindex(sc.index), "a": sc}).dropna()
@@ -105,6 +125,9 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
         xs_rows.append(dict(asof=str(asof.date()), n=len(x), b_ridge=b[1], b_analyst=b[2]))
 
 R = pd.DataFrame(rows); I = pd.DataFrame(ideas_rows); X = pd.DataFrame(xs_rows)
+F = pd.DataFrame(fac_rows); RT = pd.DataFrame(rt_rows)
+F.to_csv(os.path.join(OUT, "factors.csv"), index=False)
+RT.to_csv(os.path.join(OUT, "redteam.csv"), index=False)
 R.to_csv(os.path.join(OUT, "weekly_books.csv"), index=False)
 I.to_csv(os.path.join(OUT, "ideation.csv"), index=False)
 X.to_csv(os.path.join(OUT, "cross_section.csv"), index=False)
@@ -124,5 +147,26 @@ if len(X):
 if len(I):
     lines += [f"Ideation: nominated |excess ret| {I.abs_nom.mean() * 100:.2f}% vs rest {I.abs_rest.mean() * 100:.2f}%; "
               f"signed (hypothesis direction) {I.signed_nom.mean() * 100:.2f}%/wk"]
+if len(RT):
+    g = RT.groupby("verdict").signed_xret.agg(["count", "mean"])
+    lines += ["Red team (signed excess return in the analyst's direction): " + "; ".join(
+        f"{v} n={int(r['count'])} {r['mean'] * 100:+.2f}%" for v, r in g.iterrows())
+        + ". Weakening is right when weakened names do worse than upheld ones."]
+# Attribution (Amendment 2): book net return on market and factor returns; the intercept is
+# what the news desk adds beyond the exposures the quant signals already explain.
+if len(R) and len(F) >= 8:
+    Fi = F.set_index("asof")
+    lines += ["", "| book | weeks | alpha %/wk | NW t | beta mkt | " + " | ".join(FACTORS) + " |",
+              "|---|---:|---:|---:|---:|" + "---:|" * len(FACTORS)]
+    for k in ("fund", "analyst", "quant", "random"):
+        if k not in P:
+            continue
+        d = pd.concat([P[k], Fi], axis=1, join="inner").dropna()
+        if len(d) < 8:
+            continue
+        X_ = np.column_stack([np.ones(len(d))] + [d[c] for c in ["mkt"] + FACTORS])
+        b, *_ = np.linalg.lstsq(X_, d[k].to_numpy(), rcond=None)
+        resid = d[k].to_numpy() - X_[:, 1:] @ b[1:]            # alpha + noise: NW t on its mean
+        lines.append(f"| {k} | {len(d)} | {b[0] * 100:.3f} | {nw_t(resid):.2f} | " + " | ".join(f"{x:.2f}" for x in b[1:]) + " |")
 open(os.path.join(OUT, "summary.md"), "w").write("\n".join(lines) + "\n")
 print("\n".join(lines))
