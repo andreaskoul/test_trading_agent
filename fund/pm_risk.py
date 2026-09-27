@@ -51,10 +51,14 @@ def risk(L, Sh, reserve_L, reserve_S):
             log.append(f"sector {sec} over cap, no substitute"); break
         heavy[heavy.index(out)] = sub
         log.append(f"sector {sec}: {out} -> {sub}")
-    b = S["beta60"].fillna(1.0)
+    # Beta neutrality with gross fixed at 2: long leg a, short leg c, a*bL = c*bS, a + c = 2.
+    # (The first version only scaled the short leg and clipped it at 0.5, which left a
+    # low-beta-long / high-beta-short book at net beta -0.36 in the 2026-09-23 dry run.)
+    b = S["beta60"].fillna(1.0).clip(lower=0.1)
     bL, bS = b[L].mean(), b[Sh].mean()
-    k = float(np.clip(bL / bS if bS > 0 else 1.0, 0.5, 2.0))  # short-leg scale
-    w = pd.concat([pd.Series(1 / len(L), index=L), pd.Series(-k / len(Sh), index=Sh)])
+    a = 2 * bS / (bL + bS); c = 2 - a
+    k = c / a
+    w = pd.concat([pd.Series(a / len(L), index=L), pd.Series(-c / len(Sh), index=Sh)])
     w = w.clip(-NAME_CAP * w.abs().sum(), NAME_CAP * w.abs().sum())
     rep = {"net_beta": float((w * b[w.index]).sum()), "gross": float(w.abs().sum()), "net": float(w.sum()),
            "short_scale": k, "sector_net": w.groupby(S.loc[w.index, "GICS Sector"]).sum().round(3).to_dict(), "log": log}
