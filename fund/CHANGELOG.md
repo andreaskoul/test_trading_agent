@@ -10,3 +10,4 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   - PM/risk: the short-leg scale was clipped at 0.5, which left the dry-run book at net beta −0.36. Both legs are now scaled so that beta is exactly neutral at gross 2, as PROTOCOL_fund.md specifies.
 - 2026-09-27: Amendment 1, hybrid narrative input (structure first, this week's articles as evidence), before any live decision.
 - 2026-09-27: news archive is incremental: raw feeds and story state are saved to `fund-data` on every run (dry runs included), the dashboard's 20 feeds are merged in each week, and Finnhub is asked only for the gap since each firm's newest stored article. Embedding-cache keep-alive workflow added. Data plumbing only; no decision input changes.
+- 2026-09-27: embedding cache stored permanently in a private Hugging Face dataset (fund/emb_store.py); Actions cache kept as fast path; keep-alive workflow removed. Data plumbing only.
