@@ -56,7 +56,12 @@ jobs:
           set -euo pipefail
           if git ls-remote --exit-code origin fund-data >/dev/null 2>&1; then
             git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
-            git checkout origin/fund-data -- fund_state fund_research 2>/dev/null || true
+            # one path at a time: a pathspec missing on the branch (e.g. no fund_state yet)
+            # makes a combined checkout restore nothing
+            for p in fund_state fund_research; do
+              git checkout origin/fund-data -- "$p" 2>/dev/null || echo "fund-data has no $p yet"
+            done
+            echo "restored: $(ls fund_research/data/raw 2>/dev/null | wc -l) feeds, $(ls fund_research/data/state 2>/dev/null | wc -l) story states"
           fi
 
       - name: Restore embedding cache

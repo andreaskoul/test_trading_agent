@@ -53,7 +53,7 @@ def risk(w):
         return {}, {"n_long": 0, "n_short": 0, "stock_gross": 0.0, "stock_net": 0.0, "spy": 0.0,
                     "net_beta": 0.0, "sector_net": {}, "log": ["no views: flat"]}
     for sec, net in w.groupby(sector.reindex(w.index)).sum().items():
-        if abs(net) > SECTOR_CAP:
+        if abs(net) > SECTOR_CAP + 1e-9:
             side = w.index[(sector.reindex(w.index) == sec) & (np.sign(w) == np.sign(net))]
             other = net - w[side].sum()
             k = (np.sign(net) * SECTOR_CAP - other) / w[side].sum()
@@ -61,7 +61,7 @@ def risk(w):
             log.append(f"sector {sec}: net {net:+.2f} -> {np.sign(net) * SECTOR_CAP:+.2f}")
     long_, short_ = w[w > 0].sum(), -w[w < 0].sum()
     gross, net = long_ + short_, long_ - short_
-    if gross > 0 and abs(net) > DOLLAR_CAP * gross:
+    if gross > 0 and abs(net) > DOLLAR_CAP * gross + 1e-9:
         # shrink the heavy leg until |L - S| = cap x (L + S)
         if net > 0:
             k = short_ * (1 + DOLLAR_CAP) / (1 - DOLLAR_CAP) / long_ if short_ > 0 else 0.0
