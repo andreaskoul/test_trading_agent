@@ -49,7 +49,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install
-        run: pip install "numpy<2" pandas pyarrow yfinance scipy scikit-learn umap-learn
+        run: pip install "numpy<2" pandas pyarrow yfinance scipy scikit-learn umap-learn huggingface_hub
 
       - name: Restore fund state (weeks, attention history, research feeds and story state)
         run: |
@@ -65,15 +65,24 @@ jobs:
           path: fund_research/data/cache
           key: fund-emb-${{ github.run_id }}
           restore-keys: fund-emb-
-      # GitHub evicts caches unused for 7 days; a weekly run sits right on that line, so
-      # fund_cache_keepalive.yml touches this cache mid-week.
+      # Fast path only. The permanent copy lives in a private Hugging Face dataset
+      # (fund/emb_store.py), so an evicted Actions cache costs nothing.
 
       - name: Desk 1 · screen
         run: python fund/screen.py
       - name: Desk 2 · ideation
         run: python fund/ideate.py
+      - name: Pull embedding cache from Hugging Face (if the Actions cache missed)
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python fund/emb_store.py pull
       - name: Desk 3 · research
         run: python fund/research.py
+      - name: Push embedding cache to Hugging Face
+        if: always()
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python fund/emb_store.py push
       - name: Save news archive and story state (every run, dry runs included)
         if: always()
         run: bash fund/commit_state.sh "research data" research
