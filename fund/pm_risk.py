@@ -175,4 +175,4 @@ for k, v in books.items():
     Sk = [f"{t} {w:.3f}" for t, w in v.items() if w < 0 and t != "SPY"]
     rp = reports.get(k)
     print(f"{k:8s} L {Lk}\n{'':8s} S {Sk}" + (
-        f"\n{'':8s} stock gross {rp['stock_gross']:.2f} net {rp['stock_net']:+.2f} SPY {rp['spy']:+.2f} {rp['log']}" if rp else ""))
+        f"\n{'':8s} stock gross {rp.get('stock_gross', 0):.2f} net {rp.get('stock_net', 0):+.2f} SPY {rp.get('spy', 0):+.2f} {rp['log']}" if rp else ""))

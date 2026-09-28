@@ -14,7 +14,7 @@ book = load(asof, "book.json")
 memos = load(asof, "analysts.json")["memos"]
 rt = load(asof, "redteam.json")
 idea = load(asof, "ideation.json")
-fx = load(asof, "fx.json")
+fx = load(asof, "fx.json") if os.path.exists(os.path.join(week_dir(asof), "fx.json")) else {"books": {}}
 fund = book["books"].get("fund", {})
 
 SYSTEM = """You are the chief investment officer of a long-short fund writing the weekly
