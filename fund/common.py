@@ -10,6 +10,7 @@ import json
 import os
 import sys
 import time
+import urllib.error
 import urllib.request
 
 import pandas as pd
@@ -115,6 +116,8 @@ def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 3, temp
             err = check(out) if check else None
             if err is None:
                 return "ok", out, meta, None
+        except urllib.error.HTTPError as exc:               # keep the provider's reason (e.g. a data-policy 404)
+            err = f"HTTP {exc.code}: {exc.read()[:300].decode(errors='replace')}"
         except Exception as exc:
             err = repr(exc)
         time.sleep(0 if MOCK else 3)
