@@ -283,24 +283,25 @@ interquartile range of −0.10 to 1.01 in September 2026, with a standard error 
 
 **3. The model must not change unseen.** OpenRouter routes `deepseek/deepseek-v4.1-flash`
 to the cheapest of about 20 hosts, some serving fp4 or fp8 quantisations.
-* Every call is pinned to **Novita (fp8)**, with **DeepInfra (fp8)** as the only allowed
-  fallback. The serving provider and the raw output are logged with every memo.
-  * Correction of 2026-09-28, before any live decision: the draft pinned DeepSeek's own
-    endpoint. The provider check (`fund_llm_check.yml`) showed the account's no-training
-    data policy excludes it, and dry run 6 failed on every call with HTTP 404.
-  * The same check showed unpinned routing going to yet another host (Together).
+* **Serving provider.** It is left to OpenRouter's routing, so whichever host is available
+  serves `deepseek/deepseek-v4.1-flash`. This is the owner's decision of 2026-09-28, before
+  any live decision. The provider that answered and the raw output are logged with every
+  memo, and the weekly monitor lists the providers used.
+  * History: the draft pinned DeepSeek's own endpoint, which the account's no-training data
+    policy excludes (dry run 6: HTTP 404 on every call). A Novita/DeepInfra pin then
+    worked (dry run 7).
+  * Because hosts differ (fp4 to full precision), the canary below is the control on
+    whether the served model's behaviour changed.
 * **Canary.** The first live week's first 20 analyst prompts are frozen and re-scored at
   temperature 0 every week (`fund/shadow.py`, `canary/history.csv`).
 * **Degraded run.** If more than 25% of memos fail, the fund and analyst books hold last
   week's weights (flat if there are none). A partial set of views is not a book.
-* **Succession.** If both pinned providers fail two weeks in a row, the successor is the
-  same model on GMICloud or Fireworks, both confirmed by the provider check. If the model
-  is retired, the successor is `deepseek/deepseek-v4.1` on Novita.
+* **Succession.** If the model is retired, the successor is `deepseek/deepseek-v4.1`.
   * Weeks before and after a switch are pooled for the gate only if the canary shows
     ≥ 80% exact score agreement and a mean absolute difference ≤ 0.3 against the frozen
     scores.
   * Otherwise the clock restarts. The same rule applies if the canary drifts below those
-    thresholds with no announced change.
+    thresholds for two consecutive weeks for any reason, including a change of host.
 
 **4. Decisions must be replayable.**
 * The analyst and red-team news cutoff is fixed at Wednesday 22:00 UTC (it was the run's

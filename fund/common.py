@@ -21,12 +21,10 @@ MOCK = os.environ.get("FUND_MOCK") == "1"
 DRYRUN = os.environ.get("FUND_DRYRUN") == "1"       # real calls, no deadline, never committed, never scored as live
 MODE = "mock" if MOCK else "dryrun" if DRYRUN else "live"
 MODEL = "deepseek/deepseek-v4.1-flash"
-# Amendment 4: pin the serving provider. OpenRouter otherwise routes to the cheapest of ~20 hosts,
-# some serving fp4/fp8 quantisations, so the "same" model could change week to week unseen.
-# DeepSeek's own endpoint is excluded by the account's no-training data policy (provider check,
-# 2026-09-28), so: Novita fp8, with DeepInfra fp8 as the only allowed fallback. The serving
-# provider is logged with every call and monitored weekly.
-PROVIDER = {"order": ["novita", "deepinfra"], "allow_fallbacks": False}
+# Serving provider left to OpenRouter's routing (owner's decision, 2026-09-28), so any available
+# host serves the model. The provider that answered is logged with every call, and the frozen
+# canary measures whether scores drift when the host changes.
+PROVIDER = None
 SITE_REPO = "https://github.com/andreaskoul/my-website"
 SITE_PIN = "2c8723905b7977ccabf335bb2565e69775b06cc3"      # pipeline code pinned for the protocol window
 STATE = os.path.join(ROOT, "fund_state")
@@ -93,7 +91,8 @@ def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 3, temp
             if MOCK:
                 out, meta = mock_out, {"model": "mock"}
             else:
-                body = json.dumps({"model": MODEL, "temperature": temperature, "provider": PROVIDER,
+                body = json.dumps({"model": MODEL, "temperature": temperature,
+                                   **({"provider": PROVIDER} if PROVIDER else {}),
                                    "response_format": {"type": "json_object"},
                                    "messages": [{"role": "system", "content": system},
                                                 {"role": "user", "content": user}]}).encode()
