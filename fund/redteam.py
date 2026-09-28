@@ -12,11 +12,12 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pandas as pd
 
-from common import MOCK, PRICE_FACTS, asof_from_env, llm, load, narrative_text, require, save, week_dir
+from common import news_cutoff, save_prompts, MOCK, PRICE_FACTS, asof_from_env, llm, load, narrative_text, require, save, week_dir
 
 require("OPENROUTER_API_KEY")
 asof = asof_from_env()
-cutoff = pd.Timestamp.now(tz="UTC").tz_localize(None) if not MOCK else asof + pd.Timedelta(days=1)
+cutoff = news_cutoff(asof)                            # Amendment 4: fixed, not the run's wall clock
+PROMPTS = []
 S = pd.DataFrame(load(asof, "screen.json")["rows"]).set_index("ticker")
 memos = load(asof, "analysts.json")["memos"]
 
@@ -74,6 +75,7 @@ def one(t):
                       "Price facts: " + ("n/a" if r is None else r[PRICE_FACTS].to_json(double_precision=2)),
                       "", "ANALYST MEMO:", json.dumps(memos[t]["memo"], indent=1), "", narrative_text(narr, cutoff)])
     s = memos[t]["memo"]["score"]
+    PROMPTS.append({"ticker": t, "system": SYSTEM, "user": user})
     status, out, meta, err = llm(SYSTEM, user, {"verdict": "uphold", "flaw": None, "adjusted_score": s, "critique": "mock"},
                                  lambda o: check(o, s))
     print(f"red team {t}: {status}" + (f" {out['verdict']} {s}->{out['adjusted_score']}" if out else f" ({err})"), flush=True)
@@ -92,6 +94,7 @@ ok_ = [r["review"] for r in reviews.values() if r["status"] == "ok"]
 calib = {"reviewed": len(reviews), "ok": len(ok_),
          "uphold": sum(r["verdict"] == "uphold" for r in ok_), "weaken": sum(r["verdict"] == "weaken" for r in ok_),
          "flaws": pd.Series([r["flaw"] for r in ok_ if r["verdict"] == "weaken"]).value_counts().to_dict()}
-save(asof, "redteam.json", {"asof": str(asof.date()), "reviews": reviews, "final_score": final, "calibration": calib,
+save_prompts(asof, "redteam", PROMPTS)
+save(asof, "redteam.json", {"cutoff": str(cutoff), "asof": str(asof.date()), "reviews": reviews, "final_score": final, "calibration": calib,
                             "system": SYSTEM})
 print("red team:", calib)

@@ -99,7 +99,7 @@ else:
                                local_dir=os.path.join(ROOT, "fund_archive"), token=os.environ["HF_TOKEN"])
         A = pd.concat([pd.read_parquet(os.path.join(d_, f)) for f in want])
         A = A[A["sym"].isin(cov)]
-        got = {t: union(t, [{k: (list(v) if k == "tickers" else v) for k, v in r.items() if k != "sym"}
+        got = {t: union(t, [{k: (list(v) if k == "tickers" else v) for k, v in r.items() if k not in ("sym", "ingested_at", "h")}
                             for r in g.to_dict("records")]) for t, g in A.groupby("sym")}
         print(f"research: merged from the S&P 500 archive ({len(want)} days):", got)
     except Exception as exc:                                          # never block research on the archive

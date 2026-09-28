@@ -246,3 +246,93 @@ The verdict only changes at a look, except for a risk halt. The primary test of
 Protocol 6 (fund − quant) is unchanged and remains a stop condition. Going live
 with real money is still the owner's decision; the gate says what the evidence
 allows.
+
+## Amendment 4 (2026-09-28, before any live decision): what the evidence review changed
+
+Source: `reports/Multi agent AI trading desk design.md`, a review of the literature on
+multi-agent LLM trading, leakage, institutional risk practice and LLM news alpha, applied
+desk by desk. The review found no reason to add agents, debate or reflection memory. The
+debate literature predicts they would make the book more cautious, not more skilful, and
+no post-cutoff ablation supports them. It did find four validity threats, fixed here
+before the clock starts.
+
+**1. The verdict must measure news skill, not beta or reversal.** The quant benchmark is
+essentially a one-week reversal book: the ridge correlates +0.66 with rev1w on the
+2026-09-23 screen. The dry-run analysts leaned the other way, with +0.33 against last
+week's return. So fund − quant ≈ news skill − about 2× the reversal factor.
+* **GO** now needs *both* the excess-return NW t *and* the NW t of the intercept of the
+  fund's excess return regressed on SPY and the rev1w factor to cross the look's
+  boundary.
+* **STOP on fund − quant** uses the intercept t after regressing the difference on
+  rev1w.
+* **STOP on the score slope** uses the weekly cross-sectional slope of next-week return
+  on the analyst score, controlling for last week's return, hedge beta and sector.
+* **NO-GO at 52 weeks** means "no real money". The paper record continues to Protocol 6's
+  104-week decision.
+* Computed in `fund/score.py` → `performance/gate.md`.
+
+**2. The hedge must rest on a real beta.** 60-day OLS betas had a median of 0.31 and an
+interquartile range of −0.10 to 1.01 in September 2026, with a standard error of about
+0.2.
+* The hedge beta is now Welch's (2022) slope-winsorised 252-day beta: each daily stock
+  return is clipped to lie between −2× and 4× the market's return. It is then shrunk one
+  third toward 1: β_hedge = ⅔·β_W + ⅓.
+* Execution re-hedges dropped names with the same beta.
+* Dollar net is capped at **10%** of stock gross (was 20%).
+* `beta60` stays a price fact for the analysts.
+
+**3. The model must not change unseen.** OpenRouter routes `deepseek/deepseek-v4.1-flash`
+to the cheapest of about 20 hosts, some serving fp4 or fp8 quantisations.
+* Every call is pinned to the first-party **DeepSeek** provider with fallbacks off. The
+  serving provider and the raw output are logged with every memo.
+* **Canary.** The first live week's first 20 analyst prompts are frozen and re-scored at
+  temperature 0 every week (`fund/shadow.py`, `canary/history.csv`).
+* **Degraded run.** If more than 25% of memos fail, the fund and analyst books hold last
+  week's weights (flat if there are none). A partial set of views is not a book.
+* **Succession.** If the DeepSeek provider fails two weeks in a row, or the model is
+  retired, the named successor is the same model on Novita (fp8). If that is also gone,
+  it is `deepseek/deepseek-v4.1`.
+  * Weeks before and after a switch are pooled for the gate only if the canary shows
+    ≥ 80% exact score agreement and a mean absolute difference ≤ 0.3 against the frozen
+    scores.
+  * Otherwise the clock restarts. The same rule applies if the canary drifts below those
+    thresholds with no announced change.
+
+**4. Decisions must be replayable.**
+* The analyst and red-team news cutoff is fixed at Wednesday 22:00 UTC (it was the run's
+  wall clock).
+* Every prompt is saved gzipped with its week.
+* The news archive is append-only: first-seen text is never overwritten, and revised text
+  is kept as a further row with its content hash and ingestion time.
+
+**Smaller changes.**
+* Ideation reads the 500 screen lines sorted by attention shock, not alphabetically,
+  because LLMs attend least to the middle of long inputs.
+* A resumed risk halt continues the same clock, and halted weeks score the fund as flat.
+
+**Shadow challengers.** These are registered now, computed every week from the same
+inputs, scored with the same costs, and never traded:
+
+| book | what it tests |
+|---|---|
+| c1_wedclose, c1_thuopen | The fund's weights entered at the Wednesday close (notional) and at the execution day's open, each held a week. This measures what the one-day delay costs; large-cap news drift is mostly one day. |
+| c2_selfconsistency | 5 samples at temperature 0.7. Score = median; confidence = max(0, 1 − sd/2). |
+| c3_textonly | No price facts or hypothesis; the firm's name, ticker and match terms are masked. Separates reading the news from chasing last week's return. |
+| c4_volscaled | Score × confidence / volatility, scaled to the fund's stock gross, each name ≤ 10%. Band: a held name whose score drops to 0 keeps its weight one more week. |
+| c5_reversal | The fund's views, plus a short-term reversal position (rank of last week's return, ≤ 3% each) on covered names with a zero score and no event active in the last 7 days. Uses the LLM as a news/no-news classifier, where its evidence is strongest. |
+
+**Promotion rule.** A challenger replaces the champion only at a look, if its excess
+return minus the fund's has an NW t at or above the same O'Brien–Fleming design at α =
+0.05/6: 5.34 / 3.77 / 3.08 / 2.67 at 13 / 26 / 39 / 52 weeks. The promoted book's
+clock is its shadow start date. The registered trial count is 6 challengers plus the
+champion. Any new variant adds to it.
+
+**What stays.**
+* The deterministic PM desk, the filter-only red team, the random, analyst and quant
+  books, execution, halts and costs.
+* The review's own estimate: a large-cap weekly LLM news book should be expected at
+  roughly 0–0.5 Sharpe after costs.
+  * Under that prior the modal 52-week verdict is NO-GO. That reflects the test's power,
+    not proof of no edge.
+  * The highest-power evidence the year will produce is the adjusted score slope, the
+    timing books and the challenger contrasts.

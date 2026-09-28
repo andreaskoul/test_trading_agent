@@ -107,6 +107,13 @@ jobs:
         if: ${{ !inputs.dry_run }}
         run: bash fund/commit_state.sh "fund decisions"
 
+      - name: Shadow analysts (C2, C3) and model canary, never traded
+        if: ${{ !cancelled() && hashFiles('fund_state/*/*/book.json') != '' }}
+        continue-on-error: true
+        run: |
+          python fund/shadow.py
+          FUND_SHADOW=1 python fund/pm_risk.py
+
       - name: Desk 7 · IC memo
         if: always()
         run: python fund/ic_memo.py

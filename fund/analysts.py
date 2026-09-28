@@ -7,11 +7,12 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pandas as pd
 
-from common import MOCK, PRICE_FACTS, asof_from_env, llm, load, narrative_text, require, save, week_dir
+from common import news_cutoff, save_prompts, MOCK, PRICE_FACTS, asof_from_env, llm, load, narrative_text, require, save, week_dir
 
 require("OPENROUTER_API_KEY")
 asof = asof_from_env()
-cutoff = pd.Timestamp.now(tz="UTC").tz_localize(None) if not MOCK else asof + pd.Timedelta(days=1)
+cutoff = news_cutoff(asof)                            # Amendment 4: fixed, not the run's wall clock
+PROMPTS = []
 S = pd.DataFrame(load(asof, "screen.json")["rows"]).set_index("ticker")
 idea = load(asof, "ideation.json")
 hyp = {x["ticker"]: (side, x["hypothesis"]) for side in ("long", "short")
@@ -73,6 +74,7 @@ def one(t):
                       f"Ideation hypothesis: {hyp[t][0]} - {hyp[t][1]}" if t in hyp else "Ideation hypothesis: none (covered by rule)",
                       "", narrative_text(narr, cutoff)])
     ms = 0 if r is None else int(max(-2, min(2, round(float(r["ridge_bp"]) / 15))))     # mock: a ridge echo
+    PROMPTS.append({"ticker": t, "system": SYSTEM, "user": user})
     status, out, meta, err = llm(SYSTEM, user, {"score": ms, "confidence": 0.5, "thesis": "mock", "catalysts": [],
                                                 "risks": [], "drivers": []}, check)
     print(f"analyst {t}: {status}" + (f" score {out['score']}" if out else f" ({err})"), flush=True)
@@ -82,7 +84,8 @@ def one(t):
 
 with ThreadPoolExecutor(1 if MOCK else 6) as ex:
     memos = dict(ex.map(one, cov))
-save(asof, "analysts.json", {"asof": str(asof.date()), "memos": memos, "system": SYSTEM})
+save(asof, "analysts.json", {"asof": str(asof.date()), "memos": memos, "system": SYSTEM, "cutoff": str(cutoff)})
+save_prompts(asof, "analysts", PROMPTS)
 ok = [m for m in memos.values() if m["status"] == "ok"]
 print(f"analysts: {len(ok)}/{len(memos)} memos; score counts",
       pd.Series([m["memo"]["score"] for m in ok]).value_counts().sort_index().to_dict())

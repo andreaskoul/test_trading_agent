@@ -24,6 +24,7 @@ Wed 22:15 UTC ─ 1 screen ─▶ 2 ideation ─▶ 3 research ─▶ 4 analysts
 | 7 IC memo | `ic_memo.py` | yes | `ic_memo.md`: the week's written record |
 | 8 Macro | `fx_desk.py` | yes | `fx.json`: 17-currency book plus quant and random |
 | 10 Execution | `execute.py` | no | `execution.json`: orders for the Thursday closing auction on the Alpaca paper account; after the close `execution/fills.csv` (slippage vs the close), `nav.csv`, risk halts |
+| 11 Shadow | `shadow.py` | yes | `shadow.json`, `shadow_book.json`: challenger analysts C2 (5-sample median) and C3 (text-only, masked); the weekly model canary. Never traded |
 | 9 Performance | `score.py` | no | `performance/`: weekly P&L per book (net and in excess of cash), stage tests, attribution, `summary.md`, and the go-live gate `gate.md` |
 
 **Research reuses the narrative dashboard.** `research.py` runs
@@ -66,5 +67,7 @@ formal read at 52 weeks.
   in desk order.
 
 Secrets: `OPENROUTER_API_KEY`, `FINNHUB_API_KEY`, `HF_TOKEN`, `ALPACA_API_KEY`, `ALPACA_SECRET_KEY` (a paper account used only by the fund), and optionally `POLYGON_API_KEY`.
+
+**Evidence review and Amendment 4.** `reports/Multi agent AI trading desk design.md` audits every desk against the literature. It found no case for more agents or debate. The fixes are to the measurement (alpha net of beta and reversal), the hedge (Welch beta), model continuity (pinned provider, canary) and replayability, plus six shadow challenger books that are never traded.
 
 **Going live** is decided by `fund_state/live/performance/gate.md` (Amendment 3), not by a good month. Problems, risk halts and gate verdicts other than CONTINUE open a GitHub issue.
