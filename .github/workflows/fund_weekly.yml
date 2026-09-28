@@ -75,6 +75,14 @@ jobs:
       # Fast path only. The permanent copy lives in a private Hugging Face dataset
       # (fund/emb_store.py), so an evicted Actions cache costs nothing.
 
+      - name: Refuse a live run past its deadline (use dry_run for tests)
+        if: ${{ !inputs.dry_run }}
+        run: |
+          cd fund && python -c "
+          from common import asof_from_env, deadline_ok
+          a = asof_from_env()
+          raise SystemExit(0 if deadline_ok(a) else f'live run for {a.date()} is past its Thursday 19:00 UTC deadline: nothing to decide. Tick dry_run to test.')"
+
       - name: Desk 1 · screen
         run: python fund/screen.py
       - name: Desk 2 · ideation
