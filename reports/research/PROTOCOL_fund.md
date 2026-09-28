@@ -283,15 +283,19 @@ interquartile range of −0.10 to 1.01 in September 2026, with a standard error 
 
 **3. The model must not change unseen.** OpenRouter routes `deepseek/deepseek-v4.1-flash`
 to the cheapest of about 20 hosts, some serving fp4 or fp8 quantisations.
-* Every call is pinned to the first-party **DeepSeek** provider with fallbacks off. The
-  serving provider and the raw output are logged with every memo.
+* Every call is pinned to **Novita (fp8)**, with **DeepInfra (fp8)** as the only allowed
+  fallback. The serving provider and the raw output are logged with every memo.
+  * Correction of 2026-09-28, before any live decision: the draft pinned DeepSeek's own
+    endpoint. The provider check (`fund_llm_check.yml`) showed the account's no-training
+    data policy excludes it, and dry run 6 failed on every call with HTTP 404.
+  * The same check showed unpinned routing going to yet another host (Together).
 * **Canary.** The first live week's first 20 analyst prompts are frozen and re-scored at
   temperature 0 every week (`fund/shadow.py`, `canary/history.csv`).
 * **Degraded run.** If more than 25% of memos fail, the fund and analyst books hold last
   week's weights (flat if there are none). A partial set of views is not a book.
-* **Succession.** If the DeepSeek provider fails two weeks in a row, or the model is
-  retired, the named successor is the same model on Novita (fp8). If that is also gone,
-  it is `deepseek/deepseek-v4.1`.
+* **Succession.** If both pinned providers fail two weeks in a row, the successor is the
+  same model on GMICloud or Fireworks, both confirmed by the provider check. If the model
+  is retired, the successor is `deepseek/deepseek-v4.1` on Novita.
   * Weeks before and after a switch are pooled for the gate only if the canary shows
     ≥ 80% exact score agreement and a mean absolute difference ≤ 0.3 against the frozen
     scores.

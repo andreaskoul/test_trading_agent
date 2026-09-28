@@ -39,3 +39,4 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
     - prompts saved;
     - append-only archive with hashes;
     - weekly monitors (performance/monitor.csv).
+- 2026-09-28, dry run 6: every LLM call pinned to DeepSeek's own endpoint returned 404. The account's no-training data policy excludes that provider, and the degraded-run rule correctly held the book flat. The provider check workflow confirmed Novita, DeepInfra, GMICloud, Fireworks and AtlasCloud serve the model; unpinned routing went to Together. The pin is now Novita with DeepInfra as the only fallback (Amendment 4, corrected before any live decision). Fixed the degraded-run log line and made the IC memo tolerate a missing FX book.

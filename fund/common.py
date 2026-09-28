@@ -23,7 +23,10 @@ MODE = "mock" if MOCK else "dryrun" if DRYRUN else "live"
 MODEL = "deepseek/deepseek-v4.1-flash"
 # Amendment 4: pin the serving provider. OpenRouter otherwise routes to the cheapest of ~20 hosts,
 # some serving fp4/fp8 quantisations, so the "same" model could change week to week unseen.
-PROVIDER = {"order": ["deepseek"], "allow_fallbacks": False}
+# DeepSeek's own endpoint is excluded by the account's no-training data policy (provider check,
+# 2026-09-28), so: Novita fp8, with DeepInfra fp8 as the only allowed fallback. The serving
+# provider is logged with every call and monitored weekly.
+PROVIDER = {"order": ["novita", "deepinfra"], "allow_fallbacks": False}
 SITE_REPO = "https://github.com/andreaskoul/my-website"
 SITE_PIN = "2c8723905b7977ccabf335bb2565e69775b06cc3"      # pipeline code pinned for the protocol window
 STATE = os.path.join(ROOT, "fund_state")
