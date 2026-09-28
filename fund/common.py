@@ -20,6 +20,9 @@ MOCK = os.environ.get("FUND_MOCK") == "1"
 DRYRUN = os.environ.get("FUND_DRYRUN") == "1"       # real calls, no deadline, never committed, never scored as live
 MODE = "mock" if MOCK else "dryrun" if DRYRUN else "live"
 MODEL = "deepseek/deepseek-v4.1-flash"
+# Amendment 4: pin the serving provider. OpenRouter otherwise routes to the cheapest of ~20 hosts,
+# some serving fp4/fp8 quantisations, so the "same" model could change week to week unseen.
+PROVIDER = {"order": ["deepseek"], "allow_fallbacks": False}
 SITE_REPO = "https://github.com/andreaskoul/my-website"
 SITE_PIN = "2c8723905b7977ccabf335bb2565e69775b06cc3"      # pipeline code pinned for the protocol window
 STATE = os.path.join(ROOT, "fund_state")
@@ -27,6 +30,19 @@ CALL_LIMIT = 240                                    # seconds per LLM call, all 
 # What the analyst and red-team desks see about price: facts, not a forecast (Amendment 2).
 PRICE_FACTS = ["GICS Sector", "GICS Sub-Industry", "beta60", "vol60_ann_pct", "ret_1w_pct", "ret_1m_pct",
                "ret_12_1_pct", "pct_below_52w_high", "news_7d", "attention_shock", "earnings_in_holding_week"]
+
+
+def news_cutoff(asof) -> pd.Timestamp:
+    """Amendment 4: a fixed cutoff (Wednesday 22:00 UTC) instead of the run's wall clock, so a run can be replayed."""
+    return pd.Timestamp(asof) + pd.Timedelta(hours=22)
+
+
+def save_prompts(asof, desk, rows):
+    """Every prompt sent, gzipped next to the desk's output (Amendment 4: decisions are replayable)."""
+    import gzip
+    with gzip.open(os.path.join(week_dir(asof), f"prompts_{desk}.jsonl.gz"), "wt") as fh:
+        for r in rows:
+            fh.write(json.dumps(r, ensure_ascii=False) + "\n")
 
 
 def asof_from_env() -> pd.Timestamp:
@@ -65,7 +81,7 @@ def deadline_ok(asof) -> bool:
     return MOCK or DRYRUN or time.time() < calendar.timegm(pd.Timestamp(asof).timetuple()) + 86400 + 19 * 3600
 
 
-def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 3):
+def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 3, temperature: float = 0.0):
     """JSON-mode chat call. Returns (status, output, meta, error)."""
     err = None
     for _ in range(tries):
@@ -73,7 +89,8 @@ def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 3):
             if MOCK:
                 out, meta = mock_out, {"model": "mock"}
             else:
-                body = json.dumps({"model": MODEL, "temperature": 0, "response_format": {"type": "json_object"},
+                body = json.dumps({"model": MODEL, "temperature": temperature, "provider": PROVIDER,
+                                   "response_format": {"type": "json_object"},
                                    "messages": [{"role": "system", "content": system},
                                                 {"role": "user", "content": user}]}).encode()
                 req = urllib.request.Request("https://openrouter.ai/api/v1/chat/completions", data=body, headers={
@@ -93,7 +110,8 @@ def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 3):
                 if not txt:                          # reasoning spent the budget: nothing to parse, retry
                     raise ValueError("empty content")
                 txt = txt.removeprefix("```json").removeprefix("```").removesuffix("```")
-                out, meta = json.loads(txt), {"model": resp.get("model"), "usage": resp.get("usage")}
+                out, meta = json.loads(txt), {"model": resp.get("model"), "provider": resp.get("provider"),
+                                              "usage": resp.get("usage"), "raw": txt[:4000]}
             err = check(out) if check else None
             if err is None:
                 return "ok", out, meta, None

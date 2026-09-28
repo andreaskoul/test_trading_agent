@@ -48,7 +48,8 @@ Return JSON only: {"long_ideas": [{"ticker": str, "hypothesis": str <= 30 words}
 cols = ["GICS Sector", "beta60", "vol60_ann_pct", "ret_1w_pct", "ret_1m_pct", "ret_12_1_pct", "pct_below_52w_high",
         "news_7d", "attention_shock"]
 lines = [f"As-of Wednesday close {asof.date()}. {len(S)} members. Columns: ticker | " + " | ".join(cols) + " | headlines"]
-for t, r in S.iterrows():
+# Amendment 4: most unusual news flow first, not alphabetical (LLMs read the middle of long inputs worst)
+for t, r in S.assign(_a=pd.to_numeric(S["attention_shock"], errors="coerce")).sort_values("_a", ascending=False, na_position="last").iterrows():
     vals = [str(r[c]) if isinstance(r[c], str) else ("" if pd.isna(r[c]) else f"{r[c]:.2f}") for c in cols]
     lines.append(f"{t} | " + " | ".join(vals) + " | " + " // ".join(h for h in (r["latest_headlines"] or []) if h)[:240])
 user = "\n".join(lines)

@@ -65,6 +65,16 @@ Z["ridge_bp"] = Z[spec["features"]].to_numpy() @ np.asarray(spec["coef"]) * 1e4 
 Z["ridge_rank"] = Z["ridge_bp"].rank(ascending=False).astype(int)
 last60 = lr.loc[:asof].tail(60)
 Z["beta60"] = last60[Z.index].apply(lambda s: s.cov(last60["SPY"]) / last60["SPY"].var())
+# Hedge beta (Amendment 4): Welch (2022) slope-winsorised beta over 252 days (each daily stock
+# return clipped to lie between -2x and 4x the market's that day), shrunk one third toward 1.
+# The 60-day OLS beta has a standard error of ~0.2 and was unstable in 2026 (median 0.31).
+last252 = lr.loc[:asof].tail(252)
+rm = last252["SPY"]
+lo_, hi_ = np.minimum(-2 * rm, 4 * rm), np.maximum(-2 * rm, 4 * rm)
+wins = last252[Z.index].clip(lower=lo_, upper=hi_, axis=0)
+bw = wins.apply(lambda s: s.cov(rm) / rm[s.notna()].var())
+Z["beta252w"] = bw
+Z["beta_hedge"] = (2 / 3) * bw.fillna(1.0) + 1 / 3
 Z["ret_1w_pct"] = (np.exp(-sig["rev1w"]) - 1) * 100
 Z["ret_1m_pct"] = (np.exp(-sig["rev1m"]) - 1) * 100
 Z["ret_12_1_pct"] = (np.exp(sig["mom12_1"]) - 1) * 100
@@ -136,4 +146,4 @@ print(f"screen: {int((Z['earnings_in_holding_week'] != 'none').sum())} members r
 save(asof, "screen.json", {"asof": str(asof.date()), "n": int(len(Z)), "news_window": [str(lo), str(hi)],
                            "ridge_spec": spec, "rows": json.loads(Z.reset_index(names="ticker").to_json(orient="records"))})
 print(f"screen {asof.date()}: {len(Z)} members, attention for {Z.news_7d.notna().sum()}, "
-      f"median beta {Z.beta60.median():.2f}")
+      f"median beta60 {Z.beta60.median():.2f}, hedge beta {Z.beta_hedge.median():.2f}")

@@ -24,6 +24,7 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
 
+import hashlib
 import html
 import re
 
@@ -107,11 +108,16 @@ def do_day(day, syms):
         for a in d:
             h, sm = clean(a.get("headline")), clean(a.get("summary"))
             rows.append(dict(sym=s, src="finnhub", id=str(a.get("id")), t=h, desc=(sm if sm != h else ""),
+                             ingested_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                             h=hashlib.sha1(f"{h}|{sm}".encode()).hexdigest()[:16],
                              tickers=[x for x in (a.get("related") or "").split(",") if x], publisher=a.get("source"),
                              published=datetime.fromtimestamp(a.get("datetime", 0), timezone.utc).isoformat(),
                              url=a.get("url")))
     new = pd.DataFrame(rows)
-    df = pd.concat([old, new]).drop_duplicates(["sym", "src", "id"], keep="last") if len(new) else old
+    # append-only (Amendment 4): the first-seen version of an article is never overwritten; a revised
+    # text under the same id is kept as a further row (different content hash)
+    key = ["sym", "src", "id", "h"] if "h" in old else ["sym", "src", "id"]
+    df = pd.concat([old, new]).drop_duplicates(key, keep="first") if len(new) else old
     if len(df):
         df.sort_values(["sym", "published"]).to_parquet(os.path.join(LOCAL, "days", f"{day}.parquet"), index=False)
     return sorted(set(failed)), len(new)

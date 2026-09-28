@@ -21,25 +21,31 @@ Risk, the same for fund, analyst, quant and random, in this order:
 import numpy as np
 import pandas as pd
 
-from common import asof_from_env, deadline_ok, load, save
+import glob
+import json
+import os
+
+from common import MODE, STATE, asof_from_env, deadline_ok, load, save, week_dir
 
 asof = asof_from_env()
 S = pd.DataFrame(load(asof, "screen.json")["rows"]).set_index("ticker")
 idea = load(asof, "ideation.json")
 memos = load(asof, "analysts.json")["memos"]
 final = load(asof, "redteam.json")["final_score"]
-N, CORE_N, UNIT, SECTOR_CAP, DOLLAR_CAP = 10, 4, 1 / 20, 0.30, 0.20
+N, CORE_N, UNIT, SECTOR_CAP, DOLLAR_CAP = 10, 4, 1 / 20, 0.30, 0.10      # dollar cap 20% -> 10% (Amendment 4)
+DEGRADED = 0.25                                  # more failed memos than this: hold last week's books
 cov = [t for t in idea["coverage"] if t in S.index]            # book names need a price row
 ok = lambda t: memos.get(t, {}).get("status") == "ok"
 analyst = {t: (memos[t]["memo"]["score"] if ok(t) else 0) for t in cov}
 conf = {t: (float(memos[t]["memo"]["confidence"]) if ok(t) else 0.0) for t in cov}
-beta = S["beta60"].fillna(1.0)
+beta = (S["beta_hedge"] if "beta_hedge" in S else S["beta60"]).fillna(1.0)      # Amendment 4: Welch, shrunk
 sector = S["GICS Sector"].fillna("Unknown")
 
 
-def conviction_book(score):
+def conviction_book(score, cf=None):
     """Non-zero views only, sized by score x confidence, at most N per side."""
-    w = pd.Series({t: score.get(t, 0) * conf.get(t, 0.0) * UNIT for t in cov}, dtype=float)
+    cf = conf if cf is None else cf
+    w = pd.Series({t: score.get(t, 0) * cf.get(t, 0.0) * UNIT for t in cov}, dtype=float)
     w = w[w != 0]
     L = w[w > 0].sort_values(ascending=False).head(N)
     Sh = w[w < 0].sort_values().head(N)
@@ -87,13 +93,40 @@ def risk(w):
     return out, rep
 
 
+if os.environ.get("FUND_SHADOW") == "1":
+    # Shadow analyst books C2 / C3 (Amendment 4): the champion's sizing and risk rules on the shadow
+    # scores. Written to shadow_book.json after the champion's book is committed; never traded.
+    sh = load(asof, "shadow.json")
+    out_b, out_r = {}, {}
+    for k in ("c2_selfconsistency", "c3_textonly"):
+        sc = {t: v["score"] for t, v in sh[k].items() if v}
+        cf = {t: v["confidence"] for t, v in sh[k].items() if v}
+        out_b[k], out_r[k] = risk(conviction_book(sc, cf))
+        print(k, out_b[k], out_r[k]["log"])
+    save(asof, "shadow_book.json", {"asof": str(asof.date()), "books": out_b, "risk": out_r})
+    raise SystemExit(0)
+
 if not deadline_ok(asof):
     save(asof, "book.json", {"asof": str(asof.date()), "status": "missed_deadline", "books": {}})
     raise SystemExit("missed the Thursday 19:00 UTC deadline: week logged flat")
 fund_score = {t: final.get(t, 0) for t in cov}
 books, reports = {}, {}
-books["fund"], reports["fund"] = risk(conviction_book(fund_score))
-books["analyst"], reports["analyst"] = risk(conviction_book(analyst))
+prev_dir = max([d for d in glob.glob(os.path.join(STATE, MODE, "20*")) if os.path.basename(d) < str(asof.date())
+                and os.path.exists(os.path.join(d, "book.json"))
+                and json.load(open(os.path.join(d, "book.json"))).get("status") in ("ok", "degraded_hold")], default=None)
+prev = json.load(open(os.path.join(prev_dir, "book.json"))) if prev_dir else {"books": {}, "meta": {}}
+failed = sum(not ok(t) for t in cov) / max(len(cov), 1)
+status = "ok"
+if failed > DEGRADED:
+    # Degraded run (Amendment 4): a partial set of memos is not a book. Hold last week's fund and
+    # analyst books (flat if there is none) and log it; the shadow books are computed as usual.
+    status = "degraded_hold"
+    for k in ("fund", "analyst"):
+        books[k] = prev["books"].get(k, {})
+        reports[k] = {"log": [f"degraded run: {failed:.0%} of memos failed; holding {os.path.basename(prev_dir) if prev_dir else 'nothing (flat)'}"]}
+else:
+    books["fund"], reports["fund"] = risk(conviction_book(fund_score))
+    books["analyst"], reports["analyst"] = risk(conviction_book(analyst))
 r = S["ridge_bp"].sort_values()
 books["quant"], reports["quant"] = risk(pd.concat([pd.Series(0.1, index=r.index[-N:]), pd.Series(-0.1, index=r.index[:N])]))
 core = [t for t in idea["core"] if t in S.index]
@@ -104,7 +137,38 @@ books["core20"] = {**{t: 1 / CORE_N for t in cL}, **{t: -1 / CORE_N for t in cS}
 rng = np.random.default_rng(int(str(asof.date()).replace("-", "")))
 perm = list(rng.permutation(sorted(cov)))
 books["random"], reports["random"] = risk(pd.concat([pd.Series(0.1, index=perm[:N]), pd.Series(-0.1, index=perm[N:2 * N])]))
-save(asof, "book.json", {"asof": str(asof.date()), "status": "ok", "books": books, "risk": reports,
+
+# ---- shadow challenger books (Amendment 4), never traded; same risk rules as the champion
+# C4: Grinold-style sizing, score x confidence / volatility, scaled to the champion's stock gross,
+# with a band: a name held last week whose score is now 0 or uncovered keeps its weight one more week.
+vol = (S["vol60_ann_pct"] / 100).clip(lower=0.10).fillna(0.30)
+raw = pd.Series({t: fund_score.get(t, 0) * conf.get(t, 0.0) / vol[t] for t in cov}, dtype=float)
+raw = raw[raw != 0]
+raw = pd.concat([raw[raw > 0].nlargest(N), raw[raw < 0].nsmallest(N)])
+fund_gross = sum(abs(v) for k, v in books.get("fund", {}).items() if k != "SPY")
+c4 = (raw / raw.abs().sum() * fund_gross).clip(-0.10, 0.10) if len(raw) and fund_gross else raw * 0
+age = {}
+for t, w0 in prev["books"].get("c4_volscaled", {}).items():
+    if t != "SPY" and t not in c4.index and fund_score.get(t, 0) == 0 and prev.get("meta", {}).get("c4_age", {}).get(t, 0) < 1:
+        c4[t] = w0; age[t] = prev.get("meta", {}).get("c4_age", {}).get(t, 0) + 1
+books["c4_volscaled"], reports["c4_volscaled"] = risk(c4.astype(float))
+# C5: news-conditioned reversal. Covered names with a zero score and no event active in the last
+# 7 days get a short-term reversal position (rank of last week's return, at most 3% of NAV each);
+# the champion's news views are kept everywhere else.
+def active_event(t):
+    p_ = os.path.join(week_dir(asof), "research", f"{t}.json")
+    if not os.path.exists(p_):
+        return False
+    lo_ = (asof - pd.Timedelta(days=6)).normalize()
+    return any(pd.Timestamp(e["end"]) >= lo_ for e in json.load(open(p_)).get("events", []))
+quiet = [t for t in cov if fund_score.get(t, 0) == 0 and not active_event(t)]
+c5 = conviction_book(fund_score)
+if len(quiet) >= 4:
+    rk = S.loc[quiet, "ret_1w_pct"].rank()
+    c5 = pd.concat([c5, -(rk - rk.mean()) / (len(quiet) / 2) * 0.03])
+books["c5_reversal"], reports["c5_reversal"] = risk(c5.astype(float))
+save(asof, "book.json", {"asof": str(asof.date()), "status": status, "books": books, "risk": reports,
+                         "memo_failure_share": failed, "meta": {"c4_age": age, "quiet_names": quiet},
                          "scores": {"fund": fund_score, "analyst": analyst, "confidence": conf}})
 for k, v in books.items():
     Lk = [f"{t} {w:.3f}" for t, w in v.items() if w > 0 and t != "SPY"]

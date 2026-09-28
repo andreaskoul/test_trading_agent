@@ -186,7 +186,7 @@ elif not os.path.exists(bp):
     reason = "no book for this week: flat"
 else:
     book = json.load(open(bp))
-    if book.get("status") != "ok":
+    if book.get("status") not in ("ok", "degraded_hold"):
         reason = f"book status {book.get('status')!r}: flat"
     else:
         w = {k: float(v) for k, v in book["books"].get("fund", {}).items()}
@@ -211,7 +211,7 @@ if not acct.get("shorting_enabled") and any(v < 0 for k, v in target.items()):
 beta = {}
 sp = os.path.join(wd, "screen.json")
 if os.path.exists(sp):
-    beta = {r["ticker"]: r.get("beta60") for r in json.load(open(sp))["rows"]}
+    beta = {r["ticker"]: r.get("beta_hedge", r.get("beta60")) for r in json.load(open(sp))["rows"]}
 dropped = {}
 for sym, wt in list(target.items()):
     s_, a = api("GET", f"/v2/assets/{sym}")

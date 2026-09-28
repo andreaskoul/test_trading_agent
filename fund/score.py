@@ -53,15 +53,17 @@ def nw_t(x, L=2):
 
 
 FACTORS = ["rev1w", "mom12_1", "lowvol"]      # from the screen's z-scores (Amendment 2 attribution)
-STOCK_BOOKS = ("fund", "analyst", "quant", "core20", "random")
+STOCK_BOOKS = ("fund", "analyst", "quant", "core20", "random", "c1_wedclose", "c1_thuopen",
+               "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal")
+CHALLENGERS = ("c1_wedclose", "c1_thuopen", "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal")
 rf = fred("DTB3")                                   # 3-month T-bill, for returns in excess of cash (Amendment 3)
-rows, prev, ideas_rows, xs_rows, fac_rows, rt_rows = [], {}, [], [], [], []
+rows, prev, ideas_rows, xs_rows, fac_rows, rt_rows, mon_rows = [], {}, [], [], [], [], []
 for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     asof = pd.Timestamp(os.path.basename(wd))
     if now < asof + pd.Timedelta(days=8, hours=23) or not os.path.exists(os.path.join(wd, "book.json")):
         continue
     book = json.load(open(os.path.join(wd, "book.json")))
-    if book.get("status") != "ok":                  # missed deadline: the week is flat, so every book sells out
+    if book.get("status") not in ("ok", "degraded_hold"):   # missed deadline: the week is flat, so every book sells out
         for k in [k for k in prev if k in STOCK_BOOKS]:
             rows.append(dict(asof=str(asof.date()), book=k, gross=0.0, cost=float(prev[k].abs().sum() * 5e-4),
                              net=-float(prev[k].abs().sum() * 5e-4), excess=-float(prev[k].abs().sum() * 5e-4), n_missing=0))
@@ -70,9 +72,14 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     fx = json.load(open(os.path.join(wd, "fx.json"))) if os.path.exists(os.path.join(wd, "fx.json")) else {"books": {}}
     screen = pd.DataFrame(json.load(open(os.path.join(wd, "screen.json")))["rows"]).set_index("ticker")
     names = sorted(set(screen.index) | {t for b in book.get("books", {}).values() for t in b})
-    p = yf.download([n.replace(".", "-") for n in names], start=asof - pd.Timedelta(days=7), end=asof + pd.Timedelta(days=14),
-                    progress=False, auto_adjust=True, threads=True)["Close"]
-    p = p.rename(columns=lambda c: c.replace("-", ".")); p.index = pd.to_datetime(p.index).tz_localize(None)
+    shadow_p = os.path.join(wd, "shadow_book.json")
+    shadow = json.load(open(shadow_p))["books"] if os.path.exists(shadow_p) else {}
+    names = sorted(set(names) | {t for b in shadow.values() for t in b})
+    px_all = yf.download([n.replace(".", "-") for n in names], start=asof - pd.Timedelta(days=7), end=asof + pd.Timedelta(days=14),
+                         progress=False, auto_adjust=True, threads=True)
+    p, po = px_all["Close"], px_all["Open"]
+    for f_ in (p, po):
+        f_.rename(columns=lambda c: c.replace("-", "."), inplace=True); f_.index = pd.to_datetime(f_.index).tz_localize(None)
     # entry at the close of the first trading day after the as-of Wednesday (the execution day),
     # exit at the first close on or after the next Thursday: holidays move both, never backwards
     if p.index.max() < asof + pd.Timedelta(days=8):
@@ -80,6 +87,15 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     t0, t1 = p.index[p.index > asof][0], p.index[p.index >= asof + pd.Timedelta(days=8)][0]
     ret = p.loc[t1] / p.loc[t0] - 1
     rf_w = float(rf.asof(t0)) * (t1 - t0).days / 360
+    # C1 timing books (Amendment 4): the fund's weights entered at the as-of Wednesday close (notional,
+    # not tradable after the decision) and at the execution day's open, each held one week
+    w1 = p.index[p.index >= asof + pd.Timedelta(days=7)][0]
+    ret_wed = p.loc[w1] / p.loc[asof] - 1 if asof in p.index else ret * np.nan
+    ret_open = po.loc[t1] / po.loc[t0] - 1
+    # a halted week is flat for the fund whatever the book said (Amendment 4: halt semantics)
+    ex_p = os.path.join(wd, "execution.json")
+    halted_wk = os.path.exists(ex_p) and str(json.load(open(ex_p)).get("reason") or "").startswith("HALT")
+    fund_w = {} if halted_wk else book.get("books", {}).get("fund", {})
     fxn = sorted({c for b in fx.get("books", {}).values() for c in b})
     if fxn:
         raw = yf.download([FXT[c][0] for c in fxn], start=t0 - pd.Timedelta(days=7), end=t1 + pd.Timedelta(days=1),
@@ -89,7 +105,10 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
         usd = fred("IR3TIB01USM156N")
         acc = pd.Series({c: (fred(f"IR3TIB01{FXT[c][2]}M156N").asof(t1) - usd.asof(t1)) / 52 for c in fxn})
         fret = np.log(at(s, t1) / at(s, t0)) + acc
-    allbooks = {**{k: (v, ret, pd.Series(5e-4, index=ret.index)) for k, v in book.get("books", {}).items()},
+    c5bp = pd.Series(5e-4, index=ret.index)
+    allbooks = {**{k: (fund_w if k == "fund" else v, ret, c5bp) for k, v in book.get("books", {}).items()},
+                **{k: (v, ret, c5bp) for k, v in shadow.items()},
+                "c1_wedclose": (fund_w, ret_wed, c5bp), "c1_thuopen": (fund_w, ret_open, c5bp),
                 **{k: (v, fret, pd.Series(FX_COST)) for k, v in fx.get("books", {}).items() if fxn}}
     for k, (w, r, c) in allbooks.items():
         w = pd.Series(w, dtype=float)
@@ -102,6 +121,15 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
                          excess=gross - cost - (rf_w * float(w.sum()) if k in STOCK_BOOKS else 0.0),
                          n_missing=int(r.reindex(w.index).isna().sum()) if len(w) else 0))
         prev[k] = w
+    # monitors (Amendment 4): coverage, score dispersion, zero share, failures, serving provider
+    am = json.load(open(os.path.join(wd, "analysts.json")))["memos"] if os.path.exists(os.path.join(wd, "analysts.json")) else {}
+    sc_ok = [m["memo"]["score"] for m in am.values() if m.get("status") == "ok"]
+    mon_rows.append(dict(asof=str(asof.date()), status=book.get("status"), covered=len(am), memo_ok=len(sc_ok),
+                         zero_share=float(np.mean([s_ == 0 for s_ in sc_ok])) if sc_ok else np.nan,
+                         score_sd=float(np.std(sc_ok)) if sc_ok else np.nan,
+                         fund_names=sum(k != "SPY" for k in fund_w), fund_stock_gross=float(sum(abs(v) for k, v in fund_w.items() if k != "SPY")),
+                         spy_hedge=float(fund_w.get("SPY", 0.0)), halted=halted_wk,
+                         providers="|".join(sorted({str((m.get("meta") or {}).get("provider")) for m in am.values() if m.get("meta")}))))
     # ideation: do nominated names move more, and in the hypothesised direction?
     idea = json.load(open(os.path.join(wd, "ideation.json")))
     side = {x["ticker"]: +1 for x in (idea.get("llm") or {}).get("long_ideas", [])}
@@ -114,7 +142,7 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     # factor returns over the S&P members: equal-weight market, and rank-weighted long-short
     # (sum |w| = 2) on each screen signal. The attribution regresses each book on these.
     rm = ret.reindex(screen.index).dropna()
-    fr = {"asof": str(asof.date()), "mkt": float(rm.mean())}
+    fr = {"asof": str(asof.date()), "mkt": float(rm.mean()), "spy": float(ret.get("SPY", np.nan))}
     for f in FACTORS:
         if f in screen:
             z = screen[f].reindex(rm.index).rank(); z = z - z.mean()
@@ -136,10 +164,20 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     if len(x) > 5:
         X = np.column_stack([np.ones(len(x)), (x.ridge.rank() - 1) / (len(x) - 1) - 0.5, x.a])
         b = np.linalg.lstsq(X, x.r.to_numpy(), rcond=None)[0]
-        xs_rows.append(dict(asof=str(asof.date()), n=len(x), b_ridge=b[1], b_analyst=b[2]))
+        # Amendment 4: the score slope controlling for last week's return, hedge beta and sector
+        z_ = pd.DataFrame({"r": ret.reindex(sc.index), "a": sc, "r1w": screen["ret_1w_pct"].reindex(sc.index),
+                           "b": screen.get("beta_hedge", screen["beta60"]).reindex(sc.index),
+                           "sec": screen["GICS Sector"].reindex(sc.index)}).dropna()
+        b_adj = np.nan
+        if len(z_) > 12:
+            D = pd.get_dummies(z_["sec"], drop_first=True, dtype=float)
+            X2 = np.column_stack([np.ones(len(z_)), z_.a, z_.r1w, z_.b, D.to_numpy()])
+            b_adj = np.linalg.lstsq(X2, z_.r.to_numpy(), rcond=None)[0][1]
+        xs_rows.append(dict(asof=str(asof.date()), n=len(x), b_ridge=b[1], b_analyst=b[2], b_analyst_adj=b_adj))
 
 R = pd.DataFrame(rows); I = pd.DataFrame(ideas_rows); X = pd.DataFrame(xs_rows)
 F = pd.DataFrame(fac_rows); RT = pd.DataFrame(rt_rows)
+pd.DataFrame(mon_rows).to_csv(os.path.join(OUT, "monitor.csv"), index=False)
 F.to_csv(os.path.join(OUT, "factors.csv"), index=False)
 RT.to_csv(os.path.join(OUT, "redteam.csv"), index=False)
 R.to_csv(os.path.join(OUT, "weekly_books.csv"), index=False)
@@ -189,8 +227,19 @@ print("\n".join(lines))
 # (K = 4, two-sided alpha 0.05) on the NW t of the fund book's weekly return in excess of cash,
 # after model costs. Between looks the verdict does not change, except for a risk halt.
 LOOKS = {13: 4.049, 26: 2.863, 39: 2.337, 52: 2.024}
+CH_LOOKS = {13: 5.336, 26: 3.773, 39: 3.081, 52: 2.668}     # same design at alpha 0.05/6 (six challengers)
+
+
+def alpha_t(y, Fx, cols):
+    """NW t of the intercept of y on factor columns (weeks aligned); nan if too short."""
+    d = pd.concat([y.rename("y"), Fx[cols]], axis=1, join="inner").dropna()
+    if len(d) < len(cols) + 4:
+        return np.nan
+    X_ = np.column_stack([np.ones(len(d))] + [d[c] for c in cols])
+    b_ = np.linalg.lstsq(X_, d["y"].to_numpy(), rcond=None)[0]
+    return nw_t(d["y"].to_numpy() - X_[:, 1:] @ b_[1:])
 EXEC = os.path.join(base, "execution")
-books_ok = {os.path.basename(d): json.load(open(os.path.join(d, "book.json"))).get("status") == "ok"
+books_ok = {os.path.basename(d): json.load(open(os.path.join(d, "book.json"))).get("status") in ("ok", "degraded_hold")
             for d in sorted(glob.glob(os.path.join(base, "20*"))) if os.path.exists(os.path.join(d, "book.json"))}
 first = min([a for a, ok in books_ok.items() if ok], default=None)
 Pe = R[R.book == "fund"].set_index("asof")["excess"].sort_index() if len(R) else pd.Series(dtype=float, index=pd.Index([], dtype=str))
@@ -210,26 +259,37 @@ slip = float(fills.loc[fills["leg"] != "flatten", "slip_bp"].abs().median()) if 
 halted = os.path.exists(os.path.join(base, "HALT"))
 ops_ok = bool(on_time >= 0.9 and executed >= 0.9 and slip <= 10)
 look = max([L for L in LOOKS if n >= L], default=None)
+Fx = F.set_index("asof") if len(F) else pd.DataFrame(columns=["spy", "rev1w"])
+Px = R.pivot_table(index="asof", columns="book", values="excess") if len(R) else pd.DataFrame()
+promote = []
 if look:                                            # the verdict uses exactly the first `look` weeks
     cut = Pe.index[look - 1]
     Z_l = nw_t(Pe.iloc[:look])
-    dq_l = nw_t((Pn["fund"] - Pn["quant"]).dropna().loc[:cut]) if {"fund", "quant"} <= set(Pn) else np.nan
-    xs_l = nw_t(X.set_index("asof").b_analyst.loc[:cut]) if len(X) else np.nan
+    A_l = alpha_t(Pe.iloc[:look], Fx, ["spy", "rev1w"])          # Amendment 4: alpha net of SPY and reversal
+    dq_l = alpha_t((Pn["fund"] - Pn["quant"]).dropna().loc[:cut], Fx, ["rev1w"]) if {"fund", "quant"} <= set(Pn) else np.nan
+    xs_l = nw_t(X.set_index("asof").b_analyst_adj.loc[:cut]) if len(X) and "b_analyst_adj" in X else np.nan
     mean_l = Pe.iloc[:look].mean()
+    for k in CHALLENGERS:                           # promotion: challenger - champion at the challenger boundary
+        if k in Px:
+            t_k = nw_t((Px[k] - Px["fund"]).dropna().loc[first:cut])
+            if t_k >= CH_LOOKS[look]:
+                promote.append(f"{k} (t {t_k:.2f})")
 if halted:
     verdict = "HALTED: a risk stop fired (see fund_state/live/HALT). Review, then resume by hand."
 elif look and min(Z_l, dq_l, xs_l) <= -2:
-    verdict = f"STOP (look at {look} weeks): the fund is significantly worse than cash, the quant book, or its own scores."
-elif look and Z_l >= LOOKS[look] and ops_ok:
-    verdict = f"GO (look at {look} weeks): t {Z_l:.2f} crosses the {LOOKS[look]:.2f} boundary and operations pass."
+    verdict = f"STOP (look at {look} weeks): the fund is significantly worse than cash, than the quant book after reversal, or its scores predict the wrong way."
+elif look and Z_l >= LOOKS[look] and A_l >= LOOKS[look] and ops_ok:
+    verdict = f"GO (look at {look} weeks): t {Z_l:.2f} and alpha t {A_l:.2f} both cross {LOOKS[look]:.2f}, and operations pass."
 elif look == 52:
-    verdict = "NO-GO at 52 weeks: no boundary crossed. The fund has not shown an edge; redesign or retire."
+    verdict = ("NO-GO at 52 weeks: no boundary crossed, so no real money. The paper record continues to the "
+               "104-week decision of Protocol 6.")
 elif look and ops_ok and mean_l > 0:
     verdict = f"GO-SMALL allowed (look at {look} weeks): operations pass, no stop, positive mean. Tuition capital only."
 else:
     verdict = f"CONTINUE ({n} weeks scored; next look at {min([L for L in LOOKS if L > n], default='-')} weeks)."
 g = [f"# Go-live gate ({MODE})", "", f"**{verdict}**", "",
-     (f"At the {look}-week look: t {Z_l:.2f}, fund − quant t {dq_l:.2f}, analyst slope t {xs_l:.2f}. "
+     (f"At the {look}-week look: excess t {Z_l:.2f}, alpha t (SPY, rev1w) {A_l:.2f}, fund − quant alpha t (rev1w) {dq_l:.2f}, "
+      f"adjusted score slope t {xs_l:.2f}. Challengers promoted: {', '.join(promote) or 'none'}. "
       "The rows below are running values; only a look changes the verdict." if look else
       "No look yet. The rows below are running values and change no decision."), "",
      "| item | value | rule |", "|---|---:|---|",
@@ -237,7 +297,7 @@ g = [f"# Go-live gate ({MODE})", "", f"**{verdict}**", "",
      f"| fund excess return, mean %/wk | {Pe.mean() * 100 if n else float('nan'):.3f} | after 5 bp/side and cash |",
      f"| NW t (lags 2) | {Z:.2f} | GO if ≥ {LOOKS[look] if look else LOOKS[13]:.2f} at this look; STOP if ≤ −2 |",
      f"| fund − quant NW t | {dq:.2f} | STOP if ≤ −2 |",
-     f"| analyst-score slope NW t | {xs_t:.2f} | STOP if ≤ −2 |",
+     f"| analyst-score slope NW t | {xs_t:.2f} | adjusted version: STOP if ≤ −2 |",
      f"| decisions on time | {on_time:.0%} | ≥ 90% |",
      f"| weeks fully executed | {executed:.0%} | ≥ 90% |",
      f"| median abs slippage vs close | {slip:.1f} bp | ≤ 10 bp |",
@@ -248,6 +308,15 @@ if os.path.exists(nav_p) and n:
     g += ["", f"Broker (paper) NAV {N_['equity'].iloc[-1]:,.0f} vs {N_['equity'].iloc[0]:,.0f} at the start of its history; "
           f"model fund net cumulative {((1 + Pn['fund'].fillna(0)).prod() - 1) * 100:.2f}%."]
 open(os.path.join(OUT, "gate.md"), "w").write("\n".join(g) + "\n")
-json.dump({"verdict": verdict.split(" ")[0].rstrip(":"), "n": n, "t": Z, "look": look, "ops_ok": ops_ok},
+if len(Px):
+    g += ["", "Challengers (shadow, never traded): excess return minus the fund's, %/wk, running",
+          "| book | weeks | mean diff | NW t | promotion boundary at next look |", "|---|---:|---:|---:|---:|"]
+    nxt = min([L for L in LOOKS if L > n], default=52)
+    for k in CHALLENGERS:
+        if k in Px:
+            d_ = (Px[k] - Px["fund"]).dropna()
+            d_ = d_[d_.index >= first] if first else d_
+            g.append(f"| {k} | {len(d_)} | {d_.mean() * 100 if len(d_) else float('nan'):.3f} | {nw_t(d_):.2f} | {CH_LOOKS[nxt]:.2f} |")
+json.dump({"verdict": verdict.split(" ")[0].rstrip(":"), "n": n, "t": Z, "look": look, "ops_ok": ops_ok, "promote": promote},
           open(os.path.join(OUT, "gate.json"), "w"), default=float)
 print("\n".join(g))

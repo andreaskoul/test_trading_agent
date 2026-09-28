@@ -23,3 +23,19 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   - a hard 240 s deadline per LLM call, read in chunks with `read1`, verified against a fake server that sends whitespace forever;
   - desk time budgets: analysts 75 min, red team 45 min; names not started by then score 0 or keep the analyst score;
   - a progress line per memo and review.
+- 2026-09-28: Amendment 4 before any live decision, from the evidence review (reports/Multi agent AI trading desk design.md).
+  - Decision rules (pre-registered):
+    - the gate needs alpha net of SPY and reversal;
+    - STOP rules are reversal-adjusted;
+    - Welch-winsorised, shrunk hedge beta;
+    - dollar cap at 10%;
+    - pinned DeepSeek provider with a frozen canary and a succession rule;
+    - degraded runs hold last week's book;
+    - fixed news cutoff;
+    - ideation input sorted by attention;
+    - halt semantics;
+    - six shadow challengers with a promotion rule.
+  - Operational:
+    - prompts saved;
+    - append-only archive with hashes;
+    - weekly monitors (performance/monitor.csv).
