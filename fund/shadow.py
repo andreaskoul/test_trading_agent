@@ -88,8 +88,12 @@ print(f"shadow: C2 {sum(v is not None for v in r2.values())}/{len(names)}, C3 {s
 cdir = os.path.join(STATE, MODE, "canary")
 os.makedirs(cdir, exist_ok=True)
 cp = os.path.join(cdir, "canary.json")
-if not os.path.exists(cp):
-    base = [t for t in names if A["memos"][t]["status"] == "ok"][:20]
+ok_names = [t for t in names if A["memos"][t]["status"] == "ok"]
+if not os.path.exists(cp) and len(ok_names) < 15:
+    canary = {"created": False, "why": f"only {len(ok_names)} ok memos; the canary is frozen from a healthy week"}
+    print(f"canary: not frozen ({canary['why']})")
+elif not os.path.exists(cp):
+    base = ok_names[:20]
     json.dump({"created_from": str(asof.date()), "system": SYSTEM,
                "items": [{"ticker": t, "user": prompts[t], "score": A["memos"][t]["memo"]["score"],
                           "confidence": A["memos"][t]["memo"]["confidence"]} for t in base]}, open(cp, "w"), indent=1)
