@@ -44,3 +44,9 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 - 2026-09-28: the provider pin was removed at the owner's request, before any live decision; OpenRouter now routes to any available host. The serving provider is still logged per call and listed in `performance/monitor.csv`. The canary rule in Amendment 4 now covers host changes: pooling across a drift needs the canary to agree, and two consecutive weeks below its thresholds restart the clock.
 - 2026-09-30: position ledger (`fund/ledger.py`), an Excel file rebuilt after each weekly run and each execution/reconcile. Reporting only; no decision input changes.
 - 2026-09-30: Amendment 5 before any live decision. A daily position review (`fund/review.py`, `fund_review.yml`) can exit, reduce or increase held names on confirmed material new news, traded at the same day's close with SPY re-hedged. The fund is scored piecewise between review closes. A new c7_noreview shadow book is added, and the challenger boundaries are recomputed for seven challengers. The ledger splits lots at review changes.
+- 2026-09-30: reconciliation covers daily-review orders too. It now runs Tue–Sat at 01:07 UTC, one run per previous session. Also:
+  - fills.csv gains a `source` column; re-reconciling one record no longer drops another's rows;
+  - Alpaca cash activity (dividends on longs and shorts, fees, interest) is saved to `execution/activities.csv`;
+  - the ledger values every lot boundary at the actual fill of the order traded there, so lot P&Ls add up to trading P&L;
+  - the ledger lists review fills and slippage, and has a Cash activity sheet.
+  Records only; no decision input changes.

@@ -230,7 +230,7 @@ if mode == "trade":
             o["id"], o["status"] = r["id"], r["status"]
         else:
             o["status"] = f"rejected: {(r or {}).get('message')}"; problems.append(f"{o['symbol']}: {o['status']}")
-rec = {"asof": str(asof.date()), "day": str(today), "mode": mode, "news_since": str(since), "news_until": now_utc.isoformat(),
+rec = {"asof": str(asof.date()), "day": str(today), "mode": mode, "close_et": close_et.strftime("%H:%M"), "news_since": str(since), "news_until": now_utc.isoformat(),
        "equity": equity, "decisions": decisions, "weights_before": w_now, "target_weights": target if acts else w_now,
        "orders": orders, "problems": problems,
        "status": ("submitted" if orders else "no_action") if mode == "trade" else "planned"}

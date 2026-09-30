@@ -22,6 +22,7 @@ Idempotent: client_order_id = fund-<asof>-<symbol>-<leg>, and a week with an
 execution.json marked submitted is never traded again.
 """
 
+import glob
 import json
 import math
 import os
@@ -96,13 +97,16 @@ problems = []
 if mode == "reconcile":
     import yfinance as yf
     done = []
-    for p in sorted(os.path.join(STATE, MODE, d, "execution.json") for d in os.listdir(os.path.join(STATE, MODE))
-                    if d[:2] == "20" and os.path.exists(os.path.join(STATE, MODE, d, "execution.json"))):
+    # every order-bearing record: the weekly execution and each daily review (Amendment 5)
+    recs = [(p, "execution") for p in glob.glob(os.path.join(STATE, MODE, "20*", "execution.json"))]
+    recs += [(p, "review") for p in glob.glob(os.path.join(STATE, MODE, "20*", "reviews", "*.json"))]
+    for p, kind in sorted(recs):
         ex = json.load(open(p))
         if ex.get("status") != "submitted" or ex.get("reconciled"):
             continue
-        day = pd.Timestamp(ex["exec_day"])
-        if datetime.now(ET) < datetime.combine(day.date(), datetime.strptime(ex["close_et"], "%H:%M").time(), ET) + timedelta(minutes=45):
+        dstr = ex["exec_day"] if kind == "execution" else ex["day"]
+        day = pd.Timestamp(dstr)
+        if datetime.now(ET) < datetime.combine(day.date(), datetime.strptime(ex.get("close_et", "16:00"), "%H:%M").time(), ET) + timedelta(minutes=45):
             continue
         rows = []
         for o in ex["orders"]:
@@ -114,35 +118,48 @@ if mode == "reconcile":
                          "fill": float(od["filled_avg_price"]) if od.get("filled_avg_price") else np.nan,
                          "filled_at": od.get("filled_at")})
         F = pd.DataFrame(rows)
-        syms = sorted(F["symbol"].unique())
-        px = yf.download([s.replace(".", "-") for s in syms], start=day, end=day + pd.Timedelta(days=1),
-                         progress=False, auto_adjust=False)["Close"]
-        px = px if isinstance(px, pd.DataFrame) else px.to_frame(syms[0].replace(".", "-"))
-        close = px.rename(columns=lambda c: c.replace("-", ".")).iloc[-1] if len(px) else pd.Series(dtype=float)
-        F["close"] = F["symbol"].map(close)
-        F["slip_bp"] = np.where(F["side"] == "buy", 1, -1) * (F["fill"] / F["close"] - 1) * 1e4   # + = worse than the close
-        F.insert(0, "asof", ex["asof"]); F.insert(1, "exec_day", ex["exec_day"])
+        if len(F):
+            syms = sorted(F["symbol"].unique())
+            px = yf.download([s.replace(".", "-") for s in syms], start=day, end=day + pd.Timedelta(days=1),
+                             progress=False, auto_adjust=False)["Close"]
+            px = px if isinstance(px, pd.DataFrame) else px.to_frame(syms[0].replace(".", "-"))
+            close = px.rename(columns=lambda c: c.replace("-", ".")).iloc[-1] if len(px) else pd.Series(dtype=float)
+            F["close"] = F["symbol"].map(close)
+            F["slip_bp"] = np.where(F["side"] == "buy", 1, -1) * (F["fill"] / F["close"] - 1) * 1e4   # + = worse than the close
+        F.insert(0, "asof", ex["asof"]); F.insert(1, "exec_day", dstr); F.insert(2, "source", kind)
         fp = os.path.join(EXEC, "fills.csv")
-        old = pd.read_csv(fp, dtype={"asof": str}) if os.path.exists(fp) else pd.DataFrame({"asof": []})
-        pd.concat([old[old["asof"] != ex["asof"]], F]).to_csv(fp, index=False)
-        # realised vs target weights after the close
+        old = pd.read_csv(fp, dtype={"asof": str, "exec_day": str}) if os.path.exists(fp) else pd.DataFrame({"asof": [], "exec_day": []})
+        if "source" not in old:
+            old["source"] = "execution"
+        keep = ~((old["asof"] == ex["asof"]) & (old["exec_day"] == dstr) & (old["source"] == kind))
+        pd.concat([old[keep], F]).sort_values(["asof", "exec_day"]).to_csv(fp, index=False)
         s_, acct = api("GET", "/v2/account")
         s_, pos = api("GET", "/v2/positions")
         eq = float(acct["equity"])
         real = {p_["symbol"]: float(p_["market_value"]) / eq for p_ in (pos or [])}
         tgt = ex["target_weights"]
         track = sum(abs(real.get(k, 0) - tgt.get(k, 0)) for k in set(real) | set(tgt))
-        cls = F[F["leg"] != "flatten"]
+        cls = F[F["leg"] != "flatten"] if len(F) else F
         ex["reconciled"] = {"at": datetime.utcnow().isoformat(timespec="seconds"), "equity": eq,
-                            "n_orders": int(len(F)), "n_filled": int((F["status"] == "filled").sum()),
-                            "n_not_filled": int((F["status"] != "filled").sum()),
-                            "median_abs_slip_bp_close": float(cls["slip_bp"].abs().median()) if cls["slip_bp"].notna().any() else None,
+                            "n_orders": int(len(F)), "n_filled": int((F["status"] == "filled").sum()) if len(F) else 0,
+                            "n_not_filled": int((F["status"] != "filled").sum()) if len(F) else 0,
+                            "median_abs_slip_bp_close": float(cls["slip_bp"].abs().median()) if len(cls) and cls["slip_bp"].notna().any() else None,
                             "tracking_gross": track}
         json.dump(ex, open(p, "w"), indent=1, default=str)
-        done.append(ex["asof"])
+        done.append(f"{kind} {ex['asof']} {dstr}")
         if ex["reconciled"]["n_not_filled"]:
-            problems.append(f"{ex['asof']}: {ex['reconciled']['n_not_filled']} orders not filled")
-        print(f"reconciled {ex['asof']}: {ex['reconciled']}")
+            problems.append(f"{kind} {dstr}: {ex['reconciled']['n_not_filled']} orders not filled")
+        print(f"reconciled {kind} {dstr}: {ex['reconciled']}")
+    # cash activity (dividends paid or received, fees, interest): the part of broker P&L that
+    # price returns leave out
+    s_, act = api("GET", "/v2/account/activities?activity_types=DIV,DIVCGL,DIVCGS,DIVNRA,DIVROC,DIVTXEX,FEE,INT,PTC&page_size=100")
+    if s_ == 200 and act:
+        A = pd.DataFrame([{"date": a.get("date") or (a.get("transaction_time") or "")[:10], "type": a.get("activity_type"),
+                           "symbol": a.get("symbol"), "qty": a.get("qty"), "per_share": a.get("per_share_amount"),
+                           "amount": float(a.get("net_amount") or 0), "id": a.get("id")} for a in act])
+        ap = os.path.join(EXEC, "activities.csv")
+        old = pd.read_csv(ap, dtype=str) if os.path.exists(ap) else pd.DataFrame(columns=A.columns)
+        pd.concat([old, A.astype(str)]).drop_duplicates("id").sort_values("date").to_csv(ap, index=False)
     # broker equity curve and the risk halts (drawdown from peak, one-week loss)
     s_, ph = api("GET", "/v2/account/portfolio/history?period=1A&timeframe=1D")
     if s_ == 200 and ph and ph.get("equity"):
