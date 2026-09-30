@@ -99,6 +99,10 @@ if len(P):
         t1s = px.index[px.index >= pd.Timestamp(a) + pd.Timedelta(days=8)]
         t1 = t1s[0] if len(t1s) else None
         days[a] = (px, t0, t1)
+    # current price: the latest close for every ticker ever held
+    lp = yf.download(sorted({t.replace(".", "-") for t in P.ticker}), period="10d", progress=False, auto_adjust=False)["Close"]
+    lp = lp if isinstance(lp, pd.DataFrame) else lp.to_frame()
+    last = {c.replace("-", "."): v for c, v in lp.ffill().iloc[-1].items()}
     ent, ext, mark, st, ed, xd = [], [], [], [], [], []
     for _, r in P.iterrows():
         px, t0, t1 = days[r.week]
@@ -106,9 +110,10 @@ if len(P):
         e = r.fill if pd.notna(r.fill) else (c.get(t0) if t0 is not None else np.nan)
         ent.append(e); ed.append(str(t0.date()) if t0 is not None else r.exec_day)
         if t1 is not None and pd.notna(c.get(t1, np.nan)):
-            ext.append(c[t1]); st.append("Closed"); xd.append(str(t1.date())); mark.append(np.nan)
+            ext.append(c[t1]); st.append("Closed"); xd.append(str(t1.date()))
         else:
-            ext.append(np.nan); st.append("Open"); xd.append(""); mark.append(c.dropna().iloc[-1] if c.notna().any() else np.nan)
+            ext.append(np.nan); st.append("Open"); xd.append("")
+        mark.append(last.get(r.ticker, np.nan))
     P["entry_price"], P["exit_price"], P["mark_price"], P["status"], P["entry_day"], P["exit_day"] = ent, ext, mark, st, ed, xd
     P = P.sort_values(["week", "role", "side", "ticker"])
     held = {}
@@ -147,42 +152,35 @@ def sheet(ws, cols, data, widths):
 
 
 ws = wb.active; ws.title = "Positions"
-cols = [("Week (as-of Wed)", None), ("Ticker", None), ("Name", None), ("Sector", None), ("Role", None), ("Side", None),
-        ("Status", None), ("Entry day", None), ("Exit day", None), ("Target weight (% NAV)", "0.00%"),
-        ("Shares held (after rebalance)", "#,##0;-#,##0;-"), ("Entry price ($)", "#,##0.00"), ("Exit price ($)", "#,##0.00"),
-        ("Mark price, if open ($)", "#,##0.00"), ("Return (%)", "0.00%;-0.00%;-"), ("Contribution to NAV (%)", "0.000%;-0.000%;-"),
-        ("Consecutive weeks held", "0"), ("Analyst score", "0"), ("Confidence", "0.00"), ("Red team", None), ("Flaw named", None),
-        ("Final score", "0"), ("Earnings in holding week", None), ("Hedge beta", "0.00"), ("Return week before entry (%)", "0.0%"),
-        ("Attention shock (z)", "0.00"), ("LLM provider", None), ("Held from last book (degraded run)", None), ("Halted week", None),
-        ("Thesis", None)]
+cols = [("Week (as-of Wed)", None), ("Ticker", None), ("Name", None), ("Role", None), ("Side", None), ("Status", None),
+        ("Entry day", None), ("Exit day", None), ("Shares (signed)", "#,##0;-#,##0;-"), ("Entry price ($)", "#,##0.00"),
+        ("Exit price ($)", "#,##0.00"), ("Current price ($)", "#,##0.00"), ("Return (%)", "0.00%;-0.00%;-"),
+        ("P&L ($)", "#,##0;(#,##0);-"), ("Confidence", "0.00"), ("Red team", None), ("Thesis", None)]
 recs = []
 for _, r in (P.iterrows() if len(P) else []):
     recs.append((lambda r: (lambda i: [
-        r.week, r.ticker, r["name"], r.sector, r.role, r.side, r.status, r.entry_day, r.exit_day, r.target_weight,
-        r.shares, r.entry_price, r.exit_price, r.mark_price,
-        # signed price return: exit (or mark, while open) over entry, negated for shorts
-        f'=IFERROR(IF(F{i}="Short",-1,1)*(IF(M{i}<>"",M{i},N{i})/L{i}-1),"")',
-        f'=IFERROR(J{i}*O{i}*IF(F{i}="Short",-1,1),"")',
-        r.consecutive_weeks, r.analyst_score, r.confidence, r.redteam, r.flaw, r.final_score, r.earnings_in_week,
-        r.beta_hedge, r.ret_1w_before, r.attention_shock, r.provider,
-        "yes" if r.degraded_hold else "", "yes" if r.halted else "", r.thesis]))(r))
-sheet(ws, cols, recs, {"Name": 26, "Sector": 20, "Thesis": 90, "Week (as-of Wed)": 12, "Red team": 10, "LLM provider": 13})
+        r.week, r.ticker, r["name"], r.role, r.side, r.status, r.entry_day, r.exit_day, r.shares,
+        r.entry_price, r.exit_price, r.mark_price,
+        # signed price return: exit (or current, while open) over entry, negated for shorts
+        f'=IFERROR(IF(E{i}="Short",-1,1)*(IF(K{i}<>"",K{i},L{i})/J{i}-1),"")',
+        # shares are signed (shorts negative), so this is the position's dollar P&L before costs
+        f'=IFERROR(I{i}*(IF(K{i}<>"",K{i},L{i})-J{i}),"")',
+        r.confidence, r.redteam, r.thesis]))(r))
+sheet(ws, cols, recs, {"Name": 26, "Thesis": 90, "Week (as-of Wed)": 12, "Red team": 10})
 for i in range(2, len(recs) + 2):
-    ws.cell(row=i, column=30).alignment = Alignment(wrap_text=False)
-ws.cell(row=1, column=16).comment = Comment("Target weight x signed return: the position's share of the week's NAV return, "
-                                            "before costs. Weight is signed (short < 0), so the sign is undone here.", "fund")
+    ws.cell(row=i, column=17).alignment = Alignment(wrap_text=False)
 
 wo = wb.create_sheet("Orders")
 O = pd.DataFrame(orders)
 ocols = [("Week (as-of Wed)", None), ("Execution day", None), ("Ticker", None), ("Leg", None), ("Side", None),
-         ("Quantity", "#,##0"), ("Order type", None), ("Reference price ($)", "#,##0.00"), ("Target weight (% NAV)", "0.00%"),
+         ("Quantity", "#,##0"), ("Order type", None), ("Reference price ($)", "#,##0.00"),
          ("Status", None), ("Fill price ($)", "#,##0.00"), ("Official close ($)", "#,##0.00"), ("Slippage vs close (bp)", "0.0"),
          ("Notional ($)", "#,##0"), ("Client order id", None)]
 orecs = []
 for _, o in (O.iterrows() if len(O) else []):
     orecs.append((lambda o: (lambda i: [o.week, o.exec_day, o.ticker, o.leg, o.side, o.qty, o.order_type, o.ref_price,
-                                        o.target_weight, o.status, o.get("fill_price"), o.get("official_close"),
-                                        o.get("slippage_bp"), f'=IFERROR(F{i}*IF(K{i}<>"",K{i},H{i}),"")',
+                                        o.status, o.get("fill_price"), o.get("official_close"),
+                                        o.get("slippage_bp"), f'=IFERROR(F{i}*IF(J{i}<>"",J{i},H{i}),"")',
                                         o.client_order_id]))(o))
 sheet(wo, ocols, orecs, {"Client order id": 34, "Order type": 16, "Status": 12})
 
@@ -210,9 +208,9 @@ notes = [
     "Fund position ledger (Protocol 6). Rebuilt automatically after each weekly run and after each execution reconciliation; do not edit, changes are overwritten.",
     "Positions: one row per name per holding week. The book is re-decided every Wednesday and traded at the next session's close (market-on-close).",
     "Entry price: the fill if the name traded on the execution day, otherwise that day's official close. Exit price: the next execution day's official close.",
-    "Status Open: the week has not ended; Return uses the latest close (Mark price). Returns are price returns, dividends excluded, before costs.",
-    "Contribution to NAV: target weight x signed return. Weekly sheet: book-level returns from the performance desk, after 5 bp/side costs and in excess of cash.",
-    "Scores: analyst score -2..+2 and confidence; red team verdict and named flaw; final score after the red team. SPY rows are the beta hedge.",
+    "Status Open: the week has not ended; Return and P&L use the Current price (latest close). Returns are price returns, dividends excluded, before costs.",
+    "P&L ($): signed shares x (exit or current price - entry). Weekly sheet: book-level returns from the performance desk, after 5 bp/side costs and in excess of cash.",
+    "Confidence: the analyst's confidence (0-1); Red team: uphold or weaken. SPY rows are the beta hedge.",
     "Source records: fund-data branch, fund_state/live/<week>/ (book.json, execution.json, analysts.json, redteam.json) and fund_state/live/execution/fills.csv.",
 ]
 for i, t in enumerate(notes, 1):
