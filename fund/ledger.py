@@ -291,7 +291,10 @@ for _, r in (P.iterrows() if len(P) else []):
                                           "shares": r.shares, "entry_price": r.entry_price, "exit_price": r.exit_price,
                                           "current_price": r.mark_price, "return": ret, "pnl": pnl,
                                           "confidence": r.confidence, "redteam": r.redteam, "thesis": r.thesis}.items()})
+_nav_all = pd.read_csv(nav_p) if os.path.exists(nav_p) else pd.DataFrame(columns=["date", "equity"])
 dash = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"), "mode": MODE,
+        # the paper account's latest value from Alpaca, shown even before the first trade
+        "balance": {"equity": float(_nav_all["equity"].iloc[-1]), "date": str(_nav_all["date"].iloc[-1])} if len(_nav_all) else None,
         "positions": pos_out,
         "orders": [{k: _f(v) for k, v in o.items() if k != "target_weight"} for o in orders],
         "account": [{"date": str(r["date"]), "equity": float(r["equity"])} for _, r in N.iterrows()],
