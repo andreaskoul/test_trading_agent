@@ -1,5 +1,8 @@
 # Protocol 6: the fund, as a weekly pipeline of desks
 
+> Earlier protocols (1–5), the research they reference (the ridge, the FX ladder, the per-firm
+> core 20) and their reports are preserved on the `legacy-gold-agent` branch.
+
 Committed before any of the fund's code exists and before any decision.
 **Supersedes Protocol 5's workflow** (which never ran). Protocol 5's
 per-firm "core 20" book is kept as one of the logged comparison books.

@@ -50,3 +50,4 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   - the ledger values every lot boundary at the actual fill of the order traded there, so lot P&Ls add up to trading P&L;
   - the ledger lists review fills and slippage, and has a Cash activity sheet.
   Records only; no decision input changes.
+- 2026-09-30: repository reduced to the fund. The legacy gold agent, its workflows, earlier protocols and reports are preserved on the `legacy-gold-agent` branch. No fund code or decision input changed.
