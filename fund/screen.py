@@ -39,7 +39,7 @@ except Exception:
     meta = pd.read_csv(os.path.join(ROOT, "data/raw/stocks/sp500_current.csv"))
 meta = meta.set_index("Symbol")[["Security", "GICS Sector", "GICS Sub-Industry"]]
 
-# ---- prices, signals (definitions identical to scripts/xs/stock_ladder.py)
+# ---- prices, signals (definitions identical to scripts/xs/stock_ladder.py on the legacy-gold-agent branch)
 ymap = {t: t.replace(".", "-") for t in members}
 px = yf.download(list(ymap.values()) + ["SPY"], start=asof - pd.Timedelta(days=420), end=asof + pd.Timedelta(days=1),
                  interval="1d", progress=False, auto_adjust=True, threads=True)["Close"]
