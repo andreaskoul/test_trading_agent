@@ -1,4 +1,27 @@
-# DL+RL Gold Trading Agent
+# Trading research: from a gold DL+RL agent to a news-driven fund
+
+This repository holds two generations of work.
+
+## The fund (current, live on paper since 2026-10-01)
+
+A weekly long-short book on S&P 500 stocks, decided by a funnel of LLM and quant desks from
+each company's news narratives, hedged to zero market beta with SPY, traded in the Thursday
+closing auction on an Alpaca paper account, and reviewed daily against new news. Every rule is
+pre-registered before results exist, and a pre-registered gate decides whether it may ever
+trade real money.
+
+* How it works, schedule, desks, risk controls, evaluation: [`fund/README.md`](fund/README.md)
+* The protocol and its amendments: [`reports/research/PROTOCOL_fund.md`](reports/research/PROTOCOL_fund.md)
+* The evidence review behind the design: [`reports/Multi agent AI trading desk design.md`](reports/Multi%20agent%20AI%20trading%20desk%20design.md)
+* Live trade monitor: https://andreaskoul.github.io/test_trading_agent/
+* Records (decisions, orders, fills, Excel ledger): the `fund-data` branch
+
+## Earlier work: the DL+RL gold agent
+
+The rest of this README describes the first project, kept for reference. Its hourly
+paper-trading workflow is disabled; the research record is in `reports/`.
+
+### DL+RL Gold Trading Agent
 
 A reference implementation of an xLSTM-encoder + PPO trading agent on gold,
 wrapped in the **Minimum Viable Robustness** statistical stack that most
