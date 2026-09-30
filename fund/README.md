@@ -70,4 +70,6 @@ Secrets: `OPENROUTER_API_KEY`, `FINNHUB_API_KEY`, `HF_TOKEN`, `ALPACA_API_KEY`, 
 
 **Evidence review and Amendment 4.** `reports/Multi agent AI trading desk design.md` audits every desk against the literature. It found no case for more agents or debate. The fixes are to the measurement (alpha net of beta and reversal), the hedge (Welch beta), model continuity (pinned provider, canary) and replayability, plus six shadow challenger books that are never traded.
 
+**Position ledger.** `fund_state/live/ledger/fund_positions.xlsx` on the `fund-data` branch is rebuilt after every weekly run and every execution/reconciliation (`fund/ledger.py`). It has one row per position per week, with entry/exit prices, returns, contributions, scores and theses, plus every order with its slippage and the weekly returns.
+
 **Going live** is decided by `fund_state/live/performance/gate.md` (Amendment 3), not by a good month. Problems, risk halts and gate verdicts other than CONTINUE open a GitHub issue.
