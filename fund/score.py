@@ -54,8 +54,8 @@ def nw_t(x, L=2):
 
 FACTORS = ["rev1w", "mom12_1", "lowvol"]      # from the screen's z-scores (Amendment 2 attribution)
 STOCK_BOOKS = ("fund", "analyst", "quant", "core20", "random", "c1_wedclose", "c1_thuopen",
-               "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal")
-CHALLENGERS = ("c1_wedclose", "c1_thuopen", "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal")
+               "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview")
+CHALLENGERS = ("c1_wedclose", "c1_thuopen", "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview")
 rf = fred("DTB3")                                   # 3-month T-bill, for returns in excess of cash (Amendment 3)
 rows, prev, ideas_rows, xs_rows, fac_rows, rt_rows, mon_rows = [], {}, [], [], [], [], []
 for wd in sorted(glob.glob(os.path.join(base, "20*"))):
@@ -121,6 +121,33 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
                          excess=gross - cost - (rf_w * float(w.sum()) if k in STOCK_BOOKS else 0.0),
                          n_missing=int(r.reindex(w.index).isna().sum()) if len(w) else 0))
         prev[k] = w
+    # Amendment 5: the daily review can change the fund's weights mid-week. The fund is then scored
+    # piecewise between review closes (5 bp/side on each change); c7_noreview keeps the weekly book
+    # untouched for the whole week, so fund - c7_noreview is what the reviews added.
+    revs = [json.load(open(f)) for f in sorted(glob.glob(os.path.join(wd, "reviews", "*.json")))]
+    revs = [r_ for r_ in revs if r_.get("status") == "submitted" and t0 < pd.Timestamp(r_["day"]) < t1]
+    frow = next((x for x in rows[::-1] if x["asof"] == str(asof.date()) and x["book"] == "fund"), None)
+    if frow is not None:
+        rows.append({**frow, "book": "c7_noreview"})
+        if revs and fund_w:
+            wk_ = pd.Series(fund_w, dtype=float)
+            pts = [t0] + [pd.Timestamp(r_["day"]) for r_ in revs] + [t1]
+            g_, c_ = 0.0, frow["cost"]
+            for j in range(len(pts) - 1):
+                seg = p.loc[pts[j + 1]] / p.loc[pts[j]] - 1
+                g_ += float((wk_ * seg.reindex(wk_.index).fillna(0)).sum())
+                if j < len(revs):                       # apply review j's changes at its close
+                    new = wk_.copy()
+                    for t_, d_ in revs[j]["decisions"].items():
+                        if d_.get("final") in ("exit", "reduce", "increase"):
+                            new[t_] = float(revs[j]["target_weights"].get(t_, 0.0))
+                    new["SPY"] = float(revs[j]["target_weights"].get("SPY", new.get("SPY", 0.0)))
+                    idx_ = new.index.union(wk_.index)
+                    c_ += float((new.reindex(idx_, fill_value=0) - wk_.reindex(idx_, fill_value=0)).abs().sum() * 5e-4)
+                    wk_ = new
+            frow.update(gross=g_, cost=c_, net=g_ - c_, excess=g_ - c_ - rf_w * float(wk_.sum()))
+            prev["fund"] = wk_
+        prev["c7_noreview"] = pd.Series(fund_w, dtype=float)
     # monitors (Amendment 4): coverage, score dispersion, zero share, failures, serving provider
     am = json.load(open(os.path.join(wd, "analysts.json")))["memos"] if os.path.exists(os.path.join(wd, "analysts.json")) else {}
     sc_ok = [m["memo"]["score"] for m in am.values() if m.get("status") == "ok"]
@@ -227,7 +254,7 @@ print("\n".join(lines))
 # (K = 4, two-sided alpha 0.05) on the NW t of the fund book's weekly return in excess of cash,
 # after model costs. Between looks the verdict does not change, except for a risk halt.
 LOOKS = {13: 4.049, 26: 2.863, 39: 2.337, 52: 2.024}
-CH_LOOKS = {13: 5.336, 26: 3.773, 39: 3.081, 52: 2.668}     # same design at alpha 0.05/6 (six challengers)
+CH_LOOKS = {13: 5.442, 26: 3.848, 39: 3.142, 52: 2.721}     # same design at alpha 0.05/7 (seven challengers, Amendment 5)
 
 
 def alpha_t(y, Fx, cols):

@@ -25,6 +25,7 @@ Wed 22:15 UTC ─ 1 screen ─▶ 2 ideation ─▶ 3 research ─▶ 4 analysts
 | 8 Macro | `fx_desk.py` | yes | `fx.json`: 17-currency book plus quant and random |
 | 10 Execution | `execute.py` | no | `execution.json`: orders for the Thursday closing auction on the Alpaca paper account; after the close `execution/fills.csv` (slippage vs the close), `nav.csv`, risk halts |
 | 11 Shadow | `shadow.py` | yes | `shadow.json`, `shadow_book.json`: challenger analysts C2 (5-sample median) and C3 (text-only, masked); the weekly model canary. Never traded |
+| 12 Daily review | `review.py` | yes | `reviews/<day>.json`: on each trading day between executions, held names are re-read against news since the last review; exit / reduce / increase on confirmed material news, traded at that day's close |
 | 9 Performance | `score.py` | no | `performance/`: weekly P&L per book (net and in excess of cash), stage tests, attribution, `summary.md`, and the go-live gate `gate.md` |
 
 **Research reuses the narrative dashboard.** `research.py` runs

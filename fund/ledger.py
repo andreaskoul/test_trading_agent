@@ -68,7 +68,27 @@ for d in weeks:
                 if o["week"] == asof and o["ticker"] == f["symbol"] and o["leg"] == f["leg"]:
                     o.update(fill_price=f.get("fill"), official_close=f.get("close"), slippage_bp=f.get("slip_bp"),
                              status=f.get("status"))
-    for t, wt in w.items():
+    # Amendment 5: daily reviews change holdings mid-week. Each change closes the running lot at that
+    # day's close and opens a new one, so one row = one lot with constant shares.
+    segs = {t: [[q, None, None]] for t, q in w.items()}           # [shares, start day, end day]
+    for rp in sorted(glob.glob(os.path.join(d, "reviews", "*.json"))):
+        rv_ = json.load(open(rp))
+        if rv_.get("status") != "submitted":
+            continue
+        for o in rv_.get("orders", []):
+            if not o.get("id") or str(o.get("status", "")).startswith(("rejected", "canceled", "expired")):
+                continue
+            orders.append({"week": asof, "exec_day": rv_["day"], "ticker": o["symbol"], "leg": o["leg"], "side": o["side"],
+                           "qty": o["qty"], "order_type": "market-on-close (daily review)", "ref_price": o.get("price_ref"),
+                           "status": o.get("status"), "client_order_id": o.get("client_order_id")})
+            lots = segs.setdefault(o["symbol"], [[0, None, None]])
+            lots[-1][2] = rv_["day"]
+            lots.append([lots[-1][0] + (o["qty"] if o["side"] == "buy" else -o["qty"]), rv_["day"], None])
+    for t, lots in segs.items():
+      for q, s_day, e_day in lots:
+        if not q:
+            continue
+        wt = q
         m = (memos.get(t) or {}).get("memo") or {}
         rv = ((rt.get("reviews") or {}).get(t) or {}).get("review") or {}
         r = S.loc[t] if t in S.index else None
@@ -86,7 +106,8 @@ for d in weeks:
                      "attention_shock": (float(r["attention_shock"]) if r is not None and pd.notna(r.get("attention_shock")) else None),
                      "provider": ((memos.get(t) or {}).get("meta") or {}).get("provider"),
                      "thesis": m.get("thesis", "SPY hedge to zero beta" if t == "SPY" else ""),
-                     "degraded_hold": book.get("status") == "degraded_hold", "halted": halted})
+                     "degraded_hold": book.get("status") == "degraded_hold", "halted": halted,
+                     "seg_start": s_day, "seg_end": e_day})
 
 P = pd.DataFrame(rows)
 if len(P):
@@ -111,10 +132,13 @@ if len(P):
     for _, r in P.iterrows():
         px, t0, t1 = days[r.week]
         c = px[r.ticker] if r.ticker in px else pd.Series(dtype=float)
-        e = r.fill if pd.notna(r.fill) else (c.get(t0) if t0 is not None else np.nan)
-        ent.append(e); ed.append(str(t0.date()) if t0 is not None else r.exec_day)
-        if t1 is not None and pd.notna(c.get(t1, np.nan)):
-            ext.append(c[t1]); st.append("Closed"); xd.append(str(t1.date()))
+        has_s, has_e = isinstance(r.seg_start, str), isinstance(r.seg_end, str)
+        s0 = pd.Timestamp(r.seg_start) if has_s else t0
+        s1 = pd.Timestamp(r.seg_end) if has_e else t1
+        e = r.fill if (pd.notna(r.fill) and not has_s) else (c.get(s0) if s0 is not None else np.nan)
+        ent.append(e); ed.append(str(s0.date()) if s0 is not None else r.exec_day)
+        if s1 is not None and pd.notna(c.get(s1, np.nan)):
+            ext.append(c[s1]); st.append("Closed (daily review)" if has_e else "Closed"); xd.append(str(s1.date()))
         else:
             ext.append(np.nan); st.append("Open"); xd.append("")
         mark.append(last.get(r.ticker, np.nan))
@@ -201,7 +225,7 @@ sheet(ww, [("Day", None), ("Paper account value ($)", "$#,##0"), ("Daily return 
 wn = wb.create_sheet("Notes")
 notes = [
     "Fund position ledger (Protocol 6). Actual Alpaca paper-account trades only: weeks that were not executed, and model-only books, are left out. Rebuilt automatically after each weekly run and each execution/reconciliation; do not edit.",
-    "Positions: one row per name held per week (shares after the week's orders). The book is re-decided every Wednesday and traded at the next session's close (market-on-close).",
+    "Positions: one row per lot: a name held for a week, split where a daily review changed the shares (exit, reduce or increase at that day's close). The book is re-decided every Wednesday and traded at the next session's close (market-on-close).",
     "Entry price: the fill if the name traded on the execution day, otherwise that day's official close. Exit price: the next execution day's official close.",
     "Status Open: the week has not ended; Return and P&L use the Current price (latest close). Returns are price returns, dividends excluded, before costs.",
     "P&L ($): signed shares x (exit or current price - entry). Account sheet: the paper account's daily value from Alpaca, from the first trade on.",

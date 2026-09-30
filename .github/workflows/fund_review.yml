@@ -1,0 +1,79 @@
+name: Fund · daily position review
+
+# Desk 12 (fund/review.py, PROTOCOL_fund.md Amendment 5). On trading days strictly between
+# the week's execution and the next one, re-reads each held stock against the news since the
+# last review; exit / reduce / increase only with a confirmed, material, dated item, traded
+# in the same day's closing auction with SPY re-hedged. Idempotent per day.
+# 17:07 UTC (13:07 ET in summer, 12:07 in winter), fallback 18:07 UTC.
+
+on:
+  schedule:
+    - cron: '7 17 * * 1,2,3,5'
+    - cron: '7 18 * * 1,2,3,5'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "plan (no orders) | trade"
+        default: plan
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: fund-execute          # never alongside a weekly execution
+  cancel-in-progress: false
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+      ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install "numpy<2" pandas pyarrow yfinance openpyxl
+      - name: Restore fund state
+        run: |
+          if git ls-remote --exit-code origin fund-data >/dev/null 2>&1; then
+            git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
+            git checkout origin/fund-data -- fund_state 2>/dev/null || echo "fund-data has no fund_state yet"
+          fi
+      - name: Review (${{ inputs.mode || 'trade' }})
+        id: rv
+        run: python fund/review.py ${{ inputs.mode || 'trade' }}
+      - name: Position ledger (Excel)
+        if: ${{ always() && (inputs.mode || 'trade') == 'trade' }}
+        continue-on-error: true
+        run: python fund/ledger.py
+      - name: Commit review records
+        if: ${{ always() && (inputs.mode || 'trade') == 'trade' }}
+        run: |
+          set -euo pipefail
+          git config user.name 'fund-bot'; git config user.email 'fund-bot@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
+            rm -rf /tmp/fd && git worktree prune && git worktree add -q --detach /tmp/fd origin/fund-data
+            for f in fund_state/live/20*/reviews/*.json; do [ -f "$f" ] && mkdir -p "/tmp/fd/$(dirname "$f")" && cp "$f" "/tmp/fd/$f"; done
+            [ -d fund_state/live/ledger ] && mkdir -p /tmp/fd/fund_state/live/ledger && cp -a fund_state/live/ledger/. /tmp/fd/fund_state/live/ledger/
+            cd /tmp/fd && git add -A fund_state/live
+            if git diff --cached --quiet; then cd - >/dev/null; break; fi
+            git commit -q -m "daily review $(date -u +%Y-%m-%dT%H:%MZ)"
+            if git push -q origin HEAD:fund-data; then cd - >/dev/null; break; fi
+            cd - >/dev/null; sleep 5
+          done
+      - name: Alert
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "Fund: daily review failed $(date -u +%F)" \
+            --body "Run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} @${{ github.repository_owner }}"
