@@ -1,0 +1,48 @@
+name: Fund · dashboard (GitHub Pages)
+
+# Publishes fund/site/index.html with the ledger's dashboard.json and the Excel file from the
+# `fund-data` branch. Runs after every workflow that can change the trade record, and on demand.
+
+on:
+  workflow_run:
+    workflows: ["Fund · weekly desks", "Fund · execution (Alpaca paper)", "Fund · daily position review"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - name: Build site
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp fund/site/index.html _site/
+          git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data || true
+          for f in dashboard.json fund_positions.xlsx; do
+            git show "origin/fund-data:fund_state/live/ledger/$f" > "_site/$f" 2>/dev/null || rm -f "_site/$f"
+          done
+          [ -f _site/dashboard.json ] || echo '{"updated":"no trades yet","positions":[],"orders":[],"account":[],"cash":[]}' > _site/dashboard.json
+          touch _site/.nojekyll
+          ls -la _site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

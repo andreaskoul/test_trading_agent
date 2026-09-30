@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fund Trade Monitor</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root { --bg:#f7f7f5; --card:#fff; --ink:#1d1d1f; --muted:#6b6b70; --line:#e4e4e0; --pos:#1a7f4b; --neg:#c0392b; --accent:#2c5aa0; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#121214; --card:#1c1c1f; --ink:#ececec; --muted:#9a9aa0; --line:#2c2c30; --pos:#4cc38a; --neg:#ff6b5e; --accent:#7aa7ff; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width:1200px; margin:0 auto; padding:24px 16px 48px; }
+  header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:18px; }
+  h1 { font-size:20px; margin:0; }
+  .muted { color:var(--muted); font-size:12px; }
+  a { color:var(--accent); }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px; margin-bottom:18px; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+  .kpi .v { font-size:22px; font-weight:600; margin-top:2px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:18px; }
+  h2 { font-size:15px; margin:0 0 10px; }
+  .scroll { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  th, td { padding:6px 8px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap; }
+  th { color:var(--muted); font-weight:600; position:sticky; top:0; background:var(--card); }
+  td.n { text-align:right; font-variant-numeric:tabular-nums; }
+  .pos { color:var(--pos); } .neg { color:var(--neg); }
+  td.thesis { white-space:normal; min-width:320px; max-width:520px; color:var(--muted); }
+  .empty { color:var(--muted); padding:8px 0; }
+  canvas { max-height:260px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Fund trade monitor</h1>
+    <div class="muted">Alpaca paper account · actual trades only · updated <span id="upd">…</span> · <a href="fund_positions.xlsx">Excel ledger</a></div>
+  </header>
+  <div class="kpis" id="kpis"></div>
+  <section><h2>Account value</h2><div id="acctEmpty" class="empty" hidden>No trades yet. The first weekly trade is Thursday's close.</div><canvas id="acct"></canvas></section>
+  <section><h2>Open positions</h2><div class="scroll" id="open"></div></section>
+  <section><h2>Closed positions</h2><div class="scroll" id="closed"></div></section>
+  <section><h2>Orders</h2><div class="scroll" id="orders"></div></section>
+  <section><h2>Cash activity (dividends, fees, interest)</h2><div class="scroll" id="cash"></div></section>
+  <p class="muted">Returns are price returns before costs, signed for shorts. P&amp;L = signed shares × (exit or current − entry), using actual fills at trade boundaries. SPY rows are the market hedge.</p>
+</main>
+<script>
+const fmt = (v, d = 2) => v == null ? "" : Number(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+const pct = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${(v * 100).toFixed(2)}%</span>`;
+const usd = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${v < 0 ? "−" : ""}$${fmt(Math.abs(v), 0)}</span>`;
+const esc = s => (s ?? "").toString().replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+function table(el, cols, rows) {
+  const box = document.getElementById(el);
+  if (!rows.length) { box.innerHTML = '<div class="empty">None yet.</div>'; return; }
+  box.innerHTML = `<table><thead><tr>${cols.map(c => `<th>${c[0]}</th>`).join("")}</tr></thead><tbody>${
+    rows.map(r => `<tr>${cols.map(c => `<td class="${c[2] || ""}">${c[1](r)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+}
+fetch("dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => {
+  document.getElementById("upd").textContent = d.updated.replace("T", " ").replace("+00:00", " UTC");
+  const P = d.positions, A = d.account;
+  const open = P.filter(p => p.status === "Open"), closed = P.filter(p => p.status !== "Open");
+  const realized = closed.reduce((s, p) => s + (p.pnl || 0), 0), unreal = open.reduce((s, p) => s + (p.pnl || 0), 0);
+  const cash = d.cash.reduce((s, c) => s + (c.amount || 0), 0);
+  const eq = A.length ? A[A.length - 1].equity : null, since = A.length ? eq / A[0].equity - 1 : null;
+  const k = [["Account value", eq == null ? "—" : "$" + fmt(eq, 0)], ["Since first trade", since == null ? "—" : pct(since)],
+             ["Open positions", open.filter(p => p.role !== "beta hedge").length], ["Unrealized P&L", usd(unreal)],
+             ["Realized P&L", usd(realized)], ["Dividends & fees", usd(cash)]];
+  document.getElementById("kpis").innerHTML = k.map(([a, b]) => `<div class="kpi"><div class="muted">${a}</div><div class="v">${b}</div></div>`).join("");
+  if (A.length) {
+    new Chart(document.getElementById("acct"), { type: "line", data: { labels: A.map(a => a.date),
+      datasets: [{ data: A.map(a => a.equity), borderColor: getComputedStyle(document.documentElement).getPropertyValue("--accent"), pointRadius: 0, tension: 0.15 }] },
+      options: { plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => "$" + fmt(v, 0) } } } } });
+  } else { document.getElementById("acctEmpty").hidden = false; document.getElementById("acct").hidden = true; }
+  const posCols = [["Week", p => p.week], ["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Name", p => esc(p.name)], ["Side", p => p.side],
+    ["Entry", p => p.entry_day], ["Shares", p => fmt(p.shares, 0), "n"], ["Entry $", p => fmt(p.entry_price), "n"]];
+  table("open", [...posCols, ["Current $", p => fmt(p.current_price), "n"], ["Return", p => pct(p.return), "n"], ["P&L", p => usd(p.pnl), "n"],
+    ["Red team", p => esc(p.redteam)], ["Thesis", p => esc(p.thesis), "thesis"]], open);
+  table("closed", [...posCols, ["Exit", p => p.exit_day], ["Exit $", p => fmt(p.exit_price), "n"], ["Return", p => pct(p.return), "n"],
+    ["P&L", p => usd(p.pnl), "n"], ["Status", p => esc(p.status)]], closed.slice().reverse());
+  table("orders", [["Day", o => o.exec_day], ["Ticker", o => `<b>${esc(o.ticker)}</b>`], ["Leg", o => esc(o.leg)], ["Side", o => o.side],
+    ["Qty", o => fmt(o.qty, 0), "n"], ["Type", o => esc(o.order_type)], ["Status", o => esc(o.status)], ["Fill $", o => fmt(o.fill_price), "n"],
+    ["Close $", o => fmt(o.official_close), "n"], ["Slippage (bp)", o => fmt(o.slippage_bp, 1), "n"]], d.orders.slice().reverse());
+  table("cash", [["Date", c => c.date], ["Type", c => esc(c.type)], ["Ticker", c => esc(c.ticker)], ["Amount", c => usd(c.amount), "n"]], d.cash.slice().reverse());
+}).catch(e => { document.getElementById("kpis").innerHTML = `<div class="empty">Could not load dashboard data (${esc(e.message)}).</div>`; });
+</script>
+</body>
+</html>

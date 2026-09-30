@@ -274,3 +274,27 @@ wb.calculation.fullCalcOnLoad = True
 out = os.path.join(OUT, "fund_positions.xlsx")
 wb.save(out)
 print(f"ledger: {len(recs)} position rows, {len(orecs)} orders, {len(nrecs)} account days -> {out}")
+
+# ---- dashboard data (GitHub Pages): the same records with returns and P&L computed here
+def _f(v):
+    return None if v is None or (isinstance(v, float) and np.isnan(v)) else (float(v) if isinstance(v, (int, float, np.floating, np.integer)) else v)
+
+
+pos_out = []
+for _, r in (P.iterrows() if len(P) else []):
+    px_end = r.exit_price if pd.notna(r.exit_price) else r.mark_price
+    sgn = -1 if r.side == "Short" else 1
+    ret = sgn * (px_end / r.entry_price - 1) if pd.notna(px_end) and pd.notna(r.entry_price) and r.entry_price else None
+    pnl = r.shares * (px_end - r.entry_price) if pd.notna(px_end) and pd.notna(r.entry_price) and pd.notna(r.shares) else None
+    pos_out.append({k: _f(v) for k, v in {"week": r.week, "ticker": r.ticker, "name": r["name"], "role": r.role, "side": r.side,
+                                          "status": r.status, "entry_day": r.entry_day, "exit_day": r.exit_day or None,
+                                          "shares": r.shares, "entry_price": r.entry_price, "exit_price": r.exit_price,
+                                          "current_price": r.mark_price, "return": ret, "pnl": pnl,
+                                          "confidence": r.confidence, "redteam": r.redteam, "thesis": r.thesis}.items()})
+dash = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"), "mode": MODE,
+        "positions": pos_out,
+        "orders": [{k: _f(v) for k, v in o.items() if k != "target_weight"} for o in orders],
+        "account": [{"date": str(r["date"]), "equity": float(r["equity"])} for _, r in N.iterrows()],
+        "cash": [{"date": a[0], "type": a[1], "ticker": a[2], "amount": a[5]} for a in arecs]}
+json.dump(dash, open(os.path.join(OUT, "dashboard.json"), "w"), default=str)
+print(f"dashboard data: {len(pos_out)} positions, {len(orders)} orders -> {os.path.join(OUT, 'dashboard.json')}")
