@@ -40,13 +40,19 @@ for d in weeks:
     book, ex = ld(d, "book.json"), ld(d, "execution.json")
     if book.get("status") not in ("ok", "degraded_hold"):
         continue
+    if ex.get("status") != "submitted":            # only weeks actually traded on Alpaca
+        continue
     halted = str(ex.get("reason") or "").startswith("HALT")
-    target = ex.get("target_weights") if ex.get("status") == "submitted" else None
-    w = target if target is not None else ({} if halted else book["books"].get("fund", {}))
+    # actual holdings after the week's orders: shares before + every order the broker accepted
+    live = [o for o in ex.get("orders", []) if o.get("id") and not str(o.get("status", "")).startswith(("rejected", "canceled", "expired"))]
+    held = dict(ex.get("current_qty") or {})
+    for o in live:
+        held[o["symbol"]] = held.get(o["symbol"], 0) + (o["qty"] if o["side"] == "buy" else -o["qty"])
+    w = {t: q for t, q in held.items() if q}
     memos, rt = ld(d, "analysts.json").get("memos", {}), ld(d, "redteam.json")
     S = pd.DataFrame(ld(d, "screen.json").get("rows", [])).set_index("ticker") if ld(d, "screen.json") else pd.DataFrame()
     fills = {}
-    for o in ex.get("orders", []):
+    for o in live:
         orders.append({"week": asof, "exec_day": ex.get("exec_day"), "ticker": o["symbol"], "leg": o["leg"],
                        "side": o["side"], "qty": o["qty"],
                        "order_type": "market-on-close" if o.get("tif") == "cls" else "market (flip)",
@@ -70,9 +76,7 @@ for d in weeks:
                      "name": (str(r["Security"]) if r is not None else ("SPDR S&P 500 ETF" if t == "SPY" else "")),
                      "sector": (str(r["GICS Sector"]) if r is not None else ("Index hedge" if t == "SPY" else "")),
                      "role": "beta hedge" if t == "SPY" else "position", "side": "Long" if wt > 0 else "Short",
-                     "target_weight": float(wt),
-                     "shares": ((ex.get("current_qty") or {}).get(t, 0) + sum((o["qty"] if o["side"] == "buy" else -o["qty"])
-                                for o in ex.get("orders", []) if o["symbol"] == t and o.get("id"))) if ex else None,
+                     "shares": wt,
                      "fill": fills.get(t), "analyst_score": m.get("score"), "confidence": m.get("confidence"),
                      "redteam": rv.get("verdict"), "flaw": rv.get("flaw"),
                      "final_score": (rt.get("final_score") or {}).get(t),
@@ -184,32 +188,23 @@ for _, o in (O.iterrows() if len(O) else []):
                                         o.client_order_id]))(o))
 sheet(wo, ocols, orecs, {"Client order id": 34, "Order type": 16, "Status": 12})
 
-ww = wb.create_sheet("Weekly")
-wk = pd.read_csv(os.path.join(base, "performance", "weekly_books.csv")) if os.path.exists(os.path.join(base, "performance", "weekly_books.csv")) else pd.DataFrame()
-wk = wk[wk["book"] == "fund"] if len(wk) else wk
-wcols = [("Week (as-of Wed)", None), ("Gross return (%)", "0.00%"), ("Costs (%)", "0.00%"), ("Net return (%)", "0.00%"),
-         ("Excess over cash (%)", "0.00%"), ("Cumulative net (%)", "0.00%")]
-wrecs = []
-for k, (_, r) in enumerate(wk.iterrows() if len(wk) else []):
-    wrecs.append((lambda r, k: (lambda i: [r.asof, r.gross, r.cost, r.get("net"), r.get("excess"),
-                                           "=D2" if i == 2 else f"=(1+F{i - 1})*(1+D{i})-1"]))(r, k))
-sheet(ww, wcols, wrecs, {"Week (as-of Wed)": 14})
+ww = wb.create_sheet("Account")
 nav_p = os.path.join(base, "execution", "nav.csv")
-if os.path.exists(nav_p):
-    N = pd.read_csv(nav_p)
-    ww.cell(row=1, column=8, value="Broker day").font = H_; ww.cell(row=1, column=8).fill = HF
-    ww.cell(row=1, column=9, value="Paper NAV ($)").font = H_; ww.cell(row=1, column=9).fill = HF
-    for i, (_, r) in enumerate(N.iterrows(), 2):
-        ww.cell(row=i, column=8, value=str(r["date"])).font = F_
-        c = ww.cell(row=i, column=9, value=float(r["equity"])); c.font, c.number_format = F_, "$#,##0"
+N = pd.read_csv(nav_p) if os.path.exists(nav_p) else pd.DataFrame(columns=["date", "equity"])
+if len(P):
+    N = N[N["date"].astype(str) >= min(P["entry_day"])]                # from the first actual trade
+nrecs = [(lambda r: (lambda i: [str(r["date"]), float(r["equity"]), "" if i == 2 else f"=B{i}/B{i - 1}-1",
+                                f"=B{i}/$B$2-1"]))(r) for _, r in N.iterrows()]
+sheet(ww, [("Day", None), ("Paper account value ($)", "$#,##0"), ("Daily return (%)", "0.00%;-0.00%;-"),
+           ("Since first trade (%)", "0.00%;-0.00%;-")], nrecs, {"Day": 12, "Paper account value ($)": 16})
 
 wn = wb.create_sheet("Notes")
 notes = [
-    "Fund position ledger (Protocol 6). Rebuilt automatically after each weekly run and after each execution reconciliation; do not edit, changes are overwritten.",
-    "Positions: one row per name per holding week. The book is re-decided every Wednesday and traded at the next session's close (market-on-close).",
+    "Fund position ledger (Protocol 6). Actual Alpaca paper-account trades only: weeks that were not executed, and model-only books, are left out. Rebuilt automatically after each weekly run and each execution/reconciliation; do not edit.",
+    "Positions: one row per name held per week (shares after the week's orders). The book is re-decided every Wednesday and traded at the next session's close (market-on-close).",
     "Entry price: the fill if the name traded on the execution day, otherwise that day's official close. Exit price: the next execution day's official close.",
     "Status Open: the week has not ended; Return and P&L use the Current price (latest close). Returns are price returns, dividends excluded, before costs.",
-    "P&L ($): signed shares x (exit or current price - entry). Weekly sheet: book-level returns from the performance desk, after 5 bp/side costs and in excess of cash.",
+    "P&L ($): signed shares x (exit or current price - entry). Account sheet: the paper account's daily value from Alpaca, from the first trade on.",
     "Confidence: the analyst's confidence (0-1); Red team: uphold or weaken. SPY rows are the beta hedge.",
     "Source records: fund-data branch, fund_state/live/<week>/ (book.json, execution.json, analysts.json, redteam.json) and fund_state/live/execution/fills.csv.",
 ]
@@ -219,4 +214,4 @@ wn.column_dimensions["A"].width = 150
 wb.calculation.fullCalcOnLoad = True
 out = os.path.join(OUT, "fund_positions.xlsx")
 wb.save(out)
-print(f"ledger: {len(recs)} position rows, {len(orecs)} orders, {len(wrecs)} weeks -> {out}")
+print(f"ledger: {len(recs)} position rows, {len(orecs)} orders, {len(nrecs)} account days -> {out}")
