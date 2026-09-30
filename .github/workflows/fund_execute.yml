@@ -62,7 +62,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install "numpy<2" pandas pyarrow yfinance scipy scikit-learn
+      - run: pip install "numpy<2" pandas pyarrow yfinance scipy scikit-learn openpyxl
 
       - name: Restore fund state
         run: |
@@ -97,6 +97,11 @@ jobs:
           FUND_MOCK: ${{ inputs.mock_book && '1' || '0' }}
         run: python fund/execute.py ${{ steps.m.outputs.mode }}
 
+      - name: Position ledger (Excel)
+        if: ${{ always() && !inputs.mock_book && steps.m.outputs.mode != 'plan' }}
+        continue-on-error: true
+        run: python fund/ledger.py
+
       - name: Test order (send and cancel one closing-auction order)
         if: ${{ inputs.test_order }}
         run: |
@@ -130,6 +135,7 @@ jobs:
             mkdir -p /tmp/fd/fund_state/live/execution
             [ -d fund_state/live/execution ] && cp -a fund_state/live/execution/. /tmp/fd/fund_state/live/execution/
             for f in fund_state/live/20*/execution.json; do [ -f "$f" ] && mkdir -p "/tmp/fd/$(dirname "$f")" && cp "$f" "/tmp/fd/$f"; done
+            [ -d fund_state/live/ledger ] && mkdir -p /tmp/fd/fund_state/live/ledger && cp -a fund_state/live/ledger/. /tmp/fd/fund_state/live/ledger/
             if [ -f fund_state/live/HALT ]; then cp fund_state/live/HALT /tmp/fd/fund_state/live/HALT; else rm -f /tmp/fd/fund_state/live/HALT; fi
             cd /tmp/fd && git add -A fund_state/live
             if git diff --cached --quiet; then cd - >/dev/null; break; fi

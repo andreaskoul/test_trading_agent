@@ -51,7 +51,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install
-        run: pip install "numpy<2" pandas pyarrow yfinance scipy scikit-learn umap-learn huggingface_hub
+        run: pip install "numpy<2" pandas pyarrow yfinance scipy scikit-learn umap-learn huggingface_hub openpyxl
 
       - name: Restore fund state (weeks, attention history, research feeds and story state)
         run: |
@@ -128,6 +128,11 @@ jobs:
       - name: Desk 9 · performance
         if: always()
         run: python fund/score.py
+
+      - name: Position ledger (Excel)
+        if: always()
+        continue-on-error: true
+        run: python fund/ledger.py
 
       - name: Commit memo and performance
         if: ${{ always() && !inputs.dry_run }}
