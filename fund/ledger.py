@@ -241,8 +241,7 @@ sheet(wo, ocols, orecs, {"Client order id": 34, "Order type": 16, "Status": 12})
 ww = wb.create_sheet("Account")
 nav_p = os.path.join(base, "execution", "nav.csv")
 N = pd.read_csv(nav_p) if os.path.exists(nav_p) else pd.DataFrame(columns=["date", "equity"])
-if len(P):
-    N = N[N["date"].astype(str) >= min(P["entry_day"])]                # from the first actual trade
+N = N[N["date"].astype(str) >= min(P["entry_day"])] if len(P) else N.iloc[:0]   # from the first actual trade
 nrecs = [(lambda r: (lambda i: [str(r["date"]), float(r["equity"]), "" if i == 2 else f"=B{i}/B{i - 1}-1",
                                 f"=B{i}/$B$2-1"]))(r) for _, r in N.iterrows()]
 sheet(ww, [("Day", None), ("Paper account value ($)", "$#,##0"), ("Daily return (%)", "0.00%;-0.00%;-"),
@@ -251,8 +250,7 @@ sheet(ww, [("Day", None), ("Paper account value ($)", "$#,##0"), ("Daily return 
 wc = wb.create_sheet("Cash activity")
 ap_ = os.path.join(base, "execution", "activities.csv")
 A_ = pd.read_csv(ap_) if os.path.exists(ap_) else pd.DataFrame(columns=["date", "type", "symbol", "qty", "per_share", "amount"])
-if len(P) and len(A_):
-    A_ = A_[A_["date"].astype(str) >= min(P["entry_day"])]
+A_ = A_[A_["date"].astype(str) >= min(P["entry_day"])] if len(P) and len(A_) else A_.iloc[:0]
 arecs = [[str(r["date"]), r["type"], r["symbol"], r["qty"], r["per_share"], float(r["amount"])] for _, r in A_.iterrows()]
 sheet(wc, [("Date", None), ("Type", None), ("Ticker", None), ("Quantity", "#,##0"), ("Per share ($)", "#,##0.0000"),
            ("Amount ($)", "#,##0.00;(#,##0.00);-")], arecs, {"Date": 12})
