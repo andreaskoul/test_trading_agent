@@ -62,10 +62,10 @@ for d in weeks:
     if os.path.exists(fp):
         F = pd.read_csv(fp, dtype={"asof": str})
         for _, f in F[F["asof"] == asof].iterrows():
-            if f["leg"] != "flatten" and pd.notna(f.get("fill")):
+            if f["leg"] != "flatten" and pd.notna(f.get("fill")) and str(f.get("exec_day")) == str(ex.get("exec_day")):
                 fills[f["symbol"]] = float(f["fill"])
             for o in orders:
-                if o["week"] == asof and o["ticker"] == f["symbol"] and o["leg"] == f["leg"]:
+                if o["week"] == asof and o["ticker"] == f["symbol"] and o["leg"] == f["leg"] and str(o["exec_day"]) == str(f.get("exec_day")):
                     o.update(fill_price=f.get("fill"), official_close=f.get("close"), slippage_bp=f.get("slip_bp"),
                              status=f.get("status"))
     # Amendment 5: daily reviews change holdings mid-week. Each change closes the running lot at that
@@ -109,6 +109,16 @@ for d in weeks:
                      "degraded_hold": book.get("status") == "degraded_hold", "halted": halted,
                      "seg_start": s_day, "seg_end": e_day})
 
+# fills for every order, weekly and daily-review alike: (week, day, ticker, leg)
+_fp = os.path.join(base, "execution", "fills.csv")
+if os.path.exists(_fp):
+    _F = pd.read_csv(_fp, dtype={"asof": str, "exec_day": str}).set_index(["asof", "exec_day", "symbol", "leg"])
+    for o in orders:
+        k = (o["week"], str(o["exec_day"]), o["ticker"], o["leg"])
+        if k in _F.index:
+            f = _F.loc[k]
+            f = f.iloc[0] if isinstance(f, pd.DataFrame) else f
+            o.update(fill_price=f.get("fill"), official_close=f.get("close"), slippage_bp=f.get("slip_bp"), status=f.get("status"))
 P = pd.DataFrame(rows)
 if len(P):
     # prices: official closes of each execution day and the next one (raw, unadjusted)
@@ -128,6 +138,21 @@ if len(P):
     lp = yf.download(sorted({t.replace(".", "-") for t in P.ticker}), period="10d", progress=False, auto_adjust=False)["Close"]
     lp = lp if isinstance(lp, pd.DataFrame) else lp.to_frame()
     last = {c.replace("-", "."): v for c, v in lp.ffill().iloc[-1].items()}
+    # actual fills at lot boundaries (weekly executions and daily reviews). Using the fill of the order
+    # traded at a boundary as both the old lot's exit and the new lot's entry makes the lots' P&L add
+    # up exactly to the account's trading P&L. A flip's market order closes the old lot; its closing-
+    # auction order opens the new one.
+    fx = {}
+    fp_ = os.path.join(base, "execution", "fills.csv")
+    if os.path.exists(fp_):
+        for _, f in pd.read_csv(fp_, dtype={"exec_day": str}).iterrows():
+            if pd.isna(f.get("fill")):
+                continue
+            k = (str(f["exec_day"]), f["symbol"])
+            if f["leg"] != "open":
+                fx[k + ("exit",)] = float(f["fill"])
+            if f["leg"] != "flatten":
+                fx[k + ("entry",)] = float(f["fill"])
     ent, ext, mark, st, ed, xd = [], [], [], [], [], []
     for _, r in P.iterrows():
         px, t0, t1 = days[r.week]
@@ -135,10 +160,11 @@ if len(P):
         has_s, has_e = isinstance(r.seg_start, str), isinstance(r.seg_end, str)
         s0 = pd.Timestamp(r.seg_start) if has_s else t0
         s1 = pd.Timestamp(r.seg_end) if has_e else t1
-        e = r.fill if (pd.notna(r.fill) and not has_s) else (c.get(s0) if s0 is not None else np.nan)
+        e = fx.get((str(s0.date()), r.ticker, "entry"), c.get(s0) if s0 is not None else np.nan) if s0 is not None else np.nan
         ent.append(e); ed.append(str(s0.date()) if s0 is not None else r.exec_day)
         if s1 is not None and pd.notna(c.get(s1, np.nan)):
-            ext.append(c[s1]); st.append("Closed (daily review)" if has_e else "Closed"); xd.append(str(s1.date()))
+            ext.append(fx.get((str(s1.date()), r.ticker, "exit"), c[s1]))
+            st.append("Closed (daily review)" if has_e else "Closed"); xd.append(str(s1.date()))
         else:
             ext.append(np.nan); st.append("Open"); xd.append("")
         mark.append(last.get(r.ticker, np.nan))
@@ -222,13 +248,24 @@ nrecs = [(lambda r: (lambda i: [str(r["date"]), float(r["equity"]), "" if i == 2
 sheet(ww, [("Day", None), ("Paper account value ($)", "$#,##0"), ("Daily return (%)", "0.00%;-0.00%;-"),
            ("Since first trade (%)", "0.00%;-0.00%;-")], nrecs, {"Day": 12, "Paper account value ($)": 16})
 
+wc = wb.create_sheet("Cash activity")
+ap_ = os.path.join(base, "execution", "activities.csv")
+A_ = pd.read_csv(ap_) if os.path.exists(ap_) else pd.DataFrame(columns=["date", "type", "symbol", "qty", "per_share", "amount"])
+if len(P) and len(A_):
+    A_ = A_[A_["date"].astype(str) >= min(P["entry_day"])]
+arecs = [[str(r["date"]), r["type"], r["symbol"], r["qty"], r["per_share"], float(r["amount"])] for _, r in A_.iterrows()]
+sheet(wc, [("Date", None), ("Type", None), ("Ticker", None), ("Quantity", "#,##0"), ("Per share ($)", "#,##0.0000"),
+           ("Amount ($)", "#,##0.00;(#,##0.00);-")], arecs, {"Date": 12})
+
 wn = wb.create_sheet("Notes")
 notes = [
     "Fund position ledger (Protocol 6). Actual Alpaca paper-account trades only: weeks that were not executed, and model-only books, are left out. Rebuilt automatically after each weekly run and each execution/reconciliation; do not edit.",
     "Positions: one row per lot: a name held for a week, split where a daily review changed the shares (exit, reduce or increase at that day's close). The book is re-decided every Wednesday and traded at the next session's close (market-on-close).",
     "Entry price: the fill if the name traded on the execution day, otherwise that day's official close. Exit price: the next execution day's official close.",
     "Status Open: the week has not ended; Return and P&L use the Current price (latest close). Returns are price returns, dividends excluded, before costs.",
-    "P&L ($): signed shares x (exit or current price - entry). Account sheet: the paper account's daily value from Alpaca, from the first trade on.",
+    "P&L ($): signed shares x (exit or current price - entry). Lot boundaries use the actual Alpaca fill of the order traded there (weekly or daily review), else the official close, so lot P&Ls add up to the account's trading P&L.",
+    "Cash activity: dividends received on longs and paid on shorts, fees and interest from Alpaca; together with P&L they explain the Account sheet's value.",
+    "Account sheet: the paper account's daily value from Alpaca, from the first trade on.",
     "Confidence: the analyst's confidence (0-1); Red team: uphold or weaken. SPY rows are the beta hedge.",
     "Source records: fund-data branch, fund_state/live/<week>/ (book.json, execution.json, analysts.json, redteam.json) and fund_state/live/execution/fills.csv.",
 ]

@@ -16,8 +16,7 @@ on:
     - cron: '17 19 * * 4'
     - cron: '37 15 * * 5'
     - cron: '37 16 * * 5'
-    - cron: '7 1 * * 5'          # reconcile a Thursday execution
-    - cron: '7 1 * * 6'          # reconcile a Friday execution
+    - cron: '7 1 * * 2-6'        # reconcile the previous session: weekly executions and daily reviews
   workflow_dispatch:
     inputs:
       mode:
@@ -76,7 +75,7 @@ jobs:
         id: m
         run: |
           case "${{ github.event.schedule }}" in
-            "7 1 * * 5"|"7 1 * * 6") echo "mode=reconcile" >> "$GITHUB_OUTPUT" ;;
+            "7 1 * * 2-6") echo "mode=reconcile" >> "$GITHUB_OUTPUT" ;;
             "") echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT" ;;
             *) echo "mode=trade" >> "$GITHUB_OUTPUT" ;;
           esac
@@ -134,6 +133,7 @@ jobs:
             rm -rf /tmp/fd && git worktree prune && git worktree add -q --detach /tmp/fd origin/fund-data
             mkdir -p /tmp/fd/fund_state/live/execution
             [ -d fund_state/live/execution ] && cp -a fund_state/live/execution/. /tmp/fd/fund_state/live/execution/
+            for f in fund_state/live/20*/reviews/*.json; do [ -f "$f" ] && mkdir -p "/tmp/fd/$(dirname "$f")" && cp "$f" "/tmp/fd/$f"; done
             for f in fund_state/live/20*/execution.json; do [ -f "$f" ] && mkdir -p "/tmp/fd/$(dirname "$f")" && cp "$f" "/tmp/fd/$f"; done
             [ -d fund_state/live/ledger ] && mkdir -p /tmp/fd/fund_state/live/ledger && cp -a fund_state/live/ledger/. /tmp/fd/fund_state/live/ledger/
             if [ -f fund_state/live/HALT ]; then cp fund_state/live/HALT /tmp/fd/fund_state/live/HALT; else rm -f /tmp/fd/fund_state/live/HALT; fi
