@@ -341,3 +341,52 @@ champion. Any new variant adds to it.
     not proof of no edge.
   * The highest-power evidence the year will produce is the adjusted score slope, the
     timing books and the challenger contrasts.
+
+## Amendment 5 (2026-09-30, before any live decision): daily position review
+
+The owner asked for held positions to be re-examined every day against new news: exit
+when news materially contradicts the thesis, and enlarge when it materially strengthens
+it. This is registered before the first live week, so it is part of the fund under test
+from day one.
+
+**Desk 12, `fund/review.py`, `fund_review.yml`.**
+* **When.** Every trading day strictly between the week's execution day and the next
+  one: Friday, Monday, Tuesday and Wednesday in a normal week. It runs at 17:07 UTC,
+  with an 18:07 fallback, and trades in that day's closing auction.
+* **What it reads.** For each held stock, only the news published since the last review.
+  For the first review of a week, that is news since the book's Wednesday 22:00 UTC
+  cutoff. A stock with no new article is held, and no LLM call is made.
+* **Two calls per proposed change.**
+  * A reviewer (same model, temperature 0) proposes hold, exit, reduce or increase from
+    the position, its entry thesis, catalysts and risks, the move since entry, and the
+    numbered new articles. Any action other than hold must cite articles.
+  * A risk officer must then confirm it. It rejects only by naming a flaw: factual,
+    stale, recycled, priced or immaterial. A rejection means hold.
+* **Sizes.**
+  * exit → 0.
+  * reduce → half the current weight.
+  * increase → 1.5× the book's weight, capped at 10% of NAV, and at most once per name
+    per week.
+  * At most 5 actions a day, largest positions first.
+  * An increase is dropped if stock dollar net would exceed 10% of stock gross and be
+    more unbalanced than before.
+  * SPY is re-hedged to zero beta with the book's hedge betas. If the hedge would cross
+    zero, it goes to zero that day.
+* **Safety.**
+  * No reviews while a risk halt is active.
+  * One review per day, idempotent.
+  * No new positions and no flips; only held names change.
+
+**Evaluation.**
+* The fund is scored piecewise between review closes, with 5 bp/side on each change.
+* A new shadow book, **c7_noreview**, holds the weekly book untouched all week. So
+  fund − c7_noreview is what the reviews added or cost, including their extra costs.
+* The challenger promotion boundaries are recomputed for seven challengers at α = 0.05/7:
+  **5.44 / 3.85 / 3.14 / 2.72**.
+* If c7_noreview beats the fund at a look by that margin, the reviews are removed, by
+  the same promotion rule.
+
+**Why it is registered this way.** In the review's evidence base, large-cap news is
+mostly priced within about a day. Acting at the next close may therefore add turnover
+more often than it avoids losses. The c7 contrast measures exactly that, instead of
+assuming it.
