@@ -17,7 +17,7 @@ job is idempotent, so a retry or a manual start never acts twice.
 
 | when (UTC) | what | workflow | request body |
 |---|---|---|---|
-| daily 21:20 | news archive: Finnhub news for every S&P 500 member, one file per day | `fund_archive.yml` | `{"ref":"main","inputs":{"minutes":"40"}}` |
+| daily 21:20 | news archive: Finnhub news for every S&P 500 member, one file per day; then the context archive (Amendment 6, shadow input only) | `fund_archive.yml` | `{"ref":"main","inputs":{"minutes":"40"}}` |
 | Wed 22:15 | the desks decide next week's book (≈ 90 min), committed to `fund-data` before the Thursday 19:00 deadline; a week is decided once | `fund_weekly.yml` | `{"ref":"main"}` |
 | Thu 16:15 (Fri 16:15 after a Thursday holiday) | orders for the closing auction; each week is traded once | `fund_execute.yml` | `{"ref":"main","inputs":{"mode":"trade"}}` |
 | Mon, Tue, Wed, Fri 16:30 | daily review of held positions against new news; changes traded at that day's close | `fund_review.yml` | `{"ref":"main","inputs":{"mode":"trade"}}` |
@@ -47,6 +47,7 @@ Thu ─── 10 execution (closing auction)          Fri/Mon/Tue/Wed ─ 12 dai
 | desk | file | LLM | output (`fund_state/live/<week>/`) |
 |---|---|---|---|
 | 0 News archive | `archive.py` | no | private HF dataset `<you>/fund-news-archive`: one parquet per UTC day, 91-day window, append-only |
+| 0b Context archive | `context_archive.py` | no | private HF dataset `<you>/fund-context-archive`: FRED release calendar, Kalshi macro markets, AI-GPR, GDELT theme volume and tone (best effort), Finnhub market news, S&P 500 8-K filings; point in time, append-only. Read by no champion desk (Amendment 6 shadow input) |
 | 1 Screen | `screen.py` | no | `screen.json`: price facts, hedge beta (252-day Welch, shrunk to 1), sector, news attention, earnings in the holding week, the frozen ridge (benchmark only) |
 | 2 Ideation | `ideate.py` | yes | `ideation.json`: nominated ideas with hypotheses and the coverage list (≤ 45 names) |
 | 3 Research | `research.py` | via the dashboard pipeline | `research/<T>.json`: each name's news narratives (stories with continuity, events), built by `andreaskoul/my-website`'s pipeline at a pinned commit |
@@ -102,8 +103,8 @@ realistic expectations for a large-cap weekly news book are a Sharpe of roughly 
 * `fund-data` branch: every week's inputs, prompts, decisions, orders, fills, reviews,
   performance, the ledger and dashboard data. The commit time is the evidence that a
   decision predates its outcome.
-* Hugging Face (private): `<you>/fund-news-archive` (daily news) and `<you>/fund-embeddings`
-  (embedding cache).
+* Hugging Face (private): `<you>/fund-news-archive` (daily news), `<you>/fund-context-archive`
+  (macro, geopolitical and filing context, Amendment 6) and `<you>/fund-embeddings` (embedding cache).
 * GitHub Pages: the trade monitor (`fund/site/index.html`) and the ledger page (`fund/site/ledger/index.html`), with the Excel file as a download.
 
 ## Running and testing
@@ -118,6 +119,7 @@ realistic expectations for a large-cap weekly news book are a Sharpe of roughly 
 * **Local mock** (no keys): `FUND_MOCK=1 FUND_ASOF=2026-09-23 python fund/<desk>.py` in desk order.
 
 Secrets: `OPENROUTER_API_KEY`, `FINNHUB_API_KEY`, `HF_TOKEN`, `ALPACA_API_KEY`,
-`ALPACA_SECRET_KEY` (a paper account used only by the fund), optionally `POLYGON_API_KEY`.
+`ALPACA_SECRET_KEY` (a paper account used only by the fund), optionally `POLYGON_API_KEY`,
+`FRED_API_KEY` and `SEC_USER_AGENT` (name and contact email, as the SEC requires; context archive).
 Live trading is blocked unless `FUND_LIVE_TRADING=1` and a non-paper Alpaca endpoint are set
 on purpose.
