@@ -1,0 +1,405 @@
+{
+ "asof": "2026-09-30",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "Together",
+  "usage": {
+   "prompt_tokens": 40433,
+   "completion_tokens": 24579,
+   "total_tokens": 65012,
+   "cost": 0.0416247,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 0,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.0416247,
+    "upstream_inference_prompt_cost": 0.0121299,
+    "upstream_inference_completions_cost": 0.0294948
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 23875,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"long_ideas\":[{\"ticker\":\"MU\",\"hypothesis\":\"Post-earnings AI memory blowout with revenue quadrupling and high attention may sustain momentum next week.\"},{\"ticker\":\"NVDA\",\"hypothesis\":\"Nvidia's $150B buyback authorization and AI leadership could keep shares bid despite high expectations.\"},{\"ticker\":\"GOOGL\",\"hypothesis\":\"Gemini 4 Argon pricing and benchmark lead may drive positive AI sentiment for Alphabet.\"},{\"ticker\":\"AMD\",\"hypothesis\":\"Oct. 15 catalyst and AI chip demand momentum may support AMD after strong monthly gains.\"},{\"ticker\":\"LLY\",\"hypothesis\":\"Oral GLP-1 Foundayo cardiovascular safety and weight-loss data may boost Lilly sentiment.\"},{\"ticker\":\"HPE\",\"hypothesis\":\"$1.2B Vultr deal to deploy AMD Helios AI racks may drive HPE upside.\"},{\"ticker\":\"SNDK\",\"hypothesis\":\"Micron's blowout memory results may read across to SanDisk as NAND peer.\"},{\"ticker\":\"PYPL\",\"hypothesis\":\"Renewed takeover rumors could put PayPal in play and support shares.\"},{\"ticker\":\"WBD\",\"hypothesis\":\"Paramount merger closing date announcement may drive Warner Bros. Discovery merger-arb interest.\"},{\"ticker\":\"BMY\",\"hypothesis\":\"FDA expanded approval for CAMZYOS may provide near-term catalyst for Bristol Myers.\"},{\"ticker\":\"GEV\",\"hypothesis\":\"NRC permit for new reactor design may boost GE Vernova's nuclear growth narrative.\"},{\"ticker\":\"LITE\",\"hypothesis\":\"AI network laser opportunity highlighted at ECOC may sustain Lumentum momentum.\"}],\"short_ideas\":[{\"ticker\":\"FICO\",\"hypothesis\":\"Sharp decline and negative headline asking how much further Fair Isaac can fall may pressure shares.\"},{\"ticker\":\"APP\",\"hypothesis\":\"Fresh 52-week low after Wells Fargo calls Pixel install spike a false start; negative momentum.\"},{\"ticker\":\"TTD\",\"hypothesis\":\"Nine straight down days and ad-tech weakness may continue to weigh on Trade Desk.\"},{\"ticker\":\"DRI\",\"hypothesis\":\"Olive Garden growth fading while LongHorn carries portfolio; earnings risk remains.\"},{\"ticker\":\"CMCSA\",\"hypothesis\":\"Starlink expansion threatens cable giants; Comcast may face continued competitive pressure.\"},{\"ticker\":\"RTX\",\"hypothesis\":\"Orders not converting fast enough may keep RTX under pressure after recent weakness.\"},{\"ticker\":\"DOW\",\"hypothesis\":\"Citi downgrade and polyethylene demand weakness may pressure Dow shares.\"},{\"ticker\":\"LYB\",\"hypothesis\":\"Citi downgrade and demand weakness caps polyethylene upside for LyondellBasell.\"},{\"ticker\":\"NRG\",\"hypothesis\":\"FERC delay of PJM plan creates acute uncertainty for NRG and power peers.\"},{\"ticker\":\"STZ\",\"hypothesis\":\"Constellation Brands earnings expected to decline; weak momentum may persist.\"},{\"ticker\":\"HRL\",\"hypothesis\":\"S&P and Moody's downgrades after Brakebush deal may weigh on Hormel.\"},{\"ticker\":\"LULU\",\"hypothesis\":\"Cash concerns and weak 12-1 momentum may keep Lululemon under pressure.\"}],\"themes\":[\"AI memory and optical demand catalysts\",\"M&A and merger closings\",\"GLP-1 and FDA health catalysts\",\"Consumer and ad-tech weakness\",\"Energy/utility regulatory uncertainty\"]}"
+ },
+ "llm": {
+  "long_ideas": [
+   {
+    "ticker": "MU",
+    "hypothesis": "Post-earnings AI memory blowout with revenue quadrupling and high attention may sustain momentum next week."
+   },
+   {
+    "ticker": "NVDA",
+    "hypothesis": "Nvidia's $150B buyback authorization and AI leadership could keep shares bid despite high expectations."
+   },
+   {
+    "ticker": "GOOGL",
+    "hypothesis": "Gemini 4 Argon pricing and benchmark lead may drive positive AI sentiment for Alphabet."
+   },
+   {
+    "ticker": "AMD",
+    "hypothesis": "Oct. 15 catalyst and AI chip demand momentum may support AMD after strong monthly gains."
+   },
+   {
+    "ticker": "LLY",
+    "hypothesis": "Oral GLP-1 Foundayo cardiovascular safety and weight-loss data may boost Lilly sentiment."
+   },
+   {
+    "ticker": "HPE",
+    "hypothesis": "$1.2B Vultr deal to deploy AMD Helios AI racks may drive HPE upside."
+   },
+   {
+    "ticker": "SNDK",
+    "hypothesis": "Micron's blowout memory results may read across to SanDisk as NAND peer."
+   },
+   {
+    "ticker": "PYPL",
+    "hypothesis": "Renewed takeover rumors could put PayPal in play and support shares."
+   },
+   {
+    "ticker": "WBD",
+    "hypothesis": "Paramount merger closing date announcement may drive Warner Bros. Discovery merger-arb interest."
+   },
+   {
+    "ticker": "BMY",
+    "hypothesis": "FDA expanded approval for CAMZYOS may provide near-term catalyst for Bristol Myers."
+   },
+   {
+    "ticker": "GEV",
+    "hypothesis": "NRC permit for new reactor design may boost GE Vernova's nuclear growth narrative."
+   },
+   {
+    "ticker": "LITE",
+    "hypothesis": "AI network laser opportunity highlighted at ECOC may sustain Lumentum momentum."
+   }
+  ],
+  "short_ideas": [
+   {
+    "ticker": "FICO",
+    "hypothesis": "Sharp decline and negative headline asking how much further Fair Isaac can fall may pressure shares."
+   },
+   {
+    "ticker": "APP",
+    "hypothesis": "Fresh 52-week low after Wells Fargo calls Pixel install spike a false start; negative momentum."
+   },
+   {
+    "ticker": "TTD",
+    "hypothesis": "Nine straight down days and ad-tech weakness may continue to weigh on Trade Desk."
+   },
+   {
+    "ticker": "DRI",
+    "hypothesis": "Olive Garden growth fading while LongHorn carries portfolio; earnings risk remains."
+   },
+   {
+    "ticker": "CMCSA",
+    "hypothesis": "Starlink expansion threatens cable giants; Comcast may face continued competitive pressure."
+   },
+   {
+    "ticker": "RTX",
+    "hypothesis": "Orders not converting fast enough may keep RTX under pressure after recent weakness."
+   },
+   {
+    "ticker": "DOW",
+    "hypothesis": "Citi downgrade and polyethylene demand weakness may pressure Dow shares."
+   },
+   {
+    "ticker": "LYB",
+    "hypothesis": "Citi downgrade and demand weakness caps polyethylene upside for LyondellBasell."
+   },
+   {
+    "ticker": "NRG",
+    "hypothesis": "FERC delay of PJM plan creates acute uncertainty for NRG and power peers."
+   },
+   {
+    "ticker": "STZ",
+    "hypothesis": "Constellation Brands earnings expected to decline; weak momentum may persist."
+   },
+   {
+    "ticker": "HRL",
+    "hypothesis": "S&P and Moody's downgrades after Brakebush deal may weigh on Hormel."
+   },
+   {
+    "ticker": "LULU",
+    "hypothesis": "Cash concerns and weak 12-1 momentum may keep Lululemon under pressure."
+   }
+  ],
+  "themes": [
+   "AI memory and optical demand catalysts",
+   "M&A and merger closings",
+   "GLP-1 and FDA health catalysts",
+   "Consumer and ad-tech weakness",
+   "Energy/utility regulatory uncertainty"
+  ]
+ },
+ "core": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM"
+ ],
+ "nominated": [
+  "MU",
+  "NVDA",
+  "GOOGL",
+  "AMD",
+  "LLY",
+  "HPE",
+  "SNDK",
+  "PYPL",
+  "WBD",
+  "BMY",
+  "GEV",
+  "LITE",
+  "FICO",
+  "APP",
+  "TTD",
+  "DRI",
+  "CMCSA",
+  "RTX",
+  "DOW",
+  "LYB",
+  "NRG",
+  "STZ",
+  "HRL",
+  "LULU"
+ ],
+ "rule_based": [
+  "FICO",
+  "GEN",
+  "MRNA",
+  "MGM",
+  "CDW",
+  "AXON",
+  "CCL",
+  "RCL",
+  "RVTY",
+  "A",
+  "HLT",
+  "VTRS",
+  "NVDA",
+  "GOOG",
+  "MSFT",
+  "MU",
+  "AMD",
+  "ORCL"
+ ],
+ "coverage": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM",
+  "MU",
+  "HPE",
+  "SNDK",
+  "PYPL",
+  "WBD",
+  "BMY",
+  "GEV",
+  "LITE",
+  "FICO",
+  "APP",
+  "TTD",
+  "DRI",
+  "CMCSA",
+  "RTX",
+  "DOW",
+  "LYB",
+  "NRG",
+  "STZ",
+  "HRL",
+  "LULU",
+  "GEN",
+  "MRNA",
+  "MGM",
+  "CDW",
+  "AXON"
+ ],
+ "why": {
+  "NVDA": [
+   "core",
+   "nominated",
+   "rule"
+  ],
+  "AAPL": [
+   "core"
+  ],
+  "MSFT": [
+   "core",
+   "rule"
+  ],
+  "GOOGL": [
+   "core",
+   "nominated"
+  ],
+  "AMZN": [
+   "core"
+  ],
+  "META": [
+   "core"
+  ],
+  "AVGO": [
+   "core"
+  ],
+  "TSLA": [
+   "core"
+  ],
+  "AMD": [
+   "core",
+   "nominated",
+   "rule"
+  ],
+  "INTC": [
+   "core"
+  ],
+  "TSM": [
+   "core"
+  ],
+  "JPM": [
+   "core"
+  ],
+  "LLY": [
+   "core",
+   "nominated"
+  ],
+  "WMT": [
+   "core"
+  ],
+  "BRK.B": [
+   "core"
+  ],
+  "ORCL": [
+   "core",
+   "rule"
+  ],
+  "CRM": [
+   "core"
+  ],
+  "NFLX": [
+   "core"
+  ],
+  "BA": [
+   "core"
+  ],
+  "XOM": [
+   "core"
+  ],
+  "MU": [
+   "nominated",
+   "rule"
+  ],
+  "HPE": [
+   "nominated"
+  ],
+  "SNDK": [
+   "nominated"
+  ],
+  "PYPL": [
+   "nominated"
+  ],
+  "WBD": [
+   "nominated"
+  ],
+  "BMY": [
+   "nominated"
+  ],
+  "GEV": [
+   "nominated"
+  ],
+  "LITE": [
+   "nominated"
+  ],
+  "FICO": [
+   "nominated",
+   "rule"
+  ],
+  "APP": [
+   "nominated"
+  ],
+  "TTD": [
+   "nominated"
+  ],
+  "DRI": [
+   "nominated"
+  ],
+  "CMCSA": [
+   "nominated"
+  ],
+  "RTX": [
+   "nominated"
+  ],
+  "DOW": [
+   "nominated"
+  ],
+  "LYB": [
+   "nominated"
+  ],
+  "NRG": [
+   "nominated"
+  ],
+  "STZ": [
+   "nominated"
+  ],
+  "HRL": [
+   "nominated"
+  ],
+  "LULU": [
+   "nominated"
+  ],
+  "GEN": [
+   "rule"
+  ],
+  "MRNA": [
+   "rule"
+  ],
+  "MGM": [
+   "rule"
+  ],
+  "CDW": [
+   "rule"
+  ],
+  "AXON": [
+   "rule"
+  ]
+ },
+ "prompt_chars": 114442
+}
