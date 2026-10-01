@@ -51,3 +51,4 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   - the ledger lists review fills and slippage, and has a Cash activity sheet.
   Records only; no decision input changes.
 - 2026-09-30: repository reduced to the fund. The legacy gold agent, its workflows, earlier protocols and reports are preserved on the `legacy-gold-agent` branch. No fund code or decision input changed.
+- 2026-10-01: GitHub started the first live week's scheduled runs 3-6 hours late (weekly desks 01:17 instead of 22:15 UTC, daily review 21:21 instead of 17:07, reconcile 07:07 instead of 01:07). A late Thursday run would miss the closing auction, so execution is now attempted hourly 14:13-19:13 UTC on Thursdays (and Fridays after a Thursday holiday) and the daily review hourly 14:23-19:23 UTC; both are idempotent, so only the first run in time acts. Fill price is unchanged (closing auction). Operational only.

@@ -14,12 +14,12 @@ pre-registered in [`reports/research/PROTOCOL_fund.md`](../reports/research/PROT
 |---|---|---|
 | daily 21:20 | news archive: Finnhub news for every S&P 500 member, one file per day | `fund_archive.yml` |
 | Wed 22:15 | the desks decide next week's book (≈ 90 min); decisions committed to `fund-data` before the Thursday deadline (19:00) | `fund_weekly.yml` |
-| Thu 17:37 (18:37, 19:17 fallbacks) | orders for the Thursday closing auction; each week is traded once | `fund_execute.yml` |
-| Fri, Mon, Tue, Wed 17:07 | daily review of held positions against new news; changes traded at that day's close | `fund_review.yml` |
+| Thu, hourly 14:13–19:13 | orders for the Thursday closing auction; the first run in time trades, the rest are no-ops | `fund_execute.yml` |
+| Fri, Mon, Tue, Wed, hourly 14:23–19:23 | daily review of held positions against new news (once a day); changes traded at that day's close | `fund_review.yml` |
 | Tue–Sat 01:07 | reconcile the previous session: fills vs official close, broker NAV, cash activity, risk halts | `fund_execute.yml` |
 | after each of the above | ledger (Excel) and dashboard rebuilt and published | `fund_pages.yml` |
 
-Positions are held from one Thursday close to the next. A US holiday moves the trade to the
+GitHub often starts scheduled runs hours late, so the trading jobs are retried hourly and are idempotent. Positions are held from one Thursday close to the next. A US holiday moves the trade to the
 next session; the schedule is in UTC, so Athens times shift with daylight saving.
 
 ## The desks
