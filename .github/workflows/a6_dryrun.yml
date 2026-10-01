@@ -1,0 +1,47 @@
+name: Amendment 6 · branch dry run (temporary)
+# Runs the new Amendment 6 code on this branch against a scratch Hugging Face dataset and commits a
+# summary to fund/AMENDMENT6_DRYRUN.md. Removed before the branch merges. Never writes live data.
+on:
+  push:
+    branches: [amendment-6-info-flows]
+    paths: ['fund/context_archive.py', '.github/workflows/a6_dryrun.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: a6-dryrun
+  cancel-in-progress: true
+jobs:
+  context:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+      SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+      CONTEXT_REPO: fund-context-archive-scratch
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas pyarrow huggingface_hub
+      - name: "Context archive into the scratch dataset, twice (the second run must add little)"
+        run: |
+          set -o pipefail
+          ( time python fund/context_archive.py ) 2>&1 | tee run1.log
+          CONTEXT_SOURCES=kalshi,gpr,fred,finnhub python fund/context_archive.py 2>&1 | tee run2.log
+      - name: Commit the summary to the branch
+        if: always()
+        run: |
+          {
+            echo "# Amendment 6 branch dry run"; echo
+            echo "Run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}, commit ${GITHUB_SHA::7}, $(date -u +%FT%TZ)"; echo
+            echo '## Context archive, run 1 (all sources)'; echo '```'; grep -E '^context|^real' run1.log || echo "no output"; echo '```'
+            echo '## Context archive, run 2 (kalshi, gpr, fred, finnhub)'; echo '```'; grep -E '^context' run2.log || echo "no output"; echo '```'
+          } > fund/AMENDMENT6_DRYRUN.md
+          git config user.name 'fund-bot'; git config user.email 'fund-bot@users.noreply.github.com'
+          git add fund/AMENDMENT6_DRYRUN.md
+          git commit -q -m "Amendment 6 dry run summary" && git pull -q --rebase && git push -q || true
