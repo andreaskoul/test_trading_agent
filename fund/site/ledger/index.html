@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Position Ledger</title>
+<style>
+  :root { --bg:#f7f7f5; --card:#fff; --ink:#1d1d1f; --muted:#6b6b70; --line:#e4e4e0; --pos:#1a7f4b; --neg:#c0392b; --accent:#2c5aa0; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#121214; --card:#1c1c1f; --ink:#ececec; --muted:#9a9aa0; --line:#2c2c30; --pos:#4cc38a; --neg:#ff6b5e; --accent:#7aa7ff; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width:1300px; margin:0 auto; padding:24px 16px 48px; }
+  header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:16px; }
+  h1 { font-size:20px; margin:0; }
+  .muted { color:var(--muted); font-size:12px; }
+  a { color:var(--accent); }
+  .btn { display:inline-block; padding:7px 14px; border-radius:8px; background:var(--accent); color:#fff; text-decoration:none; font-weight:600; font-size:13px; }
+  .tabs { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+  .tab { padding:6px 12px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--ink); cursor:pointer; font:inherit; }
+  .tab[aria-selected="true"] { border-color:var(--accent); color:var(--accent); font-weight:600; }
+  .bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:10px; }
+  input[type=search] { padding:6px 10px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--ink); font:inherit; min-width:220px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; }
+  .scroll { overflow:auto; max-height:72vh; }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  th, td { padding:6px 8px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap; }
+  th { color:var(--muted); font-weight:600; position:sticky; top:0; background:var(--card); cursor:pointer; user-select:none; }
+  th[data-dir="asc"]::after { content:" ▲"; } th[data-dir="desc"]::after { content:" ▼"; }
+  td.n { text-align:right; font-variant-numeric:tabular-nums; }
+  td.thesis { white-space:normal; min-width:320px; max-width:560px; color:var(--muted); }
+  .pos { color:var(--pos); } .neg { color:var(--neg); }
+  .empty { color:var(--muted); padding:8px 0; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1>Position ledger</h1>
+      <div class="muted"><a href="../">← Trade monitor</a> · actual Alpaca paper trades only · updated <span id="upd">…</span></div>
+    </div>
+    <a class="btn" href="../fund_positions.xlsx" download>Download Excel</a>
+  </header>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-t="positions" aria-selected="true">Positions</button>
+    <button class="tab" role="tab" data-t="orders" aria-selected="false">Orders</button>
+    <button class="tab" role="tab" data-t="account" aria-selected="false">Account</button>
+    <button class="tab" role="tab" data-t="cash" aria-selected="false">Cash activity</button>
+  </div>
+  <div class="bar"><input type="search" id="q" placeholder="Filter (ticker, side, status…)"><span class="muted" id="count"></span></div>
+  <section><div class="scroll" id="box"></div></section>
+  <p class="muted">Returns are price returns before costs, signed for shorts. P&amp;L = signed shares × (exit or current − entry), using actual fills at trade boundaries. One row per lot: a name held for a week, split where a daily review changed the shares. SPY rows are the market hedge.</p>
+</main>
+<script>
+const fmt = (v, d = 2) => v == null ? "" : Number(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+const pct = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${(v * 100).toFixed(2)}%</span>`;
+const usd = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${v < 0 ? "−" : ""}$${fmt(Math.abs(v), 2)}</span>`;
+const esc = s => (s ?? "").toString().replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+// [header, key, render, css]
+const VIEWS = {
+  positions: [["Week", "week"], ["Ticker", "ticker", v => `<b>${esc(v)}</b>`], ["Name", "name", esc], ["Role", "role", esc], ["Side", "side", esc],
+    ["Status", "status", esc], ["Entry day", "entry_day"], ["Exit day", "exit_day"], ["Shares", "shares", v => fmt(v, 0), "n"],
+    ["Entry $", "entry_price", fmt, "n"], ["Exit $", "exit_price", fmt, "n"], ["Current $", "current_price", fmt, "n"],
+    ["Return", "return", pct, "n"], ["P&L $", "pnl", usd, "n"], ["Confidence", "confidence", v => fmt(v, 2), "n"],
+    ["Red team", "redteam", esc], ["Thesis", "thesis", esc, "thesis"]],
+  orders: [["Week", "week"], ["Day", "exec_day"], ["Ticker", "ticker", v => `<b>${esc(v)}</b>`], ["Leg", "leg", esc], ["Side", "side", esc],
+    ["Qty", "qty", v => fmt(v, 0), "n"], ["Order type", "order_type", esc], ["Ref $", "ref_price", fmt, "n"], ["Status", "status", esc],
+    ["Fill $", "fill_price", fmt, "n"], ["Close $", "official_close", fmt, "n"], ["Slippage bp", "slippage_bp", v => fmt(v, 1), "n"],
+    ["Order id", "client_order_id", esc]],
+  account: [["Day", "date"], ["Account value $", "equity", v => "$" + fmt(v, 0), "n"], ["Daily return", "ret", pct, "n"], ["Since first trade", "cum", pct, "n"]],
+  cash: [["Date", "date"], ["Type", "type", esc], ["Ticker", "ticker", esc], ["Amount $", "amount", usd, "n"]],
+};
+let D = {}, view = "positions", sort = { key: null, dir: 1 };
+function render() {
+  const cols = VIEWS[view], q = document.getElementById("q").value.trim().toLowerCase();
+  let rows = (D[view] || []).filter(r => !q || cols.some(c => String(r[c[1]] ?? "").toLowerCase().includes(q)));
+  if (sort.key) rows = rows.slice().sort((a, b) => {
+    const x = a[sort.key], y = b[sort.key];
+    return (x == null) - (y == null) || (x < y ? -1 : x > y ? 1 : 0) * sort.dir;
+  });
+  document.getElementById("count").textContent = `${rows.length} row${rows.length === 1 ? "" : "s"}`;
+  const box = document.getElementById("box");
+  if (!rows.length) { box.innerHTML = '<div class="empty">No rows yet. Rows appear after the first actual trade.</div>'; return; }
+  box.innerHTML = `<table><thead><tr>${cols.map(c => `<th data-k="${c[1]}"${sort.key === c[1] ? ` data-dir="${sort.dir > 0 ? "asc" : "desc"}"` : ""}>${c[0]}</th>`).join("")}</tr></thead><tbody>${
+    rows.map(r => `<tr>${cols.map(c => `<td class="${c[3] || ""}">${(c[2] || (v => v ?? ""))(r[c[1]])}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+  box.querySelectorAll("th").forEach(th => th.onclick = () => {
+    sort = { key: th.dataset.k, dir: sort.key === th.dataset.k ? -sort.dir : 1 }; render();
+  });
+}
+document.querySelectorAll(".tab").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-selected", x === b));
+  view = b.dataset.t; sort = { key: null, dir: 1 }; render();
+});
+document.getElementById("q").oninput = render;
+fetch("../dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => {
+  document.getElementById("upd").textContent = String(d.updated).replace("T", " ").replace("+00:00", " UTC");
+  const A = d.account || [];
+  D = { positions: d.positions || [], orders: d.orders || [], cash: d.cash || [],
+        account: A.map((a, i) => ({ ...a, ret: i ? a.equity / A[i - 1].equity - 1 : null, cum: a.equity / A[0].equity - 1 })) };
+  render();
+}).catch(e => { document.getElementById("box").innerHTML = `<div class="empty">Could not load ledger data (${esc(e.message)}).</div>`; });
+</script>
+</body>
+</html>

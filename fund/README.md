@@ -6,7 +6,7 @@ pre-registered in [`reports/research/PROTOCOL_fund.md`](../reports/research/PROT
 (Protocol 6, Amendments 1–5); operational changes are logged in [`CHANGELOG.md`](CHANGELOG.md).
 
 **Dashboard:** https://andreaskoul.github.io/test_trading_agent/ ·
-**Excel ledger:** `fund_state/live/ledger/fund_positions.xlsx` on the `fund-data` branch.
+**Ledger page (with Excel download):** https://andreaskoul.github.io/test_trading_agent/ledger/
 
 ## How a week runs
 
@@ -92,7 +92,7 @@ realistic expectations for a large-cap weekly news book are a Sharpe of roughly 
   decision predates its outcome.
 * Hugging Face (private): `<you>/fund-news-archive` (daily news) and `<you>/fund-embeddings`
   (embedding cache).
-* GitHub Pages: the dashboard, published from `fund/site/index.html` and the ledger data.
+* GitHub Pages: the trade monitor (`fund/site/index.html`) and the ledger page (`fund/site/ledger/index.html`), with the Excel file as a download.
 
 ## Running and testing
 

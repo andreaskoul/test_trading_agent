@@ -33,6 +33,7 @@ jobs:
           set -euo pipefail
           mkdir -p _site
           cp fund/site/index.html _site/
+          mkdir -p _site/ledger && cp fund/site/ledger/index.html _site/ledger/
           git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data || true
           for f in dashboard.json fund_positions.xlsx; do
             git show "origin/fund-data:fund_state/live/ledger/$f" > "_site/$f" 2>/dev/null || rm -f "_site/$f"
