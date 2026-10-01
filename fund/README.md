@@ -27,7 +27,7 @@ job is idempotent, so a retry or a manual start never acts twice.
 Each scheduler job: `POST https://api.github.com/repos/andreaskoul/test_trading_agent/actions/workflows/<workflow>/dispatches`
 with headers `Authorization: Bearer <fine-grained token, Actions read and write on this repo only>`,
 `Accept: application/vnd.github+json`, `X-GitHub-Api-Version: 2022-11-28`; GitHub answers 204.
-A Claude scheduled task at 16:25 UTC on weekdays is a second line: it dispatches the trade or
+A Claude scheduled task at 17:03 UTC on weekdays is a second line: it dispatches the trade or
 the review if the day's record is missing.
 
 Positions are held from one Thursday close to the next. A US holiday moves the trade to the next
