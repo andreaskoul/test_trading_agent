@@ -4,12 +4,12 @@ name: Fund · daily position review
 # the week's execution and the next one, re-reads each held stock against the news since the
 # last review; exit / reduce / increase only with a confirmed, material, dated item, traded
 # in the same day's closing auction with SPY re-hedged. Idempotent per day.
-# 17:07 UTC (13:07 ET in summer, 12:07 in winter), fallback 18:07 UTC.
+# Attempted hourly 14:23-19:23 UTC; the first run that starts in time does the day's review.
 
 on:
   schedule:
-    - cron: '7 17 * * 1,2,3,5'
-    - cron: '7 18 * * 1,2,3,5'
+    # hourly while the market is open: GitHub starts scheduled runs hours late; one review a day
+    - cron: '23 14-19 * * 1,2,3,5'
   workflow_dispatch:
     inputs:
       mode:

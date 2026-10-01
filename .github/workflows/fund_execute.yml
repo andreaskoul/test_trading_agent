@@ -3,19 +3,19 @@ name: Fund · execution (Alpaca paper)
 # Desk 10 (fund/execute.py, PROTOCOL_fund.md Amendment 3). Trades the week's fund book,
 # committed to `fund-data` by the weekly desks, into the closing auction of the first
 # trading day after the as-of Wednesday, then reconciles the fills after the close.
-# Thursday runs: 17:37 and 18:37 UTC trade the book if it exists; 19:17 UTC (after the
-# PM deadline) trades it or goes flat. Friday runs only act when Thursday was a holiday.
+# Thursday runs hourly from 14:13 to 19:13 UTC: the first one to start trades the book; after
+# the PM deadline (19:00 UTC) a missing book means flat. Friday runs only act when Thursday was
+# a holiday.
 # All runs are idempotent: a week is traded once.
 #
 # Secrets: ALPACA_API_KEY, ALPACA_SECRET_KEY (paper account, dedicated to the fund).
 
 on:
   schedule:
-    - cron: '37 17 * * 4'
-    - cron: '37 18 * * 4'
-    - cron: '17 19 * * 4'
-    - cron: '37 15 * * 5'
-    - cron: '37 16 * * 5'
+    # GitHub starts scheduled runs late (3-6 h observed in the first live week), so trading
+    # is attempted every hour the market is open; runs after the first submission are no-ops.
+    - cron: '13 14-19 * * 4'
+    - cron: '13 14-19 * * 5'     # only acts when Thursday was a holiday
     - cron: '7 1 * * 2-6'        # reconcile the previous session: weekly executions and daily reviews
   workflow_dispatch:
     inputs:
