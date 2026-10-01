@@ -3,20 +3,15 @@ name: Fund · execution (Alpaca paper)
 # Desk 10 (fund/execute.py, PROTOCOL_fund.md Amendment 3). Trades the week's fund book,
 # committed to `fund-data` by the weekly desks, into the closing auction of the first
 # trading day after the as-of Wednesday, then reconciles the fills after the close.
-# Thursday runs hourly from 14:13 to 19:13 UTC: the first one to start trades the book; after
-# the PM deadline (19:00 UTC) a missing book means flat. Friday runs only act when Thursday was
-# a holiday.
+# Started by the external scheduler: trade on Thursday (Friday after a Thursday holiday),
+# reconcile Tue-Sat after the close. All modes are idempotent.
 # All runs are idempotent: a week is traded once.
 #
 # Secrets: ALPACA_API_KEY, ALPACA_SECRET_KEY (paper account, dedicated to the fund).
 
 on:
-  schedule:
-    # GitHub starts scheduled runs late (3-6 h observed in the first live week), so trading
-    # is attempted every hour the market is open; runs after the first submission are no-ops.
-    - cron: '13 14-19 * * 4'
-    - cron: '13 14-19 * * 5'     # only acts when Thursday was a holiday
-    - cron: '7 1 * * 2-6'        # reconcile the previous session: weekly executions and daily reviews
+  # Started by the external scheduler (cron-job.org, schedule in fund/README.md); no GitHub cron,
+  # whose scheduled runs started hours late or not at all in the first live week.
   workflow_dispatch:
     inputs:
       mode:
@@ -74,11 +69,7 @@ jobs:
       - name: Mode
         id: m
         run: |
-          case "${{ github.event.schedule }}" in
-            "7 1 * * 2-6") echo "mode=reconcile" >> "$GITHUB_OUTPUT" ;;
-            "") echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT" ;;
-            *) echo "mode=trade" >> "$GITHUB_OUTPUT" ;;
-          esac
+          echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
 
       - name: Resume after a risk stop
         if: ${{ inputs.resume }}

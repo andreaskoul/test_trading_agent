@@ -10,17 +10,29 @@ pre-registered in [`reports/research/PROTOCOL_fund.md`](../reports/research/PROT
 
 ## How a week runs
 
-| when (UTC) | what | workflow |
-|---|---|---|
-| daily 21:20 | news archive: Finnhub news for every S&P 500 member, one file per day | `fund_archive.yml` |
-| Wed 22:15 | the desks decide next week's book (≈ 90 min); decisions committed to `fund-data` before the Thursday deadline (19:00) | `fund_weekly.yml` |
-| Thu, hourly 14:13–19:13 | orders for the Thursday closing auction; the first run in time trades, the rest are no-ops | `fund_execute.yml` |
-| Fri, Mon, Tue, Wed, hourly 14:23–19:23 | daily review of held positions against new news (once a day); changes traded at that day's close | `fund_review.yml` |
-| Tue–Sat 01:07 | reconcile the previous session: fills vs official close, broker NAV, cash activity, risk halts | `fund_execute.yml` |
-| after each of the above | ledger (Excel) and dashboard rebuilt and published | `fund_pages.yml` |
+All scheduled operations are started by one external scheduler (cron-job.org), which sends a
+`workflow_dispatch` request to GitHub at the times below. The workflows have no GitHub cron:
+GitHub's scheduled runs started 3–6 hours late, or not at all, in the first live week. Every
+job is idempotent, so a retry or a manual start never acts twice.
 
-GitHub often starts scheduled runs hours late, so the trading jobs are retried hourly and are idempotent. Positions are held from one Thursday close to the next. A US holiday moves the trade to the
-next session; the schedule is in UTC, so Athens times shift with daylight saving.
+| when (UTC) | what | workflow | request body |
+|---|---|---|---|
+| daily 21:20 | news archive: Finnhub news for every S&P 500 member, one file per day | `fund_archive.yml` | `{"ref":"main","inputs":{"minutes":"40"}}` |
+| Wed 22:15 | the desks decide next week's book (≈ 90 min), committed to `fund-data` before the Thursday 19:00 deadline; a week is decided once | `fund_weekly.yml` | `{"ref":"main"}` |
+| Thu 16:15 (Fri 16:15 after a Thursday holiday) | orders for the closing auction; each week is traded once | `fund_execute.yml` | `{"ref":"main","inputs":{"mode":"trade"}}` |
+| Mon, Tue, Wed, Fri 16:30 | daily review of held positions against new news; changes traded at that day's close | `fund_review.yml` | `{"ref":"main","inputs":{"mode":"trade"}}` |
+| Tue–Sat 01:10 | reconcile the previous session: fills vs official close, broker NAV, cash activity, risk halts | `fund_execute.yml` | `{"ref":"main","inputs":{"mode":"reconcile"}}` |
+| after each run of the above | ledger (Excel) and dashboard rebuilt and published | `fund_pages.yml` | (triggered by the runs) |
+
+Each scheduler job: `POST https://api.github.com/repos/andreaskoul/test_trading_agent/actions/workflows/<workflow>/dispatches`
+with headers `Authorization: Bearer <fine-grained token, Actions read and write on this repo only>`,
+`Accept: application/vnd.github+json`, `X-GitHub-Api-Version: 2022-11-28`; GitHub answers 204.
+A Claude scheduled task at 16:25 UTC on weekdays is a second line: it dispatches the trade or
+the review if the day's record is missing.
+
+Positions are held from one Thursday close to the next. A US holiday moves the trade to the next
+session. Times are UTC, so Athens times shift with daylight saving; 16:15–16:30 UTC is inside
+the trading window all year.
 
 ## The desks
 

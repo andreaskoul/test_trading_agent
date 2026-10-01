@@ -10,8 +10,8 @@ name: Fund · weekly desks
 # Secrets: OPENROUTER_API_KEY, FINNHUB_API_KEY (required), POLYGON_API_KEY (optional).
 
 on:
-  schedule:
-    - cron: '15 22 * * 3'        # Wednesday 22:15 UTC
+  # Started by the external scheduler (cron-job.org, schedule in fund/README.md); no GitHub cron,
+  # whose scheduled runs started hours late or not at all in the first live week.
   workflow_dispatch:
     inputs:
       asof:
@@ -31,8 +31,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # A week is decided once. The weekly run can be started by GitHub's schedule and by an external
-  # scheduler; a second live run for a week that already has a book stops here.
+  # A week is decided once: a second live run for a week that already has a book (a scheduler
+  # retry, or a manual start) stops here.
   guard:
     runs-on: ubuntu-latest
     timeout-minutes: 10
