@@ -143,23 +143,27 @@ def gdelt():
     # takes ~13 s at GDELT). Hard cap of 8 minutes so a slow or rate-limited GDELT never holds the job.
     lo = (now - timedelta(days=3)).strftime("%Y%m%d000000")
     hi = now.strftime("%Y%m%d%H%M%S")
+    # GDELT rate-limits shared IPs (GitHub runners included), so this source is best effort: the theme
+    # order rotates by day, so a theme cut off today is near the front tomorrow, and the 3-day lookback
+    # fills the gap.
     bad, end = [], time.time() + 8 * 60
-    for name, q in THEMES.items():
-        for mode in ("timelinevol", "timelinetone"):
-            if time.time() > end:
-                bad.append(f"{name}/{mode}: time cap"); continue
-            time.sleep(6)                                    # GDELT: at most one request every 5 seconds
-            try:
-                d = get("https://api.gdeltproject.org/api/v2/doc/doc?" + urllib.parse.urlencode(
-                    {"query": f"{q} sourcelang:english", "mode": mode, "format": "json",
-                     "startdatetime": lo, "enddatetime": hi}), tries=2, wait=20)
-            except Exception as exc:
-                bad.append(f"{name}/{mode}: {exc!r}"[:80]); continue
-            for ser in d.get("timeline", []):
-                for pt in ser.get("data", []):
-                    add("gdelt", f"{name}|{mode}|{pt['date']}", pt["date"],
-                        {"theme": name, "query": q, "mode": mode, "date": pt["date"], "value": pt["value"]})
-    return f"{len(bad)} failed: {bad[:3]}" if bad else None
+    q_ = [(n, m) for n in THEMES for m in ("timelinevol", "timelinetone")]
+    r_ = now.timetuple().tm_yday * 2 % len(q_)
+    for name, mode in q_[r_:] + q_[:r_]:
+        if time.time() > end:
+            bad.append(f"{name}/{mode}: time cap"); continue
+        time.sleep(10)                                       # GDELT asks for at most one request every 5 seconds
+        try:
+            d = get("https://api.gdeltproject.org/api/v2/doc/doc?" + urllib.parse.urlencode(
+                {"query": f"{THEMES[name]} sourcelang:english", "mode": mode, "format": "json",
+                 "startdatetime": lo, "enddatetime": hi}), tries=2, wait=20)
+        except Exception as exc:
+            bad.append(f"{name}/{mode}: {exc!r}"[:80]); continue
+        for ser in d.get("timeline", []):
+            for pt in ser.get("data", []):
+                add("gdelt", f"{name}|{mode}|{pt['date']}", pt["date"],
+                    {"theme": name, "query": THEMES[name], "mode": mode, "date": pt["date"], "value": pt["value"]})
+    return f"best effort, {len(q_) - len(bad)}/{len(q_)} queries: failed {bad[:2]}" if bad else None
 
 
 def finnhub():
