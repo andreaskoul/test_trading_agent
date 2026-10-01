@@ -3,12 +3,12 @@ name: Fund · news archive (daily)
 # Data desk (fund/archive.py): Finnhub company news for every S&P 500 member, one
 # UTC day per file, in the private Hugging Face dataset <you>/fund-news-archive.
 # Research reads it, so names new to coverage need no 91-day fetch on Wednesday.
-# Daily at 21:20 UTC (after the US close, before the Wednesday 22:15 desks).
+# Daily at 21:20 UTC via the external scheduler (after the US close, before the Wednesday desks).
 # While the 91-day window is incomplete, a run re-dispatches itself to continue.
 
 on:
-  schedule:
-    - cron: '20 21 * * *'
+  # Started by the external scheduler (cron-job.org, schedule in fund/README.md); no GitHub cron,
+  # whose scheduled runs started hours late or not at all in the first live week.
   workflow_dispatch:
     inputs:
       minutes:
