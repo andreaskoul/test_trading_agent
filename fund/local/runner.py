@@ -72,7 +72,7 @@ def load_secrets():
         for line in open(SECRETS):
             line = line.strip()
             if line and not line.startswith("#") and "=" in line:
-                k, v = line.split("=", 1)
+                k, v = line.removeprefix("export ").split("=", 1)
                 v = re.split(r"\s+#", v, maxsplit=1)[0].strip().strip('"').strip("'")     # drop a trailing comment
                 if v:
                     env[k.strip()] = v
