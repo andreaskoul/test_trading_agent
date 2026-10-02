@@ -44,6 +44,7 @@ SCHEDULE = {
     "trade":     {"days": "34",      "at": "16:15", "late": 180},
     "review":    {"days": "0124",    "at": "16:30", "late": 180},
     "reconcile": {"days": "12345",   "at": "01:10", "late": 720},
+    "report":    {"days": "0123456", "at": "05:50", "late": 600},   # iMessage: after reconcile, archive and the weekly run
 }
 # weekday(): Mon=0 ... Sun=6
 NEEDS = {
@@ -52,6 +53,7 @@ NEEDS = {
     "trade": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "review": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY"],
     "reconcile": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
+    "report": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "IMESSAGE_TO"],
 }
 GROUP = {"archive": "archive", "weekly": "weekly", "execute": "execute", "review": "execute"}
 TIMEOUT = {"archive": 350, "weekly": 340, "execute": 60, "review": 60}     # minutes, as the workflows
@@ -128,7 +130,8 @@ def tick(args):
         if missing:
             log(f"{job}: not started, missing in {SECRETS}: {', '.join(missing)}"); continue
         lf = open(os.path.join(LOGS, f"{job}-{now:%Y%m%d-%H%M}.log"), "a")
-        subprocess.Popen([sys.executable, os.path.abspath(__file__), "run", job], stdout=lf, stderr=subprocess.STDOUT,
+        cmd = ["report", "--send"] if job == "report" else ["run", job]
+        subprocess.Popen([sys.executable, os.path.abspath(__file__), *cmd], stdout=lf, stderr=subprocess.STDOUT,
                          stdin=subprocess.DEVNULL, start_new_session=True, env={**os.environ, "RUNNER_LOG": lf.name})
         log(f"{job}: started for slot {slot:%a %H:%M}Z ({late:.0f} min after it); log {lf.name}")
     if changed:
@@ -381,6 +384,133 @@ def prune():
                 shutil.rmtree(p, ignore_errors=True) if os.path.isdir(p) else os.remove(p)
 
 
+# ------------------------------------------------------------------ daily report (iMessage)
+def alpaca(secrets, path):
+    import urllib.request
+    req = urllib.request.Request("https://paper-api.alpaca.markets" + path, headers={
+        "APCA-API-KEY-ID": secrets["ALPACA_API_KEY"], "APCA-API-SECRET-KEY": secrets["ALPACA_SECRET_KEY"]})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return json.loads(r.read())
+
+
+def job_outcomes(now):
+    """Each scheduled job whose slot fell in the last 24 h: ok, FAILED, still running, nothing to do, or did not run."""
+    out = []
+    for job in SCHEDULE:
+        if job == "report":
+            continue
+        slot = last_slot(job, now)
+        if not slot or now - slot > dt.timedelta(hours=24):
+            continue
+        logs = sorted(f for f in os.listdir(LOGS) if f.startswith(f"{job}-2") and f[len(job) + 1:len(job) + 14] >= f"{slot:%Y%m%d-%H%M}")
+        if not logs:
+            out.append(f"✗ {job}: did not run (Mac asleep or off?)"); continue
+        text = open(os.path.join(LOGS, logs[0]), errors="replace").read()
+        name = "execute" if job in ("trade", "reconcile") else job
+        if f"{name}: FAILED" in text:
+            out.append(f"✗ {job}: FAILED (issue opened)")
+        elif f"{name}: ok" in text:
+            quiet = any(x in text for x in ("no execution today", "not a review day", "nothing to do", "already done", "already executed"))
+            out.append(f"✓ {job}{': nothing to do today' if quiet else ''}")
+        else:
+            out.append(f"… {job}: still running")
+    return out
+
+
+def build_report(secrets):
+    now = now_utc()
+    L = [f"Fund · {now:%a %d %b}"]
+    try:
+        a = alpaca(secrets, "/v2/account")
+        eq, last = float(a["equity"]), float(a["last_equity"])
+        L.append(f"NAV ${eq:,.0f} · last session {eq - last:+,.0f} ({(eq / last - 1) * 100:+.2f}%) · since start {(eq / 100000 - 1) * 100:+.2f}%")
+        pos = alpaca(secrets, "/v2/positions")
+        longs = sum(float(p["market_value"]) for p in pos if float(p["qty"]) > 0)
+        shorts = -sum(float(p["market_value"]) for p in pos if float(p["qty"]) < 0)
+        L.append(f"{len(pos)} positions · long ${longs:,.0f} · short ${shorts:,.0f}")
+        movers = sorted(pos, key=lambda p: float(p["unrealized_intraday_pl"]))
+        if movers:
+            fmt = lambda p: f"{p['symbol']} {float(p['unrealized_intraday_pl']):+,.0f}"
+            L.append(f"Best {', '.join(fmt(p) for p in movers[::-1][:3])}")
+            L.append(f"Worst {', '.join(fmt(p) for p in movers[:3])}")
+        since = (now - dt.timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        fills = [o for o in alpaca(secrets, f"/v2/orders?status=closed&after={since}&limit=500") if o.get("filled_at")]
+        if fills:
+            L.append(f"Trades (24 h): {len(fills)} filled · " + ", ".join(f"{o['side'][0].upper()} {o['symbol']}" for o in fills[:8])
+                     + (" …" if len(fills) > 8 else ""))
+    except Exception as e:                                      # the report still goes out
+        L.append(f"Alpaca unavailable: {type(e).__name__}")
+    # the record on fund-data
+    repo = os.path.join(HOME, "cache", "record")
+    if not os.path.isdir(repo):
+        subprocess.run(["git", "clone", "-q", "--filter=blob:none", "--no-checkout", "--single-branch", "-b", "fund-data", REPO, repo])
+    subprocess.run(["git", "-C", repo, "fetch", "-q", "origin", "+fund-data:refs/remotes/origin/fund-data"])
+    show = lambda path: subprocess.run(["git", "-C", repo, "show", f"origin/fund-data:fund_state/live/{path}"],
+                                       capture_output=True, text=True).stdout
+    weeks = sorted(x for x in subprocess.run(["git", "-C", repo, "ls-tree", "--name-only", "origin/fund-data", "fund_state/live/"],
+                                            capture_output=True, text=True).stdout.split() if os.path.basename(x)[:2] == "20")
+    if weeks:
+        w = os.path.basename(weeks[-1])
+        try:
+            st = json.loads(show(f"{w}/book.json")).get("status", "?")
+        except ValueError:
+            st = "no book"
+        try:
+            ex = json.loads(show(f"{w}/execution.json")).get("status", "not traded")
+        except ValueError:
+            ex = "not traded yet"
+        L.append(f"Week {w}: book {st}, execution {ex}")
+        revs = subprocess.run(["git", "-C", repo, "ls-tree", "--name-only", "origin/fund-data", f"fund_state/live/{w}/reviews/"],
+                              capture_output=True, text=True).stdout.split()
+        if revs:
+            try:
+                r = json.loads(show(f"{w}/reviews/{os.path.basename(revs[-1])}"))
+                acts = [f"{t} {d.get('final')}" for t, d in r.get("decisions", {}).items() if d.get("final") not in (None, "hold")]
+                L.append(f"Review {os.path.basename(revs[-1])[:-5]}: {r.get('status')}{' · ' + ', '.join(acts) if acts else ', all held'}")
+            except ValueError:
+                pass
+    try:
+        g = json.loads(show("performance/gate.json").replace("NaN", "null"))
+        L.append(f"Gate: {g['verdict']} ({g.get('n', 0)} scored weeks)")
+    except (ValueError, KeyError):
+        pass
+    if show("HALT"):
+        L.append("⚠ RISK HALT active: flat until resumed by hand")
+    L.append("Jobs (24 h): " + ("; ".join(job_outcomes(now)) or "none scheduled"))
+    try:
+        n = len(json.loads(subprocess.run(["gh", "issue", "list", "-R", GH_REPO, "--state", "open", "--json", "number"],
+                                          capture_output=True, text=True, timeout=60).stdout or "[]"))
+        if n:
+            L.append(f"Open GitHub issues: {n}")
+    except Exception:
+        pass
+    L.append("https://andreaskoul.github.io/test_trading_agent/")
+    return "\n".join(L)
+
+
+def imessage(to, text):
+    script = """on run argv
+  tell application "Messages"
+    set svc to 1st account whose service type = iMessage
+    send (item 2 of argv) to participant (item 1 of argv) of svc
+  end tell
+end run"""
+    return subprocess.run(["osascript", "-e", script, to, text], capture_output=True, text=True)
+
+
+def report(args):
+    secrets = load_secrets()
+    text = build_report(secrets)
+    print(text)
+    if args.send:
+        to = secrets.get("IMESSAGE_TO")
+        if not to:
+            raise SystemExit(f"IMESSAGE_TO is not set in {SECRETS}")
+        r = imessage(to, text)
+        log("report sent" if r.returncode == 0 else f"report NOT sent: {r.stderr.strip()}")
+        sys.exit(r.returncode)
+
+
 def status(_):
     now, state, secrets = now_utc(), read_state(), load_secrets()
     print(f"schedule {'ENABLED' if os.path.exists(ENABLED) else 'DISABLED (runner.py enable)'}; now {now:%a %Y-%m-%d %H:%M}Z")
@@ -410,6 +540,8 @@ def main():
     sub.add_parser("enable").set_defaults(f=lambda _: (open(ENABLED, "w").close(), print("schedule enabled")))
     sub.add_parser("disable").set_defaults(f=lambda _: (os.path.exists(ENABLED) and os.remove(ENABLED), print("schedule disabled")))
     sub.add_parser("status").set_defaults(f=status)
+    rp = sub.add_parser("report", help="the daily summary; --send texts it by iMessage to IMESSAGE_TO")
+    rp.add_argument("--send", action="store_true"); rp.set_defaults(f=report)
     a = p.parse_args()
     os.makedirs(HOME, exist_ok=True)
     a.f(a)
