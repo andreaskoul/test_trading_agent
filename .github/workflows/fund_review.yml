@@ -4,10 +4,10 @@ name: Fund · daily position review
 # the week's execution and the next one, re-reads each held stock against the news since the
 # last review; exit / reduce / increase only with a confirmed, material, dated item, traded
 # in the same day's closing auction with SPY re-hedged. Idempotent per day.
-# Started by the external scheduler Mon/Tue/Wed/Fri 16:30 UTC; idempotent, one review a day.
+# Started by the local runner Mon/Tue/Wed/Fri 16:30 UTC; idempotent, one review a day.
 
 on:
-  # Started by the external scheduler (cron-job.org, schedule in fund/README.md); no GitHub cron,
+  # Scheduled runs happen on the local runner (fund/local/, schedule in fund/README.md); this workflow is the manual fallback. No GitHub cron,
   # whose scheduled runs started hours late or not at all in the first live week.
   workflow_dispatch:
     inputs:
