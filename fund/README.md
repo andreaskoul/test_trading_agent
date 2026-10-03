@@ -10,10 +10,12 @@ pre-registered in [`reports/research/PROTOCOL_fund.md`](../reports/research/PROT
 
 ## How a week runs
 
-All scheduled operations are started by one external scheduler (cron-job.org), which sends a
-`workflow_dispatch` request to GitHub at the times below. The workflows have no GitHub cron:
-GitHub's scheduled runs started 3–6 hours late, or not at all, in the first live week. Every
-job is idempotent, so a retry or a manual start never acts twice.
+All scheduled operations run on the owner's Mac (`fund/local/`): a launchd agent runs
+`runner.py tick` every minute, and each due job runs the same steps as its workflow in a fresh
+clone of `main`. It restores fund state from `fund-data`, commits there, opens a GitHub issue on
+failure, and starts `fund_pages.yml` after every weekly, trade, review and reconcile run so the
+GitHub Pages monitor stays current. Every job is idempotent, so a retry or a manual start never
+acts twice. The workflows remain, manual only, as the fallback when the Mac is off.
 
 | when (UTC) | what | workflow | request body |
 |---|---|---|---|
@@ -22,13 +24,22 @@ job is idempotent, so a retry or a manual start never acts twice.
 | Thu 16:15 (Fri 16:15 after a Thursday holiday) | orders for the closing auction; each week is traded once | `fund_execute.yml` | `{"ref":"main","inputs":{"mode":"trade"}}` |
 | Mon, Tue, Wed, Fri 16:30 | daily review of held positions against new news; changes traded at that day's close | `fund_review.yml` | `{"ref":"main","inputs":{"mode":"trade"}}` |
 | Tue–Sat 01:10 | reconcile the previous session: fills vs official close, broker NAV, cash activity, risk halts | `fund_execute.yml` | `{"ref":"main","inputs":{"mode":"reconcile"}}` |
-| after each run of the above | ledger (Excel) and dashboard rebuilt and published | `fund_pages.yml` | (triggered by the runs) |
+| after each weekly, trade, review or reconcile run | ledger (Excel) and dashboard rebuilt and published on GitHub Pages | `fund_pages.yml` | (started by the runner) |
 
-Each scheduler job: `POST https://api.github.com/repos/andreaskoul/test_trading_agent/actions/workflows/<workflow>/dispatches`
-with headers `Authorization: Bearer <fine-grained token, Actions read and write on this repo only>`,
-`Accept: application/vnd.github+json`, `X-GitHub-Api-Version: 2022-11-28`; GitHub answers 204.
-A Claude scheduled task at 17:03 UTC on weekdays is a second line: it dispatches the trade or
-the review if the day's record is missing.
+The trade job also runs on Fridays; it trades only when Thursday was a holiday. A slot missed
+while the Mac slept still starts on wake, within a limit per job (3 h for trade, review and
+archive; weekly until Thu 17:15; reconcile 12 h). The desks refuse out-of-window runs on top
+of that. A Claude scheduled task at 17:03 UTC on weekdays is a second line: if the day's
+trade or review record is missing, it dispatches the GitHub workflow.
+
+**Local runner.** Install or update with `bash fund/local/install.sh`. It creates
+`~/.fund-runner` (a native Python 3.11 venv, `secrets.env` from `fund/local/secrets.env.example`,
+chmod 600) and the launchd agent `com.andreaskoul.fund-runner`. The schedule starts disabled.
+`runner.py enable|disable|status`, `runner.py run <archive|weekly|trade|review|reconcile|execute>`
+(options `--mode`, `--asof`, `--dry-run`, `--resume`). Logs are in `~/Library/Logs/fund/`. If a
+workflow on `main` calls a script the runner does not run, the runner opens an issue. The Mac
+must be awake at the slot times (on power, automatic sleep off). Each job holds a `caffeinate`
+assertion while it runs.
 
 Positions are held from one Thursday close to the next. A US holiday moves the trade to the next
 session. Times are UTC, so Athens times shift with daylight saving; 16:15–16:30 UTC is inside

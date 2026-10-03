@@ -10,7 +10,7 @@ name: Fund · weekly desks
 # Secrets: OPENROUTER_API_KEY, FINNHUB_API_KEY (required), POLYGON_API_KEY (optional).
 
 on:
-  # Started by the external scheduler (cron-job.org, schedule in fund/README.md); no GitHub cron,
+  # Scheduled runs happen on the local runner (fund/local/, schedule in fund/README.md); this workflow is the manual fallback. No GitHub cron,
   # whose scheduled runs started hours late or not at all in the first live week.
   workflow_dispatch:
     inputs:
