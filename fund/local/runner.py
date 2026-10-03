@@ -180,7 +180,8 @@ for attempt in 1 2 3; do
   git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
   rm -rf "$FD" && git worktree prune && git worktree add -q --detach "$FD" origin/fund-data
   {copy}
-  for f in fund_state/live/20*/reviews/*.json; do [ -f "$f" ] && mkdir -p "$FD/$(dirname "$f")" && cp "$f" "$FD/$f"; done
+  for f in fund_state/live/20*/reviews/*.json fund_state/live/20*/reviews/context/*.json; do [ -f "$f" ] && mkdir -p "$FD/$(dirname "$f")" && cp "$f" "$FD/$f"; done
+  [ -d fund_state/live/lifecycle ] && mkdir -p "$FD/fund_state/live/lifecycle" && cp -a fund_state/live/lifecycle/. "$FD/fund_state/live/lifecycle/"
   [ -d fund_state/live/ledger ] && mkdir -p "$FD/fund_state/live/ledger" && cp -a fund_state/live/ledger/. "$FD/fund_state/live/ledger/"
   cd "$FD" && git add -A fund_state/live
   if git diff --cached --quiet; then cd - >/dev/null; break; fi
@@ -257,14 +258,23 @@ raise SystemExit(0 if deadline_ok(a) else f'live run for {a.date()} is past its 
     j.step("Desk 8 · macro FX", "python fund/fx_desk.py")
     if not dry:
         j.step("Commit decisions (before the Thursday close)", 'bash fund/commit_state.sh "fund decisions"')
-    j.step("Shadow analysts and model canary (never traded)",
-           "ls fund_state/*/*/book.json >/dev/null 2>&1 || exit 0\npython fund/shadow.py\nFUND_SHADOW=1 python fund/pm_risk.py",
+    # shadow stage (never traded): the champion's files must leave it byte-identical
+    has_book = 'w=$(cd fund && python -c "from common import asof_from_env, week_dir; print(week_dir(asof_from_env()))")\n' \
+               '[ -f "$w/book.json" ] || exit 0\n'
+    champ = "screen ideation analysts redteam book fx"
+    j.step("Champion files: hash before the shadow stage",
+           has_book + f'(cd "$w" && for f in {champ}; do [ -f $f.json ] && shasum -a 256 $f.json; done) > "$RUNNER_TMP/champion.sha"',
            when="always", allow_fail=True)
-    # Amendment 6 parts 2-4 (shadow stage; run once they are on main, never fail the job)
-    for f, title in (("macro_desk", "Macro desk (Amendment 6)"), ("neighbours", "Neighbourhood (Amendment 6)"),
-                     ("shadow_info", "C8 informed analysts and C9 ranker (Amendment 6)")):
-        if os.path.exists(os.path.join(j.work, "fund", f + ".py")):
-            j.step(title, f"ls fund_state/*/*/book.json >/dev/null 2>&1 || exit 0\npython fund/{f}.py", when="always", allow_fail=True)
+    for cmd, title in (("python fund/shadow.py", "Shadow analysts C2, C3 and the model canary"),
+                       ("python fund/macro_desk.py", "Macro brief (Amendment 6)"),
+                       ("python fund/neighbours.py", "Neighbourhood (Amendment 6)"),
+                       ("python fund/shadow_info.py", "C8 informed analysts and C9 ranker (Amendment 6)"),
+                       ("python fund/lifecycle.py desk", "Lifecycle desk: events, horizons, kill conditions (Amendment 7)"),
+                       ("FUND_SHADOW=1 python fund/pm_risk.py", "Shadow books")):
+        j.step(title, has_book + cmd, when="always", allow_fail=True)
+    j.step("Champion files: unchanged by the shadow stage",
+           has_book + '[ -s "$RUNNER_TMP/champion.sha" ] || exit 0\n(cd "$w" && shasum -a 256 -c "$RUNNER_TMP/champion.sha")',
+           when="always")
     j.step("Desk 7 · IC memo", "python fund/ic_memo.py", when="always")
     j.step("Desk 9 · performance", "python fund/score.py", when="always")
     j.step("Position ledger (Excel)", "python fund/ledger.py", when="always", allow_fail=True)
@@ -288,6 +298,8 @@ def job_execute(j, a):
     if a.resume:
         j.step("Resume after a risk stop", 'rm -f fund_state/live/HALT && echo "HALT removed by hand (local runner)"')
     j.step(f"Execute ({mode})", f"python fund/execute.py {mode}")
+    if mode == "reconcile":
+        j.step("C10 lifecycle book: news checks and rebuild (Amendment 7)", "python fund/lifecycle.py daily", when="always")
     if mode != "plan":
         j.step("Position ledger (Excel)", "python fund/ledger.py", when="always", allow_fail=True)
     if mode != "plan" or a.resume:
@@ -300,6 +312,8 @@ def job_review(j, a):
     mode = a.mode
     j.step("Restore fund state", RESTORE.format(paths="fund_state"))
     j.step(f"Review ({mode})", f"python fund/review.py {mode}")
+    if mode == "trade":
+        j.step("Review context (Amendment 6, logged only)", "python fund/review_context.py", when="always", allow_fail=True)
     if mode == "trade":
         j.step("Position ledger (Excel)", "python fund/ledger.py", when="always", allow_fail=True)
         j.step("Commit review records", COMMIT_EXEC.format(copy="", msg="daily review"), when="always")
@@ -376,9 +390,9 @@ def run(args):
 # one not listed here means the workflow changed and this runner needs the same change.
 KNOWN = {"archive": {"archive", "context_archive"},
          "weekly": {"common", "screen", "ideate", "emb_store", "research", "commit_state", "analysts", "redteam", "pm_risk",
-                    "fx_desk", "shadow", "macro_desk", "neighbours", "shadow_info", "ic_memo", "score", "ledger"},
-         "execute": {"execute", "ledger", "broker"},
-         "review": {"review", "ledger", "broker"}}
+                    "fx_desk", "shadow", "macro_desk", "neighbours", "shadow_info", "lifecycle", "ic_memo", "score", "ledger"},
+         "execute": {"execute", "ledger", "broker", "lifecycle"},
+         "review": {"review", "ledger", "broker", "review_context"}}
 WORKFLOW = {"archive": "fund_archive.yml", "weekly": "fund_weekly.yml", "execute": "fund_execute.yml", "review": "fund_review.yml"}
 
 
@@ -507,6 +521,15 @@ def build_report(secrets):
         if t["day"] >= (now - dt.timedelta(hours=30)).date().isoformat():
             slip = f", {float(t['slip_bp']):+.1f} bp vs close" if t.get("slip_bp") else ""
             L.append(f"Pipeline test {t['day']}: {t['side']} {t['qty']} {t['symbol']} {t['status']}{slip}")
+    try:
+        lc = json.loads(show("lifecycle/state.json"))
+        if lc.get("rows"):
+            last = lc["rows"][-1]
+            ev = [e for e in lc.get("events", []) if e["day"] == last["date"] and e["action"] not in ("entry", "hedge")]
+            L.append(f"C10 lifecycle (shadow): NAV ${last['nav']:,.0f}, {len(lc.get('lots', []))} lots"
+                     + (f"; {last['date']}: " + ", ".join(f"{e['ticker']} {e['action']}" for e in ev) if ev else ""))
+    except ValueError:
+        pass
     try:
         g = json.loads(show("performance/gate.json").replace("NaN", "null"))
         L.append(f"Gate: {g['verdict']} ({g.get('n', 0)} scored weeks)")

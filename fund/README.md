@@ -71,6 +71,11 @@ Thu ─── 10 execution (last minute before close)  Fri/Mon/Tue/Wed ─ 12 da
 | 10 Execution | `execute.py` | no | `execution.json`: closing-auction orders on Alpaca; `execution/fills.csv`, `nav.csv`, `activities.csv`; risk halts |
 | 11 Shadow | `shadow.py` | yes | `shadow.json`, `shadow_book.json`: challenger analysts and the weekly model canary; never traded |
 | 12 Daily review | `review.py` | yes | `reviews/<day>.json`: exit, reduce or increase held names on confirmed material new news |
+| 13 Macro brief | `macro_desk.py` | yes, 1 call | `macro_brief.json`: holding-week calendar, regime, themes, FX view from the context archive (Amendment 6, shadow) |
+| 14 Neighbourhood | `neighbours.py` | no | `neighbours.json`: top co-mentioned peers, their and the sub-industry's headlines, own 8-Ks (Amendment 6, shadow) |
+| 15 C8 / C9 | `shadow_info.py` | yes, one per name + 1 | `shadow_info.json`: informed analysts and the ranker; books in `shadow_book.json` (Amendment 6) |
+| 16 Lifecycle C10 | `lifecycle.py` | yes, one per name + daily news checks | `lifecycle.json` per week; `lifecycle/state.json`: per-position horizon, stop/target, news exits, daily NAV (Amendment 7, shadow) |
+| 17 Review context | `review_context.py` | no | `reviews/context/<day>.json`: what a macro-aware review would have seen (Amendment 6, logged only) |
 | Ledger | `ledger.py` | no | `ledger/fund_positions.xlsx` and `ledger/dashboard.json`: actual Alpaca trades only |
 
 The model is `deepseek/deepseek-v4.1-flash` via OpenRouter, temperature 0, with the serving

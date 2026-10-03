@@ -39,7 +39,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install "numpy<2" pandas pyarrow yfinance openpyxl
+      - run: pip install "numpy<2" pandas pyarrow yfinance openpyxl huggingface_hub
       - name: Restore fund state
         run: |
           if git ls-remote --exit-code origin fund-data >/dev/null 2>&1; then
@@ -49,6 +49,12 @@ jobs:
       - name: Review (${{ inputs.mode || 'trade' }})
         id: rv
         run: python fund/review.py ${{ inputs.mode || 'trade' }}
+      - name: Review context (Amendment 6, logged only)
+        if: ${{ always() && (inputs.mode || 'trade') == 'trade' }}
+        continue-on-error: true
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python fund/review_context.py
       - name: Position ledger (Excel)
         if: ${{ always() && (inputs.mode || 'trade') == 'trade' }}
         continue-on-error: true
@@ -61,7 +67,7 @@ jobs:
           for attempt in 1 2 3; do
             git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
             rm -rf /tmp/fd && git worktree prune && git worktree add -q --detach /tmp/fd origin/fund-data
-            for f in fund_state/live/20*/reviews/*.json; do [ -f "$f" ] && mkdir -p "/tmp/fd/$(dirname "$f")" && cp "$f" "/tmp/fd/$f"; done
+            for f in fund_state/live/20*/reviews/*.json fund_state/live/20*/reviews/context/*.json; do [ -f "$f" ] && mkdir -p "/tmp/fd/$(dirname "$f")" && cp "$f" "/tmp/fd/$f"; done
             [ -d fund_state/live/ledger ] && mkdir -p /tmp/fd/fund_state/live/ledger && cp -a fund_state/live/ledger/. /tmp/fd/fund_state/live/ledger/
             cd /tmp/fd && git add -A fund_state/live
             if git diff --cached --quiet; then cd - >/dev/null; break; fi

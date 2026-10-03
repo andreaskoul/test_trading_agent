@@ -103,6 +103,25 @@ if os.environ.get("FUND_SHADOW") == "1":
         cf = {t: v["confidence"] for t, v in sh[k].items() if v}
         out_b[k], out_r[k] = risk(conviction_book(sc, cf))
         print(k, out_b[k], out_r[k]["log"])
+    # Amendment 6: C8 informed analysts (champion sizing on C8's views) and C9 (C8's views, ordered by
+    # the ranker). A degraded C8 week has no C8/C9 book.
+    if os.path.exists(os.path.join(week_dir(asof), "shadow_info.json")):
+        si = load(asof, "shadow_info.json")
+        c8 = {t: m["memo"] for t, m in si["c8"].items() if m["status"] == "ok"}
+        if si["status"] == "ok" and c8:
+            sc = {t: m["score"] for t, m in c8.items()}
+            cf = {t: float(m["confidence"]) for t, m in c8.items()}
+            out_b["c8_informed"], out_r["c8_informed"] = risk(conviction_book(sc, cf))
+            rank = si["c9"].get("rank")
+            if rank:
+                w = pd.Series({t: sc[t] * cf[t] * UNIT for t in cov if sc.get(t)}, dtype=float)
+                w = w[w != 0]
+                L = w[w > 0].loc[sorted(w[w > 0].index, key=lambda t: rank[t])].head(N)
+                Sh = w[w < 0].loc[sorted(w[w < 0].index, key=lambda t: -rank[t])].head(N)
+                out_b["c9_ranker"], out_r["c9_ranker"] = risk(pd.concat([L, Sh]))
+            for k in ("c8_informed", "c9_ranker"):
+                if k in out_b:
+                    print(k, out_b[k], out_r[k]["log"])
     save(asof, "shadow_book.json", {"asof": str(asof.date()), "books": out_b, "risk": out_r})
     raise SystemExit(0)
 

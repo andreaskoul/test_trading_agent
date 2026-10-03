@@ -54,10 +54,16 @@ def nw_t(x, L=2):
 
 FACTORS = ["rev1w", "mom12_1", "lowvol"]      # from the screen's z-scores (Amendment 2 attribution)
 STOCK_BOOKS = ("fund", "analyst", "quant", "core20", "random", "c1_wedclose", "c1_thuopen",
-               "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview")
-CHALLENGERS = ("c1_wedclose", "c1_thuopen", "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview")
+               "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview",
+               "c8_informed", "c9_ranker", "c10_lifecycle")
+CHALLENGERS = ("c1_wedclose", "c1_thuopen", "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview",
+               "c8_informed", "c9_ranker", "c10_lifecycle")
+# C10 (Amendment 7) is a NAV-based book: positions with their own horizons, exits mid-week (fund/lifecycle.py)
+_lc = os.path.join(base, "lifecycle", "state.json")
+LC = pd.DataFrame(json.load(open(_lc))["rows"]).assign(date=lambda d: pd.to_datetime(d["date"])).set_index("date") \
+    if os.path.exists(_lc) and json.load(open(_lc)).get("rows") else pd.DataFrame()
 rf = fred("DTB3")                                   # 3-month T-bill, for returns in excess of cash (Amendment 3)
-rows, prev, ideas_rows, xs_rows, fac_rows, rt_rows, mon_rows = [], {}, [], [], [], [], []
+rows, prev, ideas_rows, xs_rows, fac_rows, rt_rows, mon_rows, ic_rows = [], {}, [], [], [], [], [], []
 for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     asof = pd.Timestamp(os.path.basename(wd))
     if now < asof + pd.Timedelta(days=8, hours=23) or not os.path.exists(os.path.join(wd, "book.json")):
@@ -121,6 +127,24 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
                          excess=gross - cost - (rf_w * float(w.sum()) if k in STOCK_BOOKS else 0.0),
                          n_missing=int(r.reindex(w.index).isna().sum()) if len(w) else 0))
         prev[k] = w
+    # C10: the week's return from its daily NAV, on the same Thursday-close boundaries as every book
+    if len(LC) and t0 in LC.index and t1 in LC.index:
+        seg = LC.loc[(LC.index > t0) & (LC.index <= t1)]
+        net_ = float(LC.loc[t1, "nav"] / LC.loc[t0, "nav"] - 1)
+        rows.append(dict(asof=str(asof.date()), book="c10_lifecycle", gross=float((1 + seg["r_gross"]).prod() - 1),
+                         cost=float(seg["r_cost"].sum()), net=net_, excess=net_ - rf_w, n_missing=0))
+    # Amendment 6: does C8 rank next week's returns better than the analysts do? (rank IC, a monitor)
+    si_p = os.path.join(wd, "shadow_info.json")
+    if os.path.exists(si_p):
+        si = json.load(open(si_p))
+        c8s = pd.Series({t: m["memo"]["score"] for t, m in si.get("c8", {}).items() if m.get("status") == "ok"}, dtype=float)
+        an = pd.Series(book.get("scores", {}).get("analyst", {}), dtype=float)
+        common_ = c8s.index.intersection(an.index).intersection(ret.dropna().index)
+        if len(common_) > 5:
+            ic8 = float(c8s[common_].corr(ret[common_], method="spearman"))
+            ica = float(an[common_].corr(ret[common_], method="spearman"))
+            mon_ic = dict(asof=str(asof.date()), n=len(common_), ic_c8=ic8, ic_analyst=ica, ic_diff=ic8 - ica)
+            ic_rows.append(mon_ic)
     # Amendment 5: the daily review can change the fund's weights mid-week. The fund is then scored
     # piecewise between review closes (5 bp/side on each change); c7_noreview keeps the weekly book
     # untouched for the whole week, so fund - c7_noreview is what the reviews added.
@@ -210,6 +234,8 @@ RT.to_csv(os.path.join(OUT, "redteam.csv"), index=False)
 R.to_csv(os.path.join(OUT, "weekly_books.csv"), index=False)
 I.to_csv(os.path.join(OUT, "ideation.csv"), index=False)
 X.to_csv(os.path.join(OUT, "cross_section.csv"), index=False)
+IC = pd.DataFrame(ic_rows)
+IC.to_csv(os.path.join(OUT, "rank_ic.csv"), index=False)
 lines = [f"# Fund performance ({MODE}), {R['asof'].nunique() if len(R) else 0} scored weeks",
          "", "Formal read at 52 weeks, decision at 104 (PROTOCOL_fund.md). Anything earlier is not evidence.", ""]
 if len(R):
@@ -223,6 +249,8 @@ if len(R):
             lines.append(f"| {a} − {b} | {len(dlt)} | {dlt.mean() * 100:.3f} | {nw_t(dlt):.2f} |")
 if len(X):
     lines += ["", f"Cross-section: mean analyst-score slope {X.b_analyst.mean() * 1e4:.1f} bp/point, NW t {nw_t(X.b_analyst):.2f} ({len(X)} weeks)"]
+if len(IC):
+    lines += [f"C8 vs analyst rank IC (monitor, Amendment 6): mean diff {IC.ic_diff.mean():+.3f}, NW t {nw_t(IC.ic_diff):.2f} ({len(IC)} weeks)"]
 if len(I):
     lines += [f"Ideation: nominated |excess ret| {I.abs_nom.mean() * 100:.2f}% vs rest {I.abs_rest.mean() * 100:.2f}%; "
               f"signed (hypothesis direction) {I.signed_nom.mean() * 100:.2f}%/wk"]
@@ -254,7 +282,26 @@ print("\n".join(lines))
 # (K = 4, two-sided alpha 0.05) on the NW t of the fund book's weekly return in excess of cash,
 # after model costs. Between looks the verdict does not change, except for a risk halt.
 LOOKS = {13: 4.049, 26: 2.863, 39: 2.337, 52: 2.024}
-CH_LOOKS = {13: 5.442, 26: 3.848, 39: 3.142, 52: 2.721}     # same design at alpha 0.05/7 (seven challengers, Amendment 5)
+
+
+def obf(alpha, looks=(13, 26, 39, 52)):
+    """O'Brien-Fleming boundaries for K equally spaced looks at two-sided alpha, by integrating the joint
+    normal law of the look statistics (corr sqrt(t_j / t_k)) to the boundary c x sqrt(K / k)."""
+    from scipy.optimize import brentq
+    from scipy.stats import multivariate_normal
+    K = len(looks); t_ = np.arange(1, K + 1) / K
+    cov = np.minimum.outer(t_, t_) / np.sqrt(np.outer(t_, t_))
+    shape = np.sqrt(K / np.arange(1, K + 1))
+    mvn = multivariate_normal(mean=np.zeros(K), cov=cov)
+    cross = lambda c: 1 - mvn.cdf(c * shape, lower_limit=-c * shape, rng=np.random.default_rng(0)) - alpha
+    c = brentq(cross, 1.0, 8.0, xtol=1e-7)
+    return {L: round(float(c * s_), 3) for L, s_ in zip(looks, shape)}
+
+
+# the integration must reproduce the pre-registered champion boundaries before it sets the challengers'
+assert all(abs(obf(0.05)[L] - v) <= 0.005 for L, v in LOOKS.items()), obf(0.05)
+# every challenger ever scored counts (C1-C10: m = 10), alpha 0.05/10 each (Amendments 6 and 7; tightened from 0.05/7)
+CH_LOOKS = obf(0.05 / 10)
 
 
 def alpha_t(y, Fx, cols):
