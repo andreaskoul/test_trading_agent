@@ -1,23 +1,23 @@
-# Amendment 6 branch dry run
+# Amendment 6 branch tests
 
-Run https://github.com/andreaskoul/test_trading_agent/actions/runs/36928658865, commit 3b2b436, 2026-10-01T21:37:44Z
+Run https://github.com/andreaskoul/test_trading_agent/actions/runs/37108832437, commit 51e6cc3, 2026-10-03T08:13:55Z
 
-## Context archive, run 1 (all sources)
+## Mock: champion decisions, main vs branch; Amendment 6 desks in mock
 ```
-context fred: {'ok': True, 'fetched': 954} (1 s)
-context kalshi: {'ok': True, 'fetched': 646} (4 s)
-context gpr: {'ok': True, 'fetched': 27550} (4 s)
-context gdelt: {'ok': False, 'fetched': 344, 'note': 'best effort, 4/26 queries: failed ["export_controls/timelinetone: <HTTPError 429: \'Too Many Requests\'>", "sanctions/timelinevol: <HTTPError 429: \'Too Many Requests\'>"]'} (499 s)
-context finnhub: {'ok': True, 'fetched': 100} (0 s)
-context edgar: {'ok': True, 'fetched': 1567} (151 s)
-context archive 2026-10-01: fetched 31161, new 295 {'edgar': 2, 'gdelt': 258, 'kalshi': 35}; sources ok 5/6
-real	11m5.073s
-```
-## Context archive, run 2 (kalshi, gpr, fred, finnhub)
-```
-context fred: {'ok': True, 'fetched': 954} (1 s)
-context kalshi: {'ok': True, 'fetched': 646} (4 s)
-context gpr: {'ok': True, 'fetched': 27550} (3 s)
-context finnhub: {'ok': True, 'fetched': 100} (0 s)
-context archive 2026-10-01: fetched 29250, new 51 {'finnhub': 2, 'kalshi': 49}; sources ok 4/4
+screen.json: DIFFERENT
+ideation.json: IDENTICAL
+research.json: IDENTICAL
+analysts.json: IDENTICAL
+redteam.json: IDENTICAL
+book.json: DIFFERENT
+fx.json: IDENTICAL
+shadow ok
+macro_desk ok
+neighbours ok
+shadow_info ok
+c2_selfconsistency {'FICO': 0.1, 'MRNA': 0.1, 'PCG': 0.1, 'CHTR': 0.1, 'AXON': 0.1, 'TTD': 0.1, 'CRM': 0.05, 'NFLX': 0.05, 'INTC': -0.09, 'MPWR': -0.09, 'AMD': 
+c3_textonly {} ['no views: flat']
+c8_informed {'FICO': 0.05, 'MRNA': 0.05, 'PCG': 0.05, 'CHTR': 0.05, 'AXON': 0.05, 'TTD': 0.05, 'CRM': 0.025, 'NFLX': 0.025, 'INTC': -0.05, 'MPWR': -0.05, 'AMD':
+c9_ranker {'FICO': 0.05, 'MRNA': 0.05, 'PCG': 0.05, 'CHTR': 0.05, 'AXON': 0.05, 'TTD': 0.05, 'CRM': 0.025, 'NFLX': 0.025, 'INTC': -0.05, 'MPWR': -0.05, 'AMD': -
+score ok
 ```
