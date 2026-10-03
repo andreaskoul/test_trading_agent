@@ -396,11 +396,12 @@ def alpaca(secrets, path):
 def job_outcomes(now):
     """Each scheduled job whose slot fell in the last 24 h: ok, FAILED, still running, nothing to do, or did not run."""
     out = []
+    since = dt.datetime.fromtimestamp(os.path.getmtime(ENABLED), dt.timezone.utc) if os.path.exists(ENABLED) else now
     for job in SCHEDULE:
         if job == "report":
             continue
         slot = last_slot(job, now)
-        if not slot or now - slot > dt.timedelta(hours=24):
+        if not slot or now - slot > dt.timedelta(hours=24) or slot < since:     # slots before the switch to local
             continue
         logs = sorted(f for f in os.listdir(LOGS) if f.startswith(f"{job}-2") and f[len(job) + 1:len(job) + 14] >= f"{slot:%Y%m%d-%H%M}")
         if not logs:
@@ -428,11 +429,11 @@ def build_report(secrets):
         longs = sum(float(p["market_value"]) for p in pos if float(p["qty"]) > 0)
         shorts = -sum(float(p["market_value"]) for p in pos if float(p["qty"]) < 0)
         L.append(f"{len(pos)} positions · long ${longs:,.0f} · short ${shorts:,.0f}")
-        movers = sorted(pos, key=lambda p: float(p["unrealized_intraday_pl"]))
+        movers = sorted(pos, key=lambda p: float(p["unrealized_pl"]))
         if movers:
-            fmt = lambda p: f"{p['symbol']} {float(p['unrealized_intraday_pl']):+,.0f}"
-            L.append(f"Best {', '.join(fmt(p) for p in movers[::-1][:3])}")
-            L.append(f"Worst {', '.join(fmt(p) for p in movers[:3])}")
+            fmt = lambda p: f"{p['symbol']} {float(p['unrealized_pl']):+,.0f}"
+            L.append(f"Since entry: best {', '.join(fmt(p) for p in movers[::-1][:3])}")
+            L.append(f"Since entry: worst {', '.join(fmt(p) for p in movers[:3])}")
         since = (now - dt.timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%SZ")
         fills = [o for o in alpaca(secrets, f"/v2/orders?status=closed&after={since}&limit=500") if o.get("filled_at")]
         if fills:
