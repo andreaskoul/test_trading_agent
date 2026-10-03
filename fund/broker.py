@@ -23,7 +23,7 @@ import re
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
 BASE = os.environ.get("ALPACA_BASE", "https://paper-api.alpaca.markets")

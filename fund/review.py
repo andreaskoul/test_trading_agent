@@ -25,7 +25,6 @@ import time
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
-from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
@@ -36,7 +35,7 @@ mode = sys.argv[1]
 assert mode in ("plan", "trade"), mode
 require("OPENROUTER_API_KEY", "FINNHUB_API_KEY")
 import broker                                       # noqa: E402  (needs the Alpaca keys checked above)
-from broker import DATA, ET, api                    # noqa: E402
+from broker import ET, api                          # noqa: E402
 NAME_CAP, DOLLAR_CAP, MAX_ACTIONS, UP, DOWN = 0.10, 0.10, 5, 1.5, 0.5
 
 
