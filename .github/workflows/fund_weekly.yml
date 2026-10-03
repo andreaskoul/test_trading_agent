@@ -178,6 +178,24 @@ jobs:
             gh issue create --title "Fund gate: $v ($(date -u +%F))" --body "$(cat fund_state/live/performance/gate.md) @${{ github.repository_owner }}"
           fi
 
+      # Amendment 6 (fund/AMENDMENT6_PLAN.md): shadow challengers C8 (informed analysts) and C9
+      # (cross-sectional re-score). After every champion record is committed, so it can never delay or
+      # change one; a failure here is logged and nothing else stops.
+      - name: Amendment 6 shadow desks (macro brief, neighbourhood, C8, C9), never traded
+        if: ${{ !cancelled() && hashFiles('fund_state/*/*/book.json') != '' }}
+        continue-on-error: true
+        timeout-minutes: 75
+        run: |
+          python fund/macro_desk.py || echo "::warning::macro desk failed; C8 runs without the brief"
+          python fund/neighbours.py || echo "::warning::neighbourhood failed; C8 runs without it"
+          python fund/shadow_info.py
+          FUND_SHADOW=1 python fund/pm_risk.py
+
+      - name: Commit Amendment 6 shadow records
+        if: ${{ !cancelled() && !inputs.dry_run && hashFiles('fund_state/*/*/shadow_info.json') != '' }}
+        continue-on-error: true
+        run: bash fund/commit_state.sh "amendment 6 shadow"
+
       - name: Dry-run artifact
         if: ${{ always() && inputs.dry_run }}
         uses: actions/upload-artifact@v4

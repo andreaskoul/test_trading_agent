@@ -96,13 +96,26 @@ def risk(w):
 if os.environ.get("FUND_SHADOW") == "1":
     # Shadow analyst books C2 / C3 (Amendment 4): the champion's sizing and risk rules on the shadow
     # scores. Written to shadow_book.json after the champion's book is committed; never traded.
-    sh = load(asof, "shadow.json")
+    sh = load(asof, "shadow.json") if os.path.exists(os.path.join(week_dir(asof), "shadow.json")) else {}
     out_b, out_r = {}, {}
-    for k in ("c2_selfconsistency", "c3_textonly"):
+    for k in [k for k in ("c2_selfconsistency", "c3_textonly") if k in sh]:
         sc = {t: v["score"] for t, v in sh[k].items() if v}
         cf = {t: v["confidence"] for t, v in sh[k].items() if v}
         out_b[k], out_r[k] = risk(conviction_book(sc, cf))
         print(k, out_b[k], out_r[k]["log"])
+    # Amendment 6: C8 informed analysts and C9 cross-sectional re-score (shadow_info.py), same sizing and
+    # risk rules; no book in a degraded week (more than 25% of C8 memos failed), as for the champion
+    si_p = os.path.join(week_dir(asof), "shadow_info.json")
+    si = json.load(open(si_p)) if os.path.exists(si_p) else {"degraded": True}
+    if not si.get("degraded"):
+        m8 = {t: v["memo"] for t, v in si["c8"].items() if v.get("status") == "ok"}
+        cf8 = {t: float(m["confidence"]) for t, m in m8.items()}
+        out_b["c8_informed"], out_r["c8_informed"] = risk(conviction_book({t: m["score"] for t, m in m8.items()}, cf8))
+        if si.get("c9", {}).get("status") == "ok":
+            out_b["c9_ranker"], out_r["c9_ranker"] = risk(conviction_book(si["c9"]["scores"], cf8))
+        for k in ("c8_informed", "c9_ranker"):
+            if k in out_b:
+                print(k, out_b[k], out_r[k]["log"])
     save(asof, "shadow_book.json", {"asof": str(asof.date()), "books": out_b, "risk": out_r})
     raise SystemExit(0)
 

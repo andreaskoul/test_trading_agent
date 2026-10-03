@@ -1,47 +1,122 @@
-name: Amendment 6 · branch dry run (temporary)
-# Runs the new Amendment 6 code on this branch against a scratch Hugging Face dataset and commits a
-# summary to fund/AMENDMENT6_DRYRUN.md. Removed before the branch merges. Never writes live data.
+name: Amendment 6 · branch tests (temporary)
+# Branch only; removed before the branch merges. Never writes live data.
+#  * mock: the champion desks on main and on this branch (FUND_MOCK=1, as-of 2026-09-23) must give identical
+#    decisions; then the Amendment 6 desks and scoring run in mock on the branch.
+#  * real (workflow_dispatch with real=true): the Amendment 6 desks with real LLM calls on a copy of the live
+#    2026-09-30 week, as a dry run (FUND_DRYRUN=1, nothing committed to fund-data), context from the scratch
+#    dataset with A6_TEST_CUTOFF; plus the review-context logger on a synthetic review.
+# Results are committed to fund/AMENDMENT6_DRYRUN.md on this branch.
 on:
   push:
     branches: [amendment-6-info-flows]
-    paths: ['fund/context_archive.py', '.github/workflows/a6_dryrun.yml']
+    paths: ['fund/**.py', '.github/workflows/a6_dryrun.yml']
   workflow_dispatch:
+    inputs:
+      real:
+        description: "Also run the real-call test (≈ $0.2 of LLM calls)"
+        type: boolean
+        default: false
 permissions:
   contents: write
 concurrency:
-  group: a6-dryrun
+  group: a6-tests
   cancel-in-progress: true
 jobs:
-  context:
+  tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     env:
       FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
       HF_TOKEN: ${{ secrets.HF_TOKEN }}
-      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-      SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
-      CONTEXT_REPO: fund-context-archive-scratch
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       PYTHONUNBUFFERED: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install pandas pyarrow huggingface_hub
-      - name: "Context archive into the scratch dataset, twice (the second run must add little)"
+      - run: pip install "numpy<2" pandas pyarrow yfinance scipy scikit-learn umap-learn huggingface_hub openpyxl
+      - name: Mock pipeline, main vs branch
         run: |
-          set -o pipefail
-          ( time python fund/context_archive.py ) 2>&1 | tee run1.log
-          CONTEXT_SOURCES=kalshi,gpr,fred,finnhub python fund/context_archive.py 2>&1 | tee run2.log
+          git worktree add -q ../main origin/main
+          for d in ../main .; do
+            ( cd $d/fund && export FUND_MOCK=1 FUND_ASOF=2026-09-23
+              for desk in screen ideate research analysts redteam pm_risk fx_desk; do python $desk.py > /dev/null 2>&1 || echo "FAILED $desk in $d"; done )
+          done 2>&1 | tee mock.log
+          python - <<'EOF' | tee -a mock.log
+          import json
+          for f in ["screen.json", "ideation.json", "research.json", "analysts.json", "redteam.json", "book.json", "fx.json"]:
+              a, b = (json.load(open(f"{d}/fund_state/mock/2026-09-23/{f}")) for d in ("../main", "."))
+              print(f"{f}: {'IDENTICAL' if a == b else 'DIFFERENT'}")
+          EOF
+      - name: Mock Amendment 6 desks and scoring on the branch
+        run: |
+          cd fund && export FUND_MOCK=1 FUND_ASOF=2026-09-23
+          for s in shadow macro_desk neighbours shadow_info; do python $s.py > ../$s.mock.log 2>&1 && echo "$s ok" || echo "FAILED $s: $(tail -3 ../$s.mock.log)"; done | tee -a ../mock.log
+          FUND_SHADOW=1 python pm_risk.py 2>&1 | grep -E "^c[2389]" | cut -c1-160 | tee -a ../mock.log
+          python score.py > ../score.mock.log 2>&1 && echo "score ok" | tee -a ../mock.log || echo "FAILED score: $(tail -5 ../score.mock.log)" | tee -a ../mock.log
+      - name: Real-call test of the Amendment 6 desks (dry run, live week 2026-09-30)
+        if: ${{ inputs.real }}
+        env:
+          FUND_DRYRUN: '1'
+          FUND_ASOF: '2026-09-30'
+          CONTEXT_REPO: fund-context-archive-scratch
+          A6_TEST_CUTOFF: '2026-10-02T00:00:00'
+        run: |
+          git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
+          mkdir -p fund_state/dryrun && git archive origin/fund-data fund_state/live/2026-09-30 | tar -x
+          rm -rf fund_state/dryrun/2026-09-30 && mv fund_state/live/2026-09-30 fund_state/dryrun/2026-09-30
+          rm -f fund_state/dryrun/2026-09-30/{shadow_book,macro_brief,neighbours,shadow_info}.json
+          cd fund
+          ( time ( python macro_desk.py && python neighbours.py && python shadow_info.py && FUND_SHADOW=1 python pm_risk.py ) ) > ../real.log 2>&1 || echo "REAL TEST FAILED" >> ../real.log
+          # review context on a synthetic review of the 2026-09-30 book
+          python - <<'EOF'
+          import json, os
+          from datetime import datetime, timezone
+          from zoneinfo import ZoneInfo
+          wd = "../fund_state/dryrun/2026-09-30"
+          ex = json.load(open(f"{wd}/execution.json")); ex["status"] = "submitted"; json.dump(ex, open(f"{wd}/execution.json", "w"))
+          b = json.load(open(f"{wd}/book.json"))["books"]["fund"]
+          today = str(datetime.now(timezone.utc).astimezone(ZoneInfo("America/New_York")).date())
+          os.makedirs(f"{wd}/reviews", exist_ok=True)
+          json.dump({"day": today, "news_since": "2026-09-30 22:00:00+00:00", "weights_before": b, "decisions": {}, "status": "synthetic"},
+                    open(f"{wd}/reviews/{today}.json", "w"))
+          EOF
+          python review_context.py >> ../real.log 2>&1 || echo "REVIEW CONTEXT FAILED" >> ../real.log
+          cd ..
+          python - <<'EOF' > real_summary.md
+          import json, glob
+          wd = "fund_state/dryrun/2026-09-30"
+          m = json.load(open(f"{wd}/macro_brief.json")); si = json.load(open(f"{wd}/shadow_info.json"))
+          sb = json.load(open(f"{wd}/shadow_book.json"))["books"]; nb = json.load(open(f"{wd}/neighbours.json"))
+          ok = sum(v["status"] == "ok" for v in si["c8"].values())
+          print(f"- macro brief: {m['status']} (input {m['input_chars']} chars; context rows {m['context_rows']})")
+          print(f"- neighbourhood: {nb['n_links']} links; {sum(bool(v['neighbours']) for v in nb['names'].values())}/{len(nb['names'])} names with neighbours, {sum(bool(v['filings']) for v in nb['names'].values())} with 8-Ks")
+          print(f"- C8: {ok}/{len(si['c8'])} ok ({ok / len(si['c8']):.0%}); degraded {si['degraded']}; C9 {si['c9']['status']} {si['c9'].get('error') or ''}")
+          print(f"- usage (C8 + C9 + macro): {si['usage']}")
+          print(f"- books: " + "; ".join(f"{k} {sum(t != 'SPY' for t in v)} names" for k, v in sb.items()))
+          a = json.load(open(f"{wd}/analysts.json"))["memos"]
+          same = sum(1 for t, v in si["c8"].items() if v["status"] == "ok" and (a.get(t, {}).get("memo") or {}).get("score") == v["memo"]["score"])
+          print(f"- C8 score equal to the champion analyst's on {same}/{ok} names")
+          rc = sorted(glob.glob(f"{wd}/review_context/*.json"))
+          print(f"- review context: {json.dumps(json.load(open(rc[-1])))[:600] if rc else 'not written'}")
+          print("\n### Macro brief\n```\n" + (m.get("brief") or "none") + "\n```")
+          ex = next(iter(r for r in map(json.loads, __import__("gzip").open(f"{wd}/prompts_c8.jsonl.gz", "rt")) if r["ticker"] == "MU"), None)
+          print("\n### C8 prompt, MU (first 600 and last 1500 characters)\n```\n" + (ex["user"][:600] + "\n...\n" + ex["user"][-1500:] if ex else "n/a") + "\n```")
+          EOF
       - name: Commit the summary to the branch
         if: always()
         run: |
           {
-            echo "# Amendment 6 branch dry run"; echo
+            echo "# Amendment 6 branch tests"; echo
             echo "Run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}, commit ${GITHUB_SHA::7}, $(date -u +%FT%TZ)"; echo
-            echo '## Context archive, run 1 (all sources)'; echo '```'; grep -E '^context|^real' run1.log || echo "no output"; echo '```'
-            echo '## Context archive, run 2 (kalshi, gpr, fred, finnhub)'; echo '```'; grep -E '^context' run2.log || echo "no output"; echo '```'
+            echo '## Mock: champion decisions, main vs branch; Amendment 6 desks in mock'; echo '```'; cat mock.log 2>/dev/null || echo none; echo '```'
+            if [ -f real.log ]; then
+              echo '## Real-call test (dry run, live week 2026-09-30)'; cat real_summary.md 2>/dev/null; echo; echo '<details><summary>log tail</summary>'; echo; echo '```'; tail -40 real.log; echo '```'; echo '</details>'
+            fi
           } > fund/AMENDMENT6_DRYRUN.md
           git config user.name 'fund-bot'; git config user.email 'fund-bot@users.noreply.github.com'
           git add fund/AMENDMENT6_DRYRUN.md
-          git commit -q -m "Amendment 6 dry run summary" && git pull -q --rebase && git push -q || true
+          git commit -q -m "Amendment 6 test summary" && git pull -q --rebase && git push -q || true

@@ -54,10 +54,11 @@ def nw_t(x, L=2):
 
 FACTORS = ["rev1w", "mom12_1", "lowvol"]      # from the screen's z-scores (Amendment 2 attribution)
 STOCK_BOOKS = ("fund", "analyst", "quant", "core20", "random", "c1_wedclose", "c1_thuopen",
-               "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview")
-CHALLENGERS = ("c1_wedclose", "c1_thuopen", "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview")
+               "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview", "c8_informed", "c9_ranker")
+CHALLENGERS = ("c1_wedclose", "c1_thuopen", "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview",
+               "c8_informed", "c9_ranker")      # C8, C9: Amendment 6
 rf = fred("DTB3")                                   # 3-month T-bill, for returns in excess of cash (Amendment 3)
-rows, prev, ideas_rows, xs_rows, fac_rows, rt_rows, mon_rows = [], {}, [], [], [], [], []
+rows, prev, ideas_rows, xs_rows, fac_rows, rt_rows, mon_rows, ic_rows = [], {}, [], [], [], [], [], []
 for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     asof = pd.Timestamp(os.path.basename(wd))
     if now < asof + pd.Timedelta(days=8, hours=23) or not os.path.exists(os.path.join(wd, "book.json")):
@@ -157,6 +158,20 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
                          fund_names=sum(k != "SPY" for k in fund_w), fund_stock_gross=float(sum(abs(v) for k, v in fund_w.items() if k != "SPY")),
                          spy_hedge=float(fund_w.get("SPY", 0.0)), halted=halted_wk,
                          providers="|".join(sorted({str((m.get("meta") or {}).get("provider")) for m in am.values() if m.get("meta")}))))
+    # Amendment 6 diagnostic (not a gate): paired weekly rank IC of the C8 scores vs the champion analyst
+    # scores on the names both scored, so the market and most of the noise cancel
+    sp_ = os.path.join(wd, "shadow_info.json")
+    if os.path.exists(sp_) and am:
+        si_ = json.load(open(sp_))
+        s8 = pd.Series({t: v["memo"]["score"] for t, v in si_.get("c8", {}).items() if v.get("status") == "ok"}, dtype=float)
+        sa = pd.Series({t: m["memo"]["score"] for t, m in am.items() if m.get("status") == "ok"}, dtype=float)
+        s9 = pd.Series((si_.get("c9") or {}).get("scores") or {}, dtype=float)
+        common = s8.index.intersection(sa.index).intersection(ret.dropna().index)
+        if len(common) >= 10:
+            ic = lambda s_: float(s_.reindex(common).rank().corr(ret.reindex(common).rank())) if s_.reindex(common).nunique() > 1 else np.nan
+            ic_rows.append(dict(asof=str(asof.date()), n=len(common), ic_c8=ic(s8), ic_analyst=ic(sa),
+                                ic_c9=ic(s9) if len(s9) else np.nan, c8_ok=len(s8), degraded=bool(si_.get("degraded")),
+                                cost_usd=(si_.get("usage") or {}).get("cost_usd")))
     # ideation: do nominated names move more, and in the hypothesised direction?
     idea = json.load(open(os.path.join(wd, "ideation.json")))
     side = {x["ticker"]: +1 for x in (idea.get("llm") or {}).get("long_ideas", [])}
@@ -210,6 +225,8 @@ RT.to_csv(os.path.join(OUT, "redteam.csv"), index=False)
 R.to_csv(os.path.join(OUT, "weekly_books.csv"), index=False)
 I.to_csv(os.path.join(OUT, "ideation.csv"), index=False)
 X.to_csv(os.path.join(OUT, "cross_section.csv"), index=False)
+IC = pd.DataFrame(ic_rows)
+IC.to_csv(os.path.join(OUT, "ic_c8.csv"), index=False)
 lines = [f"# Fund performance ({MODE}), {R['asof'].nunique() if len(R) else 0} scored weeks",
          "", "Formal read at 52 weeks, decision at 104 (PROTOCOL_fund.md). Anything earlier is not evidence.", ""]
 if len(R):
@@ -223,6 +240,10 @@ if len(R):
             lines.append(f"| {a} − {b} | {len(dlt)} | {dlt.mean() * 100:.3f} | {nw_t(dlt):.2f} |")
 if len(X):
     lines += ["", f"Cross-section: mean analyst-score slope {X.b_analyst.mean() * 1e4:.1f} bp/point, NW t {nw_t(X.b_analyst):.2f} ({len(X)} weeks)"]
+if len(IC):
+    d8 = (IC.ic_c8 - IC.ic_analyst).dropna()
+    lines += [f"Amendment 6 (diagnostic, not a gate): C8 − analyst rank IC {d8.mean():+.3f}/wk, NW t {nw_t(d8):.2f} "
+              f"({len(d8)} weeks); C8 IC {IC.ic_c8.mean():+.3f}, analyst IC {IC.ic_analyst.mean():+.3f}"]
 if len(I):
     lines += [f"Ideation: nominated |excess ret| {I.abs_nom.mean() * 100:.2f}% vs rest {I.abs_rest.mean() * 100:.2f}%; "
               f"signed (hypothesis direction) {I.signed_nom.mean() * 100:.2f}%/wk"]
@@ -254,7 +275,8 @@ print("\n".join(lines))
 # (K = 4, two-sided alpha 0.05) on the NW t of the fund book's weekly return in excess of cash,
 # after model costs. Between looks the verdict does not change, except for a risk halt.
 LOOKS = {13: 4.049, 26: 2.863, 39: 2.337, 52: 2.024}
-CH_LOOKS = {13: 5.442, 26: 3.848, 39: 3.142, 52: 2.721}     # same design at alpha 0.05/7 (seven challengers, Amendment 5)
+# same design at alpha 0.05/9 (nine challengers, Amendment 6; 0.05/7 was 5.442 / 3.848 / 3.142 / 2.721)
+CH_LOOKS = {13: 5.598, 26: 3.959, 39: 3.232, 52: 2.799}
 
 
 def alpha_t(y, Fx, cols):

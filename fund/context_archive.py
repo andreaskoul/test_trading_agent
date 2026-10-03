@@ -118,7 +118,8 @@ def kalshi():
                 {"series_ticker": s, "status": "open", "limit": 200, **({"cursor": cur} if cur else {})}))
             for m in d.get("markets", []):
                 add("kalshi", m["ticker"], m.get("close_time"), {
-                    "series": s, "event": m.get("event_ticker"), "title": m.get("title"), "close": m.get("close_time"),
+                    "series": s, "event": m.get("event_ticker"), "title": m.get("title"), "sub": m.get("yes_sub_title"),
+                    "close": m.get("close_time"),
                     **{c: m.get(c) for c in ("yes_bid_dollars", "yes_ask_dollars", "last_price_dollars",
                                              "previous_price_dollars", "volume_24h_fp", "open_interest_fp")}})
             cur = d.get("cursor")

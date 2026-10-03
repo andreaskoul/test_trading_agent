@@ -53,6 +53,13 @@ jobs:
         if: ${{ always() && (inputs.mode || 'trade') == 'trade' }}
         continue-on-error: true
         run: python fund/ledger.py
+      - name: Review context (Amendment 6, logged only)
+        if: ${{ always() && (inputs.mode || 'trade') == 'trade' }}
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: pip install -q huggingface_hub && python fund/review_context.py
       - name: Commit review records
         if: ${{ always() && (inputs.mode || 'trade') == 'trade' }}
         run: |
@@ -61,7 +68,7 @@ jobs:
           for attempt in 1 2 3; do
             git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
             rm -rf /tmp/fd && git worktree prune && git worktree add -q --detach /tmp/fd origin/fund-data
-            for f in fund_state/live/20*/reviews/*.json; do [ -f "$f" ] && mkdir -p "/tmp/fd/$(dirname "$f")" && cp "$f" "/tmp/fd/$f"; done
+            for f in fund_state/live/20*/reviews/*.json fund_state/live/20*/review_context/*.json; do [ -f "$f" ] && mkdir -p "/tmp/fd/$(dirname "$f")" && cp "$f" "/tmp/fd/$f"; done
             [ -d fund_state/live/ledger ] && mkdir -p /tmp/fd/fund_state/live/ledger && cp -a fund_state/live/ledger/. /tmp/fd/fund_state/live/ledger/
             cd /tmp/fd && git add -A fund_state/live
             if git diff --cached --quiet; then cd - >/dev/null; break; fi
