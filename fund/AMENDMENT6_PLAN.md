@@ -1,6 +1,6 @@
 # Amendment 6 implementation plan: macro, peer and filing information for the news desk
 
-Status: planned 2026-10-01. Source analysis: the desk-flow review of the first live week (as-of 2026-09-30).
+Status: planned 2026-10-01; part 1 merged 2026-10-01; parts 2–8 built 2026-10-03 on this branch. Source analysis: the desk-flow review of the first live week (as-of 2026-09-30).
 This file is the working plan; the binding text goes into `reports/research/PROTOCOL_fund.md` as Amendment 6.
 
 ## Ground rules
@@ -29,7 +29,7 @@ This file is the working plan; the binding text goes into `reports/research/PROT
 | 4 | `fund/shadow_info.py` | `fund_weekly.yml`, shadow stage | 45 + 1 calls | `shadow_info.json`: C8 informed analysts, C9 ranker |
 | 5 | `fund/pm_risk.py` (`FUND_SHADOW=1` branch only) | shadow stage | no | `c8_informed`, `c9_ranker` in `shadow_book.json` |
 | 6 | `fund/score.py` | as now | no | C8/C9 scored as challengers; paired weekly rank-IC monitor (C8 − analyst) |
-| 7 | `fund/review_context.py` | `fund_review.yml`, after the review and its trades | no | `reviews/<day>_context.json`: what proposal F would have shown, logged only |
+| 7 | `fund/review_context.py` | `fund_review.yml`, after the review and its trades | no | `review_context/<day>.json` (not inside `reviews/`, which review.py reads as the previous review): what proposal F would have shown, logged only |
 | 8 | docs | — | — | Amendment 6, CHANGELOG, `fund/README.md` desk table and schedule |
 
 ### 1. Context archive (daily, data plumbing)
@@ -60,9 +60,10 @@ The rendered brief is a fixed-format text block, identical for every C8 call. Pr
   prompt = the champion's, plus one paragraph on how to use the shared and neighbourhood blocks. Same schema and
   checks. No red team: C8 is compared with the `analyst` book so the only difference is the information.
   Desk budget 40 minutes, 6 threads.
-* **C9 ranker.** One call reading all C8 theses, scores, confidences, drivers and the brief; returns a relative
-  order with ties allowed. Book: the champion's caps, hedge and N per side, ordered by the ranker, sized by C8's
-  score × confidence.
+* **C9 cross-sectional re-score.** One call reading all C8 theses, scores, confidences, drivers and the brief;
+  re-scores every name −2..+2 relative to the others, using the full range. Book: C9 score × C8 confidence,
+  the champion's caps and hedge. (Changed from an ordering, which would have made C9 almost identical to C8
+  whenever fewer than 10 names a side had views.)
 * A week with > 25% failed C8 memos logs C8/C9 as degraded (no book), same rule as the champion.
 
 ### 5–6. Books and scoring
@@ -89,7 +90,7 @@ No LLM, no orders. It records what proposal F would have shown, so a later Proto
 | Thu 10-01 20:30 | start, after the Thursday closing auction (20:00). Confirm today's execution run succeeded and `fund-data` has the as-of 2026-09-30 execution record; if not, wait an hour, at most until 23:30 | trades placed |
 | Thu night – Fri 10-02 | branch `amendment-6-info-flows`: build 1, its tests, a push-triggered dry-run workflow on the branch that runs the context archive into a scratch HF dataset and commits a summary to the branch | sources reachable, nothing written to live datasets |
 | Fri 10-02 ≈ 10:00 | merge part 1 (context archive + backfill) to `main`, logged in CHANGELOG as data plumbing; first scheduled run 21:20 UTC | mock diff clean, dry run green |
-| Sat 10-03 – Mon 10-05 | build 2–7 and the docs; mock pipeline; branch dry run of the full weekly workflow (`FUND_DRYRUN=1`, real calls, nothing committed) with a summary of C8/C9 outputs, token use and cost | champion outputs byte-identical in mock; C8 ok-share ≥ 75%; new spend ≤ $0.25 |
+| Sat 10-03 – Mon 10-05 | build 2–7 and the docs; branch tests (`a6_dryrun.yml`): mock pipeline on main vs branch, then the new desks with real calls on a copy of the live 2026-09-30 week as a dry run (cheaper than re-running the whole weekly job; `A6_TEST_CUTOFF` lets that past week see the context archive, honoured only in mock and dry runs) | champion outputs identical in mock; C8 ok-share ≥ 75%; new spend ≤ $0.25 |
 | Tue 10-06 09:00 | final check; merge to `main` outside the review window (14:23–19:23); remove the temporary dry-run workflow | all gates above; context archive has ≥ 3 complete days |
 | Tue 10-06 21:20 | daily context archive run | complete manifest |
 | Wed 10-07 22:15 | first weekly run with the shadow stage (as-of 2026-10-07) | — |

@@ -393,3 +393,52 @@ from day one.
 mostly priced within about a day. Acting at the next close may therefore add turnover
 more often than it avoids losses. The c7 contrast measures exactly that, instead of
 assuming it.
+
+## Amendment 6 (2026-10-06, during the protocol window, before any week is scored): information for the news desk, in shadow only
+
+The owner asked for the desks to receive macro, geopolitical and wider-internet information, routed to the
+desks that can act on it, at minimum API cost. The review of the first live week found that no macro,
+geopolitical, peer-firm or filing information reaches any deciding desk, and that each analyst is asked for a
+view relative to the other covered names while seeing only one firm. Protocol 6 is live, so this amendment
+**changes nothing the champion reads or decides**: every addition is a shadow input or a shadow book.
+Plan and tests: `fund/AMENDMENT6_PLAN.md`.
+
+**Data desk 0b, `fund/context_archive.py`** (a step of the daily news-archive job). Point in time, append-only,
+private Hugging Face dataset `<you>/fund-context-archive`: the FRED release calendar; open Kalshi markets for
+twelve US macro series; the Caldara–Iacoviello AI-GPR files; GDELT theme volume and tone (best effort: GDELT
+rate-limits GitHub's runners); Finnhub general market news; 8-K filings of S&P 500 members. A desk reads only
+rows fetched before its cutoff.
+
+**Shadow desks**, after every champion record of the week is committed (`fund_weekly.yml`):
+* **Macro desk** (`macro_desk.py`, one call): a brief of at most ~3,200 characters, the same for every name:
+  the holding week's major releases, the regime, at most four live themes with the GICS sectors each pushes
+  and in which direction, the FX desk's view and the ideation themes. It writes context and takes no position.
+* **Neighbourhood** (`neighbours.py`, no LLM): per covered name, the five S&P 500 firms most often in the same
+  articles over 91 days (weight n_ab / √(n_a n_b), articles tagged to more than ten firms dropped) with their
+  headlines that name them in the 7 days to the cutoff, one headline each from up to five sub-industry peers,
+  and the name's 8-Ks of the 14 days to the cutoff.
+* **C8, informed analysts** (`shadow_info.py`, one call per covered name): the champion analyst's prompt,
+  unchanged, with the brief first, the coverage reason, and the neighbourhood block after it; same model,
+  temperature, schema and checks. No red team, so **C8 − analyst** isolates the information.
+* **C9, cross-sectional re-score** (one call): every ok C8 memo and the brief, re-scored −2..+2 relative to the
+  other covered names. Book: C9 score × C8 confidence.
+* Books (`pm_risk.py`, shadow branch): the champion's sizing and risk rules. More than 25% failed C8 memos →
+  no C8 or C9 book that week.
+
+**Evaluation.**
+* C8 and C9 are challengers under the existing promotion rule. With nine challengers the boundaries are
+  recomputed at α = 0.05/9 (O'Brien–Fleming, K = 4, the same computation that gives 4.05 / 2.86 / 2.34 / 2.02
+  at α = 0.05): **5.60 / 3.96 / 3.23 / 2.80**. They are tighter for all challengers, and they are set before
+  any week of any book is scored.
+* Diagnostic, not a gate: the paired weekly rank IC of C8 scores minus that of the champion analyst scores,
+  on the names both scored (`performance/ic_c8.csv`). Because both read the same names in the same week, it
+  shows whether the extra information moves scores the right way long before a boundary can.
+* Logged only: on each review day, `review_context.py` records what a macro-aware review would have seen
+  (move net of the sector ETF, the sector's move, releases and GPR spikes in the window, new 8-Ks).
+
+**Cost.** Free data. New LLM spend is capped at $0.25 a week at the rates billed in the first live week;
+the branch test measured it before merging (`fund/AMENDMENT6_DRYRUN.md`).
+
+**What is not in this amendment.** The red team rebuilt as a checker with independent evidence, a macro-aware
+review that may act, the cross-sectional re-score in the champion, and routing to the cheapest provider all
+change the champion. They are candidates for a Protocol 7, and only if C8 or C9 earn it.

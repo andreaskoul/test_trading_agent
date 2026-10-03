@@ -41,6 +41,7 @@ daily ─ 0 news archive
 Wed ─── 1 screen ─▶ 2 ideation ─▶ 3 research ─▶ 4 analysts ─▶ 5 red team ─▶ 6 PM + risk ─▶ commit
           500 names   ≤ 45 names    narratives     memos         filter        the book
         8 macro FX · 11 shadow challengers · 7 IC memo · 9 performance · ledger · dashboard
+        then, shadow only (Amendment 6): macro brief · neighbourhood · C8 informed analysts · C9 re-score
 Thu ─── 10 execution (closing auction)          Fri/Mon/Tue/Wed ─ 12 daily review
 ```
 
@@ -60,6 +61,10 @@ Thu ─── 10 execution (closing auction)          Fri/Mon/Tue/Wed ─ 12 dai
 | 10 Execution | `execute.py` | no | `execution.json`: closing-auction orders on Alpaca; `execution/fills.csv`, `nav.csv`, `activities.csv`; risk halts |
 | 11 Shadow | `shadow.py` | yes | `shadow.json`, `shadow_book.json`: challenger analysts and the weekly model canary; never traded |
 | 12 Daily review | `review.py` | yes | `reviews/<day>.json`: exit, reduce or increase held names on confirmed material new news |
+| A6 Macro desk | `macro_desk.py` | yes, one call | `macro_brief.json`: one brief for every C8 analyst (calendar, regime, themes by sector, FX view); shadow only |
+| A6 Neighbourhood | `neighbours.py` | no | `neighbours.json`: per covered name, co-covered firms' and sub-industry news, own 8-Ks; shadow only |
+| A6 C8 / C9 | `shadow_info.py` | yes, one per name + one | `shadow_info.json`: informed analysts (C8) and a cross-sectional re-score (C9); books in `shadow_book.json`; never traded |
+| A6 Review context | `review_context.py` | no | `review_context/<day>.json`: what a macro-aware review would have seen; logged only |
 | Ledger | `ledger.py` | no | `ledger/fund_positions.xlsx` and `ledger/dashboard.json`: actual Alpaca trades only |
 
 The model is `deepseek/deepseek-v4.1-flash` via OpenRouter, temperature 0, with the serving
@@ -88,10 +93,10 @@ pass (decisions on time, orders filled, slippage ≤ 10 bp). STOP if the fund, i
 adjusted difference to the quant book, or its adjusted score slope is significantly negative.
 
 Shadow books measure every design choice against the traded fund, and one only replaces it
-if it wins at a look by the stricter boundary for seven challengers (5.44 / 3.85 / 3.14 / 2.72):
+if it wins at a look by the stricter boundary for nine challengers (5.60 / 3.96 / 3.23 / 2.80):
 timing (Wednesday close, Thursday open), 5-sample analysts, text-only analysts with names
-masked, volatility-scaled sizing, news-conditioned reversal, and the fund without the daily
-review. Benchmarks: the quant (ridge) book, an analyst book without the red team, the
+masked, volatility-scaled sizing, news-conditioned reversal, the fund without the daily
+review, and (Amendment 6) analysts given macro, peer and filing context (C8) and their cross-sectional re-score (C9). Benchmarks: the quant (ridge) book, an analyst book without the red team, the
 dashboard's core 20, and a random book.
 
 The evidence review behind these choices is in
