@@ -1,15 +1,16 @@
 """Desk 10 · Execution (PROTOCOL_fund.md, Amendment 3). Alpaca paper account, no LLM.
 
     python fund/execute.py plan        # everything except sending orders (safe any time)
-    python fund/execute.py trade       # Thursday: send the week's orders for the closing auction
+    python fund/execute.py trade       # Thursday: plan, wait for the close, send, record the fills
     python fund/execute.py reconcile   # after the close: fills, slippage, broker NAV, risk halts
+    python fund/execute.py filltest buy SPY 1   # one labelled order through the same send path
 
 The fund book (book.json, committed to `fund-data` before the Thursday deadline) is
 turned into whole-share targets at the account's equity and traded at the close of the
-first trading day after the as-of Wednesday, the price the performance desk scores at:
-market-on-close orders (time_in_force "cls"), sent while the market is open. Alpaca
-rejects an order that takes a position through zero, so a name that flips side is
-closed with a market order first and reopened on the close; those are logged as flips.
+first trading day after the as-of Wednesday, the price the performance desk scores at.
+Orders go out in the last minute before the close (fund/broker.py: the paper account has
+no closing auction, so market-on-close orders there only partly fill). A name that flips
+side is closed first and reopened once the close leg has filled; those are logged as flips.
 
 Pre-trade rules (all logged in execution.json):
 * no valid book after the deadline, a HALT file, or a book that fails sanity checks
@@ -24,29 +25,20 @@ execution.json marked submitted is never traded again.
 
 import glob
 import json
-import math
 import os
 import sys
-import time
-import urllib.error
-import urllib.request
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
 
+import broker
+from broker import ET, api
 from common import MODE, STATE, week_dir
 
 mode = sys.argv[1]
-assert mode in ("plan", "trade", "reconcile"), mode
-BASE = os.environ.get("ALPACA_BASE", "https://paper-api.alpaca.markets")
-if "paper" not in BASE and os.environ.get("FUND_LIVE_TRADING") != "1":
-    raise SystemExit("refusing a non-paper Alpaca endpoint without FUND_LIVE_TRADING=1")
-DATA = os.environ.get("ALPACA_DATA", "https://data.alpaca.markets")
-H = {"APCA-API-KEY-ID": os.environ["ALPACA_API_KEY"], "APCA-API-SECRET-KEY": os.environ["ALPACA_SECRET_KEY"],
-     "Content-Type": "application/json"}
-ET = ZoneInfo("America/New_York")
+assert mode in ("plan", "trade", "reconcile", "filltest"), mode
 GROSS_MAX, NAME_MAX, BOOK_GROSS_MAX = 1.8, 0.12, 3.0
 HALT_DD, HALT_WEEK = 0.10, 0.05
 EXEC = os.path.join(STATE, MODE, "execution")
@@ -55,28 +47,29 @@ os.makedirs(EXEC, exist_ok=True)
 if os.path.exists(os.path.join(EXEC, "problems.txt")):
     os.remove(os.path.join(EXEC, "problems.txt"))              # only this run's problems reach the alert
 
-
-def api(method, path, body=None, base=BASE):
-    """One REST call; returns (status, parsed json). 5xx and 429 are retried."""
-    for attempt in range(4):
-        req = urllib.request.Request(base + path, method=method, headers=H,
-                                     data=json.dumps(body).encode() if body is not None else None)
-        try:
-            with urllib.request.urlopen(req, timeout=30) as r:
-                txt = r.read()
-                return r.status, (json.loads(txt) if txt else None)
-        except urllib.error.HTTPError as e:
-            txt = e.read()
-            if e.code in (429, 500, 502, 503, 504) and attempt < 3:
-                time.sleep(2 ** attempt * 2); continue
-            try:
-                return e.code, json.loads(txt)
-            except Exception:
-                return e.code, {"message": txt.decode(errors="replace")}
-        except Exception as exc:
-            if attempt == 3:
-                return 0, {"message": repr(exc)}
-            time.sleep(2 ** attempt * 2)
+if mode == "filltest":                              # python fund/execute.py filltest buy|sell SYMBOL QTY
+    side, sym, qty = sys.argv[2], sys.argv[3].upper(), int(sys.argv[4])
+    assert side in ("buy", "sell") and qty > 0
+    clock = broker.Clock()
+    if not clock.is_open:
+        raise SystemExit("filltest: the market is closed today")
+    close_at = clock.next_close.timestamp()
+    day = datetime.fromtimestamp(close_at, ET).date()
+    o = {"symbol": sym, "leg": "test", "side": side, "qty": qty, "client_order_id": f"fund-test-{day:%Y%m%d}-{sym}-{side}"}
+    print(f"pipeline test: {side} {qty} {sym} before the {datetime.fromtimestamp(close_at, ET):%H:%M} ET close", flush=True)
+    broker.send([o], close_at, clock)
+    tp = os.path.join(EXEC, "tests.csv")
+    T = pd.read_csv(tp, dtype={"day": str}) if os.path.exists(tp) else pd.DataFrame()
+    row = {"day": str(day), "symbol": sym, "side": side, "qty": qty, "status": o["status"], "filled_qty": o["filled_qty"],
+           "fill": o["fill_price"], "ids": " ".join(o["ids"]), "client_order_id": o["client_order_id"],
+           "close": np.nan, "slip_bp": np.nan}
+    T = pd.concat([T[(T.get("client_order_id", pd.Series(dtype=str)) != o["client_order_id"])] if len(T) else T, pd.DataFrame([row])])
+    T.to_csv(tp, index=False)
+    print(f"pipeline test: {o['status']}, {o['filled_qty']:g}/{qty} filled at {o['fill_price']}")
+    if o["status"] != "filled":
+        open(os.path.join(EXEC, "problems.txt"), "w").write(f"pipeline test {day}: {o['status']} ({o['filled_qty']:g}/{qty})\n")
+        sys.exit(1)
+    sys.exit(0)
 
 
 now_et = datetime.now(ET)
@@ -110,13 +103,12 @@ if mode == "reconcile":
             continue
         rows = []
         for o in ex["orders"]:
-            if not o.get("id"):
-                rows.append({**{k: o.get(k) for k in ("symbol", "leg", "side", "qty")}, "status": o.get("status", "not_sent")}); continue
-            s_, od = api("GET", f"/v2/orders/{o['id']}")
+            ids = o.get("ids") or ([o["id"]] if o.get("id") else [])         # every attempt (broker.send)
+            q, fpx, last = broker.fills(ids)
             rows.append({"symbol": o["symbol"], "leg": o["leg"], "side": o["side"], "qty": o["qty"],
-                         "status": od.get("status"), "filled_qty": float(od.get("filled_qty") or 0),
-                         "fill": float(od["filled_avg_price"]) if od.get("filled_avg_price") else np.nan,
-                         "filled_at": od.get("filled_at")})
+                         "status": broker.fill_status(o["qty"], q, bool(ids)), "filled_qty": q,
+                         "fill_ratio": q / o["qty"] if o["qty"] else np.nan,
+                         "fill": fpx if fpx is not None else np.nan, "filled_at": last})
         F = pd.DataFrame(rows)
         if len(F):
             syms = sorted(F["symbol"].unique())
@@ -150,6 +142,22 @@ if mode == "reconcile":
         if ex["reconciled"]["n_not_filled"]:
             problems.append(f"{kind} {dstr}: {ex['reconciled']['n_not_filled']} orders not filled")
         print(f"reconciled {kind} {dstr}: {ex['reconciled']}")
+    # labelled pipeline tests (filltest): official close and slippage once the day has closed
+    tp = os.path.join(EXEC, "tests.csv")
+    if os.path.exists(tp):
+        T = pd.read_csv(tp, dtype={"day": str})
+        todo = T["close"].isna() & T["fill"].notna() & (pd.to_datetime(T["day"]).dt.date < datetime.now(ET).date())
+        for i in T.index[todo]:
+            px = yf.download(T.at[i, "symbol"].replace(".", "-"), start=T.at[i, "day"],
+                             end=pd.Timestamp(T.at[i, "day"]) + pd.Timedelta(days=1), progress=False, auto_adjust=False)["Close"]
+            if len(px):
+                T.at[i, "close"] = float(np.ravel(px.to_numpy())[-1])
+                T.at[i, "slip_bp"] = (1 if T.at[i, "side"] == "buy" else -1) * (T.at[i, "fill"] / T.at[i, "close"] - 1) * 1e4
+                print(f"pipeline test {T.at[i, 'day']} {T.at[i, 'side']} {T.at[i, 'symbol']}: {T.at[i, 'status']}, "
+                      f"fill {T.at[i, 'fill']:.2f} vs close {T.at[i, 'close']:.2f} = {T.at[i, 'slip_bp']:+.1f} bp")
+                if T.at[i, "status"] != "filled" or abs(T.at[i, "slip_bp"]) > 10:
+                    problems.append(f"pipeline test {T.at[i, 'day']}: {T.at[i, 'status']}, slippage {T.at[i, 'slip_bp']:+.1f} bp (limit 10)")
+        T.to_csv(tp, index=False)
     # cash activity (dividends paid or received, fees, interest): the part of broker P&L that
     # price returns leave out
     s_, act = api("GET", "/v2/account/activities?activity_types=DIV,DIVCGL,DIVCGS,DIVNRA,DIVROC,DIVTXEX,FEE,INT,PTC&page_size=100")
@@ -182,13 +190,16 @@ if mode == "reconcile":
     sys.exit(0)
 
 # ------------------------------------------------------------------ plan / trade
+clock = broker.Clock()
+close_at = close_et.timestamp()
+lead = broker.CLS_CUTOFF if broker.STYLE == "cls" else broker.PREPARE_AT + 30
 if mode == "trade":
     if today != exec_day:
         print(f"no execution today: the week of {asof.date()} trades on {exec_day}"); sys.exit(0)
     if os.path.exists(out_p) and json.load(open(out_p)).get("status") == "submitted":
         print(f"{asof.date()} already executed; nothing to do"); sys.exit(0)
-    if now_et > close_et - timedelta(minutes=15):
-        problems.append(f"missed the execution window (closing auction cutoff {close_et - timedelta(minutes=10):%H:%M} ET)")
+    if clock.now() > close_at - lead:
+        problems.append(f"missed the execution window (orders are prepared by {datetime.fromtimestamp(close_at - lead, ET):%H:%M:%S} ET)")
 deadline_passed = datetime.now(ET) >= datetime.combine(asof.date() + timedelta(days=1), datetime.min.time(),
                                                         ZoneInfo("UTC")).astimezone(ET) + timedelta(hours=19)
 
@@ -216,11 +227,7 @@ else:
 if reason:
     print(reason)
 
-s_, acct = api("GET", "/v2/account")
-assert s_ == 200, f"account unavailable: {s_} {acct}"
-equity = float(acct["equity"])
-if acct.get("trading_blocked") or acct.get("account_blocked"):
-    raise SystemExit("Alpaca account is blocked")
+acct = broker.account()
 if not acct.get("shorting_enabled") and any(v < 0 for k, v in target.items()):
     problems.append("shorting is not enabled on the account (needs >= $2,000 equity and margin): shorts dropped")
 
@@ -247,91 +254,77 @@ gross = sum(map(abs, target.values()))
 scale = min(1.0, GROSS_MAX / gross) if gross else 1.0
 target = {k: v * scale for k, v in target.items()}
 
-# prices for sizing: latest trade (IEX), else today's or yesterday's daily bar
-s_, pos = api("GET", "/v2/positions")
-assert s_ == 200, f"positions unavailable: {s_} {pos}"
-cur = {p_["symbol"]: (-1 if p_["side"] == "short" else 1) * abs(float(p_["qty"])) for p_ in pos}
-syms = sorted(set(target) | set(cur))
-price = {}
-for i in range(0, len(syms), 100):
-    s_, snap = api("GET", "/v2/stocks/snapshots?feed=iex&symbols=" + ",".join(syms[i:i + 100]), base=DATA)
-    for k, v in (snap or {}).items():
-        for f in ("latestTrade", "dailyBar", "prevDailyBar"):
-            px = ((v or {}).get(f) or {}).get("p" if f == "latestTrade" else "c")
-            if px:
-                price[k] = float(px); break
-orders = []
-for sym in syms:
-    tq = int(round(target.get(sym, 0.0) * equity / price[sym])) if sym in target and sym in price else 0
-    if sym in target and sym not in price:
-        problems.append(f"{sym}: no price, not traded"); tq = int(cur.get(sym, 0))
-    cq = int(cur.get(sym, 0))
-    if tq == cq:
-        continue
-    if cq and tq and np.sign(tq) != np.sign(cq):          # through zero: flatten now, reopen on the close
-        orders.append({"symbol": sym, "leg": "flatten", "side": "sell" if cq > 0 else "buy", "qty": abs(cq), "tif": "day"})
-        orders.append({"symbol": sym, "leg": "open", "side": "buy" if tq > 0 else "sell", "qty": abs(tq), "tif": "cls"})
-    else:
-        d = tq - cq
-        orders.append({"symbol": sym, "leg": "close" if tq == 0 else "rebalance", "side": "buy" if d > 0 else "sell",
-                       "qty": abs(d), "tif": "cls"})
-for o in orders:
-    o.update(target_weight=round(target.get(o["symbol"], 0.0), 5), price_ref=price.get(o["symbol"]),
-             client_order_id=f"fund-{asof.date()}-{o['symbol']}-{o['leg']}")
 
+def build_orders(equity, cur, price):
+    """Whole-share orders from the target weights at the given equity, holdings and prices."""
+    out, issues = [], []
+    for sym in sorted(set(target) | set(cur)):
+        cq = int(cur.get(sym, 0))
+        if sym in target and sym not in price:
+            issues.append(f"{sym}: no price, not traded"); continue
+        tq = int(round(target.get(sym, 0.0) * equity / price[sym])) if sym in target else 0
+        if tq == cq:
+            continue
+        if cq and tq and np.sign(tq) != np.sign(cq):      # through zero: close first, reopen once that has filled
+            out.append({"symbol": sym, "leg": "flatten", "side": "sell" if cq > 0 else "buy", "qty": abs(cq)})
+            out.append({"symbol": sym, "leg": "open", "side": "buy" if tq > 0 else "sell", "qty": abs(tq)})
+        else:
+            out.append({"symbol": sym, "leg": "close" if tq == 0 else "rebalance", "side": "buy" if tq > cq else "sell",
+                        "qty": abs(tq - cq)})
+    for o in out:
+        o.update(target_weight=round(target.get(o["symbol"], 0.0), 5), price_ref=price.get(o["symbol"]),
+                 client_order_id=f"fund-{asof.date()}-{o['symbol']}-{o['leg']}")
+    return out, issues
+
+
+def show(orders, equity):
+    print(f"{asof.date()} -> trades {exec_day} (close {cal[0]['close']} ET, {broker.STYLE}); equity {equity:,.0f}; "
+          f"{len(target)} targets, gross {sum(map(abs, target.values())):.2f}, scale {scale:.2f}; "
+          f"{len(orders)} orders ({sum(o['leg'] == 'flatten' for o in orders)} flips); dropped {list(dropped)}", flush=True)
+    for o in orders:
+        print(f"  {o['leg']:9s} {o['side']:4s} {o['qty']:>6d} {o['symbol']:6s} @~{o['price_ref']} (target w {o['target_weight']:+.4f})")
+
+
+cur = broker.positions()
+equity = float(acct["equity"])
+orders, issues = build_orders(equity, cur, broker.prices(set(target) | set(cur)))
 plan = {"asof": str(asof.date()), "exec_day": str(exec_day), "close_et": cal[0]["close"], "mode": mode,
-        "planned_at_et": now_et.isoformat(timespec="seconds"), "equity": equity, "reason": reason,
+        "style": broker.STYLE, "planned_at_et": now_et.isoformat(timespec="seconds"), "equity": equity, "reason": reason,
         "scale": scale, "dropped": dropped, "target_weights": {k: round(v, 5) for k, v in target.items()},
-        "current_qty": cur, "orders": orders, "problems": problems}
-print(f"{asof.date()} -> trades {exec_day} (close {cal[0]['close']} ET); equity {equity:,.0f}; "
-      f"{len(target)} targets, gross {sum(map(abs, target.values())):.2f}, scale {scale:.2f}; "
-      f"{len(orders)} orders ({sum(o['leg'] == 'flatten' for o in orders)} flips); dropped {list(dropped)}")
-for o in orders:
-    print(f"  {o['leg']:9s} {o['side']:4s} {o['qty']:>6d} {o['symbol']:6s} @~{o['price_ref']} tif={o['tif']} (target w {o['target_weight']:+.4f})")
+        "current_qty": cur, "orders": orders, "problems": problems + issues}
+show(orders, equity)
 
 if mode == "plan" or any(p.startswith("missed") for p in problems):
     plan["status"] = "planned" if mode == "plan" else "missed_window"
     if mode == "trade":
         json.dump(plan, open(out_p, "w"), indent=1, default=str)
-    if problems:
-        print("problems:", problems)
-    sys.exit(1 if mode == "trade" and problems else 0)
+    if plan["problems"]:
+        print("problems:", plan["problems"])
+    sys.exit(1 if mode == "trade" and plan["problems"] else 0)
 
 # ------------------------------------------------------------------ send
-# Idempotency: orders this week's plan already sent (an earlier run that died before saving)
-# are adopted, not resent; any other open order on the account is cancelled.
-s_, today_orders = api("GET", f"/v2/orders?status=all&limit=500&after={exec_day}T00:00:00Z")
-sent = {x["client_order_id"]: x for x in (today_orders or [])}
-mine = {o["client_order_id"] for o in orders}
-for x in today_orders or []:
-    if x["status"] in ("new", "accepted", "pending_new", "held", "partially_filled") and x["client_order_id"] not in mine:
-        api("DELETE", f"/v2/orders/{x['id']}")
-s_, clock = api("GET", "/v2/clock")
-for o in orders:
-    if o["client_order_id"] in sent:
-        o["id"], o["status"] = sent[o["client_order_id"]]["id"], sent[o["client_order_id"]]["status"]; continue
-    if o["leg"] == "flatten" and not clock.get("is_open"):
-        o["status"] = "skipped: market closed, cannot flatten before the close"; problems.append(f"{o['symbol']}: flip skipped")
-        continue
-    if o["leg"] == "open" and any(x["symbol"] == o["symbol"] and x["leg"] == "flatten" and x.get("status") != "filled" for x in orders):
-        o["status"] = "skipped: flatten leg not filled"; problems.append(f"{o['symbol']}: reopen skipped"); continue
-    s_, r = api("POST", "/v2/orders", {"symbol": o["symbol"], "qty": str(o["qty"]), "side": o["side"], "type": "market",
-                                        "time_in_force": o["tif"], "client_order_id": o["client_order_id"]})
-    if s_ not in (200, 201):
-        o["status"] = f"rejected: {r.get('message') if r else s_}"; problems.append(f"{o['symbol']} {o['leg']}: {o['status']}")
-        continue
-    o["id"], o["status"] = r["id"], r["status"]
-    if o["leg"] == "flatten":                                           # wait for the fill before reopening
-        for _ in range(45):
-            time.sleep(2)
-            s_, r = api("GET", f"/v2/orders/{o['id']}")
-            if r.get("status") in ("filled", "canceled", "rejected", "expired"):
-                break
-        o["status"] = r.get("status")
-        o["fill_price"] = float(r["filled_avg_price"]) if r.get("filled_avg_price") else None
-plan.update(status="submitted", problems=problems, submitted_at_et=datetime.now(ET).isoformat(timespec="seconds"))
+plan["status"] = "waiting"
 json.dump(plan, open(out_p, "w"), indent=1, default=str)
-print(f"submitted {sum(1 for o in orders if o.get('id'))}/{len(orders)} orders")
+if broker.STYLE == "preclose":
+    print(f"waiting until {datetime.fromtimestamp(close_at - broker.PREPARE_AT, ET):%H:%M:%S} ET to size the orders", flush=True)
+    clock.sleep_until(close_at - broker.PREPARE_AT)
+    acct = broker.account()
+    cur, equity = broker.positions(), float(acct["equity"])
+    orders, issues = build_orders(equity, cur, broker.prices(set(target) | set(cur)))
+    plan.update(equity=equity, current_qty=cur, orders=orders, sized_at_et=datetime.now(ET).isoformat(timespec="seconds"))
+    show(orders, equity)
+# any open order that is not part of this plan is cancelled (the account is dedicated to the fund)
+s_, open_orders = api("GET", "/v2/orders?status=open&limit=500")
+mine = tuple(o["client_order_id"] for o in orders)
+for x in open_orders or []:
+    if not x["client_order_id"].startswith(mine):
+        api("DELETE", f"/v2/orders/{x['id']}")
+broker.send(orders, close_at, clock)
+problems += issues + broker.problems_of(orders)
+plan.update(status="submitted", orders=orders, problems=problems, submitted_at_et=datetime.now(ET).isoformat(timespec="seconds"))
+json.dump(plan, open(out_p, "w"), indent=1, default=str)
+n_full = sum(o["status"] == "filled" for o in orders)
+print(f"{n_full}/{len(orders)} orders fully filled")
 if problems:
     print("problems:", problems)
     open(os.path.join(EXEC, "problems.txt"), "w").write("\n".join(f"{asof.date()}: {p}" for p in problems) + "\n")

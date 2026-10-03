@@ -12,7 +12,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pandas as pd
 
-from common import news_cutoff, save_prompts, MOCK, PRICE_FACTS, asof_from_env, llm, load, narrative_text, require, save, week_dir
+from common import news_cutoff, save_prompts, PRICE_FACTS, asof_from_env, llm, load, narrative_text, require, save, week_dir
 
 require("OPENROUTER_API_KEY")
 asof = asof_from_env()
@@ -76,13 +76,12 @@ def one(t):
                       "", "ANALYST MEMO:", json.dumps(memos[t]["memo"], indent=1), "", narrative_text(narr, cutoff)])
     s = memos[t]["memo"]["score"]
     PROMPTS.append({"ticker": t, "system": SYSTEM, "user": user})
-    status, out, meta, err = llm(SYSTEM, user, {"verdict": "uphold", "flaw": None, "adjusted_score": s, "critique": "mock"},
-                                 lambda o: check(o, s))
+    status, out, meta, err = llm(SYSTEM, user, lambda o: check(o, s))
     print(f"red team {t}: {status}" + (f" {out['verdict']} {s}->{out['adjusted_score']}" if out else f" ({err})"), flush=True)
     return t, {"status": status, "error": err, "meta": meta, "review": out}
 
 
-with ThreadPoolExecutor(1 if MOCK else 6) as ex:
+with ThreadPoolExecutor(6) as ex:
     reviews = dict(ex.map(one, todo))
 # final score: red-team adjusted where reviewed, analyst score otherwise (failed review = analyst score)
 final = {}

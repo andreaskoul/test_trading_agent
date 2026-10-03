@@ -1,7 +1,7 @@
 """Desk 12 · Daily position review (PROTOCOL_fund.md, Amendment 5).
 
     python fund/review.py plan     # decide, no orders
-    python fund/review.py trade    # decide and send closing-auction orders
+    python fund/review.py trade    # decide, then trade in the last minute before the close (fund/broker.py)
 
 On every trading day strictly between the week's execution day and the next one, each
 held stock is re-read against the news published since the last review (or since the
@@ -13,8 +13,8 @@ other than hold needs a second, adversarial confirmation naming no flaw.
   largest positions first.
 * Increases are dropped if stock dollar net would exceed 10% of stock gross and be more unbalanced than before.
 * SPY is re-hedged to zero beta with the same hedge betas as the book.
-Trades are market-on-close for the same day, sent while the market is open.
--> fund_state/<mode>/<asof>/reviews/<YYYY-MM-DD>.json
+Trades go out in the last minute before the same day's close (fund/broker.py).
+-> fund_state/<mode>/<asof>/reviews/<YYYY-MM-DD>.json (plan mode: <YYYY-MM-DD>.plan.json)
 """
 
 import glob
@@ -22,49 +22,21 @@ import json
 import os
 import sys
 import time
-import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
-from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
 
-from common import MOCK, MODE, STATE, llm, news_cutoff, require
+from common import MODE, STATE, llm, news_cutoff, require
 
 mode = sys.argv[1]
 assert mode in ("plan", "trade"), mode
 require("OPENROUTER_API_KEY", "FINNHUB_API_KEY")
-BASE = os.environ.get("ALPACA_BASE", "https://paper-api.alpaca.markets")
-if "paper" not in BASE and os.environ.get("FUND_LIVE_TRADING") != "1":
-    raise SystemExit("refusing a non-paper Alpaca endpoint without FUND_LIVE_TRADING=1")
-DATA = os.environ.get("ALPACA_DATA", "https://data.alpaca.markets")
-H = {"APCA-API-KEY-ID": os.environ["ALPACA_API_KEY"], "APCA-API-SECRET-KEY": os.environ["ALPACA_SECRET_KEY"],
-     "Content-Type": "application/json"}
-ET = ZoneInfo("America/New_York")
+import broker                                       # noqa: E402  (needs the Alpaca keys checked above)
+from broker import ET, api                          # noqa: E402
 NAME_CAP, DOLLAR_CAP, MAX_ACTIONS, UP, DOWN = 0.10, 0.10, 5, 1.5, 0.5
-
-
-def api(method, path, body=None, base=BASE):
-    for attempt in range(4):
-        req = urllib.request.Request(base + path, method=method, headers=H,
-                                     data=json.dumps(body).encode() if body is not None else None)
-        try:
-            with urllib.request.urlopen(req, timeout=30) as r:
-                t = r.read(); return r.status, (json.loads(t) if t else None)
-        except urllib.error.HTTPError as e:
-            t = e.read()
-            if e.code in (429, 500, 502, 503, 504) and attempt < 3:
-                time.sleep(2 ** attempt * 2); continue
-            try:
-                return e.code, json.loads(t)
-            except Exception:
-                return e.code, {"message": t.decode(errors="replace")}
-        except Exception as exc:
-            if attempt == 3:
-                return 0, {"message": repr(exc)}
-            time.sleep(2 ** attempt * 2)
 
 
 now_utc = datetime.now(timezone.utc)
@@ -90,15 +62,18 @@ if mode == "trade" and not (exec_day < today < next_exec and today in days):
 close_et = datetime.combine(today, datetime.strptime(next((c["close"] for c in cal if pd.Timestamp(c["date"]).date() == today), "16:00"), "%H:%M").time(), ET)
 rdir = os.path.join(wd, "reviews")
 os.makedirs(rdir, exist_ok=True)
-out_p = os.path.join(rdir, f"{today}.json")
+out_p = os.path.join(rdir, f"{today}.json" if mode == "trade" else f"{today}.plan.json")
 if mode == "trade" and os.path.exists(out_p) and json.load(open(out_p)).get("status") in ("submitted", "no_action"):
     print(f"review: {today} already done"); sys.exit(0)
 if os.path.exists(os.path.join(base, "HALT")):
     print("review: HALT active; no reviews until resumed"); sys.exit(0)
-if mode == "trade" and now_et > close_et - timedelta(minutes=15):
-    raise SystemExit(f"review: past the closing-auction window for {today}")
+clock = broker.Clock()
+lead = broker.CLS_CUTOFF if broker.STYLE == "cls" else broker.PREPARE_AT + 30
+if mode == "trade" and clock.now() > close_et.timestamp() - lead:
+    raise SystemExit(f"review: past the order window for {today}")
 
-prior = sorted(p for p in glob.glob(os.path.join(rdir, "*.json")) if os.path.basename(p) < f"{today}.json")
+prior = sorted(p for p in glob.glob(os.path.join(rdir, "*.json"))
+               if not p.endswith(".plan.json") and os.path.basename(p) < f"{today}.json")
 prev_reviews = [json.load(open(p)) for p in prior]
 since = pd.Timestamp(prev_reviews[-1]["news_until"]) if prev_reviews else news_cutoff(asof).tz_localize("UTC")
 increased = {t for r in prev_reviews for t, d in r.get("decisions", {}).items() if d.get("final") == "increase"}
@@ -142,8 +117,6 @@ ok_conf = lambda o: None if o.get("verdict") in ("confirm", "reject") and (
 
 
 def news(t):
-    if MOCK:
-        return json.loads(os.environ.get("FUND_REVIEW_MOCK_NEWS", "{}")).get(t, [])
     arts, lo = {}, since.date()
     for d in pd.date_range(lo, today):
         u = "https://finnhub.io/api/v1/company-news?" + urllib.parse.urlencode(
@@ -176,14 +149,14 @@ for t in sorted([t for t in held if t != "SPY"], key=lambda t: -abs(w_now[t])):
             f"THESIS at entry (score {memo.get('score')}, confidence {memo.get('confidence')}): {memo.get('thesis')}\n"
             f"Catalysts: {json.dumps(memo.get('catalysts'))}\nRisks: {json.dumps(memo.get('risks'))}\n\n"
             f"NEWS since {since:%Y-%m-%d %H:%M} UTC:\n{listing}")
-    st, out, meta, err = llm(REVIEW, user, json.loads(os.environ.get("FUND_REVIEW_MOCK_ACTION", '{"action": "hold", "evidence": [], "reason": "mock"}')), ok_action)
+    st, out, meta, err = llm(REVIEW, user, ok_action)
     d.update(proposal=out, proposal_status=st, provider=meta.get("provider"), error=err)
     if st == "ok" and out["action"] != "hold":
         if out["action"] == "increase" and (t in increased or np.sign(book_w.get(t, 0)) != np.sign(h["qty"])):
             d["final"] = "hold"; d["why"] = "already increased this week, or not in this week's book"
         else:
             cu = user + f"\n\nPROPOSED: {out['action']} because {out['reason']} (evidence {out['evidence']})"
-            st2, c, meta2, err2 = llm(CONFIRM, cu, {"verdict": "confirm", "flaw": None, "note": "mock"}, ok_conf)
+            st2, c, meta2, err2 = llm(CONFIRM, cu, ok_conf)
             d.update(confirmation=c, confirmation_status=st2)
             d["final"] = out["action"] if st2 == "ok" and c["verdict"] == "confirm" else "hold"
     decisions[t] = d
@@ -210,26 +183,31 @@ if acts:
     if np.sign(target["SPY"]) != np.sign(w_now.get("SPY", target["SPY"])) and w_now.get("SPY"):
         target["SPY"] = 0.0                            # the hedge cannot cross zero in one closing-auction order
 
-orders, problems = [], []
-for t in (acts + ["SPY"]) if acts else []:
-    s_, snap = api("GET", f"/v2/stocks/snapshots?feed=iex&symbols={t}", base=DATA)
-    px = ((snap or {}).get(t, {}).get("latestTrade") or {}).get("p") or held.get(t, {}).get("price")
-    tq = int(round(target.get(t, 0.0) * equity / px)) if px else int(held.get(t, {}).get("qty", 0))
-    cq = int(held.get(t, {}).get("qty", 0))
-    if tq != cq:
-        orders.append({"symbol": t, "leg": f"review-{decisions.get(t, {}).get('final', 'rehedge')}",
-                       "side": "buy" if tq > cq else "sell", "qty": abs(tq - cq), "tif": "cls", "price_ref": px,
-                       "client_order_id": f"fund-{asof.date()}-{t}-r{today:%Y%m%d}"})
-if mode == "trade":
-    for o in orders:
-        s_, r = api("POST", "/v2/orders", {"symbol": o["symbol"], "qty": str(o["qty"]), "side": o["side"], "type": "market",
-                                            "time_in_force": "cls", "client_order_id": o["client_order_id"]})
-        if s_ == 422 and "client_order_id" in json.dumps(r):
-            s_, r = api("GET", f"/v2/orders:by_client_order_id?client_order_id={o['client_order_id']}")
-        if s_ in (200, 201):
-            o["id"], o["status"] = r["id"], r["status"]
-        else:
-            o["status"] = f"rejected: {(r or {}).get('message')}"; problems.append(f"{o['symbol']}: {o['status']}")
+
+
+def size(prices, held_qty):
+    out = []
+    for t in (acts + ["SPY"]) if acts else []:
+        px = prices.get(t) or held.get(t, {}).get("price")
+        cq = int(held_qty.get(t, 0))
+        tq = int(round(target.get(t, 0.0) * equity / px)) if px else cq
+        if tq != cq:
+            out.append({"symbol": t, "leg": f"review-{decisions.get(t, {}).get('final', 'rehedge')}",
+                        "side": "buy" if tq > cq else "sell", "qty": abs(tq - cq), "price_ref": px,
+                        "client_order_id": f"fund-{asof.date()}-{t}-r{today:%Y%m%d}"})
+    return out
+
+
+problems = []
+orders = size(broker.prices(acts + ["SPY"]) if acts else {}, {t: h["qty"] for t, h in held.items()})
+if mode == "trade" and orders:
+    close_at = close_et.timestamp()
+    if broker.STYLE == "preclose":
+        print(f"review: waiting until {datetime.fromtimestamp(close_at - broker.PREPARE_AT, ET):%H:%M:%S} ET to size the orders", flush=True)
+        clock.sleep_until(close_at - broker.PREPARE_AT)
+        orders = size(broker.prices(acts + ["SPY"]), broker.positions())
+    broker.send(orders, close_at, clock)
+    problems += broker.problems_of(orders)
 rec = {"asof": str(asof.date()), "day": str(today), "mode": mode, "close_et": close_et.strftime("%H:%M"), "news_since": str(since), "news_until": now_utc.isoformat(),
        "equity": equity, "decisions": decisions, "weights_before": w_now, "target_weights": target if acts else w_now,
        "orders": orders, "problems": problems,

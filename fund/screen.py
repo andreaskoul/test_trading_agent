@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 
-from common import MOCK, MODE, ROOT, STATE, asof_from_env, require, save
+from common import MODE, ROOT, STATE, asof_from_env, require, save
 
 require("FINNHUB_API_KEY")
 asof = asof_from_env()
@@ -86,32 +86,23 @@ Z = Z.join(meta, how="left")
 # the per-call cap is undocumented, so very high counts may be censored: ranks survive)
 lo, hi = (asof - pd.Timedelta(days=6)).date(), asof.date()
 counts, heads = {}, {}
-if MOCK:                                        # pipeline test: counts from the dashboard's feeds where they exist
-    import glob
-    site = os.path.join(ROOT, ".cache", "my-website")
-    for f in glob.glob(os.path.join(site, "data", "raw", "*.jsonl")):
-        t = os.path.basename(f)[:-6]
-        rows = [json.loads(l) for l in open(f)]
-        wk = [r for r in rows if str(lo) <= r["published"][:10] <= str(hi)]
-        counts[t] = len(wk); heads[t] = [r["t"] for r in sorted(wk, key=lambda r: r["published"])[-2:]]
-else:
-    for i, t in enumerate(Z.index):
-        url = (f"https://finnhub.io/api/v1/company-news?symbol={ymap[t]}&from={lo}&to={hi}"
-               f"&token={os.environ['FINNHUB_API_KEY']}")
-        for attempt in range(4):
-            try:
-                with urllib.request.urlopen(url, timeout=30) as r:
-                    items = json.load(r)
-                counts[t] = len(items)
-                heads[t] = [x.get("headline") for x in sorted(items, key=lambda x: x["datetime"])[-2:]]
-                break
-            except urllib.error.HTTPError as e:
-                if e.code in (401, 403):
-                    raise SystemExit("Finnhub key refused")
-                time.sleep(15 * (attempt + 1))
-            except Exception:
-                time.sleep(3)
-        time.sleep(1.05)                        # free tier: 60 calls / minute
+for i, t in enumerate(Z.index):
+    url = (f"https://finnhub.io/api/v1/company-news?symbol={ymap[t]}&from={lo}&to={hi}"
+           f"&token={os.environ['FINNHUB_API_KEY']}")
+    for attempt in range(4):
+        try:
+            with urllib.request.urlopen(url, timeout=30) as r:
+                items = json.load(r)
+            counts[t] = len(items)
+            heads[t] = [x.get("headline") for x in sorted(items, key=lambda x: x["datetime"])[-2:]]
+            break
+        except urllib.error.HTTPError as e:
+            if e.code in (401, 403):
+                raise SystemExit("Finnhub key refused")
+            time.sleep(15 * (attempt + 1))
+        except Exception:
+            time.sleep(3)
+    time.sleep(1.05)                        # free tier: 60 calls / minute
 Z["news_7d"] = pd.Series(counts, dtype=float).reindex(Z.index)
 la = np.log1p(Z["news_7d"])
 Z["attention_z"] = (la - la.mean()) / la.std()
@@ -130,16 +121,15 @@ Z["latest_headlines"] = pd.Series(heads).reindex(Z.index)
 # after the close on entry day, any day in between, or before the open on exit day
 t0, t1 = asof + pd.Timedelta(days=1), asof + pd.Timedelta(days=8)
 earn = {}
-if not MOCK:
-    try:
-        with urllib.request.urlopen(f"https://finnhub.io/api/v1/calendar/earnings?from={t0.date()}&to={t1.date()}"
-                                    f"&token={os.environ['FINNHUB_API_KEY']}", timeout=60) as r:
-            for e in json.load(r).get("earningsCalendar", []):
-                d, h = pd.Timestamp(e["date"]), (e.get("hour") or "").lower()
-                if (t0 < d < t1) or (d == t0 and h != "bmo") or (d == t1 and h not in ("amc",)):
-                    earn[e["symbol"].replace("-", ".")] = f"{e['date']} {h or 'time n/a'}"
-    except Exception as exc:
-        print(f"screen: earnings calendar unavailable ({exc!r})")
+try:
+    with urllib.request.urlopen(f"https://finnhub.io/api/v1/calendar/earnings?from={t0.date()}&to={t1.date()}"
+                                f"&token={os.environ['FINNHUB_API_KEY']}", timeout=60) as r:
+        for e in json.load(r).get("earningsCalendar", []):
+            d, h = pd.Timestamp(e["date"]), (e.get("hour") or "").lower()
+            if (t0 < d < t1) or (d == t0 and h != "bmo") or (d == t1 and h not in ("amc",)):
+                earn[e["symbol"].replace("-", ".")] = f"{e['date']} {h or 'time n/a'}"
+except Exception as exc:
+    print(f"screen: earnings calendar unavailable ({exc!r})")
 Z["earnings_in_holding_week"] = pd.Series(earn, dtype=object).reindex(Z.index).fillna("none")
 print(f"screen: {int((Z['earnings_in_holding_week'] != 'none').sum())} members report earnings in the holding week")
 

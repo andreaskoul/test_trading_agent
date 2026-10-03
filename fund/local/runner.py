@@ -45,6 +45,9 @@ SCHEDULE = {
     "review":    {"days": "0124",    "at": "16:30", "late": 180},
     "reconcile": {"days": "12345",   "at": "01:10", "late": 720},
     "report":    {"days": "0123456", "at": "05:50", "late": 600},   # iMessage: after reconcile, archive and the weekly run
+    # one-off pipeline tests of the pre-close send: 1 SPY bought Monday, sold Tuesday (labelled fund-test-...)
+    "filltest-buy":  {"dates": ["2026-10-05"], "at": "16:15", "late": 180, "args": ["buy", "SPY", "1"]},
+    "filltest-sell": {"dates": ["2026-10-06"], "at": "16:15", "late": 180, "args": ["sell", "SPY", "1"]},
 }
 # weekday(): Mon=0 ... Sun=6
 NEEDS = {
@@ -54,10 +57,13 @@ NEEDS = {
     "review": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY"],
     "reconcile": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "report": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "IMESSAGE_TO"],
+    "filltest-buy": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
+    "filltest-sell": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
 }
-GROUP = {"archive": "archive", "weekly": "weekly", "execute": "execute", "review": "execute"}
-TIMEOUT = {"archive": 350, "weekly": 340, "execute": 60, "review": 60}     # minutes, as the workflows
-PAGES_AFTER = {"weekly", "execute", "review"}                               # fund_pages.yml's workflow_run list
+GROUP = {"archive": "archive", "weekly": "weekly", "execute": "execute", "review": "execute", "filltest": "filltest"}
+# minutes, as the workflows; trade and review wait for the last minute before the close
+TIMEOUT = {"archive": 350, "weekly": 340, "execute": 330, "review": 330, "filltest": 330}
+PAGES_AFTER = {"weekly", "execute", "review", "filltest"}                               # fund_pages.yml's workflow_run list
 
 
 def now_utc():
@@ -100,7 +106,7 @@ def last_slot(job, now):
     h, m = map(int, sc["at"].split(":"))
     for back in range(8):
         d = (now - dt.timedelta(days=back)).date()
-        if str(d.weekday()) in sc["days"]:
+        if (str(d) in sc["dates"]) if "dates" in sc else (str(d.weekday()) in sc["days"]):
             slot = dt.datetime(d.year, d.month, d.day, h, m, tzinfo=dt.timezone.utc)
             if slot <= now:
                 return slot
@@ -113,7 +119,7 @@ def tick(args):
     now = now_utc()
     state = read_state()
     if args.init:                                   # mark every past slot as handled: nothing fires retroactively
-        write_state({j: last_slot(j, now).isoformat() for j in SCHEDULE}); log("schedule state initialised"); return
+        write_state({j: (last_slot(j, now) or now).isoformat() for j in SCHEDULE}); log("schedule state initialised"); return
     if not os.path.exists(ENABLED):
         return
     secrets = load_secrets()
@@ -130,7 +136,8 @@ def tick(args):
         if missing:
             log(f"{job}: not started, missing in {SECRETS}: {', '.join(missing)}"); continue
         lf = open(os.path.join(LOGS, f"{job}-{now:%Y%m%d-%H%M}.log"), "a")
-        cmd = ["report", "--send"] if job == "report" else ["run", job]
+        cmd = ["report", "--send"] if job == "report" else \
+            ["run", "filltest", "--test", *SCHEDULE[job]["args"]] if job.startswith("filltest") else ["run", job]
         subprocess.Popen([sys.executable, os.path.abspath(__file__), *cmd], stdout=lf, stderr=subprocess.STDOUT,
                          stdin=subprocess.DEVNULL, start_new_session=True, env={**os.environ, "RUNNER_LOG": lf.name})
         log(f"{job}: started for slot {slot:%a %H:%M}Z ({late:.0f} min after it); log {lf.name}")
@@ -299,6 +306,16 @@ def job_review(j, a):
     issue(j, "Fund: daily review failed", "echo Local run failed; see the log on the Mac.")
 
 
+def job_filltest(j, a):
+    side, sym, qty = a.test
+    j.step("Restore fund state", RESTORE.format(paths="fund_state"))
+    j.step(f"Pipeline test: {side} {qty} {sym} before the close", f"python fund/execute.py filltest {side} {sym} {qty}")
+    j.step("Position ledger (Excel)", "python fund/ledger.py", when="always", allow_fail=True)
+    j.step("Commit execution records", COMMIT_EXEC.format(copy=COPY_EXEC, msg=f"pipeline test {side} {sym}"), when="always")
+    issue(j, f"Fund: pipeline test ({side} {sym}) problem",
+          'echo "The pre-close send test needs attention."; cat fund_state/live/execution/problems.txt 2>/dev/null || true')
+
+
 def run(args):
     name = args.job
     if name in ("trade", "reconcile"):              # scheduled names for the execution modes
@@ -336,12 +353,19 @@ def run(args):
     started = time.time()
     awake = subprocess.Popen(["caffeinate", "-i", "-w", str(os.getpid())])    # no idle sleep while the job runs
     drift(j)
-    res = {"archive": job_archive, "weekly": job_weekly, "execute": job_execute, "review": job_review}[name](j, args)
+    res = {"archive": job_archive, "weekly": job_weekly, "execute": job_execute, "review": job_review,
+           "filltest": job_filltest}[name](j, args)
     if name in PAGES_AFTER and res != "skip" and not args.no_pages:
         j.step("GitHub Pages: rebuild the dashboard (fund_pages.yml)",
                f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main", when="always", allow_fail=True)
     awake.terminate()
     log(f"{name}: {'FAILED' if j.failed else 'ok'} in {(time.time() - started) / 60:.1f} min")
+    to = load_secrets().get("IMESSAGE_TO")
+    if j.failed and to:                             # failures reach the phone at once, not only as a GitHub issue
+        pf = os.path.join(work, "fund_state", "live", "execution", "problems.txt")
+        detail = open(pf).read().strip()[:600] if os.path.exists(pf) else "see the log on the Mac"
+        r = imessage(to, f"⚠ Fund {name} {args.mode or ''} FAILED at {now_utc():%H:%M}Z\n{detail}\nlog: {env['RUN_LOG']}")
+        log("alert texted" if r.returncode == 0 else f"alert NOT texted: {r.stderr.strip()}")
     subprocess.run(["git", "-C", work, "worktree", "prune"])
     shutil.rmtree(work, ignore_errors=True)
     prune()
@@ -353,8 +377,8 @@ def run(args):
 KNOWN = {"archive": {"archive", "context_archive"},
          "weekly": {"common", "screen", "ideate", "emb_store", "research", "commit_state", "analysts", "redteam", "pm_risk",
                     "fx_desk", "shadow", "macro_desk", "neighbours", "shadow_info", "ic_memo", "score", "ledger"},
-         "execute": {"execute", "ledger", "screen", "ideate", "research", "analysts", "redteam", "pm_risk"},   # mock desks: GitHub only
-         "review": {"review", "ledger"}}
+         "execute": {"execute", "ledger", "broker"},
+         "review": {"review", "ledger", "broker"}}
 WORKFLOW = {"archive": "fund_archive.yml", "weekly": "fund_weekly.yml", "execute": "fund_execute.yml", "review": "fund_review.yml"}
 
 
@@ -407,7 +431,7 @@ def job_outcomes(now):
         if not logs:
             out.append(f"✗ {job}: did not run (Mac asleep or off?)"); continue
         text = open(os.path.join(LOGS, logs[0]), errors="replace").read()
-        name = "execute" if job in ("trade", "reconcile") else job
+        name = "execute" if job in ("trade", "reconcile") else "filltest" if job.startswith("filltest") else job
         if f"{name}: FAILED" in text:
             out.append(f"✗ {job}: FAILED (issue opened)")
         elif f"{name}: ok" in text:
@@ -461,6 +485,14 @@ def build_report(secrets):
         except ValueError:
             ex = "not traded yet"
         L.append(f"Week {w}: book {st}, execution {ex}")
+        recent = (now - dt.timedelta(hours=30)).date().isoformat()
+        try:
+            exj = json.loads(show(f"{w}/execution.json"))
+            if exj.get("exec_day", "") >= recent and exj.get("orders"):
+                full = sum(o.get("status") == "filled" for o in exj["orders"])
+                L.append(f"Trade {exj['exec_day']}: {full}/{len(exj['orders'])} orders fully filled")
+        except ValueError:
+            pass
         revs = subprocess.run(["git", "-C", repo, "ls-tree", "--name-only", "origin/fund-data", f"fund_state/live/{w}/reviews/"],
                               capture_output=True, text=True).stdout.split()
         if revs:
@@ -470,6 +502,11 @@ def build_report(secrets):
                 L.append(f"Review {os.path.basename(revs[-1])[:-5]}: {r.get('status')}{' · ' + ', '.join(acts) if acts else ', all held'}")
             except ValueError:
                 pass
+    import csv, io
+    for t in csv.DictReader(io.StringIO(show("execution/tests.csv"))):
+        if t["day"] >= (now - dt.timedelta(hours=30)).date().isoformat():
+            slip = f", {float(t['slip_bp']):+.1f} bp vs close" if t.get("slip_bp") else ""
+            L.append(f"Pipeline test {t['day']}: {t['side']} {t['qty']} {t['symbol']} {t['status']}{slip}")
     try:
         g = json.loads(show("performance/gate.json").replace("NaN", "null"))
         L.append(f"Gate: {g['verdict']} ({g.get('n', 0)} scored weeks)")
@@ -516,7 +553,7 @@ def status(_):
     now, state, secrets = now_utc(), read_state(), load_secrets()
     print(f"schedule {'ENABLED' if os.path.exists(ENABLED) else 'DISABLED (runner.py enable)'}; now {now:%a %Y-%m-%d %H:%M}Z")
     for job, sc in SCHEDULE.items():
-        days = ",".join(calendar.day_abbr[int(d)] for d in sc["days"])
+        days = ",".join(sc["dates"]) if "dates" in sc else ",".join(calendar.day_abbr[int(d)] for d in sc["days"])
         miss = [k for k in NEEDS[job] if k not in secrets]
         print(f"  {job:<10} {days:<28} {sc['at']}Z  last slot handled {state.get(job, '-')[:16]}"
               f"{'  MISSING ' + ','.join(miss) if miss else ''}")
@@ -530,7 +567,8 @@ def main():
     sub = p.add_subparsers(dest="cmd", required=True)
     t = sub.add_parser("tick"); t.add_argument("--init", action="store_true"); t.set_defaults(f=tick)
     r = sub.add_parser("run")
-    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute"])
+    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute", "filltest"])
+    r.add_argument("--test", nargs=3, metavar=("SIDE", "SYMBOL", "QTY"), help="filltest: e.g. buy SPY 1")
     r.add_argument("--mode", choices=["plan", "trade", "reconcile"], help="execute: plan|trade|reconcile; review: plan|trade")
     r.add_argument("--asof", help="as-of Wednesday YYYY-MM-DD (weekly, execute)")
     r.add_argument("--dry-run", action="store_true", help="weekly: real calls, no deadline, nothing committed")

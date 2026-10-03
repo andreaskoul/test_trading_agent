@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 
-from common import MOCK, MODE, STATE
+from common import MODE, STATE
 
 base = os.path.join(STATE, MODE)
 OUT = os.path.join(base, "performance")

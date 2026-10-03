@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 import pandas as pd
 
-from common import news_cutoff, save_prompts, MOCK, PRICE_FACTS, asof_from_env, llm, load, narrative_text, require, save, week_dir
+from common import news_cutoff, save_prompts, PRICE_FACTS, asof_from_env, llm, load, narrative_text, require, save, week_dir
 
 require("OPENROUTER_API_KEY")
 asof = asof_from_env()
@@ -73,16 +73,14 @@ def one(t):
                       f"Price facts: {quant}",
                       f"Ideation hypothesis: {hyp[t][0]} - {hyp[t][1]}" if t in hyp else "Ideation hypothesis: none (covered by rule)",
                       "", narrative_text(narr, cutoff)])
-    ms = 0 if r is None else int(max(-2, min(2, round(float(r["ridge_bp"]) / 15))))     # mock: a ridge echo
     PROMPTS.append({"ticker": t, "system": SYSTEM, "user": user})
-    status, out, meta, err = llm(SYSTEM, user, {"score": ms, "confidence": 0.5, "thesis": "mock", "catalysts": [],
-                                                "risks": [], "drivers": []}, check)
+    status, out, meta, err = llm(SYSTEM, user, check)
     print(f"analyst {t}: {status}" + (f" score {out['score']}" if out else f" ({err})"), flush=True)
     return t, {"status": status, "error": err, "meta": meta, "memo": out, "has_narratives": narr is not None,
                "prompt_chars": len(user)}
 
 
-with ThreadPoolExecutor(1 if MOCK else 6) as ex:
+with ThreadPoolExecutor(6) as ex:
     memos = dict(ex.map(one, cov))
 save(asof, "analysts.json", {"asof": str(asof.date()), "memos": memos, "system": SYSTEM, "cutoff": str(cutoff)})
 save_prompts(asof, "analysts", PROMPTS)
