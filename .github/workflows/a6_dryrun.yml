@@ -47,9 +47,23 @@ jobs:
           done 2>&1 | tee mock.log
           python - <<'EOF' | tee -a mock.log
           import json
+          import pandas as pd
           for f in ["screen.json", "ideation.json", "research.json", "analysts.json", "redteam.json", "book.json", "fx.json"]:
               a, b = (json.load(open(f"{d}/fund_state/mock/2026-09-23/{f}")) for d in ("../main", "."))
               print(f"{f}: {'IDENTICAL' if a == b else 'DIFFERENT'}")
+              if f == "screen.json" and a != b:          # which values differ (two separate price downloads)
+                  A, B = (pd.DataFrame(x["rows"]).set_index("ticker") for x in (a, b))
+                  d = (A.astype(str) != B.reindex_like(A).astype(str))
+                  print("  screen cells differing:", int(d.values.sum()), "of", d.size, "; columns:", d.sum()[d.sum() > 0].to_dict(),
+                        "; tickers:", list(d.index[d.any(axis=1)])[:12])
+          EOF
+          # identical inputs: main's and the branch's pm_risk on main's own desk outputs must give the same book
+          cp ../main/fund_state/mock/2026-09-23/book.json /tmp/book_main.json
+          ( cd fund && cp -r ../../main/fund_state/mock/2026-09-23/. ../fund_state/mock/2026-09-23/ \
+            && FUND_MOCK=1 FUND_ASOF=2026-09-23 python pm_risk.py > /dev/null ) && python - <<'EOF' | tee -a mock.log
+          import json
+          a, b = json.load(open("/tmp/book_main.json")), json.load(open("fund_state/mock/2026-09-23/book.json"))
+          print("book.json, branch pm_risk on main's inputs vs main:", "IDENTICAL" if a == b else "DIFFERENT")
           EOF
       - name: Mock Amendment 6 desks and scoring on the branch
         run: |
