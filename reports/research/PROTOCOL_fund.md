@@ -435,3 +435,150 @@ auction routing for it. Until then the pre-close send is the method.
 **Proof before the next weekly trade.** One labelled share of SPY is bought on
 Mon 2026-10-05 and sold on Tue 2026-10-06 through the same path (`execute.py filltest`,
 client ids `fund-test-…`). Pass: 100% filled, |fill − official close| ≤ 10 bp.
+
+## Amendment 6 (2026-10-03, before the first week it affects, as-of 2026-10-07): macro, peer and filing information, shadow only
+
+**The champion does not change.** Screen, ideation, research, analysts, red team, PM/risk, execution
+and the daily review read nothing new. The new desks run after the decisions are committed, and must
+leave the champion's files (`screen`, `ideation`, `analysts`, `redteam`, `book`, `fx`) byte-identical.
+The weekly job hashes these files before the shadow stage, re-checks them after it, and fails on any
+difference.
+
+**Inputs, point in time.** All inputs are read only if they were available before the week's cutoff
+(Wednesday 22:00 UTC).
+* *Context archive* (`fund/context_archive.py`, daily after the news archive): FRED release calendar,
+  Kalshi US macro markets, AI-GPR (level only; it is revised and published with a lag), GDELT theme
+  volume and tone, Finnhub market news, and S&P 500 8-K filings. It is append-only, and a desk reads
+  rows by fetch time.
+* *News archive* (`fund/archive.py`): read by publication time.
+
+**Desks.**
+* *Macro brief* (`fund/macro_desk.py`, one call): a fixed schema of holding-week calendar, regime
+  (≤ 60 words), ≤ 3 themes mapped to GICS sectors, and an FX view. It is rendered as one text block,
+  identical for every C8 call.
+* *Neighbourhood* (`fund/neighbours.py`, no LLM): a co-mention graph over the 91 days to the cutoff.
+  An edge counts distinct Finnhub articles filed under both firms; round-ups filed under more than
+  10 firms are excluded. Each covered name gets its 5 strongest neighbours (≥ 3 shared articles), each
+  with up to 3 headlines from the last 7 days. Articles also filed under the name itself are excluded.
+  It adds up to 5 sub-industry headlines and the name's own 8-K items in the window, at most 3,200
+  characters per name.
+* *C8 informed analysts* (`fund/shadow_info.py`): the champion analyst prompt unchanged, between a
+  shared block (the brief, ideation themes, the FX view, every covered name's hypothesis) and the
+  neighbourhood. The system prompt is the champion's plus one paragraph on the new blocks. Same schema
+  and checks, no red team, so **C8 against `analyst` isolates the information**. Book: the champion's
+  sizing and risk rules.
+* *C9 ranker*: one call orders C8's non-zero views, ties allowed, with longs above shorts. Book: the
+  champion's caps and hedge, N per side in the ranker's order, sized by C8's score × confidence.
+* A week with more than 25% failed C8 memos has no C8 or C9 book.
+* *Review context* (`fund/review_context.py`, after each daily review, no LLM): logs per held name the
+  move since entry, net of its sector ETF, scheduled releases, the GPR level, new 8-Ks and neighbour
+  headlines. Nothing reads it.
+
+**Scoring.** C8 and C9 are challengers, scored like every weekly book. A monitor, not a gate: the
+weekly Spearman rank IC of C8 scores minus the analysts' on the names both scored, with its running
+mean and NW t.
+
+## Amendment 7 (2026-10-03, before the first cohort, as-of 2026-10-07): a lifecycle for every position, shadow book C10
+
+**Why.** A news view has its own life. Large-cap drift after news is short and depends on the kind of
+news: hard-number news drifts for days to weeks; soft news is priced on the day and tends to reverse
+(Kargarzadeh et al. 2026; Lopez-Lira & Tang; Tetlock 2007/2011; post-earnings drift has largely gone
+from large caps, Martineau 2021). A one-week hold for every view ignores that. C10 tests a position
+lifecycle against the weekly book, without trading it.
+
+**The cohort.** Each week's fund book (after the red team and PM/risk) is a cohort. It enters at the
+close of the execution day.
+
+**Horizon: a fixed table, not the model's guess.** LLMs are poorly calibrated on time horizons
+(KalshiBench). The lifecycle desk (`fund/lifecycle.py desk`, one call per name) only classifies:
+* the driving `event_type` (fixed list);
+* the date the event was first reported (within the 91 days to the cutoff);
+* a scheduled `catalyst_date` (a real trading day after entry, ≤ 20 trading days away);
+* 1–3 falsifiable `kill_conditions` observable in news.
+
+| event type | H_type (trading days) |
+|---|---|
+| earnings, guidance, capital return | 15 |
+| analyst revisions | 10 |
+| legal or regulatory | 7 |
+| product launch, partnership, leadership, macro read-through, M&A rumour, other | 5 |
+| dated catalyst | trading days to the catalyst + 1 |
+
+H = H_type − news_age, where news_age is the number of trading days from the first report to the
+entry day. H is clamped to 3–20. If H_type − news_age ≤ 2 the view is stale and not entered.
+Re-estimating the table requires ≥ 30 own trades per type and a new amendment.
+
+**Stop and target, on hedged residual returns, at the close.**
+* e = r − β·r_SPY, with β the screen's hedge beta.
+* σ_e is the EWMA (span 60) of e up to the entry close, floored at 0.75 × the 252-day standard
+  deviation and frozen at entry.
+* W = σ_e·√H, also frozen at entry.
+* Exit at the close when R = side·Σe since entry reaches **−2.0·W (stop)** or **+3.0·W (target)**.
+  This is never checked on the entry day.
+* The stop is wide on purpose: stops help only under momentum or regime shifts, and tight stops on
+  single stocks underperform (Kaminski & Lo 2014; Lo & Remorov 2017). The target is wider still,
+  because selling winners early forgoes drift (Odean 1998; Frazzini 2006).
+* After a stop: no same-side re-entry for 5 trading days unless a new event has an |score| at least
+  as high. After a target: no re-entry without a new event.
+* A sensitivity grid (stop 1.5–2.5, target 2.5–off) is reported as a monitor and never used to tune.
+
+**News exit.** Each trading day, only stories that are new since the last check go to a checker.
+* For each kill condition it answers matched / partial / not, quoting the article.
+* It runs three independent passes: two wordings, plus one with the articles shuffled. It is never
+  asked to reconsider (LLM judges flip under pushback; Jagged Judges 2026).
+* Only events that happened after the entry close count.
+* Matched in ≥ 2 passes: exit. Partial or matched in ≥ 2 passes: halve, once per lot.
+* A new material hard-number event in the position's direction in ≥ 2 passes: once per lot, up to
+  1.5× the entry weight (≤ 10% of NAV, within the gross cap).
+
+**Book across weeks** (overlapping cohorts; Jegadeesh & Titman 1993).
+* Carried lots keep their weight. The caps rebalance a lot only if they move it by more than 25%
+  (no-trade band; Gârleanu & Pedersen).
+* Re-selected names:
+  * same side, new event: H extends to max(remaining, new H), at max(old, new) weight;
+  * same story: not renewed;
+  * opposite view: the lot closes and the new view opens.
+* Capacity: at most 10 a side. Carried names are ranked by |w| × the share of H left, new ones by
+  |w| − 10 bp.
+* Then the champion's caps apply: sector net ≤ 30%, dollar net ≤ 10% of stock gross, gross including
+  SPY ≤ 1.8.
+* SPY re-hedges to zero beta on cohort days, and on other trading days with trades when
+  |net beta| > 10% of gross.
+
+**Scoring C10.**
+* A self-financing book on $100,000, marked at official total-return closes. Cash earns the 3-month
+  bill, and every trade, the hedge included, costs 5 bp per side.
+* Weekly return = NAV ratio over the same Thursday-close boundaries as every book; excess return =
+  that minus the bill.
+* Daily returns are frozen when first seen, and every LLM output is logged, so the book can be
+  rebuilt from its inputs to the cent.
+
+**Multiple testing (applies to every challenger from now on).**
+* Every challenger ever scored counts: C1–C10, so m = 10, at α = 0.05/10 each.
+* Boundaries are O'Brien–Fleming, K = 4, computed in `score.py` by integrating the joint normal law
+  of the look statistics: **5.665 / 4.006 / 3.271 / 2.832** at 13 / 26 / 39 / 52 weeks.
+* The integration must first reproduce the champion's 4.049 / 2.863 / 2.337 / 2.024 at α = 0.05.
+* The C1–C7 boundaries tighten from α/7, which is allowed: no challenger has been scored, so nothing
+  has been rejected.
+* Future challengers get a pre-registered online-Bonferroni share. A threshold never loosens.
+
+**Mechanical gates, checked daily (`lifecycle/checks.json`), before C10 may ever trade.**
+* Daily lot P&L + hedge P&L + cash income − costs reconcile to the NAV change, to the cent.
+* No limit is broken on a trading day.
+* No duplicate or orphan lots.
+* Every stop or target has its trigger.
+* No news after a session's close is used at that close.
+* A second rebuild from the logged inputs reproduces the NAV exactly, and no recorded day changes on
+  rebuild.
+* *Degenerate replay* (`lifecycle.py replay`): with H = the week, no barriers, no news and the book's
+  own weights, the engine must reproduce the weekly book's gross return within 1 bp.
+
+**What would make C10 the traded fund.** Running C10 only as a shadow tests the mechanics, not the
+idea. Trading it is Protocol 7, a new hypothesis with its own clock, not a promotion:
+* The amendment is committed before Protocol 7's first decision and states its reason and that no
+  Protocol 6 performance was used to choose it.
+* Every Protocol 6 week stays in the record.
+* The weekly champion keeps running as a shadow (`c0_weekly`), with a pre-registered paired test on
+  the weekly difference (NW t, lag ≥ the longest horizon in weeks).
+* Any headline claim must survive α/k over the k champion protocols run (or a deflated Sharpe ratio;
+  Bailey & López de Prado 2014).

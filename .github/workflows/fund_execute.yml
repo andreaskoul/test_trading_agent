@@ -48,7 +48,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install "numpy<2" pandas pyarrow yfinance scipy scikit-learn openpyxl
+      - run: pip install "numpy<2" pandas pyarrow yfinance scipy scikit-learn openpyxl huggingface_hub
 
       - name: Restore fund state
         run: |
@@ -70,6 +70,14 @@ jobs:
       - name: Execute (${{ steps.m.outputs.mode }})
         run: python fund/execute.py ${{ steps.m.outputs.mode }}
 
+      - name: C10 lifecycle book, news checks and rebuild (Amendment 7)
+        if: ${{ always() && steps.m.outputs.mode == 'reconcile' }}
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python fund/lifecycle.py daily
+
       - name: Position ledger (Excel)
         if: ${{ always() && steps.m.outputs.mode != 'plan' }}
         continue-on-error: true
@@ -85,7 +93,8 @@ jobs:
             rm -rf /tmp/fd && git worktree prune && git worktree add -q --detach /tmp/fd origin/fund-data
             mkdir -p /tmp/fd/fund_state/live/execution
             [ -d fund_state/live/execution ] && cp -a fund_state/live/execution/. /tmp/fd/fund_state/live/execution/
-            for f in fund_state/live/20*/reviews/*.json; do [ -f "$f" ] && mkdir -p "/tmp/fd/$(dirname "$f")" && cp "$f" "/tmp/fd/$f"; done
+            for f in fund_state/live/20*/reviews/*.json fund_state/live/20*/reviews/context/*.json; do [ -f "$f" ] && mkdir -p "/tmp/fd/$(dirname "$f")" && cp "$f" "/tmp/fd/$f"; done
+            [ -d fund_state/live/lifecycle ] && mkdir -p /tmp/fd/fund_state/live/lifecycle && cp -a fund_state/live/lifecycle/. /tmp/fd/fund_state/live/lifecycle/
             for f in fund_state/live/20*/execution.json; do [ -f "$f" ] && mkdir -p "/tmp/fd/$(dirname "$f")" && cp "$f" "/tmp/fd/$f"; done
             [ -d fund_state/live/ledger ] && mkdir -p /tmp/fd/fund_state/live/ledger && cp -a fund_state/live/ledger/. /tmp/fd/fund_state/live/ledger/
             if [ -f fund_state/live/HALT ]; then cp fund_state/live/HALT /tmp/fd/fund_state/live/HALT; else rm -f /tmp/fd/fund_state/live/HALT; fi
