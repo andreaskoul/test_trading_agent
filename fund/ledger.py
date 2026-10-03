@@ -298,6 +298,16 @@ dash = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"), "mo
         "positions": pos_out,
         "orders": [{k: _f(v) for k, v in o.items() if k != "target_weight"} for o in orders],
         "account": [{"date": str(r["date"]), "equity": float(r["equity"])} for _, r in N.iterrows()],
-        "cash": [{"date": a[0], "type": a[1], "ticker": a[2], "amount": a[5]} for a in arecs]}
-json.dump(dash, open(os.path.join(OUT, "dashboard.json"), "w"), default=str)
+        "cash": [{"date": a[0], "type": a[1], "ticker": _f(a[2]), "amount": _f(a[5])} for a in arecs]}
+
+
+def _clean(v):                                       # browsers reject NaN in JSON: every missing value is null
+    if isinstance(v, dict):
+        return {k: _clean(x) for k, x in v.items()}
+    if isinstance(v, list):
+        return [_clean(x) for x in v]
+    return None if isinstance(v, float) and not np.isfinite(v) else v
+
+
+json.dump(_clean(dash), open(os.path.join(OUT, "dashboard.json"), "w"), default=str, allow_nan=False)
 print(f"dashboard data: {len(pos_out)} positions, {len(orders)} orders -> {os.path.join(OUT, 'dashboard.json')}")
