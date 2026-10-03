@@ -1,8 +1,7 @@
 """Shared plumbing for the fund desks (PROTOCOL_fund.md).
 
-Every desk reads and writes JSON under fund_state/<asof>/. FUND_MOCK=1 turns
-off every paid or keyed call (LLM, Finnhub, embeddings) so the whole
-pipeline can be exercised end to end; mock outputs never count.
+Every desk reads and writes JSON under fund_state/<mode>/<asof>/. FUND_DRYRUN=1 makes
+real calls with no deadline and keeps the results out of the live record.
 """
 
 import calendar
@@ -17,9 +16,8 @@ import pandas as pd
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-MOCK = os.environ.get("FUND_MOCK") == "1"
 DRYRUN = os.environ.get("FUND_DRYRUN") == "1"       # real calls, no deadline, never committed, never scored as live
-MODE = "mock" if MOCK else "dryrun" if DRYRUN else "live"
+MODE = "dryrun" if DRYRUN else "live"
 MODEL = "deepseek/deepseek-v4.1-flash"
 # Serving provider left to OpenRouter's routing (owner's decision, 2026-09-28), so any available
 # host serves the model. The provider that answered is logged with every call, and the frozen
@@ -74,47 +72,44 @@ def save(asof, name, obj):
 
 def require(*keys):
     missing = [k for k in keys if not os.environ.get(k)]
-    if missing and not MOCK:
+    if missing:
         raise SystemExit(f"missing repository secret(s): {', '.join(missing)} (Settings -> Secrets -> Actions)")
 
 
 def deadline_ok(asof) -> bool:
     """Decisions must exist before Thursday 19:00 UTC after the as-of Wednesday."""
-    return MOCK or DRYRUN or time.time() < calendar.timegm(pd.Timestamp(asof).timetuple()) + 86400 + 19 * 3600
+    return DRYRUN or time.time() < calendar.timegm(pd.Timestamp(asof).timetuple()) + 86400 + 19 * 3600
 
 
-def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 3, temperature: float = 0.0):
+def llm(system: str, user: str, check=None, tries: int = 3, temperature: float = 0.0):
     """JSON-mode chat call. Returns (status, output, meta, error)."""
     err = None
     for _ in range(tries):
         try:
-            if MOCK:
-                out, meta = mock_out, {"model": "mock"}
-            else:
-                body = json.dumps({"model": MODEL, "temperature": temperature,
-                                   **({"provider": PROVIDER} if PROVIDER else {}),
-                                   "response_format": {"type": "json_object"},
-                                   "messages": [{"role": "system", "content": system},
-                                                {"role": "user", "content": user}]}).encode()
-                req = urllib.request.Request("https://openrouter.ai/api/v1/chat/completions", data=body, headers={
-                    "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}", "Content-Type": "application/json",
-                    "HTTP-Referer": "https://github.com/andreaskoul/test_trading_agent", "X-Title": "fund-pipeline"})
-                # Hard deadline per call. OpenRouter keeps a slow request alive with whitespace, so a
-                # socket timeout alone never fires on a hung generation (dry run 5: analysts stalled
-                # for 80+ minutes). Read in chunks and give up after CALL_LIMIT seconds.
-                t0, buf = time.time(), b""
-                with urllib.request.urlopen(req, timeout=90) as r:
-                    while chunk := r.read1(65536):              # whatever has arrived, not a full block
-                        buf += chunk
-                        if time.time() - t0 > CALL_LIMIT:
-                            raise TimeoutError(f"LLM call exceeded {CALL_LIMIT} s")
-                resp = json.loads(buf)
-                txt = (resp["choices"][0]["message"].get("content") or "").strip()
-                if not txt:                          # reasoning spent the budget: nothing to parse, retry
-                    raise ValueError("empty content")
-                txt = txt.removeprefix("```json").removeprefix("```").removesuffix("```")
-                out, meta = json.loads(txt), {"model": resp.get("model"), "provider": resp.get("provider"),
-                                              "usage": resp.get("usage"), "raw": txt[:4000]}
+            body = json.dumps({"model": MODEL, "temperature": temperature,
+                               **({"provider": PROVIDER} if PROVIDER else {}),
+                               "response_format": {"type": "json_object"},
+                               "messages": [{"role": "system", "content": system},
+                                            {"role": "user", "content": user}]}).encode()
+            req = urllib.request.Request("https://openrouter.ai/api/v1/chat/completions", data=body, headers={
+                "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}", "Content-Type": "application/json",
+                "HTTP-Referer": "https://github.com/andreaskoul/test_trading_agent", "X-Title": "fund-pipeline"})
+            # Hard deadline per call. OpenRouter keeps a slow request alive with whitespace, so a
+            # socket timeout alone never fires on a hung generation (dry run 5: analysts stalled
+            # for 80+ minutes). Read in chunks and give up after CALL_LIMIT seconds.
+            t0, buf = time.time(), b""
+            with urllib.request.urlopen(req, timeout=90) as r:
+                while chunk := r.read1(65536):              # whatever has arrived, not a full block
+                    buf += chunk
+                    if time.time() - t0 > CALL_LIMIT:
+                        raise TimeoutError(f"LLM call exceeded {CALL_LIMIT} s")
+            resp = json.loads(buf)
+            txt = (resp["choices"][0]["message"].get("content") or "").strip()
+            if not txt:                          # reasoning spent the budget: nothing to parse, retry
+                raise ValueError("empty content")
+            txt = txt.removeprefix("```json").removeprefix("```").removesuffix("```")
+            out, meta = json.loads(txt), {"model": resp.get("model"), "provider": resp.get("provider"),
+                                          "usage": resp.get("usage"), "raw": txt[:4000]}
             err = check(out) if check else None
             if err is None:
                 return "ok", out, meta, None
@@ -122,7 +117,7 @@ def llm(system: str, user: str, mock_out: dict, check=None, tries: int = 3, temp
             err = f"HTTP {exc.code}: {exc.read()[:300].decode(errors='replace')}"
         except Exception as exc:
             err = repr(exc)
-        time.sleep(0 if MOCK else 3)
+        time.sleep(3)
     return "failed", None, {}, err
 
 

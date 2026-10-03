@@ -393,3 +393,45 @@ from day one.
 mostly priced within about a day. Acting at the next close may therefore add turnover
 more often than it avoids losses. The c7 contrast measures exactly that, instead of
 assuming it.
+
+## Execution note to Amendment 3 (2026-10-03, operational; no decision input or score changes)
+
+**What happened.** On 2026-10-01 all 20 market-on-close orders of the first live week
+expired on the Alpaca paper account. Six filled in part, between 15:59:55 and 15:59:58 ET;
+fourteen names and the SPY hedge got nothing. The paper engine has no closing auction:
+it fills a `cls` order against the quote in the last seconds, part-fills 10% of fill
+evaluations at random, and expires the rest (Alpaca staff on the community forum; paper
+trading documentation). Alpaca staff also say live `cls` orders need auction routing.
+
+**Change.** Orders, both weekly and daily review, go out as market orders in the last
+minute before the close (`fund/broker.py`):
+* T − 150 s: the orders are sized from fresh prices, equity and positions.
+* T − 75 s: the close legs of flips go out.
+* T − 60 s: all other orders, SPY included. A flip's open leg goes out once its close
+  leg has filled.
+* T − 30 s to T − 10 s: every 10 s, an order with no new fill is cancelled and its
+  remainder resent, up to 3 attempts.
+* T − 10 s: nothing new is sent.
+* T + 5 s: anything still open is cancelled. The residual is recorded as not fully
+  filled and absorbed by the next rebalance, never carried overnight.
+
+T is the session close from Alpaca's clock, corrected for the local clock's offset.
+
+**Why this price.** For large caps, the closing auction and the 4 pm midquote differ by a
+median 1.7 bp (Bogousslavsky & Muravyev, *Who trades at the close?*). One order at T − 1
+min tracks the close better than a split over the last minutes. A median slippage within
+the gate's 10 bp is therefore expected. It is measured, not assumed: reconciliation
+records every fill against the official close.
+
+**What does not change.** The books are scored at official closes as before, and the
+operations rule (≥ 90% of weeks fully filled, median slippage ≤ 10 bp) is unchanged.
+Week 2026-09-30 is recorded as an execution failure (about 11% filled), and by the
+owner's decision it is not topped up before its next rebalance.
+
+**Before go-live.** `FUND_EXEC_STYLE=cls` (real market-on-close orders, sent before
+15:50 ET) is available. It may be used on a live account only after Alpaca confirms
+auction routing for it. Until then the pre-close send is the method.
+
+**Proof before the next weekly trade.** One labelled share of SPY is bought on
+Mon 2026-10-05 and sold on Tue 2026-10-06 through the same path (`execute.py filltest`,
+client ids `fund-test-…`). Pass: 100% filled, |fill − official close| ≤ 10 bp.

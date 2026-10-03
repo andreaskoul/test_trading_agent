@@ -41,7 +41,7 @@
   <section><h2>Account value</h2><div id="acctEmpty" class="empty" hidden>No trades yet. The first weekly trade is Thursday's close.</div><canvas id="acct"></canvas></section>
   <section><h2>Open positions</h2><div class="scroll" id="open"></div></section>
   <section><h2>Closed positions</h2><div class="scroll" id="closed"></div></section>
-  <section><h2>Orders</h2><div class="scroll" id="orders"></div></section>
+  <section><h2>Filled orders</h2><div class="scroll" id="orders"></div></section>
   <section><h2>Cash activity (dividends, fees, interest)</h2><div class="scroll" id="cash"></div></section>
   <p class="muted">Returns are price returns before costs, signed for shorts. P&amp;L = signed shares × (exit or current − entry), using actual fills at trade boundaries. SPY rows are the market hedge.</p>
 </main>
@@ -80,7 +80,7 @@ fetch("dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   table("closed", [...posCols, ["Exit", p => p.exit_day], ["Exit $", p => fmt(p.exit_price), "n"], ["Return", p => pct(p.return), "n"],
     ["P&L", p => usd(p.pnl), "n"], ["Status", p => esc(p.status)]], closed.slice().reverse());
   table("orders", [["Day", o => o.exec_day], ["Ticker", o => `<b>${esc(o.ticker)}</b>`], ["Leg", o => esc(o.leg)], ["Side", o => o.side],
-    ["Qty", o => fmt(o.qty, 0), "n"], ["Type", o => esc(o.order_type)], ["Status", o => esc(o.status)], ["Fill $", o => fmt(o.fill_price), "n"],
+    ["Filled", o => fmt(o.qty, 0) + (o.ordered_qty && o.ordered_qty > o.qty ? ` of ${fmt(o.ordered_qty, 0)}` : ""), "n"], ["Type", o => esc(o.order_type)], ["Status", o => esc(o.status)], ["Fill $", o => fmt(o.fill_price), "n"],
     ["Close $", o => fmt(o.official_close), "n"], ["Slippage (bp)", o => fmt(o.slippage_bp, 1), "n"]], d.orders.slice().reverse());
   table("cash", [["Date", c => c.date], ["Type", c => esc(c.type)], ["Ticker", c => esc(c.ticker)], ["Amount", c => usd(c.amount), "n"]], d.cash.slice().reverse());
 }).catch(e => { document.getElementById("kpis").innerHTML = `<div class="empty">Could not load dashboard data (${esc(e.message)}).</div>`; });

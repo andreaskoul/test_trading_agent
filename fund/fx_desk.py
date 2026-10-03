@@ -86,8 +86,7 @@ def check(o):
 
 
 rk = Z.sort_values("ridge_rank").index
-mock = {"longs": [{"id": c, "reason": "mock"} for c in rk[:N]], "shorts": [{"id": c, "reason": "mock"} for c in rk[-N:]], "view": "mock"}
-status, out, meta, err = llm(SYSTEM, user, mock, check) if deadline_ok(asof) else ("missed_deadline", None, {}, None)
+status, out, meta, err = llm(SYSTEM, user, check) if deadline_ok(asof) else ("missed_deadline", None, {}, None)
 perm = list(np.random.default_rng(int(str(asof.date()).replace("-", "")) + 1).permutation(sorted(Z.index)))
 eq = lambda L, S: {**{c: 1 / N for c in L}, **{c: -1 / N for c in S}}
 books = {"fx": eq([x["id"] for x in out["longs"]], [x["id"] for x in out["shorts"]]) if status == "ok" else {},

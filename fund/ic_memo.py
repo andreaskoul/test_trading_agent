@@ -33,7 +33,7 @@ payload = {
              for t, w in sorted(fund.items(), key=lambda kv: -kv[1])},
     "risk": book.get("risk", {}).get("fund"), "fx_book": fx.get("books", {}).get("fx"), "fx_view": (fx.get("llm") or {}).get("view"),
 }
-status, out, meta, err = llm(SYSTEM, json.dumps(payload, indent=1), {"memo_markdown": "# IC memo (mock)\n\n" + json.dumps(payload)[:2000]},
+status, out, meta, err = llm(SYSTEM, json.dumps(payload, indent=1),
                              lambda o: None if isinstance(o.get("memo_markdown"), str) else "no memo")
 text = out["memo_markdown"] if status == "ok" else f"# IC memo unavailable\n\n{err}"
 open(os.path.join(week_dir(asof), "ic_memo.md"), "w").write(f"<!-- asof {asof.date()} · {meta.get('model')} -->\n" + text)

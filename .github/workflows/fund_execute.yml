@@ -1,8 +1,8 @@
 name: Fund · execution (Alpaca paper)
 
 # Desk 10 (fund/execute.py, PROTOCOL_fund.md Amendment 3). Trades the week's fund book,
-# committed to `fund-data` by the weekly desks, into the closing auction of the first
-# trading day after the as-of Wednesday, then reconciles the fills after the close.
+# committed to `fund-data` by the weekly desks, in the last minute before the close of the first
+# trading day after the as-of Wednesday (fund/broker.py), then reconciles the fills after the close.
 # Started by the local runner: trade on Thursday (Friday after a Thursday holiday),
 # reconcile Tue-Sat after the close. All modes are idempotent.
 # All runs are idempotent: a week is traded once.
@@ -20,14 +20,6 @@ on:
       asof:
         description: "as-of Wednesday (YYYY-MM-DD); empty = latest"
         default: ""
-      mock_book:
-        description: "plan against a book from the mock desks (end-to-end test of the broker path)"
-        type: boolean
-        default: false
-      test_order:
-        description: "plan mode: also send and cancel one 1-share SPY closing-auction order"
-        type: boolean
-        default: false
       resume:
         description: "remove the HALT file after a risk stop (you have reviewed it)"
         type: boolean
@@ -44,7 +36,7 @@ concurrency:
 jobs:
   execute:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 330          # trade mode waits for the last minute before the close
     env:
       ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
       ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
@@ -75,47 +67,16 @@ jobs:
         if: ${{ inputs.resume }}
         run: rm -f fund_state/live/HALT && echo "HALT removed by ${{ github.actor }}"
 
-      - name: Mock desks (end-to-end test only)
-        if: ${{ inputs.mock_book }}
-        env:
-          FUND_MOCK: '1'
-        run: |
-          for d in screen ideate research analysts redteam pm_risk; do python fund/$d.py; done
-
       - name: Execute (${{ steps.m.outputs.mode }})
-        env:
-          FUND_MOCK: ${{ inputs.mock_book && '1' || '0' }}
         run: python fund/execute.py ${{ steps.m.outputs.mode }}
 
       - name: Position ledger (Excel)
-        if: ${{ always() && !inputs.mock_book && steps.m.outputs.mode != 'plan' }}
+        if: ${{ always() && steps.m.outputs.mode != 'plan' }}
         continue-on-error: true
         run: python fund/ledger.py
 
-      - name: Test order (send and cancel one closing-auction order)
-        if: ${{ inputs.test_order }}
-        run: |
-          python - <<'EOF'
-          import json, os, time, urllib.request
-          H = {"APCA-API-KEY-ID": os.environ["ALPACA_API_KEY"], "APCA-API-SECRET-KEY": os.environ["ALPACA_SECRET_KEY"], "Content-Type": "application/json"}
-          B = "https://paper-api.alpaca.markets"
-          def call(m, p, b=None):
-              r = urllib.request.Request(B + p, method=m, headers=H, data=json.dumps(b).encode() if b else None)
-              try:
-                  with urllib.request.urlopen(r) as x: t = x.read(); return x.status, json.loads(t) if t else None
-              except urllib.error.HTTPError as e: return e.code, json.loads(e.read() or b"{}")
-          s, o = call("POST", "/v2/orders", {"symbol": "SPY", "qty": "1", "side": "buy", "type": "market", "time_in_force": "cls",
-                                             "client_order_id": f"fund-test-{int(time.time())}"})
-          print("submit:", s, o.get("status"), o.get("message"))
-          if s in (200, 201):
-              time.sleep(3); print("cancel:", call("DELETE", f"/v2/orders/{o['id']}")[0])
-              time.sleep(2); print("after cancel:", call("GET", f"/v2/orders/{o['id']}")[1].get("status"))
-          else:
-              raise SystemExit("closing-auction order refused by the paper account")
-          EOF
-
       - name: Commit execution records
-        if: ${{ always() && !inputs.mock_book && (steps.m.outputs.mode != 'plan' || inputs.resume) }}
+        if: ${{ always() && (steps.m.outputs.mode != 'plan' || inputs.resume) }}
         run: |
           set -euo pipefail
           git config user.name 'fund-bot'; git config user.email 'fund-bot@users.noreply.github.com'

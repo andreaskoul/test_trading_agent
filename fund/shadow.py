@@ -21,7 +21,7 @@ from concurrent.futures import ThreadPoolExecutor
 import numpy as np
 import pandas as pd
 
-from common import MOCK, MODE, STATE, asof_from_env, llm, load, news_cutoff, narrative_text, require, save, week_dir
+from common import MODE, STATE, asof_from_env, llm, load, news_cutoff, narrative_text, require, save, week_dir
 
 require("OPENROUTER_API_KEY")
 asof = asof_from_env()
@@ -59,8 +59,7 @@ def c2(t):
         return t, None
     scores, confs = [], []
     for k in range(5):
-        st, out, meta, err = llm(SYSTEM, prompts[t], {"score": A["memos"][t]["memo"]["score"] if A["memos"][t]["memo"] else 0,
-                                                       "confidence": 0.5}, check, temperature=0.7)
+        st, out, meta, err = llm(SYSTEM, prompts[t], check, temperature=0.7)
         if st == "ok":
             scores.append(out["score"]); confs.append(out["confidence"])
     if len(scores) < 3:
@@ -74,12 +73,12 @@ def c3(t):
     p_ = os.path.join(wd, "research", f"{t}.json")
     narr = json.load(open(p_)) if os.path.exists(p_) else None
     user = f"As-of Wednesday close {asof.date()}. Stock: the company.\n\n" + mask(t, narrative_text(narr, news_cutoff(asof)))
-    st, out, meta, err = llm(SYSTEM_C3, user, {"score": 0, "confidence": 0.5}, check)
+    st, out, meta, err = llm(SYSTEM_C3, user, check)
     return t, ({"score": out["score"], "confidence": float(out["confidence"])} if st == "ok" else None)
 
 
 names = sorted(prompts)
-with ThreadPoolExecutor(1 if MOCK else 6) as ex:
+with ThreadPoolExecutor(6) as ex:
     r2 = dict(ex.map(c2, names))
     r3 = dict(ex.map(c3, names))
 print(f"shadow: C2 {sum(v is not None for v in r2.values())}/{len(names)}, C3 {sum(v is not None for v in r3.values())}/{len(names)}")
@@ -102,9 +101,9 @@ elif not os.path.exists(cp):
 else:
     C = json.load(open(cp))
     def rescore(it):
-        st, out, meta, err = llm(C["system"], it["user"], {"score": it["score"], "confidence": it["confidence"]}, check)
+        st, out, meta, err = llm(C["system"], it["user"], check)
         return it["ticker"], (out["score"] if st == "ok" else None), meta.get("provider")
-    with ThreadPoolExecutor(1 if MOCK else 6) as ex:
+    with ThreadPoolExecutor(6) as ex:
         res = list(ex.map(rescore, C["items"]))
     ref = {it["ticker"]: it["score"] for it in C["items"]}
     got = [(ref[t], s) for t, s, _ in res if s is not None]

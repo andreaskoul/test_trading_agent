@@ -41,8 +41,6 @@ import pandas as pd
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOCAL = os.path.join(ROOT, "fund_context")
 LOCAL_ONLY = os.environ.get("CONTEXT_LOCAL_ONLY") == "1"
-if os.environ.get("FUND_MOCK") == "1":
-    raise SystemExit(print("context archive: mock mode, nothing fetched") or 0)
 now = datetime.now(timezone.utc)
 today = now.date().isoformat()
 UA = os.environ.get("SEC_USER_AGENT", "").strip()

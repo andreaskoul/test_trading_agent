@@ -16,7 +16,7 @@ import subprocess
 
 import pandas as pd
 
-from common import MOCK, ROOT, SITE_REPO, asof_from_env, llm, load, require, save
+from common import ROOT, SITE_REPO, asof_from_env, llm, load, require, save
 
 require("OPENROUTER_API_KEY")
 asof = asof_from_env()
@@ -64,10 +64,7 @@ def check(o):
     return f"unknown tickers {bad[:5]}" if bad else None
 
 
-mock = {"long_ideas": [{"ticker": t, "hypothesis": "mock: top ridge"} for t in S.nsmallest(3, "ridge_rank").index],
-        "short_ideas": [{"ticker": t, "hypothesis": "mock: bottom ridge"} for t in S.nlargest(3, "ridge_rank").index],
-        "themes": ["mock"]}
-status, out, meta, err = llm(SYSTEM, user, mock, check)
+status, out, meta, err = llm(SYSTEM, user, check)
 noms = ([x["ticker"] for x in out["long_ideas"][:N_IDEAS]] + [x["ticker"] for x in out["short_ideas"][:N_IDEAS]]) if out else []
 rule = (list(S.nsmallest(N_RULE, "ridge_rank").index) + list(S.nlargest(N_RULE, "ridge_rank").index)
         + list(pd.to_numeric(S["attention_shock"], errors="coerce").dropna().nlargest(N_RULE).index))

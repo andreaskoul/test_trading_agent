@@ -21,8 +21,6 @@ FNAME = f"emb-{re.sub(r'[^A-Za-z0-9]+', '-', EMBED).strip('-')}.npz"
 LOCAL = os.path.join(ROOT, "fund_research", "data", "cache", FNAME)
 REPO_NAME = "fund-embeddings"
 
-if os.environ.get("FUND_MOCK") == "1":
-    sys.exit(0)
 tok = os.environ.get("HF_TOKEN")
 if not tok:
     print("emb_store: HF_TOKEN not set; skipping (Actions cache only)")

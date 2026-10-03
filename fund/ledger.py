@@ -34,6 +34,28 @@ os.makedirs(OUT, exist_ok=True)
 weeks = sorted(d for d in glob.glob(os.path.join(base, "20*")) if os.path.exists(os.path.join(d, "book.json")))
 ld = lambda d, f: json.load(open(os.path.join(d, f))) if os.path.exists(os.path.join(d, f)) else {}
 
+# actual fills, the source of every share count below: reconcile's fills.csv where a record is
+# reconciled, else the filled quantity the send recorded; an order with neither is still pending
+_fp = os.path.join(base, "execution", "fills.csv")
+FQ = {}
+if os.path.exists(_fp):
+    for _, f in pd.read_csv(_fp, dtype={"asof": str, "exec_day": str}).iterrows():
+        if pd.notna(f.get("filled_qty")):
+            FQ[(f["asof"], f["exec_day"], f["symbol"], f["leg"])] = float(f["filled_qty"])
+
+
+def filled_of(o, asof, day):
+    k = (asof, str(day), o["symbol"], o["leg"])
+    if k in FQ:
+        return FQ[k]
+    return float(o["filled_qty"]) if o.get("filled_qty") is not None else None
+
+
+def signed(o, q):
+    return q if o["side"] == "buy" else -q
+
+
+ORDER_TYPE = {"preclose": "market, last minute before the close", "cls": "market-on-close"}
 rows, orders = [], []
 for d in weeks:
     asof = os.path.basename(d)
@@ -43,19 +65,21 @@ for d in weeks:
     if ex.get("status") != "submitted":            # only weeks actually traded on Alpaca
         continue
     halted = str(ex.get("reason") or "").startswith("HALT")
-    # actual holdings after the week's orders: shares before + every order the broker accepted
-    live = [o for o in ex.get("orders", []) if o.get("id") and not str(o.get("status", "")).startswith(("rejected", "canceled", "expired"))]
+    # actual holdings after the week's orders: shares before + every share actually filled
+    live = [o for o in ex.get("orders", []) if o.get("id")]
     held = dict(ex.get("current_qty") or {})
     for o in live:
-        held[o["symbol"]] = held.get(o["symbol"], 0) + (o["qty"] if o["side"] == "buy" else -o["qty"])
+        q = filled_of(o, asof, ex.get("exec_day"))
+        if q:
+            held[o["symbol"]] = held.get(o["symbol"], 0) + signed(o, q)
     w = {t: q for t, q in held.items() if q}
     memos, rt = ld(d, "analysts.json").get("memos", {}), ld(d, "redteam.json")
     S = pd.DataFrame(ld(d, "screen.json").get("rows", [])).set_index("ticker") if ld(d, "screen.json") else pd.DataFrame()
     fills = {}
     for o in live:
         orders.append({"week": asof, "exec_day": ex.get("exec_day"), "ticker": o["symbol"], "leg": o["leg"],
-                       "side": o["side"], "qty": o["qty"],
-                       "order_type": "market-on-close" if o.get("tif") == "cls" else "market (flip)",
+                       "side": o["side"], "qty": o["qty"], "filled_qty": filled_of(o, asof, ex.get("exec_day")),
+                       "order_type": "market (flip close)" if o["leg"] == "flatten" else ORDER_TYPE[ex.get("style", "cls")],
                        "ref_price": o.get("price_ref"), "target_weight": o.get("target_weight"),
                        "status": o.get("status"), "client_order_id": o.get("client_order_id")})
     fp = os.path.join(base, "execution", "fills.csv")
@@ -76,14 +100,18 @@ for d in weeks:
         if rv_.get("status") != "submitted":
             continue
         for o in rv_.get("orders", []):
-            if not o.get("id") or str(o.get("status", "")).startswith(("rejected", "canceled", "expired")):
+            if not o.get("id"):
                 continue
+            q = filled_of(o, asof, rv_["day"])
             orders.append({"week": asof, "exec_day": rv_["day"], "ticker": o["symbol"], "leg": o["leg"], "side": o["side"],
-                           "qty": o["qty"], "order_type": "market-on-close (daily review)", "ref_price": o.get("price_ref"),
+                           "qty": o["qty"], "filled_qty": q,
+                           "order_type": ORDER_TYPE[rv_.get("style", "cls")] + " (daily review)", "ref_price": o.get("price_ref"),
                            "status": o.get("status"), "client_order_id": o.get("client_order_id")})
+            if not q:
+                continue
             lots = segs.setdefault(o["symbol"], [[0, None, None]])
             lots[-1][2] = rv_["day"]
-            lots.append([lots[-1][0] + (o["qty"] if o["side"] == "buy" else -o["qty"]), rv_["day"], None])
+            lots.append([lots[-1][0] + signed(o, q), rv_["day"], None])
     for t, lots in segs.items():
       for q, s_day, e_day in lots:
         if not q:
@@ -227,14 +255,15 @@ for i in range(2, len(recs) + 2):
 wo = wb.create_sheet("Orders")
 O = pd.DataFrame(orders)
 ocols = [("Week (as-of Wed)", None), ("Execution day", None), ("Ticker", None), ("Leg", None), ("Side", None),
-         ("Quantity", "#,##0"), ("Order type", None), ("Reference price ($)", "#,##0.00"),
+         ("Ordered", "#,##0"), ("Filled", "#,##0"), ("Order type", None), ("Reference price ($)", "#,##0.00"),
          ("Status", None), ("Fill price ($)", "#,##0.00"), ("Official close ($)", "#,##0.00"), ("Slippage vs close (bp)", "0.0"),
          ("Notional ($)", "#,##0"), ("Client order id", None)]
 orecs = []
 for _, o in (O.iterrows() if len(O) else []):
-    orecs.append((lambda o: (lambda i: [o.week, o.exec_day, o.ticker, o.leg, o.side, o.qty, o.order_type, o.ref_price,
-                                        o.status, o.get("fill_price"), o.get("official_close"),
-                                        o.get("slippage_bp"), f'=IFERROR(F{i}*IF(J{i}<>"",J{i},H{i}),"")',
+    orecs.append((lambda o: (lambda i: [o.week, o.exec_day, o.ticker, o.leg, o.side, o.qty,
+                                        o.get("filled_qty") if pd.notna(o.get("filled_qty")) else "pending",
+                                        o.order_type, o.ref_price, o.status, o.get("fill_price"), o.get("official_close"),
+                                        o.get("slippage_bp"), f'=IFERROR(G{i}*IF(K{i}<>"",K{i},I{i}),"")',
                                         o.client_order_id]))(o))
 sheet(wo, ocols, orecs, {"Client order id": 34, "Order type": 16, "Status": 12})
 
@@ -291,12 +320,24 @@ for _, r in (P.iterrows() if len(P) else []):
                                           "shares": r.shares, "entry_price": r.entry_price, "exit_price": r.exit_price,
                                           "current_price": r.mark_price, "return": ret, "pnl": pnl,
                                           "confidence": r.confidence, "redteam": r.redteam, "thesis": r.thesis}.items()})
+# the page lists only orders that filled (in part or whole), at the quantity that filled
+filled_orders = [{**{k: _f(v) for k, v in o.items() if k not in ("target_weight", "filled_qty")}, "qty": float(o["filled_qty"]),
+                  "ordered_qty": o["qty"], "status": "filled" if o["filled_qty"] >= o["qty"] else "partial"} for o in orders if o.get("filled_qty") and o["filled_qty"] > 0]
+_tp = os.path.join(base, "execution", "tests.csv")
+if os.path.exists(_tp):
+    for _, t_ in pd.read_csv(_tp, dtype={"day": str}).iterrows():
+        if t_.get("filled_qty", 0) > 0:
+            filled_orders.append({"week": None, "exec_day": t_["day"], "ticker": t_["symbol"], "leg": "pipeline test",
+                                  "side": t_["side"], "qty": float(t_["filled_qty"]), "ordered_qty": int(t_["qty"]),
+                                  "order_type": ORDER_TYPE["preclose"], "status": t_["status"], "fill_price": _f(t_["fill"]),
+                                  "official_close": _f(t_.get("close")), "slippage_bp": _f(t_.get("slip_bp")),
+                                  "client_order_id": t_["client_order_id"]})
 _nav_all = pd.read_csv(nav_p) if os.path.exists(nav_p) else pd.DataFrame(columns=["date", "equity"])
 dash = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"), "mode": MODE,
         # the paper account's latest value from Alpaca, shown even before the first trade
         "balance": {"equity": float(_nav_all["equity"].iloc[-1]), "date": str(_nav_all["date"].iloc[-1])} if len(_nav_all) else None,
         "positions": pos_out,
-        "orders": [{k: _f(v) for k, v in o.items() if k != "target_weight"} for o in orders],
+        "orders": filled_orders,
         "account": [{"date": str(r["date"]), "equity": float(r["equity"])} for _, r in N.iterrows()],
         "cash": [{"date": a[0], "type": a[1], "ticker": _f(a[2]), "amount": _f(a[5])} for a in arecs]}
 

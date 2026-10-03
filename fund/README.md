@@ -21,7 +21,7 @@ acts twice. The workflows remain, manual only, as the fallback when the Mac is o
 |---|---|---|---|
 | daily 21:20 | news archive: Finnhub news for every S&P 500 member, one file per day; then the context archive (Amendment 6, shadow input only) | `fund_archive.yml` | `{"ref":"main","inputs":{"minutes":"40"}}` |
 | Wed 22:15 | the desks decide next week's book (≈ 90 min), committed to `fund-data` before the Thursday 19:00 deadline; a week is decided once | `fund_weekly.yml` | `{"ref":"main"}` |
-| Thu 16:15 (Fri 16:15 after a Thursday holiday) | orders for the closing auction; each week is traded once | `fund_execute.yml` | `{"ref":"main","inputs":{"mode":"trade"}}` |
+| Thu 16:15 (Fri 16:15 after a Thursday holiday) | orders sent in the last minute before the close (`fund/broker.py`); each week is traded once | `fund_execute.yml` | `{"ref":"main","inputs":{"mode":"trade"}}` |
 | Mon, Tue, Wed, Fri 16:30 | daily review of held positions against new news; changes traded at that day's close | `fund_review.yml` | `{"ref":"main","inputs":{"mode":"trade"}}` |
 | Tue–Sat 01:10 | reconcile the previous session: fills vs official close, broker NAV, cash activity, risk halts | `fund_execute.yml` | `{"ref":"main","inputs":{"mode":"reconcile"}}` |
 | after each weekly, trade, review or reconcile run | ledger (Excel) and dashboard rebuilt and published on GitHub Pages | `fund_pages.yml` | (started by the runner) |
@@ -52,7 +52,7 @@ daily ─ 0 news archive
 Wed ─── 1 screen ─▶ 2 ideation ─▶ 3 research ─▶ 4 analysts ─▶ 5 red team ─▶ 6 PM + risk ─▶ commit
           500 names   ≤ 45 names    narratives     memos         filter        the book
         8 macro FX · 11 shadow challengers · 7 IC memo · 9 performance · ledger · dashboard
-Thu ─── 10 execution (closing auction)          Fri/Mon/Tue/Wed ─ 12 daily review
+Thu ─── 10 execution (last minute before close)  Fri/Mon/Tue/Wed ─ 12 daily review
 ```
 
 | desk | file | LLM | output (`fund_state/live/<week>/`) |
@@ -123,11 +123,11 @@ realistic expectations for a large-cap weekly news book are a Sharpe of roughly 
 * **Dry run:** Actions → *Fund · weekly desks* → Run workflow → tick **dry_run** (real calls,
   no deadline, results only as a run artifact; nothing enters the live record). Always tick it
   for tests.
-* **Execution test:** *Fund · execution* with mode `plan`, optionally `mock_book` and
-  `test_order` (sends and cancels one 1-share closing-auction order).
-* **Review test:** *Fund · daily position review* with mode `plan`.
+* **Execution test:** `runner.py run execute --mode plan` (orders built from the real account,
+  nothing sent). `runner.py run filltest --test buy SPY 1` sends one labelled order through the
+  pre-close path (`fund-test-…`), recorded in `execution/tests.csv`.
+* **Review test:** `runner.py run review --mode plan` (writes `reviews/<day>.plan.json`, never the day's record).
 * **Provider check:** *Fund · LLM provider check* calls the model once through each candidate host.
-* **Local mock** (no keys): `FUND_MOCK=1 FUND_ASOF=2026-09-23 python fund/<desk>.py` in desk order.
 
 Secrets: `OPENROUTER_API_KEY`, `FINNHUB_API_KEY`, `HF_TOKEN`, `ALPACA_API_KEY`,
 `ALPACA_SECRET_KEY` (a paper account used only by the fund), optionally `POLYGON_API_KEY`,
