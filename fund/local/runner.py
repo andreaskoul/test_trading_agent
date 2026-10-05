@@ -46,8 +46,9 @@ SCHEDULE = {
     "reconcile": {"days": "12345",   "at": "01:10", "late": 720},
     "report":    {"days": "0123456", "at": "05:50", "late": 600},   # iMessage: after reconcile, archive and the weekly run
     # one-off pipeline tests of the pre-close send: 1 SPY bought Monday, sold Tuesday (labelled fund-test-...)
-    "filltest-buy":  {"dates": ["2026-10-05"], "at": "16:15", "late": 180, "args": ["buy", "SPY", "1"]},
-    "filltest-sell": {"dates": ["2026-10-06"], "at": "16:15", "late": 180, "args": ["sell", "SPY", "1"]},
+    # (moved from Mon/Tue: the 10-05 run crashed in the drift check before sending anything)
+    "filltest-buy":  {"dates": ["2026-10-06"], "at": "16:15", "late": 180, "args": ["buy", "SPY", "1"]},
+    "filltest-sell": {"dates": ["2026-10-07"], "at": "16:15", "late": 180, "args": ["sell", "SPY", "1"]},
 }
 # weekday(): Mon=0 ... Sun=6
 NEEDS = {
@@ -397,6 +398,8 @@ WORKFLOW = {"archive": "fund_archive.yml", "weekly": "fund_weekly.yml", "execute
 
 
 def drift(j):
+    if j.name not in WORKFLOW:                      # local-only jobs (filltest) have no workflow to compare
+        return
     try:
         y = open(os.path.join(j.work, ".github", "workflows", WORKFLOW[j.name])).read()
     except OSError:
@@ -606,7 +609,18 @@ def main():
     rp.add_argument("--send", action="store_true"); rp.set_defaults(f=report)
     a = p.parse_args()
     os.makedirs(HOME, exist_ok=True)
-    a.f(a)
+    try:
+        a.f(a)
+    except SystemExit:
+        raise
+    except BaseException as exc:                    # a crash in the runner itself still reaches the phone
+        import traceback
+        traceback.print_exc()
+        to = load_secrets().get("IMESSAGE_TO")
+        if a.cmd in ("run", "report") and to:
+            what = f"{a.cmd} {getattr(a, 'job', '')}".strip()
+            imessage(to, f"⚠ Fund runner CRASHED ({what}) at {now_utc():%H:%M}Z: {type(exc).__name__}: {exc}"[:600])
+        raise
 
 
 if __name__ == "__main__":
