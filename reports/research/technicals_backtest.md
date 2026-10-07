@@ -129,3 +129,21 @@ By zone type and strength, held +3 minus the matched placebo (ATR):
 | weaker | 138,525 | +0.0034 / +0.0022 (t +0.2) |
 | middle | 138,447 | -0.0033 / -0.0072 (t -0.6) |
 | stronger | 138,477 | -0.0148 / -0.0056 (t -0.5) |
+
+## Pre-registration: the follow-through gate (written 2026-10-07, before any holdout read of this variable)
+
+The levels failed above. The one technical variable that sorted outcomes on 2012–2021 is follow-through: did
+the market keep moving the news's way between the news day and the entry close?
+
+* **Variable.** z = side × (residual return, Welch beta vs SPY, from the close before the news day to the
+  entry close) ÷ (σ_e × √(sessions + 1)), with σ_e the Position Lifecycle book's entry volatility.
+* **Gate.** Enter only if z ≥ **1.5** (the fit-period boundary between the negative and positive quintiles).
+  Otherwise do not enter. Exits are unchanged: the Position Lifecycle barriers (−2 W, +3 W, horizon).
+* **Fit period (2012–2021), Lifecycle barriers:** passed 3,645 events +11.6 bp; failed 2,441 events −39.6 bp;
+  weekly spread (passed − failed) **+45.5 bp, t +2.38** over 427 weeks; longs +32.8 (t +1.29), shorts +40.9 (t +1.46).
+* **Primary test, read once on 2022–2025:** the weekly spread passed − failed under the Lifecycle barriers,
+  t ≥ 2.0 (one-sided). Secondary: same sign for longs and shorts; the passed events' mean above the
+  Lifecycle book's mean on all events.
+* **If it passes:** the gate becomes the Technical Timing shadow book's entry rule (Lifecycle exits unchanged),
+  with the LLM's news-stated prices logged. **If it fails:** no technical book is built from this test.
+* The threshold, the variable and the test are fixed by this commit; nothing is re-tuned after the read.
