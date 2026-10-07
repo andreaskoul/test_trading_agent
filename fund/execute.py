@@ -146,7 +146,9 @@ if mode == "reconcile":
     tp = os.path.join(EXEC, "tests.csv")
     if os.path.exists(tp):
         T = pd.read_csv(tp, dtype={"day": str})
-        todo = T["close"].isna() & T["fill"].notna() & (pd.to_datetime(T["day"]).dt.date < datetime.now(ET).date())
+        # a test day is done 45 minutes after its close (the reconcile runs at 21:10 ET on the same date)
+        done_ = pd.to_datetime(T["day"]) + pd.Timedelta(hours=16, minutes=45) <= pd.Timestamp(datetime.now(ET).replace(tzinfo=None))
+        todo = T["close"].isna() & T["fill"].notna() & done_
         for i in T.index[todo]:
             px = yf.download(T.at[i, "symbol"].replace(".", "-"), start=T.at[i, "day"],
                              end=pd.Timestamp(T.at[i, "day"]) + pd.Timedelta(days=1), progress=False, auto_adjust=False)["Close"]
