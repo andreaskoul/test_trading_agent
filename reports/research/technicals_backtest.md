@@ -147,3 +147,24 @@ the market keep moving the news's way between the news day and the entry close?
 * **If it passes:** the gate becomes the Technical Timing shadow book's entry rule (Lifecycle exits unchanged),
   with the LLM's news-stated prices logged. **If it fails:** no technical book is built from this test.
 * The threshold, the variable and the test are fixed by this commit; nothing is re-tuned after the read.
+
+## Holdout read of the follow-through gate (2022–2025, once)
+
+| group | events | Lifecycle-barrier bp / event | t (weekly) |
+|---|---:|---:|---:|
+| passed (z ≥ 1.5) | 1,866 | +3.0 | +0.84 |
+| failed (z < 1.5) | 1,134 | -2.7 | +0.95 |
+| all (Lifecycle book) | 3,000 | +0.9 | +1.03 |
+
+| weekly spread, passed − failed | bp | t | weeks |
+|---|---:|---:|---:|
+| all | -19.7 | -0.58 | 170 |
+| long | +10.2 | +0.22 | 130 |
+| short | +28.2 | +0.70 | 137 |
+
+**Primary (t ≥ 2.0): FAIL.** Secondary (both sides positive, passed above all): yes.
+
+**Conclusion.** The gate fails its pre-registered test. The 2012–2021 spread of +45 bp shrinks to about +6 bp
+per event and −20 bp in weekly terms (t −0.58) out of sample. Under the pre-registration, no Technical
+Timing book is built from this test. Neither the levels nor the follow-through gate show an edge for the
+fund's Thursday entries of S&P 500 news events at daily resolution.

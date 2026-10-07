@@ -532,5 +532,33 @@ def touch_report():
     print(txt)
     open(os.path.join(ROOT, "reports", "research", "technicals_backtest.md"), "a").write(txt)
 
+def gate():
+    """The pre-registered follow-through gate (report section 'Pre-registration'), read once on 2022-2025."""
+    T = pd.read_parquet(os.path.join(BT, "trades.parquet"))
+    Hd = T[(T.entry_day >= HOLD[0]) & (T.entry_day <= HOLD[1])].copy()
+    Hd["passed"] = Hd.priced_z >= 1.5
+    L = ["", "## Holdout read of the follow-through gate (2022–2025, once)", "",
+         "| group | events | Lifecycle-barrier bp / event | t (weekly) |", "|---|---:|---:|---:|"]
+    for k, G in ((True, Hd[Hd.passed]), (False, Hd[~Hd.passed]), ("all", Hd)):
+        m, tt, _ = weekly_t(G.lc_pnl, G.entry_day)
+        L.append(f"| {'passed (z ≥ 1.5)' if k is True else 'failed (z < 1.5)' if k is False else 'all (Lifecycle book)'} "
+                 f"| {len(G):,} | {m * 1e4:+.1f} | {tt:+.2f} |")
+    res = {}
+    for nm, G in (("all", Hd), ("long", Hd[Hd.side > 0]), ("short", Hd[Hd.side < 0])):
+        w = G.groupby(["entry_day", "passed"]).lc_pnl.mean().unstack().dropna()
+        sp = w[True] - w[False]
+        res[nm] = (sp.mean(), sp.mean() / sp.std(ddof=1) * math.sqrt(len(sp)), len(sp))
+    L += ["", "| weekly spread, passed − failed | bp | t | weeks |", "|---|---:|---:|---:|"]
+    for nm, (m, tt, n) in res.items():
+        L.append(f"| {nm} | {m * 1e4:+.1f} | {tt:+.2f} | {n} |")
+    prim = res["all"][1] >= 2.0
+    sec = res["long"][0] > 0 and res["short"][0] > 0 and Hd[Hd.passed].lc_pnl.mean() > Hd.lc_pnl.mean()
+    L += ["", f"**Primary (t ≥ 2.0): {'PASS' if prim else 'FAIL'}.** Secondary (both sides positive, passed above all): "
+          f"{'yes' if sec else 'no'}.", ""]
+    txt = "\n".join(L) + "\n"
+    print(txt)
+    open(os.path.join(ROOT, "reports", "research", "technicals_backtest.md"), "a").write(txt)
+
+
 if __name__ == "__main__":
-    {"download": download, "run": run, "report": report, "touch": touch, "touch_report": touch_report}[sys.argv[1]]()
+    {"download": download, "run": run, "report": report, "touch": touch, "touch_report": touch_report, "gate": gate}[sys.argv[1]]()
