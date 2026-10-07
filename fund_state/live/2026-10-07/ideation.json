@@ -1,0 +1,405 @@
+{
+ "asof": "2026-10-07",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "Together",
+  "usage": {
+   "prompt_tokens": 23707,
+   "completion_tokens": 28268,
+   "total_tokens": 51975,
+   "cost": 0.0410337,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 0,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.0410337,
+    "upstream_inference_prompt_cost": 0.0071121,
+    "upstream_inference_completions_cost": 0.0339216
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 27601,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"long_ideas\":[{\"ticker\":\"CEG\",\"hypothesis\":\"Nuclear play holds firm; +17.9% weekly move and high attention suggest AI/power catalyst continues.\"},{\"ticker\":\"WMT\",\"hypothesis\":\"Holiday shopper time-saving initiative; high attention and positive retail catalyst may drive next week.\"},{\"ticker\":\"IBM\",\"hypothesis\":\"DARPA quantum Stage C advance; high attention and quantum catalyst could drive next week.\"},{\"ticker\":\"DIS\",\"hypothesis\":\"Super Bowl streaming plan; high attention and media catalyst may drive next week.\"},{\"ticker\":\"MRNA\",\"hypothesis\":\"Moderna/Eli Lilly lead healthcare higher; high attention and strong momentum may continue.\"},{\"ticker\":\"MCK\",\"hypothesis\":\"Option Care surges on McKesson home-infusion bet; positive deal catalyst.\"},{\"ticker\":\"NOC\",\"hypothesis\":\"New FORTITUDE chip; advanced electronics narrative catalyst with high attention.\"},{\"ticker\":\"AMAT\",\"hypothesis\":\"AI chip earnings dependability; positive sector catalyst and high attention.\"},{\"ticker\":\"LRCX\",\"hypothesis\":\"AI chip stocks to watch; positive sector catalyst and high attention.\"},{\"ticker\":\"ABT\",\"hypothesis\":\"FDA CardioMEMS app integration; dividend bargain after selloff may attract buyers.\"},{\"ticker\":\"SBUX\",\"hypothesis\":\"Dividend increase; positive shareholder return catalyst with high attention.\"},{\"ticker\":\"TMUS\",\"hypothesis\":\"Satellite coverage push and ad data tie-up; positive catalyst with high attention.\"}],\"short_ideas\":[{\"ticker\":\"STX\",\"hypothesis\":\"Seagate worry headline; -12.4% weekly drop and high attention suggest further downside.\"},{\"ticker\":\"WDC\",\"hypothesis\":\"SanDisk forecast/chart caution; -10.8% weekly drop and high attention suggest further downside.\"},{\"ticker\":\"PEP\",\"hypothesis\":\"Earnings preview says decisions make things worse; high attention negative catalyst.\"},{\"ticker\":\"MCD\",\"hypothesis\":\"AI menu price-fixing lawsuit; negative legal catalyst with high attention.\"},{\"ticker\":\"APO\",\"hypothesis\":\"Private credit trades involved other firms' loans; risk headline with high attention.\"},{\"ticker\":\"FICO\",\"hypothesis\":\"15% staff cuts not boosting stock; negative catalyst and high attention.\"},{\"ticker\":\"WFC\",\"hypothesis\":\"Federal lending probe report; negative regulatory catalyst with high attention.\"},{\"ticker\":\"APP\",\"hypothesis\":\"Q3 results upcoming after fall; high attention and weak trend suggest downside.\"},{\"ticker\":\"GEV\",\"hypothesis\":\"Overvalued after 70% run; negative valuation headline with high attention.\"},{\"ticker\":\"LEN\",\"hypothesis\":\"30-year mortgage near 7.5%; housing headwind and high attention.\"},{\"ticker\":\"VRT\",\"hypothesis\":\"Downside left in Vertiv; negative analyst headline with high attention.\"},{\"ticker\":\"BKNG\",\"hypothesis\":\"FTC action over Priceline hotel ads; negative regulatory catalyst.\"}],\"themes\":[\"AI power and nuclear demand\",\"AI semiconductor capex\",\"Healthcare catalysts and earnings\",\"Regulatory and legal overhangs\",\"Rate-sensitive housing and REITs\"]}"
+ },
+ "llm": {
+  "long_ideas": [
+   {
+    "ticker": "CEG",
+    "hypothesis": "Nuclear play holds firm; +17.9% weekly move and high attention suggest AI/power catalyst continues."
+   },
+   {
+    "ticker": "WMT",
+    "hypothesis": "Holiday shopper time-saving initiative; high attention and positive retail catalyst may drive next week."
+   },
+   {
+    "ticker": "IBM",
+    "hypothesis": "DARPA quantum Stage C advance; high attention and quantum catalyst could drive next week."
+   },
+   {
+    "ticker": "DIS",
+    "hypothesis": "Super Bowl streaming plan; high attention and media catalyst may drive next week."
+   },
+   {
+    "ticker": "MRNA",
+    "hypothesis": "Moderna/Eli Lilly lead healthcare higher; high attention and strong momentum may continue."
+   },
+   {
+    "ticker": "MCK",
+    "hypothesis": "Option Care surges on McKesson home-infusion bet; positive deal catalyst."
+   },
+   {
+    "ticker": "NOC",
+    "hypothesis": "New FORTITUDE chip; advanced electronics narrative catalyst with high attention."
+   },
+   {
+    "ticker": "AMAT",
+    "hypothesis": "AI chip earnings dependability; positive sector catalyst and high attention."
+   },
+   {
+    "ticker": "LRCX",
+    "hypothesis": "AI chip stocks to watch; positive sector catalyst and high attention."
+   },
+   {
+    "ticker": "ABT",
+    "hypothesis": "FDA CardioMEMS app integration; dividend bargain after selloff may attract buyers."
+   },
+   {
+    "ticker": "SBUX",
+    "hypothesis": "Dividend increase; positive shareholder return catalyst with high attention."
+   },
+   {
+    "ticker": "TMUS",
+    "hypothesis": "Satellite coverage push and ad data tie-up; positive catalyst with high attention."
+   }
+  ],
+  "short_ideas": [
+   {
+    "ticker": "STX",
+    "hypothesis": "Seagate worry headline; -12.4% weekly drop and high attention suggest further downside."
+   },
+   {
+    "ticker": "WDC",
+    "hypothesis": "SanDisk forecast/chart caution; -10.8% weekly drop and high attention suggest further downside."
+   },
+   {
+    "ticker": "PEP",
+    "hypothesis": "Earnings preview says decisions make things worse; high attention negative catalyst."
+   },
+   {
+    "ticker": "MCD",
+    "hypothesis": "AI menu price-fixing lawsuit; negative legal catalyst with high attention."
+   },
+   {
+    "ticker": "APO",
+    "hypothesis": "Private credit trades involved other firms' loans; risk headline with high attention."
+   },
+   {
+    "ticker": "FICO",
+    "hypothesis": "15% staff cuts not boosting stock; negative catalyst and high attention."
+   },
+   {
+    "ticker": "WFC",
+    "hypothesis": "Federal lending probe report; negative regulatory catalyst with high attention."
+   },
+   {
+    "ticker": "APP",
+    "hypothesis": "Q3 results upcoming after fall; high attention and weak trend suggest downside."
+   },
+   {
+    "ticker": "GEV",
+    "hypothesis": "Overvalued after 70% run; negative valuation headline with high attention."
+   },
+   {
+    "ticker": "LEN",
+    "hypothesis": "30-year mortgage near 7.5%; housing headwind and high attention."
+   },
+   {
+    "ticker": "VRT",
+    "hypothesis": "Downside left in Vertiv; negative analyst headline with high attention."
+   },
+   {
+    "ticker": "BKNG",
+    "hypothesis": "FTC action over Priceline hotel ads; negative regulatory catalyst."
+   }
+  ],
+  "themes": [
+   "AI power and nuclear demand",
+   "AI semiconductor capex",
+   "Healthcare catalysts and earnings",
+   "Regulatory and legal overhangs",
+   "Rate-sensitive housing and REITs"
+  ]
+ },
+ "core": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM"
+ ],
+ "nominated": [
+  "CEG",
+  "WMT",
+  "IBM",
+  "DIS",
+  "MRNA",
+  "MCK",
+  "NOC",
+  "AMAT",
+  "LRCX",
+  "ABT",
+  "SBUX",
+  "TMUS",
+  "STX",
+  "WDC",
+  "PEP",
+  "MCD",
+  "APO",
+  "FICO",
+  "WFC",
+  "APP",
+  "GEV",
+  "LEN",
+  "VRT",
+  "BKNG"
+ ],
+ "rule_based": [
+  "CTVA",
+  "MRNA",
+  "AXON",
+  "STX",
+  "HOOD",
+  "FICO",
+  "PTC",
+  "NTAP",
+  "AES",
+  "CSCO",
+  "CEG",
+  "PEG",
+  "META",
+  "AMZN",
+  "AAPL",
+  "AVGO",
+  "CEG",
+  "ORCL"
+ ],
+ "coverage": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM",
+  "CEG",
+  "IBM",
+  "DIS",
+  "MRNA",
+  "MCK",
+  "NOC",
+  "AMAT",
+  "LRCX",
+  "ABT",
+  "SBUX",
+  "TMUS",
+  "STX",
+  "WDC",
+  "PEP",
+  "MCD",
+  "APO",
+  "FICO",
+  "WFC",
+  "APP",
+  "GEV",
+  "LEN",
+  "VRT",
+  "BKNG",
+  "CTVA",
+  "AXON"
+ ],
+ "why": {
+  "NVDA": [
+   "core"
+  ],
+  "AAPL": [
+   "core",
+   "rule"
+  ],
+  "MSFT": [
+   "core"
+  ],
+  "GOOGL": [
+   "core"
+  ],
+  "AMZN": [
+   "core",
+   "rule"
+  ],
+  "META": [
+   "core",
+   "rule"
+  ],
+  "AVGO": [
+   "core",
+   "rule"
+  ],
+  "TSLA": [
+   "core"
+  ],
+  "AMD": [
+   "core"
+  ],
+  "INTC": [
+   "core"
+  ],
+  "TSM": [
+   "core"
+  ],
+  "JPM": [
+   "core"
+  ],
+  "LLY": [
+   "core"
+  ],
+  "WMT": [
+   "core",
+   "nominated"
+  ],
+  "BRK.B": [
+   "core"
+  ],
+  "ORCL": [
+   "core",
+   "rule"
+  ],
+  "CRM": [
+   "core"
+  ],
+  "NFLX": [
+   "core"
+  ],
+  "BA": [
+   "core"
+  ],
+  "XOM": [
+   "core"
+  ],
+  "CEG": [
+   "nominated",
+   "rule"
+  ],
+  "IBM": [
+   "nominated"
+  ],
+  "DIS": [
+   "nominated"
+  ],
+  "MRNA": [
+   "nominated",
+   "rule"
+  ],
+  "MCK": [
+   "nominated"
+  ],
+  "NOC": [
+   "nominated"
+  ],
+  "AMAT": [
+   "nominated"
+  ],
+  "LRCX": [
+   "nominated"
+  ],
+  "ABT": [
+   "nominated"
+  ],
+  "SBUX": [
+   "nominated"
+  ],
+  "TMUS": [
+   "nominated"
+  ],
+  "STX": [
+   "nominated",
+   "rule"
+  ],
+  "WDC": [
+   "nominated"
+  ],
+  "PEP": [
+   "nominated"
+  ],
+  "MCD": [
+   "nominated"
+  ],
+  "APO": [
+   "nominated"
+  ],
+  "FICO": [
+   "nominated",
+   "rule"
+  ],
+  "WFC": [
+   "nominated"
+  ],
+  "APP": [
+   "nominated"
+  ],
+  "GEV": [
+   "nominated"
+  ],
+  "LEN": [
+   "nominated"
+  ],
+  "VRT": [
+   "nominated"
+  ],
+  "BKNG": [
+   "nominated"
+  ],
+  "CTVA": [
+   "rule"
+  ],
+  "AXON": [
+   "rule"
+  ]
+ },
+ "prompt_chars": 67991
+}
