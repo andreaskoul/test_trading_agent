@@ -114,6 +114,33 @@ def last_slot(job, now):
     return None
 
 
+# ------------------------------------------------------------------ heartbeat
+def heartbeat(now):
+    """Every 5 minutes: force-push heartbeat.json to the orphan branch `runner-heartbeat`. The cloud
+    backstop reads it and stands down while this Mac runs the schedule (2026-10-07: it started a second
+    daily review because the local one writes its record only after the pre-close send)."""
+    if now.minute % 5:
+        return
+    d = os.path.join(HOME, "cache", "heartbeat")
+    git = lambda *a: subprocess.run(["git", "-C", d, *a], capture_output=True, text=True, timeout=60)
+    try:
+        if not os.path.isdir(os.path.join(d, ".git")):
+            os.makedirs(d, exist_ok=True)
+            git("init", "-q"); git("remote", "add", "origin", REPO); git("checkout", "-q", "--orphan", "heartbeat")
+        json.dump({"at": now.isoformat(timespec="seconds"), "host": os.uname().nodename,
+                   "enabled": os.path.exists(ENABLED)},
+                  open(os.path.join(d, "heartbeat.json"), "w"), indent=1)
+        git("add", "heartbeat.json")
+        has = git("rev-parse", "-q", "--verify", "HEAD").returncode == 0
+        git("-c", "user.name=fund-runner", "-c", "user.email=fund-bot@users.noreply.github.com", "commit", "-q",
+            *(["--amend"] if has else []), "-m", "local runner heartbeat")
+        r = git("push", "-q", "-f", "origin", "HEAD:refs/heads/runner-heartbeat")
+        if r.returncode:
+            log(f"heartbeat push failed: {r.stderr.strip()[:200]}")
+    except Exception as exc:
+        log(f"heartbeat failed: {exc!r}")
+
+
 # ------------------------------------------------------------------ tick (launchd, every minute)
 def tick(args):
     os.makedirs(LOGS, exist_ok=True)
@@ -121,6 +148,7 @@ def tick(args):
     state = read_state()
     if args.init:                                   # mark every past slot as handled: nothing fires retroactively
         write_state({j: (last_slot(j, now) or now).isoformat() for j in SCHEDULE}); log("schedule state initialised"); return
+    heartbeat(now)
     if not os.path.exists(ENABLED):
         return
     secrets = load_secrets()
