@@ -1,0 +1,112 @@
+{
+ "asof": "2026-10-07",
+ "cutoff": "2026-10-07T22:00:00+00:00",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "Together",
+  "usage": {
+   "prompt_tokens": 2742,
+   "completion_tokens": 2984,
+   "total_tokens": 5726,
+   "cost": 0.0044034,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 0,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.0044034,
+    "upstream_inference_prompt_cost": 0.0008226,
+    "upstream_inference_completions_cost": 0.0035808
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 2371,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"calendar\": [{\"date\": \"2026-10-08\", \"release\": \"FOMC Press Release\", \"why\": \"Fed minutes shape rate expectations, impacting rate-sensitive sectors.\"}, {\"date\": \"2026-10-08\", \"release\": \"Unemployment Insurance Weekly Claims Report\", \"why\": \"Labor market health signal, affects Fed policy and cyclicals.\"}, {\"date\": \"2026-10-08\", \"release\": \"Chicago Fed Advance Retail Trade Summary\", \"why\": \"Consumer spending read, key for discretionary and staples.\"}, {\"date\": \"2026-10-08\", \"release\": \"Monthly Wholesale Trade: Sales and Inventories\", \"why\": \"Inventory cycle signal for industrials and retailers.\"}, {\"date\": \"2026-10-08\", \"release\": \"GDPNow\", \"why\": \"Q3 GDP tracking, growth sentiment for broad equities.\"}, {\"date\": \"2026-10-08\", \"release\": \"Primary Mortgage Market Survey\", \"why\": \"Mortgage rates, housing and REITs sensitivity.\"}, {\"date\": \"2026-10-08\", \"release\": \"H.4.1 Factors Affecting Reserve Balances\", \"why\": \"Fed balance sheet, liquidity conditions for risk assets.\"}, {\"date\": \"2026-10-08\", \"release\": \"H.15 Selected Interest Rates\", \"why\": \"Treasury yields, discount rates for equity valuation.\"}], \"regime\": \"Fed on hold per Kalshi (83% no hike Oct). Inflation moderate: core CPI >0.1% at 79%. Growth solid: GDP >2% at 90%, but labor cooling: U-3 >4.1% at 70%. Risk appetite mixed: record highs with bearish skepticism; geopolitical risk 40th percentile.\", \"themes\": [{\"name\": \"AI capex and semiconductors\", \"evidence\": \"ai_capex volume 0.649, tone -0.30; headlines: SpaceX buying Nvidia GPUs, Micron bullish call, Nvidia-Microsoft PC.\", \"sectors\": [\"Information Technology\"]}, {\"name\": \"Middle East oil supply risk\", \"evidence\": \"middle_east volume 3.062 vs 2.684; oil_supply 0.376; headlines: IEA reserve release, Hormuz tanker attacks, Shell refining margins.\", \"sectors\": [\"Energy\"]}, {\"name\": \"Rate-sensitive housing and REITs\", \"evidence\": \"Primary Mortgage Market Survey release; Fed on hold; ideation theme 'Rate-sensitive housing and REITs'.\", \"sectors\": [\"Real Estate\", \"Consumer Discretionary\"]}], \"fx_view\": \"Long commodity carry (ZAR, MXN, HUF, CLP), short funding (CHF, JPY, EUR, CAD); ignore momentum, avoid KRW/ILS shorts.\"}"
+ },
+ "brief": {
+  "calendar": [
+   {
+    "date": "2026-10-08",
+    "release": "FOMC Press Release",
+    "why": "Fed minutes shape rate expectations, impacting rate-sensitive sectors."
+   },
+   {
+    "date": "2026-10-08",
+    "release": "Unemployment Insurance Weekly Claims Report",
+    "why": "Labor market health signal, affects Fed policy and cyclicals."
+   },
+   {
+    "date": "2026-10-08",
+    "release": "Chicago Fed Advance Retail Trade Summary",
+    "why": "Consumer spending read, key for discretionary and staples."
+   },
+   {
+    "date": "2026-10-08",
+    "release": "Monthly Wholesale Trade: Sales and Inventories",
+    "why": "Inventory cycle signal for industrials and retailers."
+   },
+   {
+    "date": "2026-10-08",
+    "release": "GDPNow",
+    "why": "Q3 GDP tracking, growth sentiment for broad equities."
+   },
+   {
+    "date": "2026-10-08",
+    "release": "Primary Mortgage Market Survey",
+    "why": "Mortgage rates, housing and REITs sensitivity."
+   },
+   {
+    "date": "2026-10-08",
+    "release": "H.4.1 Factors Affecting Reserve Balances",
+    "why": "Fed balance sheet, liquidity conditions for risk assets."
+   },
+   {
+    "date": "2026-10-08",
+    "release": "H.15 Selected Interest Rates",
+    "why": "Treasury yields, discount rates for equity valuation."
+   }
+  ],
+  "regime": "Fed on hold per Kalshi (83% no hike Oct). Inflation moderate: core CPI >0.1% at 79%. Growth solid: GDP >2% at 90%, but labor cooling: U-3 >4.1% at 70%. Risk appetite mixed: record highs with bearish skepticism; geopolitical risk 40th percentile.",
+  "themes": [
+   {
+    "name": "AI capex and semiconductors",
+    "evidence": "ai_capex volume 0.649, tone -0.30; headlines: SpaceX buying Nvidia GPUs, Micron bullish call, Nvidia-Microsoft PC.",
+    "sectors": [
+     "Information Technology"
+    ]
+   },
+   {
+    "name": "Middle East oil supply risk",
+    "evidence": "middle_east volume 3.062 vs 2.684; oil_supply 0.376; headlines: IEA reserve release, Hormuz tanker attacks, Shell refining margins.",
+    "sectors": [
+     "Energy"
+    ]
+   },
+   {
+    "name": "Rate-sensitive housing and REITs",
+    "evidence": "Primary Mortgage Market Survey release; Fed on hold; ideation theme 'Rate-sensitive housing and REITs'.",
+    "sectors": [
+     "Real Estate",
+     "Consumer Discretionary"
+    ]
+   }
+  ],
+  "fx_view": "Long commodity carry (ZAR, MXN, HUF, CLP), short funding (CHF, JPY, EUR, CAD); ignore momentum, avoid KRW/ILS shorts."
+ },
+ "text": "MACRO BRIEF (same for every name this week; context, not a view on any stock):\nRegime: Fed on hold per Kalshi (83% no hike Oct). Inflation moderate: core CPI >0.1% at 79%. Growth solid: GDP >2% at 90%, but labor cooling: U-3 >4.1% at 70%. Risk appetite mixed: record highs with bearish skepticism; geopolitical risk 40th percentile.\nHolding-week calendar: 2026-10-08 FOMC Press Release (Fed minutes shape rate expectations, impacting rate-sensitive sectors.); 2026-10-08 Unemployment Insurance Weekly Claims Report (Labor market health signal, affects Fed policy and cyclicals.); 2026-10-08 Chicago Fed Advance Retail Trade Summary (Consumer spending read, key for discretionary and staples.); 2026-10-08 Monthly Wholesale Trade: Sales and Inventories (Inventory cycle signal for industrials and retailers.); 2026-10-08 GDPNow (Q3 GDP tracking, growth sentiment for broad equities.); 2026-10-08 Primary Mortgage Market Survey (Mortgage rates, housing and REITs sensitivity.); 2026-10-08 H.4.1 Factors Affecting Reserve Balances (Fed balance sheet, liquidity conditions for risk assets.); 2026-10-08 H.15 Selected Interest Rates (Treasury yields, discount rates for equity valuation.)\nThemes: AI capex and semiconductors [Information Technology]: ai_capex volume 0.649, tone -0.30; headlines: SpaceX buying Nvidia GPUs, Micron bullish call, Nvidia-Microsoft PC. | Middle East oil supply risk [Energy]: middle_east volume 3.062 vs 2.684; oil_supply 0.376; headlines: IEA reserve release, Hormuz tanker attacks, Shell refining margins. | Rate-sensitive housing and REITs [Real Estate, Consumer Discretionary]: Primary Mortgage Market Survey release; Fed on hold; ideation theme 'Rate-sensitive housing and REITs'.\nFX: Long commodity carry (ZAR, MXN, HUF, CLP), short funding (CHF, JPY, EUR, CAD); ignore momentum, avoid KRW/ILS shorts.",
+ "inputs": {
+  "calendar_ahead": 201,
+  "kalshi": 12,
+  "gdelt": 6,
+  "headlines": 30,
+  "gpr": "latest 2026-09-30: 168, 40th percentile of the last year (median 180)"
+ }
+}

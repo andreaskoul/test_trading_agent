@@ -13,5 +13,5 @@ No look yet. The rows below are running values and change no decision.
 | analyst-score slope NW t | nan | adjusted version: STOP if ≤ −2 |
 | decisions on time | nan% | ≥ 90% |
 | weeks fully executed | nan% | ≥ 90% |
-| median abs slippage vs close | nan bp | ≤ 10 bp |
+| median abs slippage vs close | 1.1 bp | ≤ 10 bp |
 | risk halt | no | 10% drawdown or 5% weekly loss on broker NAV |
