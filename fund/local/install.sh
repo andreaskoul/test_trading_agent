@@ -32,6 +32,8 @@ cat > "$plist" <<PL
   <key>ProgramArguments</key><array><string>$H/venv/bin/python</string><string>$H/runner.py</string><string>tick</string></array>
   <key>StartInterval</key><integer>60</integer>
   <key>RunAtLoad</key><true/>
+  <key>SoftResourceLimits</key><dict><key>NumberOfFiles</key><integer>24576</integer></dict>
+  <key>HardResourceLimits</key><dict><key>NumberOfFiles</key><integer>24576</integer></dict>
   <key>StandardOutPath</key><string>$HOME/Library/Logs/fund/scheduler.log</string>
   <key>StandardErrorPath</key><string>$HOME/Library/Logs/fund/scheduler.log</string>
   <key>EnvironmentVariables</key><dict><key>PATH</key><string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string></dict>

@@ -616,6 +616,20 @@ def status(_):
         print(f"  optional secrets not set: {', '.join(opt)}")
 
 
+def raise_file_limit():
+    """launchd starts jobs with 256 open files. The screen's parallel price download (~500 tickers, each
+    opening yfinance's cache database) needs far more: on 2026-10-07 it lost 201 of 500 names to
+    'unable to open database file'. GitHub runners allow 65536; so does every job started here."""
+    import resource
+    soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+    for want in (65536, 24576, 10240):
+        try:
+            resource.setrlimit(resource.RLIMIT_NOFILE, (want if hard == resource.RLIM_INFINITY else min(want, hard), hard))
+            return
+        except (ValueError, OSError):
+            continue
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -637,6 +651,7 @@ def main():
     rp.add_argument("--send", action="store_true"); rp.set_defaults(f=report)
     a = p.parse_args()
     os.makedirs(HOME, exist_ok=True)
+    raise_file_limit()                              # inherited by every job and desk this process starts
     try:
         a.f(a)
     except SystemExit:
