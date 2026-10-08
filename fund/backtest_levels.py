@@ -648,6 +648,87 @@ def breakout():
     open(os.path.join(ROOT, "reports", "research", "technicals_backtest.md"), "a").write(txt)
 
 
+# ----------------------------------------------------------------------------- drift profiles (horizon classes)
+DRIFT_DAYS = (1, 2, 3, 5, 10, 15, 20, 30, 40, 60)
+
+
+def drift_ticker(t):
+    """Side-signed cumulative residual return from the news-day close, and from the Thursday entry close, to
+    each of DRIFT_DAYS sessions later."""
+    T = pd.read_parquet(os.path.join(BT, "trades.parquet"), columns=["ticker", "news_day", "entry_day", "side", "beta", "gap_atr", "W", "H"])
+    T = T[T.ticker == t]
+    b = load(t)
+    if b is None or T.empty:
+        return []
+    ctx = context()
+    b = b[b.index.isin(ctx.index)]
+    r = b["adj close"].pct_change()
+    rm = ctx["spy_ret"].reindex(b.index)
+    idx = {d: i for i, d in enumerate(b.index)}
+    out = []
+    for nd, ed, side, beta, gap, W, H in zip(T.news_day, T.entry_day, T.side, T.beta, T.gap_atr, T.W, T.H):
+        j, k = idx.get(nd), idx.get(ed)
+        if j is None or k is None or k + 60 >= len(b):
+            continue
+        e = (side * (r - beta * rm)).to_numpy()
+        rec = {"ticker": t, "news_day": nd, "entry_day": ed, "side": side, "gap_atr": abs(gap),
+               "sigma": W / math.sqrt(H)}
+        for h in DRIFT_DAYS:
+            rec[f"n{h}"] = float(np.nansum(e[j + 1:j + h + 1]))
+            rec[f"e{h}"] = float(np.nansum(e[k + 1:k + h + 1]))
+        out.append(rec)
+    return out
+
+
+def drift():
+    tick = sorted(pd.read_parquet(os.path.join(BT, "trades.parquet"), columns=["ticker"]).ticker.unique())
+    rows = []
+    with ProcessPoolExecutor(max(1, (os.cpu_count() or 2) - 1)) as ex:
+        for res in ex.map(drift_ticker, tick, chunksize=4):
+            rows += res
+    D = pd.DataFrame(rows)
+    p = os.path.join(BT, "iv.parquet")
+    if os.path.exists(p):
+        V = pd.read_parquet(p)[["ticker", "news_day", "iv"]]
+        V["news_day"] = pd.to_datetime(V["news_day"])
+        D = D.merge(V, on=["ticker", "news_day"], how="left")
+    D.to_parquet(os.path.join(BT, "drift.parquet"))
+    hdr = "| group | events | " + " | ".join(f"+{h}" for h in DRIFT_DAYS) + " |"
+    sep = "|---|---:|" + "---:|" * len(DRIFT_DAYS)
+
+    def row(lab, S, pre):
+        cells = []
+        for h in DRIFT_DAYS:
+            m, tt, _ = weekly_t(S[f"{pre}{h}"], S.entry_day)
+            cells.append(f"{m * 1e4:+.0f} ({tt:+.1f})")
+        return f"| {lab} | {len(S):,} | " + " | ".join(cells) + " |"
+
+    L = ["", "## Drift profiles: when does the edge arrive? (2012–2025, for the horizon classes)", "",
+         "Mean side-signed cumulative residual return in bp (t on weekly means), the view's side = gap direction. "
+         "From the news-day close (the market's reaction already in) and from the fund's Thursday entry close.", "",
+         "**From the news-day close:**", "", hdr, sep]
+    L.append(row("all", D, "n"))
+    for sd, nm in ((1, "long (gap up)"), (-1, "short (gap down)")):
+        L.append(row(nm, D[D.side == sd], "n"))
+    D["gq"] = pd.qcut(D.gap_atr, 3, labels=["smaller gaps", "middle gaps", "largest gaps"])
+    for g, S in D.groupby("gq", observed=True):
+        L.append(row(str(g), S, "n"))
+    if "iv" in D:
+        S = D[D.iv.notna()].copy()
+        S["iq"] = pd.qcut(S.iv, 3, labels=["low IV before", "middle IV", "high IV before"])
+        for g, G in S.groupby("iq", observed=True):
+            L.append(row(str(g), G, "n"))
+    L += ["", "**From the Thursday entry close (what the fund can capture):**", "", hdr, sep]
+    L.append(row("all", D, "e"))
+    for sd, nm in ((1, "long"), (-1, "short")):
+        L.append(row(nm, D[D.side == sd], "e"))
+    for lab, lo, hi in (("2012–2021", FIT[0], FIT[1]), ("2022–2025", HOLD[0], HOLD[1])):
+        L.append(row(lab, D[(D.entry_day >= lo) & (D.entry_day <= hi)], "e"))
+    txt = "\n".join(L) + "\n"
+    print(txt)
+    open(os.path.join(ROOT, "reports", "research", "technicals_backtest.md"), "a").write(txt)
+
+
 if __name__ == "__main__":
     {"download": download, "run": run, "report": report, "touch": touch, "touch_report": touch_report, "gate": gate,
-     "breakout": breakout}[sys.argv[1]]()
+     "breakout": breakout, "drift": drift}[sys.argv[1]]()

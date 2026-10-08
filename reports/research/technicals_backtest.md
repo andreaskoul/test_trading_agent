@@ -245,3 +245,47 @@ a later forward test of positioning (open interest, skew), which has no free his
 **Conclusion of pre-registration 3.** Breakout entry fails. Breakouts within 5 sessions are rare (8–9% of events),
 so the rule mostly skips, and on the holdout it trails immediate entry (−9.2 bp, t −1.25). Under the design plan
 this decides test A; the LLM price-context test (B) still runs, and must now beat immediate entry on its own.
+
+## Drift profiles: when does the edge arrive? (2012–2025, for the horizon classes)
+
+Mean side-signed cumulative residual return in bp (t on weekly means), the view's side = gap direction. From the news-day close (the market's reaction already in) and from the fund's Thursday entry close.
+
+**From the news-day close:**
+
+| group | events | +1 | +2 | +3 | +5 | +10 | +15 | +20 | +30 | +40 | +60 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| all | 8,924 | +5 (-0.5) | +8 (+0.2) | +6 (-0.6) | +13 (+0.1) | +11 (-0.1) | +7 (-1.2) | +5 (-1.4) | -5 (-2.0) | -8 (-2.1) | -18 (-1.5) |
+| long (gap up) | 3,971 | -2 (-0.3) | -8 (+0.6) | -9 (+0.1) | +1 (+0.3) | +5 (+0.4) | -6 (-0.4) | +3 (-0.3) | -44 (-2.4) | -51 (-2.8) | -58 (-2.4) |
+| short (gap down) | 4,953 | +11 (-0.4) | +22 (+0.1) | +18 (-0.4) | +23 (-0.0) | +17 (-0.4) | +17 (-1.2) | +7 (-1.1) | +26 (-0.2) | +27 (-0.2) | +13 (+0.5) |
+| smaller gaps | 2,975 | +7 (+0.0) | +10 (+0.3) | +6 (-0.2) | +12 (+0.4) | +1 (-0.7) | -13 (-1.4) | -4 (-0.6) | -5 (-0.2) | -12 (-0.2) | -32 (-0.3) |
+| middle gaps | 2,974 | +7 (-0.3) | +11 (+1.2) | +3 (+0.1) | +12 (-0.2) | +10 (-0.5) | +1 (-1.0) | -2 (-1.4) | -10 (-1.9) | -19 (-2.5) | -24 (-1.7) |
+| largest gaps | 2,975 | +1 (-0.0) | +4 (+0.4) | +8 (+1.0) | +16 (+0.7) | +23 (+0.6) | +31 (+0.6) | +23 (-0.1) | -1 (-0.9) | +8 (-0.3) | +1 (-0.5) |
+| low IV before | 1,481 | -9 (-1.6) | -9 (-2.1) | -12 (-2.0) | -5 (-1.3) | +14 (+0.6) | +24 (+0.8) | +37 (+1.9) | +28 (+1.8) | +31 (+1.3) | +40 (+1.0) |
+| middle IV | 1,478 | -4 (-0.0) | +3 (+1.2) | +10 (+1.5) | +24 (+2.4) | +31 (+1.6) | +19 (+0.4) | +22 (+0.3) | +10 (-0.5) | +16 (-0.5) | -4 (-0.4) |
+| high IV before | 1,480 | +4 (+0.2) | +8 (+1.2) | -11 (+0.4) | +20 (+0.1) | +18 (+0.3) | +7 (+0.9) | -9 (-0.0) | -51 (-0.8) | -88 (-2.1) | -134 (-1.0) |
+
+**From the Thursday entry close (what the fund can capture):**
+
+| group | events | +1 | +2 | +3 | +5 | +10 | +15 | +20 | +30 | +40 | +60 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| all | 8,924 | +4 (+0.6) | +12 (+1.4) | +13 (+0.6) | +7 (+0.5) | +9 (+0.3) | +3 (-1.4) | -6 (-2.1) | -10 (-2.3) | -9 (-1.9) | -27 (-1.4) |
+| long | 3,971 | +9 (+1.6) | +20 (+1.6) | +19 (+0.4) | +16 (-0.1) | +17 (+0.3) | +16 (-1.0) | +13 (-1.2) | -27 (-2.8) | -39 (-3.3) | -35 (-2.2) |
+| short | 4,953 | -1 (-1.2) | +7 (+0.1) | +8 (-0.5) | +0 (-0.3) | +3 (-0.4) | -7 (-1.0) | -22 (-1.4) | +4 (-0.7) | +15 (+0.1) | -21 (-0.0) |
+| 2012–2021 | 6,086 | +5 (+0.6) | +14 (+1.5) | +15 (+0.8) | +8 (-0.0) | +9 (-0.9) | +1 (-2.7) | -14 (-3.6) | -13 (-3.0) | -4 (-2.1) | -36 (-2.2) |
+| 2022–2025 | 2,838 | +1 (+0.2) | +9 (+0.1) | +9 (-0.1) | +6 (+1.0) | +10 (+1.9) | +8 (+1.6) | +10 (+1.5) | -4 (+0.4) | -19 (-0.2) | -9 (+1.0) |
+**What the drift profiles decide (design plan, horizon classes).** There is no drift after the news day that a
+longer clock could harvest:
+* From the news-day close, the gap direction earns nothing significant at any horizon to 20 sessions.
+* Beyond 20 sessions it turns into reversal, mostly for gap-up longs: −44 to −58 bp at 30–60 sessions, t −2.4 to
+  −2.8.
+* From the fund's Thursday entry, the only positive stretch is days 1–3 (+4 to +13 bp, t ≤ 1.5). Every
+  horizon past 15 sessions is negative in 2012–2021.
+* No profile is linear or back-loaded, so the evidence rule leaves the **swing and positional classes disabled
+  for news views**. Protocol 7 ships the **tactical class** (horizons 3–15 sessions) with the full lifecycle:
+  cards, checkpoints, stops, kill exits.
+* One exploratory pattern, not a result: names with low implied volatility before the news drift +24 to +37 bp
+  over 15–20 sessions (t up to 1.9). It is logged for the forward record, not used.
+
+Caveat: the view here is the gap's direction. The fund's own views are the analysts', and their drift profile is
+measured from the live record as cohorts accrue (thesis cards log class and outcome). A later protocol could
+enable the swing class on that evidence.
