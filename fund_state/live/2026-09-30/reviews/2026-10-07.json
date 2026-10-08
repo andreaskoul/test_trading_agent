@@ -658,5 +658,14 @@
  ],
  "problems": [],
  "status": "submitted",
- "note": "Two reviews ran on 2026-10-07: the local runner (started 16:30 UTC) and the GitHub workflow started by the 17:03 UTC backstop, which saw no record yet because the local review now writes it only after the pre-close send. Both sent orders at 15:59 ET. STZ and SPY used the same client order ids, so Alpaca accepted each once; the MU reduce came only from the GitHub run. This record is the GitHub run, whose decisions match every fill on the account; the local run decided STZ exit and held MU (its record was commit 9da8899). Fixed 2026-10-07: the backstop now stands down while the local runner is alive."
+ "note": "Two reviews ran on 2026-10-07: the local runner (started 16:30 UTC) and the GitHub workflow started by the 17:03 UTC backstop, which saw no record yet because the local review now writes it only after the pre-close send. Both sent orders at 15:59 ET. STZ and SPY used the same client order ids, so Alpaca accepted each once; the MU reduce came only from the GitHub run. This record is the GitHub run, whose decisions match every fill on the account; the local run decided STZ exit and held MU (its record was commit 9da8899). Fixed 2026-10-07: the backstop now stands down while the local runner is alive.",
+ "reconciled": {
+  "at": "2026-10-08T01:10:37",
+  "equity": 100111.09,
+  "n_orders": 3,
+  "n_filled": 3,
+  "n_not_filled": 0,
+  "median_abs_slip_bp_close": 11.488970588234837,
+  "tracking_gross": 0.008188970676780948
+ }
 }
