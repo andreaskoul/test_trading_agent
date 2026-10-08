@@ -193,3 +193,42 @@ news day's prior ATR where it is a price distance. Directions are stated now:
 * **If one passes:** it becomes the candidate entry gate (top two terciles enter) for a Technical Timing shadow
   book, to be written as an amendment with the forward options archive. **If none passes:** no book.
 * Missing data (no intraday bars, no IV within 7 days) drops the event from that variable's test only.
+
+## Results of pre-registration 2 (computed 2026-10-08)
+
+Top − bottom tercile of each variable, signed by its predicted direction; Lifecycle-barrier P&L per event; t on weekly spreads. Pass: holdout t ≥ 2.58.
+
+| variable | period | events | top bp | bottom bp | weekly spread bp | t | weeks |
+|---|---|---:|---:|---:|---:|---:|---:|
+| close vs VWAP | 2016/19–2021 | 3,864 | -17.7 | -4.1 | -13.5 | -0.49 | 230 |
+| close vs VWAP | **2022–2025** | 3,000 | -10.4 | -12.4 | +8.9 | +0.22 | 151 |
+| last hour | 2016/19–2021 | 3,864 | -17.0 | +10.0 | +11.2 | +0.40 | 227 |
+| last hour | **2022–2025** | 3,000 | -12.0 | -14.7 | -14.3 | -0.38 | 155 |
+| open drive kept | 2016/19–2021 | 3,864 | -15.3 | -9.3 | -23.6 | -0.82 | 234 |
+| open drive kept | **2022–2025** | 3,000 | -11.7 | -9.2 | -8.6 | -0.23 | 151 |
+| surprise vs implied | 2016/19–2021 | 1,687 | +143.5 | -20.5 | +54.5 | +1.22 | 100 |
+| surprise vs implied | **2022–2025** | 2,913 | -2.1 | -17.3 | +14.9 | +0.37 | 146 |
+| anticipation (IV/HV) | 2016/19–2021 | 1,686 | +32.7 | +6.6 | +39.1 | +0.62 | 96 |
+| anticipation (IV/HV) | **2022–2025** | 2,913 | +11.8 | +0.8 | +34.1 | +0.79 | 131 |
+
+**Passed (holdout t ≥ 2.58): none.**
+
+Coverage (events with the variable): close vs VWAP 6,864, last hour 6,864, open drive kept 6,864, surprise vs implied 4,600, anticipation (IV/HV) 4,599.
+
+**Conclusion of pre-registration 2.** None of the five intraday or options measures passes. The largest holdout
+spreads (surprise vs implied +14.9 bp, t +0.37; anticipation +34.1 bp, t +0.79) are noise-level, and the intraday
+measures change sign between periods. No entry gate is built from them. The options archive keeps running for
+a later forward test of positioning (open interest, skew), which has no free history.
+
+## Pre-registration 3: breakout entry (test A of the design plan, written 2026-10-08 before computing)
+
+* **Rule.** From the Thursday entry close, wait up to 5 sessions for a close beyond the nearest strong
+  opposing zone (strength ≥ 2; resistance above a long, support below a short; the zone's far edge must be
+  crossed) on relative volume ≥ 1.5. Enter at that close, then use the Lifecycle exits (−2 W / +3 W /
+  horizon counted from the fill). No breakout in 5 sessions: skip. If there is no opposing zone within 6 ATR
+  (clear air), enter at the Thursday close.
+* **Comparisons on the same events.** (i) Immediate entry at the Thursday close with the Lifecycle exits (the
+  existing `lc_pnl`). (ii) The same rule on placebo levels (zones moved to random distances, as in the earlier
+  placebo).
+* **Pass (2022–2025, read once).** The weekly spread breakout − immediate has t ≥ 2.0 **and** breakout −
+  placebo has t ≥ 2.0. 2012–2021 is reported alongside.
