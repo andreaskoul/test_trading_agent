@@ -168,3 +168,28 @@ the market keep moving the news's way between the news day and the entry close?
 per event and −20 bp in weekly terms (t −0.58) out of sample. Under the pre-registration, no Technical
 Timing book is built from this test. Neither the levels nor the follow-through gate show an edge for the
 fund's Thursday entries of S&P 500 news events at daily resolution.
+
+## Pre-registration 2: intraday and options measures of "priced in" (written 2026-10-08, before any outcome is computed)
+
+Same events and Lifecycle-barrier outcomes as above (`trades.parquet`). The new inputs are the news day's
+5-minute consolidated bars from Alpaca (from 2016) and the stock's implied volatility the session before the news
+day from DoltHub `post-no-preference/options` (`volatility_history.iv_current`, latest value within 7 days
+before; from 2019). Every variable is signed in the view's direction (side = gap direction) and scaled by the
+news day's prior ATR where it is a price distance. Directions are stated now:
+
+| # | variable | definition | predicted sign for continuation |
+|---|---|---|---|
+| I1 | close vs VWAP | side × (news-day close − news-day session VWAP) / ATR | + (buyers since the open are in profit: news accepted) |
+| I2 | last hour | side × (close − price at 15:00 ET) / ATR | + (late-day flow follows the news; intraday momentum) |
+| I3 | open drive faded | side × (close − price at 10:00 ET) / ATR | + (the first half hour's move was kept) |
+| O1 | surprise vs implied | |news-day close-to-close return| / (IV_before / √252) | + (moves far beyond what options expected are under-reacted to) |
+| O2 | anticipation | IV_before / HV_before (DoltHub hv_current) | − (a well-anticipated event leaves less to drift) |
+
+* **Test, for each variable separately:** events in the top tercile minus the bottom tercile of the variable
+  (terciles computed within each period), Lifecycle-barrier P&L, weekly spread (weeks with both terciles),
+  t on weekly spreads, signed by the predicted direction.
+* **Primary read: 2022–2025 only, once.** A variable passes at **t ≥ 2.58** (one-sided α = 0.05 / 5, Bonferroni
+  over the five). 2016/2019–2021 is reported alongside for consistency, never used to choose anything.
+* **If one passes:** it becomes the candidate entry gate (top two terciles enter) for a Technical Timing shadow
+  book, to be written as an amendment with the forward options archive. **If none passes:** no book.
+* Missing data (no intraday bars, no IV within 7 days) drops the event from that variable's test only.
