@@ -1,0 +1,476 @@
+{
+ "asof": "2026-10-07",
+ "exec_day": "2026-10-08",
+ "close_et": "16:00",
+ "mode": "trade",
+ "style": "preclose",
+ "planned_at_et": "2026-10-08T12:16:21-04:00",
+ "equity": 100059.77,
+ "reason": null,
+ "scale": 1.0,
+ "dropped": {
+  "ORCL": {
+   "weight": -0.02,
+   "why": {
+    "tradable": true,
+    "shortable": false,
+    "easy_to_borrow": false,
+    "status": "active"
+   }
+  }
+ },
+ "target_weights": {
+  "MRVL": 0.06423,
+  "BA": 0.06234,
+  "NVDA": 0.03117,
+  "GOOGL": 0.0307,
+  "CEG": 0.02834,
+  "LITE": 0.02834,
+  "HPE": 0.02834,
+  "AVGO": 0.02598,
+  "AMD": 0.02598,
+  "LLY": 0.02598,
+  "NKE": -0.065,
+  "WDC": -0.03,
+  "LULU": -0.03,
+  "MCD": -0.03,
+  "META": -0.0275,
+  "STX": -0.025,
+  "BRK.B": -0.02,
+  "PEP": -0.02,
+  "SNDK": -0.02,
+  "SPY": -0.22668
+ },
+ "current_qty": {
+  "BRK.B": -4.0,
+  "GEV": 2.0,
+  "LULU": -27.0,
+  "MU": 1.0,
+  "NFLX": 24.0,
+  "SPY": -1.0
+ },
+ "orders": [
+  {
+   "symbol": "AMD",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 4,
+   "target_weight": 0.02598,
+   "price_ref": 620.67,
+   "client_order_id": "fund-2026-10-07-AMD-rebalance",
+   "attempts": [
+    "fund-2026-10-07-AMD-rebalance-a1"
+   ],
+   "ids": [
+    "681d2c6b-1c17-472b-9d12-0b9721d1409f"
+   ],
+   "id": "681d2c6b-1c17-472b-9d12-0b9721d1409f",
+   "filled_qty": 4.0,
+   "fill_price": 621.12,
+   "status": "filled"
+  },
+  {
+   "symbol": "AVGO",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 7,
+   "target_weight": 0.02598,
+   "price_ref": 359.88,
+   "client_order_id": "fund-2026-10-07-AVGO-rebalance",
+   "attempts": [
+    "fund-2026-10-07-AVGO-rebalance-a1"
+   ],
+   "ids": [
+    "e0c580f6-f35c-4163-84df-d10d8684e088"
+   ],
+   "id": "e0c580f6-f35c-4163-84df-d10d8684e088",
+   "filled_qty": 7.0,
+   "fill_price": 360.361429,
+   "status": "filled"
+  },
+  {
+   "symbol": "BA",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 33,
+   "target_weight": 0.06234,
+   "price_ref": 187.495,
+   "client_order_id": "fund-2026-10-07-BA-rebalance",
+   "attempts": [
+    "fund-2026-10-07-BA-rebalance-a1"
+   ],
+   "ids": [
+    "b43d5d0b-f8d5-47b1-82b6-4cdd7b44e6cc"
+   ],
+   "id": "b43d5d0b-f8d5-47b1-82b6-4cdd7b44e6cc",
+   "filled_qty": 33.0,
+   "fill_price": 187.69,
+   "status": "filled"
+  },
+  {
+   "symbol": "CEG",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 10,
+   "target_weight": 0.02834,
+   "price_ref": 285.09,
+   "client_order_id": "fund-2026-10-07-CEG-rebalance",
+   "attempts": [
+    "fund-2026-10-07-CEG-rebalance-a1"
+   ],
+   "ids": [
+    "aad006c0-5e7c-48bc-8a18-7204d0873a30"
+   ],
+   "id": "aad006c0-5e7c-48bc-8a18-7204d0873a30",
+   "filled_qty": 10.0,
+   "fill_price": 285.07,
+   "status": "filled"
+  },
+  {
+   "symbol": "GEV",
+   "leg": "close",
+   "side": "sell",
+   "qty": 2,
+   "target_weight": 0.0,
+   "price_ref": 997.96,
+   "client_order_id": "fund-2026-10-07-GEV-close",
+   "attempts": [
+    "fund-2026-10-07-GEV-close-a1"
+   ],
+   "ids": [
+    "de9274b4-6ad4-40b3-bd03-a286aac9dce7"
+   ],
+   "id": "de9274b4-6ad4-40b3-bd03-a286aac9dce7",
+   "filled_qty": 2.0,
+   "fill_price": 998.54,
+   "status": "filled"
+  },
+  {
+   "symbol": "GOOGL",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 9,
+   "target_weight": 0.0307,
+   "price_ref": 348.065,
+   "client_order_id": "fund-2026-10-07-GOOGL-rebalance",
+   "attempts": [
+    "fund-2026-10-07-GOOGL-rebalance-a1"
+   ],
+   "ids": [
+    "74b49b5c-287c-4b0b-8a08-56925b08a6b7"
+   ],
+   "id": "74b49b5c-287c-4b0b-8a08-56925b08a6b7",
+   "filled_qty": 9.0,
+   "fill_price": 348.411111,
+   "status": "filled"
+  },
+  {
+   "symbol": "HPE",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 40,
+   "target_weight": 0.02834,
+   "price_ref": 70.95,
+   "client_order_id": "fund-2026-10-07-HPE-rebalance",
+   "attempts": [
+    "fund-2026-10-07-HPE-rebalance-a1"
+   ],
+   "ids": [
+    "95e4e387-6a69-466e-852e-8b548c24d0f8"
+   ],
+   "id": "95e4e387-6a69-466e-852e-8b548c24d0f8",
+   "filled_qty": 40.0,
+   "fill_price": 70.92,
+   "status": "filled"
+  },
+  {
+   "symbol": "LITE",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 3,
+   "target_weight": 0.02834,
+   "price_ref": 1048.47,
+   "client_order_id": "fund-2026-10-07-LITE-rebalance",
+   "attempts": [
+    "fund-2026-10-07-LITE-rebalance-a1"
+   ],
+   "ids": [
+    "88f94214-c803-418f-bf06-05fa67f389db"
+   ],
+   "id": "88f94214-c803-418f-bf06-05fa67f389db",
+   "filled_qty": 3.0,
+   "fill_price": 1050.046667,
+   "status": "filled"
+  },
+  {
+   "symbol": "LLY",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 2,
+   "target_weight": 0.02598,
+   "price_ref": 1168.87,
+   "client_order_id": "fund-2026-10-07-LLY-rebalance",
+   "attempts": [
+    "fund-2026-10-07-LLY-rebalance-a1"
+   ],
+   "ids": [
+    "8de1a394-99ac-43f3-b3ed-6e48077c249c"
+   ],
+   "id": "8de1a394-99ac-43f3-b3ed-6e48077c249c",
+   "filled_qty": 2.0,
+   "fill_price": 1170.25,
+   "status": "filled"
+  },
+  {
+   "symbol": "LULU",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 5,
+   "target_weight": -0.03,
+   "price_ref": 92.71,
+   "client_order_id": "fund-2026-10-07-LULU-rebalance",
+   "attempts": [
+    "fund-2026-10-07-LULU-rebalance-a1"
+   ],
+   "ids": [
+    "18d3ed71-85f5-4297-9594-45b4600c66b3"
+   ],
+   "id": "18d3ed71-85f5-4297-9594-45b4600c66b3",
+   "filled_qty": 5.0,
+   "fill_price": 92.71,
+   "status": "filled"
+  },
+  {
+   "symbol": "MCD",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 13,
+   "target_weight": -0.03,
+   "price_ref": 236.49,
+   "client_order_id": "fund-2026-10-07-MCD-rebalance",
+   "attempts": [
+    "fund-2026-10-07-MCD-rebalance-a1"
+   ],
+   "ids": [
+    "88a3d2ab-31f1-408c-8921-737ce559b556"
+   ],
+   "id": "88a3d2ab-31f1-408c-8921-737ce559b556",
+   "filled_qty": 13.0,
+   "fill_price": 236.64,
+   "status": "filled"
+  },
+  {
+   "symbol": "META",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 4,
+   "target_weight": -0.0275,
+   "price_ref": 720.39,
+   "client_order_id": "fund-2026-10-07-META-rebalance",
+   "attempts": [
+    "fund-2026-10-07-META-rebalance-a1"
+   ],
+   "ids": [
+    "5c882642-bfc2-4b7e-9ed1-a9fc8b5d06e3"
+   ],
+   "id": "5c882642-bfc2-4b7e-9ed1-a9fc8b5d06e3",
+   "filled_qty": 4.0,
+   "fill_price": 720.81,
+   "status": "filled"
+  },
+  {
+   "symbol": "MRVL",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 23,
+   "target_weight": 0.06423,
+   "price_ref": 274.12,
+   "client_order_id": "fund-2026-10-07-MRVL-rebalance",
+   "attempts": [
+    "fund-2026-10-07-MRVL-rebalance-a1"
+   ],
+   "ids": [
+    "ab18a155-f446-49ac-acbc-f5fc9364bd57"
+   ],
+   "id": "ab18a155-f446-49ac-acbc-f5fc9364bd57",
+   "filled_qty": 23.0,
+   "fill_price": 274.618695,
+   "status": "filled"
+  },
+  {
+   "symbol": "MU",
+   "leg": "close",
+   "side": "sell",
+   "qty": 1,
+   "target_weight": 0.0,
+   "price_ref": 1037.97,
+   "client_order_id": "fund-2026-10-07-MU-close",
+   "attempts": [
+    "fund-2026-10-07-MU-close-a1"
+   ],
+   "ids": [
+    "d4ce054b-cfb5-4469-b982-37a7fdb9422e"
+   ],
+   "id": "d4ce054b-cfb5-4469-b982-37a7fdb9422e",
+   "filled_qty": 1.0,
+   "fill_price": 1036.16,
+   "status": "filled"
+  },
+  {
+   "symbol": "NFLX",
+   "leg": "close",
+   "side": "sell",
+   "qty": 24,
+   "target_weight": 0.0,
+   "price_ref": 71.58,
+   "client_order_id": "fund-2026-10-07-NFLX-close",
+   "attempts": [
+    "fund-2026-10-07-NFLX-close-a1"
+   ],
+   "ids": [
+    "12cd24c3-363a-4514-bc94-1f41499e62ec"
+   ],
+   "id": "12cd24c3-363a-4514-bc94-1f41499e62ec",
+   "filled_qty": 24.0,
+   "fill_price": 71.59,
+   "status": "filled"
+  },
+  {
+   "symbol": "NKE",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 187,
+   "target_weight": -0.065,
+   "price_ref": 34.75,
+   "client_order_id": "fund-2026-10-07-NKE-rebalance",
+   "attempts": [
+    "fund-2026-10-07-NKE-rebalance-a1"
+   ],
+   "ids": [
+    "aaf839cd-546d-4f90-988c-62819b6fe3e7"
+   ],
+   "id": "aaf839cd-546d-4f90-988c-62819b6fe3e7",
+   "filled_qty": 187.0,
+   "fill_price": 34.761176,
+   "status": "filled"
+  },
+  {
+   "symbol": "NVDA",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 14,
+   "target_weight": 0.03117,
+   "price_ref": 230.56,
+   "client_order_id": "fund-2026-10-07-NVDA-rebalance",
+   "attempts": [
+    "fund-2026-10-07-NVDA-rebalance-a1"
+   ],
+   "ids": [
+    "5ba25671-a994-402e-96db-811451b74b60"
+   ],
+   "id": "5ba25671-a994-402e-96db-811451b74b60",
+   "filled_qty": 14.0,
+   "fill_price": 230.49428599999996,
+   "status": "filled"
+  },
+  {
+   "symbol": "PEP",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 16,
+   "target_weight": -0.02,
+   "price_ref": 127.9,
+   "client_order_id": "fund-2026-10-07-PEP-rebalance",
+   "attempts": [
+    "fund-2026-10-07-PEP-rebalance-a1"
+   ],
+   "ids": [
+    "86c4c2e5-e633-4f9f-9d51-b766804231ea"
+   ],
+   "id": "86c4c2e5-e633-4f9f-9d51-b766804231ea",
+   "filled_qty": 16.0,
+   "fill_price": 128.19,
+   "status": "filled"
+  },
+  {
+   "symbol": "SNDK",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 1,
+   "target_weight": -0.02,
+   "price_ref": 1611.79,
+   "client_order_id": "fund-2026-10-07-SNDK-rebalance",
+   "attempts": [
+    "fund-2026-10-07-SNDK-rebalance-a1"
+   ],
+   "ids": [
+    "ff0593ca-3ae2-4043-93b3-3b11e296c679"
+   ],
+   "id": "ff0593ca-3ae2-4043-93b3-3b11e296c679",
+   "filled_qty": 1.0,
+   "fill_price": 1609.49,
+   "status": "filled"
+  },
+  {
+   "symbol": "SPY",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 28,
+   "target_weight": -0.22668,
+   "price_ref": 773.72,
+   "client_order_id": "fund-2026-10-07-SPY-rebalance",
+   "attempts": [
+    "fund-2026-10-07-SPY-rebalance-a1"
+   ],
+   "ids": [
+    "9fb0ad08-5a58-48c4-a029-fac05805a3e2"
+   ],
+   "id": "9fb0ad08-5a58-48c4-a029-fac05805a3e2",
+   "filled_qty": 28.0,
+   "fill_price": 773.95,
+   "status": "filled"
+  },
+  {
+   "symbol": "STX",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 3,
+   "target_weight": -0.025,
+   "price_ref": 775.01,
+   "client_order_id": "fund-2026-10-07-STX-rebalance",
+   "attempts": [
+    "fund-2026-10-07-STX-rebalance-a1"
+   ],
+   "ids": [
+    "dc12d097-3c15-475b-a222-db70cdfabc8a"
+   ],
+   "id": "dc12d097-3c15-475b-a222-db70cdfabc8a",
+   "filled_qty": 3.0,
+   "fill_price": 775.35,
+   "status": "filled"
+  },
+  {
+   "symbol": "WDC",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 8,
+   "target_weight": -0.03,
+   "price_ref": 392.75,
+   "client_order_id": "fund-2026-10-07-WDC-rebalance",
+   "attempts": [
+    "fund-2026-10-07-WDC-rebalance-a1"
+   ],
+   "ids": [
+    "15e99399-3b46-468d-8370-5e475682d2ac"
+   ],
+   "id": "15e99399-3b46-468d-8370-5e475682d2ac",
+   "filled_qty": 8.0,
+   "fill_price": 393.05,
+   "status": "filled"
+  }
+ ],
+ "problems": [],
+ "status": "submitted",
+ "sized_at_et": "2026-10-08T15:57:32-04:00",
+ "submitted_at_et": "2026-10-08T16:00:09-04:00"
+}
