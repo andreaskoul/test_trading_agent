@@ -560,5 +560,94 @@ def gate():
     open(os.path.join(ROOT, "reports", "research", "technicals_backtest.md"), "a").write(txt)
 
 
+# ----------------------------------------------------------------------------- pre-registration 3: breakout entry
+def breakout_level(lm, placebo_rng=None):
+    """The far edge of the nearest strong opposing zone within 6 ATR (long frame), or None (clear air)."""
+    m = placebo_map(lm, placebo_rng) if placebo_rng is not None else lm
+    c, a = m["close"], m["atr"]
+    zs = [z for z in m["zones"] if z["strength"] >= LV.P["STRONG"] and z["hi"] >= c and z["lo"] - c <= 6 * a]
+    return min(zs, key=lambda z: z["lo"])["hi"] if zs else None
+
+
+def breakout_ticker(t):
+    T = pd.read_parquet(os.path.join(BT, "trades.parquet"), columns=["ticker", "news_day", "entry_day", "side", "H", "W", "beta"])
+    T = T[T.ticker == t]
+    b = load(t)
+    if b is None or T.empty:
+        return []
+    ctx = context()
+    b = b[b.index.isin(ctx.index)]
+    r = b["adj close"].pct_change()
+    rm = ctx["spy_ret"].reindex(b.index)
+    charts = {1: LV.Chart(b, 1), -1: LV.Chart(b, -1)}
+    idx = {d: i for i, d in enumerate(b.index)}
+    out = []
+    for nd, ed, side, H, W, beta in zip(T.news_day, T.entry_day, T.side, T.H, T.W, T.beta):
+        k = idx.get(ed)
+        if k is None or k + 5 + H + 1 >= len(b):
+            continue
+        ch = charts[side]
+        es = (side * (r - beta * rm)).to_numpy()
+        try:
+            lm0 = ch.levels(b.index[k], event_day=nd)
+        except (ValueError, KeyError):
+            continue
+        rng = np.random.default_rng(zlib.crc32(f"bo{t}{ed.date()}".encode()))
+        rec = {"ticker": t, "entry_day": ed, "side": side}
+        for name, lvl in (("bo", breakout_level(lm0)), ("bo_placebo", breakout_level(lm0, rng))):
+            if lvl is None:
+                fill = k                                     # clear air: enter at the Thursday close
+            else:
+                fill = None
+                for s_ in range(1, 6):
+                    c_ = ch.b["close"].iloc[k + s_]
+                    rv = ch.relvol.iloc[k + s_]
+                    if c_ > lvl and np.isfinite(rv) and rv >= 1.5:
+                        fill = k + s_; break
+            if fill is None:
+                rec[f"{name}_pnl"], rec[f"{name}_how"] = 0.0, "skip"
+                continue
+            R = 0.0
+            for j in range(fill + 1, fill + H + 1):
+                R += es[j]
+                if R <= -STOP_K * W or R >= TARGET_K * W:
+                    break
+            rec[f"{name}_pnl"] = R - 2 * COST
+            rec[f"{name}_how"] = "clear_air" if lvl is None else f"breakout_d{fill - k}"
+        out.append(rec)
+    return out
+
+
+def breakout():
+    tick = sorted(pd.read_parquet(os.path.join(BT, "trades.parquet"), columns=["ticker"]).ticker.unique())
+    rows = []
+    with ProcessPoolExecutor(max(1, (os.cpu_count() or 2) - 1)) as ex:
+        for res in ex.map(breakout_ticker, tick, chunksize=4):
+            rows += res
+    Bk = pd.DataFrame(rows).merge(pd.read_parquet(os.path.join(BT, "trades.parquet"),
+                                                  columns=["ticker", "entry_day", "lc_pnl"]), on=["ticker", "entry_day"])
+    Bk.to_parquet(os.path.join(BT, "breakout.parquet"))
+    L = ["", "## Results of pre-registration 3: breakout entry (computed 2026-10-08)", "",
+         "| period | events | immediate bp | breakout bp | placebo-breakout bp | breakout − immediate (bp, t) | breakout − placebo (bp, t) | breakout entries / skips / clear air |",
+         "|---|---:|---:|---:|---:|---:|---:|---|"]
+    res = {}
+    for lab, lo, hi in (("2012–2021", FIT[0], FIT[1]), ("**2022–2025**", HOLD[0], HOLD[1])):
+        S = Bk[(Bk.entry_day >= lo) & (Bk.entry_day <= hi)]
+        d1, d2 = S.bo_pnl - S.lc_pnl, S.bo_pnl - S.bo_placebo_pnl
+        m1, t1, _ = weekly_t(d1, S.entry_day)
+        m2, t2, _ = weekly_t(d2, S.entry_day)
+        how = S.bo_how.str.startswith("breakout").mean(), (S.bo_how == "skip").mean(), (S.bo_how == "clear_air").mean()
+        L.append(f"| {lab} | {len(S):,} | {S.lc_pnl.mean() * 1e4:+.1f} | {S.bo_pnl.mean() * 1e4:+.1f} | "
+                 f"{S.bo_placebo_pnl.mean() * 1e4:+.1f} | {m1 * 1e4:+.1f}, {t1:+.2f} | {m2 * 1e4:+.1f}, {t2:+.2f} | "
+                 f"{how[0]:.0%} / {how[1]:.0%} / {how[2]:.0%} |")
+        res[lab] = (t1, t2)
+    ok = res["**2022–2025**"][0] >= 2 and res["**2022–2025**"][1] >= 2
+    L += ["", f"**Breakout entry: {'PASS' if ok else 'FAIL'}** (both holdout t ≥ 2.0 required).", ""]
+    txt = "\n".join(L) + "\n"
+    print(txt)
+    open(os.path.join(ROOT, "reports", "research", "technicals_backtest.md"), "a").write(txt)
+
+
 if __name__ == "__main__":
-    {"download": download, "run": run, "report": report, "touch": touch, "touch_report": touch_report, "gate": gate}[sys.argv[1]]()
+    {"download": download, "run": run, "report": report, "touch": touch, "touch_report": touch_report, "gate": gate,
+     "breakout": breakout}[sys.argv[1]]()

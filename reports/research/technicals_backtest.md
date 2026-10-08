@@ -232,3 +232,16 @@ a later forward test of positioning (open interest, skew), which has no free his
   placebo).
 * **Pass (2022–2025, read once).** The weekly spread breakout − immediate has t ≥ 2.0 **and** breakout −
   placebo has t ≥ 2.0. 2012–2021 is reported alongside.
+
+## Results of pre-registration 3: breakout entry (computed 2026-10-08)
+
+| period | events | immediate bp | breakout bp | placebo-breakout bp | breakout − immediate (bp, t) | breakout − placebo (bp, t) | breakout entries / skips / clear air |
+|---|---:|---:|---:|---:|---:|---:|---|
+| 2012–2021 | 6,086 | -9.0 | -4.1 | -6.4 | +4.9, +1.37 | +2.3, -0.06 | 9% / 88% / 3% |
+| **2022–2025** | 3,000 | +0.9 | -8.3 | -9.6 | -9.2, -1.25 | +1.3, +1.20 | 8% / 89% / 3% |
+
+**Breakout entry: FAIL** (both holdout t ≥ 2.0 required).
+
+**Conclusion of pre-registration 3.** Breakout entry fails. Breakouts within 5 sessions are rare (8–9% of events),
+so the rule mostly skips, and on the holdout it trails immediate entry (−9.2 bp, t −1.25). Under the design plan
+this decides test A; the LLM price-context test (B) still runs, and must now beat immediate entry on its own.
