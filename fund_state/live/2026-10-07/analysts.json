@@ -1,0 +1,2771 @@
+{
+ "asof": "2026-10-07",
+ "memos": {
+  "NVDA": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 6642,
+     "completion_tokens": 3264,
+     "total_tokens": 9906,
+     "cost": 0.0059094,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0059094,
+      "upstream_inference_prompt_cost": 0.0019926,
+      "upstream_inference_completions_cost": 0.0039168
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2969,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 2, \"confidence\": 0.66, \"thesis\": \"Nvidia's $150B buyback (Sep 28) and fresh SpaceX $40B chip purchase (Oct 6) reinforce AI demand, while Micron's Q4 beat confirms memory/AI strength. China chip-sale easing adds upside. With no earnings next week, these active positive events should drive relative outperformance, though much is near the price.\", \"catalysts\": [{\"date\": \"2026-09-28\", \"what\": \"Nvidia boosts buyback by $150B\"}, {\"date\": \"2026-10-06\", \"what\": \"SpaceX seeks $40B to buy Nvidia chips\"}, {\"date\": \"2026-09-30\", \"what\": \"Micron Q4 beat on AI demand\"}, {\"date\": \"2026-09-27\", \"what\": \"China weighs allowing ByteDance/Alibaba Nvidia chip buys\"}], \"risks\": [\"Market crash warnings could hit high-beta AI names\", \"Buyback and AI demand largely priced near high\", \"Accounts receivable concerns linger\"], \"drivers\": [\"Nvidia AI Dominance\", \"SpaceX Stock Volatility\", \"AI Memory Chip Boom\", \"Nvidia boosts buyback by $150B\", \"SpaceX seeks $40B to buy Nvidia chips\", \"Micron Q4 earnings beat\"]}"
+   },
+   "memo": {
+    "score": 2,
+    "confidence": 0.66,
+    "thesis": "Nvidia's $150B buyback (Sep 28) and fresh SpaceX $40B chip purchase (Oct 6) reinforce AI demand, while Micron's Q4 beat confirms memory/AI strength. China chip-sale easing adds upside. With no earnings next week, these active positive events should drive relative outperformance, though much is near the price.",
+    "catalysts": [
+     {
+      "date": "2026-09-28",
+      "what": "Nvidia boosts buyback by $150B"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "SpaceX seeks $40B to buy Nvidia chips"
+     },
+     {
+      "date": "2026-09-30",
+      "what": "Micron Q4 beat on AI demand"
+     },
+     {
+      "date": "2026-09-27",
+      "what": "China weighs allowing ByteDance/Alibaba Nvidia chip buys"
+     }
+    ],
+    "risks": [
+     "Market crash warnings could hit high-beta AI names",
+     "Buyback and AI demand largely priced near high",
+     "Accounts receivable concerns linger"
+    ],
+    "drivers": [
+     "Nvidia AI Dominance",
+     "SpaceX Stock Volatility",
+     "AI Memory Chip Boom",
+     "Nvidia boosts buyback by $150B",
+     "SpaceX seeks $40B to buy Nvidia chips",
+     "Micron Q4 earnings beat"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 22780
+  },
+  "AAPL": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 6723,
+     "completion_tokens": 714,
+     "total_tokens": 7437,
+     "cost": 0.0028737,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0028737,
+      "upstream_inference_prompt_cost": 0.0020169,
+      "upstream_inference_completions_cost": 0.0008568
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 448,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.5, \"thesis\": \"AAPL sits 1.3% below its 52w high after a 22.6% 12-month run, and this week's coverage tilts cautious: Morgan Stanley cut its PT to $355, Jefferies flags softer iPhone 18 resale demand, memory costs crimp margins, and analysts say the late-October foldable Duo (6M units) won't move the stock. Valuation debate dominates; no positive catalyst in the holding week.\", \"catalysts\": [{\"date\": \"2026-10-01\", \"what\": \"Morgan Stanley cuts Apple PT to $355\"}, {\"date\": \"2026-10-02\", \"what\": \"Jefferies flags softer iPhone 18 demand\"}, {\"date\": \"2026-10-07\", \"what\": \"Masimo $184M interest ruling against Apple\"}, {\"date\": \"unknown\", \"what\": \"Foldable iPhone Duo late-October launch\"}], \"risks\": [\"Foldable Duo launch enthusiasm could lift shares\", \"Lawsuit/AI-agent news could turn positive\"], \"drivers\": [\"Apple Stock Q3 Rally\", \"Foldable iPhone Launch\", \"Apple legal battles\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.5,
+    "thesis": "AAPL sits 1.3% below its 52w high after a 22.6% 12-month run, and this week's coverage tilts cautious: Morgan Stanley cut its PT to $355, Jefferies flags softer iPhone 18 resale demand, memory costs crimp margins, and analysts say the late-October foldable Duo (6M units) won't move the stock. Valuation debate dominates; no positive catalyst in the holding week.",
+    "catalysts": [
+     {
+      "date": "2026-10-01",
+      "what": "Morgan Stanley cuts Apple PT to $355"
+     },
+     {
+      "date": "2026-10-02",
+      "what": "Jefferies flags softer iPhone 18 demand"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "Masimo $184M interest ruling against Apple"
+     },
+     {
+      "date": "unknown",
+      "what": "Foldable iPhone Duo late-October launch"
+     }
+    ],
+    "risks": [
+     "Foldable Duo launch enthusiasm could lift shares",
+     "Lawsuit/AI-agent news could turn positive"
+    ],
+    "drivers": [
+     "Apple Stock Q3 Rally",
+     "Foldable iPhone Launch",
+     "Apple legal battles"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 22794
+  },
+  "MSFT": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Venice",
+    "usage": {
+     "prompt_tokens": 5561,
+     "completion_tokens": 2488,
+     "total_tokens": 8049,
+     "cost": 0.0046539,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0046539,
+      "upstream_inference_prompt_cost": 0.0016683,
+      "upstream_inference_completions_cost": 0.0029856
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2213,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 1, \"confidence\": 0.5, \"thesis\": \"Fresh Melius upgrade to Buy ($665) on AI-security demand (Oct 05-06) plus Nvidia-powered Surface Laptop Ultra launch (Oct 07) and a rising cloud-security/identity narrative support mild relative outperformance. But MSFT sits 1.5% below its 52-week high after a 7.75% month, so much optimism is priced; AI-capex worries and weak Copilot-usage reports cap upside.\", \"catalysts\": [{\"date\": \"2026-10-05\", \"what\": \"Melius upgrades MSFT to Buy, $665 target\"}, {\"date\": \"2026-10-07\", \"what\": \"Nvidia-powered Surface Laptop Ultra unveiled\"}, {\"date\": \"2026-10-05\", \"what\": \"Wells Fargo adds MSFT to Q4 tactical list\"}], \"risks\": [\"AI capex sustainability fears weigh on hyperscalers\", \"Stock near 52w high, optimism largely priced\", \"Copilot 'basically zero' usage report\"], \"drivers\": [\"Melius upgrade to Buy\", \"Microsoft unveils Nvidia-powered Surface Laptop Ultra\", \"Cloud Security & Identity Partnerships\", \"Microsoft Earnings Optimism\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.5,
+    "thesis": "Fresh Melius upgrade to Buy ($665) on AI-security demand (Oct 05-06) plus Nvidia-powered Surface Laptop Ultra launch (Oct 07) and a rising cloud-security/identity narrative support mild relative outperformance. But MSFT sits 1.5% below its 52-week high after a 7.75% month, so much optimism is priced; AI-capex worries and weak Copilot-usage reports cap upside.",
+    "catalysts": [
+     {
+      "date": "2026-10-05",
+      "what": "Melius upgrades MSFT to Buy, $665 target"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "Nvidia-powered Surface Laptop Ultra unveiled"
+     },
+     {
+      "date": "2026-10-05",
+      "what": "Wells Fargo adds MSFT to Q4 tactical list"
+     }
+    ],
+    "risks": [
+     "AI capex sustainability fears weigh on hyperscalers",
+     "Stock near 52w high, optimism largely priced",
+     "Copilot 'basically zero' usage report"
+    ],
+    "drivers": [
+     "Melius upgrade to Buy",
+     "Microsoft unveils Nvidia-powered Surface Laptop Ultra",
+     "Cloud Security & Identity Partnerships",
+     "Microsoft Earnings Optimism"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 19180
+  },
+  "GOOGL": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "InferenceNet",
+    "usage": {
+     "prompt_tokens": 8309,
+     "completion_tokens": 2100,
+     "total_tokens": 10409,
+     "cost": 0.001883175,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.001883175,
+      "upstream_inference_prompt_cost": 0.000623175,
+      "upstream_inference_completions_cost": 0.00126
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1820,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\n  \"score\": 1,\n  \"confidence\": 0.65,\n  \"thesis\": \"Google's new 20-year nuclear power deal and Gemini 4 Argon launch strengthen its AI infrastructure and product position, while its Anthropic stake offers upside. These recent catalysts should support relative outperformance next week, though AI capex bubble fears and EU regulatory appeals cap gains.\",\n  \"catalysts\": [\n    {\"date\": \"2026-10-06\", \"what\": \"Google signs 20-year nuclear power deal with Constellation\"},\n    {\"date\": \"2026-09-30\", \"what\": \"Google launches Gemini 4 Argon AI model\"},\n    {\"date\": \"2026-10-07\", \"what\": \"Google and Unity partner on AI gaming platform\"},\n    {\"date\": \"2026-09-29\", \"what\": \"Anthropic IPO prospectus reported, benefits Alphabet stake\"}\n  ],\n  \"risks\": [\n    \"AI capex bubble fears weigh on hyperscalers\",\n    \"EU regulatory appeal could lead to adverse ruling\",\n    \"Competition from Anthropic and OpenAI intensifies\"\n  ],\n  \"drivers\": [\n    \"Google AI Power Race\",\n    \"Alphabet Q2 Earnings Reaction\",\n    \"Anthropic Claude Expansion\",\n    \"Anthropic IPO Impact\"\n  ]\n}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.65,
+    "thesis": "Google's new 20-year nuclear power deal and Gemini 4 Argon launch strengthen its AI infrastructure and product position, while its Anthropic stake offers upside. These recent catalysts should support relative outperformance next week, though AI capex bubble fears and EU regulatory appeals cap gains.",
+    "catalysts": [
+     {
+      "date": "2026-10-06",
+      "what": "Google signs 20-year nuclear power deal with Constellation"
+     },
+     {
+      "date": "2026-09-30",
+      "what": "Google launches Gemini 4 Argon AI model"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "Google and Unity partner on AI gaming platform"
+     },
+     {
+      "date": "2026-09-29",
+      "what": "Anthropic IPO prospectus reported, benefits Alphabet stake"
+     }
+    ],
+    "risks": [
+     "AI capex bubble fears weigh on hyperscalers",
+     "EU regulatory appeal could lead to adverse ruling",
+     "Competition from Anthropic and OpenAI intensifies"
+    ],
+    "drivers": [
+     "Google AI Power Race",
+     "Alphabet Q2 Earnings Reaction",
+     "Anthropic Claude Expansion",
+     "Anthropic IPO Impact"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 29216
+  },
+  "AMZN": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 7287,
+     "completion_tokens": 1607,
+     "total_tokens": 8894,
+     "cost": 0.003963972,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.003963972,
+      "upstream_inference_prompt_cost": 0.002035572,
+      "upstream_inference_completions_cost": 0.0019284
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1299,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 1, \"confidence\": 0.4, \"thesis\": \"Amazon-specific news skews positive: 20-yr Constellation nuclear PPA (Sep 30) secures AWS power, $1B+ Synopsys custom-silicon pact (Sep 30), Delta picking Amazon Leo over Starlink, and asset-light $8B Nvidia chip leaseback. But most landed Sep 30-Oct 2 and the +4.3% week already prices them; AI-debt-bubble chatter is a sector headwind.\", \"catalysts\": [{\"date\": \"2026-09-30\", \"what\": \"Constellation 20-yr nuclear PPA with Amazon\"}, {\"date\": \"2026-09-30\", \"what\": \"Synopsys $1B+ AWS custom silicon pact\"}, {\"date\": \"2026-10-02\", \"what\": \"Amazon seeks $8B Nvidia chip leaseback\"}, {\"date\": \"2026-10-01\", \"what\": \"Delta picks Amazon Leo satellite Wi-Fi\"}], \"risks\": [\"Positive deals already priced after +4.3% week\", \"AI capex/debt bubble fears pressure hyperscalers\"], \"drivers\": [\"Amazon signs 20-year nuclear power deal\", \"Synopsys signs $1B+ Amazon chip pact\", \"Amazon seeks to offload $8B Nvidia chips\", \"Musk Delta Starlink feud\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.4,
+    "thesis": "Amazon-specific news skews positive: 20-yr Constellation nuclear PPA (Sep 30) secures AWS power, $1B+ Synopsys custom-silicon pact (Sep 30), Delta picking Amazon Leo over Starlink, and asset-light $8B Nvidia chip leaseback. But most landed Sep 30-Oct 2 and the +4.3% week already prices them; AI-debt-bubble chatter is a sector headwind.",
+    "catalysts": [
+     {
+      "date": "2026-09-30",
+      "what": "Constellation 20-yr nuclear PPA with Amazon"
+     },
+     {
+      "date": "2026-09-30",
+      "what": "Synopsys $1B+ AWS custom silicon pact"
+     },
+     {
+      "date": "2026-10-02",
+      "what": "Amazon seeks $8B Nvidia chip leaseback"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "Delta picks Amazon Leo satellite Wi-Fi"
+     }
+    ],
+    "risks": [
+     "Positive deals already priced after +4.3% week",
+     "AI capex/debt bubble fears pressure hyperscalers"
+    ],
+    "drivers": [
+     "Amazon signs 20-year nuclear power deal",
+     "Synopsys signs $1B+ Amazon chip pact",
+     "Amazon seeks to offload $8B Nvidia chips",
+     "Musk Delta Starlink feud"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 25272
+  },
+  "META": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 8984,
+     "completion_tokens": 850,
+     "total_tokens": 9834,
+     "cost": 0.0037152,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0037152,
+      "upstream_inference_prompt_cost": 0.0026952,
+      "upstream_inference_completions_cost": 0.00102
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 641,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.55, \"thesis\": \"Muse's 27% run has priced in the AI-agent upside (story share fading 28%->19%), while two negative overhangs are rising: New Mexico seeks up to $40B with a ruling due this month, and Ofcom opened a UK probe Oct 6. Capex-debt worries (Meta owes $22B more than it holds) add pressure. Risk skewed down near-term.\", \"catalysts\": [{\"date\": \"2026-10-06\", \"what\": \"Ofcom opens UK probe into Instagram Instants safety\"}, {\"date\": \"unknown\", \"what\": \"New Mexico judge rules on up to $40B penalty this month\"}], \"risks\": [\"Muse adoption/monetization beats expectations\", \"Legal penalties smaller than feared\"], \"drivers\": [\"Meta Child Addiction Lawsuits\", \"AI Capex Debt Boom\", \"Meta Muse AI agent\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.55,
+    "thesis": "Muse's 27% run has priced in the AI-agent upside (story share fading 28%->19%), while two negative overhangs are rising: New Mexico seeks up to $40B with a ruling due this month, and Ofcom opened a UK probe Oct 6. Capex-debt worries (Meta owes $22B more than it holds) add pressure. Risk skewed down near-term.",
+    "catalysts": [
+     {
+      "date": "2026-10-06",
+      "what": "Ofcom opens UK probe into Instagram Instants safety"
+     },
+     {
+      "date": "unknown",
+      "what": "New Mexico judge rules on up to $40B penalty this month"
+     }
+    ],
+    "risks": [
+     "Muse adoption/monetization beats expectations",
+     "Legal penalties smaller than feared"
+    ],
+    "drivers": [
+     "Meta Child Addiction Lawsuits",
+     "AI Capex Debt Boom",
+     "Meta Muse AI agent"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 32007
+  },
+  "AVGO": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "AtlasCloud",
+    "usage": {
+     "prompt_tokens": 4347,
+     "completion_tokens": 1298,
+     "total_tokens": 5645,
+     "cost": 0.0028617,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0028617,
+      "upstream_inference_prompt_cost": 0.0013041,
+      "upstream_inference_completions_cost": 0.0015576
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1050,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 1, \"confidence\": 0.55, \"thesis\": \"Fresh Anthropic financing news ($42B TPU lease deal, $60B AI financing plan) underpins Broadcom's reiterated $230B-by-2028 AI revenue target, and Morgan Stanley flags it resilient to data-center power shortfalls. Bullish flow, but a 7% weekly run and Anthropic concentration-risk debate cap conviction.\", \"catalysts\": [{\"date\": \"2026-10-05\", \"what\": \"Broadcom $42B Anthropic TPU lease financing reported\"}, {\"date\": \"2026-10-02\", \"what\": \"$60B AI customer financing plan with banks, Blackstone\"}, {\"date\": \"2026-10-07\", \"what\": \"Morgan Stanley: AVGO resilient to 32GW power shortfall\"}], \"risks\": [\"Anthropic concentration and circular vendor-financing concerns\", \"7% weekly gain may already price the news\"], \"drivers\": [\"Broadcom's $230B AI Forecast\", \"Broadcom Q3 Earnings Watch\", \"Anthropic $42B financing deal\", \"AI Chip Stock Volatility\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.55,
+    "thesis": "Fresh Anthropic financing news ($42B TPU lease deal, $60B AI financing plan) underpins Broadcom's reiterated $230B-by-2028 AI revenue target, and Morgan Stanley flags it resilient to data-center power shortfalls. Bullish flow, but a 7% weekly run and Anthropic concentration-risk debate cap conviction.",
+    "catalysts": [
+     {
+      "date": "2026-10-05",
+      "what": "Broadcom $42B Anthropic TPU lease financing reported"
+     },
+     {
+      "date": "2026-10-02",
+      "what": "$60B AI customer financing plan with banks, Blackstone"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "Morgan Stanley: AVGO resilient to 32GW power shortfall"
+     }
+    ],
+    "risks": [
+     "Anthropic concentration and circular vendor-financing concerns",
+     "7% weekly gain may already price the news"
+    ],
+    "drivers": [
+     "Broadcom's $230B AI Forecast",
+     "Broadcom Q3 Earnings Watch",
+     "Anthropic $42B financing deal",
+     "AI Chip Stock Volatility"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 14255
+  },
+  "TSLA": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "SiliconFlow",
+    "usage": {
+     "prompt_tokens": 6296,
+     "completion_tokens": 3711,
+     "total_tokens": 10007,
+     "cost": 0.006342,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.006342,
+      "upstream_inference_prompt_cost": 0.0018888,
+      "upstream_inference_completions_cost": 0.0044532
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 3419,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 1, \"confidence\": 0.5, \"thesis\": \"Q3 delivery beat (486,532 vs ~461k, Oct 1-3) confirms demand but looks priced after a +6.5% week. The fresher, less-priced driver is the AI-infrastructure narrative\u2014Terafab chip build-out clarified Oct 5-7, Cybercab Paris showcase, FSD Europe momentum\u2014offset by $30B credit-line funding and margin worries. Slight relative outperformance.\", \"catalysts\": [{\"date\": \"2026-10-02\", \"what\": \"Q3 deliveries beat estimates, already priced\"}, {\"date\": \"2026-10-05\", \"what\": \"Terafab AI chip project role clarified\"}, {\"date\": \"unknown\", \"what\": \"FSD EU approval momentum\"}, {\"date\": \"2026-10-21\", \"what\": \"Q3 earnings, outside holding week\"}], \"risks\": [\"$30B credit line flags funding/cash shortfall\", \"Cybercab NHTSA scrutiny, California crackdown\", \"Delivery beat already priced after +6.5% week\"], \"drivers\": [\"Tesla Q2 Earnings Slump\", \"SpaceX's Soaring Valuation\", \"Cybercab Rollout & Scrutiny\", \"Tesla $30B Credit Facility\", \"Tesla robotics race\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.5,
+    "thesis": "Q3 delivery beat (486,532 vs ~461k, Oct 1-3) confirms demand but looks priced after a +6.5% week. The fresher, less-priced driver is the AI-infrastructure narrative\u2014Terafab chip build-out clarified Oct 5-7, Cybercab Paris showcase, FSD Europe momentum\u2014offset by $30B credit-line funding and margin worries. Slight relative outperformance.",
+    "catalysts": [
+     {
+      "date": "2026-10-02",
+      "what": "Q3 deliveries beat estimates, already priced"
+     },
+     {
+      "date": "2026-10-05",
+      "what": "Terafab AI chip project role clarified"
+     },
+     {
+      "date": "unknown",
+      "what": "FSD EU approval momentum"
+     },
+     {
+      "date": "2026-10-21",
+      "what": "Q3 earnings, outside holding week"
+     }
+    ],
+    "risks": [
+     "$30B credit line flags funding/cash shortfall",
+     "Cybercab NHTSA scrutiny, California crackdown",
+     "Delivery beat already priced after +6.5% week"
+    ],
+    "drivers": [
+     "Tesla Q2 Earnings Slump",
+     "SpaceX's Soaring Valuation",
+     "Cybercab Rollout & Scrutiny",
+     "Tesla $30B Credit Facility",
+     "Tesla robotics race"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 21536
+  },
+  "AMD": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "StreamLake",
+    "usage": {
+     "prompt_tokens": 6641,
+     "completion_tokens": 1776,
+     "total_tokens": 8417,
+     "cost": 0.00197928,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.00197928,
+      "upstream_inference_prompt_cost": 0.000956304,
+      "upstream_inference_completions_cost": 0.001022976
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1459,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 2, \"confidence\": 0.55, \"thesis\": \"AMD's AI Chip Expansion story is rising (17%\u219225% share) on dated catalysts: Lisa Su's Oct 6-7 pledge of a 'substantial' 2027 supply ramp plus >$10B supply-chain spend, the HPE/Vultr $1.2B Helios order validating MI450 racks, and Citi's Oct 6 $800 target. Demand outrunning supply is fresh, actionable news; AI-chip-selloff story is fading.\", \"catalysts\": [{\"date\": \"2026-10-06\", \"what\": \"Lisa Su plans substantial 2027 AI chip supply ramp\"}, {\"date\": \"2026-09-30\", \"what\": \"HPE lands $1.2B Vultr AMD Helios order\"}, {\"date\": \"2026-10-06\", \"what\": \"Citi raises AMD target to $800 on Meta Muse\"}, {\"date\": \"2026-09-28\", \"what\": \"AMD closes $8.2B World Labs acquisition\"}], \"risks\": [\"Extended: +24% month, near 52-week high, 63% vol\", \"World Labs all-stock deal dilutive; AI-chip selloff could resume\"], \"drivers\": [\"AMD AI Chip Expansion\", \"Lisa Su 2027 supply ramp\", \"HPE Vultr Helios order\", \"AMD Stock Momentum\", \"AI chip selloff\"]}"
+   },
+   "memo": {
+    "score": 2,
+    "confidence": 0.55,
+    "thesis": "AMD's AI Chip Expansion story is rising (17%\u219225% share) on dated catalysts: Lisa Su's Oct 6-7 pledge of a 'substantial' 2027 supply ramp plus >$10B supply-chain spend, the HPE/Vultr $1.2B Helios order validating MI450 racks, and Citi's Oct 6 $800 target. Demand outrunning supply is fresh, actionable news; AI-chip-selloff story is fading.",
+    "catalysts": [
+     {
+      "date": "2026-10-06",
+      "what": "Lisa Su plans substantial 2027 AI chip supply ramp"
+     },
+     {
+      "date": "2026-09-30",
+      "what": "HPE lands $1.2B Vultr AMD Helios order"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "Citi raises AMD target to $800 on Meta Muse"
+     },
+     {
+      "date": "2026-09-28",
+      "what": "AMD closes $8.2B World Labs acquisition"
+     }
+    ],
+    "risks": [
+     "Extended: +24% month, near 52-week high, 63% vol",
+     "World Labs all-stock deal dilutive; AI-chip selloff could resume"
+    ],
+    "drivers": [
+     "AMD AI Chip Expansion",
+     "Lisa Su 2027 supply ramp",
+     "HPE Vultr Helios order",
+     "AMD Stock Momentum",
+     "AI chip selloff"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 22558
+  },
+  "INTC": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 5687,
+     "completion_tokens": 1375,
+     "total_tokens": 7062,
+     "cost": 0.0033561,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0033561,
+      "upstream_inference_prompt_cost": 0.0017061,
+      "upstream_inference_completions_cost": 0.00165
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1172,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.5, \"thesis\": \"Oct 5 Musk confirmation of TSMC Terafab talks is a fresh setback to Intel's foundry-comeback narrative, and the 'Turnaround Rally' story is fading (25%->14% share). The -6% week plus a 184% 12-1m run leaves reversal risk. SK Hynix Ohio talks are an unconfirmed offset.\", \"catalysts\": [{\"date\": \"2026-10-05\", \"what\": \"Musk confirms TSMC Terafab talks, Intel drops 4%\"}, {\"date\": \"2026-10-07\", \"what\": \"Intel CEO says it stays in Terafab\"}], \"risks\": [\"SK Hynix Ohio deal confirmed as positive\", \"Terafab resolution lifts sentiment\"], \"drivers\": [\"Intel SK Hynix Ohio talks\", \"Intel Turnaround Rally\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.5,
+    "thesis": "Oct 5 Musk confirmation of TSMC Terafab talks is a fresh setback to Intel's foundry-comeback narrative, and the 'Turnaround Rally' story is fading (25%->14% share). The -6% week plus a 184% 12-1m run leaves reversal risk. SK Hynix Ohio talks are an unconfirmed offset.",
+    "catalysts": [
+     {
+      "date": "2026-10-05",
+      "what": "Musk confirms TSMC Terafab talks, Intel drops 4%"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "Intel CEO says it stays in Terafab"
+     }
+    ],
+    "risks": [
+     "SK Hynix Ohio deal confirmed as positive",
+     "Terafab resolution lifts sentiment"
+    ],
+    "drivers": [
+     "Intel SK Hynix Ohio talks",
+     "Intel Turnaround Rally"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 19419
+  },
+  "TSM": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "StreamLake",
+    "usage": {
+     "prompt_tokens": 4643,
+     "completion_tokens": 1659,
+     "total_tokens": 6302,
+     "cost": 0.001624176,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.001624176,
+      "upstream_inference_prompt_cost": 0.000668592,
+      "upstream_inference_completions_cost": 0.000955584
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1393,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 1, \"confidence\": 0.55, \"thesis\": \"Fresh company-specific positives dominate: Musk's Oct 5 Terafab talks and Oct 1 reported Texas mega-campus show TSMC winning the AI capacity race, and Q3 previews (Oct 15 print) expect revenue above guidance with raised 2026 growth on 2nm. Stock already +13% in a month at 52-week high, so earnings bar is high and edge is tempered.\", \"catalysts\": [{\"date\": \"2026-10-15\", \"what\": \"Q3 earnings; guidance expected above, 2026 raised\"}, {\"date\": \"2026-10-05\", \"what\": \"Musk confirms Terafab talks with TSMC\"}, {\"date\": \"2026-10-01\", \"what\": \"TSMC mulls multibillion Texas chip campus\"}], \"risks\": [\"Earnings 'sell the news' at 52-week high\", \"Terafab talks early-stage, may not close\"], \"drivers\": [\"Musk confirms Terafab talks with TSMC\", \"TSMC mulls multibillion Texas chip campus\", \"TSMC Earnings Surge / Q3 previews and raised 2026 guidance\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.55,
+    "thesis": "Fresh company-specific positives dominate: Musk's Oct 5 Terafab talks and Oct 1 reported Texas mega-campus show TSMC winning the AI capacity race, and Q3 previews (Oct 15 print) expect revenue above guidance with raised 2026 growth on 2nm. Stock already +13% in a month at 52-week high, so earnings bar is high and edge is tempered.",
+    "catalysts": [
+     {
+      "date": "2026-10-15",
+      "what": "Q3 earnings; guidance expected above, 2026 raised"
+     },
+     {
+      "date": "2026-10-05",
+      "what": "Musk confirms Terafab talks with TSMC"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "TSMC mulls multibillion Texas chip campus"
+     }
+    ],
+    "risks": [
+     "Earnings 'sell the news' at 52-week high",
+     "Terafab talks early-stage, may not close"
+    ],
+    "drivers": [
+     "Musk confirms Terafab talks with TSMC",
+     "TSMC mulls multibillion Texas chip campus",
+     "TSMC Earnings Surge / Q3 previews and raised 2026 guidance"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 15962
+  },
+  "JPM": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "StreamLake",
+    "usage": {
+     "prompt_tokens": 4970,
+     "completion_tokens": 2416,
+     "total_tokens": 7386,
+     "cost": 0.002107296,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.002107296,
+      "upstream_inference_prompt_cost": 0.00071568,
+      "upstream_inference_completions_cost": 0.001391616
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2218,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 1, \"confidence\": 0.4, \"thesis\": \"Q3 earnings Oct 13 with positive ESP (+3.79%), ~9% beat history and consensus EPS +17% YoY into a stock already down 6.6% and bank sector's worst relative month since 1990 \u2014 a de-risked setup. Dimon's credit-squeeze and yield warnings temper conviction.\", \"catalysts\": [{\"date\": \"2026-10-13\", \"what\": \"Q3 earnings; consensus EPS $5.94, +17% YoY\"}], \"risks\": [\"Dimon warns corporate credit squeeze, sticky inflation\", \"Spiking Treasury yields pressure bank stocks\", \"Binary event: earnings miss could extend slump\"], \"drivers\": [\"JPMorgan Analyst Sentiment (earnings previews)\", \"Dimon market warnings\", \"Bank Q2 Earnings Season (sector lag)\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.4,
+    "thesis": "Q3 earnings Oct 13 with positive ESP (+3.79%), ~9% beat history and consensus EPS +17% YoY into a stock already down 6.6% and bank sector's worst relative month since 1990 \u2014 a de-risked setup. Dimon's credit-squeeze and yield warnings temper conviction.",
+    "catalysts": [
+     {
+      "date": "2026-10-13",
+      "what": "Q3 earnings; consensus EPS $5.94, +17% YoY"
+     }
+    ],
+    "risks": [
+     "Dimon warns corporate credit squeeze, sticky inflation",
+     "Spiking Treasury yields pressure bank stocks",
+     "Binary event: earnings miss could extend slump"
+    ],
+    "drivers": [
+     "JPMorgan Analyst Sentiment (earnings previews)",
+     "Dimon market warnings",
+     "Bank Q2 Earnings Season (sector lag)"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 17043
+  },
+  "LLY": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Sail Research",
+    "usage": {
+     "prompt_tokens": 5877,
+     "completion_tokens": 1619,
+     "total_tokens": 7496,
+     "cost": 0.00111776,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.00111776,
+      "upstream_inference_prompt_cost": 0.00047016,
+      "upstream_inference_completions_cost": 0.0006476
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1331,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 1, \"confidence\": 0.55, \"thesis\": \"Net-positive news flow: FDA expanded Jaypirca label (Oct 2), Gate Bioscience deal up to $870M (Oct 5), and Foundayo/retatrutide data reinforce GLP-1 leadership vs Novo. Foghorn cancer-deal termination is minor and mostly hits Foghorn. Stock already up 2.7% on the week, so the edge is modest.\", \"catalysts\": [{\"date\": \"2026-10-02\", \"what\": \"FDA expands Jaypirca approval to untreated CLL/SLL\"}, {\"date\": \"2026-10-05\", \"what\": \"Gate Bioscience deal expansion up to $870M\"}, {\"date\": \"2026-10-01\", \"what\": \"Foundayo Phase 3 CV/diabetes risk-reduction data\"}, {\"date\": \"2026-10-01\", \"what\": \"Foghorn FHD-909 cancer deal terminated (negative)\"}], \"risks\": [\"Foghorn deal termination\", \"Rich valuation, Q3 earnings Oct 29 outside window\", \"Much coverage is recycled opinion\"], \"drivers\": [\"Lilly Biotech Deals & Funding\", \"Retatrutide's Path to Approval\", \"Novo Nordisk vs Eli Lilly\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.55,
+    "thesis": "Net-positive news flow: FDA expanded Jaypirca label (Oct 2), Gate Bioscience deal up to $870M (Oct 5), and Foundayo/retatrutide data reinforce GLP-1 leadership vs Novo. Foghorn cancer-deal termination is minor and mostly hits Foghorn. Stock already up 2.7% on the week, so the edge is modest.",
+    "catalysts": [
+     {
+      "date": "2026-10-02",
+      "what": "FDA expands Jaypirca approval to untreated CLL/SLL"
+     },
+     {
+      "date": "2026-10-05",
+      "what": "Gate Bioscience deal expansion up to $870M"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "Foundayo Phase 3 CV/diabetes risk-reduction data"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "Foghorn FHD-909 cancer deal terminated (negative)"
+     }
+    ],
+    "risks": [
+     "Foghorn deal termination",
+     "Rich valuation, Q3 earnings Oct 29 outside window",
+     "Much coverage is recycled opinion"
+    ],
+    "drivers": [
+     "Lilly Biotech Deals & Funding",
+     "Retatrutide's Path to Approval",
+     "Novo Nordisk vs Eli Lilly"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 19734
+  },
+  "WMT": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Phala",
+    "usage": {
+     "prompt_tokens": 4819,
+     "completion_tokens": 2396,
+     "total_tokens": 7215,
+     "cost": 0.00302463,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.00302463,
+      "upstream_inference_prompt_cost": 0.00101199,
+      "upstream_inference_completions_cost": 0.00201264
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2132,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 1, \"confidence\": 0.5, \"thesis\": \"Walmart's coverage is led by a new, rising restaurant-delivery push (32% share) plus high-margin digital expansion\u2014Walmart Connect ads +43%, digital shelf labels, drone delivery\u2014and an expanding grocery price advantage into the holidays. Pricing-practice scrutiny is a contained reputational risk. News flow tilts modestly positive, though much is already in the +4% week.\", \"catalysts\": [{\"date\": \"2026-10-07\", \"what\": \"Holiday readiness, drone expansion announced\"}, {\"date\": \"2026-10-06\", \"what\": \"Walmart Connect ad expansion with WBD, Spotify\"}, {\"date\": \"2026-10-01\", \"what\": \"Digital shelf labels full rollout\"}, {\"date\": \"2026-09-27\", \"what\": \"Pricing-practice defense vs activists\"}], \"risks\": [\"Valuation debate; stock seen as expensive\", \"Pricing scrutiny could escalate\", \"Consumer caution, fuel costs\"], \"drivers\": [\"Walmart restaurant delivery\", \"Walmart Connect expansion\", \"Grocery Industry Shakeup\", \"Walmart Valuation Debate\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.5,
+    "thesis": "Walmart's coverage is led by a new, rising restaurant-delivery push (32% share) plus high-margin digital expansion\u2014Walmart Connect ads +43%, digital shelf labels, drone delivery\u2014and an expanding grocery price advantage into the holidays. Pricing-practice scrutiny is a contained reputational risk. News flow tilts modestly positive, though much is already in the +4% week.",
+    "catalysts": [
+     {
+      "date": "2026-10-07",
+      "what": "Holiday readiness, drone expansion announced"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "Walmart Connect ad expansion with WBD, Spotify"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "Digital shelf labels full rollout"
+     },
+     {
+      "date": "2026-09-27",
+      "what": "Pricing-practice defense vs activists"
+     }
+    ],
+    "risks": [
+     "Valuation debate; stock seen as expensive",
+     "Pricing scrutiny could escalate",
+     "Consumer caution, fuel costs"
+    ],
+    "drivers": [
+     "Walmart restaurant delivery",
+     "Walmart Connect expansion",
+     "Grocery Industry Shakeup",
+     "Walmart Valuation Debate"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 17073
+  },
+  "BRK.B": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 4819,
+     "completion_tokens": 2509,
+     "total_tokens": 7328,
+     "cost": 0.004305972,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.004305972,
+      "upstream_inference_prompt_cost": 0.001295172,
+      "upstream_inference_completions_cost": 0.0030108
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2316,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.4, \"thesis\": \"New subsidiary story [9] surges to 22% share, led by Texas AG civil investigative demands into Fruit of the Loom (Oct 07) over toxic chemicals\u2014a fresh regulatory risk. Combined with skepticism over Abel's Lennar buying (Oct 06), slight negative for BRK.B next week.\", \"catalysts\": [{\"date\": \"2026-10-07\", \"what\": \"Texas AG investigation into Fruit of the Loom\"}, {\"date\": \"2026-10-06\", \"what\": \"Berkshire buys more Lennar; Abel sees no quick recovery\"}], \"risks\": [\"Investigation early stage; Fruit of the Loom small vs Berkshire size\"], \"drivers\": [\"Berkshire Hathaway Subsidiary News\", \"Financial ETFs & Berkshire\", \"Abel's Alphabet Bet\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.4,
+    "thesis": "New subsidiary story [9] surges to 22% share, led by Texas AG civil investigative demands into Fruit of the Loom (Oct 07) over toxic chemicals\u2014a fresh regulatory risk. Combined with skepticism over Abel's Lennar buying (Oct 06), slight negative for BRK.B next week.",
+    "catalysts": [
+     {
+      "date": "2026-10-07",
+      "what": "Texas AG investigation into Fruit of the Loom"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "Berkshire buys more Lennar; Abel sees no quick recovery"
+     }
+    ],
+    "risks": [
+     "Investigation early stage; Fruit of the Loom small vs Berkshire size"
+    ],
+    "drivers": [
+     "Berkshire Hathaway Subsidiary News",
+     "Financial ETFs & Berkshire",
+     "Abel's Alphabet Bet"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 17514
+  },
+  "ORCL": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 4511,
+     "completion_tokens": 2289,
+     "total_tokens": 6800,
+     "cost": 0.0041001,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0041001,
+      "upstream_inference_prompt_cost": 0.0013533,
+      "upstream_inference_completions_cost": 0.0027468
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2047,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.4, \"thesis\": \"Fresh negatives dominate: Oct 7 reports of Oracle joining Broadcom/SpaceX in blockbuster private-debt talks, Michael Burry's Oct 5 warning that the $664B backlog masks debt strain, and December layoff buzz. Tencent's $7B chip lease (Oct 1) failed to lift the stock, so the AI-debt overhang still caps ORCL next week.\", \"catalysts\": [{\"date\": \"2026-10-07\", \"what\": \"Oracle in AI-chip private debt financing talks\"}, {\"date\": \"2026-10-05\", \"what\": \"Burry flags $664B backlog debt strain\"}, {\"date\": \"2026-10-01\", \"what\": \"Tencent $7B/100K-chip Oracle lease\"}], \"risks\": [\"Tencent deal re-rates stock higher\", \"Debt-crunch narrative fading\", \"Nuclear/Bloom power deals reassure\"], \"drivers\": [\"Oracle's AI Debt Crunch\", \"Oracle Fuel Cell Contract\", \"Oracle Stock Slump\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.4,
+    "thesis": "Fresh negatives dominate: Oct 7 reports of Oracle joining Broadcom/SpaceX in blockbuster private-debt talks, Michael Burry's Oct 5 warning that the $664B backlog masks debt strain, and December layoff buzz. Tencent's $7B chip lease (Oct 1) failed to lift the stock, so the AI-debt overhang still caps ORCL next week.",
+    "catalysts": [
+     {
+      "date": "2026-10-07",
+      "what": "Oracle in AI-chip private debt financing talks"
+     },
+     {
+      "date": "2026-10-05",
+      "what": "Burry flags $664B backlog debt strain"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "Tencent $7B/100K-chip Oracle lease"
+     }
+    ],
+    "risks": [
+     "Tencent deal re-rates stock higher",
+     "Debt-crunch narrative fading",
+     "Nuclear/Bloom power deals reassure"
+    ],
+    "drivers": [
+     "Oracle's AI Debt Crunch",
+     "Oracle Fuel Cell Contract",
+     "Oracle Stock Slump"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 14927
+  },
+  "CRM": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 3809,
+     "completion_tokens": 3415,
+     "total_tokens": 7224,
+     "cost": 0.0052407,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0052407,
+      "upstream_inference_prompt_cost": 0.0011427,
+      "upstream_inference_completions_cost": 0.004098
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 3280,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 0, \"confidence\": 0.6, \"thesis\": \"No material Salesforce-specific catalyst in the holding week. This week's coverage is mostly recycled valuation/cash-flow debate, minor partner announcements, and fading sector-rebound chatter. With no earnings and no active dated event, news does not justify a directional relative bet.\", \"catalysts\": [], \"risks\": [\"AI disruption fears pressure SaaS multiples\", \"Sector rotation away from software\", \"Valuation debate already priced\"], \"drivers\": [\"Salesforce AI Growth Story\", \"Agentforce Expansion\", \"Software stocks rebound\", \"Salesforce Stock Debate\"]}"
+   },
+   "memo": {
+    "score": 0,
+    "confidence": 0.6,
+    "thesis": "No material Salesforce-specific catalyst in the holding week. This week's coverage is mostly recycled valuation/cash-flow debate, minor partner announcements, and fading sector-rebound chatter. With no earnings and no active dated event, news does not justify a directional relative bet.",
+    "catalysts": [],
+    "risks": [
+     "AI disruption fears pressure SaaS multiples",
+     "Sector rotation away from software",
+     "Valuation debate already priced"
+    ],
+    "drivers": [
+     "Salesforce AI Growth Story",
+     "Agentforce Expansion",
+     "Software stocks rebound",
+     "Salesforce Stock Debate"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 12711
+  },
+  "NFLX": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 4199,
+     "completion_tokens": 2003,
+     "total_tokens": 6202,
+     "cost": 0.003512772,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.003512772,
+      "upstream_inference_prompt_cost": 0.001109172,
+      "upstream_inference_completions_cost": 0.0024036
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1762,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.35, \"thesis\": \"Fresh Netflix-specific news skews negative: Sarandos (Oct 1) admitted H1 viewership grew only 2% and growth 'isn't fast enough,' and Oct 6 coverage flags rising live-sports costs pressuring margins. The Paramount-WBD close is competitor-specific. No positive Netflix catalyst before the Oct 20 print.\", \"catalysts\": [{\"date\": \"2026-10-01\", \"what\": \"Sarandos warns Netflix growth not fast enough\"}, {\"date\": \"2026-10-06\", \"what\": \"Live-sports cost margin threat flagged\"}, {\"date\": \"2026-10-06\", \"what\": \"Paramount-WBD merger closes (competitor event)\"}], \"risks\": [\"Stock already down 27% YTD, much priced in\", \"Cluster of Buy reiterations and DB upgrade\"], \"drivers\": [\"Netflix Q2 earnings selloff / Sarandos growth warning\", \"Paramount-Warner Bros. Discovery merger\", \"Netflix live programming and cost concerns\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.35,
+    "thesis": "Fresh Netflix-specific news skews negative: Sarandos (Oct 1) admitted H1 viewership grew only 2% and growth 'isn't fast enough,' and Oct 6 coverage flags rising live-sports costs pressuring margins. The Paramount-WBD close is competitor-specific. No positive Netflix catalyst before the Oct 20 print.",
+    "catalysts": [
+     {
+      "date": "2026-10-01",
+      "what": "Sarandos warns Netflix growth not fast enough"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "Live-sports cost margin threat flagged"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "Paramount-WBD merger closes (competitor event)"
+     }
+    ],
+    "risks": [
+     "Stock already down 27% YTD, much priced in",
+     "Cluster of Buy reiterations and DB upgrade"
+    ],
+    "drivers": [
+     "Netflix Q2 earnings selloff / Sarandos growth warning",
+     "Paramount-Warner Bros. Discovery merger",
+     "Netflix live programming and cost concerns"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 13802
+  },
+  "BA": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 3821,
+     "completion_tokens": 698,
+     "total_tokens": 4519,
+     "cost": 0.0019839,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0019839,
+      "upstream_inference_prompt_cost": 0.0011463,
+      "upstream_inference_completions_cost": 0.0008376
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 408,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 2, \"confidence\": 0.66, \"thesis\": \"A cluster of material wins: the $20B Navy F/A-XX award (Oct 1), a $14.7B Lockheed PAC-3 seeker contract (Oct 6), FAA clearing the 737 MAX software glitch (Oct 2), and the SPEEA deal averting a strike (Oct 1). With BA down 8.8% on the month and 25% below its high, these catalysts are not yet priced.\", \"catalysts\": [{\"date\": \"2026-10-01\", \"what\": \"Boeing wins $20B Navy F/A-XX fighter contract\"}, {\"date\": \"2026-10-06\", \"what\": \"$14.7B Lockheed PAC-3 MSE seeker contract\"}, {\"date\": \"2026-10-02\", \"what\": \"FAA clears 737 MAX software glitch\"}, {\"date\": \"2026-10-01\", \"what\": \"SPEEA engineers ratify contract, strike averted\"}], \"risks\": [\"PAC-3 terms undefinitized\", \"China aircraft-part export tensions\", \"Execution on new programs\"], \"drivers\": [\"Boeing Navy fighter contract\", \"Boeing and Airbus orders\", \"Boeing Q2 Earnings\"]}"
+   },
+   "memo": {
+    "score": 2,
+    "confidence": 0.66,
+    "thesis": "A cluster of material wins: the $20B Navy F/A-XX award (Oct 1), a $14.7B Lockheed PAC-3 seeker contract (Oct 6), FAA clearing the 737 MAX software glitch (Oct 2), and the SPEEA deal averting a strike (Oct 1). With BA down 8.8% on the month and 25% below its high, these catalysts are not yet priced.",
+    "catalysts": [
+     {
+      "date": "2026-10-01",
+      "what": "Boeing wins $20B Navy F/A-XX fighter contract"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "$14.7B Lockheed PAC-3 MSE seeker contract"
+     },
+     {
+      "date": "2026-10-02",
+      "what": "FAA clears 737 MAX software glitch"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "SPEEA engineers ratify contract, strike averted"
+     }
+    ],
+    "risks": [
+     "PAC-3 terms undefinitized",
+     "China aircraft-part export tensions",
+     "Execution on new programs"
+    ],
+    "drivers": [
+     "Boeing Navy fighter contract",
+     "Boeing and Airbus orders",
+     "Boeing Q2 Earnings"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 11698
+  },
+  "XOM": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 3457,
+     "completion_tokens": 1856,
+     "total_tokens": 5313,
+     "cost": 0.0032643,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0032643,
+      "upstream_inference_prompt_cost": 0.0010371,
+      "upstream_inference_completions_cost": 0.0022272
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1612,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.35, \"thesis\": \"Firm-specific news skews mildly negative: Wells Fargo cut XOM to Equal-Weight (Oct 1) and valuation chatter flags a premium after a 48% 12-month run, with the Q2-miss reaction fading. The Brent>$100 spike is macro/sector (hedged) and the dividend-list surge is recycled commentary, not information.\", \"catalysts\": [{\"date\": \"2026-10-01\", \"what\": \"Wells Fargo downgrades XOM to Equal-Weight, $182 PT\"}, {\"date\": \"2026-10-02\", \"what\": \"Brent back above $100 on Middle East supply shock\"}, {\"date\": \"2026-10-06\", \"what\": \"Trinidad and Tobago offshore expansion reported\"}], \"risks\": [\"Oil spike lifts whole sector, XOM included\", \"Dividend/energy-inflow sentiment supports multiple\"], \"drivers\": [\"Exxon Q2 Earnings Reaction\", \"Wells Fargo downgrade\", \"ExxonMobil dividend investing\", \"Iran War Oil Profits\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.35,
+    "thesis": "Firm-specific news skews mildly negative: Wells Fargo cut XOM to Equal-Weight (Oct 1) and valuation chatter flags a premium after a 48% 12-month run, with the Q2-miss reaction fading. The Brent>$100 spike is macro/sector (hedged) and the dividend-list surge is recycled commentary, not information.",
+    "catalysts": [
+     {
+      "date": "2026-10-01",
+      "what": "Wells Fargo downgrades XOM to Equal-Weight, $182 PT"
+     },
+     {
+      "date": "2026-10-02",
+      "what": "Brent back above $100 on Middle East supply shock"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "Trinidad and Tobago offshore expansion reported"
+     }
+    ],
+    "risks": [
+     "Oil spike lifts whole sector, XOM included",
+     "Dividend/energy-inflow sentiment supports multiple"
+    ],
+    "drivers": [
+     "Exxon Q2 Earnings Reaction",
+     "Wells Fargo downgrade",
+     "ExxonMobil dividend investing",
+     "Iran War Oil Profits"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 10951
+  },
+  "MRVL": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 4088,
+     "completion_tokens": 862,
+     "total_tokens": 4950,
+     "cost": 0.002110272,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.002110272,
+      "upstream_inference_prompt_cost": 0.001075872,
+      "upstream_inference_completions_cost": 0.0010344
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 673,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\":2,\"confidence\":0.68,\"thesis\":\"Oct 6 investor day raised FY28 revenue to $20B above consensus and set a $70-90B FY31 target, triggering a 7% jump and multiple PT hikes (Piper/BofA to $400). The new AI expansion story is now 61% of coverage. Positive news diffusion likely continues next week, though valuation debate caps upside.\",\"catalysts\":[{\"date\":\"2026-10-06\",\"what\":\"Investor day raises FY28/FY31 revenue targets\"},{\"date\":\"2026-10-07\",\"what\":\"Analyst price target hikes after investor day\"}],\"risks\":[\"Valuation debate and 221% YTD rally may limit upside\",\"AI sentiment reversal or profit-taking\"],\"drivers\":[\"Marvell AI Expansion\",\"Investor Day guidance raise\",\"Analyst PT hikes\"]}"
+   },
+   "memo": {
+    "score": 2,
+    "confidence": 0.68,
+    "thesis": "Oct 6 investor day raised FY28 revenue to $20B above consensus and set a $70-90B FY31 target, triggering a 7% jump and multiple PT hikes (Piper/BofA to $400). The new AI expansion story is now 61% of coverage. Positive news diffusion likely continues next week, though valuation debate caps upside.",
+    "catalysts": [
+     {
+      "date": "2026-10-06",
+      "what": "Investor day raises FY28/FY31 revenue targets"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "Analyst price target hikes after investor day"
+     }
+    ],
+    "risks": [
+     "Valuation debate and 221% YTD rally may limit upside",
+     "AI sentiment reversal or profit-taking"
+    ],
+    "drivers": [
+     "Marvell AI Expansion",
+     "Investor Day guidance raise",
+     "Analyst PT hikes"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 13282
+  },
+  "CEG": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 4714,
+     "completion_tokens": 2391,
+     "total_tokens": 7105,
+     "cost": 0.004132872,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.004132872,
+      "upstream_inference_prompt_cost": 0.001263672,
+      "upstream_inference_completions_cost": 0.0028692
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2225,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\":1,\"confidence\":0.6,\"thesis\":\"Google's 20-year nuclear PPA (Oct 6) and Amazon deal (Oct 1) validate CEG's AI power demand, but the +18% week already prices much of it. Expect modest relative outperformance as analysts digest the contract, not a repeat surge.\",\"catalysts\":[{\"date\":\"2026-10-06\",\"what\":\"Google 20-year nuclear PPA signed\"},{\"date\":\"2026-10-01\",\"what\":\"Amazon 20-year nuclear PPA signed\"}],\"risks\":[\"Deal already priced after 18% weekly surge\",\"Valuation stretched at 35.9x earnings\"],\"drivers\":[\"Google nuclear deal\",\"Amazon PPA\",\"AI power demand\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.6,
+    "thesis": "Google's 20-year nuclear PPA (Oct 6) and Amazon deal (Oct 1) validate CEG's AI power demand, but the +18% week already prices much of it. Expect modest relative outperformance as analysts digest the contract, not a repeat surge.",
+    "catalysts": [
+     {
+      "date": "2026-10-06",
+      "what": "Google 20-year nuclear PPA signed"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "Amazon 20-year nuclear PPA signed"
+     }
+    ],
+    "risks": [
+     "Deal already priced after 18% weekly surge",
+     "Valuation stretched at 35.9x earnings"
+    ],
+    "drivers": [
+     "Google nuclear deal",
+     "Amazon PPA",
+     "AI power demand"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 16548
+  },
+  "CIEN": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 2377,
+     "completion_tokens": 2151,
+     "total_tokens": 4528,
+     "cost": 0.0032943,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0032943,
+      "upstream_inference_prompt_cost": 0.0007131,
+      "upstream_inference_completions_cost": 0.0025812
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1978,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 0, \"confidence\": 0.55, \"thesis\": \"Ciena's 27% weekly jump came from peer optical growth outlook (Oct 6) and analyst chatter, not new company news. Q3 beat already priced; growth story share fading. No fresh catalyst for next week, so relative performance likely neutral.\", \"catalysts\": [{\"date\": \"2026-10-06\", \"what\": \"Peer 60-70% optical growth outlook sparked sector rally\"}, {\"date\": \"2026-09-03\", \"what\": \"Q3 earnings beat and raised guidance\"}], \"risks\": [\"Sector momentum may persist\", \"High beta amplifies moves\"], \"drivers\": [\"Ciena Growth Outlook\", \"Corning stock volatility\", \"Arista Networks valuation debate\"]}"
+   },
+   "memo": {
+    "score": 0,
+    "confidence": 0.55,
+    "thesis": "Ciena's 27% weekly jump came from peer optical growth outlook (Oct 6) and analyst chatter, not new company news. Q3 beat already priced; growth story share fading. No fresh catalyst for next week, so relative performance likely neutral.",
+    "catalysts": [
+     {
+      "date": "2026-10-06",
+      "what": "Peer 60-70% optical growth outlook sparked sector rally"
+     },
+     {
+      "date": "2026-09-03",
+      "what": "Q3 earnings beat and raised guidance"
+     }
+    ],
+    "risks": [
+     "Sector momentum may persist",
+     "High beta amplifies moves"
+    ],
+    "drivers": [
+     "Ciena Growth Outlook",
+     "Corning stock volatility",
+     "Arista Networks valuation debate"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 6572
+  },
+  "SNPS": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 3430,
+     "completion_tokens": 3047,
+     "total_tokens": 6477,
+     "cost": 0.0046854,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0046854,
+      "upstream_inference_prompt_cost": 0.001029,
+      "upstream_inference_completions_cost": 0.0036564
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2932,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 0, \"confidence\": 0.6, \"thesis\": \"Positive AI deals (Amazon $1B+, OpenAI) and $1B ASR are material but already reflected in +15.6% weekly move; no new catalyst for next week, so no edge.\", \"catalysts\": [], \"risks\": [\"News already priced after sharp rally\", \"Fading earnings momentum coverage\"], \"drivers\": [\"Synopsys AI chip deals\", \"Synopsys Earnings Momentum\", \"Synopsys stock valuation\"]}"
+   },
+   "memo": {
+    "score": 0,
+    "confidence": 0.6,
+    "thesis": "Positive AI deals (Amazon $1B+, OpenAI) and $1B ASR are material but already reflected in +15.6% weekly move; no new catalyst for next week, so no edge.",
+    "catalysts": [],
+    "risks": [
+     "News already priced after sharp rally",
+     "Fading earnings momentum coverage"
+    ],
+    "drivers": [
+     "Synopsys AI chip deals",
+     "Synopsys Earnings Momentum",
+     "Synopsys stock valuation"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 10690
+  },
+  "LITE": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "DigitalOcean",
+    "usage": {
+     "prompt_tokens": 2958,
+     "completion_tokens": 4614,
+     "total_tokens": 7572,
+     "cost": 0.00481815,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.00481815,
+      "upstream_inference_prompt_cost": 0.00066555,
+      "upstream_inference_completions_cost": 0.0041526
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 4431,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\":1,\"confidence\":0.6,\"thesis\":\"AI optics rally narrative is new and rising (42% share) on Nvidia CPO demand acceleration and potential US curbs on Chinese transceivers, supporting relative upside. But +14% week and near 52-week high price much in; no earnings next week. Expect moderate outperformance, not explosive.\",\"catalysts\":[{\"date\":\"2026-10-04\",\"what\":\"Nvidia co-packaged optics demand catalyst\"},{\"date\":\"2026-10-01\",\"what\":\"US restrictions on Chinese transceivers tailwind\"}],\"risks\":[\"Insider selling noted\",\"AI rally already priced after +14% week\",\"No earnings catalyst next week\"],\"drivers\":[\"Lumentum AI optics rally\",\"Nvidia co-packaged optics shift\",\"US restrictions on Chinese optical transceivers\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.6,
+    "thesis": "AI optics rally narrative is new and rising (42% share) on Nvidia CPO demand acceleration and potential US curbs on Chinese transceivers, supporting relative upside. But +14% week and near 52-week high price much in; no earnings next week. Expect moderate outperformance, not explosive.",
+    "catalysts": [
+     {
+      "date": "2026-10-04",
+      "what": "Nvidia co-packaged optics demand catalyst"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "US restrictions on Chinese transceivers tailwind"
+     }
+    ],
+    "risks": [
+     "Insider selling noted",
+     "AI rally already priced after +14% week",
+     "No earnings catalyst next week"
+    ],
+    "drivers": [
+     "Lumentum AI optics rally",
+     "Nvidia co-packaged optics shift",
+     "US restrictions on Chinese optical transceivers"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 8925
+  },
+  "COHR": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "CoreWeave",
+    "usage": {
+     "prompt_tokens": 2952,
+     "completion_tokens": 4251,
+     "total_tokens": 7203,
+     "cost": 0.00335355,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.00335355,
+      "upstream_inference_prompt_cost": 0.0005904,
+      "upstream_inference_completions_cost": 0.00276315
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 3996,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.5, \"thesis\": \"Bullish catalysts\u2014Bernstein Outperform initiation, PhotonLink platform launch, and US restrictions on Chinese optical transceivers\u2014all hit Oct 1 and drove the +16% week, so they are priced. Material narrative shares (AI Optics Boom 42%\u219219%, Coherent AI-Driven Rally 21%\u21920%) are fading while rising stories are non-material roundups. Expect relative underperformance next week.\", \"catalysts\": [{\"date\": \"2026-10-01\", \"what\": \"Bernstein initiates Outperform, $350 PT\"}, {\"date\": \"2026-10-01\", \"what\": \"PhotonLink data-optics platform launch\"}, {\"date\": \"2026-10-01\", \"what\": \"US restrictions on Chinese optical transceivers\"}], \"risks\": [\"AI optics theme re-accelerates on fresh upgrades\", \"US restrictions become larger supply tailwind\"], \"drivers\": [\"AI Optics Boom\", \"Coherent AI Optics Rally\", \"Coherent AI-Driven Rally\", \"Bernstein initiation\", \"PhotonLink launch\", \"US restrictions on Chinese transceivers\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.5,
+    "thesis": "Bullish catalysts\u2014Bernstein Outperform initiation, PhotonLink platform launch, and US restrictions on Chinese optical transceivers\u2014all hit Oct 1 and drove the +16% week, so they are priced. Material narrative shares (AI Optics Boom 42%\u219219%, Coherent AI-Driven Rally 21%\u21920%) are fading while rising stories are non-material roundups. Expect relative underperformance next week.",
+    "catalysts": [
+     {
+      "date": "2026-10-01",
+      "what": "Bernstein initiates Outperform, $350 PT"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "PhotonLink data-optics platform launch"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "US restrictions on Chinese optical transceivers"
+     }
+    ],
+    "risks": [
+     "AI optics theme re-accelerates on fresh upgrades",
+     "US restrictions become larger supply tailwind"
+    ],
+    "drivers": [
+     "AI Optics Boom",
+     "Coherent AI Optics Rally",
+     "Coherent AI-Driven Rally",
+     "Bernstein initiation",
+     "PhotonLink launch",
+     "US restrictions on Chinese transceivers"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 8891
+  },
+  "HPE": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 5027,
+     "completion_tokens": 3313,
+     "total_tokens": 8340,
+     "cost": 0.005333172,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.005333172,
+      "upstream_inference_prompt_cost": 0.001357572,
+      "upstream_inference_completions_cost": 0.0039756
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 3067,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\":1,\"confidence\":0.6,\"thesis\":\"HPE's Sep 30 $1.2B Vultr AMD order and raised FY27 networking guidance are material positives, reinforced by Oct 1 analyst PT hikes and Oct 7 Mizuho/AMD server news. But the stock is already at a 52-week high after a +12.8% week, so much is priced; expect modest relative outperformance, not another surge.\",\"catalysts\":[{\"date\":\"2026-09-30\",\"what\":\"Vultr $1.2B AMD order\"},{\"date\":\"2026-09-30\",\"what\":\"FY27 networking guidance raise\"},{\"date\":\"2026-10-07\",\"what\":\"Mizuho selects HPE\"},{\"date\":\"2026-10-07\",\"what\":\"AMD Gen13 servers launch\"}],\"risks\":[\"AI hardware competition from Dell/SMCI\",\"Profit-taking after 52-week high\",\"High beta and volatility\"],\"drivers\":[\"HPE wins $1.2B Vultr AMD order\",\"HPE Quantum Computing Push\",\"HPE Q3 Earnings\",\"Dell AI Server Surge\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.6,
+    "thesis": "HPE's Sep 30 $1.2B Vultr AMD order and raised FY27 networking guidance are material positives, reinforced by Oct 1 analyst PT hikes and Oct 7 Mizuho/AMD server news. But the stock is already at a 52-week high after a +12.8% week, so much is priced; expect modest relative outperformance, not another surge.",
+    "catalysts": [
+     {
+      "date": "2026-09-30",
+      "what": "Vultr $1.2B AMD order"
+     },
+     {
+      "date": "2026-09-30",
+      "what": "FY27 networking guidance raise"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "Mizuho selects HPE"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "AMD Gen13 servers launch"
+     }
+    ],
+    "risks": [
+     "AI hardware competition from Dell/SMCI",
+     "Profit-taking after 52-week high",
+     "High beta and volatility"
+    ],
+    "drivers": [
+     "HPE wins $1.2B Vultr AMD order",
+     "HPE Quantum Computing Push",
+     "HPE Q3 Earnings",
+     "Dell AI Server Surge"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 16609
+  },
+  "PTC": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 2841,
+     "completion_tokens": 992,
+     "total_tokens": 3833,
+     "cost": 0.001892172,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.001892172,
+      "upstream_inference_prompt_cost": 0.000701772,
+      "upstream_inference_completions_cost": 0.0011904
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 796,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 1, \"confidence\": 0.5, \"thesis\": \"Definitive all-cash Schneider deal at $205/share (Oct 5) is the only driver; PTC trades ~6% below its 52w high, so the merger spread can narrow modestly next week. No earnings in the holding week; upside capped at deal price, so edge is small and deal-risk dependent.\", \"catalysts\": [{\"date\": \"2026-10-05\", \"what\": \"Schneider $205/share all-cash acquisition agreed\"}, {\"date\": \"unknown\", \"what\": \"Regulatory/financing progress toward Q3 2027 close\"}], \"risks\": [\"Deal break or regulatory delay widens spread\", \"Financing via equity/debt issuance concerns\", \"Upside capped at $205 deal price\"], \"drivers\": [\"Schneider acquires PTC\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.5,
+    "thesis": "Definitive all-cash Schneider deal at $205/share (Oct 5) is the only driver; PTC trades ~6% below its 52w high, so the merger spread can narrow modestly next week. No earnings in the holding week; upside capped at deal price, so edge is small and deal-risk dependent.",
+    "catalysts": [
+     {
+      "date": "2026-10-05",
+      "what": "Schneider $205/share all-cash acquisition agreed"
+     },
+     {
+      "date": "unknown",
+      "what": "Regulatory/financing progress toward Q3 2027 close"
+     }
+    ],
+    "risks": [
+     "Deal break or regulatory delay widens spread",
+     "Financing via equity/debt issuance concerns",
+     "Upside capped at $205 deal price"
+    ],
+    "drivers": [
+     "Schneider acquires PTC"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 8279
+  },
+  "NTAP": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 3218,
+     "completion_tokens": 1419,
+     "total_tokens": 4637,
+     "cost": 0.002517672,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.002517672,
+      "upstream_inference_prompt_cost": 0.000814872,
+      "upstream_inference_completions_cost": 0.0017028
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1151,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 0, \"confidence\": 0.45, \"thesis\": \"NTAP's positive news (Sep 29-Oct 1 AI data platform launch, Oct 7 Evercore upgrade to Outperform, PT $300) is already fully reflected: stock at a 52-week high after +12% week and +28% month. NTAP-specific coverage (earnings surge, AI strategy) is fading while the rising 'Seagate AI storage boom' story is peer/sector hype, which the risk desk hedges. No fresh idiosyncratic edge for next week.\", \"catalysts\": [{\"date\": \"2026-10-07\", \"what\": \"Evercore upgrade to Outperform, PT raised to $300\"}, {\"date\": \"2026-10-01\", \"what\": \"NetApp INSIGHT AI data platform launch\"}, {\"date\": \"2026-10-06\", \"what\": \"Diskover Data and Supermicro AI collaborations\"}], \"risks\": [\"News already priced at record high; momentum reversal\", \"NTAP-specific story share fading vs peer hype\"], \"drivers\": [\"NetApp AI growth strategy\", \"NetApp Earnings Surge\", \"Evercore upgrade Oct 7\", \"Seagate AI Storage Boom\"]}"
+   },
+   "memo": {
+    "score": 0,
+    "confidence": 0.45,
+    "thesis": "NTAP's positive news (Sep 29-Oct 1 AI data platform launch, Oct 7 Evercore upgrade to Outperform, PT $300) is already fully reflected: stock at a 52-week high after +12% week and +28% month. NTAP-specific coverage (earnings surge, AI strategy) is fading while the rising 'Seagate AI storage boom' story is peer/sector hype, which the risk desk hedges. No fresh idiosyncratic edge for next week.",
+    "catalysts": [
+     {
+      "date": "2026-10-07",
+      "what": "Evercore upgrade to Outperform, PT raised to $300"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "NetApp INSIGHT AI data platform launch"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "Diskover Data and Supermicro AI collaborations"
+     }
+    ],
+    "risks": [
+     "News already priced at record high; momentum reversal",
+     "NTAP-specific story share fading vs peer hype"
+    ],
+    "drivers": [
+     "NetApp AI growth strategy",
+     "NetApp Earnings Surge",
+     "Evercore upgrade Oct 7",
+     "Seagate AI Storage Boom"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 9920
+  },
+  "DAL": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Novita",
+    "usage": {
+     "prompt_tokens": 3833,
+     "completion_tokens": 2974,
+     "total_tokens": 6807,
+     "cost": 0.003067155,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.003067155,
+      "upstream_inference_prompt_cost": 0.000747435,
+      "upstream_inference_completions_cost": 0.00231972
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2778,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.35, \"thesis\": \"Into Friday's Q3 print, several brokers trimmed estimates/PTs on higher fuel, non-fuel costs and a refinery outage; UBS flags a high bar for Q4 revenue guidance. Premium-cabin and Amex demand may beat, but the stock's 39% 12-month run prices that in. Binary event caps conviction.\", \"catalysts\": [{\"date\": \"2026-10-09\", \"what\": \"Q3 earnings before market open; Q4 guidance key\"}], \"risks\": [\"Premium-cabin or Amex beat lifts results\", \"Falling oil boosts margins/guidance\", \"Binary print caps conviction\"], \"drivers\": [\"Delta Q3 earnings preview (fuel/refinery cost pressure)\", \"Delta stock performance story (broker estimate/PT cuts)\", \"UBS high bar for Q4 revenue outlook\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.35,
+    "thesis": "Into Friday's Q3 print, several brokers trimmed estimates/PTs on higher fuel, non-fuel costs and a refinery outage; UBS flags a high bar for Q4 revenue guidance. Premium-cabin and Amex demand may beat, but the stock's 39% 12-month run prices that in. Binary event caps conviction.",
+    "catalysts": [
+     {
+      "date": "2026-10-09",
+      "what": "Q3 earnings before market open; Q4 guidance key"
+     }
+    ],
+    "risks": [
+     "Premium-cabin or Amex beat lifts results",
+     "Falling oil boosts margins/guidance",
+     "Binary print caps conviction"
+    ],
+    "drivers": [
+     "Delta Q3 earnings preview (fuel/refinery cost pressure)",
+     "Delta stock performance story (broker estimate/PT cuts)",
+     "UBS high bar for Q4 revenue outlook"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 13078
+  },
+  "STX": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 3928,
+     "completion_tokens": 1066,
+     "total_tokens": 4994,
+     "cost": 0.002307072,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.002307072,
+      "upstream_inference_prompt_cost": 0.001027872,
+      "upstream_inference_completions_cost": 0.0012792
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 830,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.5, \"thesis\": \"Toshiba's Oct 2 plan to double AI HDD capacity by FY2027 is a genuine duopoly threat, and the story is exploding (49% of coverage vs 17% avg), keeping competitive/pricing pressure in focus. The 12% drop and Oct 5 analyst pushback mean much is priced, but the Oct 6 TDK bid adds uncertainty. Mild underperformance.\", \"catalysts\": [{\"date\": \"2026-10-02\", \"what\": \"Toshiba doubling HDD capacity report\"}, {\"date\": \"2026-10-06\", \"what\": \"Seagate higher bid for TDK magnetic-heads unit\"}, {\"date\": \"unknown\", \"what\": \"Q1 earnings due soon, not in holding week\"}], \"risks\": [\"Analyst pushback says Toshiba fears overdone\", \"Stock already down 12%, rebound underway\"], \"drivers\": [\"Toshiba HDD Expansion\", \"Seagate TDK magnetic-heads bid\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.5,
+    "thesis": "Toshiba's Oct 2 plan to double AI HDD capacity by FY2027 is a genuine duopoly threat, and the story is exploding (49% of coverage vs 17% avg), keeping competitive/pricing pressure in focus. The 12% drop and Oct 5 analyst pushback mean much is priced, but the Oct 6 TDK bid adds uncertainty. Mild underperformance.",
+    "catalysts": [
+     {
+      "date": "2026-10-02",
+      "what": "Toshiba doubling HDD capacity report"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "Seagate higher bid for TDK magnetic-heads unit"
+     },
+     {
+      "date": "unknown",
+      "what": "Q1 earnings due soon, not in holding week"
+     }
+    ],
+    "risks": [
+     "Analyst pushback says Toshiba fears overdone",
+     "Stock already down 12%, rebound underway"
+    ],
+    "drivers": [
+     "Toshiba HDD Expansion",
+     "Seagate TDK magnetic-heads bid"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 12435
+  },
+  "WDC": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 4579,
+     "completion_tokens": 1930,
+     "total_tokens": 6509,
+     "cost": 0.0036897,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0036897,
+      "upstream_inference_prompt_cost": 0.0013737,
+      "upstream_inference_completions_cost": 0.002316
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1763,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.6, \"thesis\": \"Toshiba's Oct 2 plan to double HDD capacity threatens WDC's AI storage pricing power; the competitive story is gaining share while WDC's earnings narrative fades. Despite a 10% drop, the supply threat is not fully resolved, so WDC likely lags peers next week.\", \"catalysts\": [{\"date\": \"2026-10-02\", \"what\": \"Toshiba plans to double HDD capacity\"}], \"risks\": [\"Dip-buying articles; Toshiba plan unconfirmed; AI demand remains strong\"], \"drivers\": [\"Toshiba HDD expansion\", \"Seagate AI Storage Boom\", \"Western Digital Earnings\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.6,
+    "thesis": "Toshiba's Oct 2 plan to double HDD capacity threatens WDC's AI storage pricing power; the competitive story is gaining share while WDC's earnings narrative fades. Despite a 10% drop, the supply threat is not fully resolved, so WDC likely lags peers next week.",
+    "catalysts": [
+     {
+      "date": "2026-10-02",
+      "what": "Toshiba plans to double HDD capacity"
+     }
+    ],
+    "risks": [
+     "Dip-buying articles; Toshiba plan unconfirmed; AI demand remains strong"
+    ],
+    "drivers": [
+     "Toshiba HDD expansion",
+     "Seagate AI Storage Boom",
+     "Western Digital Earnings"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 15139
+  },
+  "NKE": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 3640,
+     "completion_tokens": 2066,
+     "total_tokens": 5706,
+     "cost": 0.003420672,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.003420672,
+      "upstream_inference_prompt_cost": 0.000941472,
+      "upstream_inference_completions_cost": 0.0024792
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1864,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -2, \"confidence\": 0.65, \"thesis\": \"Nike's Q1 revenue miss and weak FY27 guidance (Oct 1) triggered analyst downgrades and PT cuts, with China reset and turnaround doubts persisting. Despite a 12-year low, negative news flow and rising 'stock collapse' coverage suggest NKE underperforms peers next week.\", \"catalysts\": [{\"date\": \"2026-10-01\", \"what\": \"Q1 revenue miss, FY27 outlook cut\"}, {\"date\": \"2026-10-02\", \"what\": \"Analyst PT cuts and downgrades\"}], \"risks\": [\"Stock already at 12-year low; value buyers may spark bounce\", \"Short squeeze after heavy negative coverage\"], \"drivers\": [\"Nike Q1 revenue miss/outlook cut\", \"Nike Turnaround Struggles\", \"Nike stock collapse\", \"Analyst PT cuts\"]}"
+   },
+   "memo": {
+    "score": -2,
+    "confidence": 0.65,
+    "thesis": "Nike's Q1 revenue miss and weak FY27 guidance (Oct 1) triggered analyst downgrades and PT cuts, with China reset and turnaround doubts persisting. Despite a 12-year low, negative news flow and rising 'stock collapse' coverage suggest NKE underperforms peers next week.",
+    "catalysts": [
+     {
+      "date": "2026-10-01",
+      "what": "Q1 revenue miss, FY27 outlook cut"
+     },
+     {
+      "date": "2026-10-02",
+      "what": "Analyst PT cuts and downgrades"
+     }
+    ],
+    "risks": [
+     "Stock already at 12-year low; value buyers may spark bounce",
+     "Short squeeze after heavy negative coverage"
+    ],
+    "drivers": [
+     "Nike Q1 revenue miss/outlook cut",
+     "Nike Turnaround Struggles",
+     "Nike stock collapse",
+     "Analyst PT cuts"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 11195
+  },
+  "LULU": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 3181,
+     "completion_tokens": 4205,
+     "total_tokens": 7386,
+     "cost": 0.0060003,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0060003,
+      "upstream_inference_prompt_cost": 0.0009543,
+      "upstream_inference_completions_cost": 0.005046
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 4011,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.6, \"thesis\": \"Burry sold LULU for tax-loss harvesting and swapped to Deckers (Oct 6), a negative flow signal. Oct 7 leadership overhaul adds uncertainty; stock at 52-week low with no earnings catalyst. Valuation debate fading. Expect underperformance next week.\", \"catalysts\": [{\"date\": \"2026-10-06\", \"what\": \"Burry sold LULU for tax-loss harvesting, bought Deckers\"}, {\"date\": \"2026-10-07\", \"what\": \"New leadership team structure announced\"}], \"risks\": [\"Deep value and high cash yield may attract buyers\", \"Short squeeze risk; Burry says not throwing in towel\"], \"drivers\": [\"Michael Burry Lululemon bet\", \"Lululemon Outlook Cuts\", \"Lululemon stock valuation debate\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.6,
+    "thesis": "Burry sold LULU for tax-loss harvesting and swapped to Deckers (Oct 6), a negative flow signal. Oct 7 leadership overhaul adds uncertainty; stock at 52-week low with no earnings catalyst. Valuation debate fading. Expect underperformance next week.",
+    "catalysts": [
+     {
+      "date": "2026-10-06",
+      "what": "Burry sold LULU for tax-loss harvesting, bought Deckers"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "New leadership team structure announced"
+     }
+    ],
+    "risks": [
+     "Deep value and high cash yield may attract buyers",
+     "Short squeeze risk; Burry says not throwing in towel"
+    ],
+    "drivers": [
+     "Michael Burry Lululemon bet",
+     "Lululemon Outlook Cuts",
+     "Lululemon stock valuation debate"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 9361
+  },
+  "LEN": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 2884,
+     "completion_tokens": 850,
+     "total_tokens": 3734,
+     "cost": 0.0018852,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0018852,
+      "upstream_inference_prompt_cost": 0.0008652,
+      "upstream_inference_completions_cost": 0.00102
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 543,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.55, \"thesis\": \"Fresh negatives dominate: Hunterbrook's Oct 2 short report on Lennar's Millrose spinoff triggered the worst drop since 2024, now escalating into a securities-fraud investigation (Oct 7), plus new Morgan Stanley Underweight ($65) and Melius Sell ($72) initiations and mortgage rates nearing 7.5%. Berkshire's buying is weeks-old and already priced; downside skews next week.\", \"catalysts\": [{\"date\": \"2026-10-07\", \"what\": \"Millrose securities-fraud investigation widens\"}, {\"date\": \"2026-10-02\", \"what\": \"Hunterbrook short report on Millrose/Lennar\"}, {\"date\": \"2026-10-01\", \"what\": \"Morgan Stanley Underweight, $65 target\"}, {\"date\": \"2026-10-06\", \"what\": \"Melius Sell initiation, $72 target\"}, {\"date\": \"2026-10-07\", \"what\": \"30-year mortgage nears 7.5%\"}], \"risks\": [\"Berkshire keeps buying, capping downside\", \"Much bad news already priced after -6% week\"], \"drivers\": [\"Hunterbrook/Millrose short report\", \"Millrose securities-fraud investigation\", \"Morgan Stanley and Melius sell initiations\", \"Housing Market Slump / mortgage rates\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.55,
+    "thesis": "Fresh negatives dominate: Hunterbrook's Oct 2 short report on Lennar's Millrose spinoff triggered the worst drop since 2024, now escalating into a securities-fraud investigation (Oct 7), plus new Morgan Stanley Underweight ($65) and Melius Sell ($72) initiations and mortgage rates nearing 7.5%. Berkshire's buying is weeks-old and already priced; downside skews next week.",
+    "catalysts": [
+     {
+      "date": "2026-10-07",
+      "what": "Millrose securities-fraud investigation widens"
+     },
+     {
+      "date": "2026-10-02",
+      "what": "Hunterbrook short report on Millrose/Lennar"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "Morgan Stanley Underweight, $65 target"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "Melius Sell initiation, $72 target"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "30-year mortgage nears 7.5%"
+     }
+    ],
+    "risks": [
+     "Berkshire keeps buying, capping downside",
+     "Much bad news already priced after -6% week"
+    ],
+    "drivers": [
+     "Hunterbrook/Millrose short report",
+     "Millrose securities-fraud investigation",
+     "Morgan Stanley and Melius sell initiations",
+     "Housing Market Slump / mortgage rates"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 8933
+  },
+  "BLDR": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 1729,
+     "completion_tokens": 2624,
+     "total_tokens": 4353,
+     "cost": 0.003516972,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.003516972,
+      "upstream_inference_prompt_cost": 0.000368172,
+      "upstream_inference_completions_cost": 0.0031488
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2411,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.6, \"thesis\": \"RBC downgrade to Sector Perform (Oct 7) and QXO price-target cut/fresh lows on soft residential demand reinforce negative read-across; BLDR-specific PT cuts rising. However much is priced after -6% week, so modest short.\", \"catalysts\": [{\"date\": \"2026-10-07\", \"what\": \"RBC downgrades BLDR to Sector Perform\"}, {\"date\": \"2026-10-01\", \"what\": \"StoneX lowers BLDR price target to $85\"}, {\"date\": \"2026-10-07\", \"what\": \"QXO price-target cut, fresh lows on soft demand\"}], \"risks\": [\"Downgrade already priced after -6% week\", \"No company-specific event; high beta squeeze risk\"], \"drivers\": [\"Builders FirstSource price target cuts\", \"Lowe's Valuation Debate\", \"QXO price-target cut\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.6,
+    "thesis": "RBC downgrade to Sector Perform (Oct 7) and QXO price-target cut/fresh lows on soft residential demand reinforce negative read-across; BLDR-specific PT cuts rising. However much is priced after -6% week, so modest short.",
+    "catalysts": [
+     {
+      "date": "2026-10-07",
+      "what": "RBC downgrades BLDR to Sector Perform"
+     },
+     {
+      "date": "2026-10-01",
+      "what": "StoneX lowers BLDR price target to $85"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "QXO price-target cut, fresh lows on soft demand"
+     }
+    ],
+    "risks": [
+     "Downgrade already priced after -6% week",
+     "No company-specific event; high beta squeeze risk"
+    ],
+    "drivers": [
+     "Builders FirstSource price target cuts",
+     "Lowe's Valuation Debate",
+     "QXO price-target cut"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 3901
+  },
+  "WYNN": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 733,
+     "completion_tokens": 839,
+     "total_tokens": 1572,
+     "cost": 0.0012267,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0012267,
+      "upstream_inference_prompt_cost": 0.0002199,
+      "upstream_inference_completions_cost": 0.0010068
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 783,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 0, \"confidence\": 0.5, \"thesis\": \"No material news or narratives available; no specific catalyst to drive next week's relative return.\", \"catalysts\": [], \"risks\": [], \"drivers\": []}"
+   },
+   "memo": {
+    "score": 0,
+    "confidence": 0.5,
+    "thesis": "No material news or narratives available; no specific catalyst to drive next week's relative return.",
+    "catalysts": [],
+    "risks": [],
+    "drivers": []
+   },
+   "has_narratives": false,
+   "prompt_chars": 524
+  },
+  "MCD": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 3557,
+     "completion_tokens": 2387,
+     "total_tokens": 5944,
+     "cost": 0.0039315,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0039315,
+      "upstream_inference_prompt_cost": 0.0010671,
+      "upstream_inference_completions_cost": 0.0028644
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2174,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.6, \"thesis\": \"New AI pricing antitrust lawsuit (Oct 5-7) adds legal overhang to MCD's already weak sentiment. Franchisee pushback on $8.5B overhaul and analyst skepticism on strategy update suggest continued underperformance next week. Stock is oversold but negative news is fresh.\", \"catalysts\": [{\"date\": \"2026-10-06\", \"what\": \"AI pricing antitrust lawsuit filed\"}, {\"date\": \"2026-09-23\", \"what\": \"$8.5B Next overhaul plan unveiled\"}, {\"date\": \"2026-10-06\", \"what\": \"Franchisees balk at $800k overhaul bill\"}], \"risks\": [\"Oversold bounce\", \"Dip-buying interest\", \"Dividend support\"], \"drivers\": [\"AI pricing lawsuit\", \"$8.5B overhaul\", \"franchisee pushback\", \"analyst day skepticism\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.6,
+    "thesis": "New AI pricing antitrust lawsuit (Oct 5-7) adds legal overhang to MCD's already weak sentiment. Franchisee pushback on $8.5B overhaul and analyst skepticism on strategy update suggest continued underperformance next week. Stock is oversold but negative news is fresh.",
+    "catalysts": [
+     {
+      "date": "2026-10-06",
+      "what": "AI pricing antitrust lawsuit filed"
+     },
+     {
+      "date": "2026-09-23",
+      "what": "$8.5B Next overhaul plan unveiled"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "Franchisees balk at $800k overhaul bill"
+     }
+    ],
+    "risks": [
+     "Oversold bounce",
+     "Dip-buying interest",
+     "Dividend support"
+    ],
+    "drivers": [
+     "AI pricing lawsuit",
+     "$8.5B overhaul",
+     "franchisee pushback",
+     "analyst day skepticism"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 11358
+  },
+  "PEP": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 3633,
+     "completion_tokens": 3003,
+     "total_tokens": 6636,
+     "cost": 0.004542972,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.004542972,
+      "upstream_inference_prompt_cost": 0.000939372,
+      "upstream_inference_completions_cost": 0.0036036
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2724,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.4, \"thesis\": \"News flow stays negative into the Oct 8 Q3 print: RBC sees a 'soft' September quarter, Barclays/UBS/RBC/Wells Fargo all cut targets, and two downgrades hit in two days. Wall Street is explicitly favoring KO over PEP. India label-ban suit adds regulatory noise. Earnings sits outside the holding week, so the edge is modest and largely sentiment-driven.\", \"catalysts\": [{\"date\": \"2026-10-08\", \"what\": \"Q3 earnings; soft quarter expected, sets tone\"}, {\"date\": \"2026-10-06\", \"what\": \"India energy-drink label ban reprieve won\"}, {\"date\": \"2026-10-02\", \"what\": \"Raising chip and soda prices\"}], \"risks\": [\"Oversold RSI, 4.6% yield draws dip-buyers\", \"Earnings beat could reverse sentiment\", \"Carlsberg bottling expansion is a positive\"], \"drivers\": [\"PepsiCo Q3 earnings preview\", \"Coca-Cola vs PepsiCo\", \"PepsiCo supply chain overhaul (India label suit, price hikes)\", \"PepsiCo dividend debate\", \"analyst downgrades/PT cuts\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.4,
+    "thesis": "News flow stays negative into the Oct 8 Q3 print: RBC sees a 'soft' September quarter, Barclays/UBS/RBC/Wells Fargo all cut targets, and two downgrades hit in two days. Wall Street is explicitly favoring KO over PEP. India label-ban suit adds regulatory noise. Earnings sits outside the holding week, so the edge is modest and largely sentiment-driven.",
+    "catalysts": [
+     {
+      "date": "2026-10-08",
+      "what": "Q3 earnings; soft quarter expected, sets tone"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "India energy-drink label ban reprieve won"
+     },
+     {
+      "date": "2026-10-02",
+      "what": "Raising chip and soda prices"
+     }
+    ],
+    "risks": [
+     "Oversold RSI, 4.6% yield draws dip-buyers",
+     "Earnings beat could reverse sentiment",
+     "Carlsberg bottling expansion is a positive"
+    ],
+    "drivers": [
+     "PepsiCo Q3 earnings preview",
+     "Coca-Cola vs PepsiCo",
+     "PepsiCo supply chain overhaul (India label suit, price hikes)",
+     "PepsiCo dividend debate",
+     "analyst downgrades/PT cuts"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 11389
+  },
+  "GS": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Venice",
+    "usage": {
+     "prompt_tokens": 3270,
+     "completion_tokens": 5549,
+     "total_tokens": 8819,
+     "cost": 0.0076398,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0076398,
+      "upstream_inference_prompt_cost": 0.000981,
+      "upstream_inference_completions_cost": 0.0066588
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 5365,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 1, \"confidence\": 0.45, \"thesis\": \"Big Bank Earnings coverage (rising to 19% share) flags strong trading/IB results, a positive read-through for GS's Oct 13 Q3 print. After a 14% monthly selloff the stock looks washed out, and a dividend hike supports it. CEO succession uncertainty (Sep 29) and rising yields cap conviction.\", \"catalysts\": [{\"date\": \"2026-10-13\", \"what\": \"GS Q3 earnings before market open\"}, {\"date\": \"2026-09-29\", \"what\": \"Board discusses CEO succession plan\"}], \"risks\": [\"CEO succession uncertainty\", \"Rising yields pressure financials\", \"Q3 earnings miss\"], \"drivers\": [\"Big Bank Earnings\", \"CEO succession\", \"Goldman Q3 earnings\"]}"
+   },
+   "memo": {
+    "score": 1,
+    "confidence": 0.45,
+    "thesis": "Big Bank Earnings coverage (rising to 19% share) flags strong trading/IB results, a positive read-through for GS's Oct 13 Q3 print. After a 14% monthly selloff the stock looks washed out, and a dividend hike supports it. CEO succession uncertainty (Sep 29) and rising yields cap conviction.",
+    "catalysts": [
+     {
+      "date": "2026-10-13",
+      "what": "GS Q3 earnings before market open"
+     },
+     {
+      "date": "2026-09-29",
+      "what": "Board discusses CEO succession plan"
+     }
+    ],
+    "risks": [
+     "CEO succession uncertainty",
+     "Rising yields pressure financials",
+     "Q3 earnings miss"
+    ],
+    "drivers": [
+     "Big Bank Earnings",
+     "CEO succession",
+     "Goldman Q3 earnings"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 10673
+  },
+  "CHRW": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "StreamLake",
+    "usage": {
+     "prompt_tokens": 2457,
+     "completion_tokens": 1244,
+     "total_tokens": 3701,
+     "cost": 0.001070352,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.001070352,
+      "upstream_inference_prompt_cost": 0.000353808,
+      "upstream_inference_completions_cost": 0.000716544
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1019,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.6, \"thesis\": \"CHRW dropped ~9% after announcing a dilutive $5.8B cash-and-stock acquisition of RXO on Oct 5, while RXO surged 23% \u2014 acquirer-negative drift typically persists. Freight remains weak, JPM cut its PT to $198, and an ongoing RICO liability suit (Oct 6) adds overhang. Mild relative underperformance likely continues next week.\", \"catalysts\": [{\"date\": \"2026-10-05\", \"what\": \"$5.8B RXO acquisition announced; dilution, integration risk\"}, {\"date\": \"2026-10-06\", \"what\": \"RICO liability suit news continues\"}], \"risks\": [\"Deal already largely priced after 9% drop\", \"Synergy/bigger-is-better upside could re-rate shares\"], \"drivers\": [\"C.H. Robinson Buys RXO\", \"C.H. Robinson liability crisis\", \"Analyst Ratings (JPM PT cut)\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.6,
+    "thesis": "CHRW dropped ~9% after announcing a dilutive $5.8B cash-and-stock acquisition of RXO on Oct 5, while RXO surged 23% \u2014 acquirer-negative drift typically persists. Freight remains weak, JPM cut its PT to $198, and an ongoing RICO liability suit (Oct 6) adds overhang. Mild relative underperformance likely continues next week.",
+    "catalysts": [
+     {
+      "date": "2026-10-05",
+      "what": "$5.8B RXO acquisition announced; dilution, integration risk"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "RICO liability suit news continues"
+     }
+    ],
+    "risks": [
+     "Deal already largely priced after 9% drop",
+     "Synergy/bigger-is-better upside could re-rate shares"
+    ],
+    "drivers": [
+     "C.H. Robinson Buys RXO",
+     "C.H. Robinson liability crisis",
+     "Analyst Ratings (JPM PT cut)"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 6353
+  },
+  "MRNA": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 2868,
+     "completion_tokens": 1863,
+     "total_tokens": 4731,
+     "cost": 0.002945472,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.002945472,
+      "upstream_inference_prompt_cost": 0.000709872,
+      "upstream_inference_completions_cost": 0.0022356
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1586,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.62, \"thesis\": \"Citi sell downgrade (Sep30) and valuation/profit-taking coverage dominate as cancer-vaccine story fades; MRNA is 3% below 52w high after a 45% month, so negative analyst catalyst likely drives relative underperformance next week. Nasdaq-100 inclusion Oct9 and COO news may cushion.\", \"catalysts\": [{\"date\": \"2026-09-30\", \"what\": \"Citi downgrades Moderna to sell\"}, {\"date\": \"2026-10-07\", \"what\": \"New COO Juan Andres appointed\"}, {\"date\": \"2026-10-09\", \"what\": \"Joins Nasdaq-100 before open\"}, {\"date\": \"2026-10-07\", \"what\": \"Tempus collaboration for cancer vaccine\"}, {\"date\": \"unknown\", \"what\": \"Full melanoma Phase 3 readout nears\"}], \"risks\": [\"Nasdaq-100 inclusion demand\", \"full melanoma data surprise\", \"short squeeze on plague headlines\", \"high beta volatility\"], \"drivers\": [\"Citi downgrade to sell\", \"Moderna earnings and outlook\", \"cancer vaccine breakthrough fading\", \"COO appointment\", \"Nasdaq-100 inclusion\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.62,
+    "thesis": "Citi sell downgrade (Sep30) and valuation/profit-taking coverage dominate as cancer-vaccine story fades; MRNA is 3% below 52w high after a 45% month, so negative analyst catalyst likely drives relative underperformance next week. Nasdaq-100 inclusion Oct9 and COO news may cushion.",
+    "catalysts": [
+     {
+      "date": "2026-09-30",
+      "what": "Citi downgrades Moderna to sell"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "New COO Juan Andres appointed"
+     },
+     {
+      "date": "2026-10-09",
+      "what": "Joins Nasdaq-100 before open"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "Tempus collaboration for cancer vaccine"
+     },
+     {
+      "date": "unknown",
+      "what": "Full melanoma Phase 3 readout nears"
+     }
+    ],
+    "risks": [
+     "Nasdaq-100 inclusion demand",
+     "full melanoma data surprise",
+     "short squeeze on plague headlines",
+     "high beta volatility"
+    ],
+    "drivers": [
+     "Citi downgrade to sell",
+     "Moderna earnings and outlook",
+     "cancer vaccine breakthrough fading",
+     "COO appointment",
+     "Nasdaq-100 inclusion"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 8313
+  },
+  "AXON": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 1594,
+     "completion_tokens": 2017,
+     "total_tokens": 3611,
+     "cost": 0.002748072,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.002748072,
+      "upstream_inference_prompt_cost": 0.000327672,
+      "upstream_inference_completions_cost": 0.0024204
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1824,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 0, \"confidence\": 0.5, \"thesis\": \"No material new event this week. The $1B convertible offering (Sep 15-17) and the underperformance story are both fading, while the resurgent 'Q2 earnings' items are recycled Zacks-style commentary on August results. Nothing gives a fresh edge on next week's relative return.\", \"catalysts\": [{\"date\": \"2026-09-15\", \"what\": \"Faded $1B convertible notes offering\"}, {\"date\": \"2026-10-07\", \"what\": \"Recycled Q2 software momentum commentary\"}], \"risks\": [\"High beta/vol amplifies any macro shock\", \"Ticker confusion with AXON Networks\"], \"drivers\": [\"Axon stock underperformance\", \"Axon Q2 2026 Earnings\", \"Axon $1B convertible offering\"]}"
+   },
+   "memo": {
+    "score": 0,
+    "confidence": 0.5,
+    "thesis": "No material new event this week. The $1B convertible offering (Sep 15-17) and the underperformance story are both fading, while the resurgent 'Q2 earnings' items are recycled Zacks-style commentary on August results. Nothing gives a fresh edge on next week's relative return.",
+    "catalysts": [
+     {
+      "date": "2026-09-15",
+      "what": "Faded $1B convertible notes offering"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "Recycled Q2 software momentum commentary"
+     }
+    ],
+    "risks": [
+     "High beta/vol amplifies any macro shock",
+     "Ticker confusion with AXON Networks"
+    ],
+    "drivers": [
+     "Axon stock underperformance",
+     "Axon Q2 2026 Earnings",
+     "Axon $1B convertible offering"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 3375
+  },
+  "SNDK": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Parasail",
+    "usage": {
+     "prompt_tokens": 4894,
+     "completion_tokens": 1900,
+     "total_tokens": 6794,
+     "cost": 0.0037482,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0037482,
+      "upstream_inference_prompt_cost": 0.0014682,
+      "upstream_inference_completions_cost": 0.00228
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1633,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": -1, \"confidence\": 0.4, \"thesis\": \"Bullish coverage is crowded price-target chatter (Surge story 34% share, Mizuho $2050, $175 target reset), not new information. Genuine news is negative: Toshiba doubling HDD output (Oct 1) and SK Hynix earnings caution (Oct 6) pressure memory-pricing sentiment. Stock already down 1w/1m and 27% off high; expect relative weakness.\", \"catalysts\": [{\"date\": \"2026-10-01\", \"what\": \"Toshiba doubles HDD supply, storage stocks slip\"}, {\"date\": \"2026-10-06\", \"what\": \"SK Hynix earnings caution drags SNDK 2%\"}, {\"date\": \"unknown\", \"what\": \"October earnings upcoming, outside holding week\"}], \"risks\": [\"Micron blowout confirms tight NAND supply\", \"Buyback and $93.9B contract book support\", \"Crowded bullish flow could squeeze higher\"], \"drivers\": [\"Sandisk Stock Surge\", \"AI chip selloff\", \"Sandisk AI Storage Boom\", \"Toshiba HDD supply expansion\"]}"
+   },
+   "memo": {
+    "score": -1,
+    "confidence": 0.4,
+    "thesis": "Bullish coverage is crowded price-target chatter (Surge story 34% share, Mizuho $2050, $175 target reset), not new information. Genuine news is negative: Toshiba doubling HDD output (Oct 1) and SK Hynix earnings caution (Oct 6) pressure memory-pricing sentiment. Stock already down 1w/1m and 27% off high; expect relative weakness.",
+    "catalysts": [
+     {
+      "date": "2026-10-01",
+      "what": "Toshiba doubles HDD supply, storage stocks slip"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "SK Hynix earnings caution drags SNDK 2%"
+     },
+     {
+      "date": "unknown",
+      "what": "October earnings upcoming, outside holding week"
+     }
+    ],
+    "risks": [
+     "Micron blowout confirms tight NAND supply",
+     "Buyback and $93.9B contract book support",
+     "Crowded bullish flow could squeeze higher"
+    ],
+    "drivers": [
+     "Sandisk Stock Surge",
+     "AI chip selloff",
+     "Sandisk AI Storage Boom",
+     "Toshiba HDD supply expansion"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 15760
+  },
+  "CTVA": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 3146,
+     "completion_tokens": 1030,
+     "total_tokens": 4176,
+     "cost": 0.002029272,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 512,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.002029272,
+      "upstream_inference_prompt_cost": 0.000793272,
+      "upstream_inference_completions_cost": 0.001236
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 779,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"score\": 0, \"confidence\": 0.55, \"thesis\": \"Vylor spinoff completed Oct 1; the 82% 'drop' was mechanical, and CTVA is now a pure-play crop-protection name. Fresh JPM/KeyBanc/BofA upgrades (Oct 5-7) call the sell-off overdone, but the +24% week and 52-week-high price already reflect that re-rating. No earnings or dated catalyst inside the holding week.\", \"catalysts\": [{\"date\": \"2026-10-01\", \"what\": \"Vylor spinoff completed, CTVA pure-play crop protection\"}, {\"date\": \"2026-10-06\", \"what\": \"JPMorgan upgrade to Overweight\"}, {\"date\": \"2026-10-07\", \"what\": \"KeyBanc upgrade to Overweight\"}], \"risks\": [\"Post-spin pop reverses; SeekingAlpha Sell downgrade\", \"Analyst PTs ($17-19) imply limited upside\"], \"drivers\": [\"Corteva Vylor spinoff\", \"Corteva 2026 outlook / analyst upgrades\"]}"
+   },
+   "memo": {
+    "score": 0,
+    "confidence": 0.55,
+    "thesis": "Vylor spinoff completed Oct 1; the 82% 'drop' was mechanical, and CTVA is now a pure-play crop-protection name. Fresh JPM/KeyBanc/BofA upgrades (Oct 5-7) call the sell-off overdone, but the +24% week and 52-week-high price already reflect that re-rating. No earnings or dated catalyst inside the holding week.",
+    "catalysts": [
+     {
+      "date": "2026-10-01",
+      "what": "Vylor spinoff completed, CTVA pure-play crop protection"
+     },
+     {
+      "date": "2026-10-06",
+      "what": "JPMorgan upgrade to Overweight"
+     },
+     {
+      "date": "2026-10-07",
+      "what": "KeyBanc upgrade to Overweight"
+     }
+    ],
+    "risks": [
+     "Post-spin pop reverses; SeekingAlpha Sell downgrade",
+     "Analyst PTs ($17-19) imply limited upside"
+    ],
+    "drivers": [
+     "Corteva Vylor spinoff",
+     "Corteva 2026 outlook / analyst upgrades"
+    ]
+   },
+   "has_narratives": true,
+   "prompt_chars": 9768
+  }
+ },
+ "system": "You are an equity analyst on the news desk of a long-short fund, writing this week's\nmemo on ONE stock. Your job is the part of next week's return that the NEWS explains: how this\nstock will do NEXT WEEK relative to the other names the fund covers, because of what is happening\nin its stories and events. Market beta, sector and style exposures (momentum, reversal, volatility)\nare handled by the risk desk and hedged out, so do not bet on them.\n\nYou get: sector, 60-day beta and volatility, recent returns (1 week, 1 month, 12-1 months, distance\nfrom the 52-week high) so you can judge what is already priced, news attention, whether the firm\nreports earnings inside the holding week (a binary event: take a side only if the news gives you\nan edge on it, and lower your confidence otherwise), the ideation\ndesk's hypothesis if any, and the firm's news NARRATIVES over the last ~13 weeks: stories with a\nstable identity (what each is about, its weekly share of the firm's coverage, whether it is new,\nrising or fading) with this week's articles under each as evidence, and the dated events in the\nwindow (* = active in the last 7 days, with their headlines). Read the structure for what is\nchanging; read the articles for direction and specifics.\n\nRules:\n- Use ONLY this material. Ignore anything you believe happened after the as-of date.\n- Score 0 unless the news gives a reason: a material dated event (guidance, earnings, M&A,\n  litigation, regulation, management, contracts), a story gaining or losing share, or a new story.\n  Opinion pieces, price-target chatter, ETF lists and recycled commentary are not information.\n- \"The stock went up/down a lot\" is not a news view; use recent returns only to judge whether the\n  news is already in the price.\n- Be specific: name the story or event that drives the view, with its date.\n\nReturn JSON only:\n{\"score\": int in {-2,-1,0,1,2}, \"confidence\": float in [0,1],\n \"thesis\": str <= 60 words, \"catalysts\": [{\"date\": \"YYYY-MM-DD or unknown\", \"what\": str <= 15 words}],\n \"risks\": [str <= 15 words], \"drivers\": [story or event names used]}",
+ "cutoff": "2026-10-07 22:00:00"
+}

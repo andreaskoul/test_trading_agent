@@ -1,0 +1,409 @@
+{
+ "asof": "2026-10-07",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "StreamLake",
+  "usage": {
+   "prompt_tokens": 40585,
+   "completion_tokens": 11800,
+   "total_tokens": 52385,
+   "cost": 0.01264104,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 0,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.01264104,
+    "upstream_inference_prompt_cost": 0.00584424,
+    "upstream_inference_completions_cost": 0.0067968
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 11023,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"long_ideas\":[{\"ticker\":\"AMD\",\"hypothesis\":\"AI focus and +24% month; high attention with beta hedged, momentum catalyst.\"},{\"ticker\":\"AVGO\",\"hypothesis\":\"AI hardware financing and power-resilience headlines; +7% week keep unusual attention.\"},{\"ticker\":\"MRVL\",\"hypothesis\":\"Oppenheimer bullish targets and AI focus after +7.8% week; unusual attention.\"},{\"ticker\":\"CEG\",\"hypothesis\":\"Nuclear play holds firm amid data-center power demand; +18% week signals catalyst.\"},{\"ticker\":\"CIEN\",\"hypothesis\":\"Up 27% on AI optical demand; fresh 'what happened' coverage suggests catalyst may persist.\"},{\"ticker\":\"SNPS\",\"hypothesis\":\"OpenAI deal headlines and +16% week; analysts flag undervaluation after AI catalyst.\"},{\"ticker\":\"LITE\",\"hypothesis\":\"AI demand news and 36% undervaluation claim drive +14% week; momentum catalyst.\"},{\"ticker\":\"COHR\",\"hypothesis\":\"Optical/AI top gainer +16% week; sector news may sustain re-rating.\"},{\"ticker\":\"HPE\",\"hypothesis\":\"Mizuho selection and AI ops report; +13% week to 52-week high.\"},{\"ticker\":\"PTC\",\"hypothesis\":\"Shares +38% on Schneider deal; analyst fair-value resets suggest follow-through.\"},{\"ticker\":\"NTAP\",\"hypothesis\":\"At 52-week high after +12% week; storage forecast headlines draw attention.\"},{\"ticker\":\"DAL\",\"hypothesis\":\"Q3 earnings next week; premium ticket headlines could drive positive revisions.\"}],\"short_ideas\":[{\"ticker\":\"STX\",\"hypothesis\":\"Down 12% on Toshiba HDD expansion; one-number worry headline flags competitive pressure.\"},{\"ticker\":\"WDC\",\"hypothesis\":\"Toshiba HDD expansion and full-valuation question after -11% week; storage competition.\"},{\"ticker\":\"NKE\",\"hypothesis\":\"Reduced China sales disclosure and -44% 12-month return; negative catalyst persists.\"},{\"ticker\":\"LULU\",\"hypothesis\":\"Leadership reshuffle and fully priced view after -4.5% week; turnaround uncertain.\"},{\"ticker\":\"LEN\",\"hypothesis\":\"30-year mortgage near 7.5% and -6% week; housing affordability pressures Lennar.\"},{\"ticker\":\"BLDR\",\"hypothesis\":\"Rates and QXO price-cut read-across; -6% week, below high, housing demand weak.\"},{\"ticker\":\"WYNN\",\"hypothesis\":\"Macau/gaming weakness; -17% month and earnings date may highlight China demand risk.\"},{\"ticker\":\"MCD\",\"hypothesis\":\"AI menu price-fixing lawsuit adds negative headline to -9% month; legal overhang.\"},{\"ticker\":\"PEP\",\"hypothesis\":\"Earnings next week; turnaround plan scrutiny after -9% month may disappoint.\"},{\"ticker\":\"GS\",\"hypothesis\":\"Banks under pressure from spiking yields ahead of Q3; GS down 14% month.\"},{\"ticker\":\"CHRW\",\"hypothesis\":\"Freight weakness and earnings preview; -8.6% week suggests estimates at risk.\"},{\"ticker\":\"INTC\",\"hypothesis\":\"Memory competition headlines and -6% week; high 12-month gain vulnerable to reversal.\"}],\"themes\":[\"AI optical/networking momentum: Ciena, Coherent, Lumentum, Broadcom\",\"Power/nuclear utilities rally on data-center electricity demand\",\"Storage/HDD competitive worries hit Seagate, Western Digital\",\"Weak housing and consumer discretionary pressured by rates\",\"Earnings next week: Delta, Pepsi, banks, freight, gaming\"]}"
+ },
+ "llm": {
+  "long_ideas": [
+   {
+    "ticker": "AMD",
+    "hypothesis": "AI focus and +24% month; high attention with beta hedged, momentum catalyst."
+   },
+   {
+    "ticker": "AVGO",
+    "hypothesis": "AI hardware financing and power-resilience headlines; +7% week keep unusual attention."
+   },
+   {
+    "ticker": "MRVL",
+    "hypothesis": "Oppenheimer bullish targets and AI focus after +7.8% week; unusual attention."
+   },
+   {
+    "ticker": "CEG",
+    "hypothesis": "Nuclear play holds firm amid data-center power demand; +18% week signals catalyst."
+   },
+   {
+    "ticker": "CIEN",
+    "hypothesis": "Up 27% on AI optical demand; fresh 'what happened' coverage suggests catalyst may persist."
+   },
+   {
+    "ticker": "SNPS",
+    "hypothesis": "OpenAI deal headlines and +16% week; analysts flag undervaluation after AI catalyst."
+   },
+   {
+    "ticker": "LITE",
+    "hypothesis": "AI demand news and 36% undervaluation claim drive +14% week; momentum catalyst."
+   },
+   {
+    "ticker": "COHR",
+    "hypothesis": "Optical/AI top gainer +16% week; sector news may sustain re-rating."
+   },
+   {
+    "ticker": "HPE",
+    "hypothesis": "Mizuho selection and AI ops report; +13% week to 52-week high."
+   },
+   {
+    "ticker": "PTC",
+    "hypothesis": "Shares +38% on Schneider deal; analyst fair-value resets suggest follow-through."
+   },
+   {
+    "ticker": "NTAP",
+    "hypothesis": "At 52-week high after +12% week; storage forecast headlines draw attention."
+   },
+   {
+    "ticker": "DAL",
+    "hypothesis": "Q3 earnings next week; premium ticket headlines could drive positive revisions."
+   }
+  ],
+  "short_ideas": [
+   {
+    "ticker": "STX",
+    "hypothesis": "Down 12% on Toshiba HDD expansion; one-number worry headline flags competitive pressure."
+   },
+   {
+    "ticker": "WDC",
+    "hypothesis": "Toshiba HDD expansion and full-valuation question after -11% week; storage competition."
+   },
+   {
+    "ticker": "NKE",
+    "hypothesis": "Reduced China sales disclosure and -44% 12-month return; negative catalyst persists."
+   },
+   {
+    "ticker": "LULU",
+    "hypothesis": "Leadership reshuffle and fully priced view after -4.5% week; turnaround uncertain."
+   },
+   {
+    "ticker": "LEN",
+    "hypothesis": "30-year mortgage near 7.5% and -6% week; housing affordability pressures Lennar."
+   },
+   {
+    "ticker": "BLDR",
+    "hypothesis": "Rates and QXO price-cut read-across; -6% week, below high, housing demand weak."
+   },
+   {
+    "ticker": "WYNN",
+    "hypothesis": "Macau/gaming weakness; -17% month and earnings date may highlight China demand risk."
+   },
+   {
+    "ticker": "MCD",
+    "hypothesis": "AI menu price-fixing lawsuit adds negative headline to -9% month; legal overhang."
+   },
+   {
+    "ticker": "PEP",
+    "hypothesis": "Earnings next week; turnaround plan scrutiny after -9% month may disappoint."
+   },
+   {
+    "ticker": "GS",
+    "hypothesis": "Banks under pressure from spiking yields ahead of Q3; GS down 14% month."
+   },
+   {
+    "ticker": "CHRW",
+    "hypothesis": "Freight weakness and earnings preview; -8.6% week suggests estimates at risk."
+   },
+   {
+    "ticker": "INTC",
+    "hypothesis": "Memory competition headlines and -6% week; high 12-month gain vulnerable to reversal."
+   }
+  ],
+  "themes": [
+   "AI optical/networking momentum: Ciena, Coherent, Lumentum, Broadcom",
+   "Power/nuclear utilities rally on data-center electricity demand",
+   "Storage/HDD competitive worries hit Seagate, Western Digital",
+   "Weak housing and consumer discretionary pressured by rates",
+   "Earnings next week: Delta, Pepsi, banks, freight, gaming"
+  ]
+ },
+ "core": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM"
+ ],
+ "nominated": [
+  "AMD",
+  "AVGO",
+  "MRVL",
+  "CEG",
+  "CIEN",
+  "SNPS",
+  "LITE",
+  "COHR",
+  "HPE",
+  "PTC",
+  "NTAP",
+  "DAL",
+  "STX",
+  "WDC",
+  "NKE",
+  "LULU",
+  "LEN",
+  "BLDR",
+  "WYNN",
+  "MCD",
+  "PEP",
+  "GS",
+  "CHRW",
+  "INTC"
+ ],
+ "rule_based": [
+  "MRNA",
+  "STX",
+  "WDC",
+  "AXON",
+  "CHRW",
+  "SNDK",
+  "PTC",
+  "CIEN",
+  "CTVA",
+  "VST",
+  "NTAP",
+  "CEG",
+  "META",
+  "MSFT",
+  "AMD",
+  "GOOG",
+  "GOOGL",
+  "MU"
+ ],
+ "coverage": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM",
+  "MRVL",
+  "CEG",
+  "CIEN",
+  "SNPS",
+  "LITE",
+  "COHR",
+  "HPE",
+  "PTC",
+  "NTAP",
+  "DAL",
+  "STX",
+  "WDC",
+  "NKE",
+  "LULU",
+  "LEN",
+  "BLDR",
+  "WYNN",
+  "MCD",
+  "PEP",
+  "GS",
+  "CHRW",
+  "MRNA",
+  "AXON",
+  "SNDK",
+  "CTVA"
+ ],
+ "why": {
+  "NVDA": [
+   "core"
+  ],
+  "AAPL": [
+   "core"
+  ],
+  "MSFT": [
+   "core",
+   "rule"
+  ],
+  "GOOGL": [
+   "core",
+   "rule"
+  ],
+  "AMZN": [
+   "core"
+  ],
+  "META": [
+   "core",
+   "rule"
+  ],
+  "AVGO": [
+   "core",
+   "nominated"
+  ],
+  "TSLA": [
+   "core"
+  ],
+  "AMD": [
+   "core",
+   "nominated",
+   "rule"
+  ],
+  "INTC": [
+   "core",
+   "nominated"
+  ],
+  "TSM": [
+   "core"
+  ],
+  "JPM": [
+   "core"
+  ],
+  "LLY": [
+   "core"
+  ],
+  "WMT": [
+   "core"
+  ],
+  "BRK.B": [
+   "core"
+  ],
+  "ORCL": [
+   "core"
+  ],
+  "CRM": [
+   "core"
+  ],
+  "NFLX": [
+   "core"
+  ],
+  "BA": [
+   "core"
+  ],
+  "XOM": [
+   "core"
+  ],
+  "MRVL": [
+   "nominated"
+  ],
+  "CEG": [
+   "nominated",
+   "rule"
+  ],
+  "CIEN": [
+   "nominated",
+   "rule"
+  ],
+  "SNPS": [
+   "nominated"
+  ],
+  "LITE": [
+   "nominated"
+  ],
+  "COHR": [
+   "nominated"
+  ],
+  "HPE": [
+   "nominated"
+  ],
+  "PTC": [
+   "nominated",
+   "rule"
+  ],
+  "NTAP": [
+   "nominated",
+   "rule"
+  ],
+  "DAL": [
+   "nominated"
+  ],
+  "STX": [
+   "nominated",
+   "rule"
+  ],
+  "WDC": [
+   "nominated",
+   "rule"
+  ],
+  "NKE": [
+   "nominated"
+  ],
+  "LULU": [
+   "nominated"
+  ],
+  "LEN": [
+   "nominated"
+  ],
+  "BLDR": [
+   "nominated"
+  ],
+  "WYNN": [
+   "nominated"
+  ],
+  "MCD": [
+   "nominated"
+  ],
+  "PEP": [
+   "nominated"
+  ],
+  "GS": [
+   "nominated"
+  ],
+  "CHRW": [
+   "nominated",
+   "rule"
+  ],
+  "MRNA": [
+   "rule"
+  ],
+  "AXON": [
+   "rule"
+  ],
+  "SNDK": [
+   "rule"
+  ],
+  "CTVA": [
+   "rule"
+  ]
+ },
+ "prompt_chars": 114801
+}

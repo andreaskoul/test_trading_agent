@@ -1,0 +1,293 @@
+{
+ "asof": "2026-10-07",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "Parasail",
+  "usage": {
+   "prompt_tokens": 896,
+   "completion_tokens": 7732,
+   "total_tokens": 8628,
+   "cost": 0.0095472,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 0,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.0095472,
+    "upstream_inference_prompt_cost": 0.0002688,
+    "upstream_inference_completions_cost": 0.0092784
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 7534,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"longs\":[{\"id\":\"MXN\",\"reason\":\"Top carry and strong ridge forecast; high interest differential supports long.\"},{\"id\":\"ZAR\",\"reason\":\"Highest carry, positive ridge; carry premium reliable.\"},{\"id\":\"HUF\",\"reason\":\"High carry and positive ridge; attractive carry.\"},{\"id\":\"CLP\",\"reason\":\"Best ridge rank and positive carry; forecast outperformance.\"}],\"shorts\":[{\"id\":\"CHF\",\"reason\":\"Lowest carry and very negative ridge; funding currency.\"},{\"id\":\"KRW\",\"reason\":\"Worst ridge forecast despite mild negative carry; expected underperformance.\"},{\"id\":\"ILS\",\"reason\":\"Second-worst ridge and negative carry; short.\"},{\"id\":\"JPY\",\"reason\":\"Very low carry and negative ridge; weak carry profile.\"}],\"view\":\"Long high-carry currencies with positive ridge; short low-carry/negative-ridge names. Ignore momentum due sign instability. Carry remains core premium.\"}"
+ },
+ "llm": {
+  "longs": [
+   {
+    "id": "MXN",
+    "reason": "Top carry and strong ridge forecast; high interest differential supports long."
+   },
+   {
+    "id": "ZAR",
+    "reason": "Highest carry, positive ridge; carry premium reliable."
+   },
+   {
+    "id": "HUF",
+    "reason": "High carry and positive ridge; attractive carry."
+   },
+   {
+    "id": "CLP",
+    "reason": "Best ridge rank and positive carry; forecast outperformance."
+   }
+  ],
+  "shorts": [
+   {
+    "id": "CHF",
+    "reason": "Lowest carry and very negative ridge; funding currency."
+   },
+   {
+    "id": "KRW",
+    "reason": "Worst ridge forecast despite mild negative carry; expected underperformance."
+   },
+   {
+    "id": "ILS",
+    "reason": "Second-worst ridge and negative carry; short."
+   },
+   {
+    "id": "JPY",
+    "reason": "Very low carry and negative ridge; weak carry profile."
+   }
+  ],
+  "view": "Long high-carry currencies with positive ridge; short low-carry/negative-ridge names. Ignore momentum due sign instability. Carry remains core premium."
+ },
+ "signals": {
+  "EUR": {
+   "carry": -0.8622,
+   "mom12": -0.8915,
+   "mom3": -0.3129,
+   "mom1": -0.0131,
+   "rev1w": 1.3397,
+   "value": -0.3244,
+   "ridge_bp": -0.9629,
+   "ridge_rank": 12,
+   "carry_pct": -1.7923
+  },
+  "JPY": {
+   "carry": -1.1773,
+   "mom12": -1.1525,
+   "mom3": 0.6355,
+   "mom1": 0.0838,
+   "rev1w": 0.9704,
+   "value": 2.2696,
+   "ridge_bp": -0.3642,
+   "ridge_rank": 9,
+   "carry_pct": -2.3615
+  },
+  "GBP": {
+   "carry": 0.069,
+   "mom12": -0.4009,
+   "mom3": -0.0248,
+   "mom1": 0.9505,
+   "rev1w": -0.6547,
+   "value": -0.336,
+   "ridge_bp": -3.3795,
+   "ridge_rank": 14,
+   "carry_pct": -0.11
+  },
+  "CHF": {
+   "carry": -2.0095,
+   "mom12": -1.4296,
+   "mom3": -0.8325,
+   "mom1": 0.203,
+   "rev1w": -0.4962,
+   "value": -1.4723,
+   "ridge_bp": -6.5109,
+   "ridge_rank": 15,
+   "carry_pct": -3.865
+  },
+  "AUD": {
+   "carry": 0.5119,
+   "mom12": 1.1686,
+   "mom3": 0.4,
+   "mom1": 0.0586,
+   "rev1w": -0.0074,
+   "value": -0.1159,
+   "ridge_bp": -0.5692,
+   "ridge_rank": 10,
+   "carry_pct": 0.69
+  },
+  "NZD": {
+   "carry": -0.3351,
+   "mom12": -0.5617,
+   "mom3": -0.1532,
+   "mom1": -0.5566,
+   "rev1w": 0.4138,
+   "value": 1.2221,
+   "ridge_bp": 3.4296,
+   "ridge_rank": 5,
+   "carry_pct": -0.84
+  },
+  "CAD": {
+   "carry": -0.7226,
+   "mom12": -0.5872,
+   "mom3": 0.0254,
+   "mom1": 0.1185,
+   "rev1w": 0.1559,
+   "value": 0.5659,
+   "ridge_bp": -1.3228,
+   "ridge_rank": 13,
+   "carry_pct": -1.54
+  },
+  "SEK": {
+   "carry": -0.8952,
+   "mom12": -1.2106,
+   "mom3": -0.7492,
+   "mom1": -0.7122,
+   "rev1w": -0.0125,
+   "value": 0.5589,
+   "ridge_bp": 2.6676,
+   "ridge_rank": 8,
+   "carry_pct": -1.8519
+  },
+  "NOK": {
+   "carry": 0.5119,
+   "mom12": 0.942,
+   "mom3": 0.8591,
+   "mom1": -0.083,
+   "rev1w": -1.1531,
+   "value": 0.3929,
+   "ridge_bp": -0.7084,
+   "ridge_rank": 11,
+   "carry_pct": 0.69
+  },
+  "MXN": {
+   "carry": 1.774,
+   "mom12": 1.5121,
+   "mom3": -0.3103,
+   "mom1": -1.7894,
+   "rev1w": -1.0594,
+   "value": -1.7563,
+   "ridge_bp": 7.4373,
+   "ridge_rank": 2,
+   "carry_pct": 2.97
+  },
+  "ZAR": {
+   "carry": 1.7961,
+   "mom12": 1.2487,
+   "mom3": 0.0148,
+   "mom1": 0.3097,
+   "rev1w": 1.2591,
+   "value": 0.3093,
+   "ridge_bp": 4.5589,
+   "ridge_rank": 4,
+   "carry_pct": 3.01
+  },
+  "PLN": {
+   "carry": 0.1299,
+   "mom12": -0.823,
+   "mom3": -0.6011,
+   "mom1": -0.8774,
+   "rev1w": 1.433,
+   "value": -0.7274,
+   "ridge_bp": 4.8881,
+   "ridge_rank": 3,
+   "carry_pct": 0.0
+  },
+  "HUF": {
+   "carry": 1.0011,
+   "mom12": 1.211,
+   "mom3": -0.8387,
+   "mom1": -0.0338,
+   "rev1w": 0.116,
+   "value": -0.2285,
+   "ridge_bp": 3.3237,
+   "ridge_rank": 6,
+   "carry_pct": 1.5739
+  },
+  "CZK": {
+   "carry": 0.142,
+   "mom12": -0.4985,
+   "mom3": -0.3972,
+   "mom1": -0.4916,
+   "rev1w": 1.0939,
+   "value": -0.6256,
+   "ridge_bp": 2.9506,
+   "ridge_rank": 7,
+   "carry_pct": 0.0218
+  },
+  "KRW": {
+   "carry": -0.3406,
+   "mom12": 0.2659,
+   "mom3": 3.2992,
+   "mom1": 2.3876,
+   "rev1w": -1.6474,
+   "value": 0.4181,
+   "ridge_bp": -15.3766,
+   "ridge_rank": 17,
+   "carry_pct": -0.85
+  },
+  "ILS": {
+   "carry": -0.155,
+   "mom12": 0.9613,
+   "mom3": 0.0423,
+   "mom1": 1.6539,
+   "rev1w": -1.5257,
+   "value": -1.0318,
+   "ridge_bp": -9.1934,
+   "ridge_rank": 16,
+   "carry_pct": -0.5147
+  },
+  "CLP": {
+   "carry": 0.5617,
+   "mom12": 0.2461,
+   "mom3": -1.0563,
+   "mom1": -1.2085,
+   "rev1w": -0.2254,
+   "value": 0.8813,
+   "ridge_bp": 8.3566,
+   "ridge_rank": 1,
+   "carry_pct": 0.78
+  }
+ },
+ "books": {
+  "fx": {
+   "MXN": 0.25,
+   "ZAR": 0.25,
+   "HUF": 0.25,
+   "CLP": 0.25,
+   "CHF": -0.25,
+   "KRW": -0.25,
+   "ILS": -0.25,
+   "JPY": -0.25
+  },
+  "fx_quant": {
+   "CLP": 0.25,
+   "MXN": 0.25,
+   "PLN": 0.25,
+   "ZAR": 0.25,
+   "GBP": -0.25,
+   "CHF": -0.25,
+   "ILS": -0.25,
+   "KRW": -0.25
+  },
+  "fx_random": {
+   "CZK": 0.25,
+   "CHF": 0.25,
+   "PLN": 0.25,
+   "JPY": 0.25,
+   "CAD": -0.25,
+   "EUR": -0.25,
+   "NZD": -0.25,
+   "KRW": -0.25
+  }
+ }
+}
