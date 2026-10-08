@@ -43,15 +43,18 @@ jobs:
       - id: arch
         run: python fund/archive.py
       # Amendment 6 (shadow input only): macro calendar, Kalshi, AI-GPR, GDELT, market news, 8-K filings,
-      # point in time in <you>/fund-context-archive. Never fails the news archive; one run a day is enough,
-      # so the chained backfill runs (minutes=330) skip it.
+      # and from 2026-10-08 option positioning per S&P 500 member (Alpaca, ~11 min), point in time in
+      # <you>/fund-context-archive. Never fails the news archive; one run a day is enough, so the chained
+      # backfill runs (minutes=330) skip it.
       - name: Context archive (Amendment 6)
         if: ${{ always() && (inputs.minutes || '40') != '330' }}
         continue-on-error: true
-        timeout-minutes: 25
+        timeout-minutes: 40
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
         run: python fund/context_archive.py
       - name: Continue the backfill in a new run
         if: steps.arch.outputs.backlog != '0'
