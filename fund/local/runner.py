@@ -236,7 +236,7 @@ def job_archive(j, a):
     j.env["ARCHIVE_MINUTES"] = minutes
     j.step("News archive", "python fund/archive.py")
     if minutes != "330":
-        j.step("Context archive (Amendment 6)", "python fund/context_archive.py", when="always", allow_fail=True, timeout_min=25)
+        j.step("Context archive (Amendment 6; options from 2026-10-08)", "python fund/context_archive.py", when="always", allow_fail=True, timeout_min=40)
     if not j.failed:
         backlog = "0"
         for line in open(j.env["GITHUB_OUTPUT"]):

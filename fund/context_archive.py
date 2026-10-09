@@ -18,6 +18,11 @@ Sources (each independent; a failure is logged and the others run):
   gdelt    daily volume and tone for a fixed theme list, 14 days  public, 1 request / 5 s
   finnhub  general market news                                    FINNHUB_API_KEY
   edgar    8-K / 8-K/A of S&P 500 members, items + acceptance    SEC_USER_AGENT (skipped without it)
+  options  per S&P 500 member, after the close: two expiries'      ALPACA_API_KEY / _SECRET_KEY (skipped
+           strikes within 25% of spot (IV, delta, bid/ask, volume,   without them); Alpaca's free indicative
+           open interest), ATM IV, 25-delta skew, implied move,      feed + the contracts endpoint
+           put/call open interest, largest open-interest strikes   (technicals pre-registration 2: no
+                                                                    history is free, so it starts now)
 
     python fund/context_archive.py                 # daily, after fund/archive.py
     CONTEXT_LOCAL_ONLY=1 python fund/context_archive.py   # fetch into fund_context/, push nothing
@@ -203,9 +208,117 @@ def edgar():
     return f"{len(miss)} members without filings data: {miss[:8]}" if len(miss) > 25 else None
 
 
+def options():
+    """Option positioning per S&P 500 member. Two expiries: the nearest at least 2 days out (pinning, the next
+    event) and the one closest to 30 days (the implied-vol term). Strike rows within 25% of spot keep IV, delta,
+    bid/ask, the day's volume and open interest (as of the previous session, from the contracts endpoint);
+    the summary adds ATM IV, the 25-delta put-call skew, the straddle's implied move, put/call open interest and
+    the three largest open-interest strikes."""
+    k, sk = os.environ.get("ALPACA_API_KEY"), os.environ.get("ALPACA_SECRET_KEY")
+    if not (k and sk):
+        return "skipped: no ALPACA_API_KEY"
+    h = {"APCA-API-KEY-ID": k, "APCA-API-SECRET-KEY": sk}
+    mem = pd.read_csv(io.BytesIO(get("https://raw.githubusercontent.com/fja05680/sp500/master/"
+                                     "S%26P%20500%20Historical%20Components%20%26%20Changes%20(Updated).csv", raw=True)))
+    universe = sorted(mem.iloc[-1].tickers.split(","))
+    universe = universe[:int(os.environ.get("CONTEXT_OPTIONS_LIMIT", "0")) or None]     # a test on a few names
+    spot = {}
+    for i in range(0, len(universe), 100):
+        q = urllib.parse.urlencode({"symbols": ",".join(universe[i:i + 100]), "feed": "iex"})
+        for t, v in get(f"https://data.alpaca.markets/v2/stocks/snapshots?{q}", h).items():
+            px = ((v or {}).get("dailyBar") or {}).get("c") or ((v or {}).get("latestTrade") or {}).get("p")
+            if px:
+                spot[t] = float(px)
+    d0, d1 = (now + timedelta(days=2)).date(), (now + timedelta(days=50)).date()
+    last, miss = 0.0, []
+
+    def call(url):
+        nonlocal last
+        time.sleep(max(0.0, 0.35 - (time.time() - last)))      # Alpaca free plan: 200 requests a minute
+        last = time.time()
+        return get(url, h)
+
+    for t in universe:
+        S = spot.get(t)
+        if not S:
+            miss.append(t); continue
+        try:
+            snaps, tok = {}, None
+            while True:
+                q = {"feed": "indicative", "limit": 1000, "expiration_date_gte": d0, "expiration_date_lte": d1,
+                     "strike_price_gte": round(S * 0.75, 2), "strike_price_lte": round(S * 1.25, 2)}
+                if tok:
+                    q["page_token"] = tok
+                r = call(f"https://data.alpaca.markets/v1beta1/options/snapshots/{t}?{urllib.parse.urlencode(q)}")
+                snaps.update(r.get("snapshots") or {})
+                tok = r.get("next_page_token")
+                if not tok:
+                    break
+            oi, tok = {}, None
+            while True:
+                q = {"underlying_symbols": t, "expiration_date_gte": d0, "expiration_date_lte": d1, "limit": 10000,
+                     "strike_price_gte": round(S * 0.75, 2), "strike_price_lte": round(S * 1.25, 2)}
+                if tok:
+                    q["page_token"] = tok
+                r = call(f"https://paper-api.alpaca.markets/v2/options/contracts?{urllib.parse.urlencode(q)}")
+                for c in r.get("option_contracts") or []:
+                    oi[c["symbol"]] = (int(c["open_interest"]) if c.get("open_interest") else 0, c.get("open_interest_date"))
+                tok = r.get("next_page_token")
+                if not tok:
+                    break
+        except Exception:
+            miss.append(t); continue
+        rows_ = []
+        for sym, v in snaps.items():
+            m = re.match(r"^(.+?)(\d{6})([CP])(\d{8})$", sym)
+            if not m:
+                continue
+            q = v.get("latestQuote") or {}
+            rows_.append({"exp": f"20{m.group(2)[:2]}-{m.group(2)[2:4]}-{m.group(2)[4:]}", "cp": m.group(3),
+                          "k": int(m.group(4)) / 1000, "iv": v.get("impliedVolatility"),
+                          "delta": (v.get("greeks") or {}).get("delta"), "bid": q.get("bp"), "ask": q.get("ap"),
+                          "vol": ((v.get("dailyBar") or {}).get("v") or 0), "oi": oi.get(sym, (0, None))[0]})
+        if not rows_:
+            miss.append(t); continue
+        X = pd.DataFrame(rows_)
+        exps = sorted(X.exp.unique())
+        near = exps[0]
+        m30 = min(exps, key=lambda e: abs((pd.Timestamp(e) - pd.Timestamp(today)).days - 30))
+        keep = X[X.exp.isin({near, m30})]
+
+        def atm(e):
+            G = X[(X.exp == e) & X.iv.notna()]
+            if G.empty:
+                return None, None
+            kk = G.iloc[(G.k - S).abs().argsort()].k.iloc[0]
+            c, p = G[(G.k == kk) & (G.cp == "C")], G[(G.k == kk) & (G.cp == "P")]
+            iv_ = G[G.k == kk].iv.mean()
+            mid = lambda r: (r.bid.iloc[0] + r.ask.iloc[0]) / 2 if len(r) and r.bid.iloc[0] and r.ask.iloc[0] else None
+            mc, mp = mid(c), mid(p)
+            return float(iv_), (float((mc + mp) / S) if mc and mp else None)
+
+        def skew(e):
+            G = X[(X.exp == e) & X.iv.notna() & X.delta.notna()]
+            p = G[G.cp == "P"].iloc[(G[G.cp == "P"].delta + 0.25).abs().argsort()] if (G.cp == "P").any() else None
+            c = G[G.cp == "C"].iloc[(G[G.cp == "C"].delta - 0.25).abs().argsort()] if (G.cp == "C").any() else None
+            return float(p.iv.iloc[0] - c.iv.iloc[0]) if p is not None and c is not None and len(p) and len(c) else None
+
+        iv_n, mv_n = atm(near)
+        iv_30, mv_30 = atm(m30)
+        by_k = X[X.exp == near].groupby("k").oi.sum().sort_values(ascending=False)
+        add("options", f"{t}|{today}", today, {
+            "ticker": t, "spot": S, "near_exp": near, "exp_30": m30,
+            "atm_iv_near": iv_n, "implied_move_near": mv_n, "atm_iv_30": iv_30, "implied_move_30": mv_30,
+            "skew25_30": skew(m30), "oi_call": int(X[X.cp == "C"].oi.sum()), "oi_put": int(X[X.cp == "P"].oi.sum()),
+            "vol_call": int(X[X.cp == "C"].vol.sum()), "vol_put": int(X[X.cp == "P"].vol.sum()),
+            "oi_top_near": [[float(k_), int(v_)] for k_, v_ in by_k.head(3).items()],
+            "strikes": keep.round(4).to_dict(orient="records")})
+    return f"{len(miss)} members without options data: {miss[:8]}" if len(miss) > 25 else None
+
+
 ONLY = [x for x in os.environ.get("CONTEXT_SOURCES", "").split(",") if x]     # e.g. "kalshi,gpr" for a test
 for name, fn in (("fred", fred), ("kalshi", kalshi), ("gpr", gpr), ("gdelt", gdelt), ("finnhub", finnhub),
-                 ("edgar", edgar)):
+                 ("edgar", edgar), ("options", options)):
     if not ONLY or name in ONLY:
         run(name, fn)
 
