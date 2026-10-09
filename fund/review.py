@@ -70,7 +70,7 @@ if mode == "trade" and os.path.exists(out_p) and json.load(open(out_p)).get("sta
 if os.path.exists(os.path.join(base, "HALT")):
     print("review: HALT active; no reviews until resumed"); sys.exit(0)
 clock = broker.Clock()
-lead = broker.CLS_CUTOFF if broker.STYLE == "cls" else broker.PREPARE_AT + 30
+lead = broker.PREPARE_AT + 30
 if mode == "trade" and clock.now() > close_et.timestamp() - lead:
     raise SystemExit(f"review: past the order window for {today}")
 
@@ -204,10 +204,9 @@ problems = []
 orders = size(broker.prices(acts + ["SPY"]) if acts else {}, {t: h["qty"] for t, h in held.items()})
 if mode == "trade" and orders:
     close_at = close_et.timestamp()
-    if broker.STYLE == "preclose":
-        print(f"review: waiting until {datetime.fromtimestamp(close_at - broker.PREPARE_AT, ET):%H:%M:%S} ET to size the orders", flush=True)
-        clock.sleep_until(close_at - broker.PREPARE_AT)
-        orders = size(broker.prices(acts + ["SPY"]), broker.positions())
+    print(f"review: waiting until {datetime.fromtimestamp(close_at - broker.PREPARE_AT, ET):%H:%M:%S} ET to size the orders", flush=True)
+    clock.sleep_until(close_at - broker.PREPARE_AT)
+    orders = size(broker.prices(acts + ["SPY"]), broker.positions())
     broker.send(orders, close_at, clock)
     problems += broker.problems_of(orders)
 rec = {"asof": str(asof.date()), "day": str(today), "mode": mode, "close_et": close_et.strftime("%H:%M"), "news_since": str(since), "news_until": now_utc.isoformat(),

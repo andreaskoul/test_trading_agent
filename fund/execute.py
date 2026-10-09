@@ -195,7 +195,7 @@ if mode == "reconcile":
 # ------------------------------------------------------------------ plan / trade
 clock = broker.Clock()
 close_at = close_et.timestamp()
-lead = broker.CLS_CUTOFF if broker.STYLE == "cls" else broker.PREPARE_AT + 30
+lead = broker.PREPARE_AT + 30
 if mode == "trade":
     if pd.Timestamp(today) >= P7_START:
         print(f"Protocol 7 from {P7_START.date()}: the account is traded by fund/lifecycle.py trade"); sys.exit(0)
@@ -310,14 +310,13 @@ if mode == "plan" or any(p.startswith("missed") for p in problems):
 # ------------------------------------------------------------------ send
 plan["status"] = "waiting"
 json.dump(plan, open(out_p, "w"), indent=1, default=str)
-if broker.STYLE == "preclose":
-    print(f"waiting until {datetime.fromtimestamp(close_at - broker.PREPARE_AT, ET):%H:%M:%S} ET to size the orders", flush=True)
-    clock.sleep_until(close_at - broker.PREPARE_AT)
-    acct = broker.account()
-    cur, equity = broker.positions(), float(acct["equity"])
-    orders, issues = build_orders(equity, cur, broker.prices(set(target) | set(cur)))
-    plan.update(equity=equity, current_qty=cur, orders=orders, sized_at_et=datetime.now(ET).isoformat(timespec="seconds"))
-    show(orders, equity)
+print(f"waiting until {datetime.fromtimestamp(close_at - broker.PREPARE_AT, ET):%H:%M:%S} ET to size the orders", flush=True)
+clock.sleep_until(close_at - broker.PREPARE_AT)
+acct = broker.account()
+cur, equity = broker.positions(), float(acct["equity"])
+orders, issues = build_orders(equity, cur, broker.prices(set(target) | set(cur)))
+plan.update(equity=equity, current_qty=cur, orders=orders, sized_at_et=datetime.now(ET).isoformat(timespec="seconds"))
+show(orders, equity)
 # any open order that is not part of this plan is cancelled (the account is dedicated to the fund)
 s_, open_orders = api("GET", "/v2/orders?status=open&limit=500")
 mine = tuple(o["client_order_id"] for o in orders)
