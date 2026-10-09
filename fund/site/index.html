@@ -62,9 +62,11 @@ fetch("dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   const open = P.filter(p => p.status === "Open"), closed = P.filter(p => p.status !== "Open");
   const realized = closed.reduce((s, p) => s + (p.pnl || 0), 0), unreal = open.reduce((s, p) => s + (p.pnl || 0), 0);
   const cash = d.cash.reduce((s, c) => s + (c.amount || 0), 0);
-  const eq = A.length ? A[A.length - 1].equity : (d.balance ? d.balance.equity : null), since = A.length ? eq / A[0].equity - 1 : null;
+  const eq = A.length ? A[A.length - 1].equity : (d.balance ? d.balance.equity : null);
+  // return on invested: account P&L since the first trade over the gross capital in positions (long + short at entry)
+  const inv = A.length ? A[A.length - 1].invested : null, roi = inv ? (eq - A[0].equity) / inv : null;
   const k = [[`Account value${d.balance ? ` <span class="muted">(${d.balance.date})</span>` : ""}`, eq == null ? "—" : "$" + fmt(eq, 0)],
-             ["Since first trade", since == null ? "—" : pct(since)],
+             ["Total invested", inv == null ? "—" : "$" + fmt(inv, 0)], ["Return on invested", roi == null ? "—" : pct(roi)],
              ["Open positions", open.filter(p => p.role !== "beta hedge").length], ["Unrealized P&L", usd(unreal)],
              ["Realized P&L", usd(realized)], ["Dividends & fees", usd(cash)]];
   document.getElementById("kpis").innerHTML = k.map(([a, b]) => `<div class="kpi"><div class="muted">${a}</div><div class="v">${b}</div></div>`).join("");
