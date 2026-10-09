@@ -180,21 +180,47 @@ def cohorts(replay=False):
     return out
 
 
+def closes(tickers, start, end):
+    """Daily closes adjusted for splits and dividends: Alpaca's consolidated (SIP) bars, which carry the official
+    close and are queryable once 15 minutes old; yfinance only for a ticker Alpaca does not return."""
+    import broker
+    stop = min(pd.Timestamp(end) + pd.Timedelta(days=1), pd.Timestamp.now(tz="UTC").tz_localize(None) - pd.Timedelta(minutes=16))
+    rows, token = [], None
+    syms = ",".join(sorted(tickers))
+    while True:
+        q = (f"/v2/stocks/bars?symbols={syms}&timeframe=1Day&adjustment=all&feed=sip&limit=10000"
+             f"&start={pd.Timestamp(start).date()}&end={stop.strftime('%Y-%m-%dT%H:%M:%SZ')}" + (f"&page_token={token}" if token else ""))
+        s_, b = broker.api("GET", q, base=broker.DATA)
+        if s_ != 200:
+            print(f"lifecycle: Alpaca bars unavailable ({s_}); yfinance for all", flush=True); break
+        for t, xs in (b.get("bars") or {}).items():
+            rows += [{"date": pd.Timestamp(x["t"][:10]), "ticker": t, "close": float(x["c"])} for x in xs]
+        token = b.get("next_page_token")
+        if not token:
+            break
+    px = pd.DataFrame(rows).pivot_table(index="date", columns="ticker", values="close") if rows else pd.DataFrame()
+    miss = sorted(set(tickers) - set(px.columns))
+    if miss:
+        import yfinance as yf
+        y = yf.download([t.replace(".", "-") for t in miss], start=pd.Timestamp(start), end=pd.Timestamp(end) + pd.Timedelta(days=1),
+                        progress=False, auto_adjust=True)["Close"]
+        y = y if isinstance(y, pd.DataFrame) else y.to_frame(miss[0].replace(".", "-"))
+        y.columns = [c.replace("-", ".") for c in y.columns]
+        y.index = pd.to_datetime(y.index).tz_localize(None)
+        print(f"lifecycle: yfinance for {miss}", flush=True)
+        px = pd.concat([px, y], axis=1)
+    return px.sort_index()
+
+
 def returns(tickers, start):
-    """Frozen daily total-return returns from `start` to the last complete session; new days appended."""
-    import yfinance as yf
+    """Frozen daily total-return returns from `start` to the last complete session; new days appended, never rewritten."""
     p = os.path.join(LC, "returns.csv")
     R = pd.read_csv(p, parse_dates=["date"]) if os.path.exists(p) else pd.DataFrame(columns=["date", "ticker", "ret"])
     have = {t: set(g["date"]) for t, g in R.groupby("ticker")}
     from zoneinfo import ZoneInfo
     now_et = datetime.now(ZoneInfo("America/New_York"))
     last_ok = pd.Timestamp(now_et.date()) - (pd.Timedelta(days=0) if now_et.hour >= 17 else pd.Timedelta(days=1))
-    px = yf.download([t.replace(".", "-") for t in sorted(tickers)], start=pd.Timestamp(start) - pd.Timedelta(days=10),
-                     end=last_ok + pd.Timedelta(days=1), progress=False, auto_adjust=True)["Close"]
-    px = px if isinstance(px, pd.DataFrame) else px.to_frame(sorted(tickers)[0].replace(".", "-"))
-    px.columns = [c.replace("-", ".") for c in px.columns]
-    px.index = pd.to_datetime(px.index).tz_localize(None)
-    r = px.pct_change()
+    r = closes(tickers, pd.Timestamp(start) - pd.Timedelta(days=10), last_ok).pct_change()
     new = []
     for t in r.columns:
         s_ = r[t].dropna()
@@ -209,15 +235,12 @@ def returns(tickers, start):
 
 def entry_vol(asof, t, day, beta):
     """sigma_e frozen at entry: EWMA (span 60) of residual returns to the entry close, floored at 0.75 x 252-day std."""
-    import yfinance as yf
     p = os.path.join(LC, "entries.json")
     E = json.load(open(p)) if os.path.exists(p) else {}
     k = f"{asof}|{t}|{day}"
     if k not in E:
-        px = yf.download([t.replace(".", "-"), "SPY"], start=pd.Timestamp(day) - pd.Timedelta(days=420),
-                         end=pd.Timestamp(day) + pd.Timedelta(days=1), progress=False, auto_adjust=True)["Close"]
-        px.columns = [c.replace("-", ".") for c in px.columns]
-        r = px.pct_change().dropna()
+        px = closes({t, "SPY"}, pd.Timestamp(day) - pd.Timedelta(days=420), pd.Timestamp(day))
+        r = px.loc[:pd.Timestamp(day)].pct_change().dropna()
         e = r[t] - beta * r["SPY"]
         ew, sd = float(e.ewm(span=SPAN).std().iloc[-1]), float(e.iloc[-252:].std())
         E[k] = {"beta": beta, "sigma_ewma": ew, "sigma_252": sd, "sigma_e": max(ew, FLOOR * sd), "n_days": int(len(e))}
