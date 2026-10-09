@@ -428,9 +428,9 @@ operations rule (≥ 90% of weeks fully filled, median slippage ≤ 10 bp) is un
 Week 2026-09-30 is recorded as an execution failure (about 11% filled), and by the
 owner's decision it is not topped up before its next rebalance.
 
-**Before go-live.** `FUND_EXEC_STYLE=cls` (real market-on-close orders, sent before
-15:50 ET) is available. It may be used on a live account only after Alpaca confirms
-auction routing for it. Until then the pre-close send is the method.
+**Live account (owner's decision, 2026-10-09).** The pre-close send is also the method for a live
+account: no closing-auction orders, so going live does not depend on Alpaca's auction routing. The
+market-on-close option was removed from the code.
 
 **Proof before the next weekly trade.** One labelled share of SPY is bought on
 Mon 2026-10-05 and sold on Tue 2026-10-06 through the same path (`execute.py filltest`,
@@ -637,5 +637,5 @@ duplicate lots, triggers, no look-ahead (news after the decision time is never u
 In addition, every order is reconciled against the official close; the operations rule is unchanged (≥ 90%
 of weeks fully filled, median slippage ≤ 10 bp).
 
-**Before go-live.** Unchanged from Amendment 3, plus one condition: Alpaca must confirm whether a live account
-supports market-on-close orders. Until then the pre-close send stays the method.
+**Before go-live.** Unchanged from Amendment 3. Orders use the pre-close send on the paper and the live account
+alike (owner's decision, 2026-10-09).

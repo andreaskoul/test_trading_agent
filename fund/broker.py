@@ -13,8 +13,8 @@ a few basis points (closing auction vs 4 pm midquote: median 1.7 bp, Bogousslavs
     T+5 s           whatever is still open is cancelled; the residual is logged, never carried
 
 T is the session close from Alpaca's clock, corrected for this machine's clock offset. Each attempt
-has client order id <base>-a<n>, so a rerun adopts what an earlier run already sent. With
-FUND_EXEC_STYLE=cls, real market-on-close orders are sent instead (a live account with auction routing).
+has client order id <base>-a<n>, so a rerun adopts what an earlier run already sent. This is the method
+for the live account too (owner, 2026-10-09): no closing-auction orders.
 """
 
 import json
@@ -33,12 +33,10 @@ if "paper" not in BASE and os.environ.get("FUND_LIVE_TRADING") != "1":
 H = {"APCA-API-KEY-ID": os.environ["ALPACA_API_KEY"], "APCA-API-SECRET-KEY": os.environ["ALPACA_SECRET_KEY"],
      "Content-Type": "application/json"}
 ET = ZoneInfo("America/New_York")
-STYLE = os.environ.get("FUND_EXEC_STYLE", "preclose")
-assert STYLE in ("preclose", "cls"), f"FUND_EXEC_STYLE={STYLE!r}"
+STYLE = "preclose"                                  # recorded with every order set
 FLIP_AT, SEND_AT, RETRY_FROM, LAST_SEND, SWEEP_AFTER = 75, 60, 30, 10, 5      # seconds around the close
 PREPARE_AT = 150                                    # orders are sized from prices fetched at T-150 s
 RETRY_EVERY, MAX_ATTEMPTS, POLL = 10, 3, 2
-CLS_CUTOFF = 15 * 60                                # market-on-close orders are refused from 15:50 ET
 OPEN = ("new", "accepted", "pending_new", "partially_filled", "held", "accepted_for_bidding", "pending_replace",
         "pending_cancel", "calculated")
 
@@ -191,60 +189,45 @@ def send(orders, close_at, clock, log=print):
     rest = [o for o in orders if o["leg"] not in ("flatten", "open")]
     leg_of = {o["symbol"]: o for o in first}
 
-    if STYLE == "cls":                              # live account with auction routing: one MOC order per name
-        for o in first:
-            if not o["attempts"]:
-                submit(o, "day")
-        for o in rest:
-            if not o["attempts"]:
-                submit(o, "cls")
-        deadline = min(close_at - CLS_CUTOFF, clock.now() + 120)
-        while opens and clock.now() < deadline:
-            time.sleep(POLL); refresh()
-            for o in opens:
-                if not o["attempts"] and filled(leg_of[o["symbol"]]) >= leg_of[o["symbol"]]["qty"]:
-                    submit(o, "cls")
-        clock.sleep_until(close_at + 120)
-    else:
-        clock.sleep_until(close_at - FLIP_AT)
-        for o in first:
-            if not o["attempts"]:
-                submit(o, "day")
-        clock.sleep_until(close_at - SEND_AT)
-        for o in rest:
-            if not o["attempts"]:
-                submit(o, "day")
-        progress = {id(o): (filled(o), clock.now()) for o in orders}
-        while clock.now() < close_at - LAST_SEND:
-            time.sleep(POLL); refresh()
-            for o in opens:
-                if not o["attempts"] and filled(leg_of[o["symbol"]]) >= leg_of[o["symbol"]]["qty"]:
-                    submit(o, "day"); progress[id(o)] = (0.0, clock.now())
-            if close_at - clock.now() > RETRY_FROM:
+    clock.sleep_until(close_at - FLIP_AT)
+    for o in first:
+        if not o["attempts"]:
+            submit(o, "day")
+    clock.sleep_until(close_at - SEND_AT)
+    for o in rest:
+        if not o["attempts"]:
+            submit(o, "day")
+    progress = {id(o): (filled(o), clock.now()) for o in orders}
+    while clock.now() < close_at - LAST_SEND:
+        time.sleep(POLL); refresh()
+        for o in opens:
+            if not o["attempts"] and filled(leg_of[o["symbol"]]) >= leg_of[o["symbol"]]["qty"]:
+                submit(o, "day"); progress[id(o)] = (0.0, clock.now())
+        if close_at - clock.now() > RETRY_FROM:
+            continue
+        for o in first + rest + opens:
+            f, since_t = progress[id(o)]
+            if filled(o) > f:
+                progress[id(o)] = (filled(o), clock.now()); continue
+            if filled(o) >= o["qty"] or not o["attempts"] or len(o["attempts"]) >= MAX_ATTEMPTS:
                 continue
-            for o in first + rest + opens:
-                f, since_t = progress[id(o)]
-                if filled(o) > f:
-                    progress[id(o)] = (filled(o), clock.now()); continue
-                if filled(o) >= o["qty"] or not o["attempts"] or len(o["attempts"]) >= MAX_ATTEMPTS:
-                    continue
-                if clock.now() - since_t < RETRY_EVERY:
-                    continue
-                for x in live(o):                   # stalled: cancel, wait for the cancel, resend the remainder
-                    api("DELETE", f"/v2/orders/{x['id']}")
-                for _ in range(10):
-                    time.sleep(0.5); refresh()
-                    if not live(o):
-                        break
-                if not live(o) and clock.now() < close_at - LAST_SEND:
-                    submit(o, "day")
-                progress[id(o)] = (filled(o), clock.now())
-        clock.sleep_until(close_at + SWEEP_AFTER)
-        refresh()
-        for o in orders:                            # the residual is cancelled, never carried
-            for x in live(o):
+            if clock.now() - since_t < RETRY_EVERY:
+                continue
+            for x in live(o):                   # stalled: cancel, wait for the cancel, resend the remainder
                 api("DELETE", f"/v2/orders/{x['id']}")
-        time.sleep(3)
+            for _ in range(10):
+                time.sleep(0.5); refresh()
+                if not live(o):
+                    break
+            if not live(o) and clock.now() < close_at - LAST_SEND:
+                submit(o, "day")
+            progress[id(o)] = (filled(o), clock.now())
+    clock.sleep_until(close_at + SWEEP_AFTER)
+    refresh()
+    for o in orders:                            # the residual is cancelled, never carried
+        for x in live(o):
+            api("DELETE", f"/v2/orders/{x['id']}")
+    time.sleep(3)
     refresh()
     for o in orders:
         xs = sent(o)
