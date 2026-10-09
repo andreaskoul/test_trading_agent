@@ -30,6 +30,7 @@
   td.thesis { white-space:normal; min-width:320px; max-width:560px; color:var(--muted); }
   .pos { color:var(--pos); } .neg { color:var(--neg); }
   .empty { color:var(--muted); padding:8px 0; }
+  .kpi { margin-bottom:12px; font-size:15px; } .kpi:empty { display:none; }
 </style>
 </head>
 <body>
@@ -41,6 +42,7 @@
     </div>
     <a class="btn" href="../fund_positions.xlsx" download>Download Excel</a>
   </header>
+  <div class="kpi" id="inv"></div>
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" data-t="positions" aria-selected="true">Positions</button>
     <button class="tab" role="tab" data-t="orders" aria-selected="false">Orders</button>
@@ -49,7 +51,7 @@
   </div>
   <div class="bar"><input type="search" id="q" placeholder="Filter (ticker, side, status…)"><span class="muted" id="count"></span></div>
   <section><div class="scroll" id="box"></div></section>
-  <p class="muted">Returns are price returns before costs, signed for shorts. P&amp;L = signed shares × (exit or current − entry), using actual fills at trade boundaries. One row per lot: a name held for a week, split where a daily review changed the shares. SPY rows are the market hedge.</p>
+  <p class="muted">Returns are price returns before costs, signed for shorts. P&amp;L = signed shares × (exit or current − entry), using actual fills at trade boundaries. One row per lot: a name held for a week, split where a daily review changed the shares. SPY rows are the market hedge. Invested = gross capital in positions at the day's close (long + short, shares × entry price); daily return = the day's change in account value ÷ the previous close's invested amount; return on invested = account P&amp;L since the first trade ÷ that day's invested amount.</p>
 </main>
 <script>
 const fmt = (v, d = 2) => v == null ? "" : Number(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -67,7 +69,8 @@ const VIEWS = {
     ["Qty", "qty", v => fmt(v, 0), "n"], ["Order type", "order_type", esc], ["Ref $", "ref_price", fmt, "n"], ["Status", "status", esc],
     ["Fill $", "fill_price", fmt, "n"], ["Close $", "official_close", fmt, "n"], ["Slippage bp", "slippage_bp", v => fmt(v, 1), "n"],
     ["Order id", "client_order_id", esc]],
-  account: [["Day", "date"], ["Account value $", "equity", v => "$" + fmt(v, 0), "n"], ["Daily return", "ret", pct, "n"], ["Since first trade", "cum", pct, "n"]],
+  account: [["Day", "date"], ["Account value $", "equity", v => "$" + fmt(v, 0), "n"], ["Invested $", "invested", v => v == null ? "" : "$" + fmt(v, 0), "n"],
+    ["Daily return", "ret", pct, "n"], ["P&L $", "pnl", usd, "n"], ["Return on invested", "roi", pct, "n"]],
   cash: [["Date", "date"], ["Type", "type", esc], ["Ticker", "ticker", esc], ["Amount $", "amount", usd, "n"]],
 };
 let D = {}, view = "positions", sort = { key: null, dir: 1 };
@@ -96,7 +99,11 @@ fetch("../dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => 
   document.getElementById("upd").textContent = String(d.updated).replace("T", " ").replace("+00:00", " UTC");
   const A = d.account || [];
   D = { positions: d.positions || [], orders: d.orders || [], cash: d.cash || [],
-        account: A.map((a, i) => ({ ...a, ret: i ? a.equity / A[i - 1].equity - 1 : null, cum: a.equity / A[0].equity - 1 })) };
+        account: A.map((a, i) => ({ ...a, ret: i && A[i - 1].invested ? (a.equity - A[i - 1].equity) / A[i - 1].invested : null, pnl: a.equity - A[0].equity,
+                                    roi: a.invested ? (a.equity - A[0].equity) / a.invested : null })) };
+  const last = D.account[D.account.length - 1];
+  if (last && last.invested != null) document.getElementById("inv").innerHTML =
+    `Total invested <b>$${fmt(last.invested, 0)}</b> (${last.date}) · return on invested ${pct(last.roi)} · P&amp;L ${usd(last.pnl)}`;
   render();
 }).catch(e => { document.getElementById("box").innerHTML = `<div class="empty">Could not load ledger data (${esc(e.message)}).</div>`; });
 </script>

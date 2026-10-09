@@ -347,10 +347,20 @@ ww = wb.create_sheet("Account")
 nav_p = os.path.join(base, "execution", "nav.csv")
 N = pd.read_csv(nav_p) if os.path.exists(nav_p) else pd.DataFrame(columns=["date", "equity"])
 N = N[N["date"].astype(str) >= min(P["entry_day"])] if len(P) else N.iloc[:0]   # from the first actual trade
-nrecs = [(lambda r: (lambda i: [str(r["date"]), float(r["equity"]), "" if i == 2 else f"=B{i}/B{i - 1}-1",
-                                f"=B{i}/$B$2-1"]))(r) for _, r in N.iterrows()]
-sheet(ww, [("Day", None), ("Paper account value ($)", "$#,##0"), ("Daily return (%)", "0.00%;-0.00%;-"),
-           ("Since first trade (%)", "0.00%;-0.00%;-")], nrecs, {"Day": 12, "Paper account value ($)": 16})
+
+
+def invested_on(day):
+    """Gross capital in positions at the day's close: long plus short cost basis, at entry prices."""
+    held = P[(P["entry_day"] <= day) & ((P["exit_day"] == "") | (P["exit_day"] > day))] if len(P) else P
+    return float((held["shares"].abs() * held["entry_price"]).sum()) if len(held) else 0.0
+
+
+N = N.assign(invested=[invested_on(str(d)) for d in N["date"]])
+nrecs = [(lambda r: (lambda i: [str(r["date"]), float(r["equity"]), r["invested"], "" if i == 2 else f'=IF(C{i - 1}>0,(B{i}-B{i - 1})/C{i - 1},"")',
+                                f"=B{i}-$B$2", f'=IF(C{i}>0,E{i}/C{i},"")']))(r) for _, r in N.iterrows()]
+sheet(ww, [("Day", None), ("Paper account value ($)", "$#,##0"), ("Invested ($)", "$#,##0"), ("Daily return (%)", "0.00%;-0.00%;-"),
+           ("P&L since first trade ($)", "#,##0.00;(#,##0.00);-"), ("Return on invested (%)", "0.00%;-0.00%;-")], nrecs,
+      {"Day": 12, "Paper account value ($)": 16, "Invested ($)": 14, "P&L since first trade ($)": 16, "Return on invested (%)": 16})
 
 wc = wb.create_sheet("Cash activity")
 ap_ = os.path.join(base, "execution", "activities.csv")
@@ -368,7 +378,7 @@ notes = [
     "Status Open: the week has not ended; Return and P&L use the Current price (latest close). Returns are price returns, dividends excluded, before costs.",
     "P&L ($): signed shares x (exit or current price - entry). Lot boundaries use the actual Alpaca fill of the order traded there (weekly or daily review), else the official close, so lot P&Ls add up to the account's trading P&L.",
     "Cash activity: dividends received on longs and paid on shorts, fees and interest from Alpaca; together with P&L they explain the Account sheet's value.",
-    "Account sheet: the paper account's daily value from Alpaca, from the first trade on.",
+    "Account sheet: the paper account's daily value from Alpaca, from the first trade on. Invested: gross capital in positions at the day's close (long plus short, shares x entry price). Daily return: the day's change in account value over the previous close's invested amount. Return on invested: the account's P&L since the first trade over that day's invested amount.",
     "Confidence: the analyst's confidence (0-1); Red team: uphold or weaken. SPY rows are the beta hedge.",
     "Source records: fund-data branch, fund_state/live/<week>/ (book.json, execution.json, analysts.json, redteam.json) and fund_state/live/execution/fills.csv.",
 ]
@@ -414,7 +424,7 @@ dash = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"), "mo
         "balance": {"equity": float(_nav_all["equity"].iloc[-1]), "date": str(_nav_all["date"].iloc[-1])} if len(_nav_all) else None,
         "positions": pos_out,
         "orders": filled_orders,
-        "account": [{"date": str(r["date"]), "equity": float(r["equity"])} for _, r in N.iterrows()],
+        "account": [{"date": str(r["date"]), "equity": float(r["equity"]), "invested": r["invested"]} for _, r in N.iterrows()],
         "cash": [{"date": a[0], "type": a[1], "ticker": _f(a[2]), "amount": _f(a[5])} for a in arecs]}
 
 
