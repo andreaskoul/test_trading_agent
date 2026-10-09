@@ -35,7 +35,7 @@ import pandas as pd
 
 import broker
 from broker import ET, api
-from common import MODE, STATE, week_dir
+from common import MODE, P7_START, STATE, week_dir
 
 mode = sys.argv[1]
 assert mode in ("plan", "trade", "reconcile", "filltest"), mode
@@ -92,7 +92,8 @@ if mode == "reconcile":
     done = []
     # every order-bearing record: the weekly execution and each daily review (Amendment 5)
     recs = [(p, "execution") for p in glob.glob(os.path.join(STATE, MODE, "20*", "execution.json"))]
-    recs += [(p, "review") for p in glob.glob(os.path.join(STATE, MODE, "20*", "reviews", "*.json"))]
+    recs += [(p, "review") for p in glob.glob(os.path.join(STATE, MODE, "20*", "reviews", "*.json")) if not p.endswith(".plan.json")]
+    recs += [(p, "lifecycle") for p in glob.glob(os.path.join(STATE, MODE, "lifecycle", "live", "*.json")) if not p.endswith(".plan.json")]
     for p, kind in sorted(recs):
         ex = json.load(open(p))
         if ex.get("status") != "submitted" or ex.get("reconciled"):
@@ -196,6 +197,8 @@ clock = broker.Clock()
 close_at = close_et.timestamp()
 lead = broker.CLS_CUTOFF if broker.STYLE == "cls" else broker.PREPARE_AT + 30
 if mode == "trade":
+    if pd.Timestamp(today) >= P7_START:
+        print(f"Protocol 7 from {P7_START.date()}: the account is traded by fund/lifecycle.py trade"); sys.exit(0)
     if today != exec_day:
         print(f"no execution today: the week of {asof.date()} trades on {exec_day}"); sys.exit(0)
     if os.path.exists(out_p) and json.load(open(out_p)).get("status") == "submitted":

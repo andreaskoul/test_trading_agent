@@ -582,3 +582,60 @@ idea. Trading it is Protocol 7, a new hypothesis with its own clock, not a promo
   the weekly difference (NW t, lag ≥ the longest horizon in weeks).
 * Any headline claim must survive α/k over the k champion protocols run (or a deflated Sharpe ratio;
   Bailey & López de Prado 2014).
+
+## Protocol 7 (pre-registered 2026-10-09, before its first decision on 2026-10-14): the lifecycle book trades
+
+**What changes, and why.** From the session of **2026-10-15**, the account is traded by the lifecycle book of
+Amendment 7 (C10) instead of the weekly book. The reason is the owner's design decision (2026-10-03) that each
+trade has its own life: a horizon from its thesis, an exit when news ends the thesis, and volatility-scaled
+stop and target. It was **not chosen on performance**: no Protocol 6 week had been scored when this was
+registered, and the C10 shadow had run for one session.
+
+This is a new hypothesis with its own clock, not a promotion.
+
+**The rules are Amendment 7's, unchanged.** Event-type horizon table, stop −2.0·W and target +3.0·W on hedged
+residual returns, three-pass kill-condition news checks, overlapping cohorts with the champion's caps,
+SPY hedge. Two things change because the book now trades:
+* **Decided live, before the close.** Each session:
+  * the news checks run on articles published up to **T − 20 min**;
+  * the barriers are checked on live prices at **T − 3 min** (the provisional return to that moment);
+  * the decision is logged in `lifecycle/live/<day>.json` (prices, timestamps, every action, the target
+    book);
+  * the account is traded to it with the pre-close send (`fund/broker.py`).
+  Entry volatility for a new lot uses history to the previous close.
+* **The record applies the decisions as taken.** The nightly rebuild marks every lot at the official close
+  and applies that day's logged actions; it does not recompute them on the close. A session with no live run
+  holds everything.
+
+**Transition.** The champion starts from the C10 shadow's lots as they stand at the 2026-10-14 close. On
+2026-10-15 the account moves from the Protocol 6 holdings to that book plus the new cohort (as-of
+2026-10-14). From that session:
+* the weekly execution (`execute.py trade`) and the Amendment 5 daily review stop trading;
+* the kill-condition checks replace the review;
+* reconciliation, risk halts, the IC memo and every shadow desk continue.
+
+**Scoring and the gate.**
+* **The fund's weekly return is the lifecycle book's NAV return** over the usual Thursday-close weeks
+  (Amendment 7 accounting).
+* **The gate's clock restarts** at the first Protocol 7 week (as-of 2026-10-14), with the same O'Brien–
+  Fleming looks at 13/26/39/52 weeks and the same operations rules.
+* **The Protocol 6 record stays.** Its weeks (2026-09-30, 2026-10-07) stay in `weekly_books.csv`.
+* **Headline claims.** Any claim across both protocols must survive α/2 (two champion protocols run), or a
+  deflated Sharpe ratio over the protocols run.
+* **`c0_weekly`: the weekly book it replaces.** It is the fund book of each week held Thursday to Thursday,
+  scored as a challenger.
+* **The pre-registered paired test** is d_w = r_fund − r_c0_weekly, reported weekly, with its NW t at lag
+  max(⌊4(T/100)^{2/9}⌋, 4).
+* **Reverting.** If c0_weekly beats the fund at a look by its challenger boundary, the weekly book takes
+  the account back, by the promotion rule.
+* **Multiple testing.** c0_weekly is a new test: the challenger family is now C0–C10 (m = 11) at
+  α = 0.05/11, with boundaries **5.724 / 4.048 / 3.305 / 2.862** (computed in `score.py`, which first
+  reproduces the champion's 4.049 / 2.863 / 2.337 / 2.024).
+
+**Mechanical gates kept every day.** All of Amendment 7's checks: reconciliation to the cent, limits, no
+duplicate lots, triggers, no look-ahead (news after the decision time is never used), and determinism.
+In addition, every order is reconciled against the official close; the operations rule is unchanged (≥ 90%
+of weeks fully filled, median slippage ≤ 10 bp).
+
+**Before go-live.** Unchanged from Amendment 3, plus one condition: Alpaca must confirm whether a live account
+supports market-on-close orders. Until then the pre-close send stays the method.

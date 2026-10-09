@@ -45,6 +45,9 @@ SCHEDULE = {
     "review":    {"days": "0124",    "at": "16:30", "late": 180},
     "reconcile": {"days": "12345",   "at": "01:10", "late": 720},
     "report":    {"days": "0123456", "at": "05:50", "late": 600},   # iMessage: after reconcile, archive and the weekly run
+    # Protocol 7 (from 2026-10-15): the lifecycle book decides live and trades the account every session;
+    # the job waits for the news checks (T-20 min) and the decision (T-3 min). Before the start date it does nothing.
+    "lifecycle": {"days": "01234",   "at": "16:15", "late": 180},
     # one-off pipeline tests of the pre-close send: 1 SPY bought Monday, sold Tuesday (labelled fund-test-...)
     # (moved from Mon/Tue: the 10-05 run crashed in the drift check before sending anything)
     "filltest-buy":  {"dates": ["2026-10-06"], "at": "16:15", "late": 180, "args": ["buy", "SPY", "1"]},
@@ -58,13 +61,15 @@ NEEDS = {
     "review": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY"],
     "reconcile": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "report": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "IMESSAGE_TO"],
+    "lifecycle": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY", "HF_TOKEN"],
     "filltest-buy": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "filltest-sell": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
 }
-GROUP = {"archive": "archive", "weekly": "weekly", "execute": "execute", "review": "execute", "filltest": "filltest"}
+GROUP = {"archive": "archive", "weekly": "weekly", "execute": "execute", "review": "execute", "filltest": "filltest",
+         "lifecycle": "execute"}
 # minutes, as the workflows; trade and review wait for the last minute before the close
-TIMEOUT = {"archive": 350, "weekly": 340, "execute": 330, "review": 330, "filltest": 330}
-PAGES_AFTER = {"weekly", "execute", "review", "filltest"}                               # fund_pages.yml's workflow_run list
+TIMEOUT = {"archive": 350, "weekly": 340, "execute": 330, "review": 330, "filltest": 330, "lifecycle": 330}
+PAGES_AFTER = {"weekly", "execute", "review", "filltest", "lifecycle"}                               # fund_pages.yml's workflow_run list
 
 
 def now_utc():
@@ -349,6 +354,18 @@ def job_review(j, a):
     issue(j, "Fund: daily review failed", "echo Local run failed; see the log on the Mac.")
 
 
+def job_lifecycle(j, a):
+    plan = a.mode == "plan"
+    j.step("Restore fund state", RESTORE.format(paths="fund_state"))
+    j.step(f"Protocol 7 lifecycle trade{' (plan: no orders)' if plan else ''}",
+           f"python fund/lifecycle.py trade{' --plan' if plan else ''}")
+    if not plan:
+        j.step("Position ledger (Excel)", "python fund/ledger.py", when="always", allow_fail=True)
+        j.step("Commit lifecycle records", COMMIT_EXEC.format(copy=COPY_EXEC, msg="lifecycle trade"), when="always")
+    issue(j, "Fund: lifecycle trade problem",
+          'echo "The Protocol 7 trade needs attention."; cat fund_state/live/execution/problems.txt 2>/dev/null || true')
+
+
 def job_filltest(j, a):
     side, sym, qty = a.test
     j.step("Restore fund state", RESTORE.format(paths="fund_state"))
@@ -367,6 +384,8 @@ def run(args):
         args.mode = "trade"
     elif name == "execute" and not args.mode:
         args.mode = "plan"
+    elif name == "lifecycle" and not args.mode:
+        args.mode = "trade"
     group = GROUP[name]
     os.makedirs(os.path.join(HOME, "locks"), exist_ok=True)
     lock = open(os.path.join(HOME, "locks", group), "w")
@@ -397,7 +416,7 @@ def run(args):
     awake = subprocess.Popen(["caffeinate", "-i", "-w", str(os.getpid())])    # no idle sleep while the job runs
     drift(j)
     res = {"archive": job_archive, "weekly": job_weekly, "execute": job_execute, "review": job_review,
-           "filltest": job_filltest}[name](j, args)
+           "filltest": job_filltest, "lifecycle": job_lifecycle}[name](j, args)
     if name in PAGES_AFTER and res != "skip" and not args.no_pages:
         j.step("GitHub Pages: rebuild the dashboard (fund_pages.yml)",
                f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main", when="always", allow_fail=True)
@@ -421,8 +440,10 @@ KNOWN = {"archive": {"archive", "context_archive"},
          "weekly": {"common", "screen", "ideate", "emb_store", "research", "commit_state", "analysts", "redteam", "pm_risk",
                     "fx_desk", "shadow", "macro_desk", "neighbours", "shadow_info", "lifecycle", "ic_memo", "score", "ledger"},
          "execute": {"execute", "ledger", "broker", "lifecycle"},
-         "review": {"review", "ledger", "broker", "review_context"}}
-WORKFLOW = {"archive": "fund_archive.yml", "weekly": "fund_weekly.yml", "execute": "fund_execute.yml", "review": "fund_review.yml"}
+         "review": {"review", "ledger", "broker", "review_context"},
+         "lifecycle": {"lifecycle", "ledger", "broker"}}
+WORKFLOW = {"archive": "fund_archive.yml", "weekly": "fund_weekly.yml", "execute": "fund_execute.yml", "review": "fund_review.yml",
+            "lifecycle": "fund_lifecycle.yml"}
 
 
 def drift(j):
@@ -552,6 +573,18 @@ def build_report(secrets):
         if t["day"] >= (now - dt.timedelta(hours=30)).date().isoformat():
             slip = f", {float(t['slip_bp']):+.1f} bp vs close" if t.get("slip_bp") else ""
             L.append(f"Pipeline test {t['day']}: {t['side']} {t['qty']} {t['symbol']} {t['status']}{slip}")
+    for f in sorted(subprocess.run(["git", "-C", repo, "ls-tree", "--name-only", "origin/fund-data", "fund_state/live/lifecycle/live/"],
+                                   capture_output=True, text=True).stdout.split())[-1:]:
+        if not f.endswith(".plan.json"):
+            try:
+                lt = json.loads(show(f"lifecycle/live/{os.path.basename(f)}"))
+                if lt["day"] >= (now - dt.timedelta(hours=30)).date().isoformat():
+                    acts = [f"{e['ticker']} {e['action']}" for e in lt.get("actions", []) if e["action"] not in ("hedge",)]
+                    full = sum(o.get("status") == "filled" for o in lt.get("orders", []))
+                    L.append(f"P7 trade {lt['day']}: {full}/{len(lt.get('orders', []))} orders filled"
+                             + (f"; {', '.join(acts[:8])}" if acts else "; no exits or entries"))
+            except ValueError:
+                pass
     try:
         lc = json.loads(show("lifecycle/state.json"))
         if lc.get("rows"):
@@ -635,7 +668,7 @@ def main():
     sub = p.add_subparsers(dest="cmd", required=True)
     t = sub.add_parser("tick"); t.add_argument("--init", action="store_true"); t.set_defaults(f=tick)
     r = sub.add_parser("run")
-    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute", "filltest"])
+    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute", "filltest", "lifecycle"])
     r.add_argument("--test", nargs=3, metavar=("SIDE", "SYMBOL", "QTY"), help="filltest: e.g. buy SPY 1")
     r.add_argument("--mode", choices=["plan", "trade", "reconcile"], help="execute: plan|trade|reconcile; review: plan|trade")
     r.add_argument("--asof", help="as-of Wednesday YYYY-MM-DD (weekly, execute)")

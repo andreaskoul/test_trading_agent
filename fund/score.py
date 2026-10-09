@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 
-from common import MODE, STATE
+from common import MODE, P7_START, STATE
 
 base = os.path.join(STATE, MODE)
 OUT = os.path.join(base, "performance")
@@ -55,8 +55,8 @@ def nw_t(x, L=2):
 FACTORS = ["rev1w", "mom12_1", "lowvol"]      # from the screen's z-scores (Amendment 2 attribution)
 STOCK_BOOKS = ("fund", "analyst", "quant", "core20", "random", "c1_wedclose", "c1_thuopen",
                "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview",
-               "c8_informed", "c9_ranker", "c10_lifecycle")
-CHALLENGERS = ("c1_wedclose", "c1_thuopen", "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview",
+               "c8_informed", "c9_ranker", "c10_lifecycle", "c0_weekly")
+CHALLENGERS = ("c0_weekly", "c1_wedclose", "c1_thuopen", "c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c7_noreview",
                "c8_informed", "c9_ranker", "c10_lifecycle")
 # C10 (Amendment 7) is a NAV-based book: positions with their own horizons, exits mid-week (fund/lifecycle.py)
 _lc = os.path.join(base, "lifecycle", "state.json")
@@ -102,6 +102,7 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     ex_p = os.path.join(wd, "execution.json")
     halted_wk = os.path.exists(ex_p) and str(json.load(open(ex_p)).get("reason") or "").startswith("HALT")
     fund_w = {} if halted_wk else book.get("books", {}).get("fund", {})
+    p7 = t0 >= P7_START                             # Protocol 7: the lifecycle book is the fund, the weekly book c0_weekly
     fxn = sorted({c for b in fx.get("books", {}).values() for c in b})
     if fxn:
         raw = yf.download([FXT[c][0] for c in fxn], start=t0 - pd.Timedelta(days=7), end=t1 + pd.Timedelta(days=1),
@@ -112,7 +113,8 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
         acc = pd.Series({c: (fred(f"IR3TIB01{FXT[c][2]}M156N").asof(t1) - usd.asof(t1)) / 52 for c in fxn})
         fret = np.log(at(s, t1) / at(s, t0)) + acc
     c5bp = pd.Series(5e-4, index=ret.index)
-    allbooks = {**{k: (fund_w if k == "fund" else v, ret, c5bp) for k, v in book.get("books", {}).items()},
+    allbooks = {**{("c0_weekly" if (k == "fund" and p7) else k): (fund_w if k == "fund" else v, ret, c5bp)
+                   for k, v in book.get("books", {}).items()},
                 **{k: (v, ret, c5bp) for k, v in shadow.items()},
                 "c1_wedclose": (fund_w, ret_wed, c5bp), "c1_thuopen": (fund_w, ret_open, c5bp),
                 **{k: (v, fret, pd.Series(FX_COST)) for k, v in fx.get("books", {}).items() if fxn}}
@@ -131,7 +133,7 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     if len(LC) and t0 in LC.index and t1 in LC.index:
         seg = LC.loc[(LC.index > t0) & (LC.index <= t1)]
         net_ = float(LC.loc[t1, "nav"] / LC.loc[t0, "nav"] - 1)
-        rows.append(dict(asof=str(asof.date()), book="c10_lifecycle", gross=float((1 + seg["r_gross"]).prod() - 1),
+        rows.append(dict(asof=str(asof.date()), book="fund" if p7 else "c10_lifecycle", gross=float((1 + seg["r_gross"]).prod() - 1),
                          cost=float(seg["r_cost"].sum()), net=net_, excess=net_ - rf_w, n_missing=0))
     # Amendment 6: does C8 rank next week's returns better than the analysts do? (rank IC, a monitor)
     si_p = os.path.join(wd, "shadow_info.json")
@@ -148,10 +150,10 @@ for wd in sorted(glob.glob(os.path.join(base, "20*"))):
     # Amendment 5: the daily review can change the fund's weights mid-week. The fund is then scored
     # piecewise between review closes (5 bp/side on each change); c7_noreview keeps the weekly book
     # untouched for the whole week, so fund - c7_noreview is what the reviews added.
-    revs = [json.load(open(f)) for f in sorted(glob.glob(os.path.join(wd, "reviews", "*.json")))]
+    revs = [] if p7 else [json.load(open(f)) for f in sorted(glob.glob(os.path.join(wd, "reviews", "*.json")))]
     revs = [r_ for r_ in revs if r_.get("status") == "submitted" and t0 < pd.Timestamp(r_["day"]) < t1]
     frow = next((x for x in rows[::-1] if x["asof"] == str(asof.date()) and x["book"] == "fund"), None)
-    if frow is not None:
+    if frow is not None and not p7:
         rows.append({**frow, "book": "c7_noreview"})
         if revs and fund_w:
             wk_ = pd.Series(fund_w, dtype=float)
@@ -300,8 +302,9 @@ def obf(alpha, looks=(13, 26, 39, 52)):
 
 # the integration must reproduce the pre-registered champion boundaries before it sets the challengers'
 assert all(abs(obf(0.05)[L] - v) <= 0.005 for L, v in LOOKS.items()), obf(0.05)
-# every challenger ever scored counts (C1-C10: m = 10), alpha 0.05/10 each (Amendments 6 and 7; tightened from 0.05/7)
-CH_LOOKS = obf(0.05 / 10)
+# every challenger ever scored counts: C1-C10 and, from Protocol 7, c0_weekly (m = 11), alpha 0.05/11 each
+# (Amendments 6 and 7, Protocol 7; boundaries only ever tighten)
+CH_LOOKS = obf(0.05 / 11)
 
 
 def alpha_t(y, Fx, cols):
@@ -316,6 +319,11 @@ EXEC = os.path.join(base, "execution")
 books_ok = {os.path.basename(d): json.load(open(os.path.join(d, "book.json"))).get("status") in ("ok", "degraded_hold")
             for d in sorted(glob.glob(os.path.join(base, "20*"))) if os.path.exists(os.path.join(d, "book.json"))}
 first = min([a for a, ok in books_ok.items() if ok], default=None)
+# Protocol 7 restarts the clock: the gate reads the fund from the first week traded as the lifecycle book
+P7_FIRST = min([a for a in books_ok if pd.Timestamp(a) + pd.Timedelta(days=1) >= P7_START], default=None)
+P6_LAST = max([a for a in books_ok if not P7_FIRST or a < P7_FIRST], default=None)
+if P7_FIRST and (R["asof"] >= P7_FIRST).any() if len(R) else False:
+    first = P7_FIRST
 Pe = R[R.book == "fund"].set_index("asof")["excess"].sort_index() if len(R) else pd.Series(dtype=float, index=pd.Index([], dtype=str))
 Pe = Pe[Pe.index >= first] if first else Pe.iloc[:0]
 n = len(Pe)
@@ -361,7 +369,16 @@ elif look and ops_ok and mean_l > 0:
     verdict = f"GO-SMALL allowed (look at {look} weeks): operations pass, no stop, positive mean. Tuition capital only."
 else:
     verdict = f"CONTINUE ({n} weeks scored; next look at {min([L for L in LOOKS if L > n], default='-')} weeks)."
+# pre-registered paired test (Amendment 7): the lifecycle fund against the weekly book it replaced
+d0 = (Px["fund"] - Px["c0_weekly"]).dropna() if {"fund", "c0_weekly"} <= set(Px) else pd.Series(dtype=float)
+d0 = d0[d0.index >= P7_FIRST] if P7_FIRST else d0.iloc[:0]
+lag0 = max(int(4 * (max(len(d0), 1) / 100) ** (2 / 9)), 4)        # >= the longest horizon (20 trading days) in weeks
+paired = (f"Protocol 7 vs the weekly book (c0_weekly): {len(d0)} weeks, mean {d0.mean() * 100 if len(d0) else float('nan'):+.3f}%/wk, "
+          f"NW t (lag {lag0}) {nw_t(d0, L=lag0) if len(d0) >= 3 else float('nan'):.2f}")
 g = [f"# Go-live gate ({MODE})", "", f"**{verdict}**", "",
+     (f"Protocol 7 (lifecycle book) from {P7_FIRST}: the clock restarted; the Protocol 6 record ({first if first != P7_FIRST else '2026-09-30'} "
+      f"to {P6_LAST}) stays in weekly_books.csv. " + paired) if P7_FIRST and first == P7_FIRST else
+     "Protocol 6 (weekly book). Protocol 7 starts trading on " + str(P7_START.date()) + ".", "",
      (f"At the {look}-week look: excess t {Z_l:.2f}, alpha t (SPY, rev1w) {A_l:.2f}, fund − quant alpha t (rev1w) {dq_l:.2f}, "
       f"adjusted score slope t {xs_l:.2f}. Challengers promoted: {', '.join(promote) or 'none'}. "
       "The rows below are running values; only a look changes the verdict." if look else

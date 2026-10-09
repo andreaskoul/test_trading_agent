@@ -238,6 +238,82 @@ cols = [("Week (as-of Wed)", None), ("Ticker", None), ("Name", None), ("Role", N
         ("Entry day", None), ("Exit day", None), ("Shares (signed)", "#,##0;-#,##0;-"), ("Entry price ($)", "#,##0.00"),
         ("Exit price ($)", "#,##0.00"), ("Current price ($)", "#,##0.00"), ("Return (%)", "0.00%;-0.00%;-"),
         ("P&L ($)", "#,##0;(#,##0);-"), ("Confidence", "0.00"), ("Red team", None), ("Thesis", None)]
+# ---- Protocol 7: the lifecycle book trades every day and a lot can last several weeks. Its positions are rebuilt
+# from the actual fills of the daily trade logs (lifecycle/live/<day>.json): one row per run of a position, from the
+# first fill that opens it to the fill that takes it to zero; average entry price over the fills that add to it.
+P7, P7_SEED = [], None
+for lg in sorted((json.load(open(f)) for f in glob.glob(os.path.join(base, "lifecycle", "live", "*.json")) if not f.endswith(".plan.json")),
+                 key=lambda x: x["day"]):
+    if lg.get("status") != "submitted":
+        continue
+    lots_meta = {x["ticker"]: x for x in lg.get("lots_after", [])}
+    if P7_SEED is None:                              # the holdings the first lifecycle trade found (Protocol 6's)
+        P7_SEED = (lg["day"], {t: q for t, q in (lg.get("current_qty") or {}).items() if q}, lots_meta, lg.get("asof"))
+    for o in lg["orders"]:
+        q = filled_of(o, lg.get("asof"), lg["day"])
+        orders.append({"week": lg.get("asof"), "exec_day": lg["day"], "ticker": o["symbol"], "leg": o["leg"], "side": o["side"],
+                       "qty": o["qty"], "filled_qty": q, "order_type": ORDER_TYPE[lg.get("style", "preclose")] + " (lifecycle)",
+                       "ref_price": o.get("price_ref"), "target_weight": o.get("target_weight"), "status": o.get("status"),
+                       "client_order_id": o.get("client_order_id"), "fill_price": o.get("fill_price")})
+        if q:
+            P7.append({"day": lg["day"], "ticker": o["symbol"], "q": q if o["side"] == "buy" else -q,
+                       "px": o.get("fill_price"), "meta": lots_meta.get(o["symbol"], {}), "asof": lg.get("asof")})
+if P7 or P7_SEED:
+    p7_rows, runs = [], {}
+    if P7_SEED and P7_SEED[1]:
+        # carried in at the first lifecycle session's official close: where Protocol 6's weekly rows end
+        d0, held0, meta0, wk0 = P7_SEED
+        c0 = yf.download(sorted(t.replace(".", "-") for t in held0), start=d0, end=pd.Timestamp(d0) + pd.Timedelta(days=1),
+                         progress=False, auto_adjust=False)["Close"]
+        c0 = c0 if isinstance(c0, pd.DataFrame) else c0.to_frame(sorted(held0)[0].replace(".", "-"))
+        c0 = {k.replace("-", "."): float(v) for k, v in c0.iloc[-1].items()} if len(c0) else {}
+        ref0 = {o["ticker"]: o.get("ref_price") for o in orders if o.get("exec_day") == d0}
+        for t, q in held0.items():
+            runs[t] = {"ticker": t, "shares": float(q), "entry_price": c0.get(t) or ref0.get(t), "entry_day": d0,
+                       "meta": meta0.get(t, {}), "week": wk0}
+    for f in P7:
+        t, run_ = f["ticker"], runs.get(f["ticker"])
+        if run_ and np.sign(run_["shares"] + f["q"]) != np.sign(run_["shares"]) and run_["shares"] + f["q"] != 0:
+            # a flip through zero: close this run at the fill and open the other side with the remainder
+            rest = run_["shares"] + f["q"]
+            p7_rows.append({**run_, "status": "Closed", "exit_day": f["day"], "exit_price": f["px"]})
+            runs[t] = run_ = None
+            f = {**f, "q": rest}
+        if not run_:
+            runs[t] = {"ticker": t, "shares": f["q"], "entry_price": f["px"], "entry_day": f["day"], "meta": f["meta"],
+                       "week": f["asof"]}
+            continue
+        if np.sign(f["q"]) == np.sign(run_["shares"]):          # adds: average the entry price
+            run_["entry_price"] = (run_["entry_price"] * abs(run_["shares"]) + f["px"] * abs(f["q"])) / (abs(run_["shares"]) + abs(f["q"]))
+        run_["shares"] += f["q"]
+        if f["meta"]:
+            run_["meta"] = f["meta"]
+        if run_["shares"] == 0:
+            p7_rows.append({**run_, "shares": run_["shares"] - f["q"], "status": "Closed", "exit_day": f["day"], "exit_price": f["px"]})
+            runs[t] = None
+    p7_rows += [{**r_, "status": "Open", "exit_day": "", "exit_price": np.nan} for r_ in runs.values() if r_]
+    lp7 = yf.download(sorted({r_["ticker"].replace(".", "-") for r_ in p7_rows}), period="10d", progress=False, auto_adjust=False)["Close"]
+    lp7 = lp7 if isinstance(lp7, pd.DataFrame) else lp7.to_frame(p7_rows[0]["ticker"].replace(".", "-"))
+    last7 = {c.replace("-", "."): v for c, v in lp7.ffill().iloc[-1].items()}
+    th = {}
+    for r_ in p7_rows:
+        wk = r_["meta"].get("cohort") or r_["week"]
+        if wk and wk not in th:
+            th[wk] = ld(os.path.join(base, wk), "analysts.json").get("memos", {})
+    P = pd.concat([P, pd.DataFrame([{
+        "week": r_["meta"].get("cohort") or r_["week"], "ticker": r_["ticker"],
+        "name": "SPDR S&P 500 ETF" if r_["ticker"] == "SPY" else r_["ticker"],
+        "role": "beta hedge" if r_["ticker"] == "SPY" else "position (lifecycle)", "side": "Long" if r_["shares"] > 0 else "Short",
+        "status": r_["status"], "entry_day": r_["entry_day"], "exit_day": r_["exit_day"], "shares": r_["shares"],
+        "entry_price": r_["entry_price"], "exit_price": r_["exit_price"], "mark_price": last7.get(r_["ticker"], np.nan),
+        "confidence": ((th.get(r_["meta"].get("cohort") or r_["week"], {}).get(r_["ticker"]) or {}).get("memo") or {}).get("confidence"),
+        "redteam": None,
+        "thesis": ("SPY hedge to zero beta" if r_["ticker"] == "SPY" else
+                   ((th.get(r_["meta"].get("cohort") or r_["week"], {}).get(r_["ticker"]) or {}).get("memo") or {}).get("thesis", "")
+                   + (f" | horizon {r_['meta'].get('H')} days; exit if: " + "; ".join(r_["meta"].get("kill_conditions", []))
+                      if r_["meta"].get("kill_conditions") else ""))}
+        for r_ in p7_rows])], ignore_index=True)
+
 recs = []
 for _, r in (P.iterrows() if len(P) else []):
     recs.append((lambda r: (lambda i: [
