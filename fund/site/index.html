@@ -43,7 +43,7 @@
   <section><h2>Closed positions</h2><div class="scroll" id="closed"></div></section>
   <section><h2>Filled orders</h2><div class="scroll" id="orders"></div></section>
   <section><h2>Cash activity (dividends, fees, interest)</h2><div class="scroll" id="cash"></div></section>
-  <p class="muted">Returns are price returns before costs, signed for shorts. P&amp;L = signed shares × (exit or current − entry), using actual fills at trade boundaries. SPY rows are the market hedge.</p>
+  <p class="muted">Returns are price returns before costs, signed for shorts. P&amp;L = signed shares × (exit or current − entry), using actual fills at trade boundaries. SPY rows are the market hedge. Invested = |shares| × entry price; an order's amount = filled shares × fill price.</p>
 </main>
 <script>
 const fmt = (v, d = 2) => v == null ? "" : Number(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -76,14 +76,15 @@ fetch("dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => {
       options: { plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => "$" + fmt(v, 0) } } } } });
   } else { document.getElementById("acctEmpty").hidden = false; document.getElementById("acct").hidden = true; }
   const posCols = [["Week", p => p.week], ["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Name", p => esc(p.name)], ["Side", p => p.side],
-    ["Entry", p => p.entry_day], ["Shares", p => fmt(p.shares, 0), "n"], ["Entry $", p => fmt(p.entry_price), "n"]];
+    ["Entry", p => p.entry_day], ["Shares", p => fmt(p.shares, 0), "n"], ["Entry $", p => fmt(p.entry_price), "n"],
+    ["Invested $", p => p.shares == null || p.entry_price == null ? "" : "$" + fmt(Math.abs(p.shares * p.entry_price), 0), "n"]];
   table("open", [...posCols, ["Current $", p => fmt(p.current_price), "n"], ["Return", p => pct(p.return), "n"], ["P&L", p => usd(p.pnl), "n"],
     ["Red team", p => esc(p.redteam)], ["Thesis", p => esc(p.thesis), "thesis"]], open);
   table("closed", [...posCols, ["Exit", p => p.exit_day], ["Exit $", p => fmt(p.exit_price), "n"], ["Return", p => pct(p.return), "n"],
     ["P&L", p => usd(p.pnl), "n"], ["Status", p => esc(p.status)]], closed.slice().reverse());
   table("orders", [["Day", o => o.exec_day], ["Ticker", o => `<b>${esc(o.ticker)}</b>`], ["Leg", o => esc(o.leg)], ["Side", o => o.side],
     ["Filled", o => fmt(o.qty, 0) + (o.ordered_qty && o.ordered_qty > o.qty ? ` of ${fmt(o.ordered_qty, 0)}` : ""), "n"], ["Type", o => esc(o.order_type)], ["Status", o => esc(o.status)], ["Fill $", o => fmt(o.fill_price), "n"],
-    ["Close $", o => fmt(o.official_close), "n"], ["Slippage (bp)", o => fmt(o.slippage_bp, 1), "n"]], d.orders.slice().reverse());
+    ["Amount $", o => o.qty == null || o.fill_price == null ? "" : "$" + fmt(Math.abs(o.qty * o.fill_price), 0), "n"], ["Close $", o => fmt(o.official_close), "n"], ["Slippage (bp)", o => fmt(o.slippage_bp, 1), "n"]], d.orders.slice().reverse());
   table("cash", [["Date", c => c.date], ["Type", c => esc(c.type)], ["Ticker", c => esc(c.ticker)], ["Amount", c => usd(c.amount), "n"]], d.cash.slice().reverse());
 }).catch(e => { document.getElementById("kpis").innerHTML = `<div class="empty">Could not load dashboard data (${esc(e.message)}).</div>`; });
 </script>
