@@ -5,7 +5,7 @@ name: Fund · dashboard (GitHub Pages)
 
 on:
   workflow_run:
-    workflows: ["Fund · weekly desks", "Fund · execution (Alpaca paper)", "Fund · daily position review"]
+    workflows: ["Fund · weekly desks", "Fund · execution (Alpaca paper)", "Fund · daily position review", "Fund · lifecycle trade (Protocol 7)"]
     types: [completed]
   workflow_dispatch:
 

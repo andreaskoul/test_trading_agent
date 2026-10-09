@@ -29,10 +29,12 @@ from datetime import datetime, timedelta, timezone
 import numpy as np
 import pandas as pd
 
-from common import MODE, STATE, llm, news_cutoff, require
+from common import MODE, P7_START, STATE, llm, news_cutoff, require
 
 mode = sys.argv[1]
 assert mode in ("plan", "trade"), mode
+if mode == "trade" and pd.Timestamp.now(tz="America/New_York").tz_localize(None).normalize() >= P7_START:
+    raise SystemExit(print(f"Protocol 7 from {P7_START.date()}: positions are reviewed by fund/lifecycle.py trade") or 0)
 require("OPENROUTER_API_KEY", "FINNHUB_API_KEY")
 import broker                                       # noqa: E402  (needs the Alpaca keys checked above)
 from broker import ET, api                          # noqa: E402

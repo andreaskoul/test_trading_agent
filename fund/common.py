@@ -18,6 +18,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 DRYRUN = os.environ.get("FUND_DRYRUN") == "1"       # real calls, no deadline, never committed, never scored as live
 MODE = "dryrun" if DRYRUN else "live"
+# Protocol 7 (PROTOCOL_fund.md): from this session the lifecycle book (fund/lifecycle.py trade) trades the account;
+# the weekly execution and the Amendment 5 daily review stop trading.
+# FUND_P7_START moves it (a failed gate defers Protocol 7 by a week without a code change).
+P7_START = pd.Timestamp(os.environ.get("FUND_P7_START") or "2026-10-15")
 MODEL = "deepseek/deepseek-v4.1-flash"
 # Serving provider left to OpenRouter's routing (owner's decision, 2026-09-28), so any available
 # host serves the model. The provider that answered is logged with every call, and the frozen

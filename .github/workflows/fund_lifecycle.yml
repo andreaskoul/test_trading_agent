@@ -1,0 +1,77 @@
+name: Fund · lifecycle trade (Protocol 7)
+
+# Protocol 7 (fund/lifecycle.py trade, PROTOCOL_fund.md): every session the lifecycle book runs its news checks at
+# T-20 min, decides on live prices at T-3 min, logs the decision and trades the account in the last minute before
+# the close. The local runner starts it (fund/local/); this workflow is the fallback when the Mac is down.
+# Idempotent: a day already traded is not traded again.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "trade | plan (decide and log, no orders)"
+        default: plan
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: fund-execute
+  cancel-in-progress: false
+
+jobs:
+  lifecycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 330          # waits for the news checks and the last minute before the close
+    env:
+      ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+      ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install "numpy<2" pandas pyarrow yfinance scipy openpyxl huggingface_hub
+      - name: Restore fund state
+        run: |
+          if git ls-remote --exit-code origin fund-data >/dev/null 2>&1; then
+            git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
+            git checkout origin/fund-data -- fund_state 2>/dev/null || echo "fund-data has no fund_state yet"
+          fi
+      - name: Lifecycle trade (${{ inputs.mode }})
+        run: python fund/lifecycle.py trade ${{ inputs.mode == 'plan' && '--plan' || '' }}
+      - name: Position ledger (Excel)
+        if: ${{ always() && inputs.mode == 'trade' }}
+        continue-on-error: true
+        run: python fund/ledger.py
+      - name: Commit lifecycle records
+        if: ${{ always() && inputs.mode == 'trade' }}
+        run: |
+          set -euo pipefail
+          git config user.name 'fund-bot'; git config user.email 'fund-bot@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
+            rm -rf /tmp/fd && git worktree prune && git worktree add -q --detach /tmp/fd origin/fund-data
+            mkdir -p /tmp/fd/fund_state/live/execution
+            [ -d fund_state/live/execution ] && cp -a fund_state/live/execution/. /tmp/fd/fund_state/live/execution/
+            [ -d fund_state/live/lifecycle ] && mkdir -p /tmp/fd/fund_state/live/lifecycle && cp -a fund_state/live/lifecycle/. /tmp/fd/fund_state/live/lifecycle/
+            [ -d fund_state/live/ledger ] && mkdir -p /tmp/fd/fund_state/live/ledger && cp -a fund_state/live/ledger/. /tmp/fd/fund_state/live/ledger/
+            cd /tmp/fd && git add -A fund_state/live
+            if git diff --cached --quiet; then cd - >/dev/null; break; fi
+            git commit -q -m "lifecycle trade $(date -u +%Y-%m-%dT%H:%MZ)"
+            if git push -q origin HEAD:fund-data; then cd - >/dev/null; break; fi
+            cd - >/dev/null; sleep 5
+          done
+      - name: Alert
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "Fund: lifecycle trade problem $(date -u +%F)" \
+            --body "Run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} @${{ github.repository_owner }}"
