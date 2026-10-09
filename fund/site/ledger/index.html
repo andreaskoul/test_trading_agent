@@ -51,7 +51,7 @@
   </div>
   <div class="bar"><input type="search" id="q" placeholder="Filter (ticker, side, status…)"><span class="muted" id="count"></span></div>
   <section><div class="scroll" id="box"></div></section>
-  <p class="muted">Returns are price returns before costs, signed for shorts. P&amp;L = signed shares × (exit or current − entry), using actual fills at trade boundaries. One row per lot: a name held for a week, split where a daily review changed the shares. SPY rows are the market hedge. Invested = gross capital in positions at the day's close (long + short, shares × entry price); return on invested = account P&amp;L since the first trade ÷ that day's invested amount.</p>
+  <p class="muted">Returns are price returns before costs, signed for shorts. P&amp;L = signed shares × (exit or current − entry), using actual fills at trade boundaries. One row per lot: a name held for a week, split where a daily review changed the shares. SPY rows are the market hedge. Invested = gross capital in positions at the day's close (long + short, shares × entry price); daily return = the day's change in account value ÷ the previous close's invested amount; return on invested = account P&amp;L since the first trade ÷ that day's invested amount.</p>
 </main>
 <script>
 const fmt = (v, d = 2) => v == null ? "" : Number(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -99,7 +99,7 @@ fetch("../dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => 
   document.getElementById("upd").textContent = String(d.updated).replace("T", " ").replace("+00:00", " UTC");
   const A = d.account || [];
   D = { positions: d.positions || [], orders: d.orders || [], cash: d.cash || [],
-        account: A.map((a, i) => ({ ...a, ret: i ? a.equity / A[i - 1].equity - 1 : null, pnl: a.equity - A[0].equity,
+        account: A.map((a, i) => ({ ...a, ret: i && A[i - 1].invested ? (a.equity - A[i - 1].equity) / A[i - 1].invested : null, pnl: a.equity - A[0].equity,
                                     roi: a.invested ? (a.equity - A[0].equity) / a.invested : null })) };
   const last = D.account[D.account.length - 1];
   if (last && last.invested != null) document.getElementById("inv").innerHTML =
