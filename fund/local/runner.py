@@ -257,7 +257,7 @@ def job_archive(j, a):
                 subprocess.Popen([sys.executable, os.path.abspath(__file__), "run", "archive", "--minutes", "330"],
                                  stdout=lf, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True,
                                  env={**os.environ, "RUNNER_LOG": lf.name})
-    issue(j, "Fund: news archive failed", "echo Local run failed; see the log on the Mac.")
+    issue(j, "Fund: news archive failed", "echo 'Local run failed; see the log on the Mac.'")
 
 
 def job_weekly(j, a):
@@ -323,7 +323,7 @@ v=$(python -c "import json;print(json.load(open('$f'))['verdict'])"); echo "gate
         out = os.path.join(HOME, "dryruns", now_utc().strftime("%Y%m%d-%H%M"))
         j.step("Keep the dry-run results", f'[ -d fund_state/dryrun ] && mkdir -p "{out}" && cp -a fund_state/dryrun/. "{out}/" && echo "dry run kept in {out}"',
                when="always")
-    issue(j, "Fund: weekly desks failed", "echo Local run failed; see the log on the Mac.")
+    issue(j, "Fund: weekly desks failed", "echo 'Local run failed; see the log on the Mac.'")
 
 
 def job_execute(j, a):
@@ -351,7 +351,7 @@ def job_review(j, a):
     if mode == "trade":
         j.step("Position ledger (Excel)", "python fund/ledger.py", when="always", allow_fail=True)
         j.step("Commit review records", COMMIT_EXEC.format(copy="", msg="daily review"), when="always")
-    issue(j, "Fund: daily review failed", "echo Local run failed; see the log on the Mac.")
+    issue(j, "Fund: daily review failed", "echo 'Local run failed; see the log on the Mac.'")
 
 
 def job_lifecycle(j, a):
