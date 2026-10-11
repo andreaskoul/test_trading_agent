@@ -4,6 +4,7 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-11: the Hugging Face token has been invalid since 10-08 (issues #68, #74, #75): the news and context archives stop at the login, after fetching. The context archive now keeps its fetched rows (real fetched_at) in `~/.fund-runner/pending_context/` when the login fails, for upload once a new token is set, and still fails the run so the alert fires. The 10-09 rows were recaptured after the close by hand; 10-08 and 10-10 context is lost. The alert step's body no longer runs part of its text as a command (`see: command not found`). Operational only.
 - 2026-09-27: pipeline built; Protocol 6 pre-registered (181752c). No live decision yet.
 - 2026-09-27, dry run 1 (asof 2026-09-23, run 36298379110), before any live decision:
   - research: `build.py` crashed on a fresh workspace (missing `data/state`, `site/data`); every memo ran without narratives. Directories are created, dashboard-tracked firms start from the dashboard's fitted story state, and the desk now fails loudly if no firm gets narratives.

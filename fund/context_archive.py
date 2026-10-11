@@ -335,8 +335,23 @@ if LOCAL_ONLY:
         if os.path.exists(os.path.join(LOCAL, "days", f"{today}.parquet")) else None
 else:
     from huggingface_hub import CommitOperationAdd, HfApi, hf_hub_download
-    api = HfApi(token=os.environ["HF_TOKEN"])
-    repo = f"{api.whoami()['name']}/{os.environ.get('CONTEXT_REPO', 'fund-context-archive')}"
+    api = HfApi(token=os.environ.get("HF_TOKEN"))
+    try:
+        user = api.whoami()["name"]
+    except Exception as exc:
+        # Hugging Face refused the token (issues #68/#74/#75): keep what was fetched instead of losing it. The rows
+        # go to a pending folder, with their real fetched_at, for upload once the token works; the run still fails
+        # so the alert fires.
+        pend = os.environ.get("CONTEXT_PENDING_DIR") or (os.path.expanduser("~/.fund-runner/pending_context")
+                                                         if os.path.isdir(os.path.expanduser("~/.fund-runner"))
+                                                         else os.path.join(LOCAL, "pending"))
+        os.makedirs(pend, exist_ok=True)
+        pp = os.path.join(pend, f"{today}.parquet")
+        prev = pd.read_parquet(pp) if os.path.exists(pp) else None
+        (pd.concat([prev, new]) if prev is not None else new).drop_duplicates(["source", "key", "h"]).to_parquet(pp, index=False)
+        raise SystemExit(f"context archive {today}: Hugging Face login failed ({type(exc).__name__}); "
+                         f"{len(new)} fetched rows kept in {pp} for upload; status {status}")
+    repo = f"{user}/{os.environ.get('CONTEXT_REPO', 'fund-context-archive')}"
     api.create_repo(repo, repo_type="dataset", private=True, exist_ok=True)
     files = set(api.list_repo_files(repo, repo_type="dataset"))
     pull = lambda f: pd.read_parquet(hf_hub_download(repo, f, repo_type="dataset", local_dir=LOCAL))
