@@ -28,6 +28,21 @@ from openpyxl.utils import get_column_letter
 
 from common import MODE, STATE
 
+# LEDGER_MARKS=live (the page refresh during market hours): open positions are marked at Alpaca's latest trade
+# and the account value is Alpaca's now; otherwise at the latest official close and the last reconciled NAV.
+LIVE_MARKS = os.environ.get("LEDGER_MARKS") == "live"
+if LIVE_MARKS:
+    import broker
+    LIVE_ACCT = broker.account()
+    LIVE_AT = pd.Timestamp.now(tz="America/New_York")
+
+
+def live_marks(tickers, closes_):
+    """Latest-trade marks where the market has traded since the last close, else the close."""
+    if not LIVE_MARKS or not tickers:
+        return closes_
+    return {**closes_, **broker.prices(sorted(tickers))}
+
 base = os.path.join(STATE, MODE)
 OUT = os.path.join(base, "ledger")
 os.makedirs(OUT, exist_ok=True)
@@ -165,7 +180,7 @@ if len(P):
     # current price: the latest close for every ticker ever held
     lp = yf.download(sorted({t.replace(".", "-") for t in P.ticker}), period="10d", progress=False, auto_adjust=False)["Close"]
     lp = lp if isinstance(lp, pd.DataFrame) else lp.to_frame()
-    last = {c.replace("-", "."): v for c, v in lp.ffill().iloc[-1].items()}
+    last = live_marks(set(P.ticker), {c.replace("-", "."): v for c, v in lp.ffill().iloc[-1].items()})
     # actual fills at lot boundaries (weekly executions and daily reviews). Using the fill of the order
     # traded at a boundary as both the old lot's exit and the new lot's entry makes the lots' P&L add
     # up exactly to the account's trading P&L. A flip's market order closes the old lot; its closing-
@@ -294,7 +309,7 @@ if P7 or P7_SEED:
     p7_rows += [{**r_, "status": "Open", "exit_day": "", "exit_price": np.nan} for r_ in runs.values() if r_]
     lp7 = yf.download(sorted({r_["ticker"].replace(".", "-") for r_ in p7_rows}), period="10d", progress=False, auto_adjust=False)["Close"]
     lp7 = lp7 if isinstance(lp7, pd.DataFrame) else lp7.to_frame(p7_rows[0]["ticker"].replace(".", "-"))
-    last7 = {c.replace("-", "."): v for c, v in lp7.ffill().iloc[-1].items()}
+    last7 = live_marks({r_["ticker"] for r_ in p7_rows}, {c.replace("-", "."): v for c, v in lp7.ffill().iloc[-1].items()})
     th = {}
     for r_ in p7_rows:
         wk = r_["meta"].get("cohort") or r_["week"]
@@ -422,6 +437,9 @@ _nav_all = pd.read_csv(nav_p) if os.path.exists(nav_p) else pd.DataFrame(columns
 dash = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"), "mode": MODE,
         # the paper account's latest value from Alpaca, shown even before the first trade
         "balance": {"equity": float(_nav_all["equity"].iloc[-1]), "date": str(_nav_all["date"].iloc[-1])} if len(_nav_all) else None,
+        # what "current price" means on this build: live marks during the session, or the latest official close
+        "marks": f"live {LIVE_AT:%H:%M} ET" if LIVE_MARKS else "latest close",
+        "live": {"equity": float(LIVE_ACCT["equity"]), "at": f"{LIVE_AT:%Y-%m-%d %H:%M} ET"} if LIVE_MARKS else None,
         "positions": pos_out,
         "orders": filled_orders,
         "account": [{"date": str(r["date"]), "equity": float(r["equity"]), "invested": r["invested"]} for _, r in N.iterrows()],

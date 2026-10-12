@@ -57,15 +57,15 @@ function table(el, cols, rows) {
     rows.map(r => `<tr>${cols.map(c => `<td class="${c[2] || ""}">${c[1](r)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
 }
 fetch("dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => {
-  document.getElementById("upd").textContent = d.updated.replace("T", " ").replace("+00:00", " UTC");
+  document.getElementById("upd").textContent = d.updated.replace("T", " ").replace("+00:00", " UTC") + (d.marks ? ` · prices: ${d.marks}` : "");
   const P = d.positions, A = d.account;
   const open = P.filter(p => p.status === "Open"), closed = P.filter(p => p.status !== "Open");
   const realized = closed.reduce((s, p) => s + (p.pnl || 0), 0), unreal = open.reduce((s, p) => s + (p.pnl || 0), 0);
   const cash = d.cash.reduce((s, c) => s + (c.amount || 0), 0);
-  const eq = A.length ? A[A.length - 1].equity : (d.balance ? d.balance.equity : null);
+  const eq = d.live ? d.live.equity : A.length ? A[A.length - 1].equity : (d.balance ? d.balance.equity : null);
   // return on invested: account P&L since the first trade over the gross capital in positions (long + short at entry)
   const inv = A.length ? A[A.length - 1].invested : null, roi = inv ? (eq - A[0].equity) / inv : null;
-  const k = [[`Account value${d.balance ? ` <span class="muted">(${d.balance.date})</span>` : ""}`, eq == null ? "—" : "$" + fmt(eq, 0)],
+  const k = [[`Account value${d.live ? ` <span class="muted">(live ${d.live.at.slice(11)})</span>` : d.balance ? ` <span class="muted">(${d.balance.date})</span>` : ""}`, eq == null ? "—" : "$" + fmt(eq, 0)],
              ["Total invested", inv == null ? "—" : "$" + fmt(inv, 0)], ["Return on invested", roi == null ? "—" : pct(roi)],
              ["Open positions", open.filter(p => p.role !== "beta hedge").length], ["Unrealized P&L", usd(unreal)],
              ["Realized P&L", usd(realized)], ["Dividends & fees", usd(cash)]];
