@@ -343,6 +343,7 @@ def job_execute(j, a):
     j.step(f"Execute ({mode})", f"python fund/execute.py {mode}")
     if mode == "reconcile":
         j.step("C10 lifecycle book: news checks and rebuild (Amendment 7)", "python fund/lifecycle.py daily", when="always")
+        j.step("C10 degenerate replay vs the weekly book (mechanical gate)", "python fund/lifecycle.py replay", when="always")
     if mode != "plan":
         j.step("Position ledger (Excel)", "python fund/ledger.py", when="always", allow_fail=True)
     if mode != "plan" or a.resume:
