@@ -76,7 +76,9 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: python fund/lifecycle.py daily
+        run: |
+          python fund/lifecycle.py daily
+          python fund/lifecycle.py replay
 
       - name: Position ledger (Excel)
         if: ${{ always() && steps.m.outputs.mode != 'plan' }}
