@@ -89,6 +89,19 @@ class Clock:
             time.sleep(min(d, 30))
 
 
+def open_or_just_closed(after_min=45):
+    """True while the market is open, or within `after_min` minutes after today's close (half days included)."""
+    c = Clock()
+    if c.is_open:
+        return True
+    today = datetime.fromtimestamp(c.now(), ET).date()
+    s, cal = api("GET", f"/v2/calendar?start={today}&end={today}")
+    if s != 200 or not cal:
+        return False
+    close = datetime.combine(today, datetime.strptime(cal[0]["close"], "%H:%M").time(), ET).timestamp()
+    return 0 <= c.now() - close <= after_min * 60
+
+
 def account():
     s, a = api("GET", "/v2/account")
     assert s == 200, f"account unavailable: {s} {a}"

@@ -48,6 +48,9 @@ SCHEDULE = {
     # Protocol 7 (from 2026-10-15): the lifecycle book decides live and trades the account every session;
     # the job waits for the news checks (T-20 min) and the decision (T-3 min). Before the start date it does nothing.
     "lifecycle": {"days": "01234",   "at": "16:15", "late": 180},
+    # the page with live marks: every 30 min over the US session in either season (13:30-20:00 UTC in summer time,
+    # 14:30-21:00 in winter); the job itself skips while the market is closed, except once just after the close
+    "prices":    {"days": "01234",   "at": "13:45", "until": "21:15", "every": 30, "late": 25},
     # one-off pipeline tests of the pre-close send: 1 SPY bought Monday, sold Tuesday (labelled fund-test-...)
     # (moved from Mon/Tue: the 10-05 run crashed in the drift check before sending anything)
     "filltest-buy":  {"dates": ["2026-10-06"], "at": "16:15", "late": 180, "args": ["buy", "SPY", "1"]},
@@ -61,15 +64,16 @@ NEEDS = {
     "review": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY"],
     "reconcile": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "report": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "IMESSAGE_TO"],
+    "prices": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "lifecycle": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY", "HF_TOKEN"],
     "filltest-buy": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "filltest-sell": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
 }
 GROUP = {"archive": "archive", "weekly": "weekly", "execute": "execute", "review": "execute", "filltest": "filltest",
-         "lifecycle": "execute"}
+         "lifecycle": "execute", "prices": "prices"}
 # minutes, as the workflows; trade and review wait for the last minute before the close
-TIMEOUT = {"archive": 350, "weekly": 340, "execute": 330, "review": 330, "filltest": 330, "lifecycle": 330}
-PAGES_AFTER = {"weekly", "execute", "review", "filltest", "lifecycle"}                               # fund_pages.yml's workflow_run list
+TIMEOUT = {"archive": 350, "weekly": 340, "execute": 330, "review": 330, "filltest": 330, "lifecycle": 330, "prices": 20}
+PAGES_AFTER = {"weekly", "execute", "review", "filltest", "lifecycle"}         # the prices job deploys only when it refreshed                               # fund_pages.yml's workflow_run list
 
 
 def now_utc():
@@ -114,6 +118,11 @@ def last_slot(job, now):
         d = (now - dt.timedelta(days=back)).date()
         if (str(d) in sc["dates"]) if "dates" in sc else (str(d.weekday()) in sc["days"]):
             slot = dt.datetime(d.year, d.month, d.day, h, m, tzinfo=dt.timezone.utc)
+            if "every" in sc:                       # a repeating slot: the latest one at or before now
+                uh, um = map(int, sc["until"].split(":"))
+                end = dt.datetime(d.year, d.month, d.day, uh, um, tzinfo=dt.timezone.utc)
+                while slot + dt.timedelta(minutes=sc["every"]) <= min(now, end):
+                    slot += dt.timedelta(minutes=sc["every"])
             if slot <= now:
                 return slot
     return None
@@ -366,6 +375,29 @@ def job_lifecycle(j, a):
           'echo "The Protocol 7 trade needs attention."; cat fund_state/live/execution/problems.txt 2>/dev/null || true')
 
 
+def job_prices(j, a):
+    rc = j.step("Market open, or just closed?",
+                'python -c "import sys; sys.path.insert(0, \'fund\'); import broker; sys.exit(0 if broker.open_or_just_closed() else 78)"')
+    if rc == 78:
+        j.failed = False; log("market closed: no refresh"); return "skip"
+    j.step("Restore fund state", RESTORE.format(paths="fund_state"))
+    j.step("Position ledger with live marks", "LEDGER_MARKS=live python fund/ledger.py")
+    j.step("Commit the refreshed page data", """git config user.name 'fund-bot'; git config user.email 'fund-bot@users.noreply.github.com'
+FD="$RUNNER_TMP/fd"
+for attempt in 1 2 3; do
+  git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
+  rm -rf "$FD" && git worktree prune && git worktree add -q --detach "$FD" origin/fund-data
+  mkdir -p "$FD/fund_state/live/ledger" && cp -a fund_state/live/ledger/. "$FD/fund_state/live/ledger/"
+  cd "$FD" && git add -A fund_state/live/ledger
+  if git diff --cached --quiet; then cd - >/dev/null; break; fi
+  git commit -q -m "page refresh $(date -u +%Y-%m-%dT%H:%MZ)"
+  if git push -q origin HEAD:fund-data; then cd - >/dev/null; break; fi
+  cd - >/dev/null; sleep 5
+done""")
+    j.step("GitHub Pages: rebuild the dashboard (fund_pages.yml)", f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main",
+           allow_fail=True)
+
+
 def job_filltest(j, a):
     side, sym, qty = a.test
     j.step("Restore fund state", RESTORE.format(paths="fund_state"))
@@ -416,7 +448,7 @@ def run(args):
     awake = subprocess.Popen(["caffeinate", "-i", "-w", str(os.getpid())])    # no idle sleep while the job runs
     drift(j)
     res = {"archive": job_archive, "weekly": job_weekly, "execute": job_execute, "review": job_review,
-           "filltest": job_filltest, "lifecycle": job_lifecycle}[name](j, args)
+           "filltest": job_filltest, "lifecycle": job_lifecycle, "prices": job_prices}[name](j, args)
     if name in PAGES_AFTER and res != "skip" and not args.no_pages:
         j.step("GitHub Pages: rebuild the dashboard (fund_pages.yml)",
                f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main", when="always", allow_fail=True)
@@ -488,7 +520,7 @@ def job_outcomes(now):
     out = []
     since = dt.datetime.fromtimestamp(os.path.getmtime(ENABLED), dt.timezone.utc) if os.path.exists(ENABLED) else now
     for job in SCHEDULE:
-        if job == "report":
+        if job in ("report", "prices"):          # the page refresh runs every 30 min; not a job to report
             continue
         slot = last_slot(job, now)
         if not slot or now - slot > dt.timedelta(hours=24) or slot < since:     # slots before the switch to local
@@ -668,7 +700,7 @@ def main():
     sub = p.add_subparsers(dest="cmd", required=True)
     t = sub.add_parser("tick"); t.add_argument("--init", action="store_true"); t.set_defaults(f=tick)
     r = sub.add_parser("run")
-    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute", "filltest", "lifecycle"])
+    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute", "filltest", "lifecycle", "prices"])
     r.add_argument("--test", nargs=3, metavar=("SIDE", "SYMBOL", "QTY"), help="filltest: e.g. buy SPY 1")
     r.add_argument("--mode", choices=["plan", "trade", "reconcile"], help="execute: plan|trade|reconcile; review: plan|trade")
     r.add_argument("--asof", help="as-of Wednesday YYYY-MM-DD (weekly, execute)")
