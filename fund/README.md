@@ -77,6 +77,7 @@ Thu ─── 10 execution (last minute before close)  Fri/Mon/Tue/Wed ─ 12 da
 | 16 Lifecycle C10 | `lifecycle.py` | yes, one per name + daily news checks | `lifecycle.json` per week; `lifecycle/state.json`: per-position horizon, stop/target, news exits, daily NAV (Amendment 7, shadow) |
 | 17 Review context | `review_context.py` | no | `reviews/context/<day>.json`: what a macro-aware review would have seen (Amendment 6, logged only) |
 | Ledger | `ledger.py` | no | `ledger/fund_positions.xlsx` and `ledger/dashboard.json`: actual Alpaca trades only |
+| Standard P&L | `pnl.py` | no | used by the ledger: FIFO realized/unrealized P&L from Alpaca's fills, reconciled to the account value |
 
 The model is `deepseek/deepseek-v4.1-flash` via OpenRouter, temperature 0, with the serving
 provider left to OpenRouter's routing; the provider is logged for every call and the canary
