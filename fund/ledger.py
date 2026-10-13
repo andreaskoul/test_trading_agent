@@ -329,6 +329,28 @@ if P7 or P7_SEED:
                       if r_["meta"].get("kill_conditions") else ""))}
         for r_ in p7_rows])], ignore_index=True)
 
+# ---- standard P&L (pnl.py): FIFO lots over Alpaca's own fills, Alpaca's marks. The lot rows above are a
+# holding-period view (a lot ends at each weekly roll or share change), so their P&L is not realized P&L.
+STD = None
+if os.environ.get("ALPACA_API_KEY"):
+    try:
+        import broker
+        import pnl
+        STD = pnl.fetch(broker)
+        STD["at"] = f"{pd.Timestamp.now(tz='America/New_York'):%Y-%m-%d %H:%M} ET"
+        meta = {r.ticker: r for _, r in P.iterrows()} if len(P) else {}       # the latest lot row per ticker
+        for o in STD["open"] + STD["realized_trades"]:
+            m = meta.get(o["ticker"])
+            o.update(name=m["name"] if m is not None else "", role="beta hedge" if o["ticker"] == "SPY" else "position")
+            if m is not None and o in STD["open"]:
+                o.update(week=m.week, redteam=m.redteam, thesis=m.thesis)
+        if STD["cost_mismatch"]:
+            print(f"standard P&L: FIFO cost differs from Alpaca's average entry for {STD['cost_mismatch']}")
+        print("standard P&L: " + ", ".join(f"{k} {v:,.2f}" for k, v in STD["summary"].items() if isinstance(v, float)))
+    except Exception as e:                       # the page falls back to the lot view; never fails the ledger
+        print(f"standard P&L unavailable: {e!r}")
+        STD = None
+
 recs = []
 for _, r in (P.iterrows() if len(P) else []):
     recs.append((lambda r: (lambda i: [
@@ -385,8 +407,32 @@ arecs = [[str(r["date"]), r["type"], r["symbol"], r["qty"], r["per_share"], floa
 sheet(wc, [("Date", None), ("Type", None), ("Ticker", None), ("Quantity", "#,##0"), ("Per share ($)", "#,##0.0000"),
            ("Amount ($)", "#,##0.00;(#,##0.00);-")], arecs, {"Date": 12})
 
+if STD:
+    wo_ = wb.create_sheet("Open positions", 0)
+    sheet(wo_, [("Ticker", None), ("Name", None), ("Side", None), ("Shares (signed)", "#,##0;-#,##0;-"), ("Open since", None),
+                ("Average cost ($, FIFO)", "#,##0.00"), ("Mark ($)", "#,##0.00"), ("Market value ($)", "#,##0;(#,##0);-"),
+                ("Unrealized P&L ($)", "#,##0.00;(#,##0.00);-"), ("Return (%)", "0.00%;-0.00%;-")],
+          [[o["ticker"], o["name"], o["side"], o["shares"], o["since"], o["avg_cost"], o["current_price"],
+            f"=D{i}*G{i}", f"=D{i}*(G{i}-F{i})", f'=IF(D{i}>0,1,-1)*(G{i}/F{i}-1)'] for i, o in enumerate(STD["open"], 2)],
+          {"Name": 26, "Average cost ($, FIFO)": 14})
+    wr_ = wb.create_sheet("Realized trades", 1)
+    sheet(wr_, [("Day", None), ("Ticker", None), ("Name", None), ("Closed", None), ("Shares closed", "#,##0;-#,##0;-"),
+                ("Cost ($/sh, FIFO)", "#,##0.00"), ("Close price ($)", "#,##0.00"), ("Realized P&L ($)", "#,##0.00;(#,##0.00);-")],
+          [[t["day"], t["ticker"], t["name"], t["side"], t["shares"], t["entry_price"], t["exit_price"], f"=E{i}*(G{i}-F{i})"]
+           for i, t in enumerate(STD["realized_trades"], 2)], {"Name": 26})
+    ws_ = wb.create_sheet("P&L summary", 0)
+    s_ = STD["summary"]
+    sheet(ws_, [("Item", None), ("$", "#,##0.00;(#,##0.00);-")],
+          [["Account value (Alpaca, " + STD["at"] + ")", s_["equity"]], ["Net deposits", s_["deposits"]],
+           ["Account P&L", "=B2-B3"], ["Realized P&L (closed shares, FIFO)", s_["realized"]],
+           ["Unrealized P&L (open shares at Alpaca marks)", s_["unrealized"]], ["Dividends, fees & interest", s_["cash"]],
+           ["Unexplained (should be 0)", "=B4-B5-B6-B7"]], {"Item": 48, "$": 14})
+    ws_.freeze_panes = None
+
 wn = wb.create_sheet("Notes")
 notes = [
+    "P&L summary, Open positions, Realized trades: standard broker accounting. Cost basis is FIFO over every Alpaca fill (Alpaca's own method); realized P&L comes only from shares actually closed; unrealized P&L is open shares at Alpaca's marks, from the same snapshot as the account value. Account P&L = realized + unrealized + dividends, fees & interest.",
+    "Positions sheet: a holding-period view by lot, not realized P&L. A lot ends at each weekly roll or change of shares even when the shares are still held, so its 'Closed' rows are not sales.",
     "Fund position ledger (Protocol 6). Actual Alpaca paper-account trades only: weeks that were not executed, and model-only books, are left out. Rebuilt automatically after each weekly run and each execution/reconciliation; do not edit.",
     "Positions: one row per lot: a name held for a week, split where a daily review changed the shares (exit, reduce or increase at that day's close). The book is re-decided every Wednesday and traded at the next session's close (market-on-close).",
     "Entry price: the fill if the name traded on the execution day, otherwise that day's official close. Exit price: the next execution day's official close.",
@@ -443,7 +489,11 @@ dash = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"), "mo
         "positions": pos_out,
         "orders": filled_orders,
         "account": [{"date": str(r["date"]), "equity": float(r["equity"]), "invested": r["invested"]} for _, r in N.iterrows()],
-        "cash": [{"date": a[0], "type": a[1], "ticker": _f(a[2]), "amount": _f(a[5])} for a in arecs]}
+        "cash": [{"date": a[0], "type": a[1], "ticker": _f(a[2]), "amount": _f(a[5])} for a in arecs],
+        # standard P&L (pnl.py); null when Alpaca was unreachable, and the page then shows the lot view
+        "pnl": {**STD["summary"], "at": STD["at"]} if STD else None,
+        "open_std": [{k: _f(v) for k, v in o.items()} for o in STD["open"]] if STD else None,
+        "realized": [{k: _f(v) for k, v in t.items()} for t in STD["realized_trades"]] if STD else None}
 
 
 def _clean(v):                                       # browsers reject NaN in JSON: every missing value is null
