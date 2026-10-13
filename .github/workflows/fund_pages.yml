@@ -34,11 +34,13 @@ jobs:
           mkdir -p _site
           cp fund/site/index.html _site/
           mkdir -p _site/ledger && cp fund/site/ledger/index.html _site/ledger/
+          mkdir -p _site/shadow && cp fund/site/shadow/index.html _site/shadow/
           git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data || true
-          for f in dashboard.json fund_positions.xlsx; do
+          for f in dashboard.json shadow.json fund_positions.xlsx; do
             git show "origin/fund-data:fund_state/live/ledger/$f" > "_site/$f" 2>/dev/null || rm -f "_site/$f"
           done
           [ -f _site/dashboard.json ] || echo '{"updated":"no trades yet","positions":[],"orders":[],"account":[],"cash":[]}' > _site/dashboard.json
+          [ -f _site/shadow.json ] || echo '{"updated":"not built yet","marks":"","start":100000,"books":[],"lifecycle":null,"account":null}' > _site/shadow.json
           touch _site/.nojekyll
           ls -la _site
       - uses: actions/configure-pages@v5
