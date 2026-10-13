@@ -506,3 +506,10 @@ def _clean(v):                                       # browsers reject NaN in JS
 
 json.dump(_clean(dash), open(os.path.join(OUT, "dashboard.json"), "w"), default=str, allow_nan=False)
 print(f"dashboard data: {len(pos_out)} positions, {len(orders)} orders -> {os.path.join(OUT, 'dashboard.json')}")
+
+# ---- shadow books page (fund/site/shadow): never allowed to break the trade monitor's build
+try:
+    import shadow_ledger
+    shadow_ledger.build(OUT, live=LIVE_MARKS)
+except Exception as e:                               # noqa: BLE001
+    print(f"shadow monitor: not built ({type(e).__name__}: {e})")

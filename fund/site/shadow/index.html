@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fund Shadow Books</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root { --bg:#f7f7f5; --card:#fff; --ink:#1d1d1f; --muted:#6b6b70; --line:#e4e4e0; --pos:#1a7f4b; --neg:#c0392b; --accent:#2c5aa0; --sel:#eef3fb; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#121214; --card:#1c1c1f; --ink:#ececec; --muted:#9a9aa0; --line:#2c2c30; --pos:#4cc38a; --neg:#ff6b5e; --accent:#7aa7ff; --sel:#232a36; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+  main { max-width:1200px; margin:0 auto; padding:24px 16px 48px; }
+  header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:18px; }
+  h1 { font-size:20px; margin:0; }
+  .muted { color:var(--muted); font-size:12px; }
+  a { color:var(--accent); }
+  section { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:18px; }
+  h2 { font-size:15px; margin:0 0 10px; }
+  h3 { font-size:13px; margin:14px 0 6px; color:var(--muted); }
+  .scroll { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  th, td { padding:6px 8px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap; }
+  th { color:var(--muted); font-weight:600; background:var(--card); }
+  td.n { text-align:right; font-variant-numeric:tabular-nums; }
+  td.wrap { white-space:normal; min-width:260px; max-width:480px; color:var(--muted); }
+  tr.pick { cursor:pointer; } tr.pick:hover, tr.on { background:var(--sel); }
+  .pos { color:var(--pos); } .neg { color:var(--neg); }
+  .empty { color:var(--muted); padding:8px 0; }
+  .bar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:8px; }
+  select { font:inherit; padding:4px 8px; border-radius:6px; border:1px solid var(--line); background:var(--card); color:var(--ink); }
+  .chartbox { position:relative; height:340px; } @media (max-width:600px) { .chartbox { height:420px; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Shadow books</h1>
+    <div class="muted">Books scored every week but never sent to Alpaca · notional $100,000 each · updated <span id="upd">…</span> · <a href="../">Trade monitor</a> · <a href="../ledger/">Position ledger</a></div>
+  </header>
+  <section><h2>Return since each book started</h2><div class="chartbox"><canvas id="chart"></canvas></div></section>
+  <section><h2>Leaderboard</h2><div class="muted" style="margin-bottom:6px">Tap a book to see its positions and trades.</div><div class="scroll" id="board"></div></section>
+  <section>
+    <div class="bar"><h2 style="margin:0">Book</h2><select id="pick"></select></div>
+    <div class="muted" id="desc"></div>
+    <h3>Positions now</h3><div class="scroll" id="pos"></div>
+    <h3>Shadow trades (weight changes at each execution day's close)</h3><div class="scroll" id="trades"></div>
+    <h3>Weeks</h3><div class="scroll" id="weeks"></div>
+  </section>
+  <section id="lcSec" hidden>
+    <h2 id="lcTitle">C10 lifecycle book</h2>
+    <div class="muted" id="lcNote"></div>
+    <h3>Open lots</h3><div class="scroll" id="lots"></div>
+    <h3>Events</h3><div class="scroll" id="events"></div>
+  </section>
+  <p class="muted">Marked the way the scorer (score.py) scores each book: a week's weights enter at the execution day's official close and are held to the next execution day's close; costs are 5 bp per side on the change in weights; idle cash earns nothing here. The running week is marked at the latest close, or at Alpaca's latest trades during market hours. These are hypothetical books with no fills, so they differ from the account: in week 1 most of the real orders expired unfilled. SPY rows are each book's market hedge. Return = signed price return (dividends included); amount = |weight| × the book's value at entry. The scorer's weekly results in fund-data performance/ stay the record.</p>
+</main>
+<script>
+const fmt = (v, d = 2) => v == null ? "" : Number(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+const pct = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${(v * 100).toFixed(2)}%</span>`;
+const usd = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${v < 0 ? "−" : ""}$${fmt(Math.abs(v), 0)}</span>`;
+const wt = v => v == null ? "" : `${v > 0 ? "+" : v < 0 ? "−" : ""}${(Math.abs(v) * 100).toFixed(2)}%`;
+const esc = s => (s ?? "").toString().replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const label = k => ({ c0_weekly: "c0_weekly (weekly fund book)" }[k] || k);
+function table(el, cols, rows, rowAttr) {
+  const box = document.getElementById(el);
+  if (!rows.length) { box.innerHTML = '<div class="empty">None.</div>'; return; }
+  box.innerHTML = `<table><thead><tr>${cols.map(c => `<th>${c[0]}</th>`).join("")}</tr></thead><tbody>${
+    rows.map(r => `<tr ${rowAttr ? rowAttr(r) : ""}>${cols.map(c => `<td class="${c[2] || ""}">${c[1](r)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+}
+const store = { get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+                set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
+const PAL = ["#2c5aa0", "#c0392b", "#1a7f4b", "#8e44ad", "#d35400", "#16a085", "#7f8c8d", "#b8860b", "#e84393", "#00a8ff", "#6c5ce7"];
+
+fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
+  document.getElementById("upd").textContent = d.updated.replace("T", " ").replace("+00:00", " UTC") + ` · prices: ${d.marks}`;
+  if (!d.books.length) { document.getElementById("board").innerHTML = '<div class="empty">No shadow books yet.</div>'; return; }
+  const B = d.books, byKey = Object.fromEntries(B.map(b => [b.key, b]));
+  // chart: cumulative return of every book, plus the account and the lifecycle book for reference
+  const dates = [...new Set([...B.flatMap(b => b.series.map(p => p.date)), ...(d.account || []).map(p => p.date),
+                             ...(d.lifecycle ? d.lifecycle.nav.map(p => p.date) : [])])].filter(x => ![0, 6].includes(new Date(x + "T12:00:00Z").getUTCDay())).sort();
+  const line = (pts, base) => { const m = Object.fromEntries(pts.map(p => [p.date, p.value / base - 1])); return dates.map(x => m[x] ?? null); };
+  const sets = B.map((b, i) => ({ label: label(b.key), data: line(b.series, d.start), borderColor: PAL[i % PAL.length], borderWidth: b.key === "c0_weekly" ? 2.5 : 1.3, pointRadius: 0, spanGaps: true, tension: 0.1 }));
+  if (d.lifecycle && d.lifecycle.nav.length) sets.push({ label: "c10_lifecycle", data: line(d.lifecycle.nav, d.start), borderColor: "#e67e22", borderWidth: 2.5, borderDash: [6, 3], pointRadius: 0, spanGaps: true });
+  if (d.account && d.account.length) sets.push({ label: "actual account", data: line(d.account, d.account[0].value), borderColor: getComputedStyle(document.documentElement).getPropertyValue("--ink"), borderWidth: 2, borderDash: [2, 3], pointRadius: 0, spanGaps: true });
+  new Chart(document.getElementById("chart"), { type: "line", data: { labels: dates, datasets: sets },
+    options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, padding: 6, font: { size: 10 } } },
+      tooltip: { itemSort: (a, b) => b.parsed.y - a.parsed.y, callbacks: { label: c => `${c.dataset.label}: ${(c.parsed.y * 100).toFixed(2)}%` } } },
+      scales: { x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 6, callback: function (v) { return this.getLabelForValue(v).slice(5); } } }, y: { ticks: { callback: v => (v * 100).toFixed(1) + "%" } } } } });
+
+  const sel = document.getElementById("pick");
+  sel.innerHTML = B.map(b => `<option value="${b.key}">${esc(label(b.key))}</option>`).join("");
+  const ranked = B.slice().sort((a, b) => b.return - a.return);
+  function show(k) {
+    const b = byKey[k] || B[0]; k = b.key; sel.value = k; store.set("shadowBook", k); history.replaceState(null, "", "#" + k);
+    table("board", [["#", (r, i) => ranked.indexOf(r) + 1, "n"], ["Book", r => `<b>${esc(label(r.key))}</b>`], ["Return", r => pct(r.return), "n"], ["This week", r => pct(r.week_return), "n"],
+      ["Value", r => "$" + fmt(r.value, 0), "n"], ["Since", r => r.started],
+      ["Names", r => (r.weeks.find(w => w.names != null) || {}).names ?? "", "n"], ["Stock gross", r => { const w = r.weeks.find(w => w.gross != null); return w ? (w.gross * 100).toFixed(0) + "%" : ""; }, "n"],
+      ["What it tests", r => esc(r.desc), "wrap"]], ranked, r => `class="pick${r.key === k ? " on" : ""}" data-k="${r.key}"`);
+    document.querySelectorAll("#board tr.pick").forEach(tr => tr.onclick = () => { show(tr.dataset.k); sel.scrollIntoView({ behavior: "smooth", block: "start" }); });
+    document.getElementById("desc").textContent = b.desc;
+    table("pos", [["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Weight", p => wt(p.weight), "n"], ["Return", p => pct(p.return), "n"], ["P&L", p => usd(p.pnl), "n"],
+      ["Side", p => p.side + (p.role === "beta hedge" ? " (hedge)" : "")], ["Name", p => esc(p.name)], ["Amount $", p => "$" + fmt(p.amount, 0), "n"],
+      ["Entry", p => p.entry_day], ["Entry $", p => fmt(p.entry_price), "n"], ["Current $", p => fmt(p.current_price), "n"]], b.positions);
+    table("trades", [["Day", t => t.day], ["Ticker", t => `<b>${esc(t.ticker)}</b>`], ["Action", t => esc(t.action)], ["From", t => wt(t.from_w), "n"], ["To", t => wt(t.to_w), "n"],
+      ["Amount $", t => "$" + fmt(t.amount, 0), "n"], ["Side", t => t.side], ["Name", t => esc(t.name)], ["Close $", t => fmt(t.price), "n"], ["Week", t => t.week]], b.trades);
+    table("weeks", [["As of", w => w.asof], ["Entry", w => w.entry], ["Exit", w => w.exit || ""], ["Status", w => w.status], ["Names", w => w.names ?? "", "n"],
+      ["Stock gross", w => w.gross == null ? "" : (w.gross * 100).toFixed(0) + "%", "n"], ["SPY hedge", w => wt(w.spy), "n"],
+      ["Cost", w => w.cost == null ? "" : (w.cost * 1e4).toFixed(1) + " bp", "n"], ["Return (net)", w => pct(w.return), "n"]], b.weeks);
+  }
+  sel.onchange = () => show(sel.value);
+  show(location.hash.slice(1) || store.get("shadowBook") || "c0_weekly");
+
+  const L = d.lifecycle;
+  if (L) {
+    document.getElementById("lcSec").hidden = false;
+    const fund = new Date() >= new Date(L.is_fund_from + "T00:00:00");
+    document.getElementById("lcTitle").textContent = fund ? "C10 lifecycle book (trades the account)" : "C10 lifecycle book (shadow until " + L.is_fund_from + ")";
+    const nav = L.nav[L.nav.length - 1];
+    document.getElementById("lcNote").innerHTML = `Each position has its own horizon H (trading days), a stop at −2W and a target at +3W on its hedged return R, and daily news checks against its kill conditions. NAV ${"$" + fmt(nav.value, 0)} on ${nav.date} (${pct(nav.value / d.start - 1)} since start). ` +
+      (fund ? "From " + L.is_fund_from + " this book is the fund; its fills are on the trade monitor." : "It becomes the fund on " + L.is_fund_from + " (Protocol 7).");
+    table("lots", [["Ticker", l => `<b>${esc(l.ticker)}</b>`], ["Side", l => l.side], ["Cohort", l => l.cohort], ["Entry", l => l.entry_day], ["Score", l => l.score ?? "", "n"],
+      ["Weight", l => wt(l.weight), "n"], ["Day / H", l => `${l.days ?? ""} / ${l.H ?? ""}`, "n"], ["R (hedged)", l => pct(l.R), "n"], ["Stop", l => pct(l.stop), "n"], ["Target", l => pct(l.target), "n"],
+      ["Kill conditions", l => esc(l.kill_conditions.join(" · ")), "wrap"]], L.lots.slice().sort((a, b) => Math.abs(b.weight) - Math.abs(a.weight)));
+    table("events", [["Day", e => e.day], ["Ticker", e => `<b>${esc(e.ticker)}</b>`], ["Action", e => esc((e.action || "").replace("_", " "))],
+      ["From $", e => fmt(e.from, 0), "n"], ["To $", e => fmt(e.to, 0), "n"], ["R", e => pct(e.R), "n"], ["W", e => e.W == null ? "" : (e.W * 100).toFixed(1) + "%", "n"], ["Days held", e => e.days_held ?? "", "n"]], L.events);
+  }
+}).catch(e => { document.getElementById("board").innerHTML = `<div class="empty">Could not load shadow data (${esc(e.message)}).</div>`; });
+</script>
+</body>
+</html>
