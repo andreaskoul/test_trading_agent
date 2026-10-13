@@ -35,7 +35,10 @@ DESC = {
     "c5_reversal": "C5: the fund's views plus short-term reversal positions on covered names with no news.",
     "c8_informed": "C8: the analyst prompt plus the macro brief and each name's news neighbourhood, no red team.",
     "c9_ranker": "C9: one call ranks C8's views; the champion's caps and hedge, N per side in the ranker's order.",
+    "sp500_hold": "Benchmark: just holding the S&P 500 (100% SPY, dividends reinvested), bought at the first execution day's close "
+                  "and never traded. Long only with full market exposure, unlike the hedged books, so it shows what the market did.",
 }
+BENCH = {"sp500_hold": {"SPY": 1.0}}           # held through every week, flat weeks included
 ORDER = list(DESC)
 
 
@@ -54,7 +57,7 @@ def weeks(base):
         b = json.load(open(bp))
         asof = pd.Timestamp(os.path.basename(wd))
         if b.get("status") not in ("ok", "degraded_hold"):    # missed deadline: every book is flat that week (score.py)
-            out.append({"asof": asof, "books": None, "names": {}})
+            out.append({"asof": asof, "books": None, "names": {"SPY": "SPDR S&P 500 ETF"}})
             continue
         ex_p = os.path.join(wd, "execution.json")
         halted = os.path.exists(ex_p) and str(json.load(open(ex_p)).get("reason") or "").startswith("HALT")
@@ -65,7 +68,7 @@ def weeks(base):
             books.update(json.load(open(sp))["books"])
         sc = os.path.join(wd, "screen.json")
         names = {r["ticker"]: r.get("Security") for r in json.load(open(sc))["rows"]} if os.path.exists(sc) else {}
-        out.append({"asof": asof, "books": {k: v for k, v in books.items() if k in DESC}, "names": names})
+        out.append({"asof": asof, "books": {k: v for k, v in books.items() if k in DESC}, "names": {**names, "SPY": "SPDR S&P 500 ETF"}})
     return out
 
 
@@ -126,16 +129,16 @@ def build(out_dir, live=False):
         t0 = after[0]
         nxt = days[days >= w["asof"] + pd.Timedelta(days=8)]
         t1, running = (nxt[0], False) if len(nxt) else (days[-1], True)
-        for k in set(books) | set(w["books"] or {}):
+        for k in set(books) | set(w["books"] or {}) | set(BENCH):
             B = books.setdefault(k, {"value": START, "prev": pd.Series(dtype=float), "series": [], "weeks": [],
                                      "trades": [], "positions": [], "started": str(t0.date())})
-            if w["books"] is not None and k not in w["books"]:     # no book this week (e.g. too many failed C8 memos)
+            if k not in BENCH and w["books"] is not None and k not in w["books"]:     # no book this week (e.g. too many failed C8 memos)
                 B["weeks"].append({"asof": str(w["asof"].date()), "entry": str(t0.date()), "exit": str(t1.date()),
                                    "status": "no book", "return": None, "cost": None})
                 if i == len(W) - 1 or running:
                     B["positions"] = []
                 continue
-            wt = pd.Series((w["books"] or {}).get(k, {}), dtype=float)
+            wt = pd.Series(BENCH.get(k) or (w["books"] or {}).get(k, {}), dtype=float)
             idx = wt.index.union(B["prev"].index)
             dw = wt.reindex(idx, fill_value=0) - B["prev"].reindex(idx, fill_value=0)
             cost = float(dw.abs().sum() * COST)
@@ -147,7 +150,7 @@ def build(out_dir, live=False):
                        else "flip to " + ("long" if new > 0 else "short") if old * new < 0
                        else "add" if abs(new) > abs(old) else "trim")
                 B["trades"].append({"week": str(w["asof"].date()), "day": str(t0.date()), "ticker": t, "name": w["names"].get(t),
-                                    "action": "hedge " + act if t == "SPY" else act, "side": "buy" if d > 0 else "sell",
+                                    "action": "hedge " + act if t == "SPY" and k not in BENCH else act, "side": "buy" if d > 0 else "sell",
                                     "from_w": old, "to_w": new, "amount": abs(float(d)) * B["value"],
                                     "price": _f(px.at[t0, t]) if t in px.columns else None})
             seg = days[(days > t0) & (days <= t1)]
@@ -161,16 +164,23 @@ def build(out_dir, live=False):
             end = v0 * (1 + float((wt * (px.loc[t1].reindex(wt.index) / p0 - 1).fillna(0)).sum())) if len(seg) else v0
             B["weeks"].append({"asof": str(w["asof"].date()), "entry": str(t0.date()), "exit": None if running else str(t1.date()),
                                "status": "running" if running else "closed", "return": end / B["value"] - 1, "cost": cost,
-                               "names": int((wt.index != "SPY").sum()), "gross": float(wt.drop("SPY", errors="ignore").abs().sum()),
-                               "spy": float(wt.get("SPY", 0.0))})
+                               "names": 500 if k in BENCH else int((wt.index != "SPY").sum()), "gross": float(wt.abs().sum() if k in BENCH else wt.drop("SPY", errors="ignore").abs().sum()),
+                               "spy": None if k in BENCH else float(wt.get("SPY", 0.0))})
             if running or i == len(W) - 1:
                 cur = px.loc[t1].reindex(wt.index)
-                B["positions"] = [{"ticker": t, "name": w["names"].get(t), "role": "beta hedge" if t == "SPY" else "stock",
+                B["positions"] = [{"ticker": t, "name": w["names"].get(t), "role": "beta hedge" if t == "SPY" and k not in BENCH else "stock",
                                    "side": "Long" if x > 0 else "Short", "weight": float(x), "amount": abs(float(x)) * v0,
                                    "entry_day": str(t0.date()), "entry_price": _f(p0.get(t)), "current_price": _f(cur.get(t)),
                                    "return": _f(np.sign(x) * (cur.get(t) / p0.get(t) - 1)) if p0.get(t) else None,
                                    "pnl": _f(x * v0 * (cur.get(t) / p0.get(t) - 1)) if p0.get(t) else None}
                                   for t, x in wt.sort_values(ascending=False).items()]
+            if k in BENCH and B["positions"]:      # held since the start, not re-entered each week: show it that way
+                t_s = pd.Timestamp(B["started"])
+                for q in B["positions"]:
+                    p_s, p_n = px.at[t_s, q["ticker"]], q["current_price"]
+                    q.update({"entry_day": B["started"], "entry_price": _f(p_s), "amount": START * (1 - COST),
+                              "return": _f(p_n / p_s - 1) if p_n else None,
+                              "pnl": _f(START * (1 - COST) * (p_n / p_s - 1)) if p_n else None})
             B["value"], B["prev"] = end, wt
     out_books = []
     for k in sorted(books, key=lambda k: ORDER.index(k) if k in ORDER else 99):
