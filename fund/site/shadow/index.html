@@ -53,7 +53,7 @@
     <h3>Open lots</h3><div class="scroll" id="lots"></div>
     <h3>Events</h3><div class="scroll" id="events"></div>
   </section>
-  <p class="muted">Marked the way the scorer (score.py) scores each book: a week's weights enter at the execution day's official close and are held to the next execution day's close; costs are 5 bp per side on the change in weights; idle cash earns nothing here. The running week is marked at the latest close, or at Alpaca's latest trades during market hours. These are hypothetical books with no fills, so they differ from the account: in week 1 most of the real orders expired unfilled. SPY rows are each book's market hedge. Return = signed price return (dividends included); amount = |weight| × the book's value at entry. The scorer's weekly results in fund-data performance/ stay the record.</p>
+  <p class="muted">Marked the way the scorer (score.py) scores each book: a week's weights enter at the execution day's official close and are held to the next execution day's close; costs are 5 bp per side on the change in weights; idle cash earns nothing here. The running week is marked at the latest close, or at Alpaca's latest trades during market hours. These are hypothetical books with no fills, so they differ from the account: in week 1 most of the real orders expired unfilled. SPY rows are each book's market hedge, except in the S&amp;P 500 benchmark, which is simply 100% SPY held throughout (one 5 bp buy at the start). Return = signed price return (dividends included); amount = |weight| × the book's value at entry. The scorer's weekly results in fund-data performance/ stay the record.</p>
 </main>
 <script>
 const fmt = (v, d = 2) => v == null ? "" : Number(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -61,7 +61,7 @@ const pct = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${(v 
 const usd = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${v < 0 ? "−" : ""}$${fmt(Math.abs(v), 0)}</span>`;
 const wt = v => v == null ? "" : `${v > 0 ? "+" : v < 0 ? "−" : ""}${(Math.abs(v) * 100).toFixed(2)}%`;
 const esc = s => (s ?? "").toString().replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
-const label = k => ({ c0_weekly: "c0_weekly (weekly fund book)" }[k] || k);
+const label = k => ({ c0_weekly: "c0_weekly (weekly fund book)", sp500_hold: "S&P 500 (buy & hold)" }[k] || k);
 function table(el, cols, rows, rowAttr) {
   const box = document.getElementById(el);
   if (!rows.length) { box.innerHTML = '<div class="empty">None.</div>'; return; }
@@ -80,7 +80,9 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   const dates = [...new Set([...B.flatMap(b => b.series.map(p => p.date)), ...(d.account || []).map(p => p.date),
                              ...(d.lifecycle ? d.lifecycle.nav.map(p => p.date) : [])])].filter(x => ![0, 6].includes(new Date(x + "T12:00:00Z").getUTCDay())).sort();
   const line = (pts, base) => { const m = Object.fromEntries(pts.map(p => [p.date, p.value / base - 1])); return dates.map(x => m[x] ?? null); };
-  const sets = B.map((b, i) => ({ label: label(b.key), data: line(b.series, d.start), borderColor: PAL[i % PAL.length], borderWidth: b.key === "c0_weekly" ? 2.5 : 1.3, pointRadius: 0, spanGaps: true, tension: 0.1 }));
+  const sets = B.map((b, i) => b.key === "sp500_hold"
+    ? { label: label(b.key), data: line(b.series, d.start), borderColor: "#9a9aa0", borderWidth: 3, pointRadius: 0, spanGaps: true, tension: 0.1 }
+    : { label: label(b.key), data: line(b.series, d.start), borderColor: PAL[i % PAL.length], borderWidth: b.key === "c0_weekly" ? 2.5 : 1.3, pointRadius: 0, spanGaps: true, tension: 0.1 });
   if (d.lifecycle && d.lifecycle.nav.length) sets.push({ label: "c10_lifecycle", data: line(d.lifecycle.nav, d.start), borderColor: "#e67e22", borderWidth: 2.5, borderDash: [6, 3], pointRadius: 0, spanGaps: true });
   if (d.account && d.account.length) sets.push({ label: "actual account", data: line(d.account, d.account[0].value), borderColor: getComputedStyle(document.documentElement).getPropertyValue("--ink"), borderWidth: 2, borderDash: [2, 3], pointRadius: 0, spanGaps: true });
   new Chart(document.getElementById("chart"), { type: "line", data: { labels: dates, datasets: sets },
@@ -95,7 +97,7 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
     const b = byKey[k] || B[0]; k = b.key; sel.value = k; store.set("shadowBook", k); history.replaceState(null, "", "#" + k);
     table("board", [["#", (r, i) => ranked.indexOf(r) + 1, "n"], ["Book", r => `<b>${esc(label(r.key))}</b>`], ["Return", r => pct(r.return), "n"], ["This week", r => pct(r.week_return), "n"],
       ["Value", r => "$" + fmt(r.value, 0), "n"], ["Since", r => r.started],
-      ["Names", r => (r.weeks.find(w => w.names != null) || {}).names ?? "", "n"], ["Stock gross", r => { const w = r.weeks.find(w => w.gross != null); return w ? (w.gross * 100).toFixed(0) + "%" : ""; }, "n"],
+      ["Names", r => r.key === "sp500_hold" ? "500 (SPY)" : (r.weeks.find(w => w.names != null) || {}).names ?? "", "n"], ["Stock gross", r => { const w = r.weeks.find(w => w.gross != null); return w ? (w.gross * 100).toFixed(0) + "%" : ""; }, "n"],
       ["What it tests", r => esc(r.desc), "wrap"]], ranked, r => `class="pick${r.key === k ? " on" : ""}" data-k="${r.key}"`);
     document.querySelectorAll("#board tr.pick").forEach(tr => tr.onclick = () => { show(tr.dataset.k); sel.scrollIntoView({ behavior: "smooth", block: "start" }); });
     document.getElementById("desc").textContent = b.desc;
