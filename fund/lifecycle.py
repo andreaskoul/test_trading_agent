@@ -444,6 +444,17 @@ def run(replay=False, fetch_news=True, live=None):
                                                               datetime.strptime(x["close"], "%H:%M").time(), broker.ET).timestamp())
                 for x in cal_}
     rf = rf_daily()
+    # The bill rate each session earned, frozen when first used (lifecycle/rf_used.csv), like the returns: FRED
+    # publishes DTB3 a day late, so rf.asof(day) for an already recorded day moves once the day's own rate appears,
+    # and a rebuild would rewrite recorded NAVs (2026-10-14: 10-09 and 10-12 moved by cents). A day recorded before
+    # this file existed keeps the rate it earned in the record. The replay has its own book and uses neither.
+    rfp = os.path.join(LC, "rf_used.csv")
+    rf_used = {} if replay or not os.path.exists(rfp) else \
+        {pd.Timestamp(k): float(v) for k, v in pd.read_csv(rfp).itertuples(index=False)}
+    n_rf = len(rf_used)
+    sp_ = os.path.join(LC, "state.json")
+    recorded = {} if replay or rf_used or not os.path.exists(sp_) else \
+        {pd.Timestamp(x["date"]): x["cash_income"] for x in json.load(open(sp_)).get("rows", [])}
     days = [d for d in trading_days(R) if d >= C[0]["entry_day"]]
     if live is not None:
         days = [d for d in days if d < live["day"]]
@@ -480,8 +491,16 @@ def run(replay=False, fetch_news=True, live=None):
             L["days"] += 1
         pnl_hedge = hedge * r["SPY"]
         hedge *= 1 + r["SPY"]
-        rf_rate = float(rf.asof(d)) if len(rf) and not math.isnan(rf.asof(d)) else 0.0
-        cash_inc = cash0 * rf_rate * ((d - prev_day).days if prev_day is not None else 1) / 360
+        n_cal = (d - prev_day).days if prev_day is not None else 1
+        if d in rf_used:
+            rf_rate = rf_used[d]
+        elif d in recorded and cash0 != 0:          # recorded before rf_used.csv: the rate it earned there
+            rf_rate = recorded[d] * 360 / (cash0 * n_cal)
+        else:
+            rf_rate = float(rf.asof(d)) if len(rf) and not math.isnan(rf.asof(d)) else 0.0
+        if not replay and not is_live:
+            rf_used.setdefault(d, rf_rate)
+        cash_inc = cash0 * rf_rate * n_cal / 360
         nav = nav0 + pnl_lots + pnl_hedge + cash_inc
         cost = 0.0
         traded = False
@@ -668,6 +687,8 @@ def run(replay=False, fetch_news=True, live=None):
                      "net_beta": (sum(L["n"] * L["beta"] for L in lots) + hedge) / nav if not replay else None,
                      "traded": bool(traded or c is not None)})
         prev_day = d
+    if len(rf_used) > n_rf:
+        pd.Series(rf_used).sort_index().rename("v").to_csv(rfp, index_label="date")
     return {"rows": rows, "lots": lots, "events": events, "cohorts": [c["asof"] for c in C], "live": out_live}
 
 

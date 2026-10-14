@@ -36,8 +36,25 @@ REPO_NAME = "fund-news-archive"
 LOCAL = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "fund_archive")
 FK = os.environ["FINNHUB_API_KEY"]
 api = HfApi(token=os.environ["HF_TOKEN"])
-repo = f"{api.whoami()['name']}/{REPO_NAME}"
-api.create_repo(repo, repo_type="dataset", private=True, exist_ok=True)
+
+
+def hf(fn, *a, **k):
+    """A Hugging Face call, retried after 1 and 3 minutes on a server error or a dropped connection (HF returned
+    500s for a while on 2026-10-13 and that day's run failed). Auth and other client errors fail at once."""
+    from huggingface_hub.errors import HfHubHTTPError
+    for wait in (60, 180, None):
+        try:
+            return fn(*a, **k)
+        except (HfHubHTTPError, OSError) as exc:
+            code = getattr(getattr(exc, "response", None), "status_code", None)
+            if wait is None or (code is not None and code < 500 and code != 429):
+                raise
+            print(f"archive: Hugging Face {code or type(exc).__name__}; retrying in {wait} s", flush=True)
+            time.sleep(wait)
+
+
+repo = f"{hf(api.whoami)['name']}/{REPO_NAME}"
+hf(api.create_repo, repo, repo_type="dataset", private=True, exist_ok=True)
 now = datetime.now(timezone.utc)
 t_end = time.time() + 60 * float(os.environ.get("ARCHIVE_MINUTES", "40"))
 if now.weekday() == 2:                           # Wednesday: Finnhub belongs to the weekly desks from 22:15 UTC
@@ -51,8 +68,8 @@ with urllib.request.urlopen(url, timeout=60) as r:
     mem = pd.read_csv(io.BytesIO(r.read()), parse_dates=["date"])
 universe = sorted(mem.iloc[-1].tickers.split(","))
 
-files = set(api.list_repo_files(repo, repo_type="dataset"))
-man = json.load(open(hf_hub_download(repo, "manifest.json", repo_type="dataset", local_dir=LOCAL))) \
+files = set(hf(api.list_repo_files, repo, repo_type="dataset"))
+man = json.load(open(hf(hf_hub_download, repo, "manifest.json", repo_type="dataset", local_dir=LOCAL))) \
     if "manifest.json" in files else {"days": {}}
 
 
@@ -89,7 +106,7 @@ def get(u):
 def load_day(day):
     p = os.path.join(LOCAL, "days", f"{day}.parquet")
     if not os.path.exists(p) and f"days/{day}.parquet" in files:
-        hf_hub_download(repo, f"days/{day}.parquet", repo_type="dataset", local_dir=LOCAL)
+        hf(hf_hub_download, repo, f"days/{day}.parquet", repo_type="dataset", local_dir=LOCAL)
     return pd.read_parquet(p) if os.path.exists(p) else pd.DataFrame()
 
 
@@ -133,7 +150,7 @@ def push(msg):
     man["updated"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     json.dump(man, open(os.path.join(LOCAL, "manifest.json"), "w"), indent=0, sort_keys=True)
     ops.append(CommitOperationAdd("manifest.json", os.path.join(LOCAL, "manifest.json")))
-    api.create_commit(repo, repo_type="dataset", operations=ops, commit_message=msg)
+    hf(api.create_commit, repo, repo_type="dataset", operations=ops, commit_message=msg)
     files.update(f"days/{d}.parquet" for d in changed); files.difference_update(f"days/{d}.parquet" for d in deleted)
     changed.clear(); deleted.clear()
 
