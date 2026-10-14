@@ -114,6 +114,9 @@ dashboard's core 20, and a random book.
 The evidence review behind these choices is in
 [`reports/Multi agent AI trading desk design.md`](../reports/Multi%20agent%20AI%20trading%20desk%20design.md);
 realistic expectations for a large-cap weekly news book are a Sharpe of roughly 0–0.5 after costs.
+The desk review of 2026-10-14 ([`reports/research/desk_review_2026-10.md`](../reports/research/desk_review_2026-10.md))
+maps the process graph against the goal of beating the S&P 500. It records where the design loses expected value
+and ranks the improvements.
 
 ## Where things are stored
 
