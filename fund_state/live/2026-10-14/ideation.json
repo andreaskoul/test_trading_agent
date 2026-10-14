@@ -1,0 +1,404 @@
+{
+ "asof": "2026-10-14",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "CoreWeave",
+  "usage": {
+   "prompt_tokens": 40540,
+   "completion_tokens": 49067,
+   "total_tokens": 89607,
+   "cost": 0.03216847,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 40320,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.03216847,
+    "upstream_inference_prompt_cost": 0.00027492,
+    "upstream_inference_completions_cost": 0.03189355
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 48299,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"long_ideas\":[{\"ticker\":\"MSFT\",\"hypothesis\":\"New AI chip launch positions Microsoft as AI compute competitor; near 52-week high, news could drive upside.\"},{\"ticker\":\"META\",\"hypothesis\":\"Meta's Muse flagged as bigger search threat than ChatGPT; positive AI narrative with elevated attention.\"},{\"ticker\":\"ACN\",\"hypothesis\":\"Accenture up 10.4% on dividend hike and new AI deals with Dell/Workday; momentum and news catalyst.\"},{\"ticker\":\"TTWO\",\"hypothesis\":\"Jefferies says GTA VI upside remains unpriced, $300 target; positive catalyst for next week.\"},{\"ticker\":\"BKNG\",\"hypothesis\":\"Booking launches AI travel agent Vayo with $100M investment; new product catalyst.\"},{\"ticker\":\"VEEV\",\"hypothesis\":\"Veeva IQVIA deal and Nov 5 investor day; positive clinical tech catalyst, near high.\"},{\"ticker\":\"SBAC\",\"hypothesis\":\"Bernstein says SpaceX spectrum deal is catalyst for tower stocks; SBA earnings date ahead.\"},{\"ticker\":\"ALB\",\"hypothesis\":\"Mizuho upgrade on surging energy storage demand; stock oversold, positive catalyst.\"},{\"ticker\":\"ON\",\"hypothesis\":\"onsemi Sungrow deployment for SiC energy storage; positive news after sharp selloff.\"},{\"ticker\":\"MCHP\",\"hypothesis\":\"Microchip stronger demand, higher prices, attractive valuation; positive analyst view after drop.\"},{\"ticker\":\"APH\",\"hypothesis\":\"Amphenol strong Q3 on AI infrastructure demand, BofA; positive read-through after selloff.\"},{\"ticker\":\"STX\",\"hypothesis\":\"AI memory selloff looks overblown; contrarian buy on dip with positive analyst view.\"}],\"short_ideas\":[{\"ticker\":\"ORCL\",\"hypothesis\":\"Oracle tumbles on hot CPI and CoreWeave neocloud warning; negative AI cloud catalyst.\"},{\"ticker\":\"BAC\",\"hypothesis\":\"Bank of America bond losses widen over $100B on rate rise; negative financial catalyst.\"},{\"ticker\":\"DAL\",\"hypothesis\":\"Delta cuts 2026 earnings outlook; airline turbulence and sticker shock pressure shares.\"},{\"ticker\":\"DELL\",\"hypothesis\":\"Barclays downgrades Dell on enterprise AI spending worries; stock in free fall.\"},{\"ticker\":\"HPE\",\"hypothesis\":\"HPE downgraded on AI spending concerns; sharp drop with negative sector read-through.\"},{\"ticker\":\"NTAP\",\"hypothesis\":\"NetApp downgraded on AI spending worries; plummeting with peers, negative catalyst.\"},{\"ticker\":\"CRWD\",\"hypothesis\":\"CrowdStrike slumps as OpenAI cybersecurity deal hits sector; negative sentiment.\"},{\"ticker\":\"PANW\",\"hypothesis\":\"Palo Alto declines as OpenAI cybersecurity deal pressures sector; negative read-through.\"},{\"ticker\":\"NFLX\",\"hypothesis\":\"Netflix flatlines on job cuts and subscriber churn data; negative catalyst.\"},{\"ticker\":\"YUM\",\"hypothesis\":\"Yum Brands faces weaker Taco Bell sales; Pizza Hut exit cuts earnings outlook.\"},{\"ticker\":\"KHC\",\"hypothesis\":\"Kraft Heinz faces worsening US sales as $700M turnaround spending ramps up.\"},{\"ticker\":\"STT\",\"hypothesis\":\"State Street 2026 fee revenue growth outlook trails views; shares fall.\"}],\"themes\":[\"AI infrastructure selloff pressures semis, memory, and hardware shorts.\",\"AI product launches support long software, cloud, and connectivity.\",\"Guidance cuts and churn drive single-stock short catalysts.\",\"Energy storage upgrades and AI memory dip-buying support contrarian longs.\",\"Earnings and M&A headlines drive next-week single-stock moves.\"]}"
+ },
+ "llm": {
+  "long_ideas": [
+   {
+    "ticker": "MSFT",
+    "hypothesis": "New AI chip launch positions Microsoft as AI compute competitor; near 52-week high, news could drive upside."
+   },
+   {
+    "ticker": "META",
+    "hypothesis": "Meta's Muse flagged as bigger search threat than ChatGPT; positive AI narrative with elevated attention."
+   },
+   {
+    "ticker": "ACN",
+    "hypothesis": "Accenture up 10.4% on dividend hike and new AI deals with Dell/Workday; momentum and news catalyst."
+   },
+   {
+    "ticker": "TTWO",
+    "hypothesis": "Jefferies says GTA VI upside remains unpriced, $300 target; positive catalyst for next week."
+   },
+   {
+    "ticker": "BKNG",
+    "hypothesis": "Booking launches AI travel agent Vayo with $100M investment; new product catalyst."
+   },
+   {
+    "ticker": "VEEV",
+    "hypothesis": "Veeva IQVIA deal and Nov 5 investor day; positive clinical tech catalyst, near high."
+   },
+   {
+    "ticker": "SBAC",
+    "hypothesis": "Bernstein says SpaceX spectrum deal is catalyst for tower stocks; SBA earnings date ahead."
+   },
+   {
+    "ticker": "ALB",
+    "hypothesis": "Mizuho upgrade on surging energy storage demand; stock oversold, positive catalyst."
+   },
+   {
+    "ticker": "ON",
+    "hypothesis": "onsemi Sungrow deployment for SiC energy storage; positive news after sharp selloff."
+   },
+   {
+    "ticker": "MCHP",
+    "hypothesis": "Microchip stronger demand, higher prices, attractive valuation; positive analyst view after drop."
+   },
+   {
+    "ticker": "APH",
+    "hypothesis": "Amphenol strong Q3 on AI infrastructure demand, BofA; positive read-through after selloff."
+   },
+   {
+    "ticker": "STX",
+    "hypothesis": "AI memory selloff looks overblown; contrarian buy on dip with positive analyst view."
+   }
+  ],
+  "short_ideas": [
+   {
+    "ticker": "ORCL",
+    "hypothesis": "Oracle tumbles on hot CPI and CoreWeave neocloud warning; negative AI cloud catalyst."
+   },
+   {
+    "ticker": "BAC",
+    "hypothesis": "Bank of America bond losses widen over $100B on rate rise; negative financial catalyst."
+   },
+   {
+    "ticker": "DAL",
+    "hypothesis": "Delta cuts 2026 earnings outlook; airline turbulence and sticker shock pressure shares."
+   },
+   {
+    "ticker": "DELL",
+    "hypothesis": "Barclays downgrades Dell on enterprise AI spending worries; stock in free fall."
+   },
+   {
+    "ticker": "HPE",
+    "hypothesis": "HPE downgraded on AI spending concerns; sharp drop with negative sector read-through."
+   },
+   {
+    "ticker": "NTAP",
+    "hypothesis": "NetApp downgraded on AI spending worries; plummeting with peers, negative catalyst."
+   },
+   {
+    "ticker": "CRWD",
+    "hypothesis": "CrowdStrike slumps as OpenAI cybersecurity deal hits sector; negative sentiment."
+   },
+   {
+    "ticker": "PANW",
+    "hypothesis": "Palo Alto declines as OpenAI cybersecurity deal pressures sector; negative read-through."
+   },
+   {
+    "ticker": "NFLX",
+    "hypothesis": "Netflix flatlines on job cuts and subscriber churn data; negative catalyst."
+   },
+   {
+    "ticker": "YUM",
+    "hypothesis": "Yum Brands faces weaker Taco Bell sales; Pizza Hut exit cuts earnings outlook."
+   },
+   {
+    "ticker": "KHC",
+    "hypothesis": "Kraft Heinz faces worsening US sales as $700M turnaround spending ramps up."
+   },
+   {
+    "ticker": "STT",
+    "hypothesis": "State Street 2026 fee revenue growth outlook trails views; shares fall."
+   }
+  ],
+  "themes": [
+   "AI infrastructure selloff pressures semis, memory, and hardware shorts.",
+   "AI product launches support long software, cloud, and connectivity.",
+   "Guidance cuts and churn drive single-stock short catalysts.",
+   "Energy storage upgrades and AI memory dip-buying support contrarian longs.",
+   "Earnings and M&A headlines drive next-week single-stock moves."
+  ]
+ },
+ "core": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM"
+ ],
+ "nominated": [
+  "MSFT",
+  "META",
+  "ACN",
+  "TTWO",
+  "BKNG",
+  "VEEV",
+  "SBAC",
+  "ALB",
+  "ON",
+  "MCHP",
+  "APH",
+  "STX",
+  "ORCL",
+  "BAC",
+  "DAL",
+  "DELL",
+  "HPE",
+  "NTAP",
+  "CRWD",
+  "PANW",
+  "NFLX",
+  "YUM",
+  "KHC",
+  "STT"
+ ],
+ "rule_based": [
+  "COHR",
+  "SMCI",
+  "MRNA",
+  "LITE",
+  "SNDK",
+  "CIEN",
+  "PSX",
+  "MPC",
+  "VLO",
+  "XOM",
+  "CCI",
+  "MDT",
+  "GOOG",
+  "GOOGL",
+  "MSFT",
+  "NVDA",
+  "JPM",
+  "MU"
+ ],
+ "coverage": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM",
+  "ACN",
+  "TTWO",
+  "BKNG",
+  "VEEV",
+  "SBAC",
+  "ALB",
+  "ON",
+  "MCHP",
+  "APH",
+  "STX",
+  "BAC",
+  "DAL",
+  "DELL",
+  "HPE",
+  "NTAP",
+  "CRWD",
+  "PANW",
+  "YUM",
+  "KHC",
+  "STT",
+  "COHR",
+  "SMCI",
+  "MRNA",
+  "LITE",
+  "SNDK"
+ ],
+ "why": {
+  "NVDA": [
+   "core",
+   "rule"
+  ],
+  "AAPL": [
+   "core"
+  ],
+  "MSFT": [
+   "core",
+   "nominated",
+   "rule"
+  ],
+  "GOOGL": [
+   "core",
+   "rule"
+  ],
+  "AMZN": [
+   "core"
+  ],
+  "META": [
+   "core",
+   "nominated"
+  ],
+  "AVGO": [
+   "core"
+  ],
+  "TSLA": [
+   "core"
+  ],
+  "AMD": [
+   "core"
+  ],
+  "INTC": [
+   "core"
+  ],
+  "TSM": [
+   "core"
+  ],
+  "JPM": [
+   "core",
+   "rule"
+  ],
+  "LLY": [
+   "core"
+  ],
+  "WMT": [
+   "core"
+  ],
+  "BRK.B": [
+   "core"
+  ],
+  "ORCL": [
+   "core",
+   "nominated"
+  ],
+  "CRM": [
+   "core"
+  ],
+  "NFLX": [
+   "core",
+   "nominated"
+  ],
+  "BA": [
+   "core"
+  ],
+  "XOM": [
+   "core",
+   "rule"
+  ],
+  "ACN": [
+   "nominated"
+  ],
+  "TTWO": [
+   "nominated"
+  ],
+  "BKNG": [
+   "nominated"
+  ],
+  "VEEV": [
+   "nominated"
+  ],
+  "SBAC": [
+   "nominated"
+  ],
+  "ALB": [
+   "nominated"
+  ],
+  "ON": [
+   "nominated"
+  ],
+  "MCHP": [
+   "nominated"
+  ],
+  "APH": [
+   "nominated"
+  ],
+  "STX": [
+   "nominated"
+  ],
+  "BAC": [
+   "nominated"
+  ],
+  "DAL": [
+   "nominated"
+  ],
+  "DELL": [
+   "nominated"
+  ],
+  "HPE": [
+   "nominated"
+  ],
+  "NTAP": [
+   "nominated"
+  ],
+  "CRWD": [
+   "nominated"
+  ],
+  "PANW": [
+   "nominated"
+  ],
+  "YUM": [
+   "nominated"
+  ],
+  "KHC": [
+   "nominated"
+  ],
+  "STT": [
+   "nominated"
+  ],
+  "COHR": [
+   "rule"
+  ],
+  "SMCI": [
+   "rule"
+  ],
+  "MRNA": [
+   "rule"
+  ],
+  "LITE": [
+   "rule"
+  ],
+  "SNDK": [
+   "rule"
+  ]
+ },
+ "prompt_chars": 114257
+}
