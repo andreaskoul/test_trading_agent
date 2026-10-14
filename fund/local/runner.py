@@ -218,7 +218,7 @@ RESTORE = """git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-
 for p in {paths}; do git checkout origin/fund-data -- "$p" 2>/dev/null || echo "fund-data has no $p yet"; done"""
 
 COMMIT_EXEC = """git config user.name 'fund-bot'; git config user.email 'fund-bot@users.noreply.github.com'
-FD="$RUNNER_TMP/fd"
+FD="$RUNNER_TMP/fd"; pushed=""
 for attempt in 1 2 3; do
   git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
   rm -rf "$FD" && git worktree prune && git worktree add -q --detach "$FD" origin/fund-data
@@ -227,11 +227,12 @@ for attempt in 1 2 3; do
   [ -d fund_state/live/lifecycle ] && mkdir -p "$FD/fund_state/live/lifecycle" && cp -a fund_state/live/lifecycle/. "$FD/fund_state/live/lifecycle/"
   [ -d fund_state/live/ledger ] && mkdir -p "$FD/fund_state/live/ledger" && cp -a fund_state/live/ledger/. "$FD/fund_state/live/ledger/"
   cd "$FD" && git add -A fund_state/live
-  if git diff --cached --quiet; then cd - >/dev/null; break; fi
+  if git diff --cached --quiet; then cd - >/dev/null; pushed=1; break; fi
   git commit -q -m "{msg} $(date -u +%Y-%m-%dT%H:%MZ)"
-  if git push -q origin HEAD:fund-data; then cd - >/dev/null; break; fi
+  if git push -q origin HEAD:fund-data; then cd - >/dev/null; pushed=1; break; fi
   cd - >/dev/null; sleep 5
-done"""
+done
+if [ -z "$pushed" ]; then echo "fund-data push rejected 3 times: records not saved"; exit 1; fi"""
 
 COPY_EXEC = """mkdir -p "$FD/fund_state/live/execution"
   [ -d fund_state/live/execution ] && cp -a fund_state/live/execution/. "$FD/fund_state/live/execution/"
@@ -384,17 +385,18 @@ def job_prices(j, a):
     j.step("Restore fund state", RESTORE.format(paths="fund_state"))
     j.step("Position ledger with live marks", "LEDGER_MARKS=live python fund/ledger.py")
     j.step("Commit the refreshed page data", """git config user.name 'fund-bot'; git config user.email 'fund-bot@users.noreply.github.com'
-FD="$RUNNER_TMP/fd"
+FD="$RUNNER_TMP/fd"; pushed=""
 for attempt in 1 2 3; do
   git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data
   rm -rf "$FD" && git worktree prune && git worktree add -q --detach "$FD" origin/fund-data
   mkdir -p "$FD/fund_state/live/ledger" && cp -a fund_state/live/ledger/. "$FD/fund_state/live/ledger/"
   cd "$FD" && git add -A fund_state/live/ledger
-  if git diff --cached --quiet; then cd - >/dev/null; break; fi
+  if git diff --cached --quiet; then cd - >/dev/null; pushed=1; break; fi
   git commit -q -m "page refresh $(date -u +%Y-%m-%dT%H:%MZ)"
-  if git push -q origin HEAD:fund-data; then cd - >/dev/null; break; fi
+  if git push -q origin HEAD:fund-data; then cd - >/dev/null; pushed=1; break; fi
   cd - >/dev/null; sleep 5
-done""")
+done
+if [ -z "$pushed" ]; then echo "fund-data push rejected 3 times: records not saved"; exit 1; fi""")
     j.step("GitHub Pages: rebuild the dashboard (fund_pages.yml)", f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main",
            allow_fail=True)
 
