@@ -1,0 +1,350 @@
+{
+ "_doc": "Production-funnel templates (Thesis Tree, PREREG_thesis_tree.md section 3). Written before any test. Stages: S0 primary inputs, S1 tools & capital equipment, S2 components & intermediates, S3 assembly / OEM / processors, S4 sellers, distribution & logistics, S5 end demand (macro: no listed members). A sub-industry may sit in several chains. Sub-industries not listed belong to the service layer (outside the funnel). Firm-level overrides come later, from the 10-K business description, frozen per year with the reason recorded.",
+ "version": "2026-10-14-draft",
+ "stages": {
+  "S0": "primary inputs",
+  "S1": "tools & capital equipment",
+  "S2": "components & intermediates",
+  "S3": "assembly / OEM / processors",
+  "S4": "sellers, distribution & logistics",
+  "S5": "end demand"
+ },
+ "chains": {
+  "ai_semis": {
+   "about": "AI and semiconductors: power, gases and chemicals -> fab tools and data-centre build -> chips and components -> systems and networking -> cloud platforms that sell compute -> enterprise and consumer demand",
+   "S0": [
+    "Industrial Gases",
+    "Specialty Chemicals",
+    "Independent Power Producers & Energy Traders"
+   ],
+   "S1": [
+    "Semiconductor Materials & Equipment",
+    "Heavy Electrical Equipment",
+    "Electrical Components & Equipment",
+    "Construction & Engineering"
+   ],
+   "S2": [
+    "Semiconductors",
+    "Electronic Components"
+   ],
+   "S3": [
+    "Technology Hardware, Storage & Peripherals",
+    "Communications Equipment",
+    "Electronic Manufacturing Services"
+   ],
+   "S4": [
+    "Technology Distributors",
+    "Internet Services & Infrastructure",
+    "Data Center REITs",
+    "Interactive Media & Services",
+    "Systems Software"
+   ],
+   "S5": [
+    "macro: enterprise IT spending, consumer electronics demand"
+   ]
+  },
+  "autos": {
+   "about": "Autos and EV: metals and chemicals -> machinery -> parts and chips -> vehicle makers -> dealers -> consumers",
+   "S0": [
+    "Steel",
+    "Copper",
+    "Aluminum",
+    "Diversified Metals & Mining",
+    "Specialty Chemicals"
+   ],
+   "S1": [
+    "Industrial Machinery & Supplies & Components"
+   ],
+   "S2": [
+    "Automotive Parts & Equipment",
+    "Semiconductors",
+    "Electronic Components",
+    "Tires & Rubber"
+   ],
+   "S3": [
+    "Automobile Manufacturers",
+    "Motorcycle Manufacturers"
+   ],
+   "S4": [
+    "Automotive Retail"
+   ],
+   "S5": [
+    "macro: retail auto sales, consumer credit"
+   ]
+  },
+  "aerospace_defense": {
+   "about": "Aerospace and defence: metals -> machinery -> aero parts (firm overrides) -> airframers and primes -> airlines and governments",
+   "S0": [
+    "Steel",
+    "Aluminum",
+    "Specialty Chemicals"
+   ],
+   "S1": [
+    "Industrial Machinery & Supplies & Components"
+   ],
+   "S2": [
+    "Electronic Components",
+    "Electronic Equipment & Instruments"
+   ],
+   "S3": [
+    "Aerospace & Defense"
+   ],
+   "S4": [
+    "Passenger Airlines"
+   ],
+   "S5": [
+    "macro: defence budgets, air travel demand"
+   ]
+  },
+  "energy": {
+   "about": "Oil and gas: producers -> oilfield services -> midstream -> refiners -> fuel buyers",
+   "S0": [
+    "Oil & Gas Exploration & Production",
+    "Integrated Oil & Gas"
+   ],
+   "S1": [
+    "Oil & Gas Equipment & Services",
+    "Oil & Gas Drilling"
+   ],
+   "S2": [
+    "Oil & Gas Storage & Transportation"
+   ],
+   "S3": [
+    "Oil & Gas Refining & Marketing"
+   ],
+   "S4": [
+    "Gas Utilities"
+   ],
+   "S5": [
+    "macro: fuel demand, industrial production"
+   ]
+  },
+  "power": {
+   "about": "Power: fuels -> generation equipment -> generators -> utilities -> households, industry and data centres",
+   "S0": [
+    "Oil & Gas Exploration & Production",
+    "Coal & Consumable Fuels"
+   ],
+   "S1": [
+    "Heavy Electrical Equipment",
+    "Electrical Components & Equipment"
+   ],
+   "S3": [
+    "Independent Power Producers & Energy Traders",
+    "Renewable Electricity"
+   ],
+   "S4": [
+    "Electric Utilities",
+    "Multi-Utilities",
+    "Gas Utilities",
+    "Water Utilities"
+   ],
+   "S5": [
+    "macro: electricity demand, data-centre load"
+   ]
+  },
+  "homebuilding_construction": {
+   "about": "Construction: materials and timber -> heavy machinery -> building products -> builders and engineers -> distributors and home-improvement retail -> households (rates)",
+   "S0": [
+    "Construction Materials",
+    "Steel",
+    "Timber REITs",
+    "Forest Products"
+   ],
+   "S1": [
+    "Construction Machinery & Heavy Transportation Equipment"
+   ],
+   "S2": [
+    "Building Products"
+   ],
+   "S3": [
+    "Homebuilding",
+    "Construction & Engineering"
+   ],
+   "S4": [
+    "Home Improvement Retail",
+    "Homefurnishing Retail",
+    "Trading Companies & Distributors"
+   ],
+   "S5": [
+    "macro: housing starts, mortgage rates, non-residential construction"
+   ]
+  },
+  "consumer_staples": {
+   "about": "Staples: crops and fertiliser -> farm machinery -> packaging -> branded producers -> grocers and distributors -> households",
+   "S0": [
+    "Agricultural Products & Services",
+    "Fertilizers & Agricultural Chemicals",
+    "Commodity Chemicals"
+   ],
+   "S1": [
+    "Agricultural & Farm Machinery"
+   ],
+   "S2": [
+    "Paper & Plastic Packaging Products & Materials",
+    "Metal, Glass & Plastic Containers"
+   ],
+   "S3": [
+    "Packaged Foods & Meats",
+    "Soft Drinks & Non-alcoholic Beverages",
+    "Brewers",
+    "Distillers & Vintners",
+    "Household Products",
+    "Personal Care Products",
+    "Tobacco"
+   ],
+   "S4": [
+    "Consumer Staples Merchandise Retail",
+    "Food Retail",
+    "Food Distributors",
+    "Restaurants"
+   ],
+   "S5": [
+    "macro: real consumer spending, retail sales (food)"
+   ]
+  },
+  "apparel_discretionary": {
+   "about": "Discretionary goods: materials -> brands and makers -> retailers, distributors and freight -> consumers",
+   "S0": [
+    "Commodity Chemicals"
+   ],
+   "S3": [
+    "Apparel, Accessories & Luxury Goods",
+    "Footwear",
+    "Leisure Products",
+    "Consumer Electronics",
+    "Housewares & Specialties"
+   ],
+   "S4": [
+    "Apparel Retail",
+    "Broadline Retail",
+    "Other Specialty Retail",
+    "Distributors",
+    "Computer & Electronics Retail",
+    "Air Freight & Logistics",
+    "Cargo Ground Transportation",
+    "Rail Transportation",
+    "Marine Transportation",
+    "Industrial REITs"
+   ],
+   "S5": [
+    "macro: retail sales, consumer sentiment"
+   ]
+  },
+  "healthcare": {
+   "about": "Health care: research tools -> supplies -> drug and device makers -> distributors, providers and services -> payers and patients",
+   "S1": [
+    "Life Sciences Tools & Services"
+   ],
+   "S2": [
+    "Health Care Supplies"
+   ],
+   "S3": [
+    "Pharmaceuticals",
+    "Biotechnology",
+    "Health Care Equipment"
+   ],
+   "S4": [
+    "Health Care Distributors",
+    "Health Care Services",
+    "Health Care Facilities",
+    "Health Care Technology",
+    "Health Care REITs"
+   ],
+   "S5": [
+    "Managed Health Care",
+    "macro: health spending, utilisation"
+   ]
+  },
+  "cloud_software": {
+   "about": "Software: data-centre infrastructure -> platforms and systems software -> applications -> integrators -> enterprise IT budgets",
+   "S2": [
+    "Data Center REITs",
+    "Internet Services & Infrastructure"
+   ],
+   "S3": [
+    "Systems Software"
+   ],
+   "S4": [
+    "Application Software",
+    "IT Consulting & Other Services"
+   ],
+   "S5": [
+    "macro: enterprise IT spending"
+   ]
+  },
+  "media_telecom": {
+   "about": "Media and telecom: network equipment and towers -> carriers and content makers -> ad platforms and agencies -> consumers and advertisers",
+   "S1": [
+    "Communications Equipment",
+    "Telecom Tower REITs"
+   ],
+   "S3": [
+    "Cable & Satellite",
+    "Integrated Telecommunication Services",
+    "Wireless Telecommunication Services",
+    "Movies & Entertainment",
+    "Broadcasting",
+    "Publishing",
+    "Interactive Home Entertainment"
+   ],
+   "S4": [
+    "Advertising",
+    "Interactive Media & Services"
+   ],
+   "S5": [
+    "macro: advertising spend, consumer spending"
+   ]
+  },
+  "travel_leisure": {
+   "about": "Travel: aircraft -> airlines, hotels, cruise and gaming operators -> consumers",
+   "S3": [
+    "Aerospace & Defense"
+   ],
+   "S4": [
+    "Passenger Airlines",
+    "Hotels, Resorts & Cruise Lines",
+    "Casinos & Gaming",
+    "Hotel & Resort REITs",
+    "Passenger Ground Transportation"
+   ],
+   "S5": [
+    "macro: travel demand, real consumer spending"
+   ]
+  }
+ },
+ "service_layer": {
+  "about": "Outside the funnel: financial intermediation, real estate and business services. Their links enter through exposures (rates, credit, consumer spending, S4/S5 activity), not through stage propagation.",
+  "members": [
+   "Asset Management & Custody Banks",
+   "Consumer Finance",
+   "Diversified Banks",
+   "Financial Exchanges & Data",
+   "Insurance Brokers",
+   "Investment Banking & Brokerage",
+   "Life & Health Insurance",
+   "Multi-Sector Holdings",
+   "Multi-line Insurance",
+   "Property & Casualty Insurance",
+   "Regional Banks",
+   "Reinsurance",
+   "Transaction & Payment Processing Services",
+   "Multi-Family Residential REITs",
+   "Office REITs",
+   "Other Specialized REITs",
+   "Real Estate Services",
+   "Retail REITs",
+   "Self-Storage REITs",
+   "Single-Family Residential REITs",
+   "Environmental & Facilities Services",
+   "Diversified Support Services",
+   "Human Resource & Employment Services",
+   "Research & Consulting Services",
+   "Data Processing & Outsourced Services",
+   "Specialized Consumer Services",
+   "Industrial Conglomerates",
+   "Gold"
+  ]
+ },
+ "unlisted_rule": "A sub-industry that appears in the S&P 500 or S&P 400 data but in none of the lists above is assigned in the commit that completes the pre-registration, before any test runs, by the same reading of GICS definitions, and the assignment is logged. Nothing is assigned after a result is seen."
+}
