@@ -1,0 +1,567 @@
+{
+ "asof": "2026-10-14",
+ "status": "ok",
+ "entry_day": "2026-10-15",
+ "names": {
+  "AMD": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.025,
+   "out": {
+    "event_type": "partnership",
+    "driving_event": "AMD backs Fermi's 222MW Texas AI project with credit support, advancing Project Matador lease",
+    "first_reported": "2026-10-13",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "AMD terminates or withdraws credit support agreement for Fermi's Project Matador",
+     "Fermi's Project Matador lease or financing is cancelled or fails to close",
+     "AMD delays or cancels launch of Helion/Helios AI rack platform"
+    ]
+   },
+   "provider": "DigitalOcean",
+   "news_age": 2,
+   "H_raw": 3,
+   "H": 3,
+   "stale": false,
+   "why": "partnership H 5 - news age 2",
+   "kill_conditions": [
+    "AMD terminates or withdraws credit support agreement for Fermi's Project Matador",
+    "Fermi's Project Matador lease or financing is cancelled or fails to close",
+    "AMD delays or cancels launch of Helion/Helios AI rack platform"
+   ],
+   "first_reported": "2026-10-13"
+  },
+  "AMZN": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.0275,
+   "out": {
+    "event_type": "mna_rumour",
+    "driving_event": "Amazon in talks to acquire AI startup Decart for ~$7B, strengthening AWS chip/software narrative.",
+    "first_reported": "2026-10-12",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Amazon ends talks to acquire Decart or denies the deal.",
+     "Delta reverses decision and selects Starlink over Amazon Leo.",
+     "AWS backlog falls or cloud margins decline sharply."
+    ]
+   },
+   "provider": "DigitalOcean",
+   "news_age": 3,
+   "H_raw": 2,
+   "H": 3,
+   "stale": true,
+   "why": "mna_rumour H 5 - news age 3",
+   "kill_conditions": [
+    "Amazon ends talks to acquire Decart or denies the deal.",
+    "Delta reverses decision and selects Starlink over Amazon Leo.",
+    "AWS backlog falls or cloud margins decline sharply."
+   ],
+   "first_reported": "2026-10-12"
+  },
+  "BA": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.03,
+   "out": {
+    "event_type": "other",
+    "driving_event": "Avolon orders 140 Boeing 737 MAX jets",
+    "first_reported": "2026-10-09",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Avolon cancels or reduces its 737 MAX order",
+     "Boeing loses the PAC-3 seeker contract to a competitor",
+     "FAA grounds the 737 MAX again"
+    ]
+   },
+   "provider": "DigitalOcean",
+   "news_age": 4,
+   "H_raw": 1,
+   "H": 3,
+   "stale": true,
+   "why": "other H 5 - news age 4",
+   "kill_conditions": [
+    "Avolon cancels or reduces its 737 MAX order",
+    "Boeing loses the PAC-3 seeker contract to a competitor",
+    "FAA grounds the 737 MAX again"
+   ],
+   "first_reported": "2026-10-09"
+  },
+  "BAC": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.02887,
+   "out": {
+    "event_type": "legal_regulatory",
+    "driving_event": "$1.2B Treasury AML fine plus Q3 earnings miss on trading and IB weakness",
+    "first_reported": "2026-10-14",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Bank of America's $1.2B AML penalty is reduced, overturned, or settled for materially less",
+     "Bank of America raises full-year guidance or reports a revenue/trading beat next quarter",
+     "Inflation cools and the Fed rules out further rate hikes, easing bank bond-book pressure"
+    ]
+   },
+   "provider": "DigitalOcean",
+   "news_age": 1,
+   "H_raw": 6,
+   "H": 6,
+   "stale": false,
+   "why": "legal_regulatory H 7 - news age 1",
+   "kill_conditions": [
+    "Bank of America's $1.2B AML penalty is reduced, overturned, or settled for materially less",
+    "Bank of America raises full-year guidance or reports a revenue/trading beat next quarter",
+    "Inflation cools and the Fed rules out further rate hikes, easing bank bond-book pressure"
+   ],
+   "first_reported": "2026-10-14"
+  },
+  "CRM": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.03,
+   "out": {
+    "event_type": "analyst_revisions",
+    "driving_event": "BofA double upgrade of Salesforce to Buy on AI strength, plus Loops acquisition",
+    "first_reported": "2026-10-12",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "BofA downgrades Salesforce or cuts its price target below $285",
+     "Salesforce terminates or writes down the Loops acquisition",
+     "Analysts reverse the upgrade, citing renewed AI disintermediation risk"
+    ]
+   },
+   "provider": "CoreWeave",
+   "news_age": 3,
+   "H_raw": 7,
+   "H": 7,
+   "stale": false,
+   "why": "analyst_revisions H 10 - news age 3",
+   "kill_conditions": [
+    "BofA downgrades Salesforce or cuts its price target below $285",
+    "Salesforce terminates or writes down the Loops acquisition",
+    "Analysts reverse the upgrade, citing renewed AI disintermediation risk"
+   ],
+   "first_reported": "2026-10-12"
+  },
+  "DAL": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.05973,
+   "out": {
+    "event_type": "earnings",
+    "driving_event": "Delta's Q3 earnings miss and 2026 guidance cut on 62% fuel cost surge",
+    "first_reported": "2026-10-09",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Delta raises its 2026 earnings guidance or reinstates prior forecast",
+     "Jet fuel prices decline sharply, reducing airline cost pressure",
+     "Delta successfully launches its Atlanta-Riyadh route without further delay"
+    ]
+   },
+   "provider": "Relace",
+   "news_age": 4,
+   "H_raw": 11,
+   "H": 11,
+   "stale": false,
+   "why": "earnings H 15 - news age 4",
+   "kill_conditions": [
+    "Delta raises its 2026 earnings guidance or reinstates prior forecast",
+    "Jet fuel prices decline sharply, reducing airline cost pressure",
+    "Delta successfully launches its Atlanta-Riyadh route without further delay"
+   ],
+   "first_reported": "2026-10-09"
+  },
+  "JPM": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.02986,
+   "out": {
+    "event_type": "earnings",
+    "driving_event": "JPMorgan Q3 2026 earnings miss revenue and EPS, shares dip; Dimon warns on credit cycle and AI",
+    "first_reported": "2026-10-13",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "JPMorgan reports Q4 revenue and EPS beat estimates",
+     "JPMorgan raises full-year guidance or announces large buyback/dividend increase",
+     "Analysts upgrade JPMorgan to Buy with materially higher price targets"
+    ]
+   },
+   "provider": "CoreWeave",
+   "news_age": 2,
+   "H_raw": 13,
+   "H": 13,
+   "stale": false,
+   "why": "earnings H 15 - news age 2",
+   "kill_conditions": [
+    "JPMorgan reports Q4 revenue and EPS beat estimates",
+    "JPMorgan raises full-year guidance or announces large buyback/dividend increase",
+    "Analysts upgrade JPMorgan to Buy with materially higher price targets"
+   ],
+   "first_reported": "2026-10-13"
+  },
+  "KHC": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.02986,
+   "out": {
+    "event_type": "analyst_revisions",
+    "driving_event": "Jefferies cuts KHC price target on worsening US retail demand and $700M turnaround spending.",
+    "first_reported": "2026-10-14",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Kraft Heinz reports US retail sales growth exceeding expectations",
+     "Kraft Heinz announces dividend increase or special dividend",
+     "Kraft Heinz appoints new permanent General Counsel"
+    ]
+   },
+   "provider": "CoreWeave",
+   "news_age": 1,
+   "H_raw": 9,
+   "H": 9,
+   "stale": false,
+   "why": "analyst_revisions H 10 - news age 1",
+   "kill_conditions": [
+    "Kraft Heinz reports US retail sales growth exceeding expectations",
+    "Kraft Heinz announces dividend increase or special dividend",
+    "Kraft Heinz appoints new permanent General Counsel"
+   ],
+   "first_reported": "2026-10-14"
+  },
+  "MCHP": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.025,
+   "out": {
+    "event_type": "mna_rumour",
+    "driving_event": "Microchip acquires VORAGO Technologies, expanding radiation-hardened space and defense chip portfolio",
+    "first_reported": "2026-10-09",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Microchip announces the VORAGO acquisition is terminated, unwound or materially value-destructive",
+     "Microchip cuts FY guidance or reports weaker-than-expected demand for the expanded portfolio",
+     "Navitas terminates or cancels the 800V AI data-center collaboration with Microchip"
+    ]
+   },
+   "provider": "DigitalOcean",
+   "news_age": 4,
+   "H_raw": 1,
+   "H": 3,
+   "stale": true,
+   "why": "mna_rumour H 5 - news age 4",
+   "kill_conditions": [
+    "Microchip announces the VORAGO acquisition is terminated, unwound or materially value-destructive",
+    "Microchip cuts FY guidance or reports weaker-than-expected demand for the expanded portfolio",
+    "Navitas terminates or cancels the 800V AI data-center collaboration with Microchip"
+   ],
+   "first_reported": "2026-10-09"
+  },
+  "MRNA": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.02738,
+   "out": {
+    "event_type": "macro_readthrough",
+    "driving_event": "NIH cancer-vaccine push and Nasdaq-100 reentry drove MRNA rally, now priced in",
+    "first_reported": "2026-10-09",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Moderna announces positive cancer vaccine trial results or FDA approval",
+     "Moderna raises FY guidance or reports earnings beat",
+     "Citi upgrades Moderna to buy or removes sell rating"
+    ]
+   },
+   "provider": "CoreWeave",
+   "news_age": 4,
+   "H_raw": 1,
+   "H": 3,
+   "stale": true,
+   "why": "macro_readthrough H 5 - news age 4",
+   "kill_conditions": [
+    "Moderna announces positive cancer vaccine trial results or FDA approval",
+    "Moderna raises FY guidance or reports earnings beat",
+    "Citi upgrades Moderna to buy or removes sell rating"
+   ],
+   "first_reported": "2026-10-09"
+  },
+  "MSFT": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.025,
+   "out": {
+    "event_type": "product_launch",
+    "driving_event": "Microsoft Maia 300 AI chip rollout for multi-GW Azure deployment from 2027",
+    "first_reported": "2026-10-14",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Microsoft delays Maia 300 multi-GW Azure deployment beyond 2027",
+     "Microsoft cancels Maia 300 AI chip program",
+     "Microsoft cuts Azure margin guidance or reports Azure margin contraction"
+    ]
+   },
+   "provider": "Relace",
+   "news_age": 1,
+   "H_raw": 4,
+   "H": 4,
+   "stale": false,
+   "why": "product_launch H 5 - news age 1",
+   "kill_conditions": [
+    "Microsoft delays Maia 300 multi-GW Azure deployment beyond 2027",
+    "Microsoft cancels Maia 300 AI chip program",
+    "Microsoft cuts Azure margin guidance or reports Azure margin contraction"
+   ],
+   "first_reported": "2026-10-14"
+  },
+  "NFLX": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.02738,
+   "out": {
+    "event_type": "dated_catalyst",
+    "driving_event": "Q3 earnings on Oct 20 amid job cuts, churn, and downgrade",
+    "first_reported": "2026-10-13",
+    "catalyst_date": "2026-10-20",
+    "kill_conditions": [
+     "Netflix reports Q3 subscriber growth above expectations and raises full-year guidance",
+     "Huber Research upgrades Netflix to Overweight",
+     "Netflix announces major cost cuts that significantly improve margins"
+    ]
+   },
+   "provider": "Modal",
+   "news_age": 2,
+   "H_raw": 4,
+   "H": 4,
+   "stale": false,
+   "why": "dated catalyst 2026-10-20: 3 trading days + 1",
+   "kill_conditions": [
+    "Netflix reports Q3 subscriber growth above expectations and raises full-year guidance",
+    "Huber Research upgrades Netflix to Overweight",
+    "Netflix announces major cost cuts that significantly improve margins"
+   ],
+   "first_reported": "2026-10-13"
+  },
+  "NVDA": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.025,
+   "out": {
+    "event_type": "dated_catalyst",
+    "driving_event": "TSMC Q3 earnings Oct 15 as early read on Nvidia AI demand",
+    "first_reported": "2026-10-14",
+    "catalyst_date": "2026-10-15",
+    "kill_conditions": [
+     "TSMC cuts full-year guidance or flags weakening AI/HPC chip demand",
+     "OpenAI confirms a revenue shortfall or cuts AI infrastructure spending",
+     "Nvidia discloses a major AI order cancellation or SpaceX deal collapse"
+    ]
+   },
+   "provider": "CoreWeave",
+   "news_age": 1,
+   "H_raw": 4,
+   "H": 4,
+   "stale": false,
+   "why": "other H 5 - news age 1",
+   "kill_conditions": [
+    "TSMC cuts full-year guidance or flags weakening AI/HPC chip demand",
+    "OpenAI confirms a revenue shortfall or cuts AI infrastructure spending",
+    "Nvidia discloses a major AI order cancellation or SpaceX deal collapse"
+   ],
+   "first_reported": "2026-10-14"
+  },
+  "ON": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.0275,
+   "out": {
+    "event_type": "product_launch",
+    "driving_event": "Sungrow deploys onsemi EliteSiC hybrid power modules for energy storage",
+    "first_reported": "2026-10-14",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Sungrow cancels or delays EliteSiC deployment",
+     "onsemi loses Sungrow design win to competitor",
+     "Synaptics deal terminated"
+    ]
+   },
+   "provider": "CoreWeave",
+   "news_age": 1,
+   "H_raw": 4,
+   "H": 4,
+   "stale": false,
+   "why": "product_launch H 5 - news age 1",
+   "kill_conditions": [
+    "Sungrow cancels or delays EliteSiC deployment",
+    "onsemi loses Sungrow design win to competitor",
+    "Synaptics deal terminated"
+   ],
+   "first_reported": "2026-10-14"
+  },
+  "ORCL": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.04977,
+   "out": {
+    "event_type": "macro_readthrough",
+    "driving_event": "CoreWeave bond yield hits 15%, AI borrowing fears spike, pressuring Oracle as levered AI-capex short",
+    "first_reported": "2026-10-14",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "CoreWeave bond yield falls below 10% or AI credit spreads normalize",
+     "Oracle reports positive free cash flow or raises FY guidance",
+     "FERC approves Project Jupiter pipeline without further delays"
+    ]
+   },
+   "provider": "CoreWeave",
+   "news_age": 1,
+   "H_raw": 4,
+   "H": 4,
+   "stale": false,
+   "why": "macro_readthrough H 5 - news age 1",
+   "kill_conditions": [
+    "CoreWeave bond yield falls below 10% or AI credit spreads normalize",
+    "Oracle reports positive free cash flow or raises FY guidance",
+    "FERC approves Project Jupiter pipeline without further delays"
+   ],
+   "first_reported": "2026-10-14"
+  },
+  "SBAC": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.025,
+   "out": {
+    "event_type": "macro_readthrough",
+    "driving_event": "SpaceX's $8B spectrum buy from Grain Management reframes tower REITs as winners; build option remains alive.",
+    "first_reported": "2026-10-09",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "SpaceX withdraws or regulators block the $8B spectrum purchase from Grain Management",
+     "Bernstein or major analysts reverse, saying SpaceX deal hurts tower leasing demand",
+     "SpaceX announces network build that bypasses cell tower leases entirely"
+    ]
+   },
+   "provider": "DigitalOcean",
+   "news_age": 4,
+   "H_raw": 1,
+   "H": 3,
+   "stale": true,
+   "why": "macro_readthrough H 5 - news age 4",
+   "kill_conditions": [
+    "SpaceX withdraws or regulators block the $8B spectrum purchase from Grain Management",
+    "Bernstein or major analysts reverse, saying SpaceX deal hurts tower leasing demand",
+    "SpaceX announces network build that bypasses cell tower leases entirely"
+   ],
+   "first_reported": "2026-10-09"
+  },
+  "SMCI": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.02738,
+   "out": {
+    "event_type": "legal_regulatory",
+    "driving_event": "Supermicro contractor pleads guilty in $2.5B illegal Nvidia AI-server export scheme to China",
+    "first_reported": "2026-10-10",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Super Micro is cleared of wrongdoing in the $2.5B export scheme",
+     "Federal probe into Super Micro closes with no charges or penalties",
+     "Contractor's guilty plea is withdrawn or overturned"
+    ]
+   },
+   "provider": "Novita",
+   "news_age": 4,
+   "H_raw": 3,
+   "H": 3,
+   "stale": false,
+   "why": "legal_regulatory H 7 - news age 4",
+   "kill_conditions": [
+    "Super Micro is cleared of wrongdoing in the $2.5B export scheme",
+    "Federal probe into Super Micro closes with no charges or penalties",
+    "Contractor's guilty plea is withdrawn or overturned"
+   ],
+   "first_reported": "2026-10-10"
+  },
+  "STT": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.02986,
+   "out": {
+    "event_type": "earnings",
+    "driving_event": "Q3 2026 revenue miss with net inflows collapsing to $7B and fee-growth outlook trailing views",
+    "first_reported": "2026-10-14",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "State Street reports a revenue beat with net inflows accelerating back above prior levels",
+     "Company raises its fee revenue growth outlook above consensus or prior guidance",
+     "Analysts cite improving fee-growth trajectory, reversing post-earnings underperformance versus peers"
+    ]
+   },
+   "provider": "DigitalOcean",
+   "news_age": 1,
+   "H_raw": 14,
+   "H": 14,
+   "stale": false,
+   "why": "earnings H 15 - news age 1",
+   "kill_conditions": [
+    "State Street reports a revenue beat with net inflows accelerating back above prior levels",
+    "Company raises its fee revenue growth outlook above consensus or prior guidance",
+    "Analysts cite improving fee-growth trajectory, reversing post-earnings underperformance versus peers"
+   ],
+   "first_reported": "2026-10-14"
+  },
+  "TSLA": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.01991,
+   "out": {
+    "event_type": "dated_catalyst",
+    "driving_event": "Q3 earnings on Oct 20 with expected profit decline and margin pressure",
+    "first_reported": "2026-10-14",
+    "catalyst_date": "2026-10-20",
+    "kill_conditions": [
+     "Tesla reports Q3 earnings beat with margin expansion",
+     "NHTSA closes Cybercab probe without defect finding",
+     "Tesla raises FY guidance"
+    ]
+   },
+   "provider": "CoreWeave",
+   "news_age": 1,
+   "H_raw": 4,
+   "H": 4,
+   "stale": false,
+   "why": "dated catalyst 2026-10-20: 3 trading days + 1",
+   "kill_conditions": [
+    "Tesla reports Q3 earnings beat with margin expansion",
+    "NHTSA closes Cybercab probe without defect finding",
+    "Tesla raises FY guidance"
+   ],
+   "first_reported": "2026-10-14"
+  },
+  "VEEV": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.03,
+   "out": {
+    "event_type": "partnership",
+    "driving_event": "IQVIA selects Veeva CTMS, eTMF, Study Startup and Site Connect as enterprise clinical standard",
+    "first_reported": "2026-10-13",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "IQVIA terminates or reverses the Veeva clinical applications standard designation",
+     "IQVIA adopts a rival vendor's CTMS/eTMF as its enterprise clinical standard",
+     "Veeva loses a major clinical customer or discloses declining Clinical Expansion share"
+    ]
+   },
+   "provider": "Alibaba",
+   "news_age": 2,
+   "H_raw": 3,
+   "H": 3,
+   "stale": false,
+   "why": "partnership H 5 - news age 2",
+   "kill_conditions": [
+    "IQVIA terminates or reverses the Veeva clinical applications standard designation",
+    "IQVIA adopts a rival vendor's CTMS/eTMF as its enterprise clinical standard",
+    "Veeva loses a major clinical customer or discloses declining Clinical Expansion share"
+   ],
+   "first_reported": "2026-10-13"
+  }
+ }
+}
