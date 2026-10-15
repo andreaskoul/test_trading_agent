@@ -53,6 +53,9 @@ SCHEDULE = {
     "prices":    {"days": "01234",   "at": "13:45", "until": "21:15", "every": 30, "late": 25},
     # one-off pipeline tests of the pre-close send: 1 SPY bought Monday, sold Tuesday (labelled fund-test-...)
     # (moved from Mon/Tue: the 10-05 run crashed in the drift check before sending anything)
+    # Thesis Tree R5 (research only, PREREG_thesis_tree.md): forward predictions for the day's reports, from news to
+    # 22:00 UTC of the previous session; committed to `research-data` and hash-logged in an issue before the 8-Ks arrive
+    "r5":        {"days": "01234",   "at": "02:30", "late": 300},
     "filltest-buy":  {"dates": ["2026-10-06"], "at": "16:15", "late": 180, "args": ["buy", "SPY", "1"]},
     "filltest-sell": {"dates": ["2026-10-07"], "at": "16:15", "late": 180, "args": ["sell", "SPY", "1"]},
 }
@@ -66,13 +69,14 @@ NEEDS = {
     "report": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "IMESSAGE_TO"],
     "prices": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "lifecycle": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY", "HF_TOKEN"],
+    "r5": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY", "SEC_USER_AGENT"],
     "filltest-buy": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "filltest-sell": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
 }
 GROUP = {"archive": "archive", "weekly": "weekly", "execute": "execute", "review": "execute", "filltest": "filltest",
-         "lifecycle": "execute", "prices": "prices"}
+         "lifecycle": "execute", "prices": "prices", "r5": "r5"}
 # minutes, as the workflows; trade and review wait for the last minute before the close
-TIMEOUT = {"archive": 350, "weekly": 340, "execute": 330, "review": 330, "filltest": 330, "lifecycle": 330, "prices": 20}
+TIMEOUT = {"archive": 350, "weekly": 340, "execute": 330, "review": 330, "filltest": 330, "lifecycle": 330, "prices": 20, "r5": 240}
 PAGES_AFTER = {"weekly", "execute", "review", "filltest", "lifecycle"}         # the prices job deploys only when it refreshed                               # fund_pages.yml's workflow_run list
 
 
@@ -401,6 +405,47 @@ if [ -z "$pushed" ]; then echo "fund-data push rejected 3 times: records not sav
            allow_fail=True)
 
 
+R5_DATA, R5_LOG_ISSUE = "research-data", "87"
+R5_RESTORE = f"""git fetch -q origin +refs/heads/{R5_DATA}:refs/remotes/origin/{R5_DATA} 2>/dev/null || {{ echo "{R5_DATA} has no records yet"; exit 0; }}
+git checkout origin/{R5_DATA} -- fund_state/live/research 2>/dev/null || echo 'no records on {R5_DATA} yet'"""
+# Commit the records to the orphan branch `research-data` (created on first use), then post the batch hashes to the
+# timestamp-log issue: GitHub's server time on the push and the comment is the evidence that each prediction predates
+# its report (PREREG_thesis_tree.md, R5).
+R5_COMMIT = f"""[ -d fund_state/live/research ] || {{ echo "no records to commit"; exit 0; }}
+git config user.name 'fund-bot'; git config user.email 'fund-bot@users.noreply.github.com'
+FD="$RUNNER_TMP/rd"; pushed=""
+for attempt in 1 2 3; do
+  rm -rf "$FD" && git worktree prune
+  if git fetch -q origin +refs/heads/{R5_DATA}:refs/remotes/origin/{R5_DATA} 2>/dev/null; then
+    git worktree add -q --detach "$FD" origin/{R5_DATA}
+  else
+    git worktree add -q --detach "$FD"
+    (cd "$FD" && git checkout -q --orphan {R5_DATA}-init && git rm -rq --cached . && find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {{}} +)
+  fi
+  mkdir -p "$FD/fund_state/live/research" && cp -a fund_state/live/research/. "$FD/fund_state/live/research/"
+  cd "$FD" && git add -A fund_state/live/research
+  if git diff --cached --quiet; then cd - >/dev/null; pushed=1; break; fi
+  git commit -q -m "r5 forward predictions $(date -u +%Y-%m-%dT%H:%MZ)"
+  if git push -q origin HEAD:refs/heads/{R5_DATA}; then
+    sha=$(git rev-parse HEAD)
+    body=$(git show --name-only --format= HEAD | grep -E 'r5/[0-9-]+[.]json$' | while read f; do
+      python3 -c 'import json, sys; d = json.load(open(sys.argv[1])); print(sys.argv[1].rsplit("/", 1)[1], len(d["records"]), "records, batch sha256", d["batch_sha256"])' "$f"; done)
+    gh issue comment {R5_LOG_ISSUE} -R {GH_REPO} --body "R5 records pushed to {R5_DATA} at $(date -u +%Y-%m-%dT%H:%M:%SZ), commit $sha
+$body" || echo "timestamp comment failed (the push stands)"
+    cd - >/dev/null; pushed=1; break
+  fi
+  cd - >/dev/null; sleep 5
+done
+if [ -z "$pushed" ]; then echo "{R5_DATA} push rejected 3 times: records not saved"; exit 1; fi"""
+
+
+def job_r5(j, a):
+    j.step("Restore research records", R5_RESTORE)
+    j.step("R5 forward predictions (Thesis Tree, research only)", "python fund/r5.py" + (f" --date {a.date}" if a.date else ""))
+    j.step("Commit to research-data and log the batch hashes", R5_COMMIT, when="always")
+    issue(j, "Fund research: R5 forward predictions problem", 'echo "The R5 run needs attention; predictions after a report never count."')
+
+
 def job_filltest(j, a):
     side, sym, qty = a.test
     j.step("Restore fund state", RESTORE.format(paths="fund_state"))
@@ -451,7 +496,7 @@ def run(args):
     awake = subprocess.Popen(["caffeinate", "-i", "-w", str(os.getpid())])    # no idle sleep while the job runs
     drift(j)
     res = {"archive": job_archive, "weekly": job_weekly, "execute": job_execute, "review": job_review,
-           "filltest": job_filltest, "lifecycle": job_lifecycle, "prices": job_prices}[name](j, args)
+           "filltest": job_filltest, "lifecycle": job_lifecycle, "prices": job_prices, "r5": job_r5}[name](j, args)
     if name in PAGES_AFTER and res != "skip" and not args.no_pages:
         j.step("GitHub Pages: rebuild the dashboard (fund_pages.yml)",
                f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main", when="always", allow_fail=True)
@@ -703,13 +748,14 @@ def main():
     sub = p.add_subparsers(dest="cmd", required=True)
     t = sub.add_parser("tick"); t.add_argument("--init", action="store_true"); t.set_defaults(f=tick)
     r = sub.add_parser("run")
-    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute", "filltest", "lifecycle", "prices"])
+    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute", "filltest", "lifecycle", "prices", "r5"])
     r.add_argument("--test", nargs=3, metavar=("SIDE", "SYMBOL", "QTY"), help="filltest: e.g. buy SPY 1")
     r.add_argument("--mode", choices=["plan", "trade", "reconcile"], help="execute: plan|trade|reconcile; review: plan|trade")
     r.add_argument("--asof", help="as-of Wednesday YYYY-MM-DD (weekly, execute)")
     r.add_argument("--dry-run", action="store_true", help="weekly: real calls, no deadline, nothing committed")
     r.add_argument("--resume", action="store_true", help="execute: remove the HALT file after a risk stop")
     r.add_argument("--minutes", help="archive: Finnhub budget (default 40; backfill 330)")
+    r.add_argument("--date", help="r5: report date YYYY-MM-DD (default: today, UTC)")
     r.add_argument("--no-pages", action="store_true", help="do not start the GitHub Pages deploy afterwards")
     r.set_defaults(f=run)
     sub.add_parser("enable").set_defaults(f=lambda _: (open(ENABLED, "w").close(), print("schedule enabled")))

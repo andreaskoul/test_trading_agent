@@ -1,6 +1,6 @@
 {
  "_doc": "Production-funnel templates (Thesis Tree, PREREG_thesis_tree.md section 3). Written before any test. Stages: S0 primary inputs, S1 tools & capital equipment, S2 components & intermediates, S3 assembly / OEM / processors, S4 sellers, distribution & logistics, S5 end demand (macro: no listed members). A sub-industry may sit in several chains. Sub-industries not listed belong to the service layer (outside the funnel). Firm-level overrides come later, from the 10-K business description, frozen per year with the reason recorded.",
- "version": "2026-10-14-draft",
+ "version": "2026-10-14",
  "stages": {
   "S0": "primary inputs",
   "S1": "tools & capital equipment",
@@ -175,7 +175,8 @@
    "S0": [
     "Agricultural Products & Services",
     "Fertilizers & Agricultural Chemicals",
-    "Commodity Chemicals"
+    "Commodity Chemicals",
+    "Diversified Chemicals"
    ],
    "S1": [
     "Agricultural & Farm Machinery"
@@ -206,14 +207,17 @@
   "apparel_discretionary": {
    "about": "Discretionary goods: materials -> brands and makers -> retailers, distributors and freight -> consumers",
    "S0": [
-    "Commodity Chemicals"
+    "Commodity Chemicals",
+    "Diversified Chemicals"
    ],
    "S3": [
     "Apparel, Accessories & Luxury Goods",
     "Footwear",
     "Leisure Products",
     "Consumer Electronics",
-    "Housewares & Specialties"
+    "Housewares & Specialties",
+    "Household Appliances",
+    "Home Furnishings"
    ],
    "S4": [
     "Apparel Retail",
@@ -225,7 +229,8 @@
     "Cargo Ground Transportation",
     "Rail Transportation",
     "Marine Transportation",
-    "Industrial REITs"
+    "Industrial REITs",
+    "Specialty Stores"
    ],
    "S5": [
     "macro: retail sales, consumer sentiment"
@@ -306,7 +311,8 @@
     "Hotels, Resorts & Cruise Lines",
     "Casinos & Gaming",
     "Hotel & Resort REITs",
-    "Passenger Ground Transportation"
+    "Passenger Ground Transportation",
+    "Leisure Facilities"
    ],
    "S5": [
     "macro: travel demand, real consumer spending"
@@ -343,8 +349,17 @@
    "Data Processing & Outsourced Services",
    "Specialized Consumer Services",
    "Industrial Conglomerates",
-   "Gold"
+   "Gold",
+   "Commercial & Residential Mortgage Finance",
+   "Diversified Financial Services",
+   "Diversified REITs",
+   "Mortgage REITs",
+   "Education Services",
+   "Office Services & Supplies",
+   "Security & Alarm Services",
+   "Silver"
   ]
  },
- "unlisted_rule": "A sub-industry that appears in the S&P 500 or S&P 400 data but in none of the lists above is assigned in the commit that completes the pre-registration, before any test runs, by the same reading of GICS definitions, and the assignment is logged. Nothing is assigned after a result is seen."
+ "unlisted_rule": "A sub-industry that appears in the S&P 500 or S&P 400 data but in none of the lists above is assigned in the commit that completes the pre-registration, before any test runs, by the same reading of GICS definitions, and the assignment is logged. Nothing is assigned after a result is seen.",
+ "_assigned_at_signoff": "S&P 400 sub-industries added at sign-off (2026-10-14), before any test: Diversified Chemicals -> S0 (staples, discretionary); Household Appliances, Home Furnishings -> discretionary S3; Specialty Stores -> discretionary S4; Leisure Facilities -> travel S4; mortgage and diversified finance, diversified and mortgage REITs, education, office and security services, silver -> service layer."
 }
