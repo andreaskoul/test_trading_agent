@@ -370,7 +370,8 @@ elif look and ops_ok and mean_l > 0:
 else:
     verdict = f"CONTINUE ({n} weeks scored; next look at {min([L for L in LOOKS if L > n], default='-')} weeks)."
 # pre-registered paired test (Amendment 7): the lifecycle fund against the weekly book it replaced
-d0 = (Px["fund"] - Px["c0_weekly"]).dropna() if {"fund", "c0_weekly"} <= set(Px) else pd.Series(dtype=float)
+# an empty series needs a string index: comparing the default integer index with the date string raised (2026-10-14)
+d0 = (Px["fund"] - Px["c0_weekly"]).dropna() if {"fund", "c0_weekly"} <= set(Px) else pd.Series(dtype=float, index=pd.Index([], dtype=object))
 d0 = d0[d0.index >= P7_FIRST] if P7_FIRST else d0.iloc[:0]
 lag0 = max(int(4 * (max(len(d0), 1) / 100) ** (2 / 9)), 4)        # >= the longest horizon (20 trading days) in weeks
 paired = (f"Protocol 7 vs the weekly book (c0_weekly): {len(d0)} weeks, mean {d0.mean() * 100 if len(d0) else float('nan'):+.3f}%/wk, "
