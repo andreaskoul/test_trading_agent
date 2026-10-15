@@ -1,10 +1,9 @@
 # Pre-registration: the Thesis Tree tests (Protocol 8 evidence)
 
-> **Status: DRAFT for the owner's sign-off.**
-> * This file becomes the pre-registration in the commit that removes this banner. That commit must come before
->   any test below is run, and before any feature is computed on a validation or sealed sample.
-> * Until then, only data plumbing runs.
-> * After sign-off, changes are appended as dated amendments, each stating whether any result had been seen.
+> **Status: PRE-REGISTERED.** Signed off by the owner on 2026-10-14, in the commit that removed the draft banner.
+> That commit comes before any test below was run, before any feature was computed on a validation or sealed sample,
+> and before the first R5 prediction. Changes from here on are appended as dated amendments, each stating whether any
+> result had been seen.
 
 **Owner's design (2026-10-14).**
 * A thesis per firm: its image between quarterly reports, built from its own events, competitors' events, sector
@@ -114,8 +113,11 @@ slope-winsorised and shrunk ⅓ toward 1 (as `screen.py`). A market-only residua
   * stages S0 (primary inputs) … S5 (end demand);
   * 12 chains;
   * a service layer outside the funnel.
-* Every S&P 500 GICS sub-industry is assigned (392 firms in the funnel, 111 in the service layer). S&P 400
-  sub-industries not yet listed are assigned in the sign-off commit, by the same reading, before any test.
+* Every GICS sub-industry is assigned:
+  * S&P 500: 392 firms in the funnel, 111 in the service layer;
+  * S&P 400: 293 and 107, from the current list in `data/raw/stocks/sp400_current.csv`.
+* The S&P 400 sub-industries were added in the sign-off commit, before any test (`_assigned_at_signoff` in
+  `chains.json`).
 * **Firm-level overrides:**
   * an LLM reads each firm's 10-K Item 1 and may move the firm to another (chain, stage) with a stated reason;
   * overrides are frozen per fiscal year and spot-checked by the owner (30 firms; ≥ 90% agreement, else the
@@ -197,14 +199,59 @@ price.
 
   Each rung is kept if its marginal effect on the R3 target passes (Holm across rungs). 1 sample is compared with
   3 at the final rung. **Prior: rung 1 ≈ 0.**
-* **R5 Forward seasons** (uncontaminated).
-  * For every S&P 500 and S&P 400 firm with a report expected in the window:
-    * the desk writes z_i at 22:00 UTC on the session before t0_i, from information to that time;
-    * it commits the prediction file to `fund-data` under `research/r5/<date>.json`, with SHA-256 of each record.
-  * A prediction counts only if the git commit time is earlier than the 8-K 2.02 acceptance time. This is audited
-    automatically.
-  * The Q3-2026 season starts as soon as the minimal desk works. Firms that have already reported are skipped,
-    never back-filled.
+* **R5 Forward seasons** (uncontaminated). The specification below is version `r5-v1`, implemented in
+  `fund/r5.py`.
+  * **Who.** Every S&P 500 and S&P 400 firm (current lists) with an entry dated D in the Finnhub earnings
+    calendar. A firm whose latest 8-K item 2.02 is fewer than 45 days before the cutoff has already reported this
+    season and is skipped.
+  * **Information cutoff.** C = 22:00 UTC on the last trading day before the **report date D**. This is the date of
+    the release itself, *not* t0: an after-close release on D must not be used by the decision for t0 = D+1.
+    * News: published ≤ C.
+    * Filings: accepted ≤ C.
+    * The run may happen any time after C.
+  * **Card** (1 call, temperature 0). From the EX-99.1 press release (first 15,000 characters) of the firm's latest
+    8-K item 2.02 before C: 3–5 drivers, with what the release said and any guidance; the guidance in numbers; 1–3
+    kill conditions.
+  * **Own ledger (rung 1).**
+    * Input: Finnhub company news in (that release, C], deduplicated:
+      * exact headline;
+      * token-set Jaccard ≥ 0.7 within 3 days;
+      * at most 60 items, each a headline plus its summary cut to 150 characters: the last 30 days in full, older
+        items sampled evenly in time.
+    * The three passes run concurrently. A pass that fails (time limit, empty or invalid answer, after the client's
+      retries) is dropped.
+    * 3 passes at temperature 0: two wordings plus the first wording with the items shuffled.
+    * Each pass lists events: driver, direction (−1/0/+1 against what the last release set up), size (1–3),
+      hard/soft, new/recap.
+    * Pass score = Σ over **new** events of direction × size × (1.5 if hard) / √(1 + n_new).
+    * **score_own** = the median over the passes that succeed (≥ 2 needed).
+  * **Peers (rung 2).**
+    * Input: the current-season EX-99.1 releases (first 4,000 characters) of up to 5 same-sub-industry universe
+      firms whose 8-K 2.02 was accepted within 45 days before C (most recent first).
+    * 3 passes; peer order reversed in the third.
+    * Each peer gets a channel (contagion / competitive / none), direction (−1/0/+1 for the firm), size (1–3) and a
+      driver.
+    * Pass score = Σ over peers with a channel of direction × size / √(1 + n).
+    * **score_peer** = the median over passes; missing if no peer has reported.
+  * **score_combined** = score_own + 0.5 × score_peer (score_peer counted as 0 when missing). This is the R3
+    predictor z for forward seasons; score_own and score_combined are R4 rungs 1–2.
+  * **Secondary, descriptive:** the majority "above / inline / below" call, and the Finnhub consensus (EPS and
+    revenue estimates) as fetched at decision time. That consensus is also kept as a free, point-in-time
+    expectation for SUE-against-consensus robustness.
+  * **No price** is given to any call. Stock moves, ratings and price targets are excluded by instruction.
+  * **Record and timestamp proof.**
+    * One file per report date: `fund_state/live/research/r5/<D>.json`. It is append-only per ticker, and each
+      record carries its SHA-256 (canonical JSON) plus a batch SHA-256.
+    * Pushed to the orphan branch `research-data`, separate from the fund's records so research never races the
+      fund's jobs.
+    * The batch hashes are posted as a comment on the R5 timestamp-log issue.
+    * **A prediction counts only if the earlier of GitHub's push time and the comment time precedes the 8-K item
+      2.02 acceptance time.** This is audited automatically. Unknown or failed records count as missing, never as
+      a prediction.
+  * **Start.** The Q3-2026 season starts with the first run after this commit. Firms that have already reported
+    are skipped and never back-filled. The forward record is test-only: prompts and weights are not changed within
+    or between forward seasons except by a dated amendment, and the amendment's first season is analysed
+    separately.
 
 **Tuning discipline.** Prompts and aggregation weights may be developed only on replay seasons marked *tuning* in
 the R0 report: the first post-horizon season. Every later season, and every forward season, is test-only.
@@ -278,6 +325,7 @@ the R0 report: the first post-horizon season. Every later season, and every forw
 
 | | |
 |---|---|
-| Owner | ☐ signed (date, commit) |
-| Variants not listed here are not run | ☐ |
-| S&P 400 sub-industry assignments added before any test | ☐ |
+| Owner | ☑ signed 2026-10-14 ("Confirmed"), in the commit that removed the draft banner |
+| Variants not listed here are not run | ☑ |
+| S&P 400 sub-industry assignments added before any test | ☑ (`fund/chains.json`, `_assigned_at_signoff`) |
+| R5 v1 specified before the first prediction | ☑ (§5, this commit) |

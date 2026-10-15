@@ -24,6 +24,7 @@ acts twice. The workflows remain, manual only, as the fallback when the Mac is o
 | Thu 16:15 (Fri 16:15 after a Thursday holiday) | orders sent in the last minute before the close (`fund/broker.py`); each week is traded once | `fund_execute.yml` | `{"ref":"main","inputs":{"mode":"trade"}}` |
 | Mon, Tue, Wed, Fri 16:30 | daily review of held positions against new news; changes traded at that day's close | `fund_review.yml` | `{"ref":"main","inputs":{"mode":"trade"}}` |
 | Tue–Sat 01:10 | reconcile the previous session: fills vs official close, broker NAV, cash activity, risk halts | `fund_execute.yml` | `{"ref":"main","inputs":{"mode":"reconcile"}}` |
+| Mon–Fri 02:30 | research only: Thesis Tree R5 forward predictions for the day's earnings reports (`fund/r5.py`), committed to `research-data`, hashes logged in issue #87 | (runner only) | — |
 | after each weekly, trade, review or reconcile run | ledger (Excel) and dashboard rebuilt and published on GitHub Pages | `fund_pages.yml` | (started by the runner) |
 
 The trade job also runs on Fridays; it trades only when Thursday was a holiday. A slot missed
