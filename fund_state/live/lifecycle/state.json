@@ -54,11 +54,11 @@
 {
 "date": "2026-10-13",
 "nav": 99462.04342783785,
-"pnl_lots": 19.479212525922,
-"pnl_hedge": 2.335065592404521,
+"pnl_lots": 19.47921252592149,
+"pnl_hedge": 2.335065592403608,
 "cash_income": 12.573547098525937,
 "cost": 4.017153709491273,
-"r_gross": 0.00021938963223303191,
+"r_gross": 0.00021938963223301758,
 "r_cost": 4.040114782475601e-05,
 "r_cash": 0.000126454144338283,
 "n_long": 6,
@@ -67,6 +67,23 @@
 "hedge": -0.20294781349474833,
 "net_beta": -0.0040602933108792255,
 "traded": true
+},
+{
+"date": "2026-10-14",
+"nav": 98811.95168686759,
+"pnl_lots": -869.987849489167,
+"pnl_hedge": 218.19890702349252,
+"cash_income": 12.886259654196188,
+"cost": 11.189058158810601,
+"r_gross": -0.00655314248533978,
+"r_cost": 0.00011249575992201022,
+"r_cash": 0.00012955957076777217,
+"n_long": 3,
+"n_short": 3,
+"stock_gross": 0.2255783073124085,
+"hedge": -0.0976414190554351,
+"net_beta": 0.0,
+"traded": true
 }
 ],
 "lots": [
@@ -74,14 +91,14 @@
 "id": "2026-10-07|MRVL",
 "ticker": "MRVL",
 "side": 1,
-"n": 5672.844486988486,
+"n": 5177.915325215502,
 "w0": 0.057962149688043356,
 "beta": 1.9268106508,
 "sigma_e": 0.042118691238406177,
 "H": 13,
 "W": 0.15186110091550933,
-"R": -0.031132950314494038,
-"days": 3,
+"R": -0.09755016583103027,
+"days": 4,
 "kill_conditions": [
 "Marvell cuts or withdraws its FY28 $20B or FY31 $70-90B revenue targets",
 "A major analyst downgrades MRVL citing AI data-center demand slowdown",
@@ -92,68 +109,20 @@
 "cohort": "2026-10-07",
 "entry_day": "2026-10-08",
 "entry_close_ts": 1791489600,
-"news_until": 1791921600
-},
-{
-"id": "2026-10-07|NVDA",
-"ticker": "NVDA",
-"side": 1,
-"n": 2789.2226925591203,
-"w0": 0.02812829216528587,
-"beta": 1.5498610289,
-"sigma_e": 0.017951148377472147,
-"H": 4,
-"W": 0.035902296754944295,
-"R": -0.016572879420924183,
-"days": 3,
-"kill_conditions": [
-"SpaceX cancels or reduces its $40B Nvidia chip purchase",
-"Nvidia cuts or suspends its $150B buyback",
-"China bans or restricts Nvidia chip sales to ByteDance/Alibaba"
-],
-"first_reported": "2026-10-07",
-"score": 1,
-"cohort": "2026-10-07",
-"entry_day": "2026-10-08",
-"entry_close_ts": 1791489600,
-"news_until": 1791921600
-},
-{
-"id": "2026-10-07|GOOGL",
-"ticker": "GOOGL",
-"side": 1,
-"n": 2814.4015756928775,
-"w0": 0.027704156864750605,
-"beta": 1.1606061354,
-"sigma_e": 0.01562550996955011,
-"H": 4,
-"W": 0.03125101993910022,
-"R": 0.009571935614698233,
-"days": 3,
-"kill_conditions": [
-"Constellation terminates or cancels the 20-year nuclear power deal with Google",
-"EU regulators block or force Google to unwind the nuclear power agreement",
-"Google cancels or indefinitely delays the Gemini 4 Argon AI model launch"
-],
-"first_reported": "2026-10-07",
-"score": 1,
-"cohort": "2026-10-07",
-"entry_day": "2026-10-08",
-"entry_close_ts": 1791489600,
-"news_until": 1791921600
+"news_until": 1792008000
 },
 {
 "id": "2026-10-07|HPE",
 "ticker": "HPE",
 "side": 1,
-"n": 2478.8398685187863,
+"n": 2273.500713591347,
 "w0": 0.025574456206743715,
 "beta": 1.503743029,
 "sigma_e": 0.037871722252833785,
 "H": 11,
 "W": 0.1256062928772028,
-"R": -0.03750653747853577,
-"days": 3,
+"R": -0.10408842915387254,
+"days": 4,
 "kill_conditions": [
 "HPE cuts FY27 networking guidance",
 "Vultr cancels or delays the $1.2B Helios AI server order",
@@ -164,20 +133,20 @@
 "cohort": "2026-10-07",
 "entry_day": "2026-10-08",
 "entry_close_ts": 1791489600,
-"news_until": 1791921600
+"news_until": 1792008000
 },
 {
 "id": "2026-10-07|AMD",
 "ticker": "AMD",
 "side": 1,
-"n": 3563.2040133345854,
+"n": 3358.9551548092554,
 "w0": 0.023444755548736828,
 "beta": 1.9388291041,
 "sigma_e": 0.031961678183490064,
 "H": 14,
 "W": 0.11958964926894712,
-"R": -0.034290673541944885,
-"days": 3,
+"R": -0.07065433401759671,
+"days": 4,
 "kill_conditions": [
 "AMD delays or reduces its 2027 AI chip supply ramp plan",
 "HPE/Vultr $1.2B Helios order is cancelled or reduced",
@@ -188,46 +157,21 @@
 "cohort": "2026-10-07",
 "entry_day": "2026-10-08",
 "entry_close_ts": 1791489600,
-"news_until": 1791921600,
-"increased": true
-},
-{
-"id": "2026-10-07|LLY",
-"ticker": "LLY",
-"side": 1,
-"n": 3449.1346840386054,
-"w0": 0.023444755548736828,
-"beta": 0.6060934531,
-"sigma_e": 0.01791112305388351,
-"H": 4,
-"W": 0.03582224610776702,
-"R": -0.005711543461692368,
-"days": 3,
-"kill_conditions": [
-"FDA withdraws or restricts Jaypirca first-line CLL/SLL approval",
-"Gate Bioscience collaboration terminated or deal value materially reduced",
-"Foundayo/retatrutide Phase 3 data fails to show CV/diabetes risk reduction"
-],
-"first_reported": "2026-10-05",
-"score": 1,
-"cohort": "2026-10-07",
-"entry_day": "2026-10-08",
-"entry_close_ts": 1791489600,
-"news_until": 1791921600,
+"news_until": 1792008000,
 "increased": true
 },
 {
 "id": "2026-10-07|NKE",
 "ticker": "NKE",
 "side": -1,
-"n": -6611.135148603915,
+"n": -6605.521391047783,
 "w0": -0.065,
 "beta": 0.8879359006,
 "sigma_e": 0.01767595269211655,
 "H": 13,
 "W": 0.06373155377410196,
-"R": -0.012324378909453223,
-"days": 3,
+"R": -0.021073500477958314,
+"days": 4,
 "kill_conditions": [
 "Nike raises FY27 revenue guidance or reports Q2 revenue beat.",
 "Nike China sales return to growth and management signals turnaround.",
@@ -238,44 +182,20 @@
 "cohort": "2026-10-07",
 "entry_day": "2026-10-08",
 "entry_close_ts": 1791489600,
-"news_until": 1791921600
-},
-{
-"id": "2026-10-07|MCD",
-"ticker": "MCD",
-"side": -1,
-"n": -2986.5326546010983,
-"w0": -0.03,
-"beta": 0.3630779527,
-"sigma_e": 0.013760692906267835,
-"H": 4,
-"W": 0.02752138581253567,
-"R": 0.00650054106296547,
-"days": 3,
-"kill_conditions": [
-"Lawsuit dismissed or settled with no material financial impact",
-"McDonald's and franchisees reach agreement on $8.5B overhaul costs",
-"Analysts upgrade MCD citing improved strategy and sentiment"
-],
-"first_reported": "2026-10-05",
-"score": -1,
-"cohort": "2026-10-07",
-"entry_day": "2026-10-08",
-"entry_close_ts": 1791489600,
-"news_until": 1791921600
+"news_until": 1792008000
 },
 {
 "id": "2026-10-07|META",
 "ticker": "META",
 "side": -1,
-"n": -2909.0581065592532,
+"n": -2813.8317585727364,
 "w0": -0.0275,
 "beta": 1.2964404808,
 "sigma_e": 0.02803545047546816,
 "H": 6,
 "W": 0.06867254837396503,
-"R": -0.05017915440248416,
-"days": 3,
+"R": -0.03145876969368616,
+"days": 4,
 "kill_conditions": [
 "Ofcom closes UK probe with no penalty or findings against Meta",
 "New Mexico imposes no penalty or settles for under $1B",
@@ -286,20 +206,20 @@
 "cohort": "2026-10-07",
 "entry_day": "2026-10-08",
 "entry_close_ts": 1791489600,
-"news_until": 1791921600
+"news_until": 1792008000
 },
 {
 "id": "2026-10-07|BRK.B",
 "ticker": "BRK.B",
 "side": -1,
-"n": -2037.564098914001,
+"n": -2060.108460522454,
 "w0": -0.02,
 "beta": 0.362446497,
 "sigma_e": 0.008618523374573556,
 "H": 6,
 "W": 0.021110984603954986,
-"R": -0.016646791145834745,
-"days": 3,
+"R": -0.03162907283644174,
+"days": 4,
 "kill_conditions": [
 "Texas AG drops or closes Fruit of the Loom investigation without penalties or enforcement action",
 "Fruit of the Loom settles toxic chemical claims with no material financial impact",
@@ -310,7 +230,7 @@
 "cohort": "2026-10-07",
 "entry_day": "2026-10-08",
 "entry_close_ts": 1791489600,
-"news_until": 1791921600
+"news_until": 1792008000
 }
 ],
 "events": [
@@ -541,11 +461,64 @@
 "R": -0.011796,
 "W": 0.050898,
 "days_held": 3
+},
+{
+"day": "2026-10-14",
+"id": "2026-10-07|NVDA",
+"ticker": "NVDA",
+"action": "horizon",
+"from": 2701.1,
+"to": 0.0,
+"R": -0.031414,
+"W": 0.035902,
+"days_held": 4
+},
+{
+"day": "2026-10-14",
+"id": "2026-10-07|GOOGL",
+"ticker": "GOOGL",
+"action": "horizon",
+"from": 2765.56,
+"to": 0.0,
+"R": 0.004762,
+"W": 0.031251,
+"days_held": 4
+},
+{
+"day": "2026-10-14",
+"id": "2026-10-07|LLY",
+"ticker": "LLY",
+"action": "horizon",
+"from": 3574.0,
+"to": 0.0,
+"R": 0.037042,
+"W": 0.035822,
+"days_held": 4
+},
+{
+"day": "2026-10-14",
+"id": "2026-10-07|MCD",
+"ticker": "MCD",
+"action": "horizon",
+"from": -3018.2,
+"to": 0.0,
+"R": -0.008026,
+"W": 0.027521,
+"days_held": 4
+},
+{
+"day": "2026-10-14",
+"id": "SPY",
+"ticker": "SPY",
+"action": "hedge",
+"from": -19967.41,
+"to": -9648.14
 }
 ],
 "cohorts": [
-"2026-10-07"
+"2026-10-07",
+"2026-10-14"
 ],
 "live": null,
-"updated": "2026-10-14T01:19:31+00:00"
+"updated": "2026-10-15T01:14:07+00:00"
 }
