@@ -1,0 +1,3851 @@
+{
+ "records": {
+  "AA": {
+   "ticker": "AA",
+   "index": "SP400",
+   "sector": "Materials",
+   "sub_industry": "Aluminum",
+   "status": "ok",
+   "last_release": "2026-07-16 20:12:48+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1675149/000119312526306118/aa-ex99_1.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Alumina production and shipments",
+      "last_report": "Alumina production fell 6% to 2.2 Mt on Pinjarra instability and Cyclone Narelle gas disruptions; third-party shipments flat at 1.6 Mt.",
+      "guidance": "2026 alumina production 9.5-9.6 Mt; shipments 11.5-11.6 Mt; Q3 Alumina Adj EBITDA ~$10M favorable net from Pinjarra recovery, offset by Alumar/Juruti maintenance."
+     },
+     {
+      "id": "D2",
+      "name": "Aluminum production and shipments",
+      "last_report": "Aluminum production rose 5% to 636,000 tons on San Ciprián, Alumar, Lista, Portland restarts; total shipments increased 18% sequentially.",
+      "guidance": "2026 aluminum production 2.4-2.6 Mt, shipments 2.6-2.8 Mt unchanged; Q3 efficiencies at higher rates expected to offset higher carbon prices and lower Brazil energy sales."
+     },
+     {
+      "id": "D3",
+      "name": "Aluminum realized pricing",
+      "last_report": "Aluminum third-party revenue rose 31% on higher shipments, value-add sales, and higher realized price; higher aluminum prices drove adjusted EBITDA.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Energy, tariffs, and input costs",
+      "last_report": "Adjusted EBITDA was offset by higher Pinjarra alumina production costs, increased Section 232 tariffs, higher fuel oil/diesel energy prices, and lower third-party energy sales.",
+      "guidance": "Q3 Section 232 tariff costs down ~$10M; alumina costs in Aluminum segment unfavorable ~$10M; higher carbon prices and lower Brazil third-party energy sales."
+     },
+     {
+      "id": "D5",
+      "name": "Operational tax expense",
+      "last_report": "Net income included special items; adjusted net income rose 51% sequentially to $562M; Q3 operational tax expense expected $80-$90M.",
+      "guidance": "Q3 2026 operational tax expense approximately $80M-$90M, varying with market conditions and jurisdictional profitability."
+     }
+    ],
+    "guidance": "2026: alumina production 9.5-9.6 Mt, shipments 11.5-11.6 Mt; aluminum production 2.4-2.6 Mt, shipments 2.6-2.8 Mt. Q3: Alumina Adj EBITDA ~$10M favorable net; Aluminum efficiencies offset carbon/energy; Section 232 tariffs down ~$10M; alumina costs unfavorable ~$10M; tax $80-90M.",
+    "kill_conditions": [
+     "Alcoa cuts 2026 alumina production/shipment guidance again or reports further Pinjarra outage.",
+     "Alumar or other smelter restart delayed; aluminum production/shipments miss unchanged 2026 targets.",
+     "Q3 costs exceed outlook: higher energy, carbon, alumina, or Section 232 tariffs; tax above $90M."
+    ]
+   },
+   "card_provider": "Makora",
+   "news_raw": 84,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Alcoa's $4.7B South32 bauxite, alumina, aluminum asset acquisition reported after earnings",
+        "date": "2026-07-18",
+        "driver": "D1",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump signs orders to boost domestic aluminum and defense supply chains",
+        "date": "2026-07-20",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Alcoa signs non-binding MoU with Australian Vanadium for energy storage evaluation",
+        "date": "2026-08-04",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Alcoa breaks ground on gallium plant at Wagerup alumina refinery",
+        "date": "2026-08-24",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Canada imposes retaliatory tariffs up to 50% on $20B US goods",
+        "date": "2026-08-25",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CFO says Q2 momentum carries into Q3 on strong aluminum demand, tariff upside",
+        "date": "2026-09-12",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Alcoa closes $2.6B debt offering to finance South32 acquisition",
+        "date": "2026-09-23",
+        "driver": "other",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "US warns G20 measures against China/Japan overproduction in trade talks",
+        "date": "2026-10-02",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Trump signs orders on aluminum and defense supply chains",
+        "date": "2026-07-20",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Australian Vanadium signs non-binding MoU with Alcoa for energy storage",
+        "date": "2026-08-04",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Alcoa breaks ground on gallium plant at Wagerup refinery",
+        "date": "2026-08-24",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Canada retaliates with up to 50% tariffs on $20B US goods",
+        "date": "2026-08-25",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Alcoa announces $2.6B debt offering for South32 acquisition",
+        "date": "2026-09-09",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Together"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Trump signs orders on aluminum and defense supply chains to boost domestic production",
+        "date": "2026-07-20",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Canada retaliates with up to 50% tariffs on $20B of US goods",
+        "date": "2026-08-25",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Alcoa prices and closes $2.6B notes to fund South32 acquisition",
+        "date": "2026-09-23",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Alcoa CFO says Q2 momentum carries into Q3, sees aluminum deficit, demand, tariff upside",
+        "date": "2026-09-12",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Middle East conflict drives global energy price gains, raising input costs",
+        "date": "2026-08-20",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 0.0,
+   "score_peer": null,
+   "score_combined": 0.0,
+   "overall_votes": [
+    "above",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 1.495,
+   "revenue_estimate": 3914939360,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T01:51:39.523192+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "2f0190c221e396e18e99ca86534e8951cff5e0dbcedefd89a2180ef5f08120e4"
+  },
+  "BNY": {
+   "ticker": "BNY",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Asset Management & Custody Banks",
+   "status": "ok",
+   "last_release": "2026-07-15 14:30:21+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1390777/000139077726000071/ex991_earningsreleasex2q26.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Fee revenue growth",
+      "last_report": "2Q26 fee revenue $4.0B, up 11% YoY and 7% QoQ on net new business, market values, client activity; AUM mix offset.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Net interest income",
+      "last_report": "2Q26 NII $1.45B, up 20% YoY, 6% QoQ on securities reinvestment and balance sheet growth, offset by deposit margin compression.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Noninterest expense",
+      "last_report": "2Q26 expense $3.44B, up 7% YoY, 1% QoQ on revenue-related expenses, investments, salary increases, partly offset by efficiency savings.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "AUC/A and AUM flows",
+      "last_report": "AUC/A $62.6T, up 12% YoY; AUM $2.2T, up 6% YoY on market values and inflows, offset by stronger USD and net outflows.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Segment revenue momentum",
+      "last_report": "Securities Services +15% YoY; Market and Wealth +12%; Investment and Wealth +8%; broad-based growth with record sales.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "BNY Q3 fee revenue declines or organic growth stalls versus record 2Q26.",
+     "BNY Q3 net interest income falls as deposit margin compression outweighs reinvestment.",
+     "BNY Q3 expenses grow faster than revenue, producing negative operating leverage."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "news_raw": 140,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "failed",
+     "out": null,
+     "error": "TimeoutError('LLM call exceeded 240 s')",
+     "provider": null
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "BNY completed three senior unsecured note offerings",
+        "date": "2026-08-13",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "BNY announced redemption of Series F preferred stock",
+        "date": "2026-08-20",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "BNY increased prime lending rate to 7.00%",
+        "date": "2026-09-16",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "BNY lost depositary mandate for Kazia Therapeutics ADR",
+        "date": "2026-09-19",
+        "driver": "D4",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fed seeks public comment on stablecoin rules under GENIUS Act",
+        "date": "2026-09-24",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "US Fed plans to raise bank oversight thresholds",
+        "date": "2026-09-25",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "BNY in talks with Kraken parent Payward over infrastructure partnership",
+        "date": "2026-10-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Alibaba"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "BNY completed three senior unsecured note offerings, raising fresh funding.",
+        "date": "2026-08-13",
+        "driver": "D2",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "BNY announced redemption of all Series F noncumulative perpetual preferred stock.",
+        "date": "2026-08-20",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "BNY increased its prime lending rate to 7.00%.",
+        "date": "2026-09-16",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "BNY was replaced as depositary for Kazia Therapeutics ADR program.",
+        "date": "2026-09-19",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CFO said cross-selling and AI investments are fueling next growth phase.",
+        "date": "2026-09-19",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "BNY co-released U.S. Treasury central clearing readiness survey with industry.",
+        "date": "2026-09-22",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fed proposed stablecoin rules requiring full reserve backing and capital standards.",
+        "date": "2026-09-24",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fed reportedly plans to raise bank oversight thresholds, easing compliance burden.",
+        "date": "2026-09-25",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "BNY in talks with Kraken parent Payward over infrastructure partnership.",
+        "date": "2026-09-30",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Relace"
+    }
+   ],
+   "peers": [
+    "STT",
+    "BLK",
+    "APO"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "STT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Visible addendum has only historical 2025 data; no Q3 2026 read-through."
+       },
+       {
+        "peer": "BLK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong revenue and organic fee growth indicate healthy industry fee environment for BNY."
+       },
+       {
+        "peer": "APO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Alternative investment income only; no clear read-through to BNY's drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "STT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Excerpt only historical 4-year summary; no Q3 2026 results to infer industry conditions."
+       },
+       {
+        "peer": "BLK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "Strong AUM inflows and market values signal robust industry conditions, supporting BNY's AUC/A and AUM flows."
+       },
+       {
+        "peer": "APO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Apollo's alternative investment income estimate is specific to its insurance/retirement segment, not BNY's drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "APO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Apollo's alternative investment income update is not relevant to BNY's custody, NII, or fee drivers."
+       },
+       {
+        "peer": "BLK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "BlackRock's 19% revenue growth and 11% organic base fee growth signal strong industry fee conditions."
+       },
+       {
+        "peer": "STT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release snippet only shows historical 2022-2025 data, no Q3 2026 results to infer current conditions."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    }
+   ],
+   "score_own": 1.093060082563486,
+   "score_peer": 1.414213562373095,
+   "score_combined": 1.8001668637500334,
+   "overall_votes": [
+    "inline",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 2.2764,
+   "revenue_estimate": 5595213331,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T02:06:46.419883+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "1fd1a05cbdc5340079418db07ee8f57727d456ed4a0753d83ef2b10610662b64"
+  },
+  "CMC": {
+   "ticker": "CMC",
+   "index": "SP400",
+   "sector": "Materials",
+   "sub_industry": "Steel",
+   "status": "ok",
+   "last_release": "2026-06-25 16:19:03+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/22444/000002244426000038/cmc-20260625.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Q4 FY2026 results vs Q3",
+      "last_report": "8-K furnished June 25, 2026 reports fiscal Q3 2026 results via Exhibits 99.1 and 99.2; no figures appear in the provided text.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Forward outlook commentary",
+      "last_report": "Provided release text contains no stated fourth-quarter or full-year fiscal 2026 outlook, targets, or directional commentary.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Segment and end-market performance",
+      "last_report": "Release is referenced only as a results announcement; no segment revenue, margin, volume, or pricing detail is contained in the supplied text.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Cost and input-price items",
+      "last_report": "No mention of scrap, energy, labor, or other cost items, and no cost guidance, in the supplied text.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Headline shows CMC fiscal Q4 2026 revenue or earnings declining versus the fiscal Q3 2026 levels reported June 25, 2026.",
+     "Headline reports CMC withdrawing, suspending, or cutting any fiscal 2026 outlook previously given.",
+     "Headline cites weaker shipments, project delays, or margin compression at CMC's steel operations."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "news_raw": 58,
+   "news_used": 56,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Q3 earnings call flags stronger fiscal Q4 on reversing headwinds, backlog, pricing, precast",
+        "date": "2026-06-25",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "CEO Peter Matt buys $500,000 in shares",
+        "date": "2026-07-13",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Investor Day unveils FY29 core EBITDA target $1.65B-$1.8B and 15%-16% margin",
+        "date": "2026-08-05",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "$600M share repurchase authorization increase announced",
+        "date": "2026-08-05",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Q3 earnings call flags stronger Q4 on reversing headwinds, backlog, pricing",
+        "date": "2026-06-25",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "$600M increase in share repurchase authorization",
+        "date": "2026-08-05",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Investor Day unveils FY29 targets and construction solutions strategy",
+        "date": "2026-08-05",
+        "driver": "D2/D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Together"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Q3 call flags stronger Q4 setup on backlog, pricing, precast",
+        "date": "2026-06-26",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": false
+       },
+       {
+        "what": "Investor Day unveils FY29 core EBITDA targets $1.65-1.8B",
+        "date": "2026-08-05",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "$600M increase in share repurchase authorization",
+        "date": "2026-08-05",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump says US must make steel itself",
+        "date": "2026-09-28",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Together"
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 2.9068883707497264,
+   "score_peer": null,
+   "score_combined": 2.9068883707497264,
+   "overall_votes": [
+    "above",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 2.0064,
+   "revenue_estimate": 2589933768,
+   "fiscal": "2026Q4",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T01:54:37.296558+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "6f770b1936d92b189f18f5b49c73c04bc8f32777eb7b6bd846dcfbdaf9e86301"
+  },
+  "FFIN": {
+   "ticker": "FFIN",
+   "index": "SP400",
+   "sector": "Financials",
+   "sub_industry": "Regional Banks",
+   "status": "ok",
+   "last_release": "2026-07-17 20:27:53+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/36029/000119312526307884/ffin-ex99_1.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net interest margin",
+      "last_report": "NIM 3.90% tax-equivalent, up from 3.86% linked and 3.81% YoY on lower deposit costs and improved securities yields.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Credit quality and provision",
+      "last_report": "Provision $4.18M vs $2.29M linked; NPAs 0.80% of loans vs 0.66% linked; net recoveries $600K; classified loans $283.10M.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Noninterest income",
+      "last_report": "Noninterest income $35.84M vs $32.10M linked; wealth $13.96M, mortgage $4.68M, service charges $6.26M; AUM $12.23B.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Noninterest expense and efficiency",
+      "last_report": "Expense $81.11M vs $76.77M linked; salaries $49.66M on merit and profit-sharing; efficiency ratio 45.94% vs 44.98% linked.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Loan and deposit growth",
+      "last_report": "Loans $8.35B, up 2.99% annualized QoQ; deposits $13.17B, down $234.85M YTD on municipal outflows.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Provision for credit losses exceeds $4.2M or nonperforming assets rise above 0.80% of loans",
+     "Net interest margin falls below 3.90% as deposit costs rise or securities yields reverse",
+     "Efficiency ratio rises above 46% as noninterest expense outpaces revenue growth"
+    ]
+   },
+   "card_provider": "Modal",
+   "news_raw": 25,
+   "news_used": 25,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Renewed and increased share repurchase plan through July 31, 2027",
+        "date": "2026-07-30",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Abilene region leadership transition and executive promotions announced",
+        "date": "2026-08-06",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Plan to open first full-service Bee Cave branch in Austin area",
+        "date": "2026-09-29",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "PrimeIntellect"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Renewed and increased share repurchase plan",
+        "date": "2026-07-30",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Plan to open first full-service Bee Cave branch in Austin area",
+        "date": "2026-09-29",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Together"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "2026 share repurchase plan renewed and increased",
+        "date": "2026-07-30",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "PrimeIntellect"
+    }
+   ],
+   "peers": [
+    "HOMB"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Excerpt only announces Q3 earnings; no financial details to infer industry or competitive impact."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Filing only notes Q3 2026 earnings release; no financial details to infer industry or company impact."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release text contains no operating details, so no inference for FFIN's coming results."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe"
+    }
+   ],
+   "score_own": 2.0,
+   "score_peer": 0.0,
+   "score_combined": 2.0,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "",
+   "eps_estimate": 0.5328,
+   "revenue_estimate": 182275224,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T01:55:02.472081+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "4cb70e30aab74b6ea7147f2594d8c6097622ec32f5b49275ce54a34e08b1c290"
+  },
+  "FHN": {
+   "ticker": "FHN",
+   "index": "SP400",
+   "sector": "Financials",
+   "sub_industry": "Regional Banks",
+   "status": "ok",
+   "last_release": "2026-07-15 14:32:14+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/36966/000003696626000143/fhn-20260715.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net interest income and margin",
+      "last_report": "No figures in the furnished 8-K text; the Q2 2026 earnings release exhibit was not included in the provided content.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Noninterest income",
+      "last_report": "Not disclosed in the provided 8-K text; only the existence of the Q2 2026 earnings release and investor slides is noted.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Noninterest expense and efficiency",
+      "last_report": "Not disclosed in the provided 8-K text; no expense, efficiency ratio, or cost-out figures were furnished.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Provision and credit quality",
+      "last_report": "Not disclosed in the provided 8-K text; no provision, net charge-off, or nonperforming asset data were furnished.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Capital and CET1 ratio",
+      "last_report": "8-K notes capital ratios for the most recent quarter are estimates; no CET1, tier 1, or RWA levels were provided.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Q3 headline shows net interest income or margin declining versus the Q2 2026 release.",
+     "Q3 headline shows a materially higher provision for credit losses or rising net charge-offs.",
+     "Q3 headline shows noninterest expense growth outpacing revenue, or a CET1 ratio below the Q2 level."
+    ]
+   },
+   "card_provider": "Wafer",
+   "news_raw": 93,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fed rate hike supports NII via variable-rate loans, deposit costs temper",
+        "date": "2026-09-29",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Modal"
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "TimeoutError('LLM call exceeded 240 s')",
+     "provider": null
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fed rate hike supports variable-rate loan yields, deposit costs temper",
+        "date": "2026-09-29",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Adds veteran banker Larry Lanclos and three commercial banking associates in Acadiana",
+        "date": "2026-08-06",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Welcomes Jennifer Feske as Senior Commercial Portfolio Manager",
+        "date": "2026-09-10",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Appoints Scott Serpico and Catherine Wood for banking push",
+        "date": "2026-07-25",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Josh Newsom joins First Horizon Bank in North Mississippi Market",
+        "date": "2026-07-20",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Catherine Wood promoted to Head of Commercial Banking Strategy",
+        "date": "2026-07-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Presents at Barclays Global Financial Services Conference",
+        "date": "2026-09-15",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Modal"
+    }
+   ],
+   "peers": [
+    "HOMB"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only announces Q3 earnings; no financial details to infer impact on FHN."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Makora"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only announces Q3 earnings; no figures or commentary on shared industry conditions or FHN drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Makora"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only announces Q3 earnings; no financial details or drivers disclosed, so no implication for FHN."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Makora"
+    }
+   ],
+   "score_own": 2.916815472394508,
+   "score_peer": 0.0,
+   "score_combined": 2.916815472394508,
+   "overall_votes": [
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.5293,
+   "revenue_estimate": 900264510,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T02:01:56.073646+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "f3ee88379b74724dce3488a58255f89f7eba377ea7059f242ab904b5c4f56557"
+  },
+  "GBCI": {
+   "ticker": "GBCI",
+   "index": "SP400",
+   "sector": "Financials",
+   "sub_industry": "Regional Banks",
+   "status": "ok",
+   "last_release": "2026-07-23 20:38:33+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/868671/000086867126000062/gbci-06302026xex991.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net interest margin",
+      "last_report": "Q2 NIM 3.90%, up 10 bps QoQ; earning asset yield 5.14%; core deposit cost 1.18%; total funding cost 1.33%.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Loan portfolio growth",
+      "last_report": "Loans $21.364B, up $330M or 6% annualized QoQ; up 15% YoY; organic growth 4% ex-Guaranty.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Deposit growth and funding cost",
+      "last_report": "Average deposits $24.539B, up $113M or 2% annualized QoQ; core deposit cost fell 2 bps to 1.18%.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Credit quality and provisions",
+      "last_report": "NPAs $91.8M, up 16% QoQ and 89% YoY; provision $12.4M; net charge-offs $5.9M; ACL 1.22%.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Efficiency and operating expenses",
+      "last_report": "Efficiency ratio 56.65%, improved from 63.05% prior quarter; operating efficiency 56.21%; acquisition costs and gains included.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Next quarter NIM falls or deposit/funding costs rise, reversing Q2 margin expansion.",
+     "Loan growth turns negative or deposits decline, breaking Q2 balance-sheet momentum.",
+     "Non-performing assets, charge-offs, or provision rise sharply, signaling worse credit."
+    ]
+   },
+   "card_provider": "Together",
+   "news_raw": 33,
+   "news_used": 32,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fed raised rates 25 bps, pressuring regional bank margins",
+        "date": "2026-09-17",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Appointed Byron Pollan as Deputy CFO, to succeed CFO in 2027",
+        "date": "2026-08-31",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Insider bought 2,250 shares at $47.04",
+        "date": "2026-09-01",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Board increased quarterly dividend",
+        "date": "2026-09-22",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Announced Q3 earnings release and conference call date",
+        "date": "2026-09-28",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Byron Pollan appointed Deputy CFO, to succeed CFO in 2027",
+        "date": "2026-08-31",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Director Langel buys 2,250 shares at $47.04",
+        "date": "2026-09-01",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fed raises rates by 0.25%, long-term yields near 5%",
+        "date": "2026-09-17",
+        "driver": "D1/D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Board increases quarterly dividend",
+        "date": "2026-09-22",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fed hints at more rate hikes, pressuring bank margins",
+        "date": "2026-09-25",
+        "driver": "D1/D3",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Announces Q3 earnings release and conference call date",
+        "date": "2026-09-28",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "US CPI print shifts inflation expectations, rate pressure builds",
+        "date": "2026-10-14",
+        "driver": "D1/D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Relace"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "CFO appointment: Byron Pollan as Deputy CFO, succeed Ron Copher in 2027",
+        "date": "2026-08-31",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Insider buys 2,250 shares at $47.04",
+        "date": "2026-09-01",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Glacier Bancorp increases quarterly dividend",
+        "date": "2026-09-22",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Crusoe"
+    }
+   ],
+   "peers": [
+    "HOMB"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only states earnings furnished; no financial details to infer impact on GBCI."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Alibaba"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Only announces Q3 earnings filing; no operating metrics or guidance to infer impact on GBCI."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Alibaba"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Only 8-K cover announcing Q3 earnings; no financial details, so no read-through for GBCI."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Alibaba"
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 0.0,
+   "score_combined": 0.0,
+   "overall_votes": [
+    "inline",
+    "below",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "",
+   "eps_estimate": 0.8177,
+   "revenue_estimate": 296412204,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T01:59:46.344402+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "2aebc6e2ae79642f08efbc9dd50cb1ac79a39e004a089d47ed9da6826e1083e7"
+  },
+  "IBKR": {
+   "ticker": "IBKR",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Investment Banking & Brokerage",
+   "status": "ok",
+   "last_release": "2026-07-22 00:11:00+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1381197/000138119726000118/ibkr-ex99_1.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Commission revenue and trading volumes",
+      "last_report": "Commission revenue rose 30% to $673M; customer options, stocks and futures volumes increased 17%, 14% and 2% year over year.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Net interest income",
+      "last_report": "Net interest income rose 23% to $1.06B on higher average customer margin loans and customer credit balances.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Customer accounts, equity and DARTs",
+      "last_report": "Customer accounts rose 34% to 5.19M; customer equity rose 40% to $930.3B; total DARTs rose 36% to 4.82M.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Execution, clearing and distribution fees",
+      "last_report": "Execution, clearing and distribution fees rose 22% to $142M, driven by $19M higher regulatory fees after SEC Section 31 rate increase.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Other income and currency strategy",
+      "last_report": "Other income rose 88% to $79M; currency diversification strategy reduced comprehensive earnings by $36M as USD value of GLOBAL fell 0.21%.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Next quarter reports sequential decline in customer DARTs or commission revenue.",
+     "Net interest income falls sequentially or customer margin loans stop growing.",
+     "Customer account growth decelerates sharply or customer equity declines sequentially."
+    ]
+   },
+   "card_provider": "Relace",
+   "news_raw": 239,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "September monthly metrics: DARTs 4.111M +6% YoY; client accounts 5.576M +35% YoY",
+        "date": "2026-10-01",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Modal"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "September monthly metrics: DARTs up 6% YoY, accounts up 35% YoY",
+        "date": "2026-10-01",
+        "driver": "D3",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Parasail"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "September DARTs 4.111M, up 6% YoY, slowing from Q2's 36% growth",
+        "date": "2026-10-01",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "September client accounts 5.576M, up 35% YoY, slightly above Q2's 34%",
+        "date": "2026-10-01",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Launches cryptocurrency staking for eligible clients, adding rewards and stablecoin funding",
+        "date": "2026-10-13",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    }
+   ],
+   "peers": [
+    "MS",
+    "GS"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Filing excerpt has no earnings details, so no read-through for IBKR."
+       },
+       {
+        "peer": "GS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Filing excerpt lacks results; no implications for IBKR's drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Makora"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release contains no earnings details; no read-through to IBKR drivers."
+       },
+       {
+        "peer": "GS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only notes earnings filing without figures; no read-through to IBKR drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Makora"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release text truncated; no financial results or drivers disclosed, so no implication for IBKR."
+       },
+       {
+        "peer": "MS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Only 8-K cover page; no earnings metrics or commentary, so no implication for IBKR."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Makora"
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 0.0,
+   "score_combined": 0.0,
+   "overall_votes": [
+    "below",
+    "inline",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "amc",
+   "eps_estimate": 0.7021,
+   "revenue_estimate": 1936552620,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T01:56:33.699441+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "c50b6aa7574c0764a5423af367284f55784bda6d51717fddbecd27a3ebe0470c"
+  },
+  "JBHT": {
+   "ticker": "JBHT",
+   "index": "SP500",
+   "sector": "Industrials",
+   "sub_industry": "Cargo Ground Transportation",
+   "status": "ok",
+   "last_release": "2026-07-15 20:26:22+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/728535/000143774926023629/jbht20260714_8k.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Intermodal revenue and volumes",
+      "last_report": "Q2 2026 release referenced but detailed segment results not included in provided 8-K text.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Dedicated Contract Services",
+      "last_report": "Segment performance not disclosed in the provided filing; only cover page and exhibit reference available.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Integrated Capacity Solutions margins",
+      "last_report": "No ICS revenue, volume, or margin data present in the provided 8-K excerpt.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Final Mile Services",
+      "last_report": "No Final Mile results or commentary included in the provided document text.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Operating cost and fuel",
+      "last_report": "Cost and fuel detail absent; only the 8-K cover page and exhibit reference were provided.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Next release shows intermodal volumes or revenue declining versus prior year.",
+     "Dedicated or Final Mile segment margins compress versus the prior quarter.",
+     "Management withdraws or lowers full-year outlook in the next earnings release."
+    ]
+   },
+   "card_provider": "Together",
+   "news_raw": 237,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "J.B. Hunt warned rising driver, fuel, claims costs could cut Q3 earnings up to 10%",
+        "date": "2026-09-17",
+        "driver": "D5",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Record diesel prices hit $6.51/gal, up $2.80 YoY, raising fuel costs",
+        "date": "2026-09-21",
+        "driver": "D5",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "J.B. Hunt said freight demand remained strong across most business lines",
+        "date": "2026-09-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Sixteen trucking companies collapsed in under a month, tightening capacity",
+        "date": "2026-10-01",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Intermodal conversion called a necessity for shippers amid volatile fuel markets",
+        "date": "2026-10-14",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Together"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "J.B. Hunt warns Q3 earnings could decline up to 10% on higher driver, fuel and claims costs.",
+        "date": "2026-09-16",
+        "driver": "D5",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Record diesel prices hit transport; U.S. average reaches $6.51 per gallon.",
+        "date": "2026-09-21",
+        "driver": "D5",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Strong freight demand reported across most J.B. Hunt business lines.",
+        "date": "2026-09-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": false
+       },
+       {
+        "what": "Sixteen trucking companies collapsed in under a month, tightening capacity.",
+        "date": "2026-10-01",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "AtlasCloud"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Management warns Q3 earnings pressured by driver, fuel, claims costs; earnings could decline up to 10%.",
+        "date": "2026-09-16",
+        "driver": "D5",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Record diesel prices spike to $6.51/gal, up $2.80 YoY, West Coast above $8.",
+        "date": "2026-09-21",
+        "driver": "D5",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Sixteen trucking companies collapsed in under a month, signaling industry distress.",
+        "date": "2026-10-01",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Strait of Hormuz disruption drives up global freight costs, diesel prices, trucking rates.",
+        "date": "2026-10-10",
+        "driver": "D5",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Parasail"
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": -3.0,
+   "score_peer": null,
+   "score_combined": -3.0,
+   "overall_votes": [
+    "below",
+    "below",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "amc",
+   "eps_estimate": 2.0227,
+   "revenue_estimate": 3626282977,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T01:52:41.389552+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "f332ada3aa63f03d3068a0278340061c17f198274fcd959e3de209dc26866224"
+  },
+  "MRSH": {
+   "ticker": "MRSH",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Insurance Brokers",
+   "status": "ok",
+   "last_release": "2026-07-21 11:02:42+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/62709/000006270926000193/mmc2q2026ex991newsrelease.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Marsh Risk underlying revenue growth",
+      "last_report": "Q2 underlying revenue +4%; U.S./Canada +4%, International +5%, with EMEA/APAC +5% and LatAm +8%. Six-month underlying +4%.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Guy Carpenter revenue weakness",
+      "last_report": "Q2 revenue -2% on both GAAP and underlying basis; six-month underlying revenue flat after a negative quarter.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Mercer segment mix",
+      "last_report": "Q2 underlying revenue +5%; Wealth +8%, Health +3%, Career +2% underlying. Six-month Mercer underlying +5%.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Marsh Management Consulting momentum",
+      "last_report": "Q2 revenue +15%, underlying +13%; six-month underlying +10%, the strongest consulting growth unit.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Adjusted EPS and operating margin",
+      "last_report": "Q2 adjusted EPS +9% to $2.96; adjusted operating income +5%. H1 other operating expenses +25%, compensation +7%.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Guy Carpenter posts another decline in underlying revenue, indicating reinsurance brokerage weakness is worsening.",
+     "Marsh Risk underlying growth slips below 4%, especially in U.S./Canada or EMEA, signaling core brokerage slowdown.",
+     "Adjusted operating margin contracts as expenses outpace revenue, or management flags weaker Mercer/consulting demand."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "news_raw": 110,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Marsh completes Accel Holdings acquisition, adding MMA revenue",
+        "date": "2026-10-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Mercer partners with Compa for compensation insights",
+        "date": "2026-08-13",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Oliver Wyman joins Anthropic Claude Partner Network",
+        "date": "2026-08-27",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Marsh launches Cyber Protect in Asia",
+        "date": "2026-09-01",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Archer by Marsh launches for reinsurance services",
+        "date": "2026-09-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Together"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Marsh McLennan Agency to acquire Accel Holdings",
+        "date": "2026-08-10",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Mercer and Compa partner on compensation insights",
+        "date": "2026-08-13",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Oliver Wyman joins Anthropic Claude Partner Network",
+        "date": "2026-08-27",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Marsh launches Cyber Protect in Asia",
+        "date": "2026-09-01",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Archer by Marsh launches for life/annuity reinsurance",
+        "date": "2026-09-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Together"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Marsh completes acquisition of Accel Holdings, expanding Marsh McLennan Agency.",
+        "date": "2026-10-02",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Archer by Marsh launches for life/annuity reinsurance business building.",
+        "date": "2026-09-28",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Oliver Wyman joins Anthropic's Claude Partner Network for AI consulting.",
+        "date": "2026-08-27",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Mercer and Compa partner to bring compensation insights into workflows.",
+        "date": "2026-08-13",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Marsh launches Cyber Protect in Asia, expanding risk services.",
+        "date": "2026-09-01",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Marsh and Bloomberg New Economy launch resilience coalition.",
+        "date": "2026-10-14",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Matt Stadler appointed CEO of Marsh Agency; David Eslick chairman.",
+        "date": "2026-09-16",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Nicole Delimitros appointed President, National Employee Health and Benefits, Marsh Agency.",
+        "date": "2026-10-13",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Birgit Boykin appointed Chief People Officer of Oliver Wyman and Marsh Management Consulting.",
+        "date": "2026-09-25",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Andrew Neary appointed CEO of Marsh McLennan Agency Eastern US region.",
+        "date": "2026-10-11",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Together"
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 2.4494897427831783,
+   "score_peer": null,
+   "score_combined": 2.4494897427831783,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 2.0132,
+   "revenue_estimate": 6776004911,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T01:52:24.233071+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "f1706f76450a0a08b731530226890e96b18df7d4bf3543bdce4822e22ba354c0"
+  },
+  "PLD": {
+   "ticker": "PLD",
+   "index": "SP500",
+   "sector": "Real Estate",
+   "sub_industry": "Industrial REITs",
+   "status": "ok",
+   "last_release": "2026-07-16 12:05:27+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1045609/000119312526305416/pld-ex99_1.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Same-store NOI and rent growth",
+      "last_report": "Q2 rental revenue $2.18B; FY guidance same-store cash NOI +6.75-7.25%, net effective +5.25-5.75%.",
+      "guidance": "FY2026 same-store NOI cash +6.75-7.25%, net effective +5.25-5.75%."
+     },
+     {
+      "id": "D2",
+      "name": "Occupancy and leasing demand",
+      "last_report": "Q2 average occupancy guidance 95.25-95.75%; lease proposals 129M SF, IBI 60.1, U.S. utilization 84.4%.",
+      "guidance": "FY2026 average occupancy 95.25-95.75%."
+     },
+     {
+      "id": "D3",
+      "name": "Strategic capital fees and promotes",
+      "last_report": "Q2 strategic capital revenue $242M; $412M annualized/TTM fees and promotes.",
+      "guidance": "FY2026 strategic capital revenue ex promote $660-680M; net promote $0."
+     },
+     {
+      "id": "D4",
+      "name": "Development starts and value creation",
+      "last_report": "Q2 value creation $89M; TTM $740M; realized development gains guidance $600-700M.",
+      "guidance": "FY2026 stabilizations $2.25-2.75B; starts $4.5-5.5B; realized development gains $600-700M."
+     },
+     {
+      "id": "D5",
+      "name": "Capital deployment and interest costs",
+      "last_report": "Q2 interest expense $276M; debt $36.4B; FY acquisition/disposition/contribution guidance set.",
+      "guidance": "FY2026 acquisitions $1.5-2.0B; dispositions $2.25-2.75B; contributions $2.0-2.5B."
+     }
+    ],
+    "guidance": "FY2026: Core FFO $6.22-$6.30; net earnings $4.40-$4.55; average occupancy 95.25-95.75%; same-store NOI cash +6.75-7.25%, net effective +5.25-5.75%; strategic capital revenue ex promote $660-680M; G&A $510-525M; realized development gains $600-700M.",
+    "kill_conditions": [
+     "Q3 same-store NOI growth below 6.75% or average occupancy below 95.25%.",
+     "Strategic capital revenue ex promote tracking below $660M annualized or net promote negative.",
+     "FY2026 Core FFO guidance cut below $6.22 or development gains below $600M."
+    ]
+   },
+   "card_provider": "Relace",
+   "news_raw": 175,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "CFO at BofA conference says leasing activity improving, occupancy rising, data centers fueling growth",
+        "date": "2026-09-15",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Skybox wins Hutto rezoning but Texas power limits create data center development uncertainty",
+        "date": "2026-10-06",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Prologis raises offer for UK warehouse giant Segro",
+        "date": "2026-10-13",
+        "driver": "D5",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Crusoe"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fed rate hike and surge in long-term Treasury yields raise interest costs.",
+        "date": "2026-09-20",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Texas power limits create uncertainty for Prologis/Skybox Hutto data center project.",
+        "date": "2026-10-06",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Skybox wins rezoning for 140-acre Hutto data center site.",
+        "date": "2026-10-06",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Prologis raises offer for UK warehouse giant Segro.",
+        "date": "2026-10-13",
+        "driver": "D5",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CFO reports improving leasing activity and data center growth at BofA conference.",
+        "date": "2026-09-15",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Management reports improving leasing activity, rising occupancy, data center growth",
+        "date": "2026-09-15",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Skybox wins Hutto rezoning but Texas power limits cloud data center development",
+        "date": "2026-10-06",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Prologis raises offer for UK warehouse giant Segro",
+        "date": "2026-10-13",
+        "driver": "D5",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Crusoe"
+    }
+   ],
+   "peers": [
+    "CUBE"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CUBE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Self-storage investor presentation; no industrial demand, pricing, occupancy, or cost read-through for Prologis."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CUBE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Self-storage investor presentation; no read-through to Prologis industrial demand, rents, occupancy, or development."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CUBE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Self-storage investor presentation; no read-through to industrial demand, rents, occupancy, development, or capital costs."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    }
+   ],
+   "score_own": -0.5,
+   "score_peer": 0.0,
+   "score_combined": -0.5,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "above"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.8181,
+   "revenue_estimate": 2307687723,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T01:58:58.869750+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "72da551f1cffce714a8cd588584f4e21e725bf2c4aa2f472eaaaf686022cf6bc"
+  },
+  "PNC": {
+   "ticker": "PNC",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Diversified Banks",
+   "status": "ok",
+   "last_release": "2026-07-15 14:40:23+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/713676/000162828026048244/pnc-20260715.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net interest income and margin",
+      "last_report": "No figures in provided text; Exhibit 99.1 earnings press release not included in this filing excerpt.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Provision for credit losses",
+      "last_report": "No figures in provided text; credit quality metrics and reserve build not disclosed in this excerpt.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Noninterest fee income",
+      "last_report": "No figures in provided text; capital markets, asset management and retail fee detail not included.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Noninterest expense and efficiency",
+      "last_report": "No figures in provided text; expense level, efficiency ratio and cost-savings commentary not included.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Loan and deposit growth",
+      "last_report": "No figures in provided text; average balances, period-end loans and deposit trends not disclosed.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Headline: net interest income falls or net interest margin compresses versus the prior quarter.",
+     "Headline: provision for credit losses rises on higher net charge-offs or reserve build.",
+     "Headline: noninterest expense grows faster than revenue, worsening the efficiency ratio."
+    ]
+   },
+   "card_provider": "Venice",
+   "news_raw": 142,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fed delivers first rate hike in over three years, affecting bank rates",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PNC Bank raises prime lending rate to 7.00% effective Sept 17",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PNC reaffirms Q3 and full-year guidance, citing loans, fees, AI momentum",
+        "date": "2026-09-18",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "PNC capital markets on pace for record year, supporting fee-income outlook",
+        "date": "2026-09-16",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Fed plans to raise bank oversight thresholds, easing regulatory burden",
+        "date": "2026-09-25",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "PNC expanding Houston footprint, supporting loan and deposit growth",
+        "date": "2026-09-26",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Treasury/OCC report debanking practices at nine major banks",
+        "date": "2026-10-14",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Together"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fed rate hike; PNC raises prime rate to 7.00%",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PNC reaffirms Q3 and full-year guidance; cites loans, fees, AI momentum",
+        "date": "2026-09-18",
+        "driver": "D3/D4/D5",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Together"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Federal Reserve delivers first rate hike in over three years",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PNC Bank raises prime lending rate to 7.00% effective Sept 17",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PNC reaffirms Q3 and full-year guidance, citing loans, fees, AI momentum",
+        "date": "2026-09-18",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Fed plans to raise asset thresholds for stricter bank oversight",
+        "date": "2026-09-25",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "PNC expands Houston footprint",
+        "date": "2026-09-26",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "PNC announces redemption of Series S preferred depositary shares",
+        "date": "2026-09-29",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PNC announces redemption of 6.615% senior notes due 2027",
+        "date": "2026-10-09",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "OCC/Treasury report debanking practices at nine major banks including PNC",
+        "date": "2026-10-14",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace"
+    }
+   ],
+   "peers": [
+    "BAC",
+    "C",
+    "JPM",
+    "WFC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BAC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "BAC NII +8% and deposit/loan growth signal supportive industry net interest income and balance trends for PNC."
+       },
+       {
+        "peer": "C",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Citigroup excerpt only lists registered securities; no earnings or operating metrics to infer PNC impact."
+       },
+       {
+        "peer": "JPM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "JPM average loans +10% and deposits +8% YoY imply broad industry balance growth for PNC."
+       },
+       {
+        "peer": "WFC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "WFC provision up 51% YoY signals higher industry credit costs, pressuring PNC's provision for credit losses."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BAC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "BAC NII +8% YoY and deposit/loan growth signal shared industry NII expansion."
+       },
+       {
+        "peer": "C",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release excerpt only lists registered securities; no earnings or operating data."
+       },
+       {
+        "peer": "JPM",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "JPM credit costs included $539M reserve build, implying industry provisioning may stay elevated."
+       },
+       {
+        "peer": "WFC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D5",
+        "why": "WFC average loans and deposits both +11% YoY signal broad industry balance growth."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "WFC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Wells Fargo reported average loans and deposits up 11% YoY with broad-based growth, signaling shared industry loan/deposit expansion for PNC."
+       },
+       {
+        "peer": "JPM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "JPMorgan's IB fees, markets revenue, and AWM revenue all grew double digits, pointing to stronger industry fee income for PNC."
+       },
+       {
+        "peer": "C",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Citigroup release contains only SEC registration exhibit, no earnings or financial data relevant to PNC's drivers."
+       },
+       {
+        "peer": "BAC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Bank of America's net interest income rose 8% YoY on higher rates/deposits, suggesting PNC's net interest income and margin should improve."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    }
+   ],
+   "score_own": 3.005203820042827,
+   "score_peer": 1.5,
+   "score_combined": 3.755203820042827,
+   "overall_votes": [
+    "above",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 4.9782,
+   "revenue_estimate": 6677570560,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T01:54:28.571742+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "ca8766c38ab458652570c35b9c2ee9c9d56e2d99fd946e324c53c9548332adc5"
+  },
+  "SCHW": {
+   "ticker": "SCHW",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Investment Banking & Brokerage",
+   "status": "ledger_failed",
+   "last_release": "2026-07-22 00:16:35+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/316709/000031670926000027/a2q26exhibit991.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net interest margin",
+      "last_report": "NIM expanded 12 bps QoQ to 3.00%; net interest revenue rose 19% YoY to $3.36B.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Client sweep cash balances",
+      "last_report": "Ended June at $485.7B, up $24.2B QoQ on tax seasonality, organic growth, and allocation decisions.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Trading revenue and activity",
+      "last_report": "Record daily average trades of 11.9M; trading revenue $1.2B, up 28% YoY.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Asset management fees",
+      "last_report": "Asset management and administration fees $1.8B, up 16% YoY; managed investing net flows grew 53%.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Expenses and profit margin",
+      "last_report": "GAAP expenses +12% YoY; adjusted expenses +11%; GAAP pre-tax margin 51.9%, adjusted 54.3%.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Q3 net interest margin falls below 3.00% or net interest revenue declines sequentially.",
+     "Q3 client transactional sweep cash balances decline sequentially from $485.7B.",
+     "Q3 core net new assets fall below $100B or trading revenue declines year-over-year."
+    ]
+   },
+   "card_provider": "Parasail",
+   "news_raw": 334,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "failed",
+     "out": null,
+     "error": "IncompleteRead(0 bytes read)",
+     "provider": null
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Schwab to dual list on Texas Stock Exchange effective Oct 7",
+        "date": "2026-10-01",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Schwab introduces Charley generative AI assistant for clients",
+        "date": "2026-10-02",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Schwab agrees to sell Forge Trust to Alto",
+        "date": "2026-10-06",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Schwab Trading Activity Index rises to 58.92 in September",
+        "date": "2026-10-05",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fidelity sets $100M asset minimum for RIAs",
+        "date": "2026-10-02",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Modal"
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "TimeoutError('LLM call exceeded 240 s')",
+     "provider": null
+    }
+   ],
+   "peers": [
+    "MS",
+    "GS"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release text lacks earnings details; no read-through to Schwab."
+       },
+       {
+        "peer": "GS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release text lacks earnings details; no read-through to Schwab."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Excerpt only 8-K cover; no operating or industry results relevant to Schwab."
+       },
+       {
+        "peer": "GS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Excerpt only 8-K cover; no earnings details to infer Schwab impact."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Provided excerpt has no operating results; no read-through to SCHW drivers."
+       },
+       {
+        "peer": "MS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Provided excerpt has no operating results; no read-through to SCHW drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Phala"
+    }
+   ],
+   "score_own": null,
+   "score_peer": 0.0,
+   "score_combined": null,
+   "overall_votes": [
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 1.7013,
+   "revenue_estimate": 7362808881,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T02:07:16.064672+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "799106b9c925aab5f0c4d6a7f921b3cbffd3209ce854fb0819ea4af2736935b7"
+  },
+  "USB": {
+   "ticker": "USB",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Diversified Banks",
+   "status": "ok",
+   "last_release": "2026-07-16 10:59:35+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/36104/000003610426000039/usb-20260716.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net interest income and margin",
+      "last_report": "No figures in this 8-K; results are in Exhibit 99.1 press release, which is not included in the filing text.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Fee revenue by segment",
+      "last_report": "Not disclosed here; segment detail referenced only via the 2Q26 Earnings Supplement (Exhibit 99.2).",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Provision for credit losses",
+      "last_report": "Not disclosed here; credit results referenced only via the 2Q26 Earnings Supplement (Exhibit 99.2).",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Noninterest expense and efficiency",
+      "last_report": "Not disclosed here; expense detail referenced only via the 2Q26 Earnings Supplement (Exhibit 99.2).",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Capital and CET1 ratio",
+      "last_report": "Not disclosed here; capital and other forward-looking detail referenced only via the 2Q26 conference call presentation (Exhibit 99.3).",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Headline says U.S. Bancorp cut its full-year net interest income outlook",
+     "Headline reports provision for credit losses well above prior-quarter level or rising net charge-offs",
+     "Headline says noninterest expense guidance was raised or efficiency target pushed out"
+    ]
+   },
+   "card_provider": "Makora",
+   "news_raw": 191,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "USB expects Q3 NII and fee revenues near upper end of guidance",
+        "date": "2026-09-21",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "USB completed senior unsecured note offerings maturing 2036-2046",
+        "date": "2026-09-25",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "U.S. Bank launched new small business credit cards with Jessica Alba",
+        "date": "2026-09-28",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "U.S. Bank launched Protect 360 identity and credit monitoring service",
+        "date": "2026-10-07",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "USB announced redemption of medium-term notes and senior notes",
+        "date": "2026-10-09",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "U.S. Bank and BMW Financial launched expanded BMW/MINI credit card benefits",
+        "date": "2026-10-13",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Treasury/OCC report alleges debanking practices at nine major banks",
+        "date": "2026-10-14",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "USB expects Q3 NII and fee revenues near upper end of guidance",
+        "date": "2026-09-21",
+        "driver": "D1/D2",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Fed plans to raise bank oversight thresholds",
+        "date": "2026-09-25",
+        "driver": "D4/D5",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "U.S. Bank launches new small business credit cards",
+        "date": "2026-09-28",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "U.S. Bank launches Protect 360 identity and credit monitoring",
+        "date": "2026-10-07",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "U.S. Bank and BMW launch expanded co-brand credit card benefits",
+        "date": "2026-10-13",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "OCC/Treasury report debanking practices at nine major banks",
+        "date": "2026-10-14",
+        "driver": "other",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Ionstream"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Company expects Q3 NII and fee revenues near upper end of guidance",
+        "date": "2026-09-21",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Completed fixed income offerings, issuing senior unsecured callable notes",
+        "date": "2026-09-25",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fed plans to raise bank oversight thresholds, reducing regulatory burden",
+        "date": "2026-09-25",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Launched new small business credit cards with Jessica Alba",
+        "date": "2026-09-28",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CFO survey shows optimism climbing as growth and dealmaking gain momentum",
+        "date": "2026-09-29",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Elavon earns TSG 2026 Best B2B API Award for payment gateway",
+        "date": "2026-09-29",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Relace"
+    }
+   ],
+   "peers": [
+    "BAC",
+    "C",
+    "JPM",
+    "WFC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BAC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "BAC NII up 8% YoY and loan/deposit growth signal industry NII/margin tailwind for USB."
+       },
+       {
+        "peer": "C",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only lists registered securities; no financial results or drivers disclosed."
+       },
+       {
+        "peer": "JPM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "JPM IB fees, markets, AWM AUM, and card spend growth support USB fee revenue."
+       },
+       {
+        "peer": "WFC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "WFC provision up 51% YoY signals rising industry credit costs for USB."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Alibaba"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BAC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "NII up 8% YoY and deposit/loan growth signal industry rate and balance-sheet tailwinds for USB."
+       },
+       {
+        "peer": "C",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only lists registered securities; no financial or operating results."
+       },
+       {
+        "peer": "JPM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong CCB, AWM, and payments fee growth signal broad fee-revenue strength for USB."
+       },
+       {
+        "peer": "WFC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Provision rose 51% YoY, suggesting higher credit costs may pressure USB provisions."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Alibaba"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "WFC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Loans and deposits up 11%, low delinquencies, expense discipline imply stronger NII and credit for USB."
+       },
+       {
+        "peer": "JPM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "Strong card, payments, wealth and IB fee growth signal healthy industry fee revenue for USB."
+       },
+       {
+        "peer": "C",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only lists registered securities; no earnings or operating information for USB."
+       },
+       {
+        "peer": "BAC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "NII up 8% with deposit and loan growth, supporting USB net interest income outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    }
+   ],
+   "score_own": 2.82842712474619,
+   "score_peer": 1.0,
+   "score_combined": 3.32842712474619,
+   "overall_votes": [
+    "above",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 1.3347,
+   "revenue_estimate": 8076127559,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T02:00:45.980846+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "421450c8c6e31beba06f225eef507dc52af6785c8ae427a018efade40df0d555"
+  },
+  "WHR": {
+   "ticker": "WHR",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Household Appliances",
+   "status": "ok",
+   "last_release": "2026-08-03 20:15:27+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/106640/000010664026000056/exhibit991pressrelease0630.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "North America pricing and margin recovery",
+      "last_report": "Q2 NA net sales -1.5% organic, EBIT margin 2.7% vs 5.9%; sequential margin +240bps on pricing; tariffs/raw materials/fuel and lower volume pressured.",
+      "guidance": "Full-year largest price increase in over a decade; structural cost takeout to deliver >$150M/100bps."
+     },
+     {
+      "id": "D2",
+      "name": "Latin America Brazil margin turnaround",
+      "last_report": "Q2 Latin America net sales +7.8%, organic -1.7%; EBIT margin 3.0% vs 6.0%, hurt by negative Brazil price/mix despite volume increase and tax gain.",
+      "guidance": "Announced price increase and structural cost actions to restore margins in Brazil."
+     },
+     {
+      "id": "D3",
+      "name": "Structural cost take-out delivery",
+      "last_report": "Q2 restructuring costs $41M; progress on cost take-out; full-year structural savings targeted >$150M. H1 restructuring $73M.",
+      "guidance": "Structural cost take out to deliver over $150 million or 100 basis points of margin expansion."
+     },
+     {
+      "id": "D4",
+      "name": "SDA Global sell-out and inventory",
+      "last_report": "Q2 SDA organic net sales -1.2% on lower retailer inventory despite strong sell-out; EBIT margin 11.9% vs 17.3% on marketing investments and product launches.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Interest expense and free cash flow",
+      "last_report": "Q2 interest expense $63M; closed $2B ABL and $2B secured bonds; cleared maturities until 2028; EPS outlook cut for new interest expense.",
+      "guidance": "2026 operating cash ~$700M; FCF >$300M; net debt below $5.0B; EPS revised for new interest expense."
+     }
+    ],
+    "guidance": "Full year 2026: net sales ~$15.0B; ongoing EBIT margin ~4.0%; GAAP EPS $2.25-$2.75; ongoing EPS $2.50-$3.00; operating cash ~$700M; FCF >$300M; net debt below $5.0B.",
+    "kill_conditions": [
+     "North America organic sales or segment EBIT margin declines further despite pricing actions.",
+     "Brazil price increases fail, leaving Latin America EBIT margin near 3.0% or lower.",
+     "Cost take-out savings delayed, restructuring charges rise, or free cash flow misses >$300M target."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "news_raw": 109,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Whirlpool CEO flags US consumer weakness, negative cash flows in lower-income brackets",
+        "date": "2026-08-16",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "KitchenAid debuts 2026 Design Series Stand Mixer Luminaire",
+        "date": "2026-09-15",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Whirlpool and OLIPOP collaborate on new French Door Refrigerator launch",
+        "date": "2026-09-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KitchenAid expands Go Cordless System with new grater, slicer, shredder",
+        "date": "2026-09-29",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KitchenAid launches Makers Club ambassador program for creators",
+        "date": "2026-10-02",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "PrimeIntellect"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "KitchenAid launches 2026 Design Series stand mixer",
+        "date": "2026-09-15",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Whirlpool and OLIPOP collaborate on refrigerator launch",
+        "date": "2026-09-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "KitchenAid expands Go cordless countertop appliance system",
+        "date": "2026-09-29",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "KitchenAid launches Makers Club ambassador program",
+        "date": "2026-10-02",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "CEO warns US lower-income consumers running out of money",
+        "date": "2026-08-16",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Whirlpool celebrates 115 years with appliance sweepstakes",
+        "date": "2026-08-27",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "KitchenAid debuts 2026 Design Series Stand Mixer",
+        "date": "2026-09-15",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Whirlpool and OLIPOP collaborate on refrigerator launch",
+        "date": "2026-09-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KitchenAid expands cordless countertop appliance system",
+        "date": "2026-09-29",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KitchenAid launches Makers Club ambassador program",
+        "date": "2026-10-02",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "PrimeIntellect"
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 1.7888543819998317,
+   "score_peer": null,
+   "score_combined": 1.7888543819998317,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "",
+   "eps_estimate": 1.0707,
+   "revenue_estimate": 4009206009,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-15",
+   "cutoff": "2026-10-14 22:00:00+00:00",
+   "decided_at": "2026-10-15T02:00:08.794083+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "cb5add7ce8f911d29b5cf791c7dcca4befdbfd57",
+   "sha256": "9743667d1880d0832d5606c4eedbd72896a0bedf06daf2db35b8cb463780c996"
+  }
+ },
+ "report_date": "2026-10-15",
+ "cutoff": "2026-10-14 22:00:00+00:00",
+ "version": "r5-v1",
+ "batch_sha256": "344ce3c54349e3d39f2fb9b8fbfe90bf40834f03ddffd3b8bbae14f194cd20bb"
+}
