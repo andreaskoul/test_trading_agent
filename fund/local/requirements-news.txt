@@ -1,0 +1,12 @@
+# News desk (fund/news_ingest.py, fund/news_cost.py): local runner only, native arm64 Python (mlx-whisper needs Apple
+# Silicon; YouTube refuses cloud IPs). Kept apart from requirements.txt (numpy<2 there).
+pandas>=2.0
+pyarrow>=14.0
+huggingface_hub>=0.24
+certifi
+youtube-transcript-api>=1.2.4
+yt-dlp
+mlx-whisper
+av
+tiktoken
+tabulate

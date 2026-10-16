@@ -1,0 +1,405 @@
+{
+  "_doc": "News desk sources (fund/news_ingest.py). v1 chosen by the owner on 2026-10-16 from the Phase 0 cost probe (reports/research/news_desk_cost_probe.md) under a $50-60/month cap. status: active = fetched, transcribed and tagged; archive = listing metadata only (no transcript, no LLM); dropped = not fetched (reason given). Frozen with the PREREG amendment; changes after that go in as dated amendments. tier: a = firm/executive primary, b = industry specialist, c = markets/macro, d = podcasts/official/trade press.",
+  "version": "v1-2026-10-16",
+  "youtube": [
+    {
+      "name": "CNBC Television",
+      "id": "UCrp_UI8XtuYfpiqluWLD7Lw",
+      "tier": "a",
+      "status": "active"
+    },
+    {
+      "name": "Bloomberg Television",
+      "id": "UCIALMKvObZNtJ6AmdCLP7Lg",
+      "tier": "a",
+      "status": "active"
+    },
+    {
+      "name": "Yahoo Finance",
+      "id": "UCEAZeUIeJs0IjQiqTCdVSIg",
+      "tier": "a",
+      "status": "active"
+    },
+    {
+      "name": "Bloomberg New Economy",
+      "id": "UCOa104QrplnxBkVnoArabwQ",
+      "tier": "a",
+      "note": "stands in for Bloomberg Live (no channel found)",
+      "status": "dropped",
+      "reason": "0 firm hits in the probe sample for 470 min/day of airtime"
+    },
+    {
+      "name": "Norges Bank Investment Management (In Good Company)",
+      "id": "UCRhQsN8AVIfZuBNeRV1A37w",
+      "tier": "a",
+      "status": "active"
+    },
+    {
+      "name": "Goldman Sachs",
+      "id": "UCyz6-taovlaOkPsPtK4KNEg",
+      "tier": "a",
+      "status": "active"
+    },
+    {
+      "name": "Morgan Stanley",
+      "id": "UCz6RzD6KG_hH_oHb2kyW5jQ",
+      "tier": "a",
+      "status": "active"
+    },
+    {
+      "name": "Invest Like The Best",
+      "id": "UCpQBb0fToph3jrDulwz1iUQ",
+      "tier": "a",
+      "status": "active"
+    },
+    {
+      "name": "Business Breakdowns (Colossus)",
+      "id": "UCfnHKTFEryHWyqr4Xjsjb3w",
+      "tier": "a",
+      "status": "dropped",
+      "reason": "no recent uploads"
+    },
+    {
+      "name": "Bg2 Pod",
+      "id": "UC-yRDvpR99LUc5l7i7jLzew",
+      "tier": "a",
+      "status": "active"
+    },
+    {
+      "name": "Dwarkesh Patel",
+      "id": "UCXl4i9dYBrFOabk0xGmbkRA",
+      "tier": "a",
+      "status": "active"
+    },
+    {
+      "name": "TBPN",
+      "id": "UC-DRzaGnL_vtBUpCFH5M0tg",
+      "tier": "a",
+      "status": "active"
+    },
+    {
+      "name": "20VC",
+      "id": "UCf0PBRjhf0rF8fWBIxTuoWA",
+      "tier": "a",
+      "status": "active"
+    },
+    {
+      "name": "SemiAnalysis",
+      "id": "UCf_KhBXw5TIV0A7butjgFhg",
+      "tier": "b",
+      "chain": "ai_semis",
+      "status": "active"
+    },
+    {
+      "name": "TechTechPotato",
+      "id": "UC1r0DG-KEPyqOeW6o79PByw",
+      "tier": "b",
+      "chain": "ai_semis",
+      "status": "active"
+    },
+    {
+      "name": "Asianometry",
+      "id": "UC1LpsuAUaKoMzzJSEt5WImw",
+      "tier": "b",
+      "chain": "ai_semis",
+      "status": "active"
+    },
+    {
+      "name": "Munro Live",
+      "id": "UCj--iMtToRO_cGG_fpmP5XQ",
+      "tier": "b",
+      "chain": "autos",
+      "status": "active"
+    },
+    {
+      "name": "FreightWaves",
+      "id": "UC36dglNLPZNKuSp30JVP5yg",
+      "tier": "b",
+      "chain": "logistics",
+      "status": "active"
+    },
+    {
+      "name": "Defense & Aerospace Report",
+      "id": "UCKTxvtC106sWs6hGyemEwow",
+      "tier": "b",
+      "chain": "aerospace_defense",
+      "status": "dropped",
+      "reason": "no uploads since 2022"
+    },
+    {
+      "name": "a16z",
+      "id": "UC9cn0TuPq4dnbTY-CBsm8XA",
+      "tier": "b",
+      "chain": "cloud_software",
+      "status": "active",
+      "note": "unmeasured in the probe (its sample download failed); watch its first week"
+    },
+    {
+      "name": "Bloomberg Podcasts (Odd Lots, Surveillance)",
+      "id": "UChF5O40UBqAc82I7-i5ig6A",
+      "tier": "c",
+      "status": "dropped",
+      "reason": "duplicate: Odd Lots and Surveillance come from their RSS feeds, which publish transcripts (no whisper)"
+    },
+    {
+      "name": "Real Vision",
+      "id": "UCGXWKlq1Oxr3ddEtmKhAkPg",
+      "tier": "c",
+      "status": "archive",
+      "reason": "macro: not on the path to beating SPY (desk review); metadata only"
+    },
+    {
+      "name": "Forward Guidance",
+      "id": "UCkrwgzhIBKccuDsi_SvZtnQ",
+      "tier": "c",
+      "status": "archive",
+      "reason": "macro: not on the path to beating SPY (desk review); metadata only"
+    },
+    {
+      "name": "Monetary Matters",
+      "id": "UCeyqw1Ns_cnhSJh5XvXPWgw",
+      "tier": "c",
+      "status": "archive",
+      "reason": "macro: not on the path to beating SPY (desk review); metadata only"
+    },
+    {
+      "name": "MacroVoices",
+      "id": "UCICRehoZjq3ZtAWgRJX118A",
+      "tier": "c",
+      "status": "archive",
+      "reason": "macro: not on the path to beating SPY (desk review); metadata only"
+    },
+    {
+      "name": "The Compound",
+      "id": "UCBRpqrzuuqE8TZcWw75JSdw",
+      "tier": "c",
+      "status": "archive",
+      "reason": "macro: not on the path to beating SPY (desk review); metadata only"
+    },
+    {
+      "name": "Excess Returns",
+      "id": "UCPYvx_y92dvI1PSdiho0ALw",
+      "tier": "c",
+      "status": "archive",
+      "reason": "macro: not on the path to beating SPY (desk review); metadata only"
+    },
+    {
+      "name": "Patrick Boyle",
+      "id": "UCASM0cgfkJxQ1ICmRilfHLw",
+      "tier": "c",
+      "status": "archive",
+      "reason": "macro: not on the path to beating SPY (desk review); metadata only"
+    },
+    {
+      "name": "Eurodollar University",
+      "id": "UCrXNkk4IESnqU-8GMad2vyA",
+      "tier": "c",
+      "status": "archive",
+      "reason": "macro: not on the path to beating SPY (desk review); metadata only"
+    }
+  ],
+  "podcasts": [
+    {
+      "name": "Odd Lots",
+      "feed": "https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/8a94442e-5a74-4fa2-8b8d-ae27003a8d6b/982f5071-765c-403d-969d-ae27003a8d83/podcast.rss",
+      "tier": "d",
+      "status": "active"
+    },
+    {
+      "name": "Bloomberg Surveillance",
+      "feed": "https://www.omnycontent.com/d/playlist/e73c998e-6e60-432f-8610-ae210140c5b1/8e704079-ca57-4eac-9741-ae27003e2b7f/9739700c-72c3-4176-ae55-ae27003e2b96/podcast.rss",
+      "tier": "d",
+      "status": "active"
+    },
+    {
+      "name": "Goldman Sachs Exchanges",
+      "feed": "https://feeds.megaphone.fm/GLD9218176758",
+      "tier": "d",
+      "status": "active"
+    },
+    {
+      "name": "Goldman Sachs The Markets",
+      "feed": "https://feeds.megaphone.fm/GLD9322922848",
+      "tier": "d",
+      "status": "dropped",
+      "reason": "0.1 firm hits/day; GS Exchanges kept"
+    },
+    {
+      "name": "Morgan Stanley Thoughts on the Market",
+      "feed": "https://rss.art19.com/thoughts-on-the-market",
+      "tier": "d",
+      "status": "active"
+    },
+    {
+      "name": "Capital Allocators",
+      "feed": "https://rss.libsyn.com/shows/94820/destinations/482814.xml",
+      "tier": "d",
+      "status": "dropped",
+      "reason": "allocator talk, 1.4 firm hits/day; whisper time better spent on tier a"
+    },
+    {
+      "name": "Business Breakdowns",
+      "feed": "https://feeds.megaphone.fm/breakdowns",
+      "tier": "d",
+      "status": "dropped",
+      "reason": "feed silent since July 2026"
+    },
+    {
+      "name": "Acquired",
+      "feed": "https://feeds.transistor.fm/acquired",
+      "tier": "d",
+      "status": "active"
+    },
+    {
+      "name": "Behind the Balance Sheet",
+      "feed": "https://anchor.fm/s/5f616d54/podcast/rss",
+      "tier": "d",
+      "status": "dropped",
+      "reason": "0.4 firm hits/day"
+    },
+    {
+      "name": "Columbia Energy Exchange",
+      "feed": "https://columbiaenergyexchange.libsyn.com/rss",
+      "tier": "b",
+      "chain": "energy",
+      "status": "active"
+    }
+  ],
+  "rss": [
+    {
+      "name": "Fed press releases",
+      "url": "https://www.federalreserve.gov/feeds/press_all.xml",
+      "tier": "d",
+      "kind": "official",
+      "status": "active"
+    },
+    {
+      "name": "Fed speeches",
+      "url": "https://www.federalreserve.gov/feeds/speeches.xml",
+      "tier": "d",
+      "kind": "official",
+      "status": "active"
+    },
+    {
+      "name": "FDA press releases",
+      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml",
+      "tier": "d",
+      "kind": "official",
+      "status": "active"
+    },
+    {
+      "name": "DoD contracts",
+      "url": "https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=400&Site=945&max=10",
+      "tier": "d",
+      "kind": "official",
+      "status": "dropped",
+      "reason": "the feed only announces the notice and war.gov refuses scripted reads (403); awards come from usaspending"
+    },
+    {
+      "name": "Supply Chain Dive",
+      "url": "https://www.supplychaindive.com/feeds/news/",
+      "tier": "d",
+      "kind": "trade",
+      "status": "active"
+    },
+    {
+      "name": "Utility Dive",
+      "url": "https://www.utilitydive.com/feeds/news/",
+      "tier": "d",
+      "kind": "trade",
+      "status": "active"
+    },
+    {
+      "name": "Retail Dive",
+      "url": "https://www.retaildive.com/feeds/news/",
+      "tier": "d",
+      "kind": "trade",
+      "status": "active"
+    },
+    {
+      "name": "Construction Dive",
+      "url": "https://www.constructiondive.com/feeds/news/",
+      "tier": "d",
+      "kind": "trade",
+      "status": "active"
+    },
+    {
+      "name": "Fierce Biotech",
+      "url": "https://www.fiercebiotech.com/rss/xml",
+      "tier": "d",
+      "kind": "trade",
+      "status": "dropped",
+      "reason": "403 to scripts"
+    },
+    {
+      "name": "Fierce Pharma",
+      "url": "https://www.fiercepharma.com/rss/xml",
+      "tier": "d",
+      "kind": "trade",
+      "status": "dropped",
+      "reason": "403 to scripts"
+    },
+    {
+      "name": "Skift",
+      "url": "https://skift.com/feed/",
+      "tier": "d",
+      "kind": "trade",
+      "status": "active"
+    },
+    {
+      "name": "EE Times",
+      "url": "https://www.eetimes.com/feed/",
+      "tier": "d",
+      "kind": "trade",
+      "status": "active"
+    }
+  ],
+  "budget": {
+    "usd_month_cap": 55,
+    "usd_day_stop": 1.8,
+    "_doc": "Hard stop: the desk's LLM calls stop for the UTC day once the day's spend (provider usage x live OpenRouter price) reaches usd_day_stop; the rest waits for the next day. Probe estimate for this set: tagging ~$3/month (reasoning off) + ledger ~$34/month (reasoning on, upper bound) = ~$37/month."
+  },
+  "llm": {
+    "tagging": {
+      "reasoning": false,
+      "fallback": "reasoning on (~$58/month) if the reasoning-off tags miss the node contract (precision >= 0.9 on 200 owner-checked cluster->firm tags)"
+    },
+    "ledger": {
+      "reasoning": true,
+      "passes": 3
+    },
+    "_doc": "The probe's side test: reasoning off = 842 vs 7,662 output tokens on the same 10 items, same tickers."
+  },
+  "whisper": {
+    "model": "mlx-community/whisper-large-v3-turbo",
+    "max_minutes_day": 180,
+    "_doc": "Local, Apple Silicon only. YouTube blocks caption requests within ~21 calls, so active video goes through audio + whisper (~17x real time on the M4; ~150 compute-min/day for this set)."
+  },
+  "apis": {
+    "alpaca": {
+      "status": "active",
+      "note": "backbone: ~1,000 items/day, 433 firms in 2 days"
+    },
+    "finnhub_general": {
+      "status": "active",
+      "note": "read from the context archive; no new Finnhub calls"
+    },
+    "fedreg": {
+      "status": "active"
+    },
+    "openfda": {
+      "status": "active"
+    },
+    "usaspending": {
+      "status": "active"
+    },
+    "gdelt_doc": {
+      "status": "dropped",
+      "reason": "the DOC API returns 429 to this IP even for single requests"
+    },
+    "gdelt_gkg": {
+      "status": "dropped",
+      "reason": "~115k articles/day of mostly incidental mentions; $41-298/month for noise. Deterministic counts/tone only, under its own amendment, if ever"
+    }
+  }
+}

@@ -77,6 +77,7 @@ Thu ─── 10 execution (last minute before close)  Fri/Mon/Tue/Wed ─ 12 da
 | 15 C8 / C9 | `shadow_info.py` | yes, one per name + 1 | `shadow_info.json`: informed analysts and the ranker; books in `shadow_book.json` (Amendment 6) |
 | 16 Lifecycle C10 | `lifecycle.py` | yes, one per name + daily news checks | `lifecycle.json` per week; `lifecycle/state.json`: per-position horizon, stop/target, news exits, daily NAV (Amendment 7, shadow) |
 | 17 Review context | `review_context.py` | no | `reviews/context/<day>.json`: what a macro-aware review would have seen (Amendment 6, logged only) |
+| 18 News desk (research) | `news_ingest.py`, `news_cost.py` | tagging + ledger (planned) | Phase 0 only so far: the cost probe (`reports/research/news_desk_cost_probe.md`) and the chosen source list `data/raw/news/sources.json` (Benzinga via Alpaca, Finnhub general, official and trade feeds, YouTube via audio + local whisper, podcasts with their own transcripts). Local runner only; budget stop $1.80/day. No desk reads it |
 | Ledger | `ledger.py` | no | `ledger/fund_positions.xlsx` and `ledger/dashboard.json`: actual Alpaca trades only |
 | Standard P&L | `pnl.py` | no | used by the ledger: FIFO realized/unrealized P&L from Alpaca's fills, reconciled to the account value |
 

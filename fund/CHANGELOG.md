@@ -4,6 +4,13 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-16: News desk (Desk 18), Phase 0. A cost probe fetched 2 days (10-13, 10-14) of every candidate source: Benzinga via Alpaca, Finnhub general, GDELT, official and trade feeds, 29 YouTube channels and 10 podcasts. The report is `reports/research/news_desk_cost_probe.md`. Under the owner's $50–60/month cap, the owner chose the v1 list in `data/raw/news/sources.json`:
+  - LLM tagging runs with reasoning off and the ledger with reasoning on (~$37/month estimated), with a hard stop at $1.80/day.
+  - GDELT is dropped.
+  - Macro channels are archive-only.
+  - Video goes through audio + local whisper, because YouTube blocks caption requests.
+  - Code: `fund/news_ingest.py` (probe mode only) and `fund/news_cost.py`.
+  - Research only: no runner job yet, no desk reads it, and no decision input changes. The thesis use needs a dated amendment to the Thesis Tree pre-registration.
 - 2026-10-15: the weekly run of 10-14 failed at Desk 9 (issue #88): the Protocol 7 paired test filtered an empty series (no c0_weekly week scored yet) by date, which pandas rejects on an integer index. It now skips the filter while the series is empty. Only gate.md/gate.json were not refreshed (verdict CONTINUE either way); the decisions, the lifecycle cohort and the champion hash check were unaffected. Operational only.
 - 2026-10-13: shadow monitor adds an S&P 500 buy-and-hold benchmark (owner request): 100% SPY from the first execution day's close, never traded, held through flat weeks. Display only. Owner: the shadow books are assessed over a long window, first judgement about 6 months in (mid-April 2027), at least 3x the longest horizon; the page says so.
 - 2026-10-14: Thesis Tree research. `reports/research/PREREG_thesis_tree.md` is pre-registered (owner sign-off), with the S&P 400 list (`data/raw/stocks/sp400_current.csv`) and every sub-industry in `fund/chains.json`. Research job `r5` (Mon–Fri 02:30 UTC, `fund/r5.py`) writes forward predictions for each day's earnings reports from information to 22:00 UTC of the previous session. They are committed to the orphan branch `research-data` (never `fund-data`), and the batch hashes are posted to issue #87 as server-side timestamps. Research only: no desk reads it; no decision input changes.
