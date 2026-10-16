@@ -162,6 +162,21 @@ def weekly_ic(pred, y, idx):
     return np.array(out)
 
 
+def sector_ids(names):
+    """Sector cluster per name (panel.SECTORS); the five unclustered names form one 'other' group."""
+    lab = {t: g for g, ts in P.SECTORS.items() for t in ts}
+    return np.array([lab.get(t, "other") for t in names])
+
+
+def neutralise(a, groups):
+    """Demean each row within groups (sector-neutral predictions or targets)."""
+    out = a.copy()
+    for g in np.unique(groups):
+        m = groups == g
+        out[:, m] = a[:, m] - np.nanmean(a[:, m], 1, keepdims=True)
+    return out
+
+
 def tercile_spread(pred, y, idx):
     out = []
     for d in idx:

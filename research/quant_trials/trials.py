@@ -127,7 +127,7 @@ def shuffle_names(Z, seed=0):
 
 
 # ------------------------------------------------------------------------------------------------- one config
-def run_config(p, T, cfg, folds, extra_info=None):
+def run_config(p, T, cfg, folds, extra_info=None, confirm=False):
     """cfg: trial, arm (text arm or 'none'/'intensity'), model ('ridge'|'mlp'|'seq'|'seq_ang'|'xs:<mask>'),
     h, seeds, placebo (bool), names (subset or None), train_start."""
     h = cfg["h"]
@@ -138,8 +138,11 @@ def run_config(p, T, cfg, folds, extra_info=None):
     rows = []
     hsh = chash(cfg)
     for fy in folds:
-        assert fy <= STAGE1_LAST_YEAR
+        assert fy <= STAGE1_LAST_YEAR or confirm      # 2022-25 only through confirm.py, after the prereg
         train, test = F.fold_index(p, fy, h, start=pd.Timestamp(cfg.get("train_start", "2016-01-04")))
+        if cfg.get("train_exclude"):                       # e.g. drop the COVID sessions from training
+            lo, hi = map(pd.Timestamp, cfg["train_exclude"])
+            train = train[(p.S[train] < lo) | (p.S[train] > hi)]
         y = y_raw.copy()
         y[:, ~names_mask] = np.nan
         y[test[-1] + 1:] = np.nan            # fold_index already keeps every test target inside its year
@@ -163,6 +166,12 @@ def run_config(p, T, cfg, folds, extra_info=None):
         elif model in ("mlp", "seq", "seq_ang"):
             pred, inf = M.net(X, ys, train, test, h, kind="seq" if model.startswith("seq") else "mlp",
                               seeds=cfg.get("seeds", 5), angular=model == "seq_ang")
+        elif model.startswith("rff"):
+            P_ = int(model.split(":")[1]) if ":" in model else 4000
+            g = "median" if model.startswith("rff_med") else 2.0
+            pred, inf = M.rff_ridge(X, ys, train, test, h, P=P_, gamma=g, seeds=cfg.get("seeds", 5))
+        elif model == "gbrt":
+            pred, inf = M.gbrt(X, ys, train, test, h, seeds=cfg.get("seeds", 5))
         elif model.startswith("xs"):
             _, mname, *ang = model.split(":")
             mask = cross_mask(p, mname, train, ys, T, cfg)
@@ -231,8 +240,10 @@ def granger_mask(p, train, ys, T, cfg, max_lag=5, q=0.01):
         return _GRANGER[key]
     from scipy import stats
     from sklearn.linear_model import Ridge
-    Z, _ = T.build(cfg["arm"], train, ys, cfg["h"])
-    Zs = standardise(np.concatenate([p.intensity, Z], -1), train)
+    blocks = [p.intensity]
+    if cfg["arm"] not in ("none", "intensity"):
+        blocks.append(T.build(cfg["arm"], train, ys, cfg["h"])[0])
+    Zs = standardise(np.concatenate(blocks, -1), train)
     Xr, yr = M._rows(Zs, ys, train)
     s = Ridge(alpha=100).fit(Xr, yr).predict(np.nan_to_num(Zs).reshape(-1, Zs.shape[-1])).reshape(p.D, p.N)
     e = np.nan_to_num(p.e)
@@ -434,6 +445,58 @@ def artefact(seeds=3, h=3, folds=F.INNER_FOLDS):
     return df
 
 
+# ------------------------------------------------------------------------------------------------- COVID critique
+CRASH = (pd.Timestamp("2020-02-15"), pd.Timestamp("2020-05-31"))
+
+
+def covid_table(arms=("proto_hl5", "pca_hl5"), models=("ridge", "gbrt"), hs=(10, 20, 40, 60)):
+    """Re-scores existing predictions (no refits): per fold, the text-minus-twin weekly IC difference
+    (a) as run, (b) sector-neutral (prediction and target demeaned within sector clusters),
+    (c) for 2020 without the Feb 15 - May 31 crash window. Twins: price-only and the arm's own placebo."""
+    led = pd.read_csv(LEDGER)
+    led = led[(led.trial != "A")].drop_duplicates(["hash", "fold"], keep="last")
+    cfgs = {h: json.loads(c) for h, c in zip(led.hash, led.cfg)}
+    by_key = {_key(c): h for h, c in cfgs.items()}
+    p = F.Panel()
+    grp = F.sector_ids(p.names)
+    rows = []
+    for h in hs:
+        y = p.target(h)
+        yn = F.neutralise(y, grp)
+        for model in models:
+            for arm in arms:
+                base = {"arm": arm, "model": model, "h": h, "placebo": False}
+                if model != "ridge":
+                    base["seeds"] = 5
+                k = _key(base)
+                if k not in by_key:
+                    continue
+                for twin_name, twin in (("price", {**base, "arm": "none"}), ("placebo", {**base, "placebo": True})):
+                    kt = _key(twin)
+                    if kt not in by_key:
+                        continue
+                    a, b = by_key[k], by_key[kt]
+                    for fy in sorted(led[led.hash == a].fold):
+                        fa, fb = os.path.join(PREDS, f"{a}_{fy}.npy"), os.path.join(PREDS, f"{b}_{fy}.npy")
+                        if not (os.path.exists(fa) and os.path.exists(fb)):
+                            continue
+                        _, test = F.fold_index(p, fy, h)
+                        pa, pb = np.load(fa), np.load(fb)
+                        yy, yyn = y.copy(), yn.copy()
+                        yy[test[-1] + 1:] = np.nan
+                        yyn[test[-1] + 1:] = np.nan
+                        wk = F.thursdays(p, test)
+                        d_raw = F.weekly_ic(pa, yy, wk) - F.weekly_ic(pb, yy, wk)
+                        d_neu = F.weekly_ic(F.neutralise(pa, grp), yyn, wk) - F.weekly_ic(F.neutralise(pb, grp), yyn, wk)
+                        keep = ~((p.S[wk] >= CRASH[0]) & (p.S[wk] <= CRASH[1]))
+                        rows.append({"h": h, "model": model, "arm": arm, "twin": twin_name, "fold": fy,
+                                     "diff": np.nanmean(d_raw), "diff_sector_neutral": np.nanmean(d_neu),
+                                     "diff_ex_crash": np.nanmean(d_raw[keep])})
+    df = pd.DataFrame(rows)
+    df.to_csv(os.path.join(P.REPORT, "covid_rescore.csv"), index=False)
+    return df
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd")
@@ -447,12 +510,18 @@ if __name__ == "__main__":
     ap.add_argument("--exclude", nargs="*")
     ap.add_argument("--train-start")
     ap.add_argument("--variant", default="")
+    ap.add_argument("--train-exclude", nargs=2)
     ap.add_argument("--folds", nargs="+", type=int, default=list(F.INNER_FOLDS))
     a = ap.parse_args()
     if a.cmd == "compare":
         print(compare(*a.args))
     elif a.cmd == "artefact":
         print(artefact().groupby("model").mean(numeric_only=True).to_string())
+    elif a.cmd == "covid":
+        df = covid_table()
+        with pd.option_context("display.width", 250):
+            print(df.pivot_table(index=["model", "arm", "h", "twin"], columns="fold",
+                                 values=["diff", "diff_sector_neutral", "diff_ex_crash"]).round(3).to_string())
     elif a.cmd == "report":
         with pd.option_context("display.width", 250, "display.max_columns", 20, "display.max_colwidth", 60):
             print(report().drop(columns=["hash"]).to_string(index=False))
@@ -464,5 +533,7 @@ if __name__ == "__main__":
             kw["train_start"] = a.train_start
         if a.variant:
             kw["variant"] = a.variant
+        if a.train_exclude:
+            kw["train_exclude"] = a.train_exclude
         run_many(grid(a.trial, a.arms, a.models, a.h, (False, True) if a.placebo else (False,), a.seeds, **kw),
                  folds=a.folds)

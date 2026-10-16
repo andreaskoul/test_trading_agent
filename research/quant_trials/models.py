@@ -348,3 +348,73 @@ def siamese(V, labels, epochs=15, pairs_per_epoch=20000, margin=1.0, lr=1e-4, bs
     from sklearn.metrics import roc_auc_score
     auc = roc_auc_score(same.cpu().numpy(), -dist.cpu().numpy())
     return tower.cpu(), float(auc)
+
+
+# ------------------------------------------------------------------------------------------------- kernels / trees
+def rff_ridge(X, y, train, test, h, P=4000, gamma=2.0, seeds=5,
+              shrink=(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1, 10, 100, 1e3), **_):
+    """Kernel learning by random Fourier features + ridge (Kelly, Malamud & Zhou 2024, 'The Virtue of
+    Complexity in Return Prediction'): z(x) = [sin(gamma W x), cos(gamma W x)] / sqrt(P), W ~ N(0, I),
+    an approximation of a Gaussian kernel. Ridge penalty picked on the last 20% of the training window;
+    predictions averaged over `seeds` draws of W. Primal solve via an eigendecomposition of Z'Z (P x P)."""
+    tr, va = F.split_val(train, h=h)
+    Xt, yt = _rows(X, y, tr)
+    Xv, yv = _rows(X, y, va)
+    Xa, ya = _rows(X, y, train)
+    Xs = np.nan_to_num(X[test]).reshape(-1, X.shape[-1])
+    if gamma == "median":                      # median heuristic: kernel = exp(-1/2) at the median distance
+        r = np.random.default_rng(0)
+        i, j = r.choice(len(Xt), 4000), r.choice(len(Xt), 4000)
+        gamma = float(1 / np.sqrt(np.median(((Xt[i] - Xt[j]) ** 2).sum(1))))
+    preds, chosen = [], []
+    for s in range(seeds):
+        W = np.random.default_rng(100 + s).normal(size=(X.shape[-1], P // 2)).astype(np.float32)
+
+        def feats(A):
+            Z = gamma * (A.astype(np.float32) @ W)
+            return np.hstack([np.sin(Z), np.cos(Z)]) / np.sqrt(P)
+
+        def fit(Z, yy):
+            G = Z.T @ Z
+            ev, V = np.linalg.eigh(G.astype(np.float64))
+            b = V.T @ (Z.T @ yy)
+            n = len(yy)
+            return lambda z: V @ (b / (ev + z * n))
+        Zt = feats(Xt)
+        solve = fit(Zt, yt)
+        Zv = feats(Xv)
+        best = min(shrink, key=lambda z: np.mean((Zv @ solve(z) - yv) ** 2))
+        beta = fit(feats(Xa), ya)(best)
+        p = np.full(y.shape, np.nan)
+        p[test] = (feats(Xs) @ beta).reshape(len(test), -1)
+        preds.append(p)
+        chosen.append(best)
+    return np.mean(preds, 0), {"shrink": chosen, "P": P, "gamma": gamma}
+
+
+def gbrt(X, y, train, test, h, seeds=5, **_):
+    """Gradient-boosted trees (Gu, Kelly & Xiu 2020): shallow histogram GBRT, early stopping on the last
+    20% of the training window, seed-averaged."""
+    from sklearn.ensemble import HistGradientBoostingRegressor
+    tr, va = F.split_val(train, h=h)
+    Xt, yt = _rows(X, y, tr)
+    Xv, yv = _rows(X, y, va)
+    Xs = np.nan_to_num(X[test]).reshape(-1, X.shape[-1])
+    preds, iters = [], []
+    for s in range(seeds):
+        m = HistGradientBoostingRegressor(max_depth=3, learning_rate=0.03, max_iter=600, min_samples_leaf=200,
+                                          l2_regularization=1.0, max_features=0.8, random_state=s)
+        best, best_it = np.inf, 50
+        m.fit(Xt, yt)
+        for it, pv in enumerate(m.staged_predict(Xv), 1):
+            e = np.mean((pv - yv) ** 2)
+            if e < best:
+                best, best_it = e, it
+        m2 = HistGradientBoostingRegressor(max_depth=3, learning_rate=0.03, max_iter=best_it, min_samples_leaf=200,
+                                           l2_regularization=1.0, max_features=0.8, random_state=s)
+        m2.fit(*_rows(X, y, train))
+        p = np.full(y.shape, np.nan)
+        p[test] = m2.predict(Xs).reshape(len(test), -1)
+        preds.append(p)
+        iters.append(best_it)
+    return np.mean(preds, 0), {"iters": iters}
