@@ -76,6 +76,32 @@ The pre-registered N3 test measures novelty properly, at the event level. This o
 - **Hard stop:** $0.30 of LLM spend per UTC day.
 - **If a quality check fails:** if either stage misses its node contract with reasoning off, the desk shrinks (fewer channels; ledger only for firms with a card). It does not turn reasoning on, which would cost about $58/month.
 - **Prices move:** OpenRouter's listed price for the model changed during the day, from $0.036 / $0.684 to $0.150 / $0.600 per million input / output tokens. The totals table below uses whichever price was live at the last regeneration.
+
+**Model test, same day.** I ran the same 5 tagging batches (30 Benzinga headlines + 4 transcript windows) through each model and setting. Costs are OpenRouter's billed cost:
+
+| model, setting | billed cost | $/headline | $/transcript window | time | notes |
+|---|---|---|---|---|---|
+| DeepSeek v4.1 flash, reasoning on (fund default) | $0.0201 | 0.00038 | 0.00215 | 133 s | returned [] for some headlines that plainly name a firm |
+| DeepSeek v4.1 flash, reasoning off | $0.0030 | 0.00006 | 0.00032 | 17 s | **no firms on all 4 transcript windows**; adds tickers outside the universe (the desk's check drops those) |
+| GLM 5.3 flash, reasoning on | $0.0129 | 0.00028 | 0.00114 | 185 s | 36% cheaper than DeepSeek on the same work; billed below its list price |
+| GLM 5.3 flash, `effort: low` | ~$0.001 (3 batches) | ~0.00003 | ~0.00016 | 1–4 s | headlines match; found the big-tech window, missed the windows only full reasoning found |
+| DeepSeek, `effort: low` | $0.0092 (3 batches) | ~0.00033 | ~0.0015 | 7–26 s | misses the same windows as GLM low, at 9× the cost |
+
+GLM cannot switch reasoning off ("Reasoning is mandatory"), but `effort: low` cuts it to almost nothing.
+
+Cost of tagging for the v1 sources (~608 headlines and ~263 transcript windows a day):
+
+| setting | per week |
+|---|---|
+| DeepSeek, reasoning on | $5.58 |
+| GLM, reasoning on | $3.29 |
+| GLM low effort on headlines + GLM reasoning on for windows | $2.23 |
+| DeepSeek, reasoning off | $0.85 |
+| GLM, low effort | $0.42 |
+
+There is no ground truth here: 34 items, and the models disagree mostly on transcripts. So the node-contract test picks the model: 200 owner-checked items through every candidate, and the cheapest one that passes is frozen. `sources.json` v1.2 lists GLM low effort as the preferred candidate. With it, the desk's total, tagging plus ledger, should stay well under $1/week.
+
+The traded fund and R5 keep DeepSeek. Their model is frozen by Protocol 7 and the pre-registration. GLM being about a third cheaper with reasoning on is a candidate for the next protocol, not a change now.
 <!-- /findings -->
 Window: Tue 13 – Wed 14 Oct 2026 (UTC), fetched from 2026-10-15T21:06 UTC. Model deepseek/deepseek-v4.1-flash; price $0.036 / $0.663 per million input / output tokens (openrouter /api/v1/models).
 

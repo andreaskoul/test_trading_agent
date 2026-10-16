@@ -1,6 +1,6 @@
 {
   "_doc": "News desk sources (fund/news_ingest.py). v1 chosen by the owner on 2026-10-16 from the Phase 0 cost probe (reports/research/news_desk_cost_probe.md) under a $50-60/month cap. status: active = fetched, transcribed and tagged; archive = listing metadata only (no transcript, no LLM); dropped = not fetched (reason given). Frozen with the PREREG amendment; changes after that go in as dated amendments. tier: a = firm/executive primary, b = industry specialist, c = markets/macro, d = podcasts/official/trade press.",
-  "version": "v1.1-2026-10-16",
+  "version": "v1.2-2026-10-16",
   "youtube": [
     {
       "name": "CNBC Television",
@@ -360,14 +360,30 @@
     "_doc": "The owner's $13/week covers every LLM call of the whole fund (all desks, R5, lifecycle, review, this desk). The OpenRouter key showed $9.67 for Mon-Fri of the week of 2026-10-12 and $14.93 for 1-16 Oct, so this desk gets a small share: ~$2/week. Hard stop: the desk's LLM calls stop for the UTC day once its spend (provider usage x live OpenRouter price) reaches usd_day_stop. Probe estimate for this set with reasoning off for both stages: tagging ~$0.10/day + ledger ~$0.18/day (upper bound) = ~$0.28/day."
   },
   "llm": {
-    "tagging": {
-      "reasoning": false
-    },
-    "ledger": {
-      "reasoning": false,
-      "passes": 3
-    },
-    "_doc": "Both stages run with reasoning off (side test: 842 vs 7,662 output tokens on the same 10 items, same tickers). Both must pass their node contracts first (tags: precision >= 0.9 on 200 owner-checked cluster->firm tags; ledger: agreement with a reasoning-on reference on a sample of firms). If either fails, the desk shrinks (fewer channels, ledger only for firms with a card) instead of turning reasoning on: reasoning on would cost ~$58/month, more than the whole fund's budget allows."
+    "model_candidates": [
+      {
+        "model": "z-ai/glm-5.3-flash",
+        "reasoning": {
+          "effort": "low"
+        },
+        "preferred": true,
+        "note": "cheapest: ~$0.00003/headline, ~$0.00016/transcript window; reasoning cannot be disabled on GLM"
+      },
+      {
+        "model": "deepseek/deepseek-v4.1-flash",
+        "reasoning": {
+          "enabled": false
+        },
+        "note": "~$0.00006/headline, ~$0.00032/window, but returned no firms on all 4 test transcript windows"
+      },
+      {
+        "model": "z-ai/glm-5.3-flash",
+        "reasoning": "default",
+        "note": "fallback for transcript windows if low effort misses the contract: ~$0.00114/window"
+      }
+    ],
+    "selection": "The node-contract test picks the model: the same 200 cluster->firm items (headlines and transcript windows) through each candidate, owner-checked; the cheapest candidate with precision >= 0.9 (and, for windows, recall >= 0.8 against the union of what any candidate found and the owner confirmed) is frozen with the PREREG amendment. The ledger uses the same model and setting.",
+    "_doc": "This desk only. The traded fund's model is frozen by Protocol 7 (a change restarts the protocol), and R5's by its pre-registration."
   },
   "whisper": {
     "model": "mlx-community/whisper-large-v3-turbo",
