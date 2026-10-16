@@ -62,7 +62,7 @@ SCHEDULE = {
 # weekday(): Mon=0 ... Sun=6
 NEEDS = {
     "archive": ["FINNHUB_API_KEY", "HF_TOKEN"],
-    "weekly": ["OPENROUTER_API_KEY", "FINNHUB_API_KEY", "HF_TOKEN"],
+    "weekly": ["OPENROUTER_API_KEY", "FINNHUB_API_KEY", "HF_TOKEN", "ALPACA_API_KEY", "ALPACA_SECRET_KEY", "SEC_USER_AGENT"],
     "trade": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "review": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY"],
     "reconcile": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],

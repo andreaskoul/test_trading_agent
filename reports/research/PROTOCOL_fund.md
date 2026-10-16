@@ -639,3 +639,132 @@ of weeks fully filled, median slippage ≤ 10 bp).
 
 **Before go-live.** Unchanged from Amendment 3. Orders use the pre-close send on the paper and the live account
 alike (owner's decision, 2026-10-09).
+
+## Amendment 8 (decided by the owner 2026-10-13, committed before the first cohort it affects, as-of 2026-10-21): contextual horizons and the horizon-end review
+
+**Why, and when it was decided.** The owner judged Amendment 7's horizons too narrow (2026-10-13). A horizon
+should reflect when the thesis is expected to resolve or be priced in, read from the event and its context.
+When a thesis still holds at its horizon, it should be reviewed on the recent price path and the news, not
+closed early. This was decided on 2026-10-13, before Protocol 7's first decision (2026-10-14), and no
+Protocol 7 week had been scored when this text was committed. So **Protocol 7's clock is kept** and the
+amendment applies from its effective dates. It was not chosen on performance.
+
+**Effective dates** (`fund/lifecycle.py`: `A8_ASOF`, `A8_REVIEW`; an environment variable defers either by a
+week if its gate fails):
+* the horizon at entry applies to cohorts from **as-of 2026-10-21**;
+* the horizon-end review applies to every lot that reaches its horizon on a session from **2026-10-20** (the
+  commit day), including lots of the 2026-10-07 and 2026-10-14 cohorts.
+
+### A. The horizon at entry
+
+**H = clamp(round((B_type · m − age) · (1 − 0.5 · min(p, 1))), 3, 25)** trading days. If the unrounded value
+is ≤ 2, the name is stale and not entered, as in Amendment 7.
+
+* **B_type**: the trading days a typical event of the type takes to be priced, counted from the news date.
+
+  | event type | B_type | evidence |
+  |---|---|---|
+  | earnings, guidance, capital return | 20 | post-announcement drift; large-cap drift concentrated in the first weeks |
+  | analyst downgrade | 20 | downgrade drift is long-lived |
+  | analyst upgrade | 10 | upgrades are short-lived |
+  | legal or regulatory | 10 | |
+  | cross-firm or economic link | 20 | customer, supplier and peer read-throughs are priced slowly |
+  | soft news (launch, partnership without figures, leadership, macro read-through, rumour, other) | 5 | soft information reverses |
+
+  Sources: Martineau 2022; Kargarzadeh et al. 2026 (arXiv 2608.14014); Womack 1996; Cohen–Frazzini 2008;
+  Cohen–Lou 2012; Tetlock 2011.
+* **m**, the attention and complexity multiplier, capped at 1.5:
+  * ×1.25 for low attention: abnormal volume (AV) < 1.5 on the news session, or news on a Friday, or news
+    outside market hours (Hirshleifer–Lim–Teoh 2009; DellaVigna–Pollet 2009; Da–Engelberg–Gao 2011);
+  * ×1.25 for complexity: a multi-segment or second-order thesis, or a cross-firm one (Cohen–Lou 2012);
+  * ×0.8 for high attention: AV > 3.
+  * AV is the news session's volume over the median of the 20 sessions before it (Alpaca consolidated bars).
+* **age**: trading days from the first report to the entry session.
+* **p**, the fraction already priced in: p = clip(side · CAR / M_type, 0, 1.5).
+  * CAR is the beta-adjusted return against SPY from the news session to the last close before the decision.
+  * M_type is the median |2-day abnormal return| of past events of the group in the name's GICS sector.
+    There are two groups:
+    * **hard**: earnings releases, taken from SEC EDGAR 8-K item 2.02 over the last two years;
+    * **news**: news-shock sessions in the news archive, with ≥ 5 articles and ≥ 3× the name's median daily
+      count, excluding sessions within 2 of an earnings release.
+  * A sector's median is shrunk to the group's pooled median with weight 20 events. That result is then shrunk
+    toward the fund's own desk-labelled events of the group, with the same weight, as they accumulate.
+  * **p ≥ 1 means no entry**: the move is already in the price. The exception is hard news, which is entered
+    with H = 3.
+* **Catalyst override, only from data.** If the thesis waits for the firm's next earnings release, and Finnhub's
+  calendar dates it at most 24 sessions after entry, then H = sessions to the release + 1. A catalyst date
+  from the model is never used.
+* **The model gives labels only**, each by majority of 5 valid samples (temperature 0.7, at most 8 draws; a name with fewer than 3 valid samples is not entered). In tests, single calls changed the type label between identical runs and moved the horizon by up to 20 sessions. The desk's call adds:
+  * hard or soft;
+  * first report or follow-up;
+  * the revision direction (for analyst revisions);
+  * cross-firm or direct;
+  * complex or simple;
+  * the catalyst it waits for (earnings / other / none).
+
+  Every number (age, AV, CAR, M_type, catalyst sessions) comes from data and is logged with its inputs in
+  `<asof>/lifecycle.json`.
+
+### B. The horizon-end review
+
+**When.** On the session a lot reaches its horizon, at the live decision, if neither barrier has fired and no
+kill condition has ended it that day. Every lot qualifies: entering the book already required a non-zero final
+score.
+
+**Inputs.**
+* **z = R / (σ · √days held).** σ is re-estimated on the last 60 hedged daily returns, without the news
+  session.
+* **ID = sign(R) · (%negative − %positive)** of the lot's daily hedged returns since entry (information
+  discreteness; Da–Gurun–Warachka 2014).
+* **TO**: the last 5 sessions' volume over the median of the 60 before them.
+* **News label.** The articles published while the lot was held are labelled CONFIRMING, CONTRADICTING, STALE
+  or NONE, with quotes.
+  * There are 3 independent samples at temperature 0.7, with the article order shuffled.
+  * The model sees the thesis event and the kill conditions, never the score.
+  * The majority wins. A split that includes CONTRADICTING counts as CONTRADICTING (Jagged Judges 2026: one
+    judge's verdict is not stable).
+* **Catalyst pending**: Finnhub's calendar has the next earnings release within the room left for an
+  extension.
+* **Kill partial**: today's kill check says reduce.
+
+**Decision, first match wins.**
+1. Kill partial, or CONTRADICTING: exit.
+2. z ≤ 0 and no catalyst: exit (the thesis has not worked; Odean 1998 on holding losers).
+3. z ≥ 1.5, with neither CONFIRMING news nor a catalyst: exit (the move is done).
+4. ID > 0.1 and TO < 1, without CONFIRMING news: exit (a jumpy path on fading interest).
+5. 0 < z < 1.5, and (CONFIRMING news, or a catalyst, or ID ≤ 0 with TO ≥ 1): **extend**. Otherwise exit.
+
+Sources: Savor 2012; Chan 2003; Frazzini 2006; López de Prado, AFML ch. 3.
+
+**Extension.**
+* **Length.** It runs ceil(H₀/2) more sessions, lengthened to cover a pending catalyst + 2 but never beyond
+  H₀, where H₀ is the original horizon.
+* **Limits.** At most 2 extensions. The total holding is at most 2·H₀ and at most 40 sessions.
+* **Barriers re-armed.** W′ = σ · √(extension). The stop becomes max(old stop, R − 2·W′): it only ratchets
+  up. The target becomes R + 3·W′.
+* **Slot guard.** On a cohort day, an extension needs |score| · W′ ≥ the median |score| · W of that day's
+  new candidates. Otherwise the lot exits to free its slot.
+
+**Logging and determinism.**
+* The labels are logged in `lifecycle/reviews/<day>.json` and never rerun.
+* Each decision, with all its inputs, is logged in the day's `lifecycle/live/<day>.json` and in the state's
+  `reviews`.
+* The nightly rebuild applies the logged decision; it does not recompute it.
+
+**The shadow and the switch-off rule.**
+* Every review keeps a counterfactual: exit at the horizon.
+* An extension's P&L after the horizon, net of the costs of trading it in the extension, is recorded when it
+  closes.
+* `score.py` reports the reviews, the exit rules used and the closed extensions' P&L against $0.
+* **After 50 reviews, if the closed extensions have not earned more than exiting at the horizon would have,
+  the review switches itself off**, and lots exit at their horizon as in Amendment 7.
+
+### What does not change, and what will be re-estimated
+
+* **Unchanged:**
+  * Amendment 7's barriers at entry (−2W / +3W on σ_e frozen at entry), the kill checks, the book rules, the
+    caps and the hedge;
+  * Protocol 7's live decision, logging and scoring;
+  * the challenger family.
+* **Not tuned on live data.** The B_type values are re-estimated once, by a future amendment, from the fund's
+  own replay: 85% of the 30-day maximum of the signed CAR curve per type, against a placebo baseline.
