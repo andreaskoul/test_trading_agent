@@ -57,7 +57,8 @@ def weekly_net_spread(pred, r5, idx, cost_bp=5.0):
             q = pd.Series(pred[d][m]).rank(pct=True).values
             ix = np.where(m)[0]
             lo, hi = ix[q <= 1 / 3], ix[q > 2 / 3]
-            w[hi], w[lo] = 1 / len(hi), -1 / len(lo)
+            if len(hi) and len(lo):                 # all-tied predictions (e.g. a stump-only GBRT week): no position
+                w[hi], w[lo] = 1 / len(hi), -1 / len(lo)
         g = float(np.nansum(w * np.nan_to_num(r5[d])))
         c = 0.0 if prev is None else cost_bp * 1e-4 * np.abs(w - prev).sum()
         out.append(g - c)
@@ -79,6 +80,10 @@ def main():
                 "placebo": {**base, "placebo": True, "trial": "S2"}}
         hashes = {}
         for role, cfg in cfgs.items():
+            h_ = T.chash(cfg)
+            if all(os.path.exists(os.path.join(T.PREDS, f"{h_}_{y_}.npy")) for y_ in YEARS):
+                hashes[role] = h_                   # already fitted in this read: reuse, never refit
+                continue
             hashes[role], _ = T.run_config(p, tx, cfg, YEARS, extra_info={"prereg": sha}, confirm=True)
         y = p.target(h)
         yn = F.neutralise(y, grp)
