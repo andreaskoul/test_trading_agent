@@ -1,7 +1,7 @@
-# Pre-registration: quant trials Stage 2, news-embedding signals (DRAFT, not signed)
+# Pre-registration: quant trials Stage 2, news-embedding signals
 
-**Status:** draft. Nothing is frozen until the owner signs it off and the commit is pushed. `confirm.py` refuses
-to run until then.
+**Status:** signed off by the owner on 2026-10-16 ("run those three on the 2022-2025 data"). Frozen at this
+commit. `confirm.py` reads the candidates from the JSON block below.
 
 **Dated:** 2026-10-16.
 
@@ -94,4 +94,4 @@ A candidate **passes** only if all of the following hold:
   evidence from live headlines.
 - If something passes, the decision memo lays out the options (no desk / P8 input / shadow desk) for the owner.
 
-**Owner sign-off:** _pending_
+**Owner sign-off:** approved 2026-10-16, shortlist Q1–Q3 as written; the secondary rows are descriptive only.
