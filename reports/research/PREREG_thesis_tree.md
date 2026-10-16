@@ -329,3 +329,53 @@ the R0 report: the first post-horizon season. Every later season, and every forw
 | Variants not listed here are not run | ☑ |
 | S&P 400 sub-industry assignments added before any test | ☑ (`fund/chains.json`, `_assigned_at_signoff`) |
 | R5 v1 specified before the first prediction | ☑ (§5, this commit) |
+
+---
+
+## Amendment 1 (2026-10-16): R5 input and robustness defects; r5-v2
+
+**Written before any outcome of the affected firms was examined.** Every criterion below is mechanical: document
+type, content and logged statuses. None depends on a return or a reported result.
+
+**What happened** in the first two R5 runs (15 and 16 Oct, 20 firms; `fund/r5.py` v1):
+
+1. **Wrong input document (7 records).**
+   * v1 chose the press release by file name and, failing a match, used the 8-K itself.
+   * For CFG, CMC, FHN, JBHT, PNC, USB and TRV the card was therefore written from the 8-K cover page (3–10k
+     characters of form text), not from the EX-99.1 release.
+   * CFG failed loudly: the model correctly found no drivers.
+   * The other six were recorded as `ok`, with generic cards (1–4 numbers, against 10–34 from real releases).
+   * Peer blocks were chosen by the same rule.
+2. **Transport (1 record).** SCHW lost 2 of 3 ledger passes, to a dropped connection (`IncompleteRead`) and a time
+   limit across unpinned hosts. Nothing re-ran them, so the median had one pass and the record failed.
+3. **Diagnosability.** Rejected raw answers were not logged.
+
+**How the v1 records are treated.**
+* A v1 record enters the primary R3/R4 analyses only if:
+  * (a) its card source is the filing's document of declared type EX-99.x and that document passes
+    `guards.release_check`, recomputed on the same accession; and
+  * (b) every peer release it used meets the same test.
+* Records failing (a) are excluded. By this rule that is CMC, FHN, JBHT, PNC, USB and TRV.
+* Records failing only (b) enter rung 1 (score_own) and are excluded from analyses that use score_peer or
+  score_combined.
+* All excluded records are reported in a sensitivity analysis.
+* CFG and SCHW stay missing. Nothing is back-filled.
+
+**r5-v2** (from the first run after this amendment is merged):
+* The release is chosen by declared SEC type: EX-99.1, else the first EX-99.x, from the filing index. It is
+  **never** the primary 8-K.
+* It must pass the press-release content contract (`guards.release_check`). If not, the record is
+  `input_defect`: no LLM call, and it counts as missing.
+* Peer releases are held to the same contract; a defective peer is left out and listed in `peer_defects`.
+* **Card grounding.** If the card states ≥ 3 numbers, ≥ 60% must appear in its release. Otherwise the record is
+  `card_ungrounded` and counts as missing.
+* After a schema rejection, the call gets **one repair turn**: the same material, plus the validator's message.
+  It is flagged `repaired`.
+* A failed ledger or peer pass is **re-run once**, flagged `rerun`.
+* Every rejected answer and transport error is logged, with its provider.
+* **Run quality gate.** If input defects plus failures exceed 25% of the firms attempted (from 4 firms up), the
+  run fails *after* its records are saved and committed. The runner then opens an issue and texts the owner.
+
+**Unchanged:** prompts, scores and weights, the cutoff rule, the universe, the record and timestamp proof.
+Because the mapping from a valid input to a score is unchanged, valid v1 records and v2 records are pooled. A
+sensitivity analysis excludes records with `repaired` or `rerun` passes.
