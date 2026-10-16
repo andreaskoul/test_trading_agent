@@ -1,0 +1,1300 @@
+{
+ "records": {
+  "CFG": {
+   "ticker": "CFG",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Regional Banks",
+   "status": "card_failed",
+   "error": "drivers: 1-6 objects with id and name",
+   "hour": "bmo",
+   "eps_estimate": 1.4007,
+   "revenue_estimate": 2359245152,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-16",
+   "cutoff": "2026-10-15 22:00:00+00:00",
+   "decided_at": "2026-10-16T02:31:40.543738+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "7c08f815813eebbb85999bbc65197638f3db2563",
+   "sha256": "914b6b5c3dd6996a0d91bffbebe2722c928cf625c93fb8a454cff31ceb39fb49"
+  },
+  "EEFT": {
+   "ticker": "EEFT",
+   "index": "SP400",
+   "sector": "Financials",
+   "sub_industry": "Transaction & Payment Processing Services",
+   "status": "ok",
+   "last_release": "2026-07-30 12:00:13+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1029199/000155485526001642/ex991_1.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Payments Infrastructure growth/margin",
+      "last_report": "Q2 revenue +11%, op income +2% on CoreCard amortization; constant-currency revenue +10%, EBITDA +6%; European travel soft; ATMs +1%.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Cross-Border Payments recovery",
+      "last_report": "Q2 revenue -4%, op income -34%, EBITDA -31%; U.S. immigration policy and prior-year Pakistan rebate/FX hurt; digital transactions +33%, network +3%.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "epay profitable growth",
+      "last_report": "Q2 revenue +5%, op income +5%, EBITDA +5%; transactions -11% on India low-value; POS terminals +2%, retailer locations flat.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Digital accelerator momentum",
+      "last_report": "Q2 digital accelerator revenue +31% YoY, 26% of total; includes CoreCard, merchant acquiring, payment processing, digital money transfers.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Corporate expense and SBC",
+      "last_report": "Q2 corporate expense $25.1M vs $22.7M; increase driven by $1.9M long-term share-based compensation, equally impacting operating income.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Reiterated 2026 adjusted EPS growth of 10% to 15% year-over-year; excludes FX, interest rate or unforeseen changes. No quarterly numeric guidance.",
+    "kill_conditions": [
+     "Company lowers 2026 adjusted EPS growth guidance below 10%.",
+     "Cross-Border Payments revenue or operating income declines worsen, or U.S. outbound remittance weakness deepens.",
+     "Payments Infrastructure growth stalls, European travel softness worsens, or epay transaction declines accelerate."
+    ]
+   },
+   "card_provider": "Together",
+   "news_raw": 30,
+   "news_used": 29,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Euronet and Unibanca multi-year SaaS agreement for CoreCard issuing in Peru",
+        "date": "2026-08-04",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Euronet and Unibanca multi-year SaaS CoreCard issuing partnership in Peru",
+        "date": "2026-08-04",
+        "driver": "D4 Digital accelerator momentum",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": false
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Together"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Euronet and Unibanca sign multi-year SaaS agreement for CoreCard issuing in Peru",
+        "date": "2026-08-04",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 2.1213203435596424,
+   "score_peer": null,
+   "score_combined": 2.1213203435596424,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "",
+   "eps_estimate": 3.7944,
+   "revenue_estimate": 1218305085,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-16",
+   "cutoff": "2026-10-15 22:00:00+00:00",
+   "decided_at": "2026-10-16T02:32:05.179758+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "7c08f815813eebbb85999bbc65197638f3db2563",
+   "sha256": "7c62b26d1c4590880fbada45a503d51cad66edd50631f1324959da4975995cca"
+  },
+  "MTB": {
+   "ticker": "MTB",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Regional Banks",
+   "status": "ok",
+   "last_release": "2026-07-15 10:02:30+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/36270/000003627026000046/ex991release2q26.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net interest income and margin",
+      "last_report": "Taxable-equivalent NII rose $41M QoQ to $1.804B; NIM flat at 3.70%; growth from extra day, nonaccrual interest, earning assets.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Loan growth",
+      "last_report": "Average loans rose $3.0B QoQ, led by C&I +$2.3B; CRE balances increased $1.1B from March 31.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Noninterest income",
+      "last_report": "Noninterest income rose $51M QoQ to $740M on higher trust income, swap gains, and $47M BLG distribution.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Noninterest expense and efficiency",
+      "last_report": "Noninterest expense fell $89M QoQ to $1.349B on seasonal 1Q salaries; efficiency ratio improved to 52.8%.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Credit quality and provision",
+      "last_report": "Provision was $120M; net charge-offs 0.23%; nonaccruals 0.84%; allowance 1.52%; criticized loans lower.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "M&T net interest margin falls below 3.70% or net interest income declines.",
+     "M&T loan growth stalls or commercial and industrial balances decline.",
+     "M&T provision for credit losses rises and net charge-offs exceed 0.23%."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "news_raw": 118,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fed delivered first rate hike in over three years",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "M&T increased prime lending rate from 6.75% to 7.00%",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CEO cites broad 2026 loan growth, AI and fee traction",
+        "date": "2026-09-16",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Opened new full-service branch in Torrington, Connecticut",
+        "date": "2026-09-24",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Ranked No. 1 in SBA 7(a) lending, record small business loan growth",
+        "date": "2026-10-14",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "TimeoutError('LLM call exceeded 240 s')",
+     "provider": null
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fed delivered first rate hike in over three years, lifting rate outlook",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "M&T raised prime lending rate from 6.75% to 7.00%",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Management cites broad 2026 loan growth, AI and fee business traction",
+        "date": "2026-09-18",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "M&T ranked No.1 in SBA 7(a) lending; record small business loan growth",
+        "date": "2026-10-14",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    }
+   ],
+   "peers": [
+    "FHN",
+    "HOMB"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FHN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Only 8-K cover page; no earnings metrics disclosed to infer industry conditions for MTB."
+       },
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Only 8-K cover page; no earnings metrics disclosed to infer industry conditions for MTB."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FHN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release excerpt lacks operating results; no read-through for MTB."
+       },
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release excerpt lacks operating results; no read-through for MTB."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Only 8-K cover; no Q3 results or drivers disclosed."
+       },
+       {
+        "peer": "FHN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Only 8-K cover; earnings release content not provided."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe"
+    }
+   ],
+   "score_own": 5.011226590648913,
+   "score_peer": 0.0,
+   "score_combined": 5.011226590648913,
+   "overall_votes": [
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 5.0071,
+   "revenue_estimate": 2558032383,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-16",
+   "cutoff": "2026-10-15 22:00:00+00:00",
+   "decided_at": "2026-10-16T02:44:03.795866+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "7c08f815813eebbb85999bbc65197638f3db2563",
+   "sha256": "9e009c99a138b736a37d32cfd4057e614c1e45f5111f848668915c688c390a5a"
+  },
+  "RF": {
+   "ticker": "RF",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Regional Banks",
+   "status": "ok",
+   "last_release": "2026-07-17 10:01:20+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1281761/000128176126000050/rf-2026630xexhibit991.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net interest income and margin",
+      "last_report": "NII rose 2% QoQ to $1,277M; NIM 3.66%, down 1bp; interest-bearing deposit costs 1.69%.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Loan growth",
+      "last_report": "Average loans +2% QoQ, ending +1%; C&I and investor real estate grew, consumer loans declined.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Wealth and fee income",
+      "last_report": "Wealth management income record $150M, +6% QoQ; adjusted non-interest income +7% ex securities loss.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Expenses and efficiency",
+      "last_report": "Non-interest expense +5% QoQ; adjusted +4.5%; efficiency ratio 58.3% reported, 56.9% adjusted.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Credit quality",
+      "last_report": "Net charge-offs 42bp, down 12bp QoQ; criticized loans and NPLs fell; provision $68M.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Q3 net interest margin falls below 3.66% or deposit costs rise above 1.69%.",
+     "Q3 loan growth stalls or C&I balances decline quarter over quarter.",
+     "Q3 net charge-offs rise above 42bp or criticized loans increase."
+    ]
+   },
+   "card_provider": "Together",
+   "news_raw": 124,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fed rate hike; Regions raises prime lending rate",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Management says deposit strength and credit trends remain constructive",
+        "date": "2026-09-20",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Makora"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fed rate hike and Regions prime lending rate increase",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Regions Bank increases prime lending rate effective Sept 17",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fed raises rates first time in over three years",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Management says deposit strength and credit trends remain constructive",
+        "date": "2026-09-20",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Plans to add up to 150 branches over 3-4 years",
+        "date": "2026-09-21",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Together"
+    }
+   ],
+   "peers": [
+    "FHN",
+    "HOMB"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FHN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only announces Q3 earnings filing; no financial details to infer implications for RF."
+       },
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only announces Q3 earnings filing; no financial details to infer implications for RF."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FHN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only furnishes Q3 2026 earnings exhibit; no financial details or drivers disclosed."
+       },
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only announces Q3 2026 earnings press release; no financial details or drivers disclosed."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HOMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only 8-K cover; no earnings details to infer impact."
+       },
+       {
+        "peer": "FHN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only 8-K cover; no earnings details to infer impact."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    }
+   ],
+   "score_own": 2.23606797749979,
+   "score_peer": 0.0,
+   "score_combined": 2.23606797749979,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.6833,
+   "revenue_estimate": 2045974551,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-16",
+   "cutoff": "2026-10-15 22:00:00+00:00",
+   "decided_at": "2026-10-16T02:36:38.086002+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "7c08f815813eebbb85999bbc65197638f3db2563",
+   "sha256": "d816b45c4bd649b58774b392d72f5ccd67eb8d347501fbfb0effe82a7f425d97"
+  },
+  "TFC": {
+   "ticker": "TFC",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Diversified Banks",
+   "status": "ok",
+   "last_release": "2026-07-17 10:30:36+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/92230/000009223026000096/ex991-pr2q26.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net interest income and NIM",
+      "last_report": "NII-TE up 0.6% QoQ; NIM-TE 2.98%, down 4 bps on higher funding costs, lower loan spreads, larger balance sheet.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Noninterest income and fee mix",
+      "last_report": "Noninterest income up 5.9% QoQ, driven by equity investments; IB/trading down 5.4% QoQ but up 71.7% YoY.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Noninterest expense and efficiency",
+      "last_report": "Expense up 2.4% QoQ on variable incentives, tech/talent investment; efficiency ratio 58.0%.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Loan and deposit growth",
+      "last_report": "Avg loans +0.7% QoQ on C&I; avg deposits +1.5% on interest checking.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Credit quality and charge-offs",
+      "last_report": "NCO ratio 0.50%, down 11 bps; NPLs up slightly to 0.51%; ALLL ratio 1.51%.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Q3 NIM-TE falls below 2.98% or net interest income declines QoQ.",
+     "Q3 noninterest income falls QoQ as investment banking/trading or equity gains reverse.",
+     "Q3 net charge-off ratio rises above 0.50% or nonperforming loans increase."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "news_raw": 358,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Truist completed $5.5B loan sale, reducing loan balances.",
+        "date": "2026-10-05",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Truist Foundation awarded $1.5M grant to Urban Strategies.",
+        "date": "2026-10-06",
+        "driver": "D3",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Truist Foundation announced $250k grant for Hurricane Isaias relief.",
+        "date": "2026-10-09",
+        "driver": "D3",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Captrust recruited Hoge-Barrett Group managing $3B from Truist.",
+        "date": "2026-10-14",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Truist completed $5.5B loan sale, reducing loan balances and freeing capital",
+        "date": "2026-10-05",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PNC Q3 beat on higher NII, loan growth, efficiency; rising credit costs",
+        "date": "2026-10-15",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Bank of America Q3 miss on trading/IB weakness, regulatory fine, rising costs",
+        "date": "2026-10-14",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "State Street Q3 beat but weak net inflows, revenue miss, rising expenses",
+        "date": "2026-10-14",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "US unemployment falls below 5%, a positive for credit quality",
+        "date": "2026-10-05",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Captrust recruits $3B Hoge-Barrett advisor team from Truist",
+        "date": "2026-10-14",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Parasail"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Truist Foundation announces $250,000 grant for Hurricane Isaias relief",
+        "date": "2026-10-09",
+        "driver": "D3",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Urban Strategies receives $1.5 million grant from Truist Foundation",
+        "date": "2026-10-06",
+        "driver": "D3",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Captrust recruits $3 billion financial advisor team from Truist",
+        "date": "2026-10-14",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Relace"
+    }
+   ],
+   "peers": [
+    "USB",
+    "PNC",
+    "BAC",
+    "C",
+    "JPM"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "USB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release text lacks financial details; no read-through to TFC drivers."
+       },
+       {
+        "peer": "PNC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release text lacks financial details; no read-through to TFC drivers."
+       },
+       {
+        "peer": "BAC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Commercial loans and deposits grew, signaling industry loan/deposit demand better than TFC's last modest growth."
+       },
+       {
+        "peer": "C",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release text lacks financial details; no read-through to TFC drivers."
+       },
+       {
+        "peer": "JPM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Average loans and deposits rose 2% QoQ, indicating stronger industry balance-sheet growth than TFC's last quarter."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Makora"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "USB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release lacks financial details; no read-through for TFC."
+       },
+       {
+        "peer": "PNC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No earnings figures in release; no implication for TFC."
+       },
+       {
+        "peer": "BAC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Peer NII up 8% YoY suggests industry NII tailwind, positive for TFC's NII/NIM."
+       },
+       {
+        "peer": "C",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Only cover page; no financial results to read through."
+       },
+       {
+        "peer": "JPM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Peer loans and deposits up 2% QoQ, stronger than TFC's last trend, positive for loan/deposit growth."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Makora"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "JPM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Peer loans/deposits +2% QoQ signal industry growth, positive for TFC's D4 after +0.7%/+1.5%."
+       },
+       {
+        "peer": "C",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only lists securities; no earnings results to infer for TFC."
+       },
+       {
+        "peer": "BAC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Peer NII up 8% YoY signals industry NII improvement, positive for TFC's D1 after weak QoQ NII/NIM."
+       },
+       {
+        "peer": "PNC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "8-K cover only; no earnings results to infer for TFC."
+       },
+       {
+        "peer": "USB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "8-K cover only; no earnings results to infer for TFC."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace"
+    }
+   ],
+   "score_own": -2.25,
+   "score_peer": 2.3094010767585034,
+   "score_combined": -1.0952994616207483,
+   "overall_votes": [
+    "below",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 1.1183,
+   "revenue_estimate": 5407923042,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-16",
+   "cutoff": "2026-10-15 22:00:00+00:00",
+   "decided_at": "2026-10-16T02:42:49.820873+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "7c08f815813eebbb85999bbc65197638f3db2563",
+   "sha256": "e47ffb92a42e7ce47c89d8c68dff5925b7cfa19a90d3277d2ce8424707d0140c"
+  },
+  "TRV": {
+   "ticker": "TRV",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Property & Casualty Insurance",
+   "status": "ok",
+   "last_release": "2026-07-17 10:58:28+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/86312/000008631226000143/trv-20260717.htm",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net earned premiums growth",
+      "last_report": "Provided filing is only the 8-K cover page; no premium or revenue figures for Q2 2026 were included in the text.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Combined ratio / underwriting margin",
+      "last_report": "No combined ratio or underwriting gain/loss disclosed in the provided release text; only the earnings press release is referenced as Exhibit 99.1.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Catastrophe losses",
+      "last_report": "No catastrophe loss estimate for the June 30, 2026 quarter appears in the provided text.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Net investment income",
+      "last_report": "No net investment income figure for Q2 2026 is contained in the provided filing text.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Prior-year reserve development",
+      "last_report": "No favorable or adverse prior-year reserve development amount is disclosed in the provided text.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Next release reports a combined ratio above 100 or an underwriting loss.",
+     "Catastrophe losses come in materially above the prior-year quarter.",
+     "Adverse prior-year reserve development is reported."
+    ]
+   },
+   "card_provider": "Relace",
+   "news_raw": 259,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.9
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "AIG trims property exposure as pricing softens",
+        "date": "2026-09-23",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Global commercial insurance rates falling",
+        "date": "2026-09-24",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Progressive Q3 earnings beat on higher premiums",
+        "date": "2026-10-14",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Relace"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Commercial insurance pricing softens globally",
+        "date": "2026-09-24",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "High Treasury yields near five-year highs",
+        "date": "2026-09-24",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Travelers to report Q3 earnings on Oct. 16",
+        "date": "2026-10-08",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Progressive Q3 earnings beat on higher premiums",
+        "date": "2026-10-14",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AIG trims property exposure as pricing softens",
+        "date": "2026-09-23",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "CNA shifts toward new business as pricing softens",
+        "date": "2026-10-01",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.5
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    }
+   ],
+   "peers": [
+    "PGR"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PGR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "PGR combined ratio improved and premiums grew, indicating favorable industry underwriting conditions for TRV."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PGR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "PGR's improved combined ratio and premium growth suggest favorable industry underwriting trends for TRV."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PGR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "PGR's improved combined ratio and premium growth signal favorable P&C underwriting conditions, positive for TRV margins."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    }
+   ],
+   "score_own": -0.5669467095138409,
+   "score_peer": 1.414213562373095,
+   "score_combined": 0.1401600716727066,
+   "overall_votes": [
+    "inline",
+    "below",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 7.4909,
+   "revenue_estimate": 11490115186,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-16",
+   "cutoff": "2026-10-15 22:00:00+00:00",
+   "decided_at": "2026-10-16T02:40:38.643247+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v1",
+   "code": "7c08f815813eebbb85999bbc65197638f3db2563",
+   "sha256": "fd888771733f8be6e6563fdfd7032837345d529973a1e078b4ce1a3bdcb588ae"
+  }
+ },
+ "report_date": "2026-10-16",
+ "cutoff": "2026-10-15 22:00:00+00:00",
+ "version": "r5-v1",
+ "batch_sha256": "ce1b9543e4e341dece2435e3d9ae28aa3e279eac16f1b1692fec94baa8e234e8"
+}
