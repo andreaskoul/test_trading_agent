@@ -771,13 +771,21 @@ def review_labels(day, close_ts, due, rv_dir):
     return rec
 
 
+_RV_DATA = {}
+
+
 def review_decide(L, d, label, kill_hit, med_new, prev_day, e_today):
     """Rules 1-5 of Amendment 8 (first match wins), on data: z = R / (sigma x sqrt(days held)) with sigma re-estimated on
     the last 60 sessions without the news session; ID = sign(R) x (%neg - %pos) of the daily hedged returns since
     entry; TO = 5-session volume over its 60-session median; a pending earnings release from Finnhub's calendar."""
     import broker
     t, beta = L["ticker"], L["beta"]
-    bx = bars({t, "SPY"}, prev_day - pd.Timedelta(days=150), prev_day)
+    if (t, d) not in _RV_DATA:                          # history and calendar do not change during the session: fetched
+        s_, cal = broker.api("GET", f"/v2/calendar?start={(d + pd.Timedelta(days=1)).date()}&end={(d + pd.Timedelta(days=90)).date()}")
+        _RV_DATA[(t, d)] = (bars({t, "SPY"}, prev_day - pd.Timedelta(days=150), prev_day),   # once, at the T-20 pass
+                            [pd.Timestamp(x["date"]) for x in cal] if s_ == 200 else [],
+                            earnings_next([t], d, d + pd.Timedelta(days=60)).get(t))
+    bx, fut, ce = _RV_DATA[(t, d)]
     C, V = bx["close"], bx["volume"]
     r = C.pct_change().dropna()
     e = (r[t] - beta * r["SPY"]).loc[:prev_day]
@@ -794,9 +802,6 @@ def review_decide(L, d, label, kill_hit, med_new, prev_day, e_today):
     H0 = L.get("H0", L["H"])
     room = min(2 * H0, EXT_TOTAL) - held
     h_ext = min(math.ceil(H0 / 2), room)
-    s_, cal = broker.api("GET", f"/v2/calendar?start={(d + pd.Timedelta(days=1)).date()}&end={(d + pd.Timedelta(days=90)).date()}")
-    fut = [pd.Timestamp(x["date"]) for x in cal] if s_ == 200 else []
-    ce = earnings_next([t], d, d + pd.Timedelta(days=60)).get(t)
     cs = catalyst_session(ce, fut)
     n_cat = fut.index(cs) + 1 if cs in fut else None
     catalyst = n_cat is not None and n_cat + 2 <= room
