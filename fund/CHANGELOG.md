@@ -5,7 +5,8 @@ Operational changes during the protocol window that cannot change a decision
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
 - 2026-10-16: News desk (Desk 18), Phase 0. A cost probe fetched 2 days (10-13, 10-14) of every candidate source: Benzinga via Alpaca, Finnhub general, GDELT, official and trade feeds, 29 YouTube channels and 10 podcasts. The report is `reports/research/news_desk_cost_probe.md`. Under the owner's $50–60/month cap, the owner chose the v1 list in `data/raw/news/sources.json`:
-  - LLM tagging runs with reasoning off and the ledger with reasoning on (~$37/month estimated), with a hard stop at $1.80/day.
+  - LLM budget (v1.1, after the owner's clarification): $13/week covers every LLM call of the whole fund, and this desk gets about $2/week. Tagging and the 3-pass ledger both run with reasoning off (~$0.28/day estimated), with a hard stop at $0.30/day.
+  - The OpenRouter key showed $9.67 for Mon–Fri of this week, more than the fund's known calls explain. That has to be found before the desk runs.
   - GDELT is dropped.
   - Macro channels are archive-only.
   - Video goes through audio + local whisper, because YouTube blocks caption requests.

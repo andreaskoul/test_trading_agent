@@ -1,6 +1,6 @@
 {
   "_doc": "News desk sources (fund/news_ingest.py). v1 chosen by the owner on 2026-10-16 from the Phase 0 cost probe (reports/research/news_desk_cost_probe.md) under a $50-60/month cap. status: active = fetched, transcribed and tagged; archive = listing metadata only (no transcript, no LLM); dropped = not fetched (reason given). Frozen with the PREREG amendment; changes after that go in as dated amendments. tier: a = firm/executive primary, b = industry specialist, c = markets/macro, d = podcasts/official/trade press.",
-  "version": "v1-2026-10-16",
+  "version": "v1.1-2026-10-16",
   "youtube": [
     {
       "name": "CNBC Television",
@@ -355,20 +355,19 @@
     }
   ],
   "budget": {
-    "usd_month_cap": 55,
-    "usd_day_stop": 1.8,
-    "_doc": "Hard stop: the desk's LLM calls stop for the UTC day once the day's spend (provider usage x live OpenRouter price) reaches usd_day_stop; the rest waits for the next day. Probe estimate for this set: tagging ~$3/month (reasoning off) + ledger ~$34/month (reasoning on, upper bound) = ~$37/month."
+    "usd_day_stop": 0.3,
+    "usd_week_target": 2.0,
+    "_doc": "The owner's $13/week covers every LLM call of the whole fund (all desks, R5, lifecycle, review, this desk). The OpenRouter key showed $9.67 for Mon-Fri of the week of 2026-10-12 and $14.93 for 1-16 Oct, so this desk gets a small share: ~$2/week. Hard stop: the desk's LLM calls stop for the UTC day once its spend (provider usage x live OpenRouter price) reaches usd_day_stop. Probe estimate for this set with reasoning off for both stages: tagging ~$0.10/day + ledger ~$0.18/day (upper bound) = ~$0.28/day."
   },
   "llm": {
     "tagging": {
-      "reasoning": false,
-      "fallback": "reasoning on (~$58/month) if the reasoning-off tags miss the node contract (precision >= 0.9 on 200 owner-checked cluster->firm tags)"
+      "reasoning": false
     },
     "ledger": {
-      "reasoning": true,
+      "reasoning": false,
       "passes": 3
     },
-    "_doc": "The probe's side test: reasoning off = 842 vs 7,662 output tokens on the same 10 items, same tickers."
+    "_doc": "Both stages run with reasoning off (side test: 842 vs 7,662 output tokens on the same 10 items, same tickers). Both must pass their node contracts first (tags: precision >= 0.9 on 200 owner-checked cluster->firm tags; ledger: agreement with a reasoning-on reference on a sample of firms). If either fails, the desk shrinks (fewer channels, ledger only for firms with a card) instead of turning reasoning on: reasoning on would cost ~$58/month, more than the whole fund's budget allows."
   },
   "whisper": {
     "model": "mlx-community/whisper-large-v3-turbo",
