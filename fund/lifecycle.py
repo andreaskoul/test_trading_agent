@@ -198,7 +198,16 @@ Return JSON only: {""").replace('"kill_conditions": [str (<= 25 words)]}', '"kil
         rec = {"status": st, "error": err, "weight": fund[t], "out": out, "provider": meta.get("provider"), "user": user,
                **({"samples": [o for s_, o, _, _ in smp]} if a8 else {})}
         if st == "ok" and a8:
-            rec.update(horizon8(t, fund[t], out, g, days, t0, bx, M8, S8, nxt_e.get(t)),
+            # the expected horizon over the samples' labels: each valid sample's labels give a horizon on the same data
+            # (0 if that sample would not enter), and H is their mean. A 3-2 split on an ambiguous label (cross-firm,
+            # waiting for earnings) then moves H a little, where a majority vote moved it by up to 20 sessions.
+            per = [horizon8(t, fund[t], o, g, days, t0, bx, M8, S8, nxt_e.get(t)) for o in oks]
+            hs = [0 if x["stale"] else x["H"] for x in per]
+            hbar = float(np.mean(hs))
+            rec.update(news_age=per[0]["news_age"], H_raw=hbar, H=int(min(max(round(hbar), H_MIN), H8_MAX)),
+                       stale=bool(hbar < H_MIN - 0.5), why=f"mean of {len(hs)} samples' horizons {hs} = {hbar:.1f}",
+                       samples_h=[{"H": x["H"], "stale": x["stale"], "why": x["why"], "inputs": x["inputs"]} for x in per],
+                       inputs=horizon8(t, fund[t], out, g, days, t0, bx, M8, S8, nxt_e.get(t))["inputs"],
                        kill_conditions=out["kill_conditions"], first_reported=out["first_reported"],
                        driving_event=out.get("driving_event"), confidence=(m.get("confidence")))
         elif st == "ok":

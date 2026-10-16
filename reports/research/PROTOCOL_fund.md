@@ -694,7 +694,13 @@ is ≤ 2, the name is stale and not entered, as in Amendment 7.
 * **Catalyst override, only from data.** If the thesis waits for the firm's next earnings release, and Finnhub's
   calendar dates it at most 24 sessions after entry, then H = sessions to the release + 1. A catalyst date
   from the model is never used.
-* **The model gives labels only**, each by majority of 5 valid samples (temperature 0.7, at most 8 draws; a name with fewer than 3 valid samples is not entered). In tests, single calls changed the type label between identical runs and moved the horizon by up to 20 sessions. The desk's call adds:
+* **The model gives labels only, sampled 5 times** (temperature 0.7, at most 8 draws; a name with fewer than 3 valid
+  samples is not entered). **H is the mean of the horizons the samples' labels give on the same data**, with 0 for a
+  sample whose labels would not enter the name. The name is not entered if that mean is below 2.5. The thesis
+  event and the kill conditions come from the majority labels. In tests, single calls changed ambiguous labels
+  (cross-firm, waiting for earnings) between identical runs and moved the horizon by up to 20 sessions; a
+  majority vote did not fix it (15 of 20 identical over two runs, gaps up to 20 sessions), because a 3–2 split still flips the label. With the mean, two identical runs on as-of 2026-10-14 gave 15 of 20 horizons within 2 sessions and a largest gap of 5 sessions; the remaining spread is the labels' real ambiguity, which the horizon-end review and the barriers bound.
+  The desk's call adds:
   * hard or soft;
   * first report or follow-up;
   * the revision direction (for analyst revisions);
