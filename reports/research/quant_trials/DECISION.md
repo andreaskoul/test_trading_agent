@@ -56,3 +56,26 @@ data, or forward evidence from live headlines.
   - Fix: an empty tercile leg holds no position. Fitted predictions were reused; nothing was refit.
   - Disclosed in `NOTES.log`, commit 9cdccc8.
 - Nothing in `fund/`, the runner or Protocol 7 was touched. The sealed P8 window (Jan–Sep 2026) was never loaded.
+
+## Post-hoc rerun with the tuning fix (2026-10-16; NOT confirmatory)
+After the read, a model-selection defect was found.
+- **The defect.** The trees' early stopping (MSE on the last 20% of the window) kept 1–30 trees, and 1 tree in
+  every seed for 2023. Q3 was close to an empty model.
+- **Ridge.** Its penalty flipped between the grid ends.
+- **The fix.** Settings are chosen by validation rank IC (`ridge_ic`, `gbrt_ic`; trees floor 25). It was checked
+  first on 2019–21, then Q1–Q3 were rerun on 2022–25 (`POSTHOC.md`, `posthoc.csv`). 2022–25 had already been
+  seen, so this is a diagnostic only.
+
+Δ is the text model's IC minus the IC of its price-only twin.
+
+| | Q1 ridge h10 | Q2 ridge h20 | Q3 trees h40 |
+|---|---|---|---|
+| Δ IC, pooled (NW t) | +0.015 (0.90) | +0.005 (0.29) | −0.039 (−1.04) |
+| Δ 2022 / 2023 / 2024 / 2025 | −0.017 / +0.031 / +0.029 / +0.017 | −0.030 / +0.013 / +0.003 / +0.033 | −0.144 / −0.150 / +0.144 / −0.005 |
+| Holm p | 0.55 | 0.77 | 0.85 |
+| Would pass? | no | no | no |
+
+- **The fix helps the ridge candidates.** The 2022 loss shrinks from −0.07 to −0.02 for Q1.
+- **Trees at h40 still fail badly:** 2022–23 at −0.14 / −0.15.
+- **The verdict is unchanged: no desk.** The only consistent residual is Q1 (ridge h10): +0.015, t 0.9,
+  three of four years positive. It's far from significant, and could only be judged on forward data.

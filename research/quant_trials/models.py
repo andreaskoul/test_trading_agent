@@ -418,3 +418,48 @@ def gbrt(X, y, train, test, h, seeds=5, **_):
         preds.append(p)
         iters.append(best_it)
     return np.mean(preds, 0), {"iters": iters}
+
+
+# ------------------------------------------------------------------------------------------------- IC-tuned variants
+def _val_ic(pred_rows, y, va, shape):
+    """Mean daily cross-sectional Spearman IC of predictions on the validation decisions."""
+    pr = np.full(shape, np.nan)
+    pr[va] = pred_rows
+    return np.nanmean(F.weekly_ic(pr, y, va))
+
+
+def ridge_ic(X, y, train, test, h, alphas=(1e-2, 1e-1, 1, 10, 100, 1e3, 1e4, 1e5), **_):
+    """Ridge with the penalty chosen by validation rank IC (the scored objective), not MSE."""
+    tr, va = F.split_val(train, h=h)
+    Xt, yt = _rows(X, y, tr)
+    Xv = np.nan_to_num(X[va]).reshape(-1, X.shape[-1])
+    score = {a: _val_ic(Ridge(alpha=a).fit(Xt, yt).predict(Xv).reshape(len(va), -1), y, va, y.shape) for a in alphas}
+    best = max(score, key=score.get)
+    m = Ridge(alpha=best).fit(*_rows(X, y, train))
+    pred = np.full(y.shape, np.nan)
+    pred[test] = m.predict(np.nan_to_num(X[test]).reshape(-1, X.shape[-1])).reshape(len(test), -1)
+    return pred, {"alpha": best}
+
+
+def gbrt_ic(X, y, train, test, h, seeds=5, checkpoints=(25, 50, 100, 200, 400, 600), **_):
+    """GBRT with the number of trees chosen by validation rank IC among fixed checkpoints (floor 25)."""
+    from sklearn.ensemble import HistGradientBoostingRegressor
+    tr, va = F.split_val(train, h=h)
+    Xt, yt = _rows(X, y, tr)
+    Xv = np.nan_to_num(X[va]).reshape(-1, X.shape[-1])
+    Xs = np.nan_to_num(X[test]).reshape(-1, X.shape[-1])
+    kw = dict(max_depth=3, learning_rate=0.03, min_samples_leaf=200, l2_regularization=1.0, max_features=0.8)
+    preds, iters = [], []
+    for s in range(seeds):
+        m = HistGradientBoostingRegressor(max_iter=max(checkpoints), random_state=s, **kw).fit(Xt, yt)
+        sc = {}
+        for it, pv in enumerate(m.staged_predict(Xv), 1):
+            if it in checkpoints:
+                sc[it] = _val_ic(pv.reshape(len(va), -1), y, va, y.shape)
+        best = max(sc, key=sc.get)
+        m2 = HistGradientBoostingRegressor(max_iter=best, random_state=s, **kw).fit(*_rows(X, y, train))
+        p = np.full(y.shape, np.nan)
+        p[test] = m2.predict(Xs).reshape(len(test), -1)
+        preds.append(p)
+        iters.append(best)
+    return np.mean(preds, 0), {"iters": iters}

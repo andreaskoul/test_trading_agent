@@ -163,6 +163,10 @@ def run_config(p, T, cfg, folds, extra_info=None, confirm=False):
         model = cfg["model"]
         if model == "ridge":
             pred, inf = M.ridge(X, ys, train, test, h)
+        elif model == "ridge_ic":
+            pred, inf = M.ridge_ic(X, ys, train, test, h)
+        elif model == "gbrt_ic":
+            pred, inf = M.gbrt_ic(X, ys, train, test, h, seeds=cfg.get("seeds", 5))
         elif model in ("mlp", "seq", "seq_ang"):
             pred, inf = M.net(X, ys, train, test, h, kind="seq" if model.startswith("seq") else "mlp",
                               seeds=cfg.get("seeds", 5), angular=model == "seq_ang")
@@ -375,7 +379,7 @@ def grid(trial, arms, models, hs, placebo=(False,), seeds=5, **kw):
                     if pl and arm in ("none", "intensity"):
                         continue
                     cfg = {"trial": trial, "arm": arm, "model": model, "h": h, "placebo": pl, **kw}
-                    if model != "ridge":
+                    if not model.startswith("ridge"):
                         cfg["seeds"] = seeds
                     yield cfg
 

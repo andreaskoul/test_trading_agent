@@ -68,16 +68,22 @@ def weekly_net_spread(pred, r5, idx, cost_bp=5.0):
 
 def main():
     spec, sha = frozen()
+    evaluate(spec["candidates"], sha, "S2", OUT, os.path.join(P.REPORT, "confirm.csv"),
+             f"# Quant trials · Stage 2 confirmation read (2022-2025)\n\nPre-registration commit `{sha}`. "
+             "One read; rules as pre-registered.\n\n")
+
+
+def evaluate(candidates, sha, trial, out_md, out_csv, header):
     p = F.Panel()
     tx = T.Text(p)
     grp = F.sector_ids(p.names)
     r5 = p.target(5)
     rows, tests = [], []
-    for c in spec["candidates"]:
+    for c in candidates:
         h = c["h"]
         base = {k: v for k, v in c.items() if k not in ("id", "family")}
-        cfgs = {"cand": {**base, "trial": "S2"}, "price": {**base, "arm": "none", "trial": "S2"},
-                "placebo": {**base, "placebo": True, "trial": "S2"}}
+        cfgs = {"cand": {**base, "trial": trial}, "price": {**base, "arm": "none", "trial": trial},
+                "placebo": {**base, "placebo": True, "trial": trial}}
         hashes = {}
         for role, cfg in cfgs.items():
             h_ = T.chash(cfg)
@@ -126,13 +132,13 @@ def main():
     df["pass"] = ((df.p_holm < 0.05) & (df.d_2022_23 > 0) & (df.d_2024_25 > 0) & (df.d_2022 >= 0)
                   & (df.d_placebo > 0) & (df.net_spread_bp_wk > 0)).where(df.family == "primary")
     df["kind"] = np.where(df.d_sector_neutral > 0, "firm-level", "sector-rotation")
-    df.to_csv(os.path.join(P.REPORT, "confirm.csv"), index=False)
-    with open(OUT, "w") as f:
-        f.write(f"# Quant trials · Stage 2 confirmation read (2022-2025)\n\nPre-registration commit `{sha}`. "
-                "One read; rules as pre-registered.\n\n")
+    df.to_csv(out_csv, index=False)
+    with open(out_md, "w") as f:
+        f.write(header)
         f.write(df.round(4).to_markdown(index=False))
         f.write("\n")
     print(df.round(4).to_string())
+    return df
 
 
 if __name__ == "__main__":
