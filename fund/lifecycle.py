@@ -996,17 +996,19 @@ def run(replay=False, fetch_news=True, live=None):
                     trade(L, 0.0, acts.get(L["id"], {}).get("action", "exit"))
             for lid, x in after.items():
                 L = next((y for y in lots if y["id"] == lid), None)
+                new_ext = False
                 if L is None:
                     L = {**{k: v for k, v in x.items() if k not in ("w", "n", "R", "days", "e", "ext_pnl")}, "n": 0.0, "R": 0.0, "days": 0}
                     lots.append(L)
                 else:
-                    if x.get("ext", 0) > L.get("ext", 0) and L.get("ext_pnl") is None:
-                        L["ext_pnl"] = 0.0                  # extended at this close: count its P&L from the next session
+                    new_ext = x.get("ext", 0) > L.get("ext", 0) and L.get("ext_pnl") is None
                     for k in ("H", "kill_conditions", "first_reported", "w0", "reduced", "increased", "H0", "ext", "stop_R", "target_R"):
                         if k in x:
                             L[k] = x[k]
                 if lid in acts:
                     trade(L, x["w"] * nav, acts[lid]["action"])
+                if L.get("ext_pnl") is None and x.get("ext", 0) and new_ext:
+                    L["ext_pnl"] = 0.0                      # extended at this close: its P&L counts from the next session
             cool = {tuple([k.rsplit("|", 1)[0], int(k.rsplit("|", 1)[1])]): {**v, "until": pd.Timestamp(v["until"]) if v.get("until") else None}
                     for k, v in lg.get("cool", {}).items()}
             reviews.extend(lg.get("reviews", []))
