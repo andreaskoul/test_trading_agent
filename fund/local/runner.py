@@ -57,6 +57,9 @@ SCHEDULE = {
     # Thesis Tree R5 (research only, PREREG_thesis_tree.md): forward predictions for the day's reports, from news to
     # 22:00 UTC of the previous session; committed to `research-data` and hash-logged in an issue before the 8-Ks arrive
     "r5":        {"days": "01234",   "at": "02:30", "late": 300},
+    # Research shadow books from the quant trials (PROTOCOL_fund.md "Research shadow books"; never traded): the
+    # Wednesday as-of books after the Wednesday archive; records on `research-data`, one file per week, never re-run
+    "qshadow":   {"days": "3",       "at": "03:30", "late": 600},
     "filltest-buy":  {"dates": ["2026-10-06"], "at": "16:15", "late": 180, "args": ["buy", "SPY", "1"]},
     "filltest-sell": {"dates": ["2026-10-07"], "at": "16:15", "late": 180, "args": ["sell", "SPY", "1"]},
 }
@@ -71,11 +74,12 @@ NEEDS = {
     "prices": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "lifecycle": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY", "HF_TOKEN"],
     "r5": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY", "SEC_USER_AGENT"],
+    "qshadow": ["OPENROUTER_API_KEY", "HF_TOKEN"],
     "filltest-buy": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "filltest-sell": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
 }
 GROUP = {"archive": "archive", "weekly": "weekly", "execute": "execute", "review": "execute", "filltest": "filltest",
-         "lifecycle": "execute", "prices": "prices", "r5": "r5"}
+         "lifecycle": "execute", "prices": "prices", "r5": "r5", "qshadow": "r5"}   # research-data pushes in turn
 # minutes, as the workflows; trade and review wait for the last minute before the close
 TIMEOUT = {"archive": 350, "weekly": 340, "execute": 330, "review": 330, "filltest": 330, "lifecycle": 330, "prices": 20, "r5": 240}
 PAGES_AFTER = {"weekly", "execute", "review", "filltest", "lifecycle"}         # the prices job deploys only when it refreshed                               # fund_pages.yml's workflow_run list
@@ -447,6 +451,22 @@ def job_r5(j, a):
     issue(j, "Fund research: R5 forward predictions problem", 'echo "The R5 run needs attention; predictions after a report never count."')
 
 
+QS_COMMIT = R5_COMMIT.split("    sha=$(git rev-parse HEAD)")[0].replace(
+    'git commit -q -m "r5 forward predictions', 'git commit -q -m "qshadow research books') + """    cd - >/dev/null; pushed=1; break
+  fi
+  cd - >/dev/null; sleep 5
+done
+if [ -z "$pushed" ]; then echo "research-data push rejected 3 times: records not saved"; exit 1; fi"""
+
+
+def job_qshadow(j, a):
+    j.step("Restore research records", R5_RESTORE)
+    j.step("Research shadow books (quant trials; never traded)", "python fund/qshadow.py weekly"
+           + (f" --asof {a.date}" if a.date else ""))
+    j.step("Commit to research-data", QS_COMMIT, when="always")
+    issue(j, "Fund research: qshadow books problem", 'echo "The research shadow books run needs attention (never traded)."')
+
+
 def job_filltest(j, a):
     side, sym, qty = a.test
     j.step("Restore fund state", RESTORE.format(paths="fund_state"))
@@ -497,7 +517,8 @@ def run(args):
     awake = subprocess.Popen(["caffeinate", "-i", "-w", str(os.getpid())])    # no idle sleep while the job runs
     drift(j)
     res = {"archive": job_archive, "weekly": job_weekly, "execute": job_execute, "review": job_review,
-           "filltest": job_filltest, "lifecycle": job_lifecycle, "prices": job_prices, "r5": job_r5}[name](j, args)
+           "filltest": job_filltest, "lifecycle": job_lifecycle, "prices": job_prices, "r5": job_r5,
+     "qshadow": job_qshadow}[name](j, args)
     if name in PAGES_AFTER and res != "skip" and not args.no_pages:
         j.step("GitHub Pages: rebuild the dashboard (fund_pages.yml)",
                f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main", when="always", allow_fail=True)
@@ -750,7 +771,7 @@ def main():
     sub = p.add_subparsers(dest="cmd", required=True)
     t = sub.add_parser("tick"); t.add_argument("--init", action="store_true"); t.set_defaults(f=tick)
     r = sub.add_parser("run")
-    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute", "filltest", "lifecycle", "prices", "r5"])
+    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute", "filltest", "lifecycle", "prices", "r5", "qshadow"])
     r.add_argument("--test", nargs=3, metavar=("SIDE", "SYMBOL", "QTY"), help="filltest: e.g. buy SPY 1")
     r.add_argument("--mode", choices=["plan", "trade", "reconcile"], help="execute: plan|trade|reconcile; review: plan|trade")
     r.add_argument("--asof", help="as-of Wednesday YYYY-MM-DD (weekly, execute)")

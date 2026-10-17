@@ -639,3 +639,51 @@ of weeks fully filled, median slippage ≤ 10 bp).
 
 **Before go-live.** Unchanged from Amendment 3. Orders use the pre-close send on the paper and the live account
 alike (owner's decision, 2026-10-09).
+
+---
+
+## Research shadow books (2026-10-17): outside Protocol 7
+
+**Status.** Written before any forward record of these books exists. Nothing in the traded fund changes:
+* the lifecycle book, its desks and gates;
+* the weekly shadow book and the challengers C0–C10;
+* `score.py` and its O'Brien–Fleming / Bonferroni family (m = 11).
+
+**What.** `fund/qshadow.py` forms six weekly books on the 31-name news panel of the quant trials
+(`reports/research/quant_trials/DECISION.md`):
+* `q5_h{5,10,20}`: the quant book's five price factors (`fund/screen.py`), refit by ridge.
+* `qn_h{5,10,20}`: the same factors plus the news state (decayed headline vectors against 16 topic prototypes).
+* Ridge is tuned on validation rank IC, refit quarterly on an expanding window (PREREG_thesis_tree.md
+  Amendment 2's refit rule).
+* The owner's primaries (2026-10-17) are `qn_h10` and `q5_h20`.
+* Each book is the top/bottom 5 at 10% of NAV, then the champion's risk rules: sector net ≤ 30%, dollar net
+  ≤ 10% of gross, SPY to zero 60-day beta.
+
+**How they are kept.**
+* Never traded.
+* Not challengers, not in `score.py`, not in any gate or multiple-testing family.
+* The weekly job `qshadow` (Thu 03:30 UTC) writes one record per week to the `research-data` branch. A week is
+  never re-run.
+* `ledger.json` and `LEDGER.md` mark them like `shadow_ledger.py`: Thursday close to Thursday close, 5 bp per
+  side, cash 0.
+
+**History.** History is filled where it can be:
+* walk-forward `backfill` weeks 2018–2025;
+* `catchup` weeks for October 2026, computed late.
+
+Only `live` weeks are forward evidence. The 2022–25 backfill window was read during the research.
+
+**Sealed window.** Jan–Sep 2026 is the sealed P8 holdout:
+* no text from it is used;
+* no decision or target window may touch it;
+* no book is formed in it.
+
+**Live text.** Finnhub news for the 31 names is processed exactly as the thesis panel's history:
+* rewritten with the thesis pipeline's prompt (`deepseek/deepseek-v4-flash`, fact extraction; temperature 0 here
+  under the repository rule);
+* deduplicated at cosine 0.87 (day and 20-day window);
+* embedded with `google/gemini-embedding-001`.
+
+The source mix differs from the history (FNSPID, Benzinga, FMP), which is a known shift.
+
+**Judgement.** No verdict on these books before ~mid-April 2027 (the shadow-books rule).
