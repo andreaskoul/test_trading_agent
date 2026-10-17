@@ -329,3 +329,51 @@ the R0 report: the first post-horizon season. Every later season, and every forw
 | Variants not listed here are not run | ☑ |
 | S&P 400 sub-industry assignments added before any test | ☑ (`fund/chains.json`, `_assigned_at_signoff`) |
 | R5 v1 specified before the first prediction | ☑ (§5, this commit) |
+
+---
+
+## Amendment 1 (2026-10-17): the quant validation function, and lessons from the quant trials
+
+**What had been seen.**
+* No result of any P8 test (H or R family, node contract) has been seen. No P8 feature has been computed on the
+  validation or sealed sample.
+* **Disclosure.** The separate quant trials (branch `research/quant-trials`,
+  `reports/research/quant_trials/DECISION.md`) tested a news-embedding return model on 31 large caps. They read
+  2022–25 once, under their own pre-registration (commit 8de9271), and failed.
+* That model is not a P8 hypothesis. The sealed Jan–Sep 2026 window was never loaded.
+* This amendment changes **no** hypothesis, primary statistic, family, split, sample or pass rule.
+
+**Decision (owner, 2026-10-17).**
+* No standalone quant signal desk. The news-embedding return model is closed (failed confirmation; 2022 broke
+  every candidate) and is not a P8 node.
+* The quant function becomes P8's **validation team**. It owns T7 (measurement and learning: node tests, trial
+  ledger, the sealed read) and the neutrality checks behind P1/S5. It also maintains the test harness built for
+  the trials: point-in-time tests, twins, placebos, a ledger, and a guarded single-read runner.
+
+**Practices added to every deterministic P8 test.** These are reporting and process only; the primary statistics
+in §4 and the rules in §2 are unchanged.
+1. **Trial ledger.** Every fitted variant is logged, failures included. The count is stated in the sealed-read
+   report.
+2. **Twins.** Each signal is reported next to a no-signal twin (same model, signal removed) and a placebo (signal
+   permuted across names within date). This sits alongside §2's randomization inference.
+3. **Sector-neutral and regime reporting.**
+   * Every result also shows its sector-neutral version and per-year values, with 2022 on its own row.
+   * 2020–21 is flagged as the COVID regime.
+   * A descriptive "fit excluding 2020" row is added.
+   * A signal whose gain disappears sector-neutral is labelled a sector tilt, not a firm-level signal.
+4. **Model selection.**
+   * Hyper-parameters are chosen within the training window by validation rank IC, never by MSE early stopping.
+     In the trials, MSE early stopping left gradient-boosted trees with 1–30 trees.
+   * Return models are shallow and regularised: ridge, or trees of depth ≤ 3.
+   * Deep nets (MLP, transformers, cross-sectional attention) are not used for return prediction without a new
+     amendment. They added nothing over their placebos in the trials.
+
+**Design input (no change to the tests).**
+* Propagation (E2) uses named links (S2), not embedding similarity. In the trials, text-to-return Granger edges
+  between the 31 names were almost absent: 0–7 of 930 pairs at FDR ≤ 0.10.
+* Embedding similarity stays where §7 puts it: peer identification (S1).
+
+**Optional, not scheduled.** A shadow-only forward log of the trials' best residual: ridge, h = 10, cluster news
+state, 31 names, a sector-neutral increment of +0.02 (t 1.7, not significant).
+* It is never traded and is not a P8 node.
+* It runs only on a separate go-ahead from the owner.
