@@ -38,6 +38,7 @@ GH_REPO = "andreaskoul/test_trading_agent"
 # The schedule (UTC), as in fund/README.md. late = how long after its slot a job may still start
 # (the Mac was asleep or off); the desks refuse their own out-of-window runs on top of this.
 # Each script is idempotent, so trade runs Thu and Fri (a Friday run trades only after a Thursday holiday).
+P7_DAY, P7_ASOF = os.environ.get("FUND_P7_START") or "2026-10-15", "2026-10-14"   # first P7 session / its as-of (report labels)
 SCHEDULE = {
     "archive":   {"days": "0123456", "at": "21:20", "late": 180},
     "weekly":    {"days": "2",       "at": "22:15", "late": 1140},   # still decidable before Thu 19:00
@@ -630,7 +631,8 @@ def build_report(secrets):
             ex = json.loads(show(f"{w}/execution.json")).get("status", "not traded")
         except ValueError:
             ex = "not traded yet"
-        L.append(f"Week {w}: book {st}, execution {ex}")
+        p7 = w >= P7_ASOF                                    # from Protocol 7 the weekly book is the shadow c0_weekly
+        L.append(f"Week {w}: book {st}, " + ("weekly book scored as shadow c0_weekly; the lifecycle book trades" if p7 else f"execution {ex}"))
         recent = (now - dt.timedelta(hours=30)).date().isoformat()
         try:
             exj = json.loads(show(f"{w}/execution.json"))
@@ -670,7 +672,7 @@ def build_report(secrets):
         if lc.get("rows"):
             last = lc["rows"][-1]
             ev = [e for e in lc.get("events", []) if e["day"] == last["date"] and e["action"] not in ("entry", "hedge")]
-            L.append(f"C10 lifecycle (shadow): NAV ${last['nav']:,.0f}, {len(lc.get('lots', []))} lots"
+            L.append(f"{'Lifecycle book (the fund, model NAV)' if now.date().isoformat() >= P7_DAY else 'C10 lifecycle (shadow)'}: NAV ${last['nav']:,.0f}, {len(lc.get('lots', []))} lots"
                      + (f"; {last['date']}: " + ", ".join(f"{e['ticker']} {e['action']}" for e in ev) if ev else ""))
     except ValueError:
         pass

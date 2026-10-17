@@ -39,9 +39,10 @@ from datetime import datetime, timezone
 
 import pandas as pd
 
-from common import MODE, MODEL, ROOT, STATE, llm, require
+import guards
+from common import MODE, MODEL, ROOT, STATE, require
 
-VERSION = "r5-v1"
+VERSION = "r5-v2"          # Amendment 1 (2026-10-16): typed exhibit, content and grounding checks, repair, re-runs, gate
 NEWS_MAX, PEERS_MAX, CARD_CHARS, PEER_CHARS, SEASON_DAYS, SUMMARY = 60, 5, 15000, 4000, 45, 150
 HARD_W, PEER_W, PASSES = 1.5, 0.5, 3
 UA = os.environ.get("SEC_USER_AGENT", "").strip()
@@ -143,15 +144,20 @@ def releases(t, before):
 
 @functools.lru_cache(maxsize=None)
 def release_text(cik, acc, primary, limit):
-    """The EX-99.1 press release of an 8-K (by file name), else its primary document."""
+    """The earnings press release of an 8-K item 2.02, chosen by its declared SEC type (EX-99.1, else the first
+    EX-99.x) from the filing index, then held to the press-release content contract (guards.release_check).
+    Returns (text, name, url, how, defect); defect is None when the document is usable. Never the primary 8-K:
+    on 2026-10-15/16 the file-name rule fed 7 of 20 cards an 8-K cover page."""
     base = f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc.replace('-', '')}"
-    idx = sec(f"{base}/index.json") or {}
-    files = [x["name"] for x in idx.get("directory", {}).get("item", []) if x["name"].lower().endswith((".htm", ".html", ".txt"))]
-    ex = [f for f in files if re.search(r"ex[-_]?99|exhibit[-_]?99|ex99|dex99", f.lower()) and not f.lower().endswith("index.htm")]
-    ex = sorted(ex, key=lambda f: (not re.search(r"99[-_.]?0?1(?!\d)", f.lower()), f))
-    name = ex[0] if ex else primary
-    b = sec(f"{base}/{name}", raw=True)
-    return (text_of(b, limit) if b else ""), name, f"{base}/{name}"
+    page = sec(f"{base}/{acc}-index.htm", raw=True)
+    doc, how = guards.typed_exhibit(guards.filing_documents(page.decode("utf-8", errors="replace") if page else ""))
+    if doc is None:
+        return "", None, None, how, how
+    url = f"{base}/{doc['name']}"
+    b = sec(url, raw=True)
+    full = text_of(b, 200000) if b else ""
+    defect = guards.release_check(full) if full else "exhibit could not be fetched"
+    return full[:limit], doc["name"], url, how, defect
 
 
 def norm(s):
@@ -294,13 +300,19 @@ def one(t, D, C, U, season_rel, prompts):
     acc, accession, primary = rel[0]
     if (C - acc).days < SEASON_DAYS:                       # already reported this season: the calendar is stale
         return {**rec, "status": "already_reported", "last_release": str(acc)}
-    card_txt, card_file, card_url = release_text(cik, accession, primary, CARD_CHARS)
-    if len(card_txt) < 500:
-        return {**rec, "status": "release_text_missing", "release_url": card_url}
-    st, card, meta, err = llm(CARD, f"Company {t} ({U.loc[t, 'Security']}). Earnings release accepted {acc:%Y-%m-%d}:\n\n{card_txt}", chk_card)
+    card_txt, card_file, card_url, how, defect = release_text(cik, accession, primary, CARD_CHARS)
+    src = {"last_release": str(acc), "release_url": card_url, "release_doc": how}
+    if defect:                                              # input contract: no LLM call on the wrong document
+        return {**rec, **src, "status": "input_defect", "error": defect}
+    st, card, meta, err, glog = guards.guarded_llm(CARD, f"Company {t} ({U.loc[t, 'Security']}). Earnings release accepted {acc:%Y-%m-%d}:\n\n{card_txt}", chk_card)
     prompts.append({"ticker": t, "task": "card", "system": CARD, "user": card_txt[:200] + "..."})
     if st != "ok":
-        return {**rec, "status": "card_failed", "error": err}
+        return {**rec, **src, "status": "card_failed", "error": err, "card_log": glog}
+    claims = " ".join(f"{d.get('last_report') or ''} {d.get('guidance') or ''}" for d in card["drivers"]) + f" {card.get('guidance') or ''}"
+    grounded, gstats = guards.grounding(claims, card_txt)
+    if not grounded:                                        # output contract: the card must rest on its release
+        return {**rec, **src, "status": "card_ungrounded", "error": f"card numbers not in the release: {gstats}",
+                "card": card, "card_log": glog, "grounding": gstats}
     news, n_raw = own_news(t, acc, C)
     drivers = "\n".join(f"{d['id']}. {d['name']}: last report: {d.get('last_report')}; guidance: {d.get('guidance')}" for d in card["drivers"])
     listing = lambda xs: "\n".join(f"[{i}] {x['date']} {x['source']}: {x['headline']} :: {x['summary']}" for i, x in enumerate(xs))
@@ -310,12 +322,16 @@ def one(t, D, C, U, season_rel, prompts):
         k, (sysp, xs) = k_sys_xs
         user = (f"Company {t} ({U.loc[t, 'Security']}). Last earnings release: {acc:%Y-%m-%d}. News up to {C:%Y-%m-%d %H:%M} UTC.\n"
                 f"DRIVERS:\n{drivers}\nGUIDANCE: {card.get('guidance')}\n\nNEWS ({len(xs)} items):\n{listing(xs) or 'none'}")
-        s_, o, m_, e_ = llm(sysp, user, chk_ledger)
+        s_, o, m_, e_, lg = guards.guarded_llm(sysp, user, chk_ledger)
         prompts.append({"ticker": t, "task": f"ledger{k}", "system": sysp, "user": user})
-        return {"status": s_, "out": o, "error": e_, "provider": m_.get("provider")}
+        return {"status": s_, "out": o, "error": e_, "provider": m_.get("provider"), "log": lg}
 
+    specs = list(enumerate(((LEDGER_A, news), (LEDGER_B, news), (LEDGER_A, shuffled))))
     with ThreadPoolExecutor(PASSES) as px:                  # the three passes are independent
-        own_passes = list(px.map(ledger_pass, enumerate(((LEDGER_A, news), (LEDGER_B, news), (LEDGER_A, shuffled)))))
+        own_passes = list(px.map(ledger_pass, specs))
+        again = [i for i, x in enumerate(own_passes) if x["status"] != "ok"]
+        for i, x in zip(again, px.map(ledger_pass, [specs[i] for i in again])):   # one re-run of a failed pass
+            own_passes[i] = {**x, "rerun": True, "first_error": own_passes[i]["error"]}
     okp = [p["out"] for p in own_passes if p["status"] == "ok"]
     own = med([own_score(o) for o in okp])
     overall = [o["overall"] for o in okp]
@@ -323,26 +339,37 @@ def one(t, D, C, U, season_rel, prompts):
     sub = U.loc[t, "GICS Sub-Industry"]
     peers = [p for p in season_rel.get(sub, []) if p[0] != t][:PEERS_MAX]
     peer_passes, peer = [], None
+    peer_defects = {}
     if peers:
-        blocks = []
+        blocks, kept = [], []
         for p, (pacc, pcik, paccn, pprim) in peers:
-            txt, _, _ = release_text(pcik, paccn, pprim, PEER_CHARS)
+            txt, _, _, _, pdef = release_text(pcik, paccn, pprim, PEER_CHARS)
+            if pdef:
+                peer_defects[p] = pdef; continue
+            kept.append((p, (pacc, pcik, paccn, pprim)))
             blocks.append(f"=== PEER {p} ({U.loc[p, 'Security']}), release accepted {pacc:%Y-%m-%d}:\n{txt}")
+        peers = kept
         names = [p for p, _ in peers]
         order = [list(range(len(blocks))), list(range(len(blocks))), list(reversed(range(len(blocks))))]
         def peer_pass(k_idx):
             k, idx = k_idx
             user = (f"Company {t} ({U.loc[t, 'Security']}). DRIVERS:\n{drivers}\n\nPEER RELEASES:\n" + "\n\n".join(blocks[i] for i in idx))
-            s_, o, m_, e_ = llm(PEERS, user, chk_peers(names))
+            s_, o, m_, e_, lg = guards.guarded_llm(PEERS, user, chk_peers(names))
             prompts.append({"ticker": t, "task": f"peers{k}", "system": PEERS, "user": user})
-            return {"status": s_, "out": o, "error": e_, "provider": m_.get("provider")}
+            return {"status": s_, "out": o, "error": e_, "provider": m_.get("provider"), "log": lg}
 
+        if not peers:
+            order = []
         with ThreadPoolExecutor(PASSES) as px:
             peer_passes = list(px.map(peer_pass, enumerate(order)))
+            again = [i for i, x in enumerate(peer_passes) if x["status"] != "ok"]
+            for i, x in zip(again, px.map(peer_pass, [(i, order[i]) for i in again])):
+                peer_passes[i] = {**x, "rerun": True, "first_error": peer_passes[i]["error"]}
         peer = med([peer_score(o) for o in [x["out"] for x in peer_passes if x["status"] == "ok"]])
     combined = None if own is None else own + PEER_W * (peer or 0.0)
-    return {**rec, "status": "ok" if own is not None else "ledger_failed", "last_release": str(acc), "release_url": card_url,
-            "card": card, "card_provider": meta.get("provider"), "news_raw": n_raw, "news_used": len(news),
+    return {**rec, **src, "status": "ok" if own is not None else "ledger_failed",
+            "card": card, "card_provider": meta.get("provider"), "card_log": glog, "grounding": gstats,
+            "peer_defects": peer_defects, "news_raw": n_raw, "news_used": len(news),
             "own_passes": own_passes, "peers": [p for p, _ in peers], "peer_passes": peer_passes,
             "score_own": own, "score_peer": peer, "score_combined": combined,
             "overall_votes": overall, "overall": max(set(overall), key=overall.count) if overall else None}
@@ -421,8 +448,14 @@ def main():
     with gzip.open(os.path.join(OUT, f"{D.date()}.prompts.{datetime.now(timezone.utc):%H%M%S}.jsonl.gz"), "wt") as fh:
         for x in prompts:
             fh.write(json.dumps(x, ensure_ascii=False) + "\n")
+    passed, q = guards.quality_gate([r["status"] for r in new.values()])
+    old.setdefault("runs", []).append({"at": pd.Timestamp.now(tz="UTC").isoformat(), "version": VERSION, "code": code, "quality": q})
+    json.dump(old, open(p, "w"), indent=1, default=str, ensure_ascii=False)
     ok = sum(r["status"] == "ok" for r in new.values())
-    print(f"r5 {D.date()}: {ok}/{len(new)} ok; batch sha256 {old['batch_sha256']}")
+    print(f"r5 {D.date()}: {ok}/{len(new)} ok; quality {q}; batch sha256 {old['batch_sha256']}")
+    if not passed:                                          # records are saved and committed first (runner: when=always)
+        raise SystemExit(f"r5 quality gate failed: {q['bad']} of {q['attempted']} input defects or failures "
+                         f"(threshold {q['threshold']:.0%}): {q['counts']}")
 
 
 if __name__ == "__main__":
