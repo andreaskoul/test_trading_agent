@@ -79,3 +79,33 @@ After the read, a model-selection defect was found.
 - **Trees at h40 still fail badly:** 2022–23 at −0.14 / −0.15.
 - **The verdict is unchanged: no desk.** The only consistent residual is Q1 (ridge h10): +0.015, t 0.9,
   three of four years positive. It's far from significant, and could only be judged on forward data.
+
+## Refit-cadence study (2026-10-17; owner's question; NOT confirmatory for 2022–25)
+**Question.** Would refitting more often, so the models adapt to the regime, rescue the signal? Tested for:
+* the shadow quant model: its five price factors refit by IC-tuned ridge or trees;
+* the same model plus the news-embedding state, with a shuffled-text placebo.
+
+**Design.**
+* Refits yearly or quarterly, on an expanding or a 2-year rolling window.
+* Horizons h = 5, 10, 20; years 2018–2025.
+* The topic clusters are refit each quarter on headlines from before that quarter.
+* Full table in `REFIT.md` / `refit_study.csv`.
+
+**Bug found and fixed.** scikit-learn's HistGradientBoosting turns on its own early stopping above 10k rows, so
+every earlier tree fit had been cut short on an internal 10% holdout (`NOTES.log`).
+* The Stage-2 Q3 result stands as pre-registered but carries this defect.
+* The refit-study trees were run with it fixed.
+
+**Findings.**
+1. **Quarterly refits on a 2-year window do reduce the 2022 damage** of the news model. The text increment in
+   2022 goes from about −0.05/−0.10 (yearly, expanding) to about 0/−0.02.
+2. **But adaptation creates no lasting alpha.** The text increment over the quant model in 2022–25 is about zero
+   in every setup and both model families (best +0.019, t 1.1). In 2018–21 it looked strong (t up to 4.0).
+3. **The quant model refit on these 31 names: ridge, expanding window, h = 20, yearly or quarterly.** It earns
+   +0.067 IC in 2022–25 (t 2.5), against ≈ 0 in 2018–21.
+   * Short rolling windows hurt it: +0.009 on 2-year rolling.
+   * This lead emerged from an already-seen window. A clean test needs a pre-registered S&P 500 test or forward
+     data.
+
+**Verdict unchanged for the embeddings.** No desk. The price-factor lead belongs to the existing quant benchmark,
+not to a news model.

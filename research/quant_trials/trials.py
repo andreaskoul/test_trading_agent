@@ -148,7 +148,9 @@ def run_config(p, T, cfg, folds, extra_info=None, confirm=False):
         y[test[-1] + 1:] = np.nan            # fold_index already keeps every test target inside its year
         sd = np.nanstd(y[train])
         ys = y / sd
-        blocks, info = [p.price], {}
+        base_ = cfg.get("base", "price")
+        blocks, info = [{"price": p.price, "quant5": p.quant, "quantscore": p.quant_score[..., None],
+                         "quant5+price": np.concatenate([p.quant, p.price], -1)}[base_]], {}
         if cfg["arm"] != "none":
             blocks.append(p.intensity)
         if cfg["arm"] not in ("none", "intensity"):
@@ -161,7 +163,11 @@ def run_config(p, T, cfg, folds, extra_info=None, confirm=False):
         X[:, ~names_mask] = np.nan
         t0 = time.time()
         model = cfg["model"]
-        if model == "ridge":
+        if model == "frozen_quant":                       # the shadow book's own ranking, no fit
+            pred = np.full(ys.shape, np.nan)
+            pred[test] = p.quant_score[test]
+            inf = {}
+        elif model == "ridge":
             pred, inf = M.ridge(X, ys, train, test, h)
         elif model == "ridge_ic":
             pred, inf = M.ridge_ic(X, ys, train, test, h)
@@ -501,6 +507,158 @@ def covid_table(arms=("proto_hl5", "pca_hl5"), models=("ridge", "gbrt"), hs=(10,
     return df
 
 
+# ------------------------------------------------------------------------------------------------- refit cadence
+_PROTO = {}
+
+
+def proto_block(p, T, lo, hi):
+    """proto_hl5 with k-means fit on headlines from sessions [lo, hi) only (no targets involved), memoised so
+    every horizon and the placebo share one encoder per training window."""
+    key = (int(lo), int(hi))
+    if key not in _PROTO:
+        from sklearn.cluster import KMeans
+        rows = np.arange(lo, hi)
+        d, i = np.where(p.n[rows] > 0)
+        V = T.state(0)[rows[d], i]
+        V = V / np.linalg.norm(V, axis=1, keepdims=True)
+        rng = np.random.default_rng(0)
+        if len(V) > 20000:
+            V = V[rng.choice(len(V), 20000, replace=False)]
+        km = KMeans(16, n_init=2, random_state=0).fit(V)
+        C = km.cluster_centers_ / np.linalg.norm(km.cluster_centers_, axis=1, keepdims=True)
+        S = T.state(5)
+        nrm = np.linalg.norm(S, axis=-1, keepdims=True)
+        U = np.where(nrm > 0, S / np.maximum(nrm, 1e-9), 0.0)
+        _PROTO[key] = (U @ C.T.astype(np.float32)).astype(np.float32)
+    return _PROTO[key]
+
+
+def periods(p, fy, h, refit):
+    """Test decisions of year fy (target window inside the year, as fold_index), split by refit cadence."""
+    _, test = F.fold_index(p, fy, h)
+    if refit == "Y":
+        return [test]
+    q = p.S[test].quarter
+    return [test[q == k] for k in sorted(set(q))]
+
+
+def run_refit(p, T, cfg, years, confirm=True):
+    """cfg: base, arm ('none'|'proto_hl5'), placebo, model ('ridge_ic'|'gbrt_ic'), h, refit ('Y'|'Q'),
+    window (None = expanding from 2016-01-04, else years). One prediction file and ledger row per year."""
+    h, hsh = cfg["h"], chash(cfg)
+    y_raw = p.target(h)
+    base = {"quant5": p.quant, "price": p.price}[cfg["base"]]
+    rows = []
+    for fy in years:
+        assert fy <= STAGE1_LAST_YEAR or confirm
+        _, test_year = F.fold_index(p, fy, h)
+        pred = np.full(y_raw.shape, np.nan)
+        info = {"alphas": [], "n_train": []}
+        t0 = time.time()
+        for test in periods(p, fy, h, cfg["refit"]):
+            first = test[0]
+            start = pd.Timestamp("2016-01-04") if not cfg.get("window") else \
+                max(pd.Timestamp("2016-01-04"), p.S[first] - pd.DateOffset(years=cfg["window"]))
+            lo = int(np.searchsorted(p.S, start))
+            train = np.arange(lo, first)
+            train = train[train + 1 + h < first]                      # h-session embargo
+            y = y_raw.copy()
+            y[test_year[-1] + 1:] = np.nan
+            ys = y / np.nanstd(y[train])
+            blocks = [base]
+            if cfg["arm"] == "proto_hl5":
+                Z = proto_block(p, T, lo, first)
+                blocks += [p.intensity, shuffle_names(Z) if cfg.get("placebo") else Z]
+            X = standardise(np.concatenate(blocks, -1), train)
+            if cfg["model"] == "ridge_ic":
+                pr, inf = M.ridge_ic(X, ys, train, test, h)
+                info["alphas"].append(inf["alpha"])
+            else:
+                pr, inf = M.gbrt_ic(X, ys, train, test, h, seeds=cfg.get("seeds", 3))
+                info["alphas"].append(inf["iters"])
+            pred[test] = pr[test]
+            info["n_train"].append(int(len(train)))
+        np.save(os.path.join(PREDS, f"{hsh}_{fy}.npy"), pred.astype(np.float32))
+        y = y_raw.copy()
+        y[test_year[-1] + 1:] = np.nan
+        wk = F.thursdays(p, test_year)
+        ic = F.weekly_ic(pred, y, wk)
+        rows.append({"time": pd.Timestamp.now().strftime("%Y-%m-%d %H:%M"), "git": git_rev(), "hash": hsh,
+                     "trial": cfg["trial"], "arm": cfg["arm"], "model": cfg["model"], "h": h,
+                     "placebo": bool(cfg.get("placebo")), "variant": f"{cfg['refit']}-{cfg.get('window') or 'exp'}",
+                     "fold": fy, "n_weeks": int(np.isfinite(ic).sum()), "ic": float(np.nanmean(ic)),
+                     "ic_t": float(F.nw_t(ic, F.nw_lag(h))), "spread": float(np.nanmean(F.tercile_spread(pred, y, wk))),
+                     "ndcg5": float(np.nanmean(F.ndcg_at(pred, y, wk))), "secs": round(time.time() - t0, 1),
+                     "cfg": json.dumps(cfg, sort_keys=True), "info": json.dumps(info, default=str)})
+        print(f"  {cfg['arm']:<10}{' pl' if cfg.get('placebo') else '   '} {cfg['model']} h={h:<2} "
+              f"{rows[-1]['variant']:<6} {fy}: IC {rows[-1]['ic']:+.4f}  {rows[-1]['secs']}s", flush=True)
+    pd.DataFrame(rows).reindex(columns=COLS).to_csv(LEDGER, mode="a", header=False, index=False)
+    return hsh
+
+
+def refit_study(models=("ridge_ic",), hs=(5, 10, 20), years=tuple(range(2018, 2026))):
+    p = F.Panel()
+    T = Text(p)
+    done = set(pd.read_csv(LEDGER).hash)
+    for h in hs:
+        for model in models:
+            for refit in ("Y", "Q"):
+                for window in (None, 2):
+                    for arm, pl in (("none", False), ("proto_hl5", False), ("proto_hl5", True)):
+                        cfg = {"trial": "RF", "base": "quant5", "arm": arm, "placebo": pl, "model": model,
+                               "h": h, "refit": refit, "window": window}
+                        if chash(cfg) not in done:
+                            run_refit(p, T, cfg, years)
+
+
+def refit_table(models=("ridge_ic", "gbrt_ic"), hs=(5, 10, 20)):
+    """Per (model, h, refit, window): quant-model IC, text increment over it, and increment over the placebo,
+    for 2018-21, 2022 alone and 2022-25 (pooled weekly, NW t). 2022-25 is a second look, not confirmation."""
+    led = pd.read_csv(LEDGER)
+    led = led[led.trial == "RF"].drop_duplicates(["hash", "fold"], keep="last")
+    cf = {h_: json.loads(c) for h_, c in zip(led.hash, led.cfg)}
+    find = {(c["model"], c["h"], c["refit"], c["window"], c["arm"], c["placebo"]): h_ for h_, c in cf.items()}
+    p = F.Panel()
+    blocks = {"18-21": range(2018, 2022), "2022": [2022], "22-25": range(2022, 2026)}
+    out = []
+    for model in models:
+        for h in hs:
+            y = p.target(h)
+            for refit in ("Y", "Q"):
+                for window in (None, 2):
+                    k = lambda arm, pl: find.get((model, h, refit, window, arm, pl))
+                    q, t, pl = k("none", False), k("proto_hl5", False), k("proto_hl5", True)
+                    if not (q and t and pl):
+                        continue
+                    row = {"model": model, "h": h, "refit": refit, "window": f"{window}y" if window else "exp"}
+                    for name, yrs in blocks.items():
+                        ics = {r: [] for r in ("q", "t", "pl")}
+                        for fy in yrs:
+                            _, test = F.fold_index(p, fy, h)
+                            yy = y.copy()
+                            yy[test[-1] + 1:] = np.nan
+                            wk = F.thursdays(p, test)
+                            for r, hh in (("q", q), ("t", t), ("pl", pl)):
+                                ics[r].append(F.weekly_ic(np.load(os.path.join(PREDS, f"{hh}_{fy}.npy")), yy, wk))
+                        a = {r: np.concatenate(v) for r, v in ics.items()}
+                        L = F.nw_lag(h)
+                        row[f"quant {name}"] = f"{np.nanmean(a['q']):+.3f} ({F.nw_t(a['q'], L):+.1f})"
+                        d = a["t"] - a["q"]
+                        row[f"+text {name}"] = f"{np.nanmean(d):+.3f} ({F.nw_t(d, L):+.1f})"
+                        d2 = a["t"] - a["pl"]
+                        row[f"vs plc {name}"] = f"{np.nanmean(d2):+.3f}"
+                    out.append(row)
+    df = pd.DataFrame(out)
+    df.to_csv(os.path.join(P.REPORT, "refit_study.csv"), index=False)
+    with open(os.path.join(P.REPORT, "REFIT.md"), "w") as f:
+        f.write("# Refit cadence study: quant model (5 factors) and quant + news embeddings\n\n"
+                "Yearly vs quarterly refits, expanding vs 2-year rolling windows; IC (NW t). 2022-25 had been "
+                "read before: a second look, not confirmation. Jan-Sep 2026 never loaded.\n\n")
+        f.write(df.to_markdown(index=False))
+        f.write("\n")
+    return df
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd")
@@ -515,12 +673,18 @@ if __name__ == "__main__":
     ap.add_argument("--train-start")
     ap.add_argument("--variant", default="")
     ap.add_argument("--train-exclude", nargs=2)
+    ap.add_argument("--base", default="")
     ap.add_argument("--folds", nargs="+", type=int, default=list(F.INNER_FOLDS))
     a = ap.parse_args()
     if a.cmd == "compare":
         print(compare(*a.args))
     elif a.cmd == "artefact":
         print(artefact().groupby("model").mean(numeric_only=True).to_string())
+    elif a.cmd == "refit":
+        refit_study(models=tuple(a.models) if a.models != ["ridge"] else ("ridge_ic",), hs=tuple(a.h))
+    elif a.cmd == "refit_table":
+        with pd.option_context("display.width", 300, "display.max_columns", 30):
+            print(refit_table().to_string(index=False))
     elif a.cmd == "covid":
         df = covid_table()
         with pd.option_context("display.width", 250):
@@ -539,5 +703,7 @@ if __name__ == "__main__":
             kw["variant"] = a.variant
         if a.train_exclude:
             kw["train_exclude"] = a.train_exclude
+        if a.base:
+            kw["base"] = a.base
         run_many(grid(a.trial, a.arms, a.models, a.h, (False, True) if a.placebo else (False,), a.seeds, **kw),
                  folds=a.folds)

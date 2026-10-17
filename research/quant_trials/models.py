@@ -403,7 +403,8 @@ def gbrt(X, y, train, test, h, seeds=5, **_):
     preds, iters = [], []
     for s in range(seeds):
         m = HistGradientBoostingRegressor(max_depth=3, learning_rate=0.03, max_iter=600, min_samples_leaf=200,
-                                          l2_regularization=1.0, max_features=0.8, random_state=s)
+                                          l2_regularization=1.0, max_features=0.8, random_state=s,
+                                          early_stopping=False)
         best, best_it = np.inf, 50
         m.fit(Xt, yt)
         for it, pv in enumerate(m.staged_predict(Xv), 1):
@@ -411,7 +412,8 @@ def gbrt(X, y, train, test, h, seeds=5, **_):
             if e < best:
                 best, best_it = e, it
         m2 = HistGradientBoostingRegressor(max_depth=3, learning_rate=0.03, max_iter=best_it, min_samples_leaf=200,
-                                           l2_regularization=1.0, max_features=0.8, random_state=s)
+                                           l2_regularization=1.0, max_features=0.8, random_state=s,
+                                           early_stopping=False)
         m2.fit(*_rows(X, y, train))
         p = np.full(y.shape, np.nan)
         p[test] = m2.predict(Xs).reshape(len(test), -1)
@@ -448,7 +450,7 @@ def gbrt_ic(X, y, train, test, h, seeds=5, checkpoints=(25, 50, 100, 200, 400, 6
     Xt, yt = _rows(X, y, tr)
     Xv = np.nan_to_num(X[va]).reshape(-1, X.shape[-1])
     Xs = np.nan_to_num(X[test]).reshape(-1, X.shape[-1])
-    kw = dict(max_depth=3, learning_rate=0.03, min_samples_leaf=200, l2_regularization=1.0, max_features=0.8)
+    kw = dict(max_depth=3, learning_rate=0.03, min_samples_leaf=200, l2_regularization=1.0, max_features=0.8, early_stopping=False)
     preds, iters = [], []
     for s in range(seeds):
         m = HistGradientBoostingRegressor(max_iter=max(checkpoints), random_state=s, **kw).fit(Xt, yt)

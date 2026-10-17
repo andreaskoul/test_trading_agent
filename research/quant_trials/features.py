@@ -6,7 +6,9 @@ Timing (one session of execution gap, so a headline mis-stamped by hours can nev
     cross-sectionally demeaned; it exists only when d+1+h is a session <= 2025-12-31.
 """
 
+import json
 import math
+import os
 
 import numpy as np
 import pandas as pd
@@ -48,6 +50,7 @@ class Panel:
         self.e = self.r - bprev * self.rm[:, None]                 # residual return of day t, beta from t-1
         self._price_feats()
         self._intensity()
+        self._quant_feats()
         self.D, self.N = len(S), len(self.names)
 
     def _price_feats(self):
@@ -62,6 +65,22 @@ class Panel:
         f["vix"] = np.repeat(np.log(self.vix)[:, None], len(self.names), 1)
         f["beta"] = self.beta
         self.price = np.stack([f[c] for c in PRICE_COLS], -1).astype(np.float32)
+
+    def _quant_feats(self):
+        """The shadow quant book's five signals (fund/screen.py), on the session calendar, z-scored across the
+        31 names per day, and the frozen ridge score (artefacts/llm/ridge_stocks.json; fit 2004-01..2026-03, so
+        in-sample on every historical window)."""
+        lp = pd.DataFrame(np.log(self.close), index=self.S)
+        lr = lp.diff()
+        f = {"mom12_1": (lp.shift(20) - lp.shift(252)).values, "rev1m": -(lp - lp.shift(20)).values,
+             "rev1w": -(lp - lp.shift(5)).values, "lowvol": -lr.rolling(60, min_periods=50).std().values,
+             "high52": (pd.DataFrame(self.close, index=self.S)
+                        / pd.DataFrame(self.close, index=self.S).rolling(252, min_periods=200).max()).values}
+        spec = json.load(open(os.path.join(P.ROOT, "artefacts", "llm", "ridge_stocks.json")))
+        Z = np.stack([f[c] for c in spec["features"]], -1)
+        Z = (Z - np.nanmean(Z, 1, keepdims=True)) / np.nanstd(Z, 1, keepdims=True)
+        self.quant = Z.astype(np.float32)
+        self.quant_score = (Z @ np.asarray(spec["coef"]) + spec["intercept"]).astype(np.float32)
 
     def _intensity(self):
         n = self.n.astype(np.float32)
