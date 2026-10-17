@@ -4,6 +4,12 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-17: research shadow books (`fund/qshadow.py`, runner job `qshadow`, Thu 03:30 UTC; PROTOCOL_fund.md "Research shadow books").
+  * Six weekly books from the quant trials on the 31-name news panel, never traded, records on `research-data`.
+  * The job shares R5's lock, so `research-data` pushes never overlap.
+  * Every OpenRouter call goes through `common._log_call` (spend: about $0.16 a week at the measured $0.000028 per article).
+  * Could this change a decision? No. No desk of the traded fund reads its output, and `score.py`, the gates and the champion's files are untouched.
+  * Contract tests: `fund/tests/test_qshadow.py` (session rule, risk caps, the m0 prompt verbatim, nothing from the sealed window).
 - 2026-10-16: R5 forward predictions, r5-v2 (pre-registration Amendment 1).
   * v1 chose the press release by file name. For 7 of 20 firms it fed the card the 8-K cover page: CFG failed, six were recorded as `ok` with generic cards.
   * SCHW lost 2 of 3 passes to transport errors that nothing re-ran.

@@ -347,18 +347,29 @@ def week_record(p, d, models_cache, sector, kind):
 
 # ------------------------------------------------------------------------------------------------- live text
 def _post(path, payload, tries=3, limit=120):
+    """OpenRouter call; every attempt goes to the fund's LLM call log (common._log_call: caller, model, provider,
+    tokens, billed cost, prompt). Not guards.guarded_llm: the rewrite must use the history's model and its
+    single-message, json_schema request (caf_ml_v0 m0), which common.llm cannot send."""
+    from common import _log_call
+    payload = {**payload, "usage": {"include": True}}
+    prompt = payload["messages"][0]["content"] if "messages" in payload else f"[embeddings x{len(payload['input'])}]"
     err = None
     for _ in range(tries):
+        resp = None
         try:
             req = urllib.request.Request(f"{OR}/{path}", data=json.dumps(payload).encode(), headers={
                 "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}", "Content-Type": "application/json",
                 "HTTP-Referer": "https://github.com/andreaskoul/test_trading_agent", "X-Title": "fund-qshadow"})
             with urllib.request.urlopen(req, timeout=limit) as r:
-                return json.loads(r.read()), None
+                resp = json.loads(r.read())
+            _log_call("", prompt, payload.get("temperature", 0.0), {**resp, "model": resp.get("model") or payload["model"]},
+                      "ok", None)
+            return resp, None
         except urllib.error.HTTPError as exc:
             err = f"HTTP {exc.code}: {exc.read()[:300].decode(errors='replace')}"
         except Exception as exc:
             err = repr(exc)
+        _log_call("", prompt, payload.get("temperature", 0.0), resp, "error", err)
         time.sleep(3)
     return None, err
 
@@ -447,13 +458,15 @@ def embed(texts):
     return np.vstack(vecs) if vecs else np.zeros((0, DIM), np.float32)
 
 
-def ingest(lo, hi, S):
+def ingest(lo, hi, S, threads=32):
     """Finnhub archive news for the 31 names published in [lo, hi] -> m0 facts -> embeddings -> live store.
-    Articles already processed are skipped; returns counts for the quality gate."""
+    Saved name by name, so an interrupted run resumes; articles already processed are skipped; an article whose
+    session is not known yet (after the last close) waits for the next run. Returns counts for the quality gate."""
     from infoflow import news
     lo = max(pd.Timestamp(lo, tz="UTC"), pd.Timestamp(LIVE_START, tz="UTC"))
     A = news(lo, pd.Timestamp(hi, tz="UTC"))
-    A = A[A["sym"].isin(NAMES)].copy()
+    only = os.environ.get("QS_ONLY")                     # testing: restrict to some names
+    A = A[A["sym"].isin(only.split(",") if only else NAMES)].copy()
     pdone = os.path.join(QS_HOME, "live", "processed.json")
     os.makedirs(os.path.dirname(pdone), exist_ok=True)
     done = json.load(open(pdone)) if os.path.exists(pdone) else {}
@@ -462,49 +475,45 @@ def ingest(lo, hi, S):
     A["session"] = [session_of(t, S) for t in A["published"]]
     A = A[A["session"].notna()]                         # after the last known session: left for the next run
     stats = {"articles": int(len(A)), "kept": 0, "failed": 0, "facts": 0, "dup_dropped": 0, "reasons": {}}
-    if A.empty:
-        return stats
-    rows = list(A.itertuples())
-    with cf.ThreadPoolExecutor(16) as ex:
-        res = list(ex.map(lambda r: clean(r.t, r.desc or "", ENTITY[r.sym]), rows))
-    rejects = []
-    new = {t: [] for t in NAMES}
-    for r, (st, facts, det) in zip(rows, res):
-        stats["reasons"][st] = stats["reasons"].get(st, 0) + 1
-        if st in ("http_error", "bad_json"):
-            stats["failed"] += 1
-            rejects.append({"key": r.key, "status": st, "detail": det})
-            continue                                    # not marked processed: retried next run
-        done[r.key] = st
-        for f in facts:
-            new[r.sym].append((pd.Timestamp(r.published), r.session, f))
-    for t in NAMES:
-        if not new[t]:
-            continue
-        new[t].sort(key=lambda x: x[0])
-        V = embed([f for _, _, f in new[t]])
+    for t, G in A.groupby("sym"):
+        rows = list(G.itertuples())
+        with cf.ThreadPoolExecutor(threads) as ex:
+            res = list(ex.map(lambda r: clean(r.t, r.desc or "", ENTITY[r.sym]), rows))
+        new, rejects = [], []
+        for r, (st, facts, det) in zip(rows, res):
+            stats["reasons"][st] = stats["reasons"].get(st, 0) + 1
+            if st in ("http_error", "bad_json"):
+                stats["failed"] += 1
+                rejects.append({"key": r.key, "status": st, "detail": det})
+                continue                                # not marked processed: retried next run
+            stats["kept"] += st == "kept"
+            new += [(pd.Timestamp(r.published), r.session, f) for f in facts]
+        new.sort(key=lambda x: x[0])
+        V = embed([f for _, _, f in new]) if new else np.zeros((0, DIM), np.float32)
         store = load_facts(t)
         ts, sess, vec = list(store["ts"]), list(store["session"]), list(store["vec"].astype(np.float32))
-        for (when, s, _), v in zip(new[t], V):
+        for (when, s_, _), v in zip(new, V):
             # m0: day dedup then a 20-day window, both at cosine > 0.87 against earlier kept facts; the window
             # contains the day, so one pass over the earlier kept facts of the last 20 days is the same rule
             ns = int(when.value)
-            recent = [k for k in range(len(ts)) if 0 <= ns - ts[k] <= 20 * 86400 * 10**9]
-            if any(float(v @ vec[k]) > DEDUP for k in recent):
+            if any(0 <= ns - ts[k] <= 20 * 86400 * 10**9 and float(v @ vec[k]) > DEDUP for k in range(len(ts))):
                 stats["dup_dropped"] += 1
                 continue
             ts.append(ns)
-            sess.append(np.datetime64(s.date()))
+            sess.append(np.datetime64(s_.date()))
             vec.append(v)
             stats["facts"] += 1
         np.savez(_live_path(t), ts=np.array(ts, "int64"), session=np.array(sess, "datetime64[D]"),
                  vec=np.array(vec, np.float16).reshape(-1, DIM))
-    stats["kept"] = sum(1 for _, (st, _, _) in zip(rows, res) if st == "kept")
-    json.dump(done, open(pdone, "w"))
-    if rejects:
-        with open(os.path.join(QS_HOME, "live", "rejects.jsonl"), "a") as f:
-            for x in rejects:
-                f.write(json.dumps({**x, "at": pd.Timestamp.now(tz="UTC").isoformat()}) + "\n")
+        for r, (st, _, _) in zip(rows, res):
+            if st not in ("http_error", "bad_json"):
+                done[r.key] = st
+        json.dump(done, open(pdone, "w"))
+        if rejects:
+            with open(os.path.join(QS_HOME, "live", "rejects.jsonl"), "a") as f:
+                for x in rejects:
+                    f.write(json.dumps({**x, "at": pd.Timestamp.now(tz="UTC").isoformat()}) + "\n")
+        print(f"  {t}: {len(rows)} articles, facts total {stats['facts']}, failed {stats['failed']}", flush=True)
     return stats
 
 
@@ -682,9 +691,10 @@ def cmd_weekly(asof=None):
     json.dump(rec, open(out, "w"))
     print(json.dumps({k: rec["models"][k]["book"] for k in PRIMARY}, indent=1), stats)
     ledger()
-    tried = stats["articles"]
-    if tried >= 20 and stats["failed"] > 0.25 * tried:          # quality gate: after saving
-        raise SystemExit(f"quality gate: {stats['failed']} of {tried} cleaning calls failed")
+    from guards import quality_gate                             # CLAUDE.md 9: the gate runs after saving
+    ok, q = quality_gate(["error"] * stats["failed"] + ["ok"] * (stats["articles"] - stats["failed"]))
+    if not ok:
+        raise SystemExit(f"quality gate: {q}")
 
 
 if __name__ == "__main__":
