@@ -332,7 +332,9 @@ the R0 report: the first post-horizon season. Every later season, and every forw
 
 ---
 
-## Amendment 1 (2026-10-17): the quant validation function, and lessons from the quant trials
+## Amendment 2 (2026-10-17): the quant validation function, and lessons from the quant trials
+
+*Numbered after Amendment 1 (2026-10-16, R5 inputs), which is in PR #93.*
 
 **What had been seen.**
 * No result of any P8 test (H or R family, node contract) has been seen. No P8 feature has been computed on the
