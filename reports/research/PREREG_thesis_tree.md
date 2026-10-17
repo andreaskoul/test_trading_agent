@@ -377,3 +377,21 @@ in §4 and the rules in §2 are unchanged.
 state, 31 names, a sector-neutral increment of +0.02 (t 1.7, not significant).
 * It is never traded and is not a P8 node.
 * It runs only on a separate go-ahead from the owner.
+
+**Refit rule (added 2026-10-17, owner).** From the refit-cadence study (`reports/research/quant_trials/REFIT.md`):
+* Quarterly refits on a 2-year rolling window cut the 2022 loss of the news model to about 0.
+* Expanding windows were needed for the price factors: +0.067 IC at h = 20 in 2022–25, against +0.009 on a
+  2-year rolling window.
+
+So, for every P8 return model (deterministic nodes and Q4 combinations):
+* **Refit quarterly** (first session of each calendar quarter), with an h-session embargo.
+* **Expanding windows** by default. A rolling window needs a pre-registered reason.
+* Encoders (topic clusters, PCA) are refit at the same quarterly dates, on text from before the refit date only.
+
+**Owner's choice of research shadow models (2026-10-17).**
+* The news model: the five quant factors plus the decayed-headline topic state, ridge tuned on rank IC,
+  quarterly expanding refits, at **h = 10**.
+* The quant model: the five price factors refit by ridge, quarterly expanding, at **h = 20**.
+
+Both are research shadow books (see `PROTOCOL_fund.md` and the shadow amendment). They are never traded, and they
+are not P8 nodes unless a later amendment admits them on evidence.
