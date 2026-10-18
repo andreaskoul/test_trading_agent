@@ -39,6 +39,9 @@ jobs:
           for f in dashboard.json shadow.json fund_positions.xlsx; do
             git show "origin/fund-data:fund_state/live/ledger/$f" > "_site/$f" 2>/dev/null || rm -f "_site/$f"
           done
+          git fetch -q origin +refs/heads/research-data:refs/remotes/origin/research-data || true
+          git show "origin/research-data:fund_state/live/research/qshadow/ledger.json" > _site/research.json 2>/dev/null \
+            || echo '{"books":{}}' > _site/research.json
           [ -f _site/dashboard.json ] || echo '{"updated":"no trades yet","positions":[],"orders":[],"account":[],"cash":[]}' > _site/dashboard.json
           [ -f _site/shadow.json ] || echo '{"updated":"not built yet","marks":"","start":100000,"books":[],"lifecycle":null,"account":null}' > _site/shadow.json
           touch _site/.nojekyll
