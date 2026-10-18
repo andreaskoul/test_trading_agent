@@ -464,6 +464,8 @@ def job_qshadow(j, a):
     j.step("Research shadow books (quant trials; never traded)", "python fund/qshadow.py weekly"
            + (f" --asof {a.date}" if a.date else ""))
     j.step("Commit to research-data", QS_COMMIT, when="always")
+    j.step("GitHub Pages: rebuild (research books on the shadow page)", f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main",
+           allow_fail=True)
     issue(j, "Fund research: qshadow books problem", 'echo "The research shadow books run needs attention (never traded)."')
 
 

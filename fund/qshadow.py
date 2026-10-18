@@ -346,7 +346,7 @@ def week_record(p, d, models_cache, sector, kind):
 
 
 # ------------------------------------------------------------------------------------------------- live text
-def _post(path, payload, tries=3, limit=120):
+def _post(path, payload, tries=3, limit=90):
     """OpenRouter call; every attempt goes to the fund's LLM call log (common._log_call: caller, model, provider,
     tokens, billed cost, prompt). Not guards.guarded_llm: the rewrite must use the history's model and its
     single-message, json_schema request (caf_ml_v0 m0), which common.llm cannot send."""
@@ -360,8 +360,15 @@ def _post(path, payload, tries=3, limit=120):
             req = urllib.request.Request(f"{OR}/{path}", data=json.dumps(payload).encode(), headers={
                 "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}", "Content-Type": "application/json",
                 "HTTP-Referer": "https://github.com/andreaskoul/test_trading_agent", "X-Title": "fund-qshadow"})
-            with urllib.request.urlopen(req, timeout=limit) as r:
-                resp = json.loads(r.read())
+            # hard deadline per call, as common.llm: OpenRouter keeps a slow request alive with whitespace, so a
+            # socket timeout alone never fires (2026-10-17: one hung call stalled the October ingest for 40 min)
+            t0, buf = time.time(), b""
+            with urllib.request.urlopen(req, timeout=60) as r:
+                while chunk := r.read1(65536):
+                    buf += chunk
+                    if time.time() - t0 > limit:
+                        raise TimeoutError(f"call exceeded {limit} s")
+            resp = json.loads(buf)
             _log_call("", prompt, payload.get("temperature", 0.0), {**resp, "model": resp.get("model") or payload["model"]},
                       "ok", None)
             return resp, None
@@ -573,8 +580,11 @@ def ledger(p=None):
             prev = w
         out[name] = rows
     os.makedirs(REC, exist_ok=True)
-    json.dump({"generated": pd.Timestamp.now(tz="UTC").isoformat(), "books": out}, open(os.path.join(REC, "ledger.json"), "w"),
-              default=float)
+    last = recs[-1]
+    json.dump({"generated": pd.Timestamp.now(tz="UTC").isoformat(), "primary": list(PRIMARY), "books": out,
+               "latest": {"asof": last["asof"], "kind": last["kind"],
+                          "books": {k: v["book"] for k, v in last["models"].items()}}},
+              open(os.path.join(REC, "ledger.json"), "w"), default=float)
     write_md(out)
     return out
 

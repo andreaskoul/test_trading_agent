@@ -54,6 +54,13 @@
     <h3>Open lots</h3><div class="scroll" id="lots"></div>
     <h3>Events</h3><div class="scroll" id="events"></div>
   </section>
+  <section id="rSec" hidden>
+    <div class="bar"><h2 style="margin:0">Research books (quant trials · never traded)</h2><select id="rspan"><option value="all">History + live</option><option value="live">Live only</option></select></div>
+    <div class="muted" id="rnote"></div>
+    <div class="chartbox"><canvas id="rchart"></canvas></div>
+    <div class="scroll" id="rboard"></div>
+    <h3>This week's books (primaries)</h3><div class="scroll" id="rpos"></div>
+  </section>
   <p class="muted">Marked the way the scorer (score.py) scores each book: a week's weights enter at the execution day's official close and are held to the next execution day's close; costs are 5 bp per side on the change in weights; idle cash earns nothing here. The running week is marked at the latest close, or at Alpaca's latest trades during market hours. These are hypothetical books with no fills, so they differ from the account: in week 1 most of the real orders expired unfilled. SPY rows are each book's market hedge, except in the S&amp;P 500 benchmark, which is simply 100% SPY held throughout (one 5 bp buy at the start). Return = signed price return (dividends included); amount = |weight| × the book's value at entry. The scorer's weekly results in fund-data performance/ stay the record.</p>
 </main>
 <script>
@@ -129,6 +136,40 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
       ["From $", e => fmt(e.from, 0), "n"], ["To $", e => fmt(e.to, 0), "n"], ["R", e => pct(e.R), "n"], ["W", e => e.W == null ? "" : (e.W * 100).toFixed(1) + "%", "n"], ["Days held", e => e.days_held ?? "", "n"]], L.events);
   }
 }).catch(e => { document.getElementById("board").innerHTML = `<div class="empty">Could not load shadow data (${esc(e.message)}).</div>`; });
+
+// Research shadow books (fund/qshadow.py; PROTOCOL_fund.md "Research shadow books"): weekly NAV from research.json
+fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
+  if (!R.books || !Object.keys(R.books).length) return;
+  document.getElementById("rSec").hidden = false;
+  const PRIM = R.primary || [], names = Object.keys(R.books);
+  const KIND = { backfill: "history (walk-forward)", catchup: "Oct 2026 catch-up (computed late)", live: "live (forward)" };
+  document.getElementById("rnote").innerHTML = "Six books on the 31-name news panel: <b>q5</b> = the quant book's five price factors refit quarterly, <b>qn</b> = the same plus the news state; h = horizon in sessions. Primaries: <b>" + PRIM.join(", ") +
+    "</b>. History 2018–2025 is walk-forward (2022–25 was read during the research); Jan–Sep 2026 is the sealed P8 window (no books). Only live weeks are forward evidence; no verdict before mid-April 2027. With 5 longs and 5 shorts among 31 names, book returns are dominated by a few moves (e.g. GameStop in January 2021): read the mean IC (rank correlation of the scores with the h-session residual return) as the steadier measure. Updated " + esc((R.generated || "").replace("T", " ").slice(0, 16)) + " UTC.";
+  let chart = null;
+  function draw(span) {
+    const rows = k => R.books[k].filter(x => x.ret != null && (span === "all" || x.kind === "live"));
+    const dates = [...new Set(names.flatMap(k => R.books[k].filter(x => span === "all" || x.kind === "live").map(x => x.asof)))].sort();
+    const sets = names.map((k, i) => {
+      let v = 1; const m = {}; R.books[k].forEach(x => { if (span === "live" && x.kind !== "live") return; if (x.ret != null) v *= 1 + x.ret; m[x.asof] = x.ret == null && span === "all" && x.kind !== "live" && x.asof > "2025-12-31" ? null : v - 1; });
+      return { label: k + (PRIM.includes(k) ? " ★" : ""), data: dates.map(d => m[d] ?? null), borderColor: PAL[i % PAL.length], borderWidth: PRIM.includes(k) ? 2.5 : 1.2, pointRadius: 0, spanGaps: false, tension: 0.1 };
+    });
+    if (chart) chart.destroy();
+    chart = new Chart(document.getElementById("rchart"), { type: "line", data: { labels: dates, datasets: sets },
+      options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, padding: 6, font: { size: 10 } } },
+        tooltip: { itemSort: (a, b) => b.parsed.y - a.parsed.y, callbacks: { label: c => `${c.dataset.label}: ${(c.parsed.y * 100).toFixed(1)}%` } } },
+        scales: { x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } }, y: { ticks: { callback: v => (v * 100).toFixed(0) + "%" } } } } });
+    const stat = k => { const r = rows(k).map(x => x.ret), ic = rows(k).map(x => x.ic).filter(x => x != null);
+      const n = r.length, mu = n ? r.reduce((a, b) => a + b, 0) / n : null, sd = n > 1 ? Math.sqrt(r.reduce((a, b) => a + (b - mu) ** 2, 0) / (n - 1)) : null;
+      let v = 1, peak = 1, dd = 0; r.forEach(x => { v *= 1 + x; peak = Math.max(peak, v); dd = Math.min(dd, v / peak - 1); });
+      return { k, n, cum: n ? v - 1 : null, sharpe: sd ? mu / sd * Math.sqrt(52) : null, dd: n ? dd : null, ic: ic.length ? ic.reduce((a, b) => a + b, 0) / ic.length : null }; };
+    table("rboard", [["Book", r => `<b>${esc(r.k)}</b>${PRIM.includes(r.k) ? " ★" : ""}`], ["Weeks", r => r.n, "n"], ["Cumulative", r => pct(r.cum), "n"], ["Sharpe (ann.)", r => r.sharpe == null ? "" : r.sharpe.toFixed(2), "n"],
+      ["Max drawdown", r => pct(r.dd), "n"], ["Mean IC", r => r.ic == null ? "" : r.ic.toFixed(3), "n"]], names.map(stat));
+  }
+  const sel = document.getElementById("rspan"); sel.onchange = () => draw(sel.value); draw("all");
+  const L = R.latest;
+  if (L) table("rpos", [["Book", r => `<b>${esc(r.book)}</b>`], ["As of", r => L.asof + " (" + (KIND[L.kind] || L.kind) + ")"], ["Ticker", r => esc(r.t)], ["Weight", r => wt(r.w), "n"]],
+    PRIM.flatMap(b => Object.entries(L.books[b] || {}).sort((x, y) => y[1] - x[1]).map(([t, w]) => ({ book: b, t, w }))));
+}).catch(() => {});
 </script>
 </body>
 </html>
