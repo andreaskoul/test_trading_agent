@@ -596,9 +596,11 @@ def write_md(out):
         if r.empty:
             return "| – | – | – | – | – |"
         cum = float(np.prod(1 + r) - 1)
-        sh = float(r.mean() / r.std() * np.sqrt(52)) if r.std() > 0 else np.nan
-        dd = float((np.cumprod(1 + r) / np.maximum.accumulate(np.cumprod(1 + r)) - 1).min())
-        return f"| {len(r)} | {cum:+.1%} | {sh:+.2f} | {dd:.1%} | {ic.mean():+.3f} |"
+        sh = float(r.mean() / r.std() * np.sqrt(52)) if len(r) > 1 and r.std() > 0 else np.nan
+        v = np.concatenate([[1.0], np.cumprod(1 + r)])                    # the peak starts at the initial value
+        dd = float((v / np.maximum.accumulate(v) - 1).min())
+        f = lambda x, spec: "–" if not np.isfinite(x) else format(x, spec)
+        return f"| {len(r)} | {cum:+.1%} | {f(sh, '+.2f')} | {dd:.1%} | {f(ic.mean() if len(ic) else np.nan, '+.3f')} |"
     spans = {"backfill 2018-21": lambda x: x["kind"] == "backfill" and x["asof"] < "2022",
              "backfill 2022-25 (seen in research)": lambda x: x["kind"] == "backfill" and "2022" <= x["asof"] < "2026",
              "Oct 2026 catch-up (computed late)": lambda x: x["kind"] == "catchup",

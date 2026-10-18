@@ -685,5 +685,8 @@ Only `live` weeks are forward evidence. The 2022–25 backfill window was read d
 * embedded with `google/gemini-embedding-001`.
 
 The source mix differs from the history (FNSPID, Benzinga, FMP), which is a known shift.
+* The live fact density is about twice the history's (KO in October 2026: 7.7 facts a day, against 3.5 in 2025).
+* GameStop is outside the S&P 500 news archive, so it has no live headlines. Its news features read "no news";
+  its price factors are unaffected.
 
 **Judgement.** No verdict on these books before ~mid-April 2027 (the shadow-books rule).
