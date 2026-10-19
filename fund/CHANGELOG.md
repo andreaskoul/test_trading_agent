@@ -4,6 +4,7 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-20: shadow page book descriptions rewritten as Tests / Reads / Decides / Book (owner request), and moved from `fund/shadow_ledger.py` to the page, so wording changes go live with a Pages deploy. `shadow.json` no longer carries a `desc` field; the list and order of books are unchanged. Could this change a decision? No: display only.
 - 2026-10-19: shadow page shows readable book names (owner request): e.g. "News only, company hidden (C3)" for `c3_textonly`, "Price factors + news, 10-day (qn_h10)" for the research books, a legend for the C<n> (challenger) and Protocol <n> codes, and plain-English descriptions in `fund/shadow_ledger.py`. Record keys, URLs and every file the scorer reads are unchanged. Could this change a decision? No: display only.
 - 2026-10-19: research shadow books, market exposure lines (owner policy; PROTOCOL_fund.md "Research shadow books", "Market exposure").
   * The ledger holds each primary on top of SPY, 1x and through the owner's dynamic sleeve (1.3x SPY above the 200-session average at the as-of close, 0.7x otherwise, the rest at DTB3), against SPY buy-and-hold, the sleeve alone and a risk-matched SPY. The page has an "Against the S&P 500" view.

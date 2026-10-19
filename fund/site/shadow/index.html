@@ -43,7 +43,7 @@
   <section><h2>Leaderboard</h2><div class="muted" style="margin-bottom:6px">Tap a book to see its positions and trades.</div><div class="scroll" id="board"></div></section>
   <section>
     <div class="bar"><h2 style="margin:0">Book</h2><select id="pick"></select></div>
-    <div class="muted" id="desc"></div>
+    <div class="muted" id="desc" style="line-height:1.6"></div>
     <h3>Positions now</h3><div class="scroll" id="pos"></div>
     <h3>Shadow trades (weight changes at each execution day's close)</h3><div class="scroll" id="trades"></div>
     <h3>Weeks</h3><div class="scroll" id="weeks"></div>
@@ -78,6 +78,59 @@ const NAMES = {
   sp500_hold: "S&P 500 buy & hold",
 };
 const label = k => NAMES[k] || k;
+// what each book tests, then who reads what, how they decide and how the book is built
+const FUND_RULES = "Up to 10 longs and 10 shorts, strongest score × confidence first, at most 10% of the book each; sector and dollar limits; SPY hedges out the market.";
+const ABOUT = {
+  c0_weekly: { test: "The original fund: the whole weekly team.",
+    reads: "This week's news on about 45 covered stocks.",
+    decides: "An AI analyst writes a memo on each stock and scores it from −2 (strong sell) to +2 (strong buy), with a confidence. A red-team reviewer then argues against each memo and can weaken the score.",
+    book: FUND_RULES + " Held Thursday to Thursday. It traded the account until 14 Oct; since then it runs as a shadow, compared with the lifecycle fund." },
+  analyst: { test: "Does the red team help?",
+    reads: "The same news as the weekly fund.",
+    decides: "The same analysts and scores, but no red team: their scores go straight to sizing.",
+    book: FUND_RULES },
+  quant: { test: "Can a simple formula beat the AI team? The main benchmark.",
+    reads: "Prices only, for all 500 S&P stocks: five price signals (12-month momentum, last month's and last week's moves, volatility, distance from the 52-week high).",
+    decides: "A fixed statistical model (ridge regression) turns the signals into a forecast. No AI, no news.",
+    book: "The 10 highest forecasts long and the 10 lowest short, 10% each; same limits and SPY hedge." },
+  core20: { test: "The older Protocol 5 design, on a fixed list.",
+    reads: "The analysts' scores, but only for the 20 firms the dashboard tracks.",
+    decides: "The analysts (no red team).",
+    book: "The 4 best longs and the 4 best shorts, 25% each. No SPY hedge." },
+  random: { test: "Luck baseline: what random picks earn.",
+    reads: "Nothing.",
+    decides: "No one: 10 longs and 10 shorts drawn at random from the covered stocks (seeded by the date).",
+    book: "10% each; same limits and SPY hedge as the fund." },
+  c2_selfconsistency: { test: "Does asking 5 times and taking the vote beat asking once?",
+    reads: "The same news and prompt as the analysts.",
+    decides: "The analyst is asked 5 times with more randomness. Score = the middle answer; confidence is higher when the 5 answers agree. No red team.",
+    book: FUND_RULES },
+  c3_textonly: { test: "Is the team reading the news, or just reacting to recent price moves?",
+    reads: "The news stories only, with the company's name and ticker replaced by \"the company\", and no price data.",
+    decides: "One analyst scores each stock blind. No red team.",
+    book: FUND_RULES },
+  c4_volscaled: { test: "Does a smarter sizing rule help?",
+    reads: "The weekly fund's final scores (after the red team).",
+    decides: "Same views; only the sizes change. Size = score × confidence ÷ the stock's volatility, so calmer stocks get bigger bets. A stock whose view drops to zero is kept one extra week.",
+    book: "Up to 10 per side, scaled to the fund's total size, at most 10% each; same limits and SPY hedge." },
+  c5_reversal: { test: "Can the stocks with no news earn something too?",
+    reads: "The weekly fund's scores, plus last week's returns.",
+    decides: "Keeps every position of the fund. Covered stocks with no view and no recent news get a small bet that last week's move reverses: buy last week's losers, sell its winners.",
+    book: "The fund's positions plus those extra bets (at most 3% each); same limits and SPY hedge." },
+  c8_informed: { test: "Do the analysts decide better with more context?",
+    reads: "The same news per stock, plus the week's macro brief, the big themes, the currency view, and what each stock's peers and sector made news with.",
+    decides: "One analyst memo per stock, as in the fund, but no red team.",
+    book: FUND_RULES },
+  c9_ranker: { test: "Can a portfolio manager pick the best of the analysts' ideas?",
+    reads: "All of C8's memos side by side, plus the macro brief.",
+    decides: "One AI portfolio manager ranks the views against each other, from the strongest buy to the strongest sell.",
+    book: "Up to 10 longs and 10 shorts in the manager's order, sized by C8's score × confidence; same limits and SPY hedge. No book in a week where too many C8 memos failed." },
+  sp500_hold: { test: "What the market did.",
+    reads: "Nothing.",
+    decides: "No one: 100% SPY (the S&P 500 fund), bought at the first day's close and never traded.",
+    book: "Long only with full market exposure, unlike the hedged books. Dividends reinvested." },
+};
+const about = b => ABOUT[b.key] || { test: b.desc || "" };
 // research books: q5 = five price factors, qn = the same plus news, h<n> = horizon in trading days
 const rlabel = k => { const m = /^(q5|qn)_h(\d+)$/.exec(k); return m ? `${m[1] === "qn" ? "Price factors + news" : "Price factors"}, ${m[2]}-day (${k})` : k; };
 function table(el, cols, rows, rowAttr) {
@@ -116,9 +169,11 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
     table("board", [["#", (r, i) => ranked.indexOf(r) + 1, "n"], ["Book", r => `<b>${esc(label(r.key))}</b>`], ["Return", r => pct(r.return), "n"], ["This week", r => pct(r.week_return), "n"],
       ["Value", r => "$" + fmt(r.value, 0), "n"], ["Since", r => r.started],
       ["Names", r => r.key === "sp500_hold" ? "500 (SPY)" : (r.weeks.find(w => w.names != null) || {}).names ?? "", "n"], ["Stock gross", r => { const w = r.weeks.find(w => w.gross != null); return w ? (w.gross * 100).toFixed(0) + "%" : ""; }, "n"],
-      ["What it tests", r => esc(r.desc), "wrap"]], ranked, r => `class="pick${r.key === k ? " on" : ""}" data-k="${r.key}"`);
+      ["What it tests", r => esc(about(r).test), "wrap"]], ranked, r => `class="pick${r.key === k ? " on" : ""}" data-k="${r.key}"`);
     document.querySelectorAll("#board tr.pick").forEach(tr => tr.onclick = () => { show(tr.dataset.k); sel.scrollIntoView({ behavior: "smooth", block: "start" }); });
-    document.getElementById("desc").textContent = b.desc;
+    const A = about(b);
+    document.getElementById("desc").innerHTML = `<b>Tests:</b> ${esc(A.test)}` +
+      [["Reads", A.reads], ["Decides", A.decides], ["Book", A.book]].filter(x => x[1]).map(([h, t]) => `<br><b>${h}:</b> ${esc(t)}`).join("");
     table("pos", [["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Weight", p => wt(p.weight), "n"], ["Return", p => pct(p.return), "n"], ["P&L", p => usd(p.pnl), "n"],
       ["Side", p => p.side + (p.role === "beta hedge" ? " (hedge)" : "")], ["Name", p => esc(p.name)], ["Amount $", p => "$" + fmt(p.amount, 0), "n"],
       ["Entry", p => p.entry_day], ["Entry $", p => fmt(p.entry_price), "n"], ["Current $", p => fmt(p.current_price), "n"]], b.positions);
