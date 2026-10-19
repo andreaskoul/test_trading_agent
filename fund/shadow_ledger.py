@@ -22,19 +22,27 @@ from common import MODE, P7_START, STATE
 
 START, COST = 100_000.0, 5e-4
 # the weekly fund book: the champion until Protocol 7, then shadow c0_weekly; shown as one series
+# What each book tests. Keys are the record names (C<n> = challenger n in PROTOCOL_fund.md); the page shows
+# readable names for them (fund/site/shadow/index.html, NAMES).
 DESC = {
     "c0_weekly": "The weekly fund book (after red team and risk), held Thursday to Thursday. It traded the account until 14 Oct; "
-                 "from Protocol 7 (15 Oct) it is the shadow c0_weekly, tested against the lifecycle fund.",
-    "analyst": "Analyst scores straight into the same sizing and risk rules, no red team.",
-    "quant": "Ridge model top and bottom 10 over the whole S&P 500, same risk rules (the primary benchmark).",
-    "core20": "Per-firm scores on the dashboard's 20 names, top and bottom 4 (Protocol 5).",
-    "random": "10 long and 10 short drawn from the covered names, seeded by date (the luck baseline).",
-    "c2_selfconsistency": "C2: the analyst prompt sampled 5 times at temperature 0.7; score = median, confidence from the spread.",
-    "c3_textonly": "C3: news only, with the firm's name, ticker and price facts masked.",
-    "c4_volscaled": "C4: score x confidence / volatility, scaled to the fund's gross, each name at most 10%.",
-    "c5_reversal": "C5: the fund's views plus short-term reversal positions on covered names with no news.",
-    "c8_informed": "C8: the analyst prompt plus the macro brief and each name's news neighbourhood, no red team.",
-    "c9_ranker": "C9: one call ranks C8's views; the champion's caps and hedge, N per side in the ranker's order.",
+                 "from Protocol 7 (15 Oct) it runs as a shadow, tested against the lifecycle fund.",
+    "analyst": "The analysts' scores go straight into the same sizing and risk rules, with no red team. Shows what the red team adds.",
+    "quant": "No LLM: a ridge model on five price factors, top and bottom 10 over the whole S&P 500, same risk rules. The primary benchmark.",
+    "core20": "Protocol 5's design: per-firm scores on the dashboard's 20 names, top and bottom 4.",
+    "random": "10 long and 10 short drawn at random from the covered names, seeded by date. The luck baseline.",
+    "c2_selfconsistency": "Challenger 2. The analyst prompt asked 5 times at temperature 0.7; score = the median answer, "
+                          "confidence from how much the 5 answers agree. Tests whether voting beats one answer.",
+    "c3_textonly": "Challenger 3. The analyst reads the news only, with the firm's name and ticker masked and no price facts. "
+                   "Tests reading the news against chasing last week's return.",
+    "c4_volscaled": "Challenger 4. The fund's views sized by score × confidence / volatility, scaled to the fund's gross, "
+                    "each name at most 10%. Tests the sizing rule.",
+    "c5_reversal": "Challenger 5. The fund's views, plus short-term reversal bets (buy last week's losers, sell its winners, "
+                   "at most 3% each) on covered names with no news.",
+    "c8_informed": "Challenger 8. The analyst prompt plus the macro brief and each name's peer and sector news, no red team. "
+                   "Tests whether more context helps the analysts.",
+    "c9_ranker": "Challenger 9. One LLM call, acting as the portfolio manager, ranks challenger 8's views against each other; "
+                 "the book takes the strongest in that order, with the fund's caps and hedge.",
     "sp500_hold": "Benchmark: just holding the S&P 500 (100% SPY, dividends reinvested), bought at the first execution day's close "
                   "and never traded. Long only with full market exposure, unlike the hedged books, so it shows what the market did.",
 }
