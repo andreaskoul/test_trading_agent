@@ -109,29 +109,31 @@ def master_fit_predict(d, y, train, va, pred_days, cfg, seed, M, max_epochs=40):
                 if len(ix) >= 10:
                     out[day, ix] = net(x).float().cpu().numpy()
         return out
-    tr_days = [t for t in train if t >= LOOK and np.isfinite(y[t]).sum() >= 50]
     vth = thursdays(d["S"], va)
+    labels = {}                     # per training day, computed once: inputs with a label, drop-extreme mask, z-label
+    for day in train:
+        if day < LOOK:
+            continue
+        ix, x = batch(day)
+        fin = np.isfinite(y[day, ix])
+        if fin.sum() < 50:
+            continue
+        lab = torch.tensor(y[day, ix][fin], device=dev, dtype=torch.float32)
+        keep, lab = drop_extreme(lab)                                    # base_model.py train_epoch
+        labels[day] = (x[torch.tensor(fin, device=dev)], keep, zscore(lab))
     best, best_ic, best_state = -1, -np.inf, None
     for ep in range(max_epochs):
         net.train()
         losses = []
-        for day in np.random.permutation(tr_days):
-            ix, x = batch(day)
-            lab = torch.tensor(y[day, ix], device=dev, dtype=torch.float32)
-            fin = torch.isfinite(lab)
-            if fin.sum() < 50:
-                continue
-            x_, lab = x[fin], lab[fin]
-            keep, lab = drop_extreme(lab)                                # base_model.py train_epoch
-            lab = zscore(pd.Series(lab.cpu().numpy())).values
-            lab = torch.tensor(lab, device=dev, dtype=torch.float32)
-            pred = net(x_)[keep]
-            loss = torch.mean((pred - lab) ** 2)
+        for day in np.random.permutation(list(labels)):                 # no host-device sync inside the loop
+            x_, keep, lab = labels[day]
+            loss = torch.mean((net(x_)[keep] - lab) ** 2)
             opt.zero_grad()
             loss.backward()
             torch.nn.utils.clip_grad_value_(net.parameters(), 3.0)       # base_model.py
             opt.step()
-            losses.append(loss.item())
+            losses.append(loss.detach())
+        losses = torch.stack(losses).float().cpu().numpy()
         s = val_ic(scores(vth), y, vth)
         if np.isfinite(s) and s > best_ic:
             best, best_ic = ep, s
