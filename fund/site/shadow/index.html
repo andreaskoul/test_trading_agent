@@ -38,7 +38,7 @@
     <h1>Shadow books</h1>
     <div class="muted">Books scored every week but never sent to Alpaca · notional $100,000 each · updated <span id="upd">…</span> · <a href="../">Trade monitor</a> · <a href="../ledger/">Position ledger</a></div>
   </header>
-  <p class="muted" style="margin:-6px 0 14px"><b>Not a verdict yet.</b> The first judgement of these books is set for mid-April 2027, about 6 months in and at least 3 times the longest holding horizon (40 trading days). Until then the rankings are noise.</p>
+  <p class="muted" style="margin:-6px 0 14px"><b>Not a verdict yet.</b> The first judgement of these books is set for mid-April 2027, about 6 months in and at least 3 times the longest holding horizon (40 trading days). Until then the rankings are noise.<br>Codes in brackets: <b>C<i>n</i></b> = challenger <i>n</i>, an alternative design registered in the fund protocol (PROTOCOL_fund.md) and scored against the fund; <b>Protocol <i>n</i></b> = the fund's <i>n</i>th pre-registered design (Protocol 7 is the one trading now).</p>
   <section><h2>Return since each book started</h2><div class="chartbox"><canvas id="chart"></canvas></div></section>
   <section><h2>Leaderboard</h2><div class="muted" style="margin-bottom:6px">Tap a book to see its positions and trades.</div><div class="scroll" id="board"></div></section>
   <section>
@@ -49,7 +49,7 @@
     <h3>Weeks</h3><div class="scroll" id="weeks"></div>
   </section>
   <section id="lcSec" hidden>
-    <h2 id="lcTitle">C10 lifecycle book</h2>
+    <h2 id="lcTitle">Lifecycle fund (C10)</h2>
     <div class="muted" id="lcNote"></div>
     <h3>Open lots</h3><div class="scroll" id="lots"></div>
     <h3>Events</h3><div class="scroll" id="events"></div>
@@ -69,7 +69,17 @@ const pct = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${(v 
 const usd = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${v < 0 ? "−" : ""}$${fmt(Math.abs(v), 0)}</span>`;
 const wt = v => v == null ? "" : `${v > 0 ? "+" : v < 0 ? "−" : ""}${(Math.abs(v) * 100).toFixed(2)}%`;
 const esc = s => (s ?? "").toString().replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
-const label = k => ({ c0_weekly: "c0_weekly (weekly fund book)", sp500_hold: "S&P 500 (buy & hold)" }[k] || k);
+// readable names for the record keys; C<n> = challenger n in PROTOCOL_fund.md
+const NAMES = {
+  c0_weekly: "Weekly fund book (C0)", analyst: "Analysts, no red team", quant: "Price-factor model, whole S&P 500",
+  core20: "Core 20 names (Protocol 5)", random: "Random picks (luck baseline)", c2_selfconsistency: "Analysts, 5-answer vote (C2)",
+  c3_textonly: "News only, company hidden (C3)", c4_volscaled: "Volatility-scaled sizing (C4)", c5_reversal: "Fund views + reversal on quiet names (C5)",
+  c8_informed: "Analysts + macro and peer news (C8)", c9_ranker: "PM ranks the C8 views (C9)", c10_lifecycle: "Lifecycle fund (C10)",
+  sp500_hold: "S&P 500 buy & hold",
+};
+const label = k => NAMES[k] || k;
+// research books: q5 = five price factors, qn = the same plus news, h<n> = horizon in trading days
+const rlabel = k => { const m = /^(q5|qn)_h(\d+)$/.exec(k); return m ? `${m[1] === "qn" ? "Price factors + news" : "Price factors"}, ${m[2]}-day (${k})` : k; };
 function table(el, cols, rows, rowAttr) {
   const box = document.getElementById(el);
   if (!rows.length) { box.innerHTML = '<div class="empty">None.</div>'; return; }
@@ -91,7 +101,7 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   const sets = B.map((b, i) => b.key === "sp500_hold"
     ? { label: label(b.key), data: line(b.series, d.start), borderColor: "#9a9aa0", borderWidth: 3, pointRadius: 0, spanGaps: true, tension: 0.1 }
     : { label: label(b.key), data: line(b.series, d.start), borderColor: PAL[i % PAL.length], borderWidth: b.key === "c0_weekly" ? 2.5 : 1.3, pointRadius: 0, spanGaps: true, tension: 0.1 });
-  if (d.lifecycle && d.lifecycle.nav.length) sets.push({ label: "c10_lifecycle", data: line(d.lifecycle.nav, d.start), borderColor: "#e67e22", borderWidth: 2.5, borderDash: [6, 3], pointRadius: 0, spanGaps: true });
+  if (d.lifecycle && d.lifecycle.nav.length) sets.push({ label: label("c10_lifecycle"), data: line(d.lifecycle.nav, d.start), borderColor: "#e67e22", borderWidth: 2.5, borderDash: [6, 3], pointRadius: 0, spanGaps: true });
   if (d.account && d.account.length) sets.push({ label: "actual account", data: line(d.account, d.account[0].value), borderColor: getComputedStyle(document.documentElement).getPropertyValue("--ink"), borderWidth: 2, borderDash: [2, 3], pointRadius: 0, spanGaps: true });
   new Chart(document.getElementById("chart"), { type: "line", data: { labels: dates, datasets: sets },
     options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, padding: 6, font: { size: 10 } } },
@@ -125,7 +135,7 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   if (L) {
     document.getElementById("lcSec").hidden = false;
     const fund = new Date() >= new Date(L.is_fund_from + "T00:00:00");
-    document.getElementById("lcTitle").textContent = fund ? "C10 lifecycle book (trades the account)" : "C10 lifecycle book (shadow until " + L.is_fund_from + ")";
+    document.getElementById("lcTitle").textContent = fund ? "Lifecycle fund (C10, trades the account)" : "Lifecycle book (C10, shadow until " + L.is_fund_from + ")";
     const nav = L.nav[L.nav.length - 1];
     document.getElementById("lcNote").innerHTML = `Each position has its own horizon H (trading days), a stop at −2W and a target at +3W on its hedged return R, and daily news checks against its kill conditions. NAV ${"$" + fmt(nav.value, 0)} on ${nav.date} (${pct(nav.value / d.start - 1)} since start). ` +
       (fund ? "From " + L.is_fund_from + " this book is the fund; its fills are on the trade monitor." : "It becomes the fund on " + L.is_fund_from + " (Protocol 7).");
@@ -143,8 +153,8 @@ fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
   document.getElementById("rSec").hidden = false;
   const PRIM = R.primary || [], names = Object.keys(R.books);
   const KIND = { backfill: "history (walk-forward)", catchup: "Oct 2026 catch-up (computed late)", live: "live (forward)" };
-  document.getElementById("rnote").innerHTML = "Six books on the 31-name news panel: <b>q5</b> = the quant book's five price factors refit quarterly, <b>qn</b> = the same plus the news state; h = horizon in sessions. Primaries: <b>" + PRIM.join(", ") +
-    "</b>. History 2018–2025 is walk-forward (2022–25 was read during the research); Jan–Sep 2026 is the sealed P8 window (no books). Only live weeks are forward evidence; no verdict before mid-April 2027. With 5 longs and 5 shorts among 31 names, book returns are dominated by a few moves (e.g. GameStop in January 2021): read the mean IC (rank correlation of the scores with the h-session residual return) as the steadier measure. <b>Against the S&amp;P 500</b>: every book is long/short; each primary is shown on top of SPY, held 1x and through the owner's dynamic sleeve (" + ((R.policy || {}).up ?? "1.3") + "x SPY when SPY closes above its 200-session average at the as-of close, " + ((R.policy || {}).down ?? "0.7") + "x otherwise; the borrowed or idle part pays or earns the T-bill rate). The fair yardstick is the risk-matched S&amp;P, which holds the sleeve's average exposure throughout. Weeks without a session Wednesday are flat for every line." + (R.latest && R.latest.sleeve ? " Sleeve this week: <b>" + R.latest.sleeve + "x</b>." : "") + " Updated " + esc((R.generated || "").replace("T", " ").slice(0, 16)) + " UTC.";
+  document.getElementById("rnote").innerHTML = "Six books on the 31-name news panel. <b>Price factors</b> (q5) = the quant book's five price factors, refit quarterly; <b>Price factors + news</b> (qn) = the same plus the news state; the day count (h) is how many trading days ahead each book forecasts and holds. Primaries: <b>" + PRIM.map(rlabel).join(", ") +
+    "</b>. History 2018–2025 is walk-forward (2022–25 was read during the research); Jan–Sep 2026 is sealed as the holdout for the next protocol (Protocol 8), so no books there. Only live weeks are forward evidence; no verdict before mid-April 2027. With 5 longs and 5 shorts among 31 names, book returns are dominated by a few moves (e.g. GameStop in January 2021): read the mean IC (rank correlation of the scores with the h-session residual return) as the steadier measure. <b>Against the S&amp;P 500</b>: every book is long/short; each primary is shown on top of SPY, held 1x and through the owner's dynamic sleeve (" + ((R.policy || {}).up ?? "1.3") + "x SPY when SPY closes above its 200-session average at the as-of close, " + ((R.policy || {}).down ?? "0.7") + "x otherwise; the borrowed or idle part pays or earns the T-bill rate). The fair yardstick is the risk-matched S&amp;P, which holds the sleeve's average exposure throughout. Weeks without a session Wednesday are flat for every line." + (R.latest && R.latest.sleeve ? " Sleeve this week: <b>" + R.latest.sleeve + "x</b>." : "") + " Updated " + esc((R.generated || "").replace("T", " ").slice(0, 16)) + " UTC.";
   let chart = null;
   // "Against the S&P 500": each primary on top of SPY (1x, and the owner's dynamic sleeve), SPY buy-and-hold, the
   // sleeve alone and a risk-matched SPY holding the span's mean sleeve; only weeks where every line has a return
@@ -155,7 +165,7 @@ fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
     const sbar = idx.reduce((a, i) => a + B[i].sleeve, 0) / idx.length;
     const L = { "S&P 500 buy & hold": idx.map(i => B[i].spy), ["risk-matched S&P (" + sbar.toFixed(2) + "x)"]: idx.map(i => sbar * B[i].spy + (1 - sbar) * B[i].rf),
       ["dynamic sleeve alone (" + P.up + "x / " + P.down + "x)"]: idx.map(i => B[i].timing) };
-    PRIM.forEach(n => { L[n + " + S&P"] = idx.map(i => R.books[n][i].ovl); L[n + " + dynamic sleeve"] = idx.map(i => R.books[n][i].dyn); });
+    PRIM.forEach(n => { L[rlabel(n) + " + S&P"] = idx.map(i => R.books[n][i].ovl); L[rlabel(n) + " + dynamic sleeve"] = idx.map(i => R.books[n][i].dyn); });
     return { idx, L };
   }
   function drawSpx(span) {
@@ -182,7 +192,7 @@ fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
     const dates = [...new Set(names.flatMap(k => R.books[k].filter(x => span === "all" || x.kind === "live").map(x => x.asof)))].sort();
     const sets = names.map((k, i) => {
       let v = 1; const m = {}; R.books[k].forEach(x => { if (span === "live" && x.kind !== "live") return; if (x.ret != null) v *= 1 + x.ret; m[x.asof] = x.ret == null && span === "all" && x.kind !== "live" && x.asof > "2025-12-31" ? null : v - 1; });
-      return { label: k + (PRIM.includes(k) ? " ★" : ""), data: dates.map(d => m[d] ?? null), borderColor: PAL[i % PAL.length], borderWidth: PRIM.includes(k) ? 2.5 : 1.2, pointRadius: 0, spanGaps: false, tension: 0.1 };
+      return { label: rlabel(k) + (PRIM.includes(k) ? " ★" : ""), data: dates.map(d => m[d] ?? null), borderColor: PAL[i % PAL.length], borderWidth: PRIM.includes(k) ? 2.5 : 1.2, pointRadius: 0, spanGaps: false, tension: 0.1 };
     });
     if (chart) chart.destroy();
     chart = new Chart(document.getElementById("rchart"), { type: "line", data: { labels: dates, datasets: sets },
@@ -193,13 +203,13 @@ fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
       const n = r.length, mu = n ? r.reduce((a, b) => a + b, 0) / n : null, sd = n > 1 ? Math.sqrt(r.reduce((a, b) => a + (b - mu) ** 2, 0) / (n - 1)) : null;
       let v = 1, peak = 1, dd = 0; r.forEach(x => { v *= 1 + x; peak = Math.max(peak, v); dd = Math.min(dd, v / peak - 1); });
       return { k, n, cum: n ? v - 1 : null, sharpe: sd ? mu / sd * Math.sqrt(52) : null, dd: n ? dd : null, ic: ic.length ? ic.reduce((a, b) => a + b, 0) / ic.length : null }; };
-    table("rboard", [["Book", r => `<b>${esc(r.k)}</b>${PRIM.includes(r.k) ? " ★" : ""}`], ["Weeks", r => r.n, "n"], ["Cumulative", r => pct(r.cum), "n"], ["Sharpe (ann.)", r => r.sharpe == null ? "" : r.sharpe.toFixed(2), "n"],
+    table("rboard", [["Book", r => `<b>${esc(rlabel(r.k))}</b>${PRIM.includes(r.k) ? " ★" : ""}`], ["Weeks", r => r.n, "n"], ["Cumulative", r => pct(r.cum), "n"], ["Sharpe (ann.)", r => r.sharpe == null ? "" : r.sharpe.toFixed(2), "n"],
       ["Max drawdown", r => pct(r.dd), "n"], ["Mean IC", r => r.ic == null ? "" : r.ic.toFixed(3), "n"]], names.map(stat));
   }
   const sel = document.getElementById("rspan"); sel.onchange = () => draw(sel.value); draw("all");
   document.getElementById("rview").onchange = () => draw(sel.value);
   const L = R.latest;
-  if (L) table("rpos", [["Book", r => `<b>${esc(r.book)}</b>`], ["As of", r => L.asof + " (" + (KIND[L.kind] || L.kind) + ")"], ["Ticker", r => esc(r.t)], ["Weight", r => wt(r.w), "n"]],
+  if (L) table("rpos", [["Book", r => `<b>${esc(rlabel(r.book))}</b>`], ["As of", r => L.asof + " (" + (KIND[L.kind] || L.kind) + ")"], ["Ticker", r => esc(r.t)], ["Weight", r => wt(r.w), "n"]],
     PRIM.flatMap(b => Object.entries(L.books[b] || {}).sort((x, y) => y[1] - x[1]).map(([t, w]) => ({ book: b, t, w }))));
 }).catch(() => {});
 </script>
