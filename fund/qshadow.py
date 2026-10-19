@@ -7,6 +7,8 @@ Six weekly books on the 31-name news panel, one per horizon (h = 5, 10, 20 sessi
 Ridge tuned on validation rank IC; quarterly refits on an expanding window (Amendment 2's refit rule).
 The owner's primaries (2026-10-17): qn at h = 10, q5 at h = 20. Books: top/bottom 5 at 10% of NAV,
 then the champion's risk rules (sector net <= 30%, dollar net <= 10% of gross, SPY to zero 60-day beta).
+Every book is long/short. The ledger also scores each book on top of SPY: held 1x (overlay) and through the
+owner's dynamic sleeve (1.3x SPY in an uptrend, 0.7x otherwise), against SPY buy-and-hold and a risk-matched SPY.
 
     python fund/qshadow.py seed DIR       # historical text sums (thesis panel, <= 2025-12-31) into QS_HOME/hist
     python fund/qshadow.py backfill       # walk-forward books 2018-2025, then the October 2026 weeks
@@ -54,6 +56,11 @@ PRIMARY = ("qn_h10", "q5_h20")
 FACTORS = ("mom12_1", "rev1m", "rev1w", "lowvol", "high52")        # artefacts/llm/ridge_stocks.json order
 DIM, K_PROTO, HL, N_SIDE, UNIT = 3072, 16, 5, 5, 0.10
 SECTOR_CAP, DOLLAR_CAP, COST = 0.30, 0.10, 5e-4
+# Market exposure, the owner's policy (2026-10-19; CLAUDE.md 17: stated, never tested or tuned): an SPY sleeve
+# under every book, 1.3x SPY when SPY closes above its 200-session average at the as-of close, 0.7x otherwise;
+# the borrowed or idle 0.3 pays or earns the 3-month T-bill rate (DTB3). Trend state and rate are frozen per
+# week at first use (exposure.json), never recomputed.
+SLEEVE_UP, SLEEVE_DOWN, TREND_WIN = 1.3, 0.7, 200
 ALPHAS = (1e-2, 1e-1, 1, 10, 100, 1e3, 1e4, 1e5)
 FIT_START, HIST_END = pd.Timestamp("2016-01-04"), pd.Timestamp("2025-12-31")
 SEALED = (pd.Timestamp("2026-01-01"), pd.Timestamp("2026-09-30"))
@@ -524,6 +531,58 @@ def ingest(lo, hi, S, threads=32):
     return stats
 
 
+# ------------------------------------------------------------------------------------------------- exposure
+def dtb3():
+    """FRED DTB3 (3-month T-bill, percent -> fraction); an empty series if FRED is unreachable."""
+    try:
+        with urllib.request.urlopen("https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTB3", timeout=60) as r:
+            s = pd.read_csv(r, na_values=".")
+    except Exception as e:                                                   # noqa: BLE001
+        print(f"DTB3 unavailable: {e}")
+        return pd.Series(dtype=float)
+    s.columns = ["date", "v"]
+    return s.assign(date=pd.to_datetime(s.date)).set_index("date")["v"].dropna() / 100
+
+
+def trend_state(spy, S, d):
+    """SPY's trend at the as-of close d (session index): close vs the mean of the last TREND_WIN closes, d included.
+    Uses closes <= d only."""
+    win = spy[max(0, d - TREND_WIN + 1): d + 1]
+    if len(win) < TREND_WIN or not np.isfinite(win).all():
+        return None
+    ma = float(win.mean())
+    up = bool(spy[d] > ma)
+    return {"spy": round(float(spy[d]), 4), "ma": round(ma, 4), "up": up, "sleeve": SLEEVE_UP if up else SLEEVE_DOWN}
+
+
+def exposure(p, recs):
+    """The frozen per-week exposure state {asof: {spy, ma, up, sleeve, rf}}. A week's trend state is written the first
+    time it is computed; its rate (the last DTB3 published before the as-of day) when FRED first has it. Nothing
+    already written is ever changed (CLAUDE.md 4)."""
+    path = os.path.join(REC, "exposure.json")
+    E = json.load(open(path)) if os.path.exists(path) else {}
+    rf, changed = None, False
+    for r in recs:
+        a = r["asof"]
+        d = int(np.searchsorted(p.S, pd.Timestamp(a)))
+        if d >= len(p.S) or p.S[d] != pd.Timestamp(a):
+            continue
+        if a not in E:
+            st = trend_state(p.spy, p.S, d)
+            if st is None:
+                continue
+            E[a], changed = {**st, "rf": None}, True
+        if E[a].get("rf") is None:
+            rf = dtb3() if rf is None else rf
+            prior = rf[rf.index < pd.Timestamp(a)]
+            if len(prior) and (pd.Timestamp(a) - prior.index[-1]).days <= 7:
+                E[a]["rf"], changed = round(float(prior.iloc[-1]), 6), True
+    if changed:
+        os.makedirs(REC, exist_ok=True)
+        json.dump(E, open(path, "w"), indent=0, sort_keys=True)
+    return E
+
+
 # ------------------------------------------------------------------------------------------------- ledger
 def all_records():
     recs = []
@@ -554,6 +613,27 @@ def ledger(p=None):
     closes["SPY"] = p.spy
     ex = [S[S > pd.Timestamp(r["asof"])][0] if (S > pd.Timestamp(r["asof"])).any() else None for r in recs]
     targets = {h: p.target(h) for h in (5, 10, 20)}
+    E = exposure(p, recs)
+    # the S&P yardsticks, on the same holding periods as the books: SPY held 1x, and the dynamic sleeve alone
+    # (s x SPY + (1 - s) x the T-bill rate; 5 bp per side when the sleeve changes)
+    bench, prev_s = [], None
+    for k, r in enumerate(recs):
+        e0 = ex[k]
+        e1 = ex[k + 1] if k + 1 < len(recs) else None
+        st = E.get(r["asof"], {})
+        row = {"asof": r["asof"], "kind": r["kind"], "spy": None, "rf": None, "sleeve": st.get("sleeve"),
+               "up": st.get("up"), "timing": None}
+        if e0 is None or e1 is None or (e1 - e0).days > 10:
+            bench.append(row)
+            prev_s = None if e1 is not None else prev_s
+            continue
+        row["spy"] = float(closes["SPY"].loc[e1] / closes["SPY"].loc[e0] - 1)
+        if st.get("rf") is not None:
+            row["rf"] = st["rf"] * (e1 - e0).days / 360
+            s = st["sleeve"]
+            row["timing"] = s * row["spy"] + (1 - s) * row["rf"] - COST * abs(s - (prev_s if prev_s is not None else s))
+            prev_s = s
+        bench.append(row)
     out = {}
     for name, (h, _) in MODELS.items():
         nav, prev, rows = 100_000.0, {}, []
@@ -563,7 +643,8 @@ def ledger(p=None):
             e1 = ex[k + 1] if k + 1 < len(recs) else None
             gap = e1 is not None and (e1 - e0).days > 10
             if e0 is None or e1 is None or gap:
-                rows.append({"asof": r["asof"], "kind": r["kind"], "ret": None, "nav": nav, "ic": None})
+                rows.append({"asof": r["asof"], "kind": r["kind"], "ret": None, "nav": nav, "ic": None,
+                             "ovl": None, "dyn": None})
                 prev = {} if gap else prev
                 continue
             turn = sum(abs(w.get(t, 0) - prev.get(t, 0)) for t in set(w) | set(prev))
@@ -576,20 +657,54 @@ def ledger(p=None):
             yy = targets[h][d] if d < len(S) else np.full(len(NAMES), np.nan)
             m = np.isfinite(sc) & np.isfinite(yy)
             ic = float(pd.Series(sc[m]).corr(pd.Series(yy[m]), method="spearman")) if m.sum() >= 10 else None
-            rows.append({"asof": r["asof"], "kind": r["kind"], "ret": ret, "nav": nav, "ic": ic})
+            b = bench[k]                                      # the book on top of SPY: 1x, and the dynamic sleeve
+            rows.append({"asof": r["asof"], "kind": r["kind"], "ret": ret, "nav": nav, "ic": ic,
+                         "ovl": b["spy"] + ret, "dyn": None if b["timing"] is None else b["timing"] + ret})
             prev = w
         out[name] = rows
     os.makedirs(REC, exist_ok=True)
     last = recs[-1]
+    pending = [b["asof"] for b in bench if b["spy"] is not None and b["timing"] is None]
     json.dump({"generated": pd.Timestamp.now(tz="UTC").isoformat(), "primary": list(PRIMARY), "books": out,
+               "bench": bench, "policy": {"up": SLEEVE_UP, "down": SLEEVE_DOWN, "trend_sessions": TREND_WIN,
+                                          "rate": "DTB3", "since": "2026-10-19"},
+               "pending_rate": pending,
                "latest": {"asof": last["asof"], "kind": last["kind"],
+                          "sleeve": E.get(last["asof"], {}).get("sleeve"),
                           "books": {k: v["book"] for k, v in last["models"].items()}}},
               open(os.path.join(REC, "ledger.json"), "w"), default=float)
-    write_md(out)
+    write_md(out, bench)
     return out
 
 
-def write_md(out):
+def vs_spy(out, bench, keep):
+    """Rows of the 'against the S&P 500' table for one span: name -> weekly returns, on the weeks where SPY, the
+    rate and every book have a return. The risk-matched SPY holds the span's mean sleeve throughout."""
+    idx = [k for k, b in enumerate(bench) if keep(b) and b["timing"] is not None
+           and all(out[n][k]["dyn"] is not None for n in PRIMARY)]
+    if not idx:
+        return {}, None
+    sbar = float(np.mean([bench[k]["sleeve"] for k in idx]))
+    rows = {"S&P 500 buy & hold": [bench[k]["spy"] for k in idx],
+            f"risk-matched S&P ({sbar:.2f}x)": [sbar * bench[k]["spy"] + (1 - sbar) * bench[k]["rf"] for k in idx],
+            f"dynamic sleeve alone ({SLEEVE_UP}x / {SLEEVE_DOWN}x)": [bench[k]["timing"] for k in idx]}
+    for n in PRIMARY:
+        rows[f"{n} + S&P"] = [out[n][k]["ovl"] for k in idx]
+        rows[f"{n} + dynamic sleeve"] = [out[n][k]["dyn"] for k in idx]
+    return rows, sbar
+
+
+def perf(r):
+    """cumulative, annualised, Sharpe (ann., not in excess of cash), max drawdown from the initial value."""
+    r = np.asarray(r, float)
+    v = np.concatenate([[1.0], np.cumprod(1 + r)])
+    cum = float(v[-1] - 1)
+    ann = float(v[-1] ** (52 / len(r)) - 1) if len(r) else np.nan
+    sh = float(r.mean() / r.std(ddof=1) * np.sqrt(52)) if len(r) > 1 and r.std() > 0 else np.nan
+    return cum, ann, sh, float((v / np.maximum.accumulate(v) - 1).min())
+
+
+def write_md(out, bench=None):
     def stats(rows):
         r = pd.Series([x["ret"] for x in rows if x["ret"] is not None], dtype=float)
         ic = pd.Series([x["ic"] for x in rows if x["ic"] is not None], dtype=float)
@@ -608,13 +723,33 @@ def write_md(out):
     lines = ["# Research shadow books (quant trials)", "",
              "Never traded. Weekly, Thursday close to Thursday close, 5 bp per side, cash 0. Primaries: "
              + ", ".join(PRIMARY) + ". Jan-Sep 2026 is the sealed P8 window: no books. Only `live` rows are "
-             "forward evidence.", ""]
+             "forward evidence.",
+             "", f"Below each span: the primaries on top of SPY, held 1x and through the owner's dynamic sleeve "
+             f"({SLEEVE_UP}x SPY when SPY closes above its {TREND_WIN}-session average at the as-of close, {SLEEVE_DOWN}x "
+             "otherwise; the borrowed or idle part pays or earns DTB3), against SPY buy-and-hold and a risk-matched SPY "
+             "holding the span's mean sleeve. All lines use the books' holding weeks: a week without a session "
+             "Wednesday (e.g. 4 July, Juneteenth, Christmas) is flat for every line. The sleeve is the owner's policy "
+             "(2026-10-19), not a tested or tuned parameter.", ""]
     for span, keep in spans.items():
         lines += [f"## {span}", "", "| book | weeks | cumulative | Sharpe (ann.) | max drawdown | mean IC |",
                   "|---|---|---|---|---|---|"]
         for name, rows in out.items():
             lines.append(f"| {name}{' (primary)' if name in PRIMARY else ''} " + stats([x for x in rows if keep(x)]))
         lines.append("")
+        rows, sbar = vs_spy(out, bench or [], keep)
+        if rows:
+            spy = perf(rows["S&P 500 buy & hold"])[1]
+            rm = perf(next(v for k, v in rows.items() if k.startswith("risk-matched")))[1]
+            lines += [f"Against the S&P 500 ({len(rows['S&P 500 buy & hold'])} weeks; mean sleeve "
+                      f"{sbar:.2f}x):", "",
+                      "| line | cumulative | annualised | vs S&P (ann.) | vs risk-matched (ann.) | Sharpe | max drawdown |",
+                      "|---|---|---|---|---|---|---|"]
+            short = len(rows["S&P 500 buy & hold"]) < 26                     # annualising a few weeks says nothing
+            for k, r in rows.items():
+                c, a, s, dd = perf(r)
+                ann = "| – | – | – |" if short else f"| {a:+.1%} | {a - spy:+.1%} | {a - rm:+.1%} |"
+                lines.append(f"| {k} | {c:+.1%} {ann} {'–' if not np.isfinite(s) else format(s, '+.2f')} | {dd:.1%} |")
+            lines.append("")
     open(os.path.join(REC, "LEDGER.md"), "w").write("\n".join(lines))
 
 
@@ -707,6 +842,9 @@ def cmd_weekly(asof=None):
     ok, q = quality_gate(["error"] * stats["failed"] + ["ok"] * (stats["articles"] - stats["failed"]))
     if not ok:
         raise SystemExit(f"quality gate: {q}")
+    pend = json.load(open(os.path.join(REC, "ledger.json"))).get("pending_rate", [])
+    if pend:                                     # saved and pushed first; then loudly: the sleeve lines lack a rate
+        raise SystemExit(f"DTB3 not yet available for {pend}: the dynamic-sleeve lines skip those weeks")
 
 
 if __name__ == "__main__":
