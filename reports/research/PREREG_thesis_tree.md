@@ -445,3 +445,29 @@ So, for every P8 return model (deterministic nodes and Q4 combinations):
 
 Both are research shadow books (see `PROTOCOL_fund.md` and the shadow amendment). They are never traded, and they
 are not P8 nodes unless a later amendment admits them on evidence.
+
+## Amendment 3 (2026-10-19, draft for owner sign-off): transformer research arms; market exposure lines
+
+Written before any transformer outcome on the S&P 500 or on the news panel exists.
+
+**What changes.** Amendment 2 §4 bars deep nets from return prediction without a new amendment. This amendment
+admits exactly three transformer models as **research arms only**: MASTER, the Temporal Fusion Transformer and
+Chronos-2. They run under `reports/research/PREREG_quant_transformers.md`:
+* a single pre-registered S&P 500 read on factors only, against an annually refit ridge (Holm over 3 models × 3
+  horizons);
+* a forward research book on the 31-name news panel only for a model that passes that read.
+
+**What does not change.**
+* They are never traded and are not P8 nodes. Admitting one as a node needs a later amendment on forward
+  evidence.
+* §4's model-selection rule applies: settings by validation rank IC, never MSE.
+* The sealed Jan–Sep 2026 window stays sealed.
+
+**Market exposure lines (owner policy, 2026-10-19; PROTOCOL_fund.md "Market exposure").**
+* The research books are also reported on top of SPY: 1x, and the owner's dynamic sleeve (1.3x SPY above the
+  200-session average, 0.7x otherwise, the rest at the T-bill rate).
+* The yardsticks are SPY buy-and-hold and a risk-matched SPY.
+* All books stay long/short.
+* The sleeve is a stated policy, not a tested or tuned parameter, and is not a P8 input.
+
+**Owner sign-off:** _pending_

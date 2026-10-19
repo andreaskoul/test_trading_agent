@@ -690,3 +690,22 @@ The source mix differs from the history (FNSPID, Benzinga, FMP), which is a know
   its price factors are unaffected.
 
 **Judgement.** No verdict on these books before ~mid-April 2027 (the shadow-books rule).
+
+**Market exposure (owner policy, 2026-10-19).** Stated by the owner as policy (CLAUDE.md 17), not tested or tuned:
+"the S&P hedge is a dynamic component; when the S&P is very bullish it is counter-intuitive to short it further;
+some strategies should head for more risk and hence more expected return", and "in all strategies both long and
+short positions are possible". The goal is always to beat buy-and-hold of the S&P 500.
+* Every book stays long/short (top 5 long, bottom 5 short, the risk rules above, SPY hedge to zero beta).
+* The ledger also holds each book on top of an SPY sleeve:
+  * 1x SPY ("+ S&P"), and
+  * the dynamic sleeve: **1.3x SPY when SPY closes above its 200-session average at the as-of close, 0.7x
+    otherwise.** The borrowed or idle 0.3 pays or earns the 3-month T-bill rate (FRED DTB3, the last value
+    published before the as-of day); a sleeve change costs 5 bp per side.
+* Each week's trend state and rate are frozen at first use in `exposure.json` on `research-data` and never
+  recomputed (CLAUDE.md 4).
+* Yardsticks: SPY buy-and-hold; the sleeve alone (market timing without stock picking); and a **risk-matched
+  S&P** holding the span's mean sleeve throughout. Beating SPY by holding more of it is not skill, so the
+  risk-matched line is the fair comparison.
+* All lines use the books' holding weeks; a week without a session Wednesday is flat for every line.
+* The 1.3 / 0.7 levels and the 200-session rule are the owner's choice, made before any of these lines was
+  computed; they are never changed because of their results.

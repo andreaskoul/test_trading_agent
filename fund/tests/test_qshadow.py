@@ -57,6 +57,57 @@ def test_sealed_window_never_in_targets():
     assert p.n[(p.S >= Q.SEALED[0]) & (p.S <= Q.SEALED[1])].sum() == 0            # no text from the window
 
 
+def test_trend_state_uses_no_future_close():
+    S = pd.bdate_range("2020-01-01", periods=260)
+    spy = np.linspace(100, 130, 260)
+    d = 230
+    st = Q.trend_state(spy, S, d)
+    assert st["up"] and st["sleeve"] == Q.SLEEVE_UP
+    later = spy.copy()
+    later[d + 1:] = 1.0                                                # a crash after the as-of close changes nothing
+    assert Q.trend_state(later, S, d) == st
+    down = spy.copy()
+    down[d] = 50.0                                                     # the as-of close itself below the average
+    assert Q.trend_state(down, S, d)["sleeve"] == Q.SLEEVE_DOWN
+    assert Q.trend_state(spy, S, Q.TREND_WIN - 2) is None              # fewer than 200 closes: no state
+
+
+def test_exposure_is_frozen_at_first_use():
+    import tempfile
+    tmp = tempfile.mkdtemp()
+    rec_, dtb3_ = Q.REC, Q.dtb3
+    try:
+        Q.REC = tmp
+        S = pd.bdate_range("2020-01-01", periods=260)
+        Q.dtb3 = lambda: pd.Series([0.05], index=[S[-5]])
+
+        class P:
+            pass
+        p = P()
+        p.S, p.spy = S, np.linspace(100, 130, 260)
+        a = str(S[-3].date())
+        E1 = Q.exposure(p, [{"asof": a}])
+        assert E1[a]["sleeve"] == Q.SLEEVE_UP and E1[a]["rf"] == 0.05
+        p.spy = np.linspace(130, 100, 260)                             # revised prices later: the week stays as recorded
+        Q.dtb3 = lambda: pd.Series([0.09], index=[S[-5]])
+        assert Q.exposure(p, [{"asof": a}])[a] == E1[a]
+    finally:
+        Q.REC, Q.dtb3 = rec_, dtb3_
+
+
+def test_vs_spy_lines():
+    bench = [{"asof": f"2020-01-{i + 1:02d}", "kind": "backfill", "spy": 0.01 * (i - 1), "rf": 0.001,
+              "sleeve": [1.3, 0.7, 1.3][i], "up": None, "timing": None} for i in range(3)]
+    for b in bench:
+        b["timing"] = b["sleeve"] * b["spy"] + (1 - b["sleeve"]) * b["rf"]
+    out = {n: [{"ret": 0.002, "ovl": b["spy"] + 0.002, "dyn": b["timing"] + 0.002} for b in bench] for n in Q.PRIMARY}
+    rows, sbar = Q.vs_spy(out, bench, lambda b: True)
+    assert abs(sbar - (1.3 + 0.7 + 1.3) / 3) < 1e-12
+    rm = next(v for k, v in rows.items() if k.startswith("risk-matched"))
+    assert np.allclose(rm, [sbar * b["spy"] + (1 - sbar) * b["rf"] for b in bench])
+    assert np.allclose(rows[f"{Q.PRIMARY[0]} + dynamic sleeve"], [b["timing"] + 0.002 for b in bench])
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):

@@ -4,6 +4,11 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-19: research shadow books, market exposure lines (owner policy; PROTOCOL_fund.md "Research shadow books", "Market exposure").
+  * The ledger holds each primary on top of SPY, 1x and through the owner's dynamic sleeve (1.3x SPY above the 200-session average at the as-of close, 0.7x otherwise, the rest at DTB3), against SPY buy-and-hold, the sleeve alone and a risk-matched SPY. The page has an "Against the S&P 500" view.
+  * Trend state and rate are frozen per week in `exposure.json` on `research-data`. A completed week still without a rate fails the `qshadow` job after the records are saved.
+  * Could this change a decision? No. The books, their records and the traded fund are unchanged; these are extra ledger lines on research books.
+  * Contract tests in `fund/tests/test_qshadow.py`: no future close in the trend state, frozen at first use, risk-matched and sleeve arithmetic.
 - 2026-10-17: research shadow books (`fund/qshadow.py`, runner job `qshadow`, Thu 03:30 UTC; PROTOCOL_fund.md "Research shadow books").
   * Six weekly books from the quant trials on the 31-name news panel, never traded, records on `research-data`.
   * The job shares R5's lock, so `research-data` pushes never overlap.
