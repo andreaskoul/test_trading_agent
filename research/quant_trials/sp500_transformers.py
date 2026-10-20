@@ -2,7 +2,10 @@
 
     python sp500_transformers.py smoke    # first refit (training through 2012) for M1/M2, M3 on 10 Thursdays of 2012;
                                           # runtimes and shapes, no test-year score (allowed before sign-off)
-    python sp500_transformers.py run      # refuses unless the pre-registration is signed off, committed and pushed
+    python sp500_transformers.py run PART # one part (ridge, chronos2, chronos2_ft, master_h5 ... tft_h20); parts run
+                                          # in parallel; each refuses unless the pre-registration is signed off,
+                                          # committed and pushed
+    python sp500_transformers.py score    # once every part is saved: the one read -> SP500_TRANSFORMERS.md
 
 Data and target are sp500_test.build()'s (PREREG_quant_sp500.md): point-in-time membership, five z-scored signals,
 residual targets from close(d+1); nothing after 2025-12-31. A score at d uses closes <= d only.
@@ -28,8 +31,10 @@ OUT = os.path.join(P.REPORT, "SP500_TRANSFORMERS.md")
 HS, YEARS, TRAIN0 = (5, 10, 20), range(2013, 2026), pd.Timestamp("2010-01-04")
 LOOK, CTX, PRED = 8, 512, 21                      # MASTER lookback, Chronos-2 context, Chronos-2 prediction length
 GRID = {"master": [{"d_model": m, "beta": b} for m in (64, 256) for b in (2, 5)],
-        "tft": [{"hidden": hs, "epochs": ep} for hs in (16, 64) for ep in (5, 15)]}
-SEEDS = {"master": (0, 1, 2), "tft": (0,)}
+        "tft": [{"hidden": hs, "epochs": ep} for hs in (16, 64) for ep in (5, 15, 30)]}
+SEEDS = {"master": (0, 1, 2, 3, 4), "tft": (0, 1, 2)}       # MASTER: the paper's five seeds (main.py)
+MAX_EPOCHS, PATIENCE = 100, 15                             # MASTER: best validation rank IC, patience 15
+FT_STEPS = 2000                                            # Chronos-2 fine-tuning steps per refit
 
 
 def log(*a):
@@ -79,7 +84,7 @@ def master_day(d, M, day):
     return ix, x
 
 
-def master_fit_predict(d, y, train, va, pred_days, cfg, seed, M, max_epochs=40):
+def master_fit_predict(d, y, train, va, pred_days, cfg, seed, M, max_epochs=MAX_EPOCHS):
     import torch
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), "vendor", "master"))
     from master import MASTER                                           # vendored unchanged (SOURCE)
@@ -138,7 +143,7 @@ def master_fit_predict(d, y, train, va, pred_days, cfg, seed, M, max_epochs=40):
         if np.isfinite(s) and s > best_ic:
             best, best_ic = ep, s
             best_state = {k: v.detach().clone() for k, v in net.state_dict().items()}
-        if np.mean(losses) < 0.95:                                       # the paper's stop rule
+        if np.mean(losses) < 0.95 or ep - best >= PATIENCE:              # the paper's stop rule, or no gain in 15
             break
     if best_state is not None:
         net.load_state_dict(best_state)
@@ -197,14 +202,41 @@ def tft_fit_predict(d, h, train, va, pred_days, cfg, seed, sector):
 _PIPE = None
 
 
-def chronos_scores(d, days, sector):
-    """{h: (D, N) scores} for every h at once; zero-shot, cross-learning in sector-ordered groups of ~100 names."""
-    import torch
+def chronos_pipe():
     from chronos import Chronos2Pipeline
     global _PIPE
     if _PIPE is None:
         _PIPE = Chronos2Pipeline.from_pretrained("amazon/chronos-2", device_map=str(device()))
-    q = list(_PIPE.quantiles)
+    return _PIPE
+
+
+def chronos_finetune(d, train_end, year):
+    """M3-ft: Chronos-2 fully fine-tuned on every name's residual-return series (and its five signals) up to the
+    refit point; library defaults (lr 1e-6), FT_STEPS steps, context 512, prediction length 21. Non-member days
+    are given as missing targets, so the loss never sees them."""
+    inputs = []
+    for j in range(len(d["names"])):
+        v = np.where(d["valid"][:train_end, j])[0]
+        if len(v) < 300:
+            continue
+        a = v[0]
+        tgt = np.where(d["elig"][a:train_end, j], d["e"][a:train_end, j], np.nan).astype(np.float32)
+        inputs.append({"target": tgt, "past_covariates": {f"z{k}": d["Z"][a:train_end, j, k].astype(np.float32)
+                                                          for k in range(5)}})
+    from chronos import Chronos2Pipeline                                  # a fresh copy: the zero-shot one stays untouched
+    base = Chronos2Pipeline.from_pretrained("amazon/chronos-2", device_map=str(device()))
+    ft = base.fit(inputs, prediction_length=PRED, num_steps=FT_STEPS, batch_size=64, context_length=CTX,
+                            output_dir=os.path.join(P.CACHE, f"chronos2_ft_{year}"))
+    ft.model.eval()
+    return ft
+
+
+def chronos_scores(d, days, sector, pipe=None):
+    """{h: (D, N) scores} for every h at once; cross-learning in sector-ordered groups of ~100 names. Zero-shot
+    unless a fine-tuned pipeline is given."""
+    import torch
+    _PIPE_ = pipe or chronos_pipe()
+    q = list(_PIPE_.quantiles)
     mi = q.index(0.5)
     out = {h: np.full((len(d["S"]), len(d["names"])), np.nan) for h in HS}
     order = np.lexsort((np.array(d["names"]), np.array(sector)))
@@ -216,7 +248,7 @@ def chronos_scores(d, days, sector):
             tgt = d["e"][a: day + 1, j].astype(np.float32)
             inputs.append({"target": tgt, "past_covariates": {f"z{k}": d["Z"][a: day + 1, j, k].astype(np.float32)
                                                               for k in range(5)}})
-        fc = _PIPE.predict(inputs, prediction_length=PRED, batch_size=600, cross_learning=True)
+        fc = _PIPE_.predict(inputs, prediction_length=PRED, batch_size=600, cross_learning=True)
         for j, f in zip(live, fc):
             med = f[0, mi].float().cpu().numpy() if isinstance(f, torch.Tensor) else np.asarray(f)[0, mi]
             for h in HS:
@@ -314,44 +346,84 @@ def signed_off():
     return sha
 
 
-def run():
+MODELS = ("master", "tft", "chronos2", "chronos2_ft")
+PARTS = ["ridge", "chronos2", "chronos2_ft"] + [f"{m}_h{h}" for m in ("master", "tft") for h in HS]
+
+
+def part_path(part):
+    return os.path.join(P.CACHE, f"sp500_tf_{part}.npz")
+
+
+def run(part):
+    """One part of the read (parts run as separate processes, in parallel); `score` combines them once all exist."""
     sha = signed_off()
     d = T.build()
     S, sector, M = d["S"], sectors(d), market(d)
-    preds = {(m, h): np.full(d["y20"].shape, np.nan) for m in ("master", "tft", "chronos2", "ridge") for h in HS}
-    chosen = {}
-    for h in HS:
+    preds, chosen = {}, {}
+    if part == "ridge":
+        for h in HS:
+            preds[h] = np.full(d["y20"].shape, np.nan)
+            for yr in YEARS:
+                tr, va, train, _ = windows(S, yr, h)
+                days = thursdays(S, np.where(S.year == yr)[0])
+                preds[h][days] = ridge_fit_predict(d, y=d[f"y{h}"], tr=tr, va=va, train=train, pred_days=days)[0][days]
+    elif part in ("chronos2", "chronos2_ft"):
+        for h in HS:
+            preds[h] = np.full(d["y20"].shape, np.nan)
+        for yr in YEARS:
+            days = thursdays(S, np.where(S.year == yr)[0])
+            q = int(np.searchsorted(S, pd.Timestamp(f"{yr}-01-01")))
+            pipe = chronos_finetune(d, q - 1 - max(HS), yr) if part == "chronos2_ft" else None
+            cs = chronos_scores(d, days, sector, pipe)
+            for h in HS:
+                preds[h][days] = cs[h][days]
+            log(part, yr)
+    else:
+        m, h = part.split("_h")
+        h = int(h)
         y = d[f"y{h}"]
         tr, va, train, _ = windows(S, 2013, h)                           # settings: first refit only, then frozen
-        for m in ("master", "tft"):
-            best, bs = None, -np.inf
-            for cfg in GRID[m]:
-                vth = thursdays(S, va)
-                sc = master_fit_predict(d, y, tr, va, vth, cfg, 0, M)[0] if m == "master" else \
-                    tft_fit_predict(d, h, tr, va, vth, cfg, 0, sector)[0]
-                s = val_ic(sc, y, vth)
-                if s > bs:
-                    best, bs = cfg, s
-            chosen[(m, h)] = best
-            log("chosen", m, h, best, bs)
+        best, bs = None, -np.inf
+        for cfg in GRID[m]:
+            vth = thursdays(S, va)
+            sc = master_fit_predict(d, y, tr, va, vth, cfg, 0, M)[0] if m == "master" else \
+                tft_fit_predict(d, h, tr, va, vth, cfg, 0, sector)[0]
+            s_ = val_ic(sc, y, vth)
+            log(part, cfg, s_)
+            if s_ > bs:
+                best, bs = cfg, s_
+        chosen = {"settings": best, "val_ic": bs}
+        preds[h] = np.full(y.shape, np.nan)
         for yr in YEARS:
-            tr, va, train, q = windows(S, yr, h)
+            tr, va, train, _ = windows(S, yr, h)
             days = thursdays(S, np.where(S.year == yr)[0])
-            preds[("ridge", h)][days] = ridge_fit_predict(d, y, tr, va, train, days)[0][days]
-            preds[("master", h)][days] = np.nanmean([master_fit_predict(d, y, tr, va, days, chosen[("master", h)],
-                                                                         s_, M)[0][days] for s_ in SEEDS["master"]], 0)
-            preds[("tft", h)][days] = tft_fit_predict(d, h, tr, va, days, chosen[("tft", h)], SEEDS["tft"][0],
-                                                      sector)[0][days]
-            log("refit", h, yr)
-    for yr in YEARS:
-        days = thursdays(S, np.where(S.year == yr)[0])
-        cs = chronos_scores(d, days, sector)
-        for h in HS:
-            preds[("chronos2", h)][days] = cs[h][days]
-        log("chronos", yr)
-    np.savez_compressed(os.path.join(P.CACHE, "sp500_transformers_preds.npz"),
-                        **{f"{m}_h{h}": v for (m, h), v in preds.items()})
-    score(d, preds, chosen, sha, sector)
+            runs = [master_fit_predict(d, y, tr, va, days, best, s_, M)[0][days] if m == "master" else
+                    tft_fit_predict(d, h, tr, va, days, best, s_, sector)[0][days] for s_ in SEEDS[m]]
+            preds[h][days] = np.nanmean(runs, 0)                         # seed-averaged scores
+            log(part, yr)
+    np.savez_compressed(part_path(part), **{f"h{h}": v for h, v in preds.items()},
+                        meta=json.dumps({"sha": sha, "chosen": chosen}))
+    log("saved", part_path(part))
+
+
+def score_all():
+    sha = signed_off()
+    missing = [p_ for p_ in PARTS if not os.path.exists(part_path(p_))]
+    if missing:
+        sys.exit(f"parts not finished: {missing}")
+    d = T.build()
+    preds, chosen = {}, {}
+    for p_ in PARTS:
+        z = np.load(part_path(p_))
+        meta = json.loads(str(z["meta"]))
+        assert meta["sha"] == sha, f"{p_} was run under another pre-registration commit"
+        model = p_.split("_h")[0]
+        for k in z.files:
+            if k.startswith("h"):
+                preds[(model, int(k[1:]))] = z[k]
+        if meta["chosen"]:
+            chosen[(model, int(p_.split("_h")[1]))] = meta["chosen"]
+    score(d, preds, chosen, sha, sectors(d))
 
 
 def score(d, preds, chosen, sha, sector):
@@ -371,21 +443,21 @@ def score(d, preds, chosen, sha, sector):
                 neu[fy] = F.weekly_ic(F.neutralise(pred, sector), F.neutralise(y, sector), wk)
             return out, nets, neu
         r_ic, _, _ = per_year(preds[("ridge", h)])
-        for m in ("master", "tft", "chronos2"):
+        for m in MODELS:
             ic, nets, neu = per_year(preds[(m, h)])
-            cat = lambda dct, ys: np.concatenate([dct[y_] for y_ in ys])
+            cat = lambda dct, ys: np.concatenate([dct[y_] for y_ in ys if y_ in dct] or [np.full(1, np.nan)])
             allic = cat(ic, YEARS)
             t = F.nw_t(allic, 4)
             res[(m, h)] = {"ic": np.nanmean(allic), "t": t, "p": float(stats.norm.sf(t)),
                            "ridge_ic": np.nanmean(cat(r_ic, YEARS)),
                            "ic_2013_19": np.nanmean(cat(ic, range(2013, 2020))),
-                           "ic_2020_25": np.nanmean(cat(ic, range(2020, 2026))), "ic_2022": np.nanmean(ic[2022]),
+                           "ic_2020_25": np.nanmean(cat(ic, range(2020, 2026))), "ic_2022": np.nanmean(ic.get(2022, np.full(1, np.nan))),
                            "net_decile_bp_wk": np.nanmean(cat(nets, YEARS)) * 1e4,
                            "sector_neutral_ic": np.nanmean(cat(neu, YEARS)),
                            "ic_2022_25": np.nanmean(cat(ic, range(2022, 2026))), "settings": chosen.get((m, h))}
             years += [{"model": m, "h": h, "year": fy, "ic": np.nanmean(ic[fy]), "ridge_ic": np.nanmean(r_ic[fy])}
                       for fy in YEARS]
-    keys = sorted(res, key=lambda k: res[k]["p"])                        # Holm over the 9
+    keys = sorted(res, key=lambda k: res[k]["p"])                        # Holm over the 12
     for i, k in enumerate(keys):
         res[k]["p_holm"] = min(1.0, max(res[kk]["p"] * (len(keys) - j) for j, kk in enumerate(keys[: i + 1])))
     for k, r in res.items():
@@ -403,4 +475,9 @@ def score(d, preds, chosen, sha, sector):
 
 
 if __name__ == "__main__":
-    {"smoke": smoke, "run": run}[sys.argv[1]]()
+    cmd = sys.argv[1]
+    if cmd == "run":
+        assert sys.argv[2] in PARTS, f"part must be one of {PARTS}"
+        run(sys.argv[2])
+    else:
+        {"smoke": smoke, "score": score_all}[cmd]()

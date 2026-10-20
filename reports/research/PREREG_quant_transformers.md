@@ -27,6 +27,11 @@ test has power. The 31-name panel has no clean history left:
 | M1 | **MASTER** (Li et al., AAAI 2024, arXiv 2312.15235) | `SJTU-DMTai/MASTER` @ `de8f585`, MIT, vendored unchanged (`master.py`) | cross-sectional ranker, trained |
 | M2 | **Temporal Fusion Transformer** (Lim et al. 2021) | `darts` `TFTModel` (Apache-2.0), pinned in `requirements-quant.txt` | global multi-series forecaster, trained |
 | M3 | **Chronos-2** (Ansari et al. 2025, arXiv 2510.15821) | `chronos-forecasting` `Chronos2Pipeline`, weights `amazon/chronos-2` (Apache-2.0) | pretrained, zero-shot, no training |
+| M3-ft | **Chronos-2, fine-tuned** | the same pipeline's `fit` (full fine-tuning, library defaults) | refit annually on the training window |
+
+**Compute is not a constraint (owner, 2026-10-20):** "the goal is a successful model; even 3 days of retraining a
+year is fine". Every setting below is chosen for model quality, not runtime, and is fixed before any test-year
+score exists.
 
 **Why darts and not neuralforecast for TFT.** Darts takes per-row sample weights. That lets training count only
 rows where the name was an index member that day, as the ridge test does. Neuralforecast has no such mask.
@@ -53,8 +58,9 @@ rows where the name was an index member that day, as the ridge test does. Neural
   * One training batch is one session's eligible cross-section, as in the paper.
   * Labels: the paper's drop-extreme (2.5% each tail) and cross-sectional z-score, MSE loss, Adam.
   * Settings from the official `main.py`: lr 1e-5, 4 temporal and 2 cross-stock heads, dropout 0.5, and the
-    paper's stop rule (train loss < 0.95) with at most 40 epochs. The epoch kept is the one with the best
-    validation rank IC.
+    paper's stop rule (train loss < 0.95). Up to 100 epochs; training also stops after 15 epochs without a gain
+    in validation rank IC, and the epoch kept is the one with the best validation rank IC. (In the smoke check the
+    paper's stop rule never fired within 40 epochs, and the best epoch was often the 39th.)
 * **M2 TFT.**
   * Target series per name: the daily residual return.
   * Past covariates: the five z-signals.
@@ -70,6 +76,11 @@ rows where the name was an index member that day, as the ridge test does. Neural
     pipeline's guidance. Names are ordered by GICS sector, then ticker, so each group is sector-coherent; the call
     batch is 600 series (100 targets × 6 series each). Prediction length 21.
   * Score at h = the sum of median forecasts for steps 2 … h + 1. One forecast serves all three horizons.
+* **M3-ft Chronos-2, fine-tuned.** At each annual refit, a fresh copy of `amazon/chronos-2` is fully fine-tuned with
+  the pipeline's `fit`: every name's daily residual-return series with its five signals as past covariates, up to
+  the refit point less 21 sessions. Non-member days are given as missing targets.
+  * Library defaults (lr 1e-6), 2,000 steps, batch 64, context 512, prediction length 21.
+  * Scoring is then as for M3.
 
 ## Fitting
 * **Annual expanding refits.** Training starts 2010-01-04. Test years 2013–2025 are each predicted by a model
@@ -79,21 +90,24 @@ rows where the name was an index member that day, as the ridge test does. Neural
     (test year 2013), then frozen for every later refit. This bounds compute.
   * Grids:
     * M1: d_model ∈ {64, 256} × gate temperature β ∈ {2, 5} (the paper's two values).
-    * M2: hidden size ∈ {16, 64} × epochs ∈ {5, 15}.
-    * M3: none.
-* **Seeds.** M1 averages 3 seeds per refit; M2 uses 1 seed per refit. These are fixed now and not changed after
-  the smoke check.
+    * M2: hidden size ∈ {16, 64} × epochs ∈ {5, 15, 30}.
+    * M3 and M3-ft: none.
+* **Seeds.** At every refit, M1 averages 5 seeds (the paper's `main.py` uses seeds 0–4) and M2 averages 3. The
+  grid is searched with seed 0.
+* **Execution.** The read runs as separate parts in parallel (`run ridge`, `run chronos2`, `run chronos2_ft`,
+  `run master_h5` … `run tft_h20`). `score` combines them only when every part is saved under the same signed
+  commit. The measured runtime is several days on the M4.
 * **Comparator.** A ridge on the same five signals, refit annually on the same windows, with α chosen by
   validation rank IC (grid 1e-2 … 1e5), at each h.
 
-## Hypotheses (one read, 9 tests, Holm at 0.05)
-For each model M ∈ {M1, M2, M3} and each h ∈ {5, 10, 20}:
+## Hypotheses (one read, 12 tests, Holm at 0.05)
+For each model M ∈ {M1, M2, M3, M3-ft} and each h ∈ {5, 10, 20}:
 
 **H(M, h).** M's mean weekly cross-sectional Spearman IC with the h-session residual return, pooled over
 2013–2025, is > 0. This is a one-sided Newey–West test (lag 4).
 
 **Pass** only if all of these hold:
-1. Holm-adjusted p < 0.05 across the 9;
+1. Holm-adjusted p < 0.05 across the 12;
 2. mean IC > the annual ridge's mean IC at the same h, on the same decisions;
 3. mean IC > 0 in both 2013–2019 and 2020–2025;
 4. mean IC ≥ 0 in 2022;
