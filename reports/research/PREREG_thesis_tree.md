@@ -446,7 +446,7 @@ So, for every P8 return model (deterministic nodes and Q4 combinations):
 Both are research shadow books (see `PROTOCOL_fund.md` and the shadow amendment). They are never traded, and they
 are not P8 nodes unless a later amendment admits them on evidence.
 
-## Amendment 3 (2026-10-19, draft for owner sign-off): transformer research arms; market exposure lines
+## Amendment 3 (2026-10-19, signed 2026-10-20): transformer research arms; market exposure lines
 
 Written before any transformer outcome on the S&P 500 or on the news panel exists.
 
@@ -470,4 +470,4 @@ Chronos-2. They run under `reports/research/PREREG_quant_transformers.md`:
 * All books stay long/short.
 * The sleeve is a stated policy, not a tested or tuned parameter, and is not a P8 input.
 
-**Owner sign-off:** _pending_
+**Owner sign-off:** signed by the owner in session, 2026-10-20 ("Signed").
