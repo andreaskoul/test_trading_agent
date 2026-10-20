@@ -1,4 +1,4 @@
-# Pre-registration: the refit five-factor quant model on the S&P 500 (DRAFT, not signed)
+# Pre-registration: the refit five-factor quant model on the S&P 500 (signed 2026-10-20)
 
 **Status:** draft. `research/quant_trials/sp500_test.py` refuses to score anything until the owner signs this off
 and the commit is pushed.
@@ -73,4 +73,4 @@ is > 0. It is pooled over 2013–2025, with Newey–West t (lag 4) and a one-sid
   amendment.
 * **Either way,** the forward shadow book keeps running.
 
-**Owner sign-off:** _pending_
+**Owner sign-off:** signed by the owner in session, 2026-10-20 ("Signed"), before any test-year score.

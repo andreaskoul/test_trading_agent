@@ -1,4 +1,4 @@
-# Pre-registration: three off-the-shelf transformers on the S&P 500, then forward on factors + news (DRAFT, not signed)
+# Pre-registration: three off-the-shelf transformers on the S&P 500, then forward on factors + news (signed 2026-10-20)
 
 **Status:** draft. `research/quant_trials/sp500_transformers.py run` refuses to score anything until the owner
 signs this off and the commit is pushed. Before sign-off only the smoke check below may run.
@@ -146,4 +146,4 @@ For each model M ∈ {M1, M2, M3, M3-ft} and each h ∈ {5, 10, 20}:
 * Report runtimes and shapes, and inspect a sample of scores next to their inputs.
 * No 2013–2025 prediction is scored before sign-off.
 
-**Owner sign-off:** _pending_
+**Owner sign-off:** signed by the owner in session, 2026-10-20 ("Signed"), before any test-year score.
