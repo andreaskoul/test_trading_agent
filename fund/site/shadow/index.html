@@ -71,64 +71,61 @@ const wt = v => v == null ? "" : `${v > 0 ? "+" : v < 0 ? "−" : ""}${(Math.abs
 const esc = s => (s ?? "").toString().replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 // readable names for the record keys; C<n> = challenger n in PROTOCOL_fund.md
 const NAMES = {
-  c0_weekly: "Weekly fund book (C0)", analyst: "Analysts, no red team", quant: "Price-factor model, whole S&P 500",
-  core20: "Core 20 names (Protocol 5)", random: "Random picks (luck baseline)", c2_selfconsistency: "Analysts, 5-answer vote (C2)",
-  c3_textonly: "News only, company hidden (C3)", c4_volscaled: "Volatility-scaled sizing (C4)", c5_reversal: "Fund views + reversal on quiet names (C5)",
-  c8_informed: "Analysts + macro and peer news (C8)", c9_ranker: "PM ranks the C8 views (C9)", c10_lifecycle: "Lifecycle fund (C10)",
+  c0_weekly: "Weekly fund book (C0)", analyst: "Analysts, no red team", quant: "Price factors, whole S&P 500",
+  core20: "Fixed 20-stock list, concentrated", random: "Random picks (luck baseline)", c2_selfconsistency: "Self-consistency vote (C2)",
+  c3_textonly: "News only, company hidden (C3)", c4_volscaled: "Inverse-volatility sizing (C4)", c5_reversal: "Fund + short-term reversal (C5)",
+  c8_informed: "Analysts + macro and peer news (C8)", c9_ranker: "LLM ranker on C8 (C9)", c10_lifecycle: "Lifecycle fund (C10)",
   sp500_hold: "S&P 500 buy & hold",
 };
 const label = k => NAMES[k] || k;
-// what each book tests, then who reads what, how they decide and how the book is built
-const FUND_RULES = "Up to 10 longs and 10 shorts, strongest score × confidence first, at most 10% of the book each; sector and dollar limits; SPY hedges out the market.";
+// Each book in the standard strategy layout: what it tests, universe, signal, portfolio construction, rebalancing
+const UNIV = "Weekly coverage universe: about 45 S&P 500 stocks. It is the fixed 20-stock list, plus names an LLM idea screen nominates, the price model's 6 highest and 6 lowest forecasts, and the 6 largest jumps in news coverage.";
+const NEWS = "LLM news signal. For each stock an LLM analyst reads about 13 weeks of news (grouped into stories and dated events), with recent returns, beta, volatility and earnings dates. It outputs a score from −2 (strong sell) to +2 (strong buy) and a confidence from 0 to 1. Conviction = score × confidence.";
+const RED = "Adversarial review (red team): a second LLM checks each non-zero score for a named error (factual, stale, recycled, contradicted, already priced) and can only move it one notch toward 0.";
+const BUILD = "Long the 10 highest and short the 10 lowest convictions (non-zero only); weight = conviction ÷ 20, at most 10% per stock.";
+const RISK = " Risk limits: sector net at most 30% and dollar net at most 10% of gross; then beta-neutral, with SPY offsetting the book's 60-day market beta.";
+const REBAL = "Weekly. Decided after Wednesday's close, entered at Thursday's close, held to the next Thursday's close; 5 bp cost per side on traded weight.";
 const ABOUT = {
-  c0_weekly: { test: "The original fund: the whole weekly team.",
-    reads: "This week's news on about 45 covered stocks.",
-    decides: "An AI analyst writes a memo on each stock and scores it from −2 (strong sell) to +2 (strong buy), with a confidence. A red-team reviewer then argues against each memo and can weaken the score.",
-    book: FUND_RULES + " Held Thursday to Thursday. It traded the account until 14 Oct; since then it runs as a shadow, compared with the lifecycle fund." },
-  analyst: { test: "Does the red team help?",
-    reads: "The same news as the weekly fund.",
-    decides: "The same analysts and scores, but no red team: their scores go straight to sizing.",
-    book: FUND_RULES },
-  quant: { test: "Can a simple formula beat the AI team? The main benchmark.",
-    reads: "Prices only, for all 500 S&P stocks: five price signals (12-month momentum, last month's and last week's moves, volatility, distance from the 52-week high).",
-    decides: "A fixed statistical model (ridge regression) turns the signals into a forecast. No AI, no news.",
-    book: "The 10 highest forecasts long and the 10 lowest short, 10% each; same limits and SPY hedge." },
-  core20: { test: "The older Protocol 5 design, on a fixed list.",
-    reads: "The analysts' scores, but only for the 20 firms the dashboard tracks.",
-    decides: "The analysts (no red team).",
-    book: "The 4 best longs and the 4 best shorts, 25% each. No SPY hedge." },
-  random: { test: "Luck baseline: what random picks earn.",
-    reads: "Nothing.",
-    decides: "No one: 10 longs and 10 shorts drawn at random from the covered stocks (seeded by the date).",
-    book: "10% each; same limits and SPY hedge as the fund." },
-  c2_selfconsistency: { test: "Does asking 5 times and taking the vote beat asking once?",
-    reads: "The same news and prompt as the analysts.",
-    decides: "The analyst is asked 5 times with more randomness. Score = the middle answer; confidence is higher when the 5 answers agree. No red team.",
-    book: FUND_RULES },
-  c3_textonly: { test: "Is the team reading the news, or just reacting to recent price moves?",
-    reads: "The news stories only, with the company's name and ticker replaced by \"the company\", and no price data.",
-    decides: "One analyst scores each stock blind. No red team.",
-    book: FUND_RULES },
-  c4_volscaled: { test: "Does a smarter sizing rule help?",
-    reads: "The weekly fund's final scores (after the red team).",
-    decides: "Same views; only the sizes change. Size = score × confidence ÷ the stock's volatility, so calmer stocks get bigger bets. A stock whose view drops to zero is kept one extra week.",
-    book: "Up to 10 per side, scaled to the fund's total size, at most 10% each; same limits and SPY hedge." },
-  c5_reversal: { test: "Can the stocks with no news earn something too?",
-    reads: "The weekly fund's scores, plus last week's returns.",
-    decides: "Keeps every position of the fund. Covered stocks with no view and no recent news get a small bet that last week's move reverses: buy last week's losers, sell its winners.",
-    book: "The fund's positions plus those extra bets (at most 3% each); same limits and SPY hedge." },
-  c8_informed: { test: "Do the analysts decide better with more context?",
-    reads: "The same news per stock, plus the week's macro brief, the big themes, the currency view, and what each stock's peers and sector made news with.",
-    decides: "One analyst memo per stock, as in the fund, but no red team.",
-    book: FUND_RULES },
-  c9_ranker: { test: "Can a portfolio manager pick the best of the analysts' ideas?",
-    reads: "All of C8's memos side by side, plus the macro brief.",
-    decides: "One AI portfolio manager ranks the views against each other, from the strongest buy to the strongest sell.",
-    book: "Up to 10 longs and 10 shorts in the manager's order, sized by C8's score × confidence; same limits and SPY hedge. No book in a week where too many C8 memos failed." },
-  sp500_hold: { test: "What the market did.",
-    reads: "Nothing.",
-    decides: "No one: 100% SPY (the S&P 500 fund), bought at the first day's close and never traded.",
-    book: "Long only with full market exposure, unlike the hedged books. Dividends reinvested." },
+  c0_weekly: { test: "The original fund design. It traded the account until 14 Oct; it now runs as a shadow benchmark for the lifecycle fund.",
+    universe: UNIV, signal: NEWS + " " + RED, portfolio: BUILD + RISK },
+  analyst: { test: "The value of the red team: the fund without adversarial review.",
+    universe: UNIV, signal: NEWS + " No red team.", portfolio: BUILD + RISK },
+  quant: { test: "Primary benchmark: a pure price-factor model, no LLM and no news.",
+    universe: "All S&P 500 stocks.",
+    signal: "Five price factors: 12-1 month momentum, 1-month reversal, 1-week reversal, low volatility and nearness to the 52-week high. A ridge regression fitted on past data combines them into a return forecast.",
+    portfolio: "Long the 10 highest and short the 10 lowest forecasts, 10% each." + RISK },
+  core20: { test: "Concentration: an equal-weight, unhedged 4-long / 4-short book on a fixed list.",
+    universe: "A fixed list of 20 large-cap, mostly blue-chip S&P 500 stocks, chosen arbitrarily when the project started (not a screen).",
+    signal: NEWS + " No red team.",
+    portfolio: "Long the 4 highest and short the 4 lowest convictions, 25% each (equal weight). No risk limits and no SPY hedge, so it carries market and sector exposure." },
+  random: { test: "Luck baseline (null model).",
+    universe: UNIV, signal: "None: 10 longs and 10 shorts drawn at random, seeded by the date.", portfolio: "10% each." + RISK },
+  c2_selfconsistency: { test: "Self-consistency: does a vote over 5 samples beat a single answer?",
+    universe: UNIV,
+    signal: "The same LLM analyst, sampled 5 times at temperature 0.7 (self-consistency, Wang et al. 2022). Score = the median of the 5; confidence = 1 − (standard deviation ÷ 2), so agreement raises it. No red team.",
+    portfolio: BUILD + RISK },
+  c3_textonly: { test: "Ablation: does the signal come from reading the news, or from prices?",
+    universe: UNIV,
+    signal: "The LLM analyst sees only the news, anonymised: the company's name and ticker are replaced by \"the company\", and there are no price data and no idea-screen hypothesis. No red team.",
+    portfolio: BUILD + RISK },
+  c4_volscaled: { test: "Sizing: inverse-volatility weighting instead of conviction weighting.",
+    universe: UNIV, signal: "The fund's final scores (after the red team); no new LLM call.",
+    portfolio: "Top 10 and bottom 10 by conviction ÷ 60-day volatility; weights proportional to it, scaled to the fund's gross, at most 10% each. A stock whose score falls to 0 is held one more week (turnover band)." + RISK },
+  c5_reversal: { test: "Adds the short-term reversal effect (Jegadeesh 1990; Lehmann 1990) on stocks the news signal leaves out.",
+    universe: UNIV, signal: "The fund's final scores, plus last week's return for stocks with score 0 and no news event in the last 7 days.",
+    portfolio: "The fund's positions, plus reversal positions on those quiet stocks: long last week's losers, short its winners, scaled by rank, at most 3% each." + RISK },
+  c8_informed: { test: "More context: does adding macro and peer information improve the LLM signal?",
+    universe: UNIV,
+    signal: NEWS + " Added inputs: the week's macro brief, market themes, the FX view, news on each stock's most co-mentioned peers and sub-industry, and its 8-K filings. No red team.",
+    portfolio: BUILD + RISK },
+  c9_ranker: { test: "Cross-sectional ranking: does one LLM comparing all stocks at once beat scoring them one at a time?",
+    universe: "Stocks with a non-zero C8 score.",
+    signal: "One LLM call, acting as portfolio manager, reads every C8 memo and the macro brief and ranks the stocks from strongest long to strongest short; longs always rank above shorts.",
+    portfolio: "Long the top 10 and short the bottom 10 in that order; weight = C8 conviction ÷ 20, at most 10% each." + RISK + " No book in a week where more than 25% of C8 memos failed." },
+  sp500_hold: { test: "Market benchmark.",
+    universe: "SPY (S&P 500 ETF).", signal: "None.",
+    portfolio: "100% SPY, long only with beta 1, unlike the beta-neutral books. Dividends reinvested.",
+    rebal: "None: bought at the first entry and held." },
 };
 const about = b => ABOUT[b.key] || { test: b.desc || "" };
 // research books: q5 = five price factors, qn = the same plus news, h<n> = horizon in trading days
@@ -173,7 +170,7 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
     document.querySelectorAll("#board tr.pick").forEach(tr => tr.onclick = () => { show(tr.dataset.k); sel.scrollIntoView({ behavior: "smooth", block: "start" }); });
     const A = about(b);
     document.getElementById("desc").innerHTML = `<b>Tests:</b> ${esc(A.test)}` +
-      [["Reads", A.reads], ["Decides", A.decides], ["Book", A.book]].filter(x => x[1]).map(([h, t]) => `<br><b>${h}:</b> ${esc(t)}`).join("");
+      [["Universe", A.universe], ["Signal", A.signal], ["Portfolio", A.portfolio], ["Rebalancing", A.rebal || (A.universe ? REBAL : "")]].filter(x => x[1]).map(([h, t]) => `<br><b>${h}:</b> ${esc(t)}`).join("");
     table("pos", [["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Weight", p => wt(p.weight), "n"], ["Return", p => pct(p.return), "n"], ["P&L", p => usd(p.pnl), "n"],
       ["Side", p => p.side + (p.role === "beta hedge" ? " (hedge)" : "")], ["Name", p => esc(p.name)], ["Amount $", p => "$" + fmt(p.amount, 0), "n"],
       ["Entry", p => p.entry_day], ["Entry $", p => fmt(p.entry_price), "n"], ["Current $", p => fmt(p.current_price), "n"]], b.positions);
