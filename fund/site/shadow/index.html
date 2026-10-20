@@ -72,63 +72,68 @@ const esc = s => (s ?? "").toString().replace(/[&<>]/g, c => ({ "&": "&amp;", "<
 // readable names for the record keys; C<n> = challenger n in PROTOCOL_fund.md
 const NAMES = {
   c0_weekly: "Weekly fund book (C0)", analyst: "Analysts, no red team", quant: "Price-factor model, whole S&P 500",
-  core20: "Core 20 names (Protocol 5)", random: "Random picks (luck baseline)", c2_selfconsistency: "Analysts, 5-answer vote (C2)",
-  c3_textonly: "News only, company hidden (C3)", c4_volscaled: "Volatility-scaled sizing (C4)", c5_reversal: "Fund views + reversal on quiet names (C5)",
-  c8_informed: "Analysts + macro and peer news (C8)", c9_ranker: "PM ranks the C8 views (C9)", c10_lifecycle: "Lifecycle fund (C10)",
+  core20: "Core 20 firms only", random: "Random picks (luck baseline)", c2_selfconsistency: "Analysts, 5-answer vote (C2)",
+  c3_textonly: "News only, company hidden (C3)", c4_volscaled: "Volatility-scaled sizing (C4)", c5_reversal: "Fund picks + reversal bets on no-news stocks (C5)",
+  c8_informed: "Analysts + macro and peer news (C8)", c9_ranker: "PM ranks the C8 verdicts (C9)", c10_lifecycle: "Lifecycle fund (C10)",
   sp500_hold: "S&P 500 buy & hold",
 };
 const label = k => NAMES[k] || k;
-// what each book tests, then who reads what, how they decide and how the book is built
-const FUND_RULES = "Up to 10 longs and 10 shorts, strongest score × confidence first, at most 10% of the book each; sector and dollar limits; SPY hedges out the market.";
+// Each book as a pipeline: what goes in, what is done to it, how the positions are decided. Terms are defined where used.
+const NEWS = "For each stock: the last ~13 weeks of news grouped into stories and dated events, recent price moves, risk figures (beta, volatility) and whether it reports earnings this week.";
+const POOL = "about 45 stocks picked each week (the 20 core firms, AI-nominated ideas, the price model's extremes and news-attention spikes)";
+const ANALYST = "An AI analyst reads it and writes a verdict per stock: a score from −2 (strong sell) to +2 (strong buy), 0 if the news gives no reason to act, and a confidence from 0 to 1.";
+const RED = "A second AI, the red team, looks for one specific error in each non-zero verdict (wrong fact, stale news, recycled opinion, contradicted, already in the price). If it finds one, the score moves a step toward 0.";
+const PICK = "Up to 10 longs (positive scores) and 10 shorts (negative), strongest score × confidence first. Size = score × confidence ÷ 20 of the book, at most 10% each.";
+const RISK = " Then the risk rules: each sector net at most 30%, net dollars (longs minus shorts) at most 10% of the gross, and SPY (an S&P 500 fund) added to cancel the book's market sensitivity.";
 const ABOUT = {
-  c0_weekly: { test: "The original fund: the whole weekly team.",
-    reads: "This week's news on about 45 covered stocks.",
-    decides: "An AI analyst writes a memo on each stock and scores it from −2 (strong sell) to +2 (strong buy), with a confidence. A red-team reviewer then argues against each memo and can weaken the score.",
-    book: FUND_RULES + " Held Thursday to Thursday. It traded the account until 14 Oct; since then it runs as a shadow, compared with the lifecycle fund." },
+  c0_weekly: { test: "The original fund: the full weekly team.",
+    info: "News, for " + POOL + ". " + NEWS,
+    process: ANALYST + " " + RED,
+    decide: PICK + RISK + " Held Thursday to Thursday. It traded the account until 14 Oct; since then it runs as a shadow, compared with the lifecycle fund." },
   analyst: { test: "Does the red team help?",
-    reads: "The same news as the weekly fund.",
-    decides: "The same analysts and scores, but no red team: their scores go straight to sizing.",
-    book: FUND_RULES },
+    info: "The same as the weekly fund: " + POOL + ", with the same news and price data.",
+    process: ANALYST + " No red team.",
+    decide: PICK + RISK },
   quant: { test: "Can a simple formula beat the AI team? The main benchmark.",
-    reads: "Prices only, for all 500 S&P stocks: five price signals (12-month momentum, last month's and last week's moves, volatility, distance from the 52-week high).",
-    decides: "A fixed statistical model (ridge regression) turns the signals into a forecast. No AI, no news.",
-    book: "The 10 highest forecasts long and the 10 lowest short, 10% each; same limits and SPY hedge." },
-  core20: { test: "The older Protocol 5 design, on a fixed list.",
-    reads: "The analysts' scores, but only for the 20 firms the dashboard tracks.",
-    decides: "The analysts (no red team).",
-    book: "The 4 best longs and the 4 best shorts, 25% each. No SPY hedge." },
+    info: "Prices only, for all 500 S&P stocks: five signals (12-month momentum, last month's move, last week's move, volatility, distance from the 52-week high). No news.",
+    process: "A fixed statistical model (ridge regression, fitted on past data) turns the five signals into a forecast per stock. No AI.",
+    decide: "The 10 highest forecasts long and the 10 lowest short, 10% each." + RISK },
+  core20: { test: "Is a small fixed list of firms better than a wider weekly pick?",
+    info: "The same news and price data, but only for the 20 core firms the fund's news dashboard follows.",
+    process: ANALYST + " No red team.",
+    decide: "The 4 highest score × confidence long and the 4 lowest short, 25% each. No risk rules and no SPY hedge." },
   random: { test: "Luck baseline: what random picks earn.",
-    reads: "Nothing.",
-    decides: "No one: 10 longs and 10 shorts drawn at random from the covered stocks (seeded by the date).",
-    book: "10% each; same limits and SPY hedge as the fund." },
-  c2_selfconsistency: { test: "Does asking 5 times and taking the vote beat asking once?",
-    reads: "The same news and prompt as the analysts.",
-    decides: "The analyst is asked 5 times with more randomness. Score = the middle answer; confidence is higher when the 5 answers agree. No red team.",
-    book: FUND_RULES },
-  c3_textonly: { test: "Is the team reading the news, or just reacting to recent price moves?",
-    reads: "The news stories only, with the company's name and ticker replaced by \"the company\", and no price data.",
-    decides: "One analyst scores each stock blind. No red team.",
-    book: FUND_RULES },
+    info: "None.",
+    process: "None. 10 longs and 10 shorts are drawn at random from " + POOL + " (seeded by the date).",
+    decide: "10% each." + RISK },
+  c2_selfconsistency: { test: "Does asking five times and taking the middle answer beat asking once?",
+    info: "The same as the analysts: " + NEWS,
+    process: "The analyst is asked 5 times, with some randomness. Score = the middle of the 5 answers; confidence is higher when they agree. No red team.",
+    decide: PICK + RISK },
+  c3_textonly: { test: "Is the team reading the news, or reacting to recent price moves?",
+    info: "The news stories only. The company's name and ticker are replaced by \"the company\" and there are no price data.",
+    process: "An AI analyst scores each stock blind, from −2 to +2 with a confidence. No red team.",
+    decide: PICK + RISK },
   c4_volscaled: { test: "Does a smarter sizing rule help?",
-    reads: "The weekly fund's final scores (after the red team).",
-    decides: "Same views; only the sizes change. Size = score × confidence ÷ the stock's volatility, so calmer stocks get bigger bets. A stock whose view drops to zero is kept one extra week.",
-    book: "Up to 10 per side, scaled to the fund's total size, at most 10% each; same limits and SPY hedge." },
+    info: "The weekly fund's final scores and confidences (after the red team), plus each stock's volatility.",
+    process: "No new AI call. Positions are re-sized by score × confidence ÷ volatility, so calmer stocks get bigger bets, then scaled to the fund's total size. A stock whose score drops to 0 is kept one extra week.",
+    decide: "Up to 10 per side, at most 10% each." + RISK },
   c5_reversal: { test: "Can the stocks with no news earn something too?",
-    reads: "The weekly fund's scores, plus last week's returns.",
-    decides: "Keeps every position of the fund. Covered stocks with no view and no recent news get a small bet that last week's move reverses: buy last week's losers, sell its winners.",
-    book: "The fund's positions plus those extra bets (at most 3% each); same limits and SPY hedge." },
+    info: "The weekly fund's final scores, last week's return of each stock, and whether it had a news event in the last 7 days.",
+    process: "The fund's positions are kept as they are. Stocks with score 0 and no news event in 7 days are ranked by last week's return.",
+    decide: "The fund's positions, plus a small bet that last week's move reverses on those quiet stocks: buy the biggest losers, sell the biggest winners, at most 3% each." + RISK },
   c8_informed: { test: "Do the analysts decide better with more context?",
-    reads: "The same news per stock, plus the week's macro brief, the big themes, the currency view, and what each stock's peers and sector made news with.",
-    decides: "One analyst memo per stock, as in the fund, but no red team.",
-    book: FUND_RULES },
+    info: "Everything the analysts get (" + NEWS + ") plus the week's macro brief, the big market themes, the currency view, and what each stock's closest peers and sub-industry made news with.",
+    process: ANALYST + " No red team.",
+    decide: PICK + RISK },
   c9_ranker: { test: "Can a portfolio manager pick the best of the analysts' ideas?",
-    reads: "All of C8's memos side by side, plus the macro brief.",
-    decides: "One AI portfolio manager ranks the views against each other, from the strongest buy to the strongest sell.",
-    book: "Up to 10 longs and 10 shorts in the manager's order, sized by C8's score × confidence; same limits and SPY hedge. No book in a week where too many C8 memos failed." },
+    info: "All of C8's verdicts side by side, with their reasons, plus the macro brief.",
+    process: "One AI portfolio manager ranks every stock with a non-zero verdict, from strongest buy to strongest sell, comparing them with each other. Every long stays above every short.",
+    decide: "Up to 10 longs and 10 shorts taken in the manager's order, sized by C8's score × confidence ÷ 20, at most 10% each." + RISK + " No book in a week where over 25% of C8's verdicts failed." },
   sp500_hold: { test: "What the market did.",
-    reads: "Nothing.",
-    decides: "No one: 100% SPY (the S&P 500 fund), bought at the first day's close and never traded.",
-    book: "Long only with full market exposure, unlike the hedged books. Dividends reinvested." },
+    info: "None.",
+    process: "None.",
+    decide: "Buy 100% SPY on the first day and never trade. Long only with full market exposure, unlike the hedged books. Dividends reinvested." },
 };
 const about = b => ABOUT[b.key] || { test: b.desc || "" };
 // research books: q5 = five price factors, qn = the same plus news, h<n> = horizon in trading days
@@ -173,7 +178,7 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
     document.querySelectorAll("#board tr.pick").forEach(tr => tr.onclick = () => { show(tr.dataset.k); sel.scrollIntoView({ behavior: "smooth", block: "start" }); });
     const A = about(b);
     document.getElementById("desc").innerHTML = `<b>Tests:</b> ${esc(A.test)}` +
-      [["Reads", A.reads], ["Decides", A.decides], ["Book", A.book]].filter(x => x[1]).map(([h, t]) => `<br><b>${h}:</b> ${esc(t)}`).join("");
+      [["1 · Information in", A.info], ["2 · Processing", A.process], ["3 · Decision", A.decide]].filter(x => x[1]).map(([h, t]) => `<br><b>${h}:</b> ${esc(t)}`).join("");
     table("pos", [["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Weight", p => wt(p.weight), "n"], ["Return", p => pct(p.return), "n"], ["P&L", p => usd(p.pnl), "n"],
       ["Side", p => p.side + (p.role === "beta hedge" ? " (hedge)" : "")], ["Name", p => esc(p.name)], ["Amount $", p => "$" + fmt(p.amount, 0), "n"],
       ["Entry", p => p.entry_day], ["Entry $", p => fmt(p.entry_price), "n"], ["Current $", p => fmt(p.current_price), "n"]], b.positions);
