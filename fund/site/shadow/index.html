@@ -222,6 +222,14 @@ fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
   }
   function drawSpx(span) {
     const B = R.bench || [], { idx, L } = lines(span), keys = Object.keys(L);
+    if (!keys.length) {                         // ledger built before the S&P lines existed, or no live week yet
+      if (chart) { chart.destroy(); chart = null; }
+      document.getElementById("rchart").parentElement.style.display = "none";
+      document.getElementById("rboard").innerHTML = '<div class="empty">' + (B.length
+        ? "No week in this span has every line yet. Choose History + live, or wait for the next weekly run."
+        : "No S&amp;P comparison in this ledger yet (built " + esc((R.generated || "").slice(0, 10)) + "). It appears after the next weekly research run, Thursday 03:30 UTC.") + "</div>";
+      return;
+    }
     const dates = idx.map(i => B[i].asof);
     const sets = keys.map((k, j) => { let v = 1; return { label: k, data: L[k].map(x => (v *= 1 + x) - 1), borderColor: j === 0 ? "#e6e6e6" : PAL[j % PAL.length],
       borderWidth: j < 3 ? 2.5 : 1.5, borderDash: j === 1 || j === 2 ? [5, 4] : [], pointRadius: 0, tension: 0.1 }; });
@@ -239,6 +247,7 @@ fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
       ["Sharpe (ann.)", r => P[r.k].sharpe == null ? "" : P[r.k].sharpe.toFixed(2), "n"], ["Max drawdown", r => pct(P[r.k].dd), "n"]], keys.map(k => ({ k })));
   }
   function draw(span) {
+    document.getElementById("rchart").parentElement.style.display = "";
     if (document.getElementById("rview").value === "spx") return drawSpx(span);
     const rows = k => R.books[k].filter(x => x.ret != null && (span === "all" || x.kind === "live"));
     const dates = [...new Set(names.flatMap(k => R.books[k].filter(x => span === "all" || x.kind === "live").map(x => x.asof)))].sort();
