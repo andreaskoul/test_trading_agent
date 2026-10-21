@@ -1,0 +1,640 @@
+{
+ "day": "2026-10-21",
+ "asof": "2026-10-14",
+ "close_et": "16:00",
+ "news_ts": 1792611600,
+ "decided_at": "2026-10-21T19:57:05+00:00",
+ "style": "preclose",
+ "nav_model": 98585.22739778925,
+ "hedge_w": -0.09413320393113153,
+ "actions": [
+  {
+   "day": "2026-10-21",
+   "id": "2026-10-07|MRVL",
+   "ticker": "MRVL",
+   "action": "news_increase",
+   "from": 5170.53,
+   "to": 8572.8,
+   "R": -0.106049,
+   "W": 0.151861,
+   "days_held": 9
+  },
+  {
+   "day": "2026-10-21",
+   "id": "2026-10-07|HPE",
+   "ticker": "HPE",
+   "action": "news_increase",
+   "from": 2097.16,
+   "to": 3782.55,
+   "R": -0.187243,
+   "W": 0.125606,
+   "days_held": 9
+  },
+  {
+   "day": "2026-10-21",
+   "id": "2026-10-07|NKE",
+   "ticker": "NKE",
+   "action": "news_increase",
+   "from": -7024.68,
+   "to": -9613.73,
+   "R": -0.079557,
+   "W": 0.063732,
+   "days_held": 9
+  },
+  {
+   "day": "2026-10-21",
+   "id": "2026-10-14|CRM",
+   "ticker": "CRM",
+   "action": "news_increase",
+   "from": 2886.94,
+   "to": 4437.1,
+   "R": -0.021122,
+   "W": 0.086881,
+   "days_held": 4
+  },
+  {
+   "day": "2026-10-21",
+   "id": "2026-10-14|ON",
+   "ticker": "ON",
+   "action": "horizon",
+   "from": 2821.23,
+   "to": 0.0,
+   "R": 0.040996,
+   "W": 0.06559,
+   "days_held": 4
+  },
+  {
+   "day": "2026-10-21",
+   "id": "2026-10-14|NVDA",
+   "ticker": "NVDA",
+   "action": "horizon",
+   "from": 2509.03,
+   "to": 0.0,
+   "R": 0.018875,
+   "W": 0.034856,
+   "days_held": 4
+  },
+  {
+   "day": "2026-10-21",
+   "id": "2026-10-14|MSFT",
+   "ticker": "MSFT",
+   "action": "horizon",
+   "from": 3700.17,
+   "to": 0.0,
+   "R": -0.013817,
+   "W": 0.033882,
+   "days_held": 4
+  },
+  {
+   "day": "2026-10-21",
+   "id": "2026-10-14|ORCL",
+   "ticker": "ORCL",
+   "action": "horizon",
+   "from": -3751.34,
+   "to": 0.0,
+   "R": 0.04456,
+   "W": 0.062433,
+   "days_held": 4
+  },
+  {
+   "day": "2026-10-21",
+   "id": "2026-10-14|NFLX",
+   "ticker": "NFLX",
+   "action": "horizon",
+   "from": -964.21,
+   "to": 0.0,
+   "R": 0.108451,
+   "W": 0.041135,
+   "days_held": 4
+  },
+  {
+   "day": "2026-10-21",
+   "id": "2026-10-14|TSLA",
+   "ticker": "TSLA",
+   "action": "horizon",
+   "from": -1665.46,
+   "to": 0.0,
+   "R": -0.059565,
+   "W": 0.042703,
+   "days_held": 4
+  },
+  {
+   "day": "2026-10-21",
+   "id": "SPY",
+   "ticker": "SPY",
+   "action": "hedge",
+   "from": 276.55,
+   "to": -9280.14
+  }
+ ],
+ "cool": {},
+ "lots_after": [
+  {
+   "id": "2026-10-07|MRVL",
+   "ticker": "MRVL",
+   "side": 1,
+   "w0": 0.057962149688043356,
+   "beta": 1.9268106508,
+   "sigma_e": 0.042118691238406177,
+   "H": 13,
+   "W": 0.15186110091550933,
+   "R": -0.10604922705363143,
+   "days": 9,
+   "kill_conditions": [
+    "Marvell cuts or withdraws its FY28 $20B or FY31 $70-90B revenue targets",
+    "A major analyst downgrades MRVL citing AI data-center demand slowdown",
+    "Marvell loses a key custom AI chip customer or cuts data-center revenue guidance"
+   ],
+   "first_reported": "2026-10-06",
+   "score": 2,
+   "cohort": "2026-10-07",
+   "entry_day": "2026-10-08",
+   "entry_close_ts": 1791489600,
+   "news_until": 1792611600,
+   "increased": true,
+   "w": 0.08695830298450294
+  },
+  {
+   "id": "2026-10-07|HPE",
+   "ticker": "HPE",
+   "side": 1,
+   "w0": 0.025574456206743715,
+   "beta": 1.503743029,
+   "sigma_e": 0.037871722252833785,
+   "H": 11,
+   "W": 0.1256062928772028,
+   "R": -0.18724342788797482,
+   "days": 9,
+   "kill_conditions": [
+    "HPE cuts FY27 networking guidance",
+    "Vultr cancels or delays the $1.2B Helios AI server order",
+    "HPE loses a major AI server order to a competitor"
+   ],
+   "first_reported": "2026-10-02",
+   "score": 1,
+   "cohort": "2026-10-07",
+   "entry_day": "2026-10-08",
+   "entry_close_ts": 1791489600,
+   "news_until": 1792611600,
+   "increased": true,
+   "w": 0.038368337328052525
+  },
+  {
+   "id": "2026-10-07|AMD",
+   "ticker": "AMD",
+   "side": 1,
+   "w0": 0.033713214871670616,
+   "beta": 1.9388291041,
+   "sigma_e": 0.031961678183490064,
+   "H": 14,
+   "W": 0.11958964926894712,
+   "R": -0.10873872018738212,
+   "days": 9,
+   "kill_conditions": [
+    "AMD terminates or withdraws credit support agreement for Fermi's Project Matador",
+    "Fermi's Project Matador lease or financing is cancelled or fails to close",
+    "AMD delays or cancels launch of Helion/Helios AI rack platform"
+   ],
+   "first_reported": "2026-10-13",
+   "score": 1,
+   "cohort": "2026-10-07",
+   "entry_day": "2026-10-08",
+   "entry_close_ts": 1791489600,
+   "news_until": 1792611600,
+   "increased": true,
+   "w": 0.033035985549817425
+  },
+  {
+   "id": "2026-10-07|NKE",
+   "ticker": "NKE",
+   "side": -1,
+   "w0": -0.065,
+   "beta": 0.8879359006,
+   "sigma_e": 0.01767595269211655,
+   "H": 13,
+   "W": 0.06373155377410196,
+   "R": -0.07955662493619481,
+   "days": 9,
+   "kill_conditions": [
+    "Nike raises FY27 revenue guidance or reports Q2 revenue beat.",
+    "Nike China sales return to growth and management signals turnaround.",
+    "Analyst upgrades Nike to Buy citing improving fundamentals."
+   ],
+   "first_reported": "2026-10-06",
+   "score": -2,
+   "cohort": "2026-10-07",
+   "entry_day": "2026-10-08",
+   "entry_close_ts": 1791489600,
+   "news_until": 1792611600,
+   "increased": true,
+   "w": -0.09751690930053042
+  },
+  {
+   "id": "2026-10-14|CRM",
+   "ticker": "CRM",
+   "side": 1,
+   "w0": 0.03,
+   "beta": 0.5840932952,
+   "sigma_e": 0.0328379352501746,
+   "H": 7,
+   "W": 0.0868810102408036,
+   "kill_conditions": [
+    "BofA downgrades Salesforce or cuts its price target below $285",
+    "Salesforce terminates or writes down the Loops acquisition",
+    "Analysts reverse the upgrade, citing renewed AI disintermediation risk"
+   ],
+   "first_reported": "2026-10-12",
+   "score": 1,
+   "cohort": "2026-10-14",
+   "entry_day": "2026-10-15",
+   "entry_close_ts": 1792093200,
+   "R": -0.021122370475817262,
+   "days": 4,
+   "news_until": 1792611600,
+   "increased": true,
+   "w": 0.0450078042925525
+  },
+  {
+   "id": "2026-10-14|DAL",
+   "ticker": "DAL",
+   "side": -1,
+   "w0": -0.04783500259099339,
+   "beta": 1.408434609,
+   "sigma_e": 0.015322674039553553,
+   "H": 11,
+   "W": 0.050819560574118426,
+   "kill_conditions": [
+    "Delta raises its 2026 earnings guidance or reinstates prior forecast",
+    "Jet fuel prices decline sharply, reducing airline cost pressure",
+    "Delta successfully launches its Atlanta-Riyadh route without further delay"
+   ],
+   "first_reported": "2026-10-09",
+   "score": -2,
+   "cohort": "2026-10-14",
+   "entry_day": "2026-10-15",
+   "entry_close_ts": 1792093200,
+   "R": 0.005609756560495912,
+   "days": 4,
+   "news_until": 1792611600,
+   "increased": true,
+   "reduced": true,
+   "w": -0.03738992968261548
+  },
+  {
+   "id": "2026-10-14|JPM",
+   "ticker": "JPM",
+   "side": -1,
+   "w0": -0.02391349702606835,
+   "beta": 0.8522598366,
+   "sigma_e": 0.010647844060787033,
+   "H": 13,
+   "W": 0.03839134773431235,
+   "kill_conditions": [
+    "JPMorgan reports Q4 revenue and EPS beat estimates",
+    "JPMorgan raises full-year guidance or announces large buyback/dividend increase",
+    "Analysts upgrade JPMorgan to Buy with materially higher price targets"
+   ],
+   "first_reported": "2026-10-13",
+   "score": -1,
+   "cohort": "2026-10-14",
+   "entry_day": "2026-10-15",
+   "entry_close_ts": 1792093200,
+   "R": 0.003598608455679673,
+   "days": 4,
+   "news_until": 1792611600,
+   "w": -0.02377152078030924
+  },
+  {
+   "id": "2026-10-14|KHC",
+   "ticker": "KHC",
+   "side": -1,
+   "w0": -0.02391349702606835,
+   "beta": 0.3351283058,
+   "sigma_e": 0.016147017299596722,
+   "H": 9,
+   "W": 0.048441051898790166,
+   "kill_conditions": [
+    "Kraft Heinz reports US retail sales growth exceeding expectations",
+    "Kraft Heinz announces dividend increase or special dividend",
+    "Kraft Heinz appoints new permanent General Counsel"
+   ],
+   "first_reported": "2026-10-14",
+   "score": -1,
+   "cohort": "2026-10-14",
+   "entry_day": "2026-10-15",
+   "entry_close_ts": 1792093200,
+   "R": -0.010564793820510525,
+   "days": 4,
+   "news_until": 1792611600,
+   "w": -0.024067600836758407
+  },
+  {
+   "id": "2026-10-14|STT",
+   "ticker": "STT",
+   "side": -1,
+   "w0": -0.02391349702606835,
+   "beta": 1.0371090036,
+   "sigma_e": 0.011793064360554183,
+   "H": 14,
+   "W": 0.044125606377368065,
+   "kill_conditions": [
+    "State Street reports a revenue beat with net inflows accelerating back above prior levels",
+    "Company raises its fee revenue growth outlook above consensus or prior guidance",
+    "Analysts cite improving fee-growth trajectory, reversing post-earnings underperformance versus peers"
+   ],
+   "first_reported": "2026-10-14",
+   "score": -1,
+   "cohort": "2026-10-14",
+   "entry_day": "2026-10-15",
+   "entry_close_ts": 1792093200,
+   "R": -0.0040995357992834065,
+   "days": 4,
+   "news_until": 1792611600,
+   "w": -0.023967582206998652
+  },
+  {
+   "id": "2026-10-14|BAC",
+   "ticker": "BAC",
+   "side": -1,
+   "w0": -0.023120651679256303,
+   "beta": 0.8299454439,
+   "sigma_e": 0.013440444525801502,
+   "H": 6,
+   "W": 0.03292223100439709,
+   "kill_conditions": [
+    "Bank of America's $1.2B AML penalty is reduced, overturned, or settled for materially less",
+    "Bank of America raises full-year guidance or reports a revenue/trading beat next quarter",
+    "Inflation cools and the Fed rules out further rate hikes, easing bank bond-book pressure"
+   ],
+   "first_reported": "2026-10-14",
+   "score": -1,
+   "cohort": "2026-10-14",
+   "entry_day": "2026-10-15",
+   "entry_close_ts": 1792093200,
+   "R": 0.017980843942013346,
+   "days": 4,
+   "news_until": 1792611600,
+   "increased": true,
+   "w": -0.034969418457731154
+  }
+ ],
+ "prices": {
+  "MRVL": 244.93,
+  "HPE": 58.215,
+  "AMD": 553.47,
+  "NKE": 37.54,
+  "CRM": 241.825,
+  "DAL": 77.805,
+  "JPM": 334.89,
+  "KHC": 23.525,
+  "STT": 168.66,
+  "BAC": 50.865,
+  "SPY": 773.485
+ },
+ "equity": 98536.98,
+ "current_qty": {
+  "AMD": 6.0,
+  "BAC": -68.0,
+  "CRM": 12.0,
+  "DAL": -47.0,
+  "HPE": 36.0,
+  "JPM": -7.0,
+  "KHC": -101.0,
+  "MRVL": 21.0,
+  "MSFT": 7.0,
+  "NFLX": -15.0,
+  "NKE": -187.0,
+  "NVDA": 11.0,
+  "ON": 37.0,
+  "ORCL": -29.0,
+  "STT": -14.0,
+  "TSLA": -4.0
+ },
+ "target_weights": {
+  "MRVL": 0.08695830298450294,
+  "HPE": 0.038368337328052525,
+  "AMD": 0.033035985549817425,
+  "NKE": -0.09751690930053042,
+  "CRM": 0.0450078042925525,
+  "DAL": -0.03738992968261548,
+  "JPM": -0.02377152078030924,
+  "KHC": -0.024067600836758407,
+  "STT": -0.023967582206998652,
+  "BAC": -0.034969418457731154,
+  "SPY": -0.09413320393113153
+ },
+ "orders": [
+  {
+   "symbol": "CRM",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 6,
+   "target_weight": 0.04501,
+   "price_ref": 241.825,
+   "client_order_id": "fund-lc-2026-10-21-CRM-rebalance",
+   "attempts": [
+    "fund-lc-2026-10-21-CRM-rebalance-a1"
+   ],
+   "ids": [
+    "7568ef92-dfe3-4340-b535-8f46e56e68fc"
+   ],
+   "id": "7568ef92-dfe3-4340-b535-8f46e56e68fc",
+   "filled_qty": 6.0,
+   "fill_price": 241.79,
+   "status": "filled"
+  },
+  {
+   "symbol": "HPE",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 29,
+   "target_weight": 0.03837,
+   "price_ref": 58.215,
+   "client_order_id": "fund-lc-2026-10-21-HPE-rebalance",
+   "attempts": [
+    "fund-lc-2026-10-21-HPE-rebalance-a1"
+   ],
+   "ids": [
+    "1137c77e-3c5d-49a9-9189-eead638ef645"
+   ],
+   "id": "1137c77e-3c5d-49a9-9189-eead638ef645",
+   "filled_qty": 29.0,
+   "fill_price": 58.084138,
+   "status": "filled"
+  },
+  {
+   "symbol": "MRVL",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 14,
+   "target_weight": 0.08696,
+   "price_ref": 244.93,
+   "client_order_id": "fund-lc-2026-10-21-MRVL-rebalance",
+   "attempts": [
+    "fund-lc-2026-10-21-MRVL-rebalance-a1"
+   ],
+   "ids": [
+    "71eeba68-51dc-495b-9a38-4ae65e5b6174"
+   ],
+   "id": "71eeba68-51dc-495b-9a38-4ae65e5b6174",
+   "filled_qty": 14.0,
+   "fill_price": 244.55,
+   "status": "filled"
+  },
+  {
+   "symbol": "MSFT",
+   "leg": "close",
+   "side": "sell",
+   "qty": 7,
+   "target_weight": 0.0,
+   "price_ref": 533.06,
+   "client_order_id": "fund-lc-2026-10-21-MSFT-close",
+   "attempts": [
+    "fund-lc-2026-10-21-MSFT-close-a1"
+   ],
+   "ids": [
+    "69a115ff-2e35-4319-ba47-922ed89bf67d"
+   ],
+   "id": "69a115ff-2e35-4319-ba47-922ed89bf67d",
+   "filled_qty": 7.0,
+   "fill_price": 533.04,
+   "status": "filled"
+  },
+  {
+   "symbol": "NFLX",
+   "leg": "close",
+   "side": "buy",
+   "qty": 15,
+   "target_weight": 0.0,
+   "price_ref": 65.105,
+   "client_order_id": "fund-lc-2026-10-21-NFLX-close",
+   "attempts": [
+    "fund-lc-2026-10-21-NFLX-close-a1"
+   ],
+   "ids": [
+    "309bb7b6-237c-4ff8-938b-f95a57e30096"
+   ],
+   "id": "309bb7b6-237c-4ff8-938b-f95a57e30096",
+   "filled_qty": 15.0,
+   "fill_price": 65.068667,
+   "status": "filled"
+  },
+  {
+   "symbol": "NKE",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 69,
+   "target_weight": -0.09752,
+   "price_ref": 37.54,
+   "client_order_id": "fund-lc-2026-10-21-NKE-rebalance",
+   "attempts": [
+    "fund-lc-2026-10-21-NKE-rebalance-a1"
+   ],
+   "ids": [
+    "4cb889ee-296e-42d9-9cf1-85a8236bc987"
+   ],
+   "id": "4cb889ee-296e-42d9-9cf1-85a8236bc987",
+   "filled_qty": 69.0,
+   "fill_price": 37.49,
+   "status": "filled"
+  },
+  {
+   "symbol": "NVDA",
+   "leg": "close",
+   "side": "sell",
+   "qty": 11,
+   "target_weight": 0.0,
+   "price_ref": 222.04,
+   "client_order_id": "fund-lc-2026-10-21-NVDA-close",
+   "attempts": [
+    "fund-lc-2026-10-21-NVDA-close-a1"
+   ],
+   "ids": [
+    "e341d198-1fc0-4bc4-847c-3e7429af4c7a"
+   ],
+   "id": "e341d198-1fc0-4bc4-847c-3e7429af4c7a",
+   "filled_qty": 11.0,
+   "fill_price": 221.922727,
+   "status": "filled"
+  },
+  {
+   "symbol": "ON",
+   "leg": "close",
+   "side": "sell",
+   "qty": 37,
+   "target_weight": 0.0,
+   "price_ref": 77.005,
+   "client_order_id": "fund-lc-2026-10-21-ON-close",
+   "attempts": [
+    "fund-lc-2026-10-21-ON-close-a1"
+   ],
+   "ids": [
+    "91c93186-cad2-4c06-9448-6a691ab3e50e"
+   ],
+   "id": "91c93186-cad2-4c06-9448-6a691ab3e50e",
+   "filled_qty": 37.0,
+   "fill_price": 76.931081,
+   "status": "filled"
+  },
+  {
+   "symbol": "ORCL",
+   "leg": "close",
+   "side": "buy",
+   "qty": 29,
+   "target_weight": 0.0,
+   "price_ref": 128.895,
+   "client_order_id": "fund-lc-2026-10-21-ORCL-close",
+   "attempts": [
+    "fund-lc-2026-10-21-ORCL-close-a1"
+   ],
+   "ids": [
+    "70ca9133-6ea6-4bdc-b688-d3478da62c37"
+   ],
+   "id": "70ca9133-6ea6-4bdc-b688-d3478da62c37",
+   "filled_qty": 29.0,
+   "fill_price": 129.046897,
+   "status": "filled"
+  },
+  {
+   "symbol": "SPY",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 12,
+   "target_weight": -0.09413,
+   "price_ref": 773.485,
+   "client_order_id": "fund-lc-2026-10-21-SPY-rebalance",
+   "attempts": [
+    "fund-lc-2026-10-21-SPY-rebalance-a1"
+   ],
+   "ids": [
+    "ee70b09e-5ec5-4ea6-951d-c00b2b2bae33"
+   ],
+   "id": "ee70b09e-5ec5-4ea6-951d-c00b2b2bae33",
+   "filled_qty": 12.0,
+   "fill_price": 773.201666,
+   "status": "filled"
+  },
+  {
+   "symbol": "TSLA",
+   "leg": "close",
+   "side": "buy",
+   "qty": 4,
+   "target_weight": 0.0,
+   "price_ref": 385.56,
+   "client_order_id": "fund-lc-2026-10-21-TSLA-close",
+   "attempts": [
+    "fund-lc-2026-10-21-TSLA-close-a1"
+   ],
+   "ids": [
+    "cd34a607-5c55-4b57-8997-e9171ac708ec"
+   ],
+   "id": "cd34a607-5c55-4b57-8997-e9171ac708ec",
+   "filled_qty": 4.0,
+   "fill_price": 386.4025,
+   "status": "filled"
+  }
+ ],
+ "problems": [],
+ "status": "submitted",
+ "submitted_at": "2026-10-21T20:00:09+00:00"
+}
