@@ -1,0 +1,116 @@
+{
+ "asof": "2026-10-21",
+ "cutoff": "2026-10-21T22:00:00+00:00",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "Ionstream",
+  "usage": {
+   "prompt_tokens": 2781,
+   "completion_tokens": 6417,
+   "total_tokens": 9198,
+   "cost": 0.00446202,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 0,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.00446202,
+    "upstream_inference_prompt_cost": 0.00061182,
+    "upstream_inference_completions_cost": 0.0038502
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 5855,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"calendar\":[{\"date\":\"2026-10-22\",\"release\":\"Unemployment Insurance Weekly Claims Report\",\"why\":\"Labor market pulse; guides Fed path and rate-sensitive equities.\"},{\"date\":\"2026-10-22\",\"release\":\"Chicago Fed Survey of Economic Conditions\",\"why\":\"Growth read; informs cyclical earnings and risk appetite.\"},{\"date\":\"2026-10-22\",\"release\":\"H.4.1 Factors Affecting Reserve Balances\",\"why\":\"Balance sheet/liquidity; affects funding and risk assets.\"},{\"date\":\"2026-10-22\",\"release\":\"H.15 Selected Interest Rates\",\"why\":\"Rates curve; discount rates for equity valuations.\"},{\"date\":\"2026-10-22\",\"release\":\"Primary Mortgage Market Survey\",\"why\":\"Mortgage rates; housing demand and homebuilder outlook.\"},{\"date\":\"2026-10-22\",\"release\":\"Risk-On Risk-Off Index\",\"why\":\"Risk appetite gauge; informs positioning across sectors.\"},{\"date\":\"2026-10-22\",\"release\":\"ICE BofA Indices\",\"why\":\"Credit spreads; risk appetite and financial conditions.\"},{\"date\":\"2026-10-28\",\"release\":\"FOMC decision\",\"why\":\"Rate path; hike odds 12%, hold priced.\"}],\"regime\":\"Rates: Fed hold priced (99% above 3.75%, 12% hike). Growth: moderate; Q3 GDP >4% at 11%, payrolls >70k at 53%. Inflation: CPI >0.2% at 56%, core YoY >3.5% at 1%. Risk appetite: mixed; AI capex tone -0.59, Middle East tone -2.50, oil supply tone -2.17.\",\"themes\":[{\"name\":\"AI capex scrutiny\",\"evidence\":\"GDELT ai_capex volume 0.442 vs 0.599, tone -0.59; ideation: data-center demand lifts utilities, industrials, SMCI; chip hardware faces guidance scrutiny.\",\"sectors\":[\"Information Technology\",\"Utilities\",\"Industrials\"]},{\"name\":\"Consumer discretionary split\",\"evidence\":\"Ideation: hotels strong, restaurants and housing weak; PMMS mortgage release in holding week.\",\"sectors\":[\"Consumer Discretionary\",\"Real Estate\"]},{\"name\":\"Oil supply inflation\",\"evidence\":\"GDELT oil_supply volume 0.312 vs 0.272, tone -2.17; Southwest cuts 2026 profit forecast on higher fuel.\",\"sectors\":[\"Energy\",\"Industrials\",\"Consumer Discretionary\"]}],\"fx_view\":\"Neutral dollar: Fed hold priced, pound firm on inflation, oil supports commodity FX, Middle East risk caps.\"}"
+ },
+ "brief": {
+  "calendar": [
+   {
+    "date": "2026-10-22",
+    "release": "Unemployment Insurance Weekly Claims Report",
+    "why": "Labor market pulse; guides Fed path and rate-sensitive equities."
+   },
+   {
+    "date": "2026-10-22",
+    "release": "Chicago Fed Survey of Economic Conditions",
+    "why": "Growth read; informs cyclical earnings and risk appetite."
+   },
+   {
+    "date": "2026-10-22",
+    "release": "H.4.1 Factors Affecting Reserve Balances",
+    "why": "Balance sheet/liquidity; affects funding and risk assets."
+   },
+   {
+    "date": "2026-10-22",
+    "release": "H.15 Selected Interest Rates",
+    "why": "Rates curve; discount rates for equity valuations."
+   },
+   {
+    "date": "2026-10-22",
+    "release": "Primary Mortgage Market Survey",
+    "why": "Mortgage rates; housing demand and homebuilder outlook."
+   },
+   {
+    "date": "2026-10-22",
+    "release": "Risk-On Risk-Off Index",
+    "why": "Risk appetite gauge; informs positioning across sectors."
+   },
+   {
+    "date": "2026-10-22",
+    "release": "ICE BofA Indices",
+    "why": "Credit spreads; risk appetite and financial conditions."
+   },
+   {
+    "date": "2026-10-28",
+    "release": "FOMC decision",
+    "why": "Rate path; hike odds 12%, hold priced."
+   }
+  ],
+  "regime": "Rates: Fed hold priced (99% above 3.75%, 12% hike). Growth: moderate; Q3 GDP >4% at 11%, payrolls >70k at 53%. Inflation: CPI >0.2% at 56%, core YoY >3.5% at 1%. Risk appetite: mixed; AI capex tone -0.59, Middle East tone -2.50, oil supply tone -2.17.",
+  "themes": [
+   {
+    "name": "AI capex scrutiny",
+    "evidence": "GDELT ai_capex volume 0.442 vs 0.599, tone -0.59; ideation: data-center demand lifts utilities, industrials, SMCI; chip hardware faces guidance scrutiny.",
+    "sectors": [
+     "Information Technology",
+     "Utilities",
+     "Industrials"
+    ]
+   },
+   {
+    "name": "Consumer discretionary split",
+    "evidence": "Ideation: hotels strong, restaurants and housing weak; PMMS mortgage release in holding week.",
+    "sectors": [
+     "Consumer Discretionary",
+     "Real Estate"
+    ]
+   },
+   {
+    "name": "Oil supply inflation",
+    "evidence": "GDELT oil_supply volume 0.312 vs 0.272, tone -2.17; Southwest cuts 2026 profit forecast on higher fuel.",
+    "sectors": [
+     "Energy",
+     "Industrials",
+     "Consumer Discretionary"
+    ]
+   }
+  ],
+  "fx_view": "Neutral dollar: Fed hold priced, pound firm on inflation, oil supports commodity FX, Middle East risk caps."
+ },
+ "text": "MACRO BRIEF (same for every name this week; context, not a view on any stock):\nRegime: Rates: Fed hold priced (99% above 3.75%, 12% hike). Growth: moderate; Q3 GDP >4% at 11%, payrolls >70k at 53%. Inflation: CPI >0.2% at 56%, core YoY >3.5% at 1%. Risk appetite: mixed; AI capex tone -0.59, Middle East tone -2.50, oil supply tone -2.17.\nHolding-week calendar: 2026-10-22 Unemployment Insurance Weekly Claims Report (Labor market pulse; guides Fed path and rate-sensitive equities.); 2026-10-22 Chicago Fed Survey of Economic Conditions (Growth read; informs cyclical earnings and risk appetite.); 2026-10-22 H.4.1 Factors Affecting Reserve Balances (Balance sheet/liquidity; affects funding and risk assets.); 2026-10-22 H.15 Selected Interest Rates (Rates curve; discount rates for equity valuations.); 2026-10-22 Primary Mortgage Market Survey (Mortgage rates; housing demand and homebuilder outlook.); 2026-10-22 Risk-On Risk-Off Index (Risk appetite gauge; informs positioning across sectors.); 2026-10-22 ICE BofA Indices (Credit spreads; risk appetite and financial conditions.); 2026-10-28 FOMC decision (Rate path; hike odds 12%, hold priced.)\nThemes: AI capex scrutiny [Information Technology, Utilities, Industrials]: GDELT ai_capex volume 0.442 vs 0.599, tone -0.59; ideation: data-center demand lifts utilities, industrials, SMCI; chip hardware faces guidance scrutiny. | Consumer discretionary split [Consumer Discretionary, Real Estate]: Ideation: hotels strong, restaurants and housing weak; PMMS mortgage release in holding week. | Oil supply inflation [Energy, Industrials, Consumer Discretionary]: GDELT oil_supply volume 0.312 vs 0.272, tone -2.17; Southwest cuts 2026 profit forecast on higher fuel.\nFX: Neutral dollar: Fed hold priced, pound firm on inflation, oil supports commodity FX, Middle East risk caps.",
+ "inputs": {
+  "calendar_ahead": 228,
+  "kalshi": 12,
+  "gdelt": 9,
+  "headlines": 30,
+  "gpr": "latest 2026-09-30: 168, 40th percentile of the last year (median 180)"
+ }
+}

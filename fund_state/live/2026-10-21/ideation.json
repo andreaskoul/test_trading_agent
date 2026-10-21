@@ -1,0 +1,404 @@
+{
+ "asof": "2026-10-21",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "CoreWeave",
+  "usage": {
+   "prompt_tokens": 40267,
+   "completion_tokens": 45024,
+   "total_tokens": 85291,
+   "cost": 0.03530565,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 0,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.03530565,
+    "upstream_inference_prompt_cost": 0.00604005,
+    "upstream_inference_completions_cost": 0.0292656
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 44254,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"long_ideas\":[{\"ticker\":\"HAS\",\"hypothesis\":\"Q3 deep dive shows Magic Momentum, licensing expansion, cost discipline; stock at 52-week high on strong news flow.\"},{\"ticker\":\"MSCI\",\"hypothesis\":\"Net new subscription sales beat estimates, pointing to sustained sales momentum; RBC positive, stock near high.\"},{\"ticker\":\"NI\",\"hypothesis\":\"Earnings next week expected to grow; data-center power business can grow and stock looks cheap.\"},{\"ticker\":\"AEP\",\"hypothesis\":\"Reports next week with expected earnings growth; upgraded to Buy, utility momentum.\"},{\"ticker\":\"MMM\",\"hypothesis\":\"AWS collaboration on optical connectivity; RBC says Amazon deal advances data-center growth opportunity.\"},{\"ticker\":\"FITB\",\"hypothesis\":\"Strong Q3 after largest conversion; Evercore upgrades to Outperform with $60 price target.\"},{\"ticker\":\"UAL\",\"hypothesis\":\"Q3 deep dive: premium offerings, loyalty, Starlink drive share gains; stronger revenue guidance lifts airlines.\"},{\"ticker\":\"SMCI\",\"hypothesis\":\"Fiscal Q1 update and raised full-year revenue guidance boost AI trade; Super Micro leads AI hardware.\"},{\"ticker\":\"DOV\",\"hypothesis\":\"Reports Q3 tomorrow; earnings catalyst with new product launch, industrial demand.\"},{\"ticker\":\"HLT\",\"hypothesis\":\"AI-agent era trade favors hotels over online agencies; stock at 52-week high on strong momentum.\"},{\"ticker\":\"MAR\",\"hypothesis\":\"AI-agent era trade favors hotels; Wyndham Q3 beat supports travel demand, stock at high.\"},{\"ticker\":\"CSX\",\"hypothesis\":\"Earnings beat with strong margin expansion; rail momentum could continue next week.\"}],\"short_ideas\":[{\"ticker\":\"NFLX\",\"hypothesis\":\"Cuts ad revenue guidance, stock slides 5%; streaming ad growth concerns pressure shares.\"},{\"ticker\":\"LRCX\",\"hypothesis\":\"Chip-gear outlook fails to impress; stock falls, semiconductor equipment sentiment weak.\"},{\"ticker\":\"ROL\",\"hypothesis\":\"Misses Q3 sales expectations, stock drops 7%; pest control demand concerns.\"},{\"ticker\":\"DVA\",\"hypothesis\":\"Stock nosediving; HHS kidney care national plan threatens dialysis reimbursement and volumes.\"},{\"ticker\":\"EQT\",\"hypothesis\":\"Faces historically bearish resistance; analysts estimate earnings decline for natural gas producer.\"},{\"ticker\":\"DOW\",\"hypothesis\":\"Dividend math questioned; BofA flags tough Q3 for chemicals, yield may not be safe.\"},{\"ticker\":\"WYNN\",\"hypothesis\":\"Boston casino GGR lowest since Feb 2021; Macau and Las Vegas demand concerns.\"},{\"ticker\":\"ED\",\"hypothesis\":\"Downgraded to Hold with wait for lower price; utility valuation stretched after run.\"},{\"ticker\":\"CMG\",\"hypothesis\":\"Soft sales and falling stock; higher prices may not revive traffic, restaurant weakness.\"},{\"ticker\":\"FTNT\",\"hypothesis\":\"Rare double downgrade to sell from Arete; cybersecurity competition and valuation concerns.\"},{\"ticker\":\"COHR\",\"hypothesis\":\"Susquehanna cuts target; AI optical component stock down sharply on weak chip equipment sentiment.\"},{\"ticker\":\"NVR\",\"hypothesis\":\"Q3 earnings expected to decline; home sales contracts at record low as mortgage rates hit 7.4%.\"}],\"themes\":[\"AI data-center demand lifts utilities, industrials, and SMCI.\",\"Earnings next week drive NI, AEP, DOV, NVR.\",\"Consumer discretionary split: hotels strong, restaurants and housing weak.\",\"Chip equipment and AI hardware face guidance scrutiny.\",\"Streaming ad and online travel face AI disruption.\"]}"
+ },
+ "llm": {
+  "long_ideas": [
+   {
+    "ticker": "HAS",
+    "hypothesis": "Q3 deep dive shows Magic Momentum, licensing expansion, cost discipline; stock at 52-week high on strong news flow."
+   },
+   {
+    "ticker": "MSCI",
+    "hypothesis": "Net new subscription sales beat estimates, pointing to sustained sales momentum; RBC positive, stock near high."
+   },
+   {
+    "ticker": "NI",
+    "hypothesis": "Earnings next week expected to grow; data-center power business can grow and stock looks cheap."
+   },
+   {
+    "ticker": "AEP",
+    "hypothesis": "Reports next week with expected earnings growth; upgraded to Buy, utility momentum."
+   },
+   {
+    "ticker": "MMM",
+    "hypothesis": "AWS collaboration on optical connectivity; RBC says Amazon deal advances data-center growth opportunity."
+   },
+   {
+    "ticker": "FITB",
+    "hypothesis": "Strong Q3 after largest conversion; Evercore upgrades to Outperform with $60 price target."
+   },
+   {
+    "ticker": "UAL",
+    "hypothesis": "Q3 deep dive: premium offerings, loyalty, Starlink drive share gains; stronger revenue guidance lifts airlines."
+   },
+   {
+    "ticker": "SMCI",
+    "hypothesis": "Fiscal Q1 update and raised full-year revenue guidance boost AI trade; Super Micro leads AI hardware."
+   },
+   {
+    "ticker": "DOV",
+    "hypothesis": "Reports Q3 tomorrow; earnings catalyst with new product launch, industrial demand."
+   },
+   {
+    "ticker": "HLT",
+    "hypothesis": "AI-agent era trade favors hotels over online agencies; stock at 52-week high on strong momentum."
+   },
+   {
+    "ticker": "MAR",
+    "hypothesis": "AI-agent era trade favors hotels; Wyndham Q3 beat supports travel demand, stock at high."
+   },
+   {
+    "ticker": "CSX",
+    "hypothesis": "Earnings beat with strong margin expansion; rail momentum could continue next week."
+   }
+  ],
+  "short_ideas": [
+   {
+    "ticker": "NFLX",
+    "hypothesis": "Cuts ad revenue guidance, stock slides 5%; streaming ad growth concerns pressure shares."
+   },
+   {
+    "ticker": "LRCX",
+    "hypothesis": "Chip-gear outlook fails to impress; stock falls, semiconductor equipment sentiment weak."
+   },
+   {
+    "ticker": "ROL",
+    "hypothesis": "Misses Q3 sales expectations, stock drops 7%; pest control demand concerns."
+   },
+   {
+    "ticker": "DVA",
+    "hypothesis": "Stock nosediving; HHS kidney care national plan threatens dialysis reimbursement and volumes."
+   },
+   {
+    "ticker": "EQT",
+    "hypothesis": "Faces historically bearish resistance; analysts estimate earnings decline for natural gas producer."
+   },
+   {
+    "ticker": "DOW",
+    "hypothesis": "Dividend math questioned; BofA flags tough Q3 for chemicals, yield may not be safe."
+   },
+   {
+    "ticker": "WYNN",
+    "hypothesis": "Boston casino GGR lowest since Feb 2021; Macau and Las Vegas demand concerns."
+   },
+   {
+    "ticker": "ED",
+    "hypothesis": "Downgraded to Hold with wait for lower price; utility valuation stretched after run."
+   },
+   {
+    "ticker": "CMG",
+    "hypothesis": "Soft sales and falling stock; higher prices may not revive traffic, restaurant weakness."
+   },
+   {
+    "ticker": "FTNT",
+    "hypothesis": "Rare double downgrade to sell from Arete; cybersecurity competition and valuation concerns."
+   },
+   {
+    "ticker": "COHR",
+    "hypothesis": "Susquehanna cuts target; AI optical component stock down sharply on weak chip equipment sentiment."
+   },
+   {
+    "ticker": "NVR",
+    "hypothesis": "Q3 earnings expected to decline; home sales contracts at record low as mortgage rates hit 7.4%."
+   }
+  ],
+  "themes": [
+   "AI data-center demand lifts utilities, industrials, and SMCI.",
+   "Earnings next week drive NI, AEP, DOV, NVR.",
+   "Consumer discretionary split: hotels strong, restaurants and housing weak.",
+   "Chip equipment and AI hardware face guidance scrutiny.",
+   "Streaming ad and online travel face AI disruption."
+  ]
+ },
+ "core": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM"
+ ],
+ "nominated": [
+  "HAS",
+  "MSCI",
+  "NI",
+  "AEP",
+  "MMM",
+  "FITB",
+  "UAL",
+  "SMCI",
+  "DOV",
+  "HLT",
+  "MAR",
+  "CSX",
+  "NFLX",
+  "LRCX",
+  "ROL",
+  "DVA",
+  "EQT",
+  "DOW",
+  "WYNN",
+  "ED",
+  "CMG",
+  "FTNT",
+  "COHR",
+  "NVR"
+ ],
+ "rule_based": [
+  "MRNA",
+  "COHR",
+  "FLEX",
+  "LITE",
+  "LRCX",
+  "PANW",
+  "HAS",
+  "EFX",
+  "CRL",
+  "HLT",
+  "HST",
+  "IBM",
+  "HAS",
+  "MSCI",
+  "NI",
+  "GPC",
+  "AEP",
+  "MMM"
+ ],
+ "coverage": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM",
+  "HAS",
+  "MSCI",
+  "NI",
+  "AEP",
+  "MMM",
+  "FITB",
+  "UAL",
+  "SMCI",
+  "DOV",
+  "HLT",
+  "MAR",
+  "CSX",
+  "LRCX",
+  "ROL",
+  "DVA",
+  "EQT",
+  "DOW",
+  "WYNN",
+  "ED",
+  "CMG",
+  "FTNT",
+  "COHR",
+  "NVR",
+  "MRNA",
+  "FLEX"
+ ],
+ "why": {
+  "NVDA": [
+   "core"
+  ],
+  "AAPL": [
+   "core"
+  ],
+  "MSFT": [
+   "core"
+  ],
+  "GOOGL": [
+   "core"
+  ],
+  "AMZN": [
+   "core"
+  ],
+  "META": [
+   "core"
+  ],
+  "AVGO": [
+   "core"
+  ],
+  "TSLA": [
+   "core"
+  ],
+  "AMD": [
+   "core"
+  ],
+  "INTC": [
+   "core"
+  ],
+  "TSM": [
+   "core"
+  ],
+  "JPM": [
+   "core"
+  ],
+  "LLY": [
+   "core"
+  ],
+  "WMT": [
+   "core"
+  ],
+  "BRK.B": [
+   "core"
+  ],
+  "ORCL": [
+   "core"
+  ],
+  "CRM": [
+   "core"
+  ],
+  "NFLX": [
+   "core",
+   "nominated"
+  ],
+  "BA": [
+   "core"
+  ],
+  "XOM": [
+   "core"
+  ],
+  "HAS": [
+   "nominated",
+   "rule"
+  ],
+  "MSCI": [
+   "nominated",
+   "rule"
+  ],
+  "NI": [
+   "nominated",
+   "rule"
+  ],
+  "AEP": [
+   "nominated",
+   "rule"
+  ],
+  "MMM": [
+   "nominated",
+   "rule"
+  ],
+  "FITB": [
+   "nominated"
+  ],
+  "UAL": [
+   "nominated"
+  ],
+  "SMCI": [
+   "nominated"
+  ],
+  "DOV": [
+   "nominated"
+  ],
+  "HLT": [
+   "nominated",
+   "rule"
+  ],
+  "MAR": [
+   "nominated"
+  ],
+  "CSX": [
+   "nominated"
+  ],
+  "LRCX": [
+   "nominated",
+   "rule"
+  ],
+  "ROL": [
+   "nominated"
+  ],
+  "DVA": [
+   "nominated"
+  ],
+  "EQT": [
+   "nominated"
+  ],
+  "DOW": [
+   "nominated"
+  ],
+  "WYNN": [
+   "nominated"
+  ],
+  "ED": [
+   "nominated"
+  ],
+  "CMG": [
+   "nominated"
+  ],
+  "FTNT": [
+   "nominated"
+  ],
+  "COHR": [
+   "nominated",
+   "rule"
+  ],
+  "NVR": [
+   "nominated"
+  ],
+  "MRNA": [
+   "rule"
+  ],
+  "FLEX": [
+   "rule"
+  ]
+ },
+ "prompt_chars": 113550
+}
