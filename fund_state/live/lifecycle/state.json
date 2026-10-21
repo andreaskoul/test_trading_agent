@@ -122,11 +122,11 @@
 {
 "date": "2026-10-19",
 "nav": 98473.08526418496,
-"pnl_lots": 512.4072734468164,
-"pnl_hedge": 1.1548385418156408,
+"pnl_lots": 512.407273446815,
+"pnl_hedge": 1.1548385418156275,
 "cash_income": 34.77868533970671,
 "cost": 1.8896752303439814,
-"r_gross": 0.005244355802564166,
+"r_gross": 0.005244355802564152,
 "r_cost": 1.9296846531068872e-05,
 "r_cash": 0.00035515042096968705,
 "n_long": 8,
@@ -135,6 +135,23 @@
 "hedge": 0.0027829283785797067,
 "net_beta": -0.02548633456732834,
 "traded": true
+},
+{
+"date": "2026-10-20",
+"nav": 98126.67418813235,
+"pnl_lots": -355.10521786772375,
+"pnl_hedge": 0.918865341320769,
+"cash_income": 12.083894747964786,
+"cost": 4.30861827416093,
+"r_gross": -0.003596783340099347,
+"r_cost": 4.375427318644185e-05,
+"r_cash": 0.00012271266524803144,
+"n_long": 7,
+"n_short": 9,
+"stock_gross": 0.5067852828654164,
+"hedge": 0.002802116867042201,
+"net_beta": 0.042792740594720165,
+"traded": true
 }
 ],
 "lots": [
@@ -142,14 +159,14 @@
 "id": "2026-10-07|MRVL",
 "ticker": "MRVL",
 "side": 1,
-"n": 5005.022604596151,
+"n": 5075.319644847975,
 "w0": 0.057962149688043356,
 "beta": 1.9268106508,
 "sigma_e": 0.042118691238406177,
 "H": 13,
 "W": 0.15186110091550933,
-"R": -0.12128114955475786,
-"days": 7,
+"R": -0.11369642771044766,
+"days": 8,
 "kill_conditions": [
 "Marvell cuts or withdraws its FY28 $20B or FY31 $70-90B revenue targets",
 "A major analyst downgrades MRVL citing AI data-center demand slowdown",
@@ -160,20 +177,20 @@
 "cohort": "2026-10-07",
 "entry_day": "2026-10-08",
 "entry_close_ts": 1791489600,
-"news_until": 1792438800
+"news_until": 1792525200
 },
 {
 "id": "2026-10-07|HPE",
 "ticker": "HPE",
 "side": 1,
-"n": 2012.6839624203546,
+"n": 2020.609333312291,
 "w0": 0.025574456206743715,
 "beta": 1.503743029,
 "sigma_e": 0.037871722252833785,
 "H": 11,
 "W": 0.1256062928772028,
-"R": -0.21535277742703518,
-"days": 7,
+"R": -0.2164571006598886,
+"days": 8,
 "kill_conditions": [
 "HPE cuts FY27 networking guidance",
 "Vultr cancels or delays the $1.2B Helios AI server order",
@@ -184,20 +201,20 @@
 "cohort": "2026-10-07",
 "entry_day": "2026-10-08",
 "entry_close_ts": 1791489600,
-"news_until": 1792438800
+"news_until": 1792525200
 },
 {
 "id": "2026-10-07|AMD",
 "ticker": "AMD",
 "side": 1,
-"n": 3166.1221068727796,
+"n": 3146.644615610353,
 "w0": 0.033713214871670616,
 "beta": 1.9388291041,
 "sigma_e": 0.031961678183490064,
 "H": 14,
 "W": 0.11958964926894712,
-"R": -0.1199314216292354,
-"days": 7,
+"R": -0.13258414141973382,
+"days": 8,
 "kill_conditions": [
 "AMD terminates or withdraws credit support agreement for Fermi's Project Matador",
 "Fermi's Project Matador lease or financing is cancelled or fails to close",
@@ -208,21 +225,21 @@
 "cohort": "2026-10-07",
 "entry_day": "2026-10-08",
 "entry_close_ts": 1791489600,
-"news_until": 1792438800,
+"news_until": 1792525200,
 "increased": true
 },
 {
 "id": "2026-10-07|NKE",
 "ticker": "NKE",
 "side": -1,
-"n": -6962.930622121475,
+"n": -7088.304540875073,
 "w0": -0.065,
 "beta": 0.8879359006,
 "sigma_e": 0.01767595269211655,
 "H": 13,
 "W": 0.06373155377410196,
-"R": -0.07862426355540424,
-"days": 7,
+"R": -0.09365293548877261,
+"days": 8,
 "kill_conditions": [
 "Nike raises FY27 revenue guidance or reports Q2 revenue beat.",
 "Nike China sales return to growth and management signals turnaround.",
@@ -233,7 +250,7 @@
 "cohort": "2026-10-07",
 "entry_day": "2026-10-08",
 "entry_close_ts": 1791489600,
-"news_until": 1792438800
+"news_until": 1792525200
 },
 {
 "id": "2026-10-14|CRM",
@@ -254,34 +271,10 @@
 "cohort": "2026-10-14",
 "entry_day": "2026-10-15",
 "entry_close_ts": 1792093200,
-"n": 2894.4015279541895,
-"R": -0.01321747289789706,
-"days": 2,
-"news_until": 1792438800
-},
-{
-"id": "2026-10-14|VEEV",
-"ticker": "VEEV",
-"side": 1,
-"w0": 0.03,
-"beta": 0.7128005326,
-"sigma_e": 0.0264650560126635,
-"H": 3,
-"W": 0.04583882163908938,
-"kill_conditions": [
-"IQVIA terminates or reverses the Veeva clinical applications standard designation",
-"IQVIA adopts a rival vendor's CTMS/eTMF as its enterprise clinical standard",
-"Veeva loses a major clinical customer or discloses declining Clinical Expansion share"
-],
-"first_reported": "2026-10-13",
-"score": 1,
-"cohort": "2026-10-14",
-"entry_day": "2026-10-15",
-"entry_close_ts": 1792093200,
-"n": 2981.0918856813682,
-"R": 0.01709133056998112,
-"days": 2,
-"news_until": 1792438800
+"n": 2894.1627651966764,
+"R": -0.015258423282383854,
+"days": 3,
+"news_until": 1792525200
 },
 {
 "id": "2026-10-14|ON",
@@ -302,10 +295,10 @@
 "cohort": "2026-10-14",
 "entry_day": "2026-10-15",
 "entry_close_ts": 1792093200,
-"n": 2678.898658158081,
-"R": 0.004397152146114875,
-"days": 2,
-"news_until": 1792438800
+"n": 2770.4911998073594,
+"R": 0.03273917958460425,
+"days": 3,
+"news_until": 1792525200
 },
 {
 "id": "2026-10-14|NVDA",
@@ -326,10 +319,10 @@
 "cohort": "2026-10-14",
 "entry_day": "2026-10-15",
 "entry_close_ts": 1792093200,
-"n": 2453.0981283708466,
-"R": 0.010171816157448176,
-"days": 2,
-"news_until": 1792438800
+"n": 2446.0921822674336,
+"R": 0.0021052595051874214,
+"days": 3,
+"news_until": 1792525200
 },
 {
 "id": "2026-10-14|MSFT",
@@ -350,10 +343,10 @@
 "cohort": "2026-10-14",
 "entry_day": "2026-10-15",
 "entry_close_ts": 1792093200,
-"n": 3703.363380288653,
-"R": -0.004387154579006191,
-"days": 2,
-"news_until": 1792438800,
+"n": 3691.9101084760196,
+"R": -0.010632205774157022,
+"days": 3,
+"news_until": 1792525200,
 "increased": true
 },
 {
@@ -375,11 +368,12 @@
 "cohort": "2026-10-14",
 "entry_day": "2026-10-15",
 "entry_close_ts": 1792093200,
-"n": -7065.961925800361,
-"R": 0.034901989485923275,
-"days": 2,
-"news_until": 1792438800,
-"increased": true
+"n": -3631.8491259757784,
+"R": 0.012423599494649724,
+"days": 3,
+"news_until": 1792525200,
+"increased": true,
+"reduced": true
 },
 {
 "id": "2026-10-14|ORCL",
@@ -400,10 +394,10 @@
 "cohort": "2026-10-14",
 "entry_day": "2026-10-15",
 "entry_close_ts": 1792093200,
-"n": -3771.5677092546766,
-"R": 0.02502908458530148,
-"days": 2,
-"news_until": 1792438800
+"n": -3816.678674216053,
+"R": 0.018352657364736086,
+"days": 3,
+"news_until": 1792525200
 },
 {
 "id": "2026-10-14|JPM",
@@ -424,10 +418,10 @@
 "cohort": "2026-10-14",
 "entry_day": "2026-10-15",
 "entry_close_ts": 1792093200,
-"n": -2334.003661878301,
-"R": -9.055094824143503e-05,
-"days": 2,
-"news_until": 1792438800
+"n": -2346.109998145052,
+"R": -0.002419871694335646,
+"days": 3,
+"news_until": 1792525200
 },
 {
 "id": "2026-10-14|KHC",
@@ -448,10 +442,10 @@
 "cohort": "2026-10-14",
 "entry_day": "2026-10-15",
 "entry_close_ts": 1792093200,
-"n": -2336.9049273408727,
-"R": 0.0020650049964598682,
-"days": 2,
-"news_until": 1792438800
+"n": -2403.4719213868366,
+"R": -0.0252964231032935,
+"days": 3,
+"news_until": 1792525200
 },
 {
 "id": "2026-10-14|STT",
@@ -472,10 +466,10 @@
 "cohort": "2026-10-14",
 "entry_day": "2026-10-15",
 "entry_close_ts": 1792093200,
-"n": -2317.598717785429,
-"R": 0.005880264022160888,
-"days": 2,
-"news_until": 1792438800
+"n": -2333.7096923695626,
+"R": 0.002406099715304707,
+"days": 3,
+"news_until": 1792525200
 },
 {
 "id": "2026-10-14|BAC",
@@ -496,10 +490,10 @@
 "cohort": "2026-10-14",
 "entry_day": "2026-10-15",
 "entry_close_ts": 1792093200,
-"n": -3415.2740799908984,
-"R": 0.019816299524367732,
-"days": 2,
-"news_until": 1792438800,
+"n": -3432.2182855872015,
+"R": 0.017637796696119257,
+"days": 3,
+"news_until": 1792525200,
 "increased": true
 },
 {
@@ -521,35 +515,11 @@
 "cohort": "2026-10-14",
 "entry_day": "2026-10-15",
 "entry_close_ts": 1792093200,
-"n": -1034.4850240996134,
-"R": 0.034207414984274556,
-"days": 2,
-"news_until": 1792438800,
+"n": -1017.3053157537933,
+"R": 0.052816456883452115,
+"days": 3,
+"news_until": 1792525200,
 "reduced": true
-},
-{
-"id": "2026-10-14|SMCI",
-"ticker": "SMCI",
-"side": -1,
-"w0": -0.021927379389609893,
-"beta": 2.0434684394,
-"sigma_e": 0.044818910390094675,
-"H": 3,
-"W": 0.07762862993552062,
-"kill_conditions": [
-"Super Micro is cleared of wrongdoing in the $2.5B export scheme",
-"Federal probe into Super Micro closes with no charges or penalties",
-"Contractor's guilty plea is withdrawn or overturned"
-],
-"first_reported": "2026-10-10",
-"score": -1,
-"cohort": "2026-10-14",
-"entry_day": "2026-10-15",
-"entry_close_ts": 1792093200,
-"n": -1969.5331322163952,
-"R": 0.06978068167509774,
-"days": 2,
-"news_until": 1792438800
 },
 {
 "id": "2026-10-14|TSLA",
@@ -570,10 +540,10 @@
 "cohort": "2026-10-14",
 "entry_day": "2026-10-15",
 "entry_close_ts": 1792093200,
-"n": -1589.871203112156,
-"R": -0.027667742889452514,
-"days": 2,
-"news_until": 1792438800
+"n": -1614.276931247742,
+"R": -0.037443977773387996,
+"days": 3,
+"news_until": 1792525200
 }
 ],
 "events": [
@@ -1084,6 +1054,39 @@
 "R": 0.019816,
 "W": 0.032922,
 "days_held": 2
+},
+{
+"day": "2026-10-20",
+"id": "2026-10-14|VEEV",
+"ticker": "VEEV",
+"action": "horizon",
+"from": 2998.69,
+"to": 0.0,
+"R": 0.020604,
+"W": 0.045839,
+"days_held": 3
+},
+{
+"day": "2026-10-20",
+"id": "2026-10-14|SMCI",
+"ticker": "SMCI",
+"action": "horizon",
+"from": -1992.23,
+"to": 0.0,
+"R": 0.065106,
+"W": 0.077629,
+"days_held": 3
+},
+{
+"day": "2026-10-20",
+"id": "2026-10-14|DAL",
+"ticker": "DAL",
+"action": "news_reduce",
+"from": -7258.16,
+"to": -3631.85,
+"R": 0.012424,
+"W": 0.05082,
+"days_held": 3
 }
 ],
 "cohorts": [
@@ -1091,5 +1094,5 @@
 "2026-10-14"
 ],
 "live": null,
-"updated": "2026-10-20T01:11:14+00:00"
+"updated": "2026-10-21T01:11:05+00:00"
 }
