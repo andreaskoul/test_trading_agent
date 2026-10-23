@@ -84,18 +84,40 @@ def master_day(d, M, day):
     return ix, x
 
 
-def master_fit_predict(d, y, train, va, pred_days, cfg, seed, M, max_epochs=MAX_EPOCHS):
-    import torch
+def master_net(cfg):
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), "vendor", "master"))
     from master import MASTER                                           # vendored unchanged (SOURCE)
+    return MASTER(d_feat=5, d_model=cfg["d_model"], t_nhead=4, s_nhead=2, T_dropout_rate=0.5, S_dropout_rate=0.5,
+                  gate_input_start_index=5, gate_input_end_index=20, beta=cfg["beta"]).to(device())
+
+
+def master_predict(d, M, path, days):
+    """Scores from a saved MASTER (train_final): market features scaled with the training rows' constants."""
+    import torch
+    ck = torch.load(path, map_location=device(), weights_only=False)     # our own checkpoint (train_final)
+    net = master_net(ck["cfg"])
+    net.load_state_dict(ck["state"])
+    net.eval()
+    M = np.nan_to_num((M - ck["mu"]) / np.where(ck["sd"] > 0, ck["sd"], 1.0)).astype(np.float32)
+    out = np.full((len(d["S"]), len(d["names"])), np.nan)
+    with torch.no_grad():
+        for day in days:
+            ix, x = master_day(d, M, day)
+            if len(ix) >= 10:
+                out[day, ix] = net(torch.tensor(x, device=device())).float().cpu().numpy()
+    return out
+
+
+def master_fit_predict(d, y, train, va, pred_days, cfg, seed, M, max_epochs=MAX_EPOCHS, save=None):
+    import torch
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "vendor", "master"))
     from base_model import drop_extreme, zscore
     dev = device()
     mu, sd = np.nanmean(M[train], 0), np.nanstd(M[train], 0)             # training rows only: no future scale
     M = np.nan_to_num((M - mu) / np.where(sd > 0, sd, 1.0)).astype(np.float32)
     torch.manual_seed(seed)
     np.random.seed(seed)
-    net = MASTER(d_feat=5, d_model=cfg["d_model"], t_nhead=4, s_nhead=2, T_dropout_rate=0.5, S_dropout_rate=0.5,
-                 gate_input_start_index=5, gate_input_end_index=20, beta=cfg["beta"]).to(dev)
+    net = master_net(cfg)
     opt = torch.optim.Adam(net.parameters(), 1e-5)
     cache = {}
 
@@ -147,11 +169,14 @@ def master_fit_predict(d, y, train, va, pred_days, cfg, seed, M, max_epochs=MAX_
             break
     if best_state is not None:
         net.load_state_dict(best_state)
+    if save:
+        torch.save({"state": net.state_dict(), "mu": mu, "sd": sd, "cfg": cfg, "best_epoch": best, "val_ic": best_ic},
+                   save)
     return scores(pred_days), {"epochs": ep + 1, "best_epoch": best, "val_ic": best_ic}
 
 
 # ------------------------------------------------------------------------------------------------ M2 TFT (darts)
-def tft_fit_predict(d, h, train, va, pred_days, cfg, seed, sector):
+def tft_fit_predict(d, h, train, va, pred_days, cfg, seed, sector, save=None):
     import torch
     from darts import TimeSeries
     from darts.models import TFTModel
@@ -183,19 +208,45 @@ def tft_fit_predict(d, h, train, va, pred_days, cfg, seed, sector):
                      pl_trainer_kwargs={"accelerator": acc, "enable_progress_bar": False,
                                         "enable_model_summary": False})
     model.fit(list(S_), past_covariates=list(C_), sample_weight=list(W_), stride=5, verbose=False)
+    if save:
+        model.save(save)
+        json.dump({"cats": cats, "h": h}, open(save + ".json", "w"))
+    return tft_scores(model, d, h, pred_days, sector, cats), {"series": len(js)}
+
+
+def tft_predict(d, path, days, sector):
+    from darts.models import TFTModel
+    meta = json.load(open(path + ".json"))
+    return tft_scores(TFTModel.load(path), d, meta["h"], days, sector, meta["cats"])
+
+
+def tft_scores(model, d, h, pred_days, sector, cats):
+    from darts import TimeSeries
+    S, names = d["S"], d["names"]
+    idx = pd.RangeIndex(0, len(S))
+    first = {j: np.where(d["valid"][:, j])[0] for j in range(len(names))}
+    span = {j: v[0] for j, v in first.items() if len(v)}
+
+    def series(j, upto):
+        a = span[j]
+        tgt = np.nan_to_num(d["e"][a:upto, j]).astype(np.float32)
+        cov = np.nan_to_num(d["Z"][a:upto, j]).astype(np.float32)
+        ts = TimeSeries.from_times_and_values(idx[a:upto], tgt[:, None], columns=["e"],
+                                              static_covariates=pd.DataFrame({c: [float(sector[j] == c)] for c in cats}))
+        return ts, TimeSeries.from_times_and_values(idx[a:upto], cov)
     out = np.full((len(S), len(names)), np.nan)
     for day in pred_days:
         live = [j for j in span if d["elig"][day, j] and day - span[j] >= 60]
         if len(live) < 10:
             continue
-        ser, cov = zip(*[series(j, day + 1)[:2] for j in live])
+        ser, cov = zip(*[series(j, day + 1) for j in live])
         fc = model.predict(n=h + 1, series=list(ser), past_covariates=list(cov), num_samples=1,
                            predict_likelihood_parameters=True, verbose=False, show_warnings=False)
         for j, f in zip(live, fc):
             comp = [c for c in f.components if c.endswith("q0.50")] or list(f.components)[:1]
             med = f[comp[0]].values()[:, 0]                              # the median forecast path
             out[day, j] = float(med[1: h + 1].sum())                     # steps 2 .. h+1: the target window
-    return out, {"series": len(js)}
+    return out
 
 
 # ------------------------------------------------------------------------------------------------ M3 Chronos-2
@@ -210,7 +261,7 @@ def chronos_pipe():
     return _PIPE
 
 
-def chronos_finetune(d, train_end, year):
+def chronos_finetune(d, train_end, year, out_dir=None):
     """M3-ft: Chronos-2 fully fine-tuned on every name's residual-return series (and its five signals) up to the
     refit point; library defaults (lr 1e-6), FT_STEPS steps, context 512, prediction length 21. Non-member days
     are given as missing targets, so the loss never sees them."""
@@ -226,12 +277,12 @@ def chronos_finetune(d, train_end, year):
     from chronos import Chronos2Pipeline                                  # a fresh copy: the zero-shot one stays untouched
     base = Chronos2Pipeline.from_pretrained("amazon/chronos-2", device_map=str(device()))
     ft = base.fit(inputs, prediction_length=PRED, num_steps=FT_STEPS, batch_size=64, context_length=CTX,
-                            output_dir=os.path.join(P.CACHE, f"chronos2_ft_{year}"))
+                            output_dir=out_dir or os.path.join(P.CACHE, f"chronos2_ft_{year}"))
     ft.model.eval()
     return ft
 
 
-def chronos_scores(d, days, sector, pipe=None):
+def chronos_scores(d, days, sector, pipe=None, widths=None):
     """{h: (D, N) scores} for every h at once; cross-learning in sector-ordered groups of ~100 names. Zero-shot
     unless a fine-tuned pipeline is given."""
     import torch
@@ -250,9 +301,13 @@ def chronos_scores(d, days, sector, pipe=None):
                                                               for k in range(5)}})
         fc = _PIPE_.predict(inputs, prediction_length=PRED, batch_size=600, cross_learning=True)
         for j, f in zip(live, fc):
-            med = f[0, mi].float().cpu().numpy() if isinstance(f, torch.Tensor) else np.asarray(f)[0, mi]
+            arr = f[0].float().cpu().numpy() if isinstance(f, torch.Tensor) else np.asarray(f)[0]
+            med = arr[mi]
             for h in HS:
                 out[h][day, j] = float(med[1: h + 1].sum())
+                if widths is not None:                                   # S5: the q10-q90 range of the h-step sum
+                    widths.setdefault(h, np.full_like(out[h], np.nan))[day, j] = \
+                        float(arr[q.index(0.9)][1: h + 1].sum() - arr[q.index(0.1)][1: h + 1].sum())
     return out
 
 
@@ -480,6 +535,35 @@ def score(d, preds, chosen, sha, sector):
     print(tab.round(4).to_string(index=False))
 
 
+LIVE_MODELS = os.environ.get("SPX_MODELS", os.path.expanduser("~/.fund-runner/cache/spx_models"))
+FINAL = {"master_h5": {"d_model": 256, "beta": 5}, "master_h20": {"d_model": 256, "beta": 2},
+         "tft_h10": {"hidden": 16, "epochs": 15}, "tft_h20": {"hidden": 16, "epochs": 15}, "chronos2_ft": None}
+
+
+def train_final(part, year=2026, tag=None):
+    """Live models for the forward books (Amendment 3): the annual refit for `year`, trained on every row whose target
+    ends before 1 January of `year`, with the settings the read froze; saved under LIVE_MODELS/<year>/."""
+    d = T.build()
+    S, sector, M = d["S"], sectors(d), market(d)
+    out = os.path.join(LIVE_MODELS, tag or str(year))
+    os.makedirs(out, exist_ok=True)
+    if part == "chronos2_ft":
+        q = int(np.searchsorted(S, pd.Timestamp(f"{year}-01-01")))
+        chronos_finetune(d, q - 1 - max(HS), year, out_dir=os.path.join(out, "chronos2_ft"))
+    else:
+        m, h = part.split("_h")
+        h = int(h)
+        tr, va, train, _ = windows(S, year, h)
+        for s_ in SEEDS[m]:
+            path = os.path.join(out, f"{part}_seed{s_}" + (".pt" if m == "master" else ""))
+            if m == "master":
+                master_fit_predict(d, d[f"y{h}"], tr, va, [], FINAL[part], s_, M, save=path)
+            else:
+                tft_fit_predict(d, h, tr, va, [], FINAL[part], s_, sector, save=path)
+            log("saved", path)
+    log("train_final done", part)
+
+
 def strategies_all():
     """Amendment 2: every model x horizon x strategy, after the read (descriptive)."""
     import strategies as ST
@@ -501,5 +585,8 @@ if __name__ == "__main__":
     if cmd == "run":
         assert sys.argv[2] in PARTS, f"part must be one of {PARTS}"
         run(sys.argv[2])
+    elif cmd == "train_final":
+        assert sys.argv[2] in FINAL, f"part must be one of {list(FINAL)}"
+        train_final(sys.argv[2])
     else:
         {"smoke": smoke, "score": score_all, "strategies": strategies_all}[cmd]()
