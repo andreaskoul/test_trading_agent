@@ -1,0 +1,2020 @@
+{
+ "records": {
+  "ALV": {
+   "ticker": "ALV",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Automotive Parts & Equipment",
+   "last_release": "2026-07-17 10:15:35+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1034670/000119312526306698/alv-ex99_1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Organic sales growth vs LVP",
+      "last_report": "Q2 organic +1.0%, 1.3pp above LVP; Asia/China strong, Americas/EMEA weak.",
+      "guidance": "FY26 around 0% organic; LVP -2.5%; no Q3 organic guide."
+     },
+     {
+      "id": "D2",
+      "name": "Adjusted operating margin",
+      "last_report": "Q2 adj. op margin 9.6%, adj. op income +7.3%; cost savings offset FX/raw material headwinds.",
+      "guidance": "Q3 around H1 2026 level (~9.3%); significant Q4 improvement; FY 10.5-11%."
+     },
+     {
+      "id": "D3",
+      "name": "Tariffs and raw material costs",
+      "last_report": "Q2 raw material gross $21M; tariffs net -$7M, 35bps; >80% tariff compensation achieved.",
+      "guidance": "FY raw material ~$110M gross; FY tariff dilution ~20bps; Q3 limited, Q4 greater compensation."
+     },
+     {
+      "id": "D4",
+      "name": "China and Asia OEM mix",
+      "last_report": "China organic +3.4%; Chinese OEM sales +44%, 55% of China sales; India +35%.",
+      "guidance": "No specific regional guidance; FY organic around 0%."
+     },
+     {
+      "id": "D5",
+      "name": "Cash flow and Türkiye restructuring",
+      "last_report": "Q2 operating cash flow $434M record; FOCF $340M; Türkiye closure $142M charges, $90M in Q2.",
+      "guidance": "FY26 operating cash flow ~$1.2B; capex <5% sales; buybacks $300-500M; $40M savings from 2027."
+     }
+    ],
+    "guidance": "FY26: ~0% organic sales, ~2.5% positive FX, ~10.5-11% adj. op margin, ~$1.2B op cash flow, capex <5% sales, LVP -2.5%, tax ~30%. Q3 adj. op margin around H1 level (~9.3%), significant Q4 improvement. Share repurchases $300-500M.",
+    "kill_conditions": [
+     "Q3 adjusted operating margin falls below H1 2026 level or FY margin guidance cut below 10.5%.",
+     "Net tariff costs exceed guidance or customer compensation recovery stalls, pressuring margins.",
+     "Organic sales turn negative or China OEM sales growth slows sharply."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 25,
+    "found": 25,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 77,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Autoliv declares quarterly dividend",
+        "date": "2026-08-13",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Autoliv advances virtual testing for safety development",
+        "date": "2026-09-08",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Autoliv retires repurchased shares, reducing share count",
+        "date": "2026-09-30",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Middle East tensions threaten shipping and raw material costs",
+        "date": "2026-10-08",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Autoliv retires repurchased shares, reducing issued share count",
+        "date": "2026-09-30",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Autoliv retires repurchased shares, reducing issued share count",
+        "date": "2026-09-30",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "VC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Visteon's customer vehicle production fell 5% in Q3, worse than ALV's FY LVP guide, implying weaker organic sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Visteon customer production -5% signals weaker LVP than ALV's -2.5% FY assumption, pressuring organic sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Visteon customer vehicle production fell 5%, signaling weaker LVP than Autoliv's FY -2.5% assumption, pressuring organic sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.4472135954999579,
+   "score_peer": -1.414213562373095,
+   "score_combined": -0.25989318568658953,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 2.3351,
+   "revenue_estimate": 2761421719,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-23",
+   "cutoff": "2026-10-22 22:00:00+00:00",
+   "decided_at": "2026-10-23T02:34:45.381958+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "6e8b1f4a9874364759e3ad3a72dd366c32c46e7448d1bdbd073fd5063d9a2a16"
+  },
+  "AXP": {
+   "ticker": "AXP",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Consumer Finance",
+   "last_release": "2026-07-24 15:00:28+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/4962/000000496226000318/q226exhibit991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Card Member spending growth",
+      "last_report": "Q2 billed business rose 9% FX-adjusted to $455.8B, highest in three years; revenue +10%.",
+      "guidance": "FY 2026 revenue growth guidance raised to 10%; no Q3 billed business guidance."
+     },
+     {
+      "id": "D2",
+      "name": "Revenue growth and net interest income",
+      "last_report": "Total revenues net of interest expense +10% to $19.6B, driven by spending, net interest income on card balances, and card fees.",
+      "guidance": "FY 2026 revenue growth guidance 10%."
+     },
+     {
+      "id": "D3",
+      "name": "Expenses and customer engagement costs",
+      "last_report": "Consolidated expenses +12% to $14.5B on variable customer engagement costs, U.S. Platinum Card refresh, benefits usage, and operating expenses.",
+      "guidance": "Plans to reinvest H1 outperformance in growth initiatives; no specific Q3 expense guidance."
+     },
+     {
+      "id": "D4",
+      "name": "Credit performance and provisions",
+      "last_report": "Provisions $1.1B vs $1.4B, reserve release vs prior-year build; net write-off rate 2.0%, flat YoY.",
+      "guidance": "No specific Q3 credit guidance; CEO said credit performance strengthened."
+     },
+     {
+      "id": "D5",
+      "name": "EPS, tax rate, share count",
+      "last_report": "EPS $4.53 +11%; effective tax rate 23.6% vs 18.7%; average diluted shares down 3%.",
+      "guidance": "FY 2026 EPS guidance maintained at $17.30-$17.90."
+     }
+    ],
+    "guidance": "FY 2026 revenue growth guidance raised to 10%; FY 2026 EPS guidance maintained at $17.30-$17.90; plans to reinvest H1 outperformance in growth initiatives. No Q3-specific guidance.",
+    "kill_conditions": [
+     "Q3 billed business growth decelerates below Q2's 9% FX-adjusted rate.",
+     "Credit provisions rise sharply or net write-off rate exceeds 2.0%.",
+     "Expenses grow faster than revenue, or FY revenue growth guidance is cut below 10%."
+    ]
+   },
+   "card_provider": "InferenceNet",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 14,
+    "found": 14,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 487,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Prelim Sept credit metrics: consumer write-off 1.5%, small business 2.1%",
+        "date": "2026-10-15",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Prelim Q3 U.S. consumer net write-off 1.5%, small business 2.1%, delinquencies low",
+        "date": "2026-10-15",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AML fine/enforcement actions from Fed and OCC land",
+        "date": "2026-10-14",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Amex launches Proof of Intent token for agentic checkout",
+        "date": "2026-10-14",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Block expands Marqeta partnership; Square credit card on Amex network",
+        "date": "2026-10-19",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tishman Speyer opens ZO Clubhouses to Amex Business Platinum cardholders",
+        "date": "2026-10-19",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Albertsons launches new forU American Express Card",
+        "date": "2026-10-21",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Amex and Airbnb exclusive partnership adds 1M listings to Amex Travel",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "AML fine lands; Fed and OCC enforcement for past suspicious activity reporting deficiencies",
+        "date": "2026-10-14",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Amex launches 'Proof of Intent' token for agentic checkout",
+        "date": "2026-10-14",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Prelim U.S. Consumer net write-off 1.5%, 30+ days past due 1.2%; small business write-off 2.1%",
+        "date": "2026-10-15",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Rakuten introduces limited edition NARUTO design for Rakuten American Express Card",
+        "date": "2026-10-15",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tishman Speyer opens ZO Clubhouses to Amex Business Platinum cardholders at no fee increase",
+        "date": "2026-10-19",
+        "driver": "D3",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Block expands Marqeta partnership to power Square credit card on American Express Network",
+        "date": "2026-10-19",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Albertsons launches new forU American Express Card with Imprint",
+        "date": "2026-10-21",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "American Express and Airbnb launch exclusive partnership, adding 1M+ listings to Amex Travel",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "SLM",
+    "FCFS",
+    "COF",
+    "ALLY",
+    "SYF"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SLM",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Student lender; company-specific credit and expense issues, no read-through to AXP card drivers."
+       },
+       {
+        "peer": "FCFS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Pawn demand strength is not a read-through to AXP card spending or credit."
+       },
+       {
+        "peer": "COF",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Capital One reserve release and lower provision signal stable/improving card credit for AXP."
+       },
+       {
+        "peer": "ALLY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D4",
+        "why": "Ally's stable auto credit and strong consumer lending support AXP's benign credit trend."
+       },
+       {
+        "peer": "SYF",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Synchrony's record Q3 purchase volume +8% signals resilient card spending, supporting AXP billed business growth."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SLM",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Student-lending specific; charge-off rise tied to company practices, no read-through to AXP card."
+       },
+       {
+        "peer": "FCFS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Pawn demand strength reflects lower-income stress, not AXP premium card spending or credit."
+       },
+       {
+        "peer": "COF",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Capital One provision down and reserve release signal stable card credit, supporting AXP's credit trend."
+       },
+       {
+        "peer": "ALLY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D4",
+        "why": "Ally's stable auto credit and strong consumer lending suggest resilient consumer credit, mildly supportive for AXP."
+       },
+       {
+        "peer": "SYF",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Synchrony purchase volume +8% broad-based signals healthy card spending, supporting AXP billed business growth."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SYF",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad-based purchase volume +8% and record Q3 spend signal healthy consumer card demand, supporting AXP billed business growth."
+       },
+       {
+        "peer": "ALLY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D4",
+        "why": "Strong auto credit and stable charge-offs suggest consumer credit remains healthy, modestly supportive for AXP provisions."
+       },
+       {
+        "peer": "COF",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Capital One card credit benign with reserve release and lower provisions; supports AXP credit, though card loan growth modest."
+       },
+       {
+        "peer": "FCFS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Pawn demand strength reflects subprime/alternative credit, not premium card spending; no clear read-through to AXP."
+       },
+       {
+        "peer": "SLM",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Student loan-specific originations and charge-off issue; little read-through to AXP card spending or credit."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.1213203435596424,
+   "score_peer": 2.5,
+   "score_combined": 3.3713203435596424,
+   "overall_votes": [
+    "above",
+    "above",
+    "inline"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 4.5287,
+   "revenue_estimate": 20323276176,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-23",
+   "cutoff": "2026-10-22 22:00:00+00:00",
+   "decided_at": "2026-10-23T02:33:43.036566+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "36d8b2206fb9405f69f6f03702974263302233d5bf81bc0423958a77f028fff8"
+  },
+  "BAH": {
+   "ticker": "BAH",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Research & Consulting Services",
+   "last_release": "2026-07-24 10:49:09+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1443646/000162828026049494/q1fy2027exhibit991_final.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Revenue growth and Civil weakness",
+      "last_report": "Q1 revenue fell 4.2% YoY; ex-billables fell 3.8%. National Security demand accelerating while Civil remains challenged.",
+      "guidance": "FY2027 revenue $11.2–$11.7B, 0–4% growth."
+     },
+     {
+      "id": "D2",
+      "name": "Adjusted EBITDA margin",
+      "last_report": "Q1 adjusted EBITDA $334M, up 7.4%; margin 11.9%, up 130 bps.",
+      "guidance": "FY2027 adjusted EBITDA $1,240–$1,290M; margin ~11%."
+     },
+     {
+      "id": "D3",
+      "name": "Backlog and book-to-bill",
+      "last_report": "Q1 backlog $39B, up 3.2%; quarterly book-to-bill 1.5x.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Adjusted EPS and net income",
+      "last_report": "Q1 adjusted diluted EPS $1.81, up 22.3%; adjusted net income $217M, up 17.9%.",
+      "guidance": "FY2027 adjusted diluted EPS $6.00–$6.35."
+     },
+     {
+      "id": "D5",
+      "name": "Free cash flow and capex",
+      "last_report": "Q1 FCF $261M vs $96M; capital deployment $447M.",
+      "guidance": "FY2027 FCF $825–$925M; capex ~$220M, $105M new HQ."
+     }
+    ],
+    "guidance": "FY2027: revenue $11.2–$11.7B (0–4% growth); adjusted EBITDA $1,240–$1,290M (~11% margin); adjusted diluted EPS $6.00–$6.35; free cash flow $825–$925M.",
+    "kill_conditions": [
+     "Q2 revenue decline exceeds Q1's 4.2% or FY2027 revenue guidance is cut below $11.2B.",
+     "Book-to-bill falls below 1.0x or total backlog declines from $39B.",
+     "Adjusted EBITDA margin drops below ~11% or FY adjusted EPS guidance cut below $6.00."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 27,
+    "found": 27,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 143,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Booz Allen acquisition noted by William Blair; details unspecified",
+        "date": "2026-08-25",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "U.S. Navy selects Booz Allen for contract",
+        "date": "2026-10-01",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PDW integrates Booz Allen mission autonomy software on drones",
+        "date": "2026-10-09",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Palantir Knox federal cloud partnership pressures Booz Allen",
+        "date": "2026-10-19",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Booz Allen acquisition noted by William Blair analyst",
+        "date": "2026-08-25",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "U.S. Navy selects Booz Allen for contract",
+        "date": "2026-10-01",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PDW integrates Booz Allen mission autonomy software on drones",
+        "date": "2026-10-09",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "U.S. Navy selected Booz Allen for contract",
+        "date": "2026-10-01",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PDW to integrate Booz Allen mission autonomy software on drones",
+        "date": "2026-10-09",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Michael D. Brasseur, Navy Task Force 59 founder, joins Booz Allen",
+        "date": "2026-09-29",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Booz Allen releases new AI cyber threat report and counter AI defense",
+        "date": "2026-09-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Decart",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "EFX"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "EFX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Equifax is not a Booz Allen industry peer; its mortgage/credit-driven results and small government unit say little about BAH's national security/civil consulting demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "EFX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Equifax is not a direct peer; its government verification growth does not signal BAH consulting demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "EFX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Equifax is credit/data, not government consulting; its government and mortgage trends do not reveal Booz Allen's demand or margins."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.9068883707497264,
+   "score_peer": 0.0,
+   "score_combined": 2.9068883707497264,
+   "overall_votes": [
+    "above",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 1.5076,
+   "revenue_estimate": 2836597352,
+   "fiscal": "2027Q2",
+   "report_date": "2026-10-23",
+   "cutoff": "2026-10-22 22:00:00+00:00",
+   "decided_at": "2026-10-23T02:33:34.067566+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "800c063313e8cf4eb4760f844c4247eabc03351f8db6bd6e99ffc15ad514369e"
+  },
+  "FLG": {
+   "ticker": "FLG",
+   "index": "SP400",
+   "sector": "Financials",
+   "sub_industry": "Regional Banks",
+   "last_release": "2026-07-24 14:08:02+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/910073/000091007326000065/a2q2026earningsrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "C&I loan growth",
+      "last_report": "C&I loans rose $2.0B or 12% QoQ to $18.6B; originations $2.8B, commitments $4.2B.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Deposit growth and cost",
+      "last_report": "Total deposits +$689M; core +$644M; C&I/Private Bank deposits +$905M; cost of deposits -5bps, cost of funds -7bps.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Net interest margin",
+      "last_report": "NIM 2.13%, down 2bps QoQ; ex extra day 2.16%; net interest income $440M, down $3M QoQ.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Expenses and operating leverage",
+      "last_report": "Operating expenses $427M, down 3% QoQ; positive operating leverage 7%; PPNR $66M, adjusted PPNR $62M.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Credit quality and provisions",
+      "last_report": "Provision $18M vs none prior; NCOs 0.66% vs 0.52%; non-accruals +5%; criticized/classified -1%, substandard -6%.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "C&I loan growth stalls or reverses, with originations falling below Q2's $2.8B.",
+     "Net interest margin drops below 2.13% or deposit costs rise after Q2's 5bp decline.",
+     "Provision for credit losses rises sharply and net charge-offs exceed 0.66%."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 17,
+    "found": 17,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 54,
+   "news_used": 54,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Authorized $250M share repurchase program",
+        "date": "2026-07-25",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Agreed to $31.5M data breach class action settlement",
+        "date": "2026-07-28",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Announced full implementation of Private Bank operating model",
+        "date": "2026-08-05",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Selected Fiserv Finxact for core banking modernization",
+        "date": "2026-08-17",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Data breach class action settlement of $31.5M",
+        "date": "2026-07-28",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Full implementation of Private Bank operating model",
+        "date": "2026-08-05",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Federal Reserve interest rate increase on Sept 16",
+        "date": "2026-09-16",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Data breach settlement $31.5M",
+        "date": "2026-07-28",
+        "driver": "D4",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Private Bank full implementation",
+        "date": "2026-08-05",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selects Finxact core banking platform",
+        "date": "2026-08-17",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "GBCI",
+    "ASB",
+    "COLB",
+    "UBSI",
+    "VLY"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GBCI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Peer NIM +11bps and deposit cost down signal industry funding/margin tailwind for FLG."
+       },
+       {
+        "peer": "ASB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong core deposit growth and margin expansion suggest industry deposit/margin conditions improving for FLG."
+       },
+       {
+        "peer": "COLB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "NIM +18bps and $700M deposit campaign indicate strong industry pricing/funding tailwind for FLG."
+       },
+       {
+        "peer": "UBSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record NII, NIM +5bps, loan growth show industry revenue/margin momentum for FLG."
+       },
+       {
+        "peer": "VLY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "NIM +8bps and $1.1B deposit growth signal industry margin/deposit tailwind for FLG."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GBCI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Peer NIM +11bps, deposit and loan growth signal industry pricing/funding tailwinds for FLG."
+       },
+       {
+        "peer": "ASB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Peer deposit growth and margin expansion signal shared funding tailwinds for FLG."
+       },
+       {
+        "peer": "COLB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Peer NIM +18bps and deposit campaign signal industry funding/pricing tailwinds; credit stable."
+       },
+       {
+        "peer": "UBSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Peer NIM +5bps, loan/deposit growth, low credit costs point to shared tailwinds for FLG."
+       },
+       {
+        "peer": "VLY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Peer NIM +8bps and deposit growth indicate industry pricing/funding improvement for FLG."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VLY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Peer NIM rose 8bps on asset repricing despite deposit cost pressure; supports FLG NIM."
+       },
+       {
+        "peer": "UBSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record NII and NIM expansion on loan/deposit growth; positive read-across for FLG NIM."
+       },
+       {
+        "peer": "COLB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Peer NIM jumped 18bps on lower funding costs and deposit mix; positive for FLG NIM."
+       },
+       {
+        "peer": "ASB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Core deposits grew and margin expanded; supportive for FLG deposit growth/cost."
+       },
+       {
+        "peer": "GBCI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "Deposits up 10% annualized, funding costs down; positive for FLG deposit growth/cost."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -1.5,
+   "score_peer": 4.4907311951024935,
+   "score_combined": 0.7453655975512468,
+   "overall_votes": [
+    "below",
+    "below",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "bmo",
+   "eps_estimate": 0.0797,
+   "revenue_estimate": 492645053,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-23",
+   "cutoff": "2026-10-22 22:00:00+00:00",
+   "decided_at": "2026-10-23T02:33:50.166281+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "8374c7e4682f84a6a695a6f5f2b2927f2f1c1564f1fdb04b865f6a4d8e46e797"
+  },
+  "GNTX": {
+   "ticker": "GNTX",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Automotive Parts & Equipment",
+   "last_release": "2026-07-24 16:00:09+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/355811/000035581126000044/exhibit99106302026.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Automotive revenue and mirror shipments",
+      "last_report": "Automotive sales $560.1M, down from $578.1M; mirror units/revenue ~3%/5% below forecast; China revenue -20% q/q.",
+      "guidance": "Q3 global light-vehicle production -2%; FY26 revenue $2.65–$2.75B; FY27 $2.80–$2.90B."
+     },
+     {
+      "id": "D2",
+      "name": "Gross margin and tariff reimbursements",
+      "last_report": "Gross margin 37.0%, +280 bps y/y; included ~$18M IEEPA tariff reimbursement in COGS; sequential +50 bps ex benefit.",
+      "guidance": "FY26 gross margin 34.5%–35.5%, raised from 34%–35%; reflects all known tariffs as of July 24."
+     },
+     {
+      "id": "D3",
+      "name": "Premium Audio and Other Products",
+      "last_report": "Premium Audio $51.7M, +16%; Other Products $39.4M, +12%; non-automotive ~14% of total revenue.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Operating expenses and capital spending",
+      "last_report": "GAAP opex $99.7M vs $106.8M; adjusted $99.3M vs $97.5M; tax rate 16.5%.",
+      "guidance": "FY26 opex $405–$415M; tax 16%–17%; capex $115–$125M; D&A $100–$110M."
+     }
+    ],
+    "guidance": "FY2026: revenue $2.65–$2.75B unchanged; gross margin 34.5%–35.5%; opex $405–$415M; tax 16%–17%; capex $115–$125M; D&A $100–$110M. FY2027 revenue $2.80–$2.90B. Q3 global light-vehicle production expected -2% y/y.",
+    "kill_conditions": [
+     "Q3 gross margin falls below 34.5% as the $18M tariff reimbursement benefit does not repeat.",
+     "Automotive revenue declines more than global light-vehicle production, with China weakness worsening.",
+     "Premium Audio or Other Products growth turns negative, or FY26 revenue guidance is cut below $2.65B."
+    ]
+   },
+   "card_provider": "Morph",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 33,
+    "found": 33,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 32,
+   "news_used": 31,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Plans new plant in Morocco to strengthen supply chain with North African OEMs",
+        "date": "2026-07-29",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Investor Day outlines $7B revenue path, VOXX, contract manufacturing",
+        "date": "2026-08-27",
+        "driver": "D3",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "VC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Customer vehicle production fell 5%, worse than GNTX's -2% Q3 guide, signaling weaker auto demand/mirror shipments."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Visteon's customer production fell 5% and supply chain remains challenging, implying weaker auto demand for Gentex mirror shipments."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Visteon's customer production fell 5%, worse than Gentex's -2% guide, signaling weaker auto volumes for mirror shipments."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": -1.414213562373095,
+   "score_combined": -0.7071067811865475,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.5134,
+   "revenue_estimate": 683904757,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-23",
+   "cutoff": "2026-10-22 22:00:00+00:00",
+   "decided_at": "2026-10-23T02:32:54.576908+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "fd6f2d8f4f6e3132b990e4eb792e26979d564464bc41cf48496c832b48fb4421"
+  },
+  "SLB": {
+   "ticker": "SLB",
+   "index": "SP500",
+   "sector": "Energy",
+   "sub_industry": "Oil & Gas Equipment & Services",
+   "last_release": "2026-07-24 15:02:06+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/87347/000119312526315068/d122193dex99.htm",
+   "release_doc": "type EX-99",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Middle East activity recovery",
+      "last_report": "Middle East revenue fell 13% sequentially; area down 4%; conflict disruptions; activity began recovering in some countries but full recovery uncertain.",
+      "guidance": "No timing given; return to full production capacity expected to take time; recovery needs higher well intervention and equipment demand."
+     },
+     {
+      "id": "D2",
+      "name": "Production Systems and ChampionX",
+      "last_report": "Production Systems revenue rose 7% sequentially, 29% y/y; ChampionX added $865M; excluding acquisition, Production Systems revenue fell 1% y/y.",
+      "guidance": "Customers prioritize production, recovery and asset life; subsea momentum; no numeric outlook."
+     },
+     {
+      "id": "D3",
+      "name": "Digital and AI demand",
+      "last_report": "Digital revenue rose 9% sequentially and 18% y/y; margin 27.8%, up 683 bps sequentially; Tachyus acquisition strengthened reservoir modeling.",
+      "guidance": "Strong demand expected going forward; no numeric guidance."
+     },
+     {
+      "id": "D4",
+      "name": "Data Center Solutions growth",
+      "last_report": "H1 2026 revenue grew 63% y/y; selected as delivery partner for Meta's 1GW Canada data center; widened scope to engineering and design.",
+      "guidance": "On track to exceed $1B annualized run rate by end-2026; expect to surpass $2B annualized run rate exiting 2027."
+     },
+     {
+      "id": "D5",
+      "name": "Broad-based growth outside Middle East",
+      "last_report": "International rose 3% sequentially but fell 3% y/y; North America rose 4% sequentially, 36% y/y; U.S. unconventionals rebounded.",
+      "guidance": "Broad-based growth outside Middle East; favorable investment backdrop from energy security and supply diversification; strong foundation for 2027."
+     }
+    ],
+    "guidance": "No formal revenue/EPS guidance. Data Center Solutions on track to exceed $1B annualized run rate by end-2026 and surpass $2B exiting 2027; Middle East recovery timing uncertain.",
+    "kill_conditions": [
+     "Middle East revenue falls again or conflict disruptions worsen, delaying activity recovery.",
+     "Production Systems or Digital revenue declines sequentially, reversing Q2 growth drivers.",
+     "Data Center Solutions $1B run-rate target delayed or major hyperscaler project canceled."
+    ]
+   },
+   "card_provider": "Relace",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 8,
+    "found": 8,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 195,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "SLB awarded Oman Bisat-B expansion production facility contract by OQEP",
+        "date": "2026-09-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SLB awarded four Aramco integrated well construction contracts for 450+ wells",
+        "date": "2026-09-24",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Ormat selected for up to $35M DOE funding with SLB for geothermal",
+        "date": "2026-09-24",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SLB OneSubsea JV awarded ExxonMobil Rovuma LNG subsea production systems contract",
+        "date": "2026-09-29",
+        "driver": "D2",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SLB signs 15-year DrillPlan agreement with TotalEnergies",
+        "date": "2026-10-08",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SLB expands Arena digital subsurface collaboration with Chevron and TotalEnergies",
+        "date": "2026-10-08",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Oman OQEP Bisat-B expansion production facility contract",
+        "date": "2026-09-23",
+        "driver": "D1. Middle East activity recovery",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Aramco four well construction contracts for 450+ wells",
+        "date": "2026-09-24",
+        "driver": "D1. Middle East activity recovery",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Ormat DOE funding partnership for geothermal projects",
+        "date": "2026-09-24",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "OneSubsea ExxonMobil Rovuma LNG subsea production systems contract",
+        "date": "2026-09-29",
+        "driver": "D2. Production Systems and ChampionX",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Equinor digital leak detection and production monitoring contract",
+        "date": "2026-09-23",
+        "driver": "D3. Digital and AI demand",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TotalEnergies 15-year DrillPlan well planning agreement",
+        "date": "2026-10-08",
+        "driver": "D3. Digital and AI demand",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Chevron and TotalEnergies expanded Arena digital subsurface collaboration",
+        "date": "2026-10-08",
+        "driver": "D3. Digital and AI demand",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Aramco four integrated well construction contracts for 450+ wells over three years",
+        "date": "2026-09-24",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Oman OQEP Bisat-B expansion production facility contract with maintenance support",
+        "date": "2026-09-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "OneSubsea ExxonMobil Rovuma LNG subsea production systems contract in Mozambique",
+        "date": "2026-09-29",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TotalEnergies 15-year DrillPlan digital drilling agreement",
+        "date": "2026-10-08",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Chevron and TotalEnergies expanded Arena digital subsurface collaboration",
+        "date": "2026-10-08",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Equinor awarded SLB digital production monitoring contract at Johan Sverdrup",
+        "date": "2026-09-23",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Ormat selected for up to $35M DOE funding with SLB for geothermal projects",
+        "date": "2026-09-24",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "WFRD",
+    "HAL"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "WFRD",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Confirms Middle East conflict disruptions still weigh on activity, tempering SLB's expected recovery."
+       },
+       {
+        "peer": "HAL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Shows Middle East activity improving across service lines, supporting SLB's recovery outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "WFRD",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Confirms Middle East conflict still weighs on activity, matching SLB's D1 recovery uncertainty."
+       },
+       {
+        "peer": "HAL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Shows Middle East activity improving across product lines, supporting SLB's D1 recovery; international growth also positive."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HAL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Peer sees Middle East activity improving across product lines, supporting SLB's uncertain Middle East recovery."
+       },
+       {
+        "peer": "WFRD",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Peer says Middle East conflict disruptions still weighed on activity, tempering SLB's recovery outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 6.80336051416609,
+   "score_peer": 0.0,
+   "score_combined": 6.80336051416609,
+   "overall_votes": [
+    "above",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 0.6216,
+   "revenue_estimate": 9373008827,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-23",
+   "cutoff": "2026-10-22 22:00:00+00:00",
+   "decided_at": "2026-10-23T02:32:46.483514+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "bd10e13dde6e75de6b7a3cbe9bef61d0ad392a5bfbc08e8014cce93859d2cdcd"
+  }
+ },
+ "report_date": "2026-10-23",
+ "cutoff": "2026-10-22 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "f601b71a4081995a3537c0595c9ff2f7063f362d56687b9419a85c4724b3aaeb",
+ "runs": [
+  {
+   "at": "2026-10-23T02:34:45.412625+00:00",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "quality": {
+    "counts": {
+     "ok": 6
+    },
+    "attempted": 6,
+    "bad": 0,
+    "bad_share": 0.0,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
