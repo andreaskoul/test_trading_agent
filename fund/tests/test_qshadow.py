@@ -99,12 +99,12 @@ def test_vs_spy_lines():
     bench = [{"asof": f"2020-01-{i + 1:02d}", "kind": "backfill", "spy": 0.01 * (i - 1), "rf": 0.001,
               "sleeve": [1.3, 0.7, 1.3][i], "up": None, "timing": None} for i in range(3)]
     for b in bench:
-        b["timing"] = b["sleeve"] * b["spy"] + (1 - b["sleeve"]) * b["rf"]
+        b["timing"] = b["sleeve"] * b["spy"] - max(b["sleeve"] - 1, 0) * b["rf"]
     out = {n: [{"ret": 0.002, "ovl": b["spy"] + 0.002, "dyn": b["timing"] + 0.002} for b in bench] for n in Q.PRIMARY}
     rows, sbar = Q.vs_spy(out, bench, lambda b: True)
     assert abs(sbar - (1.3 + 0.7 + 1.3) / 3) < 1e-12
     rm = next(v for k, v in rows.items() if k.startswith("risk-matched"))
-    assert np.allclose(rm, [sbar * b["spy"] + (1 - sbar) * b["rf"] for b in bench])
+    assert np.allclose(rm, [sbar * b["spy"] - max(sbar - 1, 0) * b["rf"] for b in bench])
     assert np.allclose(rows[f"{Q.PRIMARY[0]} + dynamic sleeve"], [b["timing"] + 0.002 for b in bench])
 
 

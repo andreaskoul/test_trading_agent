@@ -9,6 +9,7 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   * Trend state and rate are frozen per week in `exposure.json` on `research-data`. A completed week still without a rate fails the `qshadow` job after the records are saved.
   * Could this change a decision? No. The books, their records and the traded fund are unchanged; these are extra ledger lines on research books.
   * Contract tests in `fund/tests/test_qshadow.py`: no future close in the trend state, frozen at first use, risk-matched and sleeve arithmetic.
+  * Amended 2026-10-23 (owner: use the costs paper trading has shown): financing on the broker's terms. A debit balance pays Alpaca's margin rate, 6.50% today (DTB3 + 2.43%); idle cash earns nothing; easy-to-borrow shorts cost $0. Trades stay at 5 bp per side, against a measured 0.8 bp slippage and 0.08 bp fees (118 paper fills, 1–22 October).
 - 2026-10-17: research shadow books (`fund/qshadow.py`, runner job `qshadow`, Thu 03:30 UTC; PROTOCOL_fund.md "Research shadow books").
   * Six weekly books from the quant trials on the 31-name news panel, never traded, records on `research-data`.
   * The job shares R5's lock, so `research-data` pushes never overlap.
