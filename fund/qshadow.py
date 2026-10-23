@@ -58,9 +58,13 @@ DIM, K_PROTO, HL, N_SIDE, UNIT = 3072, 16, 5, 5, 0.10
 SECTOR_CAP, DOLLAR_CAP, COST = 0.30, 0.10, 5e-4
 # Market exposure, the owner's policy (2026-10-19; CLAUDE.md 17: stated, never tested or tuned): an SPY sleeve
 # under every book, 1.3x SPY when SPY closes above its 200-session average at the as-of close, 0.7x otherwise;
-# the borrowed or idle 0.3 pays or earns the 3-month T-bill rate (DTB3). Trend state and rate are frozen per
+# financing on the broker's terms (MARGIN_SPREAD below). Trend state and the T-bill rate are frozen per
 # week at first use (exposure.json), never recomputed.
 SLEEVE_UP, SLEEVE_DOWN, TREND_WIN = 1.3, 0.7, 200
+# Financing on the broker's terms (Alpaca, docs read 2026-10-23): a debit balance pays the margin rate, 6.50% a year
+# on actual/360, which was DTB3 (4.07% on 2026-10-21) + 2.43%; history uses DTB3 + that spread. Idle cash earns
+# nothing; easy-to-borrow shorts cost $0. Debit = net long exposure above equity (short proceeds count as cash).
+MARGIN_SPREAD = 0.0243
 ALPHAS = (1e-2, 1e-1, 1, 10, 100, 1e3, 1e4, 1e5)
 FIT_START, HIST_END = pd.Timestamp("2016-01-04"), pd.Timestamp("2025-12-31")
 SEALED = (pd.Timestamp("2026-01-01"), pd.Timestamp("2026-09-30"))
@@ -615,7 +619,8 @@ def ledger(p=None):
     targets = {h: p.target(h) for h in (5, 10, 20)}
     E = exposure(p, recs)
     # the S&P yardsticks, on the same holding periods as the books: SPY held 1x, and the dynamic sleeve alone
-    # (s x SPY + (1 - s) x the T-bill rate; 5 bp per side when the sleeve changes)
+    # (s x SPY, the part above 1x financed at the margin rate, idle cash earning nothing; 5 bp per side when the
+    # sleeve changes)
     bench, prev_s = [], None
     for k, r in enumerate(recs):
         e0 = ex[k]
@@ -629,9 +634,10 @@ def ledger(p=None):
             continue
         row["spy"] = float(closes["SPY"].loc[e1] / closes["SPY"].loc[e0] - 1)
         if st.get("rf") is not None:
-            row["rf"] = st["rf"] * (e1 - e0).days / 360
+            row["rf"] = (st["rf"] + MARGIN_SPREAD) * (e1 - e0).days / 360      # the margin rate over the period
             s = st["sleeve"]
-            row["timing"] = s * row["spy"] + (1 - s) * row["rf"] - COST * abs(s - (prev_s if prev_s is not None else s))
+            row["timing"] = s * row["spy"] - max(s - 1, 0) * row["rf"] - COST * abs(s - (prev_s if prev_s is not None
+                                                                                   else s))
             prev_s = s
         bench.append(row)
     out = {}
@@ -658,8 +664,11 @@ def ledger(p=None):
             m = np.isfinite(sc) & np.isfinite(yy)
             ic = float(pd.Series(sc[m]).corr(pd.Series(yy[m]), method="spearman")) if m.sum() >= 10 else None
             b = bench[k]                                      # the book on top of SPY: 1x, and the dynamic sleeve
+            net = sum(w.values())                             # the book's net dollar exposure, SPY hedge included
+            fin = lambda s_: max(s_ + net - 1, 0) - max(s_ - 1, 0)  # debit the book adds on top of the sleeve's own
             rows.append({"asof": r["asof"], "kind": r["kind"], "ret": ret, "nav": nav, "ic": ic,
-                         "ovl": b["spy"] + ret, "dyn": None if b["timing"] is None else b["timing"] + ret})
+                         "ovl": None if b["rf"] is None else b["spy"] + ret - fin(1.0) * b["rf"],
+                         "dyn": None if b["timing"] is None else b["timing"] + ret - fin(b["sleeve"]) * b["rf"]})
             prev = w
         out[name] = rows
     os.makedirs(REC, exist_ok=True)
@@ -667,7 +676,8 @@ def ledger(p=None):
     pending = [b["asof"] for b in bench if b["spy"] is not None and b["timing"] is None]
     json.dump({"generated": pd.Timestamp.now(tz="UTC").isoformat(), "primary": list(PRIMARY), "books": out,
                "bench": bench, "policy": {"up": SLEEVE_UP, "down": SLEEVE_DOWN, "trend_sessions": TREND_WIN,
-                                          "rate": "DTB3", "since": "2026-10-19"},
+                                          "rate": "DTB3 + 2.43% on debit balances; idle cash 0",
+                                          "since": "2026-10-19"},
                "pending_rate": pending,
                "latest": {"asof": last["asof"], "kind": last["kind"],
                           "sleeve": E.get(last["asof"], {}).get("sleeve"),
@@ -686,7 +696,7 @@ def vs_spy(out, bench, keep):
         return {}, None
     sbar = float(np.mean([bench[k]["sleeve"] for k in idx]))
     rows = {"S&P 500 buy & hold": [bench[k]["spy"] for k in idx],
-            f"risk-matched S&P ({sbar:.2f}x)": [sbar * bench[k]["spy"] + (1 - sbar) * bench[k]["rf"] for k in idx],
+            f"risk-matched S&P ({sbar:.2f}x)": [sbar * bench[k]["spy"] - max(sbar - 1, 0) * bench[k]["rf"] for k in idx],
             f"dynamic sleeve alone ({SLEEVE_UP}x / {SLEEVE_DOWN}x)": [bench[k]["timing"] for k in idx]}
     for n in PRIMARY:
         rows[f"{n} + S&P"] = [out[n][k]["ovl"] for k in idx]
@@ -726,7 +736,8 @@ def write_md(out, bench=None):
              "forward evidence.",
              "", f"Below each span: the primaries on top of SPY, held 1x and through the owner's dynamic sleeve "
              f"({SLEEVE_UP}x SPY when SPY closes above its {TREND_WIN}-session average at the as-of close, {SLEEVE_DOWN}x "
-             "otherwise; the borrowed or idle part pays or earns DTB3), against SPY buy-and-hold and a risk-matched SPY "
+             "otherwise; a debit balance pays the margin rate, DTB3 + 2.43% (Alpaca's 6.50% today), idle cash earns nothing, "
+             "easy-to-borrow shorts cost nothing), against SPY buy-and-hold and a risk-matched SPY "
              "holding the span's mean sleeve. All lines use the books' holding weeks: a week without a session "
              "Wednesday (e.g. 4 July, Juneteenth, Christmas) is flat for every line. The sleeve is the owner's policy "
              "(2026-10-19), not a tested or tuned parameter.", ""]
