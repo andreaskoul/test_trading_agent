@@ -184,3 +184,46 @@ Paper fills have no market impact, so the measured slippage is a lower bound.
    * the measured cost is reported alongside.
 5. **The parts already saved stay valid.** They were run under the signed commit, and nothing in this amendment
    touches fitting or prediction. `score` accepts parts whose commit is an ancestor of this one.
+
+## Amendment 2 (2026-10-23): every model on every literature strategy, written before any score
+
+Written before `score` has run. No prediction has been opened. Owner: "test all models on all strategies from
+literature" (`reports/research/quant_trials/STRATEGY_LITERATURE.md`).
+
+**What runs.** `python sp500_transformers.py strategies` runs after `score`. It covers every model (ridge, MASTER,
+TFT, Chronos-2, Chronos-2-ft) × h ∈ {5, 10, 20} × the strategies below, on the 2013–2025 Thursday decisions, with
+these parameters fixed now.
+* **Descriptive only.** It changes no pass/fail above. These predictions will have been seen, so the choice of
+  strategy is made on forward weeks only.
+
+**Common rules:**
+* **Book:** long/short, 50% long and 50% short of NAV (the research books' gross), beta-hedged with SPY to zero
+  252-day shrunk beta.
+* **Holding period:** from close(d+1) to the next decision's close(d+1), on raw returns, dividends included.
+* **Sleeve:** the owner's dynamic SPY sleeve (1.3x when SPY closes above its 200-session average at d, else 0.7x).
+* **Costs (Amendment 1, broker terms):**
+  * 5 bp per side on every weight change, the hedge and sleeve included;
+  * debit balance at DTB3 + 2.43% (actual/360);
+  * idle cash 0;
+  * easy-to-borrow shorts $0.
+* **Reported in % per year:**
+  * the book alone;
+  * book + sleeve;
+  * excess over SPY buy-and-hold;
+  * excess over the risk-matched S&P;
+  * Sharpe, max drawdown and turnover (% of NAV per year);
+  * all for 2013–25, 2013–19, 2020–25 and 2022.
+
+**Strategies** (adapted to ~450 names; deciles replace the 31-name top/bottom 5):
+
+| | Rule |
+|---|---|
+| S0 | top 10% long, bottom 10% short, equal weight, rebalanced weekly |
+| S1 | band: enter in the top/bottom 10%, hold until the name leaves the top/bottom 20% (Novy-Marx & Velikov 2016) |
+| S2 | signal-weighted: weights ∝ cross-sectional z-score ÷ 60-day volatility, over the top and bottom thirds (Grinold 1994) |
+| S3 | partial adjustment toward S2 (Gârleanu & Pedersen 2013): w_t = w_{t−1} + λ(S2_t − w_{t−1}), λ = 1 − 0.5^(5/h) |
+| S4 | S3 × min(1.5, 10% ÷ the book's realised volatility over the last 13 weeks, annualised) (Moreira & Muir 2017) |
+| S5 | uncertainty-adjusted (median ÷ q90−q10 range): **not run historically**, because the saved parts hold no quantiles; forward only |
+
+* Sector caps are not applied on the S&P universe.
+* **The DTB3 series is downloaded once and frozen** in `.cache/quant_trials/dtb3.csv`.

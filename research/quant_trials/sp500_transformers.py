@@ -480,10 +480,26 @@ def score(d, preds, chosen, sha, sector):
     print(tab.round(4).to_string(index=False))
 
 
+def strategies_all():
+    """Amendment 2: every model x horizon x strategy, after the read (descriptive)."""
+    import strategies as ST
+    if not os.path.exists(OUT):
+        sys.exit("run `score` first")
+    d = T.build()
+    preds = {}
+    for p_ in PARTS:
+        z = np.load(part_path(p_))
+        for k in z.files:
+            if k.startswith("h"):
+                preds[(p_.split("_h")[0], int(k[1:]))] = z[k]
+    tab = ST.run_all(d, preds, YEARS, ("ridge",) + MODELS, os.path.join(P.REPORT, "SP500_STRATEGIES.md"))
+    print(tab[tab.span == "2013-25"].round(2).to_string(index=False))
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1]
     if cmd == "run":
         assert sys.argv[2] in PARTS, f"part must be one of {PARTS}"
         run(sys.argv[2])
     else:
-        {"smoke": smoke, "score": score_all}[cmd]()
+        {"smoke": smoke, "score": score_all, "strategies": strategies_all}[cmd]()

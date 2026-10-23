@@ -99,7 +99,8 @@ def build():
     # daily residual return e_t = r_t - beta_{t-1} r_SPY,t (beta known the session before); for the sequence models
     e = r - np.vstack([np.full((1, r.shape[1]), np.nan), beta[:-1]]) * rm[:, None]
     return {"S": S, "names": names, "Z": Z.astype(np.float32), "frozen": frozen, "y20": resid(H), "y5": resid(5),
-            "y10": resid(10), "elig": elig, "e": e.astype(np.float32), "spy": spy.values, "rm": rm,
+            "y10": resid(10), "elig": elig, "e": e.astype(np.float32), "spy": spy.values, "rm": rm, "r": r,
+            "beta": beta,
             "valid": np.isfinite(close)}
 
 
