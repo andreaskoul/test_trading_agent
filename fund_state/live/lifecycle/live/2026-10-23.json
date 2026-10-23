@@ -1,0 +1,769 @@
+{
+ "day": "2026-10-23",
+ "asof": "2026-10-21",
+ "close_et": "16:00",
+ "news_ts": 1792784400,
+ "decided_at": "2026-10-23T19:57:10+00:00",
+ "style": "preclose",
+ "nav_model": 97554.48770732076,
+ "hedge_w": -0.2856698923074924,
+ "actions": [
+  {
+   "day": "2026-10-23",
+   "id": "2026-10-21|CSX",
+   "ticker": "CSX",
+   "action": "news_increase",
+   "from": 5826.88,
+   "to": 8908.49,
+   "R": -0.012329,
+   "W": 0.04641,
+   "days_held": 1
+  },
+  {
+   "day": "2026-10-23",
+   "id": "2026-10-21|SMCI",
+   "ticker": "SMCI",
+   "action": "news_increase",
+   "from": 5685.44,
+   "to": 8772.38,
+   "R": -0.013706,
+   "W": 0.166471,
+   "days_held": 1
+  },
+  {
+   "day": "2026-10-23",
+   "id": "2026-10-21|TSLA",
+   "ticker": "TSLA",
+   "action": "news_increase",
+   "from": 4905.54,
+   "to": 7423.01,
+   "R": 0.003363,
+   "W": 0.042283,
+   "days_held": 1
+  },
+  {
+   "day": "2026-10-23",
+   "id": "2026-10-21|META",
+   "ticker": "META",
+   "action": "news_exit",
+   "from": 4442.29,
+   "to": 0.0,
+   "R": -0.002397,
+   "W": 0.097869,
+   "days_held": 1
+  },
+  {
+   "day": "2026-10-23",
+   "id": "2026-10-21|CRM",
+   "ticker": "CRM",
+   "action": "news_increase",
+   "from": -2897.54,
+   "to": -4390.58,
+   "R": 0.003786,
+   "W": 0.05419,
+   "days_held": 1
+  },
+  {
+   "day": "2026-10-23",
+   "id": "2026-10-21|AMD",
+   "ticker": "AMD",
+   "action": "news_exit",
+   "from": -2465.27,
+   "to": 0.0,
+   "R": -0.024387,
+   "W": 0.053096,
+   "days_held": 1
+  },
+  {
+   "day": "2026-10-23",
+   "id": "SPY",
+   "ticker": "SPY",
+   "action": "hedge",
+   "from": -17080.95,
+   "to": -27868.38
+  }
+ ],
+ "cool": {},
+ "lots_after": [
+  {
+   "id": "2026-10-07|MRVL",
+   "ticker": "MRVL",
+   "side": 1,
+   "w0": 0.057962149688043356,
+   "beta": 1.9268106508,
+   "sigma_e": 0.042118691238406177,
+   "H": 13,
+   "W": 0.15186110091550933,
+   "R": -0.1418858365593923,
+   "days": 11,
+   "kill_conditions": [
+    "Marvell cuts or withdraws its FY28 $20B or FY31 $70-90B revenue targets",
+    "A major analyst downgrades MRVL citing AI data-center demand slowdown",
+    "Marvell loses a key custom AI chip customer or cuts data-center revenue guidance"
+   ],
+   "first_reported": "2026-10-06",
+   "score": 2,
+   "cohort": "2026-10-07",
+   "entry_day": "2026-10-08",
+   "entry_close_ts": 1791489600,
+   "news_until": 1792784400,
+   "increased": true,
+   "w": 0.08165967612359169
+  },
+  {
+   "id": "2026-10-07|NKE",
+   "ticker": "NKE",
+   "side": -1,
+   "w0": -0.065,
+   "beta": 0.8879359006,
+   "sigma_e": 0.01767595269211655,
+   "H": 13,
+   "W": 0.06373155377410196,
+   "R": -0.09061816464905285,
+   "days": 11,
+   "kill_conditions": [
+    "Nike raises FY27 revenue guidance or reports Q2 revenue beat.",
+    "Nike China sales return to growth and management signals turnaround.",
+    "Analyst upgrades Nike to Buy citing improving fundamentals."
+   ],
+   "first_reported": "2026-10-06",
+   "score": -2,
+   "cohort": "2026-10-07",
+   "entry_day": "2026-10-08",
+   "entry_close_ts": 1791489600,
+   "news_until": 1792784400,
+   "increased": true,
+   "w": -0.09806489561508559
+  },
+  {
+   "id": "2026-10-21|CSX",
+   "ticker": "CSX",
+   "side": 1,
+   "w0": 0.06087,
+   "beta": 0.6402889768,
+   "sigma_e": 0.012403712798847924,
+   "H": 14,
+   "W": 0.04641044361723182,
+   "kill_conditions": [
+    "CSX issues weak Q4 or FY guidance",
+    "CSX reports operating margin contraction or volume decline",
+    "Peer railroads UNP/NSC report disappointing earnings and negative sector outlook"
+   ],
+   "first_reported": "2026-10-21",
+   "score": 2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.012328509063764386,
+   "days": 1,
+   "news_until": 1792784400,
+   "increased": true,
+   "w": 0.09131804419257392
+  },
+  {
+   "id": "2026-10-21|SMCI",
+   "ticker": "SMCI",
+   "side": 1,
+   "w0": 0.05994,
+   "beta": 2.0551470887,
+   "sigma_e": 0.04617076198201026,
+   "H": 13,
+   "W": 0.16647104975338137,
+   "kill_conditions": [
+    "Company cuts or withdraws its raised FY27 revenue outlook",
+    "Backlog falls below $60B or major orders are cancelled",
+    "Gross margin guidance is reduced or new CFO departs"
+   ],
+   "first_reported": "2026-10-20",
+   "score": 2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.013706342663702655,
+   "days": 1,
+   "news_until": 1792784400,
+   "increased": true,
+   "w": 0.08992284489736949
+  },
+  {
+   "id": "2026-10-21|TSLA",
+   "ticker": "TSLA",
+   "side": 1,
+   "w0": 0.05072,
+   "beta": 1.6622139812,
+   "sigma_e": 0.021141475729803922,
+   "H": 4,
+   "W": 0.042282951459607844,
+   "kill_conditions": [
+    "Tesla or SpaceX board denies merger talks or disbands special committee",
+    "Merger exploration formally terminated or abandoned",
+    "Musk walks back merger comments, says tie-up not planned"
+   ],
+   "first_reported": "2026-10-21",
+   "score": 2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.0033629007307186213,
+   "days": 1,
+   "news_until": 1792784400,
+   "increased": true,
+   "w": 0.07609086908899867
+  },
+  {
+   "id": "2026-10-21|WMT",
+   "ticker": "WMT",
+   "side": 1,
+   "w0": 0.02997,
+   "beta": 0.3207502052,
+   "sigma_e": 0.01653331855788083,
+   "H": 3,
+   "W": 0.028636547759970994,
+   "kill_conditions": [
+    "Walmart discontinues or withdraws the $120 Walmart+/Sam's Club membership bundle",
+    "Sam's Club exits the joint membership bundle",
+    "Deutsche Bank downgrades Walmart or removes its Buy rating"
+   ],
+   "first_reported": "2026-10-20",
+   "score": 1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.00710862189916542,
+   "days": 1,
+   "news_until": 1792784400,
+   "w": 0.02961577065532776
+  },
+  {
+   "id": "2026-10-21|MMM",
+   "ticker": "MMM",
+   "side": 1,
+   "w0": 0.02767,
+   "beta": 0.7929686064,
+   "sigma_e": 0.01671492423451073,
+   "H": 3,
+   "W": 0.028951098018836906,
+   "kill_conditions": [
+    "3M announces termination or material reduction of AWS data center partnership",
+    "3M cuts FY2026 EPS guidance below prior range",
+    "RBC downgrades 3M or withdraws data-center growth thesis"
+   ],
+   "first_reported": "2026-10-20",
+   "score": 1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.0064994879162018696,
+   "days": 1,
+   "news_until": 1792784400,
+   "w": 0.027289676303416898
+  },
+  {
+   "id": "2026-10-21|HAS",
+   "ticker": "HAS",
+   "side": 1,
+   "w0": 0.02536,
+   "beta": 0.8311884956,
+   "sigma_e": 0.025196195918633518,
+   "H": 13,
+   "W": 0.09084617633126964,
+   "kill_conditions": [
+    "Hasbro cuts or withdraws its raised FY2026 sales guidance",
+    "Magic: The Gathering quarterly revenue falls below $600M or declines year-over-year",
+    "Hasbro reduces, suspends, or abandons its doubled buyback target"
+   ],
+   "first_reported": "2026-10-20",
+   "score": 1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.005665913641888794,
+   "days": 1,
+   "news_until": 1792784400,
+   "w": 0.025313813835873986
+  },
+  {
+   "id": "2026-10-21|BA",
+   "ticker": "BA",
+   "side": 1,
+   "w0": 0.02536,
+   "beta": 1.1052051922,
+   "sigma_e": 0.01763199327664512,
+   "H": 5,
+   "W": 0.03942633554539774,
+   "kill_conditions": [
+    "FAA suspends or revokes 737 MAX 10 certification",
+    "Boeing delays 737 MAX 10 deliveries due to new regulatory or quality issue",
+    "Boeing cuts FY guidance or reports major 737 MAX order cancellations"
+   ],
+   "first_reported": "2026-10-20",
+   "score": 1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.010291360186604578,
+   "days": 1,
+   "news_until": 1792784400,
+   "w": 0.025393489455718225
+  },
+  {
+   "id": "2026-10-21|XOM",
+   "ticker": "XOM",
+   "side": 1,
+   "w0": 0.02536,
+   "beta": 0.0126441844,
+   "sigma_e": 0.014639053007285812,
+   "H": 3,
+   "W": 0.02535558358331299,
+   "kill_conditions": [
+    "US-Israel tensions with Iran de-escalate and Brent crude falls below $100",
+    "US Congress passes a windfall tax on oil company profits",
+    "ExxonMobil issues a profit warning or cuts guidance"
+   ],
+   "first_reported": "2026-10-20",
+   "score": 1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.027672804317553455,
+   "days": 1,
+   "news_until": 1792784400,
+   "w": 0.025981568045932248
+  },
+  {
+   "id": "2026-10-21|ROL",
+   "ticker": "ROL",
+   "side": -1,
+   "w0": -0.072,
+   "beta": 0.4132383735,
+   "sigma_e": 0.020746454352392717,
+   "H": 14,
+   "W": 0.07762612417699859,
+   "kill_conditions": [
+    "Rollins reports better-than-expected revenue and EPS in Q4 2026",
+    "Rollins raises full-year 2026 revenue and EPS guidance",
+    "Analyst upgrades Rollins to Buy or Overweight"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.010804305209988537,
+   "days": 1,
+   "news_until": 1792784400,
+   "w": -0.07084799339311827
+  },
+  {
+   "id": "2026-10-21|LRCX",
+   "ticker": "LRCX",
+   "side": -1,
+   "w0": -0.031,
+   "beta": 2.0246720698,
+   "sigma_e": 0.03262781653407281,
+   "H": 14,
+   "W": 0.12208211074901847,
+   "kill_conditions": [
+    "Lam Research raises Q2 guidance above consensus",
+    "AI chip selloff reverses; SOX index posts multiple up days",
+    "Analysts upgrade LRCX to Buy on improved outlook"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.008024763009562787,
+   "days": 1,
+   "news_until": 1792784400,
+   "w": -0.03081800161727671
+  },
+  {
+   "id": "2026-10-21|CRM",
+   "ticker": "CRM",
+   "side": -1,
+   "w0": -0.03,
+   "beta": 0.5885645393,
+   "sigma_e": 0.03128640827909104,
+   "H": 3,
+   "W": 0.054189648725729234,
+   "kill_conditions": [
+    "Salesforce terminates or abandons the Braze acquisition agreement",
+    "Salesforce announces a large share buyback to offset the $5.66B cash outlay",
+    "Analysts upgrade CRM citing strong accretion and integration confidence from the Braze deal"
+   ],
+   "first_reported": "2026-10-20",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.0037855392723488836,
+   "days": 1,
+   "news_until": 1792784400,
+   "increased": true,
+   "w": -0.0450064288775623
+  },
+  {
+   "id": "2026-10-21|NFLX",
+   "ticker": "NFLX",
+   "side": -1,
+   "w0": -0.029,
+   "beta": 0.5883033849,
+   "sigma_e": 0.022376301218358693,
+   "H": 14,
+   "W": 0.08372445274235055,
+   "kill_conditions": [
+    "Netflix raises its full-year revenue or ad-revenue guidance",
+    "Netflix reports accelerating subscriber growth or strong Q4 guidance",
+    "Netflix announces a major content hit or partnership that boosts growth outlook"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.014433815353222756,
+   "days": 1,
+   "news_until": 1792784400,
+   "w": -0.028403827876289325
+  },
+  {
+   "id": "2026-10-21|MSFT",
+   "ticker": "MSFT",
+   "side": -1,
+   "w0": -0.0275,
+   "beta": 0.9479008426,
+   "sigma_e": 0.01584356823851591,
+   "H": 5,
+   "W": 0.03542729558747818,
+   "kill_conditions": [
+    "Microsoft beats Q1 estimates and raises FY2027 guidance",
+    "Microsoft reaffirms or re-enters the UK Nscale data center deal",
+    "CoreWeave secures new financing, easing AI capex debt fears"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.01222900000521904,
+   "days": 1,
+   "news_until": 1792784400,
+   "w": -0.02761264255796083
+  },
+  {
+   "id": "2026-10-21|AAPL",
+   "ticker": "AAPL",
+   "side": -1,
+   "w0": -0.025,
+   "beta": 0.7621233146,
+   "sigma_e": 0.014154727220666097,
+   "H": 8,
+   "W": 0.040035614414315246,
+   "kill_conditions": [
+    "Apple reports stronger-than-expected iPhone 18 demand or raises forward guidance",
+    "Analysts upgrade Apple, citing improving iPhone demand and attractive valuation",
+    "OpenAI trade-secret claims dismissed or settled without material Apple liability"
+   ],
+   "first_reported": "2026-10-20",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.002405787714554365,
+   "days": 1,
+   "news_until": 1792784400,
+   "w": -0.024882472855876452
+  },
+  {
+   "id": "2026-10-21|CMG",
+   "ticker": "CMG",
+   "side": -1,
+   "w0": -0.025,
+   "beta": 0.7546463915,
+   "sigma_e": 0.02779123548300911,
+   "H": 5,
+   "W": 0.06214309171871257,
+   "kill_conditions": [
+    "Chipotle reports Q3 EPS above consensus and raises FY guidance",
+    "Chipotle announces a new takeover bid or strategic investment",
+    "Chipotle Q3 same-store sales turn positive with margin expansion"
+   ],
+   "first_reported": "2026-10-15",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.019571946732109418,
+   "days": 1,
+   "news_until": 1792784400,
+   "w": -0.024335686931645527
+  },
+  {
+   "id": "2026-10-21|AVGO",
+   "ticker": "AVGO",
+   "side": -1,
+   "w0": -0.0225,
+   "beta": 1.6383774217,
+   "sigma_e": 0.01956707001249525,
+   "H": 3,
+   "W": 0.03389115941689916,
+   "kill_conditions": [
+    "Broadcom raises AI revenue guidance or reports accelerating AI chip sales",
+    "CEO Hock Tan retracts or clarifies 'casino' warning on AI spending",
+    "Anthropic secures $42B loan and AI funding concerns ease"
+   ],
+   "first_reported": "2026-10-20",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.0032920331787508333,
+   "days": 1,
+   "news_until": 1792784400,
+   "w": -0.02230835764143668
+  }
+ ],
+ "prices": {
+  "MRVL": 227.435,
+  "NKE": 37.345,
+  "CSX": 50.855,
+  "SMCI": 32.885,
+  "TSLA": 372.49,
+  "WMT": 120.05,
+  "MMM": 173.67,
+  "HAS": 117.37,
+  "BA": 188.365,
+  "XOM": 183.15,
+  "ROL": 34.85,
+  "LRCX": 229.49,
+  "CRM": 248.55,
+  "NFLX": 65.87,
+  "MSFT": 524.795,
+  "AAPL": 347.63,
+  "CMG": 27.475,
+  "AVGO": 321.455,
+  "SPY": 759.85
+ },
+ "equity": 97539.09,
+ "current_qty": {
+  "AAPL": -7.0,
+  "AMD": -5.0,
+  "AVGO": -7.0,
+  "BA": 13.0,
+  "CMG": -87.0,
+  "CRM": -12.0,
+  "CSX": 114.0,
+  "HAS": 21.0,
+  "LRCX": -13.0,
+  "META": 7.0,
+  "MMM": 15.0,
+  "MRVL": 35.0,
+  "MSFT": -5.0,
+  "NFLX": -42.0,
+  "NKE": -256.0,
+  "ROL": -199.0,
+  "SMCI": 173.0,
+  "SPY": -22.0,
+  "TSLA": 13.0,
+  "WMT": 24.0,
+  "XOM": 14.0
+ },
+ "target_weights": {
+  "MRVL": 0.08165967612359169,
+  "NKE": -0.09806489561508559,
+  "CSX": 0.09131804419257392,
+  "SMCI": 0.08992284489736949,
+  "TSLA": 0.07609086908899867,
+  "WMT": 0.02961577065532776,
+  "MMM": 0.027289676303416898,
+  "HAS": 0.025313813835873986,
+  "BA": 0.025393489455718225,
+  "XOM": 0.025981568045932248,
+  "ROL": -0.07084799339311827,
+  "LRCX": -0.03081800161727671,
+  "CRM": -0.0450064288775623,
+  "NFLX": -0.028403827876289325,
+  "MSFT": -0.02761264255796083,
+  "AAPL": -0.024882472855876452,
+  "CMG": -0.024335686931645527,
+  "AVGO": -0.02230835764143668,
+  "SPY": -0.2856698923074924
+ },
+ "orders": [
+  {
+   "symbol": "AMD",
+   "leg": "close",
+   "side": "buy",
+   "qty": 5,
+   "target_weight": 0.0,
+   "price_ref": 514.98,
+   "client_order_id": "fund-lc-2026-10-23-AMD-close",
+   "attempts": [
+    "fund-lc-2026-10-23-AMD-close-a1"
+   ],
+   "ids": [
+    "83f6a8b3-f0ec-409c-b432-70e64264dfa6"
+   ],
+   "id": "83f6a8b3-f0ec-409c-b432-70e64264dfa6",
+   "filled_qty": 5.0,
+   "fill_price": 516.37,
+   "status": "filled"
+  },
+  {
+   "symbol": "CMG",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 1,
+   "target_weight": -0.02434,
+   "price_ref": 27.475,
+   "client_order_id": "fund-lc-2026-10-23-CMG-rebalance",
+   "attempts": [
+    "fund-lc-2026-10-23-CMG-rebalance-a1"
+   ],
+   "ids": [
+    "5c94a160-7a9c-4d06-84c6-62808b62334d"
+   ],
+   "id": "5c94a160-7a9c-4d06-84c6-62808b62334d",
+   "filled_qty": 1.0,
+   "fill_price": 27.51,
+   "status": "filled"
+  },
+  {
+   "symbol": "CRM",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 6,
+   "target_weight": -0.04501,
+   "price_ref": 248.55,
+   "client_order_id": "fund-lc-2026-10-23-CRM-rebalance",
+   "attempts": [
+    "fund-lc-2026-10-23-CRM-rebalance-a1"
+   ],
+   "ids": [
+    "b30a2ceb-150b-4d98-9395-b728ef539fb1"
+   ],
+   "id": "b30a2ceb-150b-4d98-9395-b728ef539fb1",
+   "filled_qty": 6.0,
+   "fill_price": 248.81666699999997,
+   "status": "filled"
+  },
+  {
+   "symbol": "CSX",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 61,
+   "target_weight": 0.09132,
+   "price_ref": 50.855,
+   "client_order_id": "fund-lc-2026-10-23-CSX-rebalance",
+   "attempts": [
+    "fund-lc-2026-10-23-CSX-rebalance-a1"
+   ],
+   "ids": [
+    "51c7f513-0347-4e01-95cf-a1500447371b"
+   ],
+   "id": "51c7f513-0347-4e01-95cf-a1500447371b",
+   "filled_qty": 61.0,
+   "fill_price": 50.827705,
+   "status": "filled"
+  },
+  {
+   "symbol": "META",
+   "leg": "close",
+   "side": "sell",
+   "qty": 7,
+   "target_weight": 0.0,
+   "price_ref": 642.715,
+   "client_order_id": "fund-lc-2026-10-23-META-close",
+   "attempts": [
+    "fund-lc-2026-10-23-META-close-a1"
+   ],
+   "ids": [
+    "7de91a74-ed34-442d-b5a3-c3d16c159bad"
+   ],
+   "id": "7de91a74-ed34-442d-b5a3-c3d16c159bad",
+   "filled_qty": 7.0,
+   "fill_price": 642.86,
+   "status": "filled"
+  },
+  {
+   "symbol": "ROL",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 1,
+   "target_weight": -0.07085,
+   "price_ref": 34.85,
+   "client_order_id": "fund-lc-2026-10-23-ROL-rebalance",
+   "attempts": [
+    "fund-lc-2026-10-23-ROL-rebalance-a1"
+   ],
+   "ids": [
+    "9a398ea8-fd92-431f-bb6a-512b31c1e52c"
+   ],
+   "id": "9a398ea8-fd92-431f-bb6a-512b31c1e52c",
+   "filled_qty": 1.0,
+   "fill_price": 34.88,
+   "status": "filled"
+  },
+  {
+   "symbol": "SMCI",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 94,
+   "target_weight": 0.08992,
+   "price_ref": 32.885,
+   "client_order_id": "fund-lc-2026-10-23-SMCI-rebalance",
+   "attempts": [
+    "fund-lc-2026-10-23-SMCI-rebalance-a1"
+   ],
+   "ids": [
+    "952823b4-57a0-4734-a54a-773ad48f0af8"
+   ],
+   "id": "952823b4-57a0-4734-a54a-773ad48f0af8",
+   "filled_qty": 94.0,
+   "fill_price": 32.98,
+   "status": "filled"
+  },
+  {
+   "symbol": "SPY",
+   "leg": "rebalance",
+   "side": "sell",
+   "qty": 15,
+   "target_weight": -0.28567,
+   "price_ref": 759.85,
+   "client_order_id": "fund-lc-2026-10-23-SPY-rebalance",
+   "attempts": [
+    "fund-lc-2026-10-23-SPY-rebalance-a1"
+   ],
+   "ids": [
+    "8a32b1e2-2eef-4d3d-9a60-d82f653a5608"
+   ],
+   "id": "8a32b1e2-2eef-4d3d-9a60-d82f653a5608",
+   "filled_qty": 15.0,
+   "fill_price": 760.18,
+   "status": "filled"
+  },
+  {
+   "symbol": "TSLA",
+   "leg": "rebalance",
+   "side": "buy",
+   "qty": 7,
+   "target_weight": 0.07609,
+   "price_ref": 372.49,
+   "client_order_id": "fund-lc-2026-10-23-TSLA-rebalance",
+   "attempts": [
+    "fund-lc-2026-10-23-TSLA-rebalance-a1"
+   ],
+   "ids": [
+    "97f5559a-a73a-4c0e-b205-c279ca444aa2"
+   ],
+   "id": "97f5559a-a73a-4c0e-b205-c279ca444aa2",
+   "filled_qty": 7.0,
+   "fill_price": 372.461429,
+   "status": "filled"
+  }
+ ],
+ "problems": [],
+ "status": "submitted",
+ "submitted_at": "2026-10-23T20:00:09+00:00"
+}
