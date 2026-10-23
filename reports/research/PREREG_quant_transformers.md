@@ -147,3 +147,40 @@ For each model M ∈ {M1, M2, M3, M3-ft} and each h ∈ {5, 10, 20}:
 * No 2013–2025 prediction is scored before sign-off.
 
 **Owner sign-off:** signed by the owner in session, 2026-10-20 ("Signed"), before any test-year score.
+
+
+## Amendment 1 (2026-10-23): costs measured in paper trading, written before any score
+
+Written before `score` has run. No prediction of any part has been opened, and no 2013–25 IC has been computed.
+
+**Why.** The owner asked that profitability be judged with the costs the paper account has actually shown.
+
+**Measured costs.** From the paper account (`fund-data: fund_state/live/execution/fills.csv` and `activities.csv`,
+1–22 October 2026; 118 filled orders, $347k traded):
+* slippage against the official close: 0.8 bp, weighted by traded value (median 0.3 bp); 1 order in 10 was off by
+  13.8 bp or more;
+* regulatory fees: 0.08 bp of traded value;
+* 11% of orders expired unfilled, all of them in week 1.
+
+**Documented costs.** From Alpaca, the fund's broker
+(https://docs.alpaca.markets/docs/margin-and-short-selling, read 2026-10-23):
+* $0 locate and borrow fees on easy-to-borrow shorts, which are the only shorts Alpaca opens;
+* margin interest of 6.50% a year (non-elite tier) on the settlement-date debit balance, on an actual/360 basis.
+
+Paper fills have no market impact, so the measured slippage is a lower bound.
+
+**What changes.**
+1. **Pass rule 5 is unchanged at 10 bp per unit of one-way turnover.** That is about 12× the measured cost and
+   leaves room for real fills being worse than paper ones.
+2. **New descriptive lines** (no pass/fail): the net decile spread at 1 bp (measured) and at 20 bp (stress).
+3. **The decile long-short portfolio pays no margin interest.** Its longs are funded by its short proceeds, so the
+   account carries no debit balance. Shorts are assumed easy-to-borrow, at a $0 fee.
+   * Limitation: there is no history of each stock's borrow status, so a stock that was hard to borrow at the time
+     still counts as shortable. For S&P 500 members this is rare.
+4. **Stage-2 books** (PROTOCOL_fund.md "Market exposure") use the broker's terms:
+   * a debit balance pays 6.50% a year;
+   * idle cash earns nothing;
+   * trading costs 5 bp per side, about 6× the measured cost;
+   * the measured cost is reported alongside.
+5. **The parts already saved stay valid.** They were run under the signed commit, and nothing in this amendment
+   touches fitting or prediction. `score` accepts parts whose commit is an ancestor of this one.

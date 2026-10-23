@@ -416,7 +416,9 @@ def score_all():
     for p_ in PARTS:
         z = np.load(part_path(p_))
         meta = json.loads(str(z["meta"]))
-        assert meta["sha"] == sha, f"{p_} was run under another pre-registration commit"
+        # parts run under the signed commit stay valid after an amendment that leaves fitting untouched (Amendment 1)
+        assert subprocess.run(["git", "merge-base", "--is-ancestor", meta["sha"], sha], cwd=ROOT).returncode == 0, \
+            f"{p_} was run under a commit that is not an ancestor of the pre-registration"
         model = p_.split("_h")[0]
         for k in z.files:
             if k.startswith("h"):
@@ -430,7 +432,7 @@ def score(d, preds, chosen, sha, sector):
     S = d["S"]
     res, years = {}, []
     for h in HS:
-        def per_year(pred):
+        def per_year(pred, cost_bp=10.0):
             out, nets, neu = {}, {}, {}
             for fy in YEARS:
                 yrs = np.where(S.year == fy)[0]
@@ -439,12 +441,14 @@ def score(d, preds, chosen, sha, sector):
                 y = d[f"y{h}"].copy()
                 y[yrs[-1] + 1:] = np.nan                                 # target windows inside the year
                 out[fy] = F.weekly_ic(pred, y, wk)
-                nets[fy] = T.decile_net(pred, d["y5"], wk)
+                nets[fy] = T.decile_net(pred, d["y5"], wk, cost_bp)
                 neu[fy] = F.weekly_ic(F.neutralise(pred, sector), F.neutralise(y, sector), wk)
             return out, nets, neu
         r_ic, _, _ = per_year(preds[("ridge", h)])
         for m in MODELS:
             ic, nets, neu = per_year(preds[(m, h)])
+            nets1 = per_year(preds[(m, h)], 1.0)[1]                     # Amendment 1: measured paper cost
+            nets20 = per_year(preds[(m, h)], 20.0)[1]                   # Amendment 1: stress
             cat = lambda dct, ys: np.concatenate([dct[y_] for y_ in ys if y_ in dct] or [np.full(1, np.nan)])
             allic = cat(ic, YEARS)
             t = F.nw_t(allic, 4)
@@ -453,6 +457,8 @@ def score(d, preds, chosen, sha, sector):
                            "ic_2013_19": np.nanmean(cat(ic, range(2013, 2020))),
                            "ic_2020_25": np.nanmean(cat(ic, range(2020, 2026))), "ic_2022": np.nanmean(ic.get(2022, np.full(1, np.nan))),
                            "net_decile_bp_wk": np.nanmean(cat(nets, YEARS)) * 1e4,
+                           "net_decile_bp_wk_measured_1bp": np.nanmean(cat(nets1, YEARS)) * 1e4,
+                           "net_decile_bp_wk_stress_20bp": np.nanmean(cat(nets20, YEARS)) * 1e4,
                            "sector_neutral_ic": np.nanmean(cat(neu, YEARS)),
                            "ic_2022_25": np.nanmean(cat(ic, range(2022, 2026))), "settings": chosen.get((m, h))}
             years += [{"model": m, "h": h, "year": fy, "ic": np.nanmean(ic[fy]), "ridge_ic": np.nanmean(r_ic[fy])}
