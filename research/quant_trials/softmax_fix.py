@@ -25,7 +25,8 @@ import torch.nn.functional as Fn
 
 import panel as P
 
-CLIFF_FP32, RULE_MARGIN, RULE_SHARE = 16.6, 15.0, 0.001       # Amendment 3: under 0.1% of rows above 15 -> no-op
+CLIFF_FP32, RULE_MARGIN, RULE_SHARE = 16.6, 15.0, 0.001       # Amendment 3: every call site under 0.1% of rows
+                                                               # above 15 -> no-op
 LOG = os.path.join(P.CACHE, "logs", "softmax_diag.json")
 
 
@@ -89,7 +90,8 @@ class Margins:
         return {"rows": rows, "gt10": sum(s["gt10"] for s in self.sites.values()), "gt15": gt15, "share_gt15": gt15 / max(rows, 1),
                 "gt_cliff": sum(s["gt_cliff"] for s in self.sites.values()),
                 "max_margin": max([s["max"] for s in self.sites.values()] or [float("nan")]),
-                "noop": gt15 / max(rows, 1) < RULE_SHARE, "sites": self.sites}
+                "noop": all(s["gt15"] / max(s["rows"], 1) < RULE_SHARE for s in self.sites.values()),   # per site
+                "sites": self.sites}
 
 
 @contextlib.contextmanager
@@ -188,7 +190,8 @@ def ab(model):
     """F2 (only if F1's rule is crossed): validation IC of the 2013 window, 5 seeds, standard vs fixed softmax."""
     diag = json.load(open(LOG))
     key = {"master": "master_h5"}[model]
-    if all(v.get("noop", True) for v in diag[key].values() if isinstance(v, dict)):
+    per_site = lambda v: all(s["gt15"] / max(s["rows"], 1) < RULE_SHARE for s in v["sites"].values())
+    if all(per_site(v) for v in diag[key].values() if isinstance(v, dict) and "sites" in v):
         sys.exit(f"F1 rule not crossed for {key}: the fix is a numerical no-op; F2 does not run (Amendment 3)")
     X, d, sector, M = _setup()
     S, h, cfg = d["S"], 5, X.FINAL["master_h5"]

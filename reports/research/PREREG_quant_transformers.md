@@ -288,8 +288,16 @@ on 2013–2025 exists. The 2013–25 S&P data have been seen for the other model
   * Chronos-2-ft (2000 steps, eager attention so that softmax is visible).
 
   Log every softmax row's margin.
-  * **Rule:** if under 0.1% of rows have m > 15, the fix is a numerical no-op for that model. This is recorded,
-    and there is no retraining.
+  * **Rule (per call site, corrected 2026-10-25 before any F2 run):** if, at every softmax call site, under 0.1%
+    of rows have m > 15, the fix is a numerical no-op for that model. This is recorded, and there is no
+    retraining. If any site crosses, F2 runs.
+  * **Disclosure.** The first draft pooled all of a model's rows. MASTER seed 0's diagnostic showed why that is
+    wrong:
+    * the temporal attention (`master.py:168`) has 4.7% of rows above 15 (max margin 88);
+    * 130M cross-stock attention rows (max 9.3) dilute the pooled share to 0.095%.
+
+    The correction was made after seeing these diagnostic counts, which are not an outcome, and before any
+    standard-vs-fixed comparison existed.
 * **F2, only where F1's rule is crossed.**
   * Swap in the ported fixed softmax (`softmax_fix.py`; tests in `test_softmax_fix.py`).
   * Compare validation IC of the 2013 window, 5 seeds each, standard vs fixed.
