@@ -483,7 +483,10 @@ def score_all():
     score(d, preds, chosen, sha, sectors(d))
 
 
-def score(d, preds, chosen, sha, sector):
+def score(d, preds, chosen, sha, sector, models=MODELS, out=OUT, years_csv="sp500_transformers_years.csv",
+          title="S&P 500 read of three transformers"):
+    """The signed read's statistics and pass rule; Holm over the model x horizon tests given (Amendment 3 reuses it
+    for Timestral alone, Holm over 3, with its own output files)."""
     S = d["S"]
     res, years = {}, []
     for h in HS:
@@ -500,7 +503,7 @@ def score(d, preds, chosen, sha, sector):
                 neu[fy] = F.weekly_ic(F.neutralise(pred, sector), F.neutralise(y, sector), wk)
             return out, nets, neu
         r_ic, _, _ = per_year(preds[("ridge", h)])
-        for m in MODELS:
+        for m in models:
             ic, nets, neu = per_year(preds[(m, h)])
             nets1 = per_year(preds[(m, h)], 1.0)[1]                     # Amendment 1: measured paper cost
             nets20 = per_year(preds[(m, h)], 20.0)[1]                   # Amendment 1: stress
@@ -518,7 +521,7 @@ def score(d, preds, chosen, sha, sector):
                            "ic_2022_25": np.nanmean(cat(ic, range(2022, 2026))), "settings": chosen.get((m, h))}
             years += [{"model": m, "h": h, "year": fy, "ic": np.nanmean(ic[fy]), "ridge_ic": np.nanmean(r_ic[fy])}
                       for fy in YEARS]
-    keys = sorted(res, key=lambda k: res[k]["p"])                        # Holm over the 12
+    keys = sorted(res, key=lambda k: res[k]["p"])                        # Holm over the tests in this read
     for i, k in enumerate(keys):
         res[k]["p_holm"] = min(1.0, max(res[kk]["p"] * (len(keys) - j) for j, kk in enumerate(keys[: i + 1])))
     for k, r in res.items():
@@ -526,9 +529,9 @@ def score(d, preds, chosen, sha, sector):
                          and r["ic_2020_25"] > 0 and r["ic_2022"] >= 0 and r["net_decile_bp_wk"] > 0)
     tab = pd.DataFrame([{"model": m, "h": h, **{k: v for k, v in r.items() if k != "settings"}}
                         for (m, h), r in res.items()])
-    pd.DataFrame(years).to_csv(os.path.join(P.REPORT, "sp500_transformers_years.csv"), index=False)
-    with open(OUT, "w") as f:
-        f.write(f"# S&P 500 read of three transformers (pre-registration `{sha}`)\n\n")
+    pd.DataFrame(years).to_csv(os.path.join(P.REPORT, years_csv), index=False)
+    with open(out, "w") as f:
+        f.write(f"# {title} (pre-registration `{sha}`)\n\n")
         f.write(tab.round(4).to_markdown(index=False) + "\n\n")
         f.write("Settings chosen at the first refit: " + json.dumps({f"{m}_h{h}": c for (m, h), c in chosen.items()})
                 + "\n")

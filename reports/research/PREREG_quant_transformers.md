@@ -227,3 +227,74 @@ these parameters fixed now.
 
 * Sector caps are not applied on the S&P universe.
 * **The DTB3 series is downloaded once and frozen** in `.cache/quant_trials/dtb3.csv`.
+
+## Amendment 3 (2026-10-25): Timestral, and the softmax fix, written before any Timestral test-year score
+Owner request (2026-10-25):
+* test Timestral (Mistral, released 2026-10-15) on the current setup at several horizons, with and without news,
+  against our models;
+* check whether the softmax/cross-entropy fix of Barron, Gnanapragasam & Tschannen (DeepMind, arXiv 2610.31642)
+  applies to our models and what it changes;
+* test and verify before every final decision.
+
+Before this amendment, only these ran: the smoke test (2012, a training-period year; panel 2017) and the F1
+diagnostic below, which uses only the 2013 refit window's training and validation rows. No Timestral prediction
+on 2013–2025 exists. The 2013–25 S&P data have been seen for the other models; Timestral is a new model on them.
+
+**T1: Timestral on the S&P 500 read, 2013–25 (confirmatory for Timestral).**
+* **Model:** Timestral-209M, zero-shot. Code: github.com/mistralai/timestral@a534bdb. The weights' hub revision
+  is recorded in the saved part. There are no fine-tuning tools, so there is no fitting and no grid.
+* **Input:** exactly as zero-shot Chronos-2 (`chronos_scores`):
+  * per eligible name, the daily residual series as target;
+  * the five z-scored signals as past covariates;
+  * context 512, prediction length 21;
+  * names as independent series;
+  * library defaults (symmetric averaging on), `clip_nonnegative` off.
+* **Score:** the sum of median steps 1..h, so sessions d+2..d+1+h, the target's window.
+* **Same universe, eligibility, embargo, Thursday decisions, scorer and pass rule** as the signed read:
+  * Holm p < 0.05;
+  * IC above ridge;
+  * IC > 0 in 2013–19 and in 2020–25;
+  * IC ≥ 0 in 2022;
+  * net decile spread > 0 at 10 bp.
+* **Holm across Timestral's 3 horizons** (5, 10, 20). This is its own family; the 12-test read stays as recorded.
+* **Then, descriptive:** Timestral on S0–S4 and **S5** (median ÷ (q90 − q10) of the h-step sums, then S3),
+  next to ridge, Chronos-2, Chronos-2-ft and MASTER, in % per year with broker costs.
+* **Caveat:** Timestral's pretraining corpus is not disclosed and may contain market series up to 2026, so a
+  2013–25 zero-shot result can be contaminated. A pass earns at most a forward book; forward weeks are the clean
+  test.
+
+**T2: Timestral ± news on the 31-name panel, 2018–25 (descriptive).**
+* **Two arms at h ∈ {5, 10, 20}:**
+  * factors only: the panel's five signals as past covariates;
+  * factors + news: adds 3 intensity columns and PCA-8 of the half-life-5 headline state (the PCA is fit on
+    2016–17 sessions only).
+* **Target:** the panel's residual target. Thursday decisions.
+* **Reported:**
+  * weekly IC per arm, Δ IC (news − none) with NW t, and sector-neutral Δ;
+  * spans 2018–25 and 2022–25, and by year.
+* **Descriptive only:** the panel was used before, has low power, and its news idea already failed
+  (`DECISION.md`).
+
+**F: the softmax fix (2610.31642).**
+* **Why it might matter.** None of our models trains on cross-entropy: MASTER uses MSE, TFT and Chronos-2 use
+  quantile losses. Softmax appears only in attention and in MASTER's feature gate. In fp32, a softmax row whose
+  top logit exceeds the log-sum-exp of the rest by a margin m loses accuracy in the top entry's gradient. The
+  port's tests measured the error at about 0.2% at m = 10, about 17% at m = 15, and 100% past the cliff at about
+  16.6.
+* **Timestral is inference-only, so the fix does not apply to it.**
+* **F1, diagnostic.** Retrain the 2013 refit window (training and validation rows only) for:
+  * MASTER h5 (5 seeds, the frozen settings);
+  * TFT h10 (seed 0);
+  * Chronos-2-ft (2000 steps, eager attention so that softmax is visible).
+
+  Log every softmax row's margin.
+  * **Rule:** if under 0.1% of rows have m > 15, the fix is a numerical no-op for that model. This is recorded,
+    and there is no retraining.
+* **F2, only where F1's rule is crossed.**
+  * Swap in the ported fixed softmax (`softmax_fix.py`; tests in `test_softmax_fix.py`).
+  * Compare validation IC of the 2013 window, 5 seeds each, standard vs fixed.
+* **F3, only if Δ val-IC > 2 seed standard errors.** The fixed variant becomes an extra forward-book arm in the
+  forward-books amendment. There is **no second read of 2013–25**: those years were seen, so any re-run on them
+  is labelled descriptive.
+
+**Owner sign-off (Amendment 3):** _pending_

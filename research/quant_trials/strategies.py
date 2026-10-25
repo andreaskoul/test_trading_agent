@@ -131,7 +131,14 @@ def stats(df, sbar=None):
 SPANS = {"2013-25": (2013, 2025), "2013-19": (2013, 2019), "2020-25": (2020, 2025), "2022": (2022, 2022)}
 
 
-def run_all(d, preds, years, models, out_md, hs=(5, 10, 20), spans=SPANS):
+HEADER = ("# Every model on every literature strategy, S&P 500 2013-2025 (descriptive; PREREG_quant_transformers "
+          "Amendment 2)\n\nAll returns in % per year. Book: long/short, 50% + 50% of NAV, beta-hedged. "
+          "+ sleeve: the owner's dynamic SPY sleeve (1.3x / 0.7x). Costs: 5 bp per side, margin DTB3 + 2.43%, "
+          "idle cash 0, ETB borrow $0. These predictions were seen at scoring: the strategy is chosen on "
+          "forward weeks only. S5 runs forward only (no quantiles in the saved parts).\n\n")
+
+
+def run_all(d, preds, years, models, out_md, hs=(5, 10, 20), spans=SPANS, header=HEADER):
     rf, vol = dtb3(), vol60(d)
     rows = []
     for m in models:
@@ -145,11 +152,7 @@ def run_all(d, preds, years, models, out_md, hs=(5, 10, 20), spans=SPANS):
     tab = pd.DataFrame(rows)
     tab.to_csv(out_md.replace(".md", ".csv"), index=False)
     with open(out_md, "w") as f:
-        f.write("# Every model on every literature strategy, S&P 500 2013-2025 (descriptive; PREREG_quant_transformers "
-                "Amendment 2)\n\nAll returns in % per year. Book: long/short, 50% + 50% of NAV, beta-hedged. "
-                "+ sleeve: the owner's dynamic SPY sleeve (1.3x / 0.7x). Costs: 5 bp per side, margin DTB3 + 2.43%, "
-                "idle cash 0, ETB borrow $0. These predictions were seen at scoring: the strategy is chosen on "
-                "forward weeks only. S5 runs forward only (no quantiles in the saved parts).\n\n")
+        f.write(header)
         for name in spans:
             f.write(f"## {name}\n\n" + tab[tab.span == name].drop(columns="span").round(2).to_markdown(index=False)
                     + "\n\n")
