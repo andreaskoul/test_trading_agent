@@ -3,6 +3,7 @@ Amendment 3).
 
     python timestral_sp500.py smoke     # 10 Thursdays of 2012 (a training-period year) on the S&P harness and 5 of
                                         # 2017 on the panel: coverage, sample inputs/outputs, reproducibility
+    python timestral_sp500.py devcheck  # MPS vs CPU scores on 4 Thursdays of 2012 (must agree before MPS is used)
     python timestral_sp500.py run       # T1: every Thursday 2013-25 (refuses unless Amendment 3 is signed + pushed)
     python timestral_sp500.py score     # T1: the one read -> SP500_TIMESTRAL.md (Holm over 3), strategies table
     python timestral_sp500.py news      # T2: +/- news on the panel, 2018-25 (descriptive) -> TIMESTRAL_NEWS.md
@@ -36,11 +37,41 @@ CHUNK = 128
 _M = None
 
 
+DEVICE = os.environ.get("TIMESTRAL_DEVICE", "mps")     # verified against CPU in `devcheck` before use
+
+
+def _mps_safe():
+    """MPS has no float64. Timestral uses it only in its scaler bookkeeping (causal Welford mean/std per patch, and
+    the multi-patch refine, which a 21-step forecast never reaches). Run exactly those on CPU, in float64 as the
+    library does, and move the float32 results back; the network itself stays on the GPU."""
+    import timestral.forecaster as tf
+    import timestral.model as tm
+    import timestral.scaler as ts
+    if getattr(ts, "_mps_safe", False):
+        return
+    orig = ts.causal_patch_loc_scale
+
+    def cpls(data, mask, *a, **k):
+        loc, scale = orig(data.cpu(), mask.cpu(), *a, **k)
+        return loc.to(data.device), scale.to(data.device)
+    tm.causal_patch_loc_scale = tf.causal_patch_loc_scale = cpls
+    refine = tf.TimestralForecaster._refine_block
+
+    def refine_cpu(self, quantiles, context, mask, target_rows):
+        if quantiles.shape[1] // self.patch_size <= 1:
+            return quantiles                                             # the library's own early return
+        raise NotImplementedError("multi-patch refine on MPS: not needed for PRED = 21")
+    tf.TimestralForecaster._refine_block = refine_cpu
+    ts._mps_safe = True
+
+
 def model():
     global _M
     if _M is None:
         from timestral import TimestralForecaster
-        _M = TimestralForecaster.from_pretrained(REPO, device="cpu", revision=REV)   # MPS lacks float64 (_refine_block)
+        if DEVICE == "mps":
+            _mps_safe()
+        _M = TimestralForecaster.from_pretrained(REPO, device=DEVICE, revision=REV)
         _M.model.eval()
     return _M
 
@@ -110,7 +141,7 @@ def smoke():
     again = timestral_scores(d, days[:2], sector)
     expected = [int(sum(d["elig"][dd, j] and np.isfinite(d["e"][max(0, dd - 59): dd + 1, j]).all()
                         for j in range(len(d["names"])))) for dd in days]
-    rep = {"weights_rev": weights_rev(), "code": CODE, "device": "cpu", "sec_10_thursdays": round(sec, 1),
+    rep = {"weights_rev": weights_rev(), "code": CODE, "device": DEVICE, "sec_10_thursdays": round(sec, 1),
            "names_scored": [int(np.isfinite(cs[20][dd]).sum()) for dd in days], "names_expected": expected,
            "reproducible": bool(all(np.array_equal(cs[h][days[:2]], again[h][days[:2]], equal_nan=True) for h in X.HS)),
            **{f"ic_h{h}_2012": X.val_ic(cs[h], d[f"y{h}"], days) for h in X.HS},
@@ -146,7 +177,7 @@ def run():
             preds[h][days] = cs[h][days]
         X.log("timestral", yr)
     np.savez_compressed(PART, **{f"h{h}": v for h, v in preds.items()}, **{f"w{h}": v for h, v in w.items()},
-                        meta=json.dumps({"sha": sha, "weights_rev": weights_rev(), "code": CODE}))
+                        meta=json.dumps({"sha": sha, "weights_rev": weights_rev(), "code": CODE, "device": DEVICE}))
     X.log("saved", PART)
 
 
@@ -277,5 +308,29 @@ def news():
     print(tab.round(4).to_string(index=False))
 
 
+def devcheck():
+    """MPS vs CPU on 4 Thursdays of 2012 (training period): scores must agree to float32 noise before MPS is used."""
+    global _M, DEVICE
+    d = T.build()
+    S, sector = d["S"], X.sectors(d)
+    days = X.thursdays(S, np.where(S.year == 2012)[0])[:4]
+    res = {}
+    for dev in ("cpu", "mps"):
+        DEVICE, _M = dev, None
+        t = time.time()
+        res[dev] = (timestral_scores(d, days, sector), time.time() - t)
+    rep = {"sec_cpu": round(res["cpu"][1], 1), "sec_mps": round(res["mps"][1], 1)}
+    for h in X.HS:
+        a, b = res["cpu"][0][h][days], res["mps"][0][h][days]
+        ok = np.isfinite(a) & np.isfinite(b)
+        rep[f"h{h}"] = {"same_names": bool((np.isfinite(a) == np.isfinite(b)).all()),
+                        "max_abs_diff": float(np.abs(a - b)[ok].max()), "score_sd": float(a[ok].std()),
+                        "rank_corr": float(pd.Series(a[ok]).rank().corr(pd.Series(b[ok]).rank()))}
+    rep["agree"] = all(rep[f"h{h}"]["same_names"] and rep[f"h{h}"]["rank_corr"] > 0.9999
+                       and rep[f"h{h}"]["max_abs_diff"] < 1e-3 * rep[f"h{h}"]["score_sd"] for h in X.HS)
+    json.dump(rep, open(os.path.join(P.REPORT, "timestral_devcheck.json"), "w"), indent=1)
+    print(json.dumps(rep, indent=1))
+
+
 if __name__ == "__main__":
-    {"smoke": smoke, "run": run, "score": score, "news": news}[sys.argv[1]]()
+    {"smoke": smoke, "devcheck": devcheck, "run": run, "score": score, "news": news}[sys.argv[1]]()
