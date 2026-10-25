@@ -64,7 +64,8 @@ class Margins:
             return
         with torch.no_grad():
             z = x.detach().float().movedim(dim, -1).reshape(-1, x.shape[dim])
-            z = z[torch.isfinite(z).any(-1)]
+            z = torch.where(z < -1e30, float("-inf"), z)      # additive masks (-finfo.max) mark absent keys, not
+            z = z[torch.isfinite(z).any(-1)]                 # logits; a row with one live key has m = inf, skipped
             if z.shape[-1] < 2 or not len(z):
                 return
             top, i = z.max(-1, keepdim=True)

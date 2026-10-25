@@ -72,6 +72,16 @@ def test_patch_logs_margins_and_restores():
     assert s["rows"] == 8 and s["gt_cliff"] == 4 and abs(s["max_margin"] - 20.0) < 1e-3, s
 
 
+def test_masked_keys_are_not_margins():
+    """Attention masks add -finfo.max: a row with one live key is skipped, masked keys never count as logits."""
+    mg = Margins()
+    z = torch.tensor([[0.0, 1.0, 2.0], [0.0, torch.finfo(torch.float32).min, torch.finfo(torch.float32).min]])
+    with patched_softmax(mg):
+        torch.softmax(z, -1)
+    s = mg.summary()
+    assert s["rows"] == 1 and s["max_margin"] < 2, s
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):
