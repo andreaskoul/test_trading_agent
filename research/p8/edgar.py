@@ -36,7 +36,11 @@ LAST = pd.Timestamp("2025-12-31 23:59:59")                       # never past th
 PREF = {"eps": ["EarningsPerShareDiluted", "EarningsPerShareBasicAndDiluted"],
         "ni": ["NetIncomeLossAvailableToCommonStockholdersDiluted", "NetIncomeLoss",
                "NetIncomeLossAvailableToCommonStockholdersBasic", "ProfitLoss"],
-        "sh": ["WeightedAverageNumberOfDilutedSharesOutstanding", "WeightedAverageNumberOfShareOutstandingBasicAndDiluted"]}
+        "sh": ["WeightedAverageNumberOfDilutedSharesOutstanding", "WeightedAverageNumberOfShareOutstandingBasicAndDiluted"],
+        # H3b (Amendment 5 C): inventory is a balance-sheet instant; revenue a duration
+        "inv": ["InventoryNet", "InventoryGross"],
+        "rev": ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet"]}
+INSTANT = {"InventoryNet", "InventoryGross"}
 
 
 def get(url, tries=4):
@@ -173,8 +177,9 @@ def build():
         for concept in {c for cs in PREF.values() for c in cs}:
             for unit, xs in (g.get(concept, {}).get("units") or {}).items():
                 for x in xs:
-                    if x.get("filed") and pd.Timestamp(x["filed"]) <= LAST and x.get("start") and x.get("end"):
-                        eps.append({"cik": c, "concept": concept, "unit": unit, "start": x["start"], "end": x["end"],
+                    inst = concept in INSTANT
+                    if x.get("filed") and pd.Timestamp(x["filed"]) <= LAST and x.get("end") and (inst or x.get("start")):
+                        eps.append({"cik": c, "concept": concept, "unit": unit, "start": x["end"] if inst else x["start"], "end": x["end"],
                                     "val": x["val"], "filed": x["filed"], "accn": x["accn"], "form": x.get("form"),
                                     "fp": x.get("fp"), "fy": x.get("fy")})
     R = pd.DataFrame(rel).drop_duplicates(["cik", "accession"])
@@ -247,6 +252,49 @@ def quarters():
     Q = pd.DataFrame(rows).sort_values(["cik", "end", "derived"]).drop_duplicates(["cik", "end"], keep="first")
     Q.to_parquet(os.path.join(CACHE, "eps_quarterly.parquet"))
     return Q
+
+
+def inv_sales():
+    """Quarterly first-filed inventory and revenue per firm (H3b). Revenue: 80-100-day periods, Q4 derived as
+    FY - Q1..Q3 (flagged); inventory: the instant at the quarter end (+-5 days). Each quantity takes the first concept
+    of its PREF list present. `filed` = the later of the two first-filing dates (the ratio is known only then)."""
+    E = pd.read_parquet(os.path.join(CACHE, "facts_first.parquet"))
+    E = E[E["unit"] == "USD"]
+
+    def pick(kind):
+        rank = {c: i for i, c in enumerate(PREF[kind])}
+        x = E[E["concept"].isin(rank)].assign(r=lambda d: d["concept"].map(rank))
+        return x.sort_values("r").drop_duplicates(["cik", "start", "end"], keep="first")
+
+    rev, inv = pick("rev"), pick("inv")
+    rq = rev[rev["days"].between(80, 100)][["cik", "start", "end", "val", "filed"]].assign(derived=False)
+    ra = rev[rev["days"].between(330, 380)]
+    q_by = {c: g for c, g in rq.groupby("cik")}
+    der = []
+    for r in ra.itertuples():
+        g = q_by.get(r.cik)
+        if g is None:
+            continue
+        p = g[(g["end"] > r.start) & (g["end"] < r.end)]
+        if len(p) == 3:
+            der.append({"cik": r.cik, "start": p["end"].max(), "end": r.end, "val": r.val - p["val"].sum(),
+                        "filed": r.filed, "derived": True})
+    RQ = pd.concat([rq, pd.DataFrame(der)]).sort_values(["cik", "end", "derived"]).drop_duplicates(["cik", "end"], keep="first")
+    out = []
+    inv_by = {c: g for c, g in inv.groupby("cik")}
+    for r in RQ.itertuples():
+        g = inv_by.get(r.cik)
+        if g is None or r.val <= 0:
+            continue
+        m = g[(g["end"] - r.end).abs() <= pd.Timedelta(days=5)]
+        if not len(m):
+            continue
+        out.append({"cik": r.cik, "end": r.end, "inv": float(m["val"].iloc[0]), "rev": float(r.val),
+                    "ratio": float(m["val"].iloc[0]) / float(r.val), "filed": max(r.filed, m["filed"].iloc[0]),
+                    "rev_derived": r.derived})
+    X = pd.DataFrame(out)
+    X.to_parquet(os.path.join(CACHE, "inv_sales.parquet"))
+    return X
 
 
 def coverage():

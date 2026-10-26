@@ -6,7 +6,8 @@ between -2x and 4x SPY's that day (Welch 2022, as fund/screen.py), and both are 
 Before XLRE (2015-10-08) and XLC (2018-06-19), and for names without a current GICS sector, e is market-only
 and flagged (Amendment 4, D4).
 
-Returns: Alpaca SIP (adjusted) from 2016-01-04; yfinance (auto-adjusted) before, flagged as survivorship-biased.
+Returns: Alpaca SIP (adjusted) from 2016-01-04; yfinance (auto-adjusted) before, flagged as survivorship-biased for
+stocks; sector ETFs before 2016 from yfinance (`yf_etf_close.parquet`).
 """
 import os
 import sys
@@ -29,6 +30,10 @@ def returns():
     """Daily simple returns, Alpaca from SPLICE, yfinance before (first Alpaca return is SPLICE's own)."""
     A = PX.panel().sort_index()
     Y = pd.read_parquet(os.path.join(PX.CACHE, "yf_sp500_close.parquet")).sort_index()
+    # SPDR sector ETFs before 2016 (yfinance, auto-adjusted; no survivorship issue for ETFs), so the §1 sector
+    # residual exists before Alpaca's history (XLRE from 2015-10, XLC from 2018-06 as Amendment 4 D4)
+    etf = pd.read_parquet(os.path.join(PX.CACHE, "yf_etf_close.parquet")).sort_index()
+    Y = Y.join(etf.drop(columns=["SPY"]), how="left")
     ra = A.pct_change(fill_method=None)
     ry = Y.pct_change(fill_method=None)
     ra = ra[ra.index > SPLICE]

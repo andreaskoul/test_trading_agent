@@ -78,7 +78,7 @@ def main():
         x = by.get(norm(s))
         if x is None and s in RETIRED:                          # a sub-industry retired in 2023: its industry stands
             ind = T[T["industry_code"] == RETIRED[s]].iloc[0]
-            out[r.Symbol] = {"sub": s + " (retired 2023)", "sub_code": None, "industry": ind.industry,
+            out[r.Symbol] = {"sub": s, "sub_code": None, "retired_2023": True, "industry": ind.industry,
                              "industry_code": ind.industry_code, "sector": ind.sector}
             continue
         if x is None:

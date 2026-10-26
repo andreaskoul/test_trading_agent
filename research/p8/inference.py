@@ -26,6 +26,11 @@ import pandas as pd
 from scipy import stats
 
 
+RADEMACHER = np.array([-1.0, 1.0])
+# Webb (2023) six-point weights (mean 0, variance 1): with G <= 12 clusters Rademacher has only 2^G distinct draws
+WEBB = np.array([-np.sqrt(1.5), -1.0, -np.sqrt(0.5), np.sqrt(0.5), 1.0, np.sqrt(1.5)])
+
+
 def _codes(x):
     return pd.factorize(pd.Series(x).astype(str), sort=True)[0]
 
@@ -64,7 +69,7 @@ def event_test(y, s, cell, cluster, direction=1, B=9999, seed=0, chunk=500, retu
     SY = S @ Yc                                              # G x G
     tw = []
     for i in range(0, B, chunk):
-        W = rng.choice([-1.0, 1.0], size=(min(chunk, B - i), G))
+        W = rng.choice(WEBB if G <= 12 else RADEMACHER, size=(min(chunk, B - i), G))
         bb = W @ A / D
         sc = W * A - W @ SY.T - bb[:, None] * Q
         tw.append(bb / np.sqrt(k * (sc ** 2).sum(1) / D ** 2))

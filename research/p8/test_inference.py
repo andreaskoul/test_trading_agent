@@ -43,7 +43,7 @@ def test_exact():
     yt, st = I._demean(y, c, C), I._demean(s, c, C)
     k = G / (G - 1) * (N - 1) / (N - 1 - C)
     r2 = np.random.default_rng(7)
-    W = r2.choice([-1.0, 1.0], size=(20, G))
+    W = r2.choice(I.WEBB if G <= 12 else I.RADEMACHER, size=(20, G))
     for b in range(5):
         ystar = (y - yt) + W[b][g] * yt                       # fitted FE + w_g * restricted residual
         ys = I._demean(ystar, c, C)
@@ -104,7 +104,17 @@ def test_nw_holm():
     print("ok   Newey-West size; Holm")
 
 
+def test_webb_size():
+    R, rej = 300, 0
+    for r in range(R):
+        rng = np.random.default_rng(5000 + r)
+        y, s, cell, ind = sim(rng, beta=0.0, n_ind=11, n_sec=11, n_season=40, per=8)
+        rej += I.event_test(y, s, cell // 1000, ind, B=399, seed=r, ri=False)["p_wild"] <= 0.05
+    print(f"WCR with Webb weights, 11 clusters, one-sided 5%: {rej / R:.3f} (MC se {np.sqrt(.05 * .95 / R):.3f})")
+
+
 if __name__ == "__main__":
+    test_webb_size()
     test_exact()
     test_nw_holm()
     test_size_power()
