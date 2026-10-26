@@ -35,7 +35,16 @@ def returns():
     ry = ry[ry.index <= SPLICE]
     R = pd.concat([ry, ra]).sort_index()
     R = R[~R.index.duplicated(keep="last")]
+    # data-quality rule (fixed before reading any result): a daily |return| > 75% in this universe is a bad print or
+    # a mis-adjusted corporate action (CPWR, JXG: several > 150% days), set to missing; the count is reported
+    global N_BAD
+    bad = R.drop(columns=[c for c in ETF.values() if c in R] + ["SPY"]).abs() > 0.75
+    N_BAD = int(bad.values.sum())
+    R = R.mask(bad.reindex(columns=R.columns, fill_value=False))
     return R
+
+
+N_BAD = 0
 
 
 def sectors():
@@ -64,9 +73,11 @@ def betas(R, t, start_idx):
     bm = float(np.cov(yw, rmo)[0, 1] / rmo.var())
     etf = SECTOR_ETF.get(t)
     bs = 0.0
-    if etf and etf in w and w.index[0] >= ETF_START.get(etf, pd.Timestamp("1990-01-01")):
+    okk = ok & w[etf].notna() if etf and etf in w else ok & False
+    # the sector residual needs the ETF over (nearly) the whole window: before 2016 the cache has no ETF prices,
+    # and a handful of overlapping days gave sector betas of ~1e13 (2016-02-09 events) before this rule
+    if etf and w.index[0] >= ETF_START.get(etf, pd.Timestamp("1990-01-01")) and okk.sum() >= 200:
         rs = w[etf]
-        okk = ok & rs.notna()
         g = float(np.cov(rs[okk], rm[okk])[0, 1] / rm[okk].var())
         rres = (rs - g * rm)[okk]                            # sector return orthogonal to SPY in the window
         resid_y = (y.clip(lower=lo_, upper=hi_) - bm * rm)[okk]

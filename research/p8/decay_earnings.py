@@ -132,13 +132,15 @@ def table(D, sig):
 
 
 def report(D):
+    RS.returns()                                                 # sets N_BAD for the report
     L = ["# How long is earnings information priced? (P8 fit sample 2012-2021, descriptive)", "",
          "Design and reading rule: `research/p8/decay_earnings.py` header, fixed before any data was read.",
          "D_h = residual return from t0+2 to t0+1+h (after the 3-day reaction). IC = Spearman per season, averaged; "
          "t over seasons. Q5-Q1 = top minus bottom quintile mean D_h, bp.", "",
          f"Events: {len(D):,} ({(D['universe'] == 'sp500').sum():,} S&P 500 point in time, "
          f"{(D['universe'] == 'sp400').sum():,} S&P 400 current list); seasons {D['season'].nunique()}; "
-         f"market-only residuals {(D['resid'] == 'market_only').mean():.0%}.", ""]
+         f"market-only residuals {(D['resid'] == 'market_only').mean():.0%}. Daily returns set missing as bad prints "
+         f"(|r| > 75%, all names and days): {RS.N_BAD}.", ""]
     big = D["sue"].abs() >= D["sue"].abs().quantile(0.9)
     cuts = [("S&P 500, all fit years", D[D.universe == "sp500"]),
             ("S&P 500, 2016-2021 (survivorship-free prices)", D[(D.universe == "sp500") & (D.t0 >= "2016-01-04")]),
