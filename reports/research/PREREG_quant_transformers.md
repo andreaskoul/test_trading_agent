@@ -333,6 +333,10 @@ Strategy variants of one signal correlate 0.8–0.9. Each cluster gets one book,
 **Common rules.**
 * Strategy rules, the sleeve (1.3x/0.7x on the 200-session trend), broker costs and the beta hedge are exactly
   Amendment 2's.
+  * **One exception, S4's volatility scale.** In the historical backtest, the scale at a Thursday decision included
+    the week ending at the following Friday's close: a one-day look-ahead in a 13-week volatility estimate,
+    disclosed here. Live, that close is unknown, so the scale uses weeks through the previous record (one week
+    later than the backtest).
 * Decisions are made at each Thursday close. Positions are held from close(d+1) to the next decision's close(d+1).
 * **Models:**
   * the read's frozen settings (`FINAL`), trained on every row whose target ends by the last close before
