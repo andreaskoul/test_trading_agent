@@ -214,7 +214,7 @@ def strategies(d, z):
     hdr = ("# Timestral on every literature strategy, S&P 500 2013-2025 (descriptive; Amendment 3)\n\n"
            "All returns in % per year; same books, sleeve and broker costs as SP500_STRATEGIES.md. Model "
            "`timestral_unc` is the uncertainty-adjusted score (median / (q90 - q10)); its **S3 row is S5**. Rows for "
-           "ridge, Chronos-2 and MASTER repeat the earlier table for comparison.\n\n")
+           "the other models repeat the earlier table for comparison.\n\n")
     tab = ST.run_all(d, preds, X.YEARS, ("ridge",) + X.MODELS + ("timestral", "timestral_unc"),
                      path, header=hdr)
     print(tab[(tab.span == "2013-25") & tab.model.str.startswith("timestral")].round(2).to_string(index=False))
