@@ -1,0 +1,5138 @@
+{
+ "records": {
+  "AMKR": {
+   "ticker": "AMKR",
+   "index": "SP400",
+   "sector": "Information Technology",
+   "sub_industry": "Semiconductors",
+   "last_release": "2026-07-27 20:08:09+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1047127/000104712726000043/amkr6302026erex-991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net sales growth",
+      "last_report": "Q2 net sales $1.90B, up 26% YoY, record; Q1 was $1.685B.",
+      "guidance": "Q3 net sales $1.95B-$2.05B."
+     },
+     {
+      "id": "D2",
+      "name": "Gross margin expansion",
+      "last_report": "Q2 gross margin 16.8%, up from 14.2% in Q1 and 12.0% a year ago.",
+      "guidance": "Q3 gross margin 18.5%-19.5%."
+     },
+     {
+      "id": "D3",
+      "name": "Advanced products revenue",
+      "last_report": "Q2 advanced products net sales $1.557B, up from $1.372B in Q1 and $1.228B a year ago.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Computing and automotive demand",
+      "last_report": "Record Q2 revenue in Computing and Automotive & Industrial end markets; Computing 22%, Auto/Industrial 22% of sales.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Capital expenditures",
+      "last_report": "H1 capex payments $688M; capital expenditures payable rose to $621M.",
+      "guidance": "Full year 2026 capital expenditures approximately $2.5B-$3.0B."
+     }
+    ],
+    "guidance": "Q3 2026: net sales $1.95B-$2.05B; gross margin 18.5%-19.5%; net income $180M-$205M; diluted EPS $0.72-$0.82. Full year 2026 capital expenditures approximately $2.5B-$3.0B.",
+    "kill_conditions": [
+     "Q3 net sales below $1.95B or gross margin below 18.5%.",
+     "Q3 EPS below $0.72 or net income below $180M.",
+     "Advanced products sales decline sequentially or Computing/Automotive revenue falls."
+    ]
+   },
+   "card_provider": "Together",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 22,
+    "found": 16,
+    "share": 0.7272727272727273,
+    "missing": [
+     "1.228",
+     "1.372",
+     "1.557",
+     "1.685",
+     "621",
+     "688"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 182,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Amkor secures $1.3B NVIDIA deal for advanced packaging expansion in South Korea",
+        "date": "2026-10-21",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Sector warning on component supply chain bottlenecks and cleanroom space constraints",
+        "date": "2026-10-23",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "NVIDIA-Amkor $1.3B advanced packaging expansion in South Korea",
+        "date": "2026-10-21",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Industry warning on supply chain bottlenecks and cleanroom constraints",
+        "date": "2026-10-23",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Amkor secures $1.3B NVIDIA deal to expand AI packaging capacity in South Korea",
+        "date": "2026-10-21",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "TXN",
+    "MU"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TXN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Broad industrial, automotive and data-center growth signals healthy semiconductor demand for Amkor's computing/auto markets."
+       },
+       {
+        "peer": "MU",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record AI-driven memory demand and higher capex signal robust advanced-packaging/test demand, positive for Amkor's advanced products."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TXN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Broad industrial, auto and data center growth signals durable end-market demand for Amkor packaging/test."
+       },
+       {
+        "peer": "MU",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record AI-driven memory demand and capex implies strong advanced packaging/test demand, supporting Amkor's advanced products."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MU",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "AI-driven memory demand and record results signal strong advanced packaging demand, supporting Amkor's advanced products revenue and sales growth."
+       },
+       {
+        "peer": "TXN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Broad industrial, automotive and data center growth signals improving semiconductor demand, supporting Amkor's computing and automotive end markets."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 1.4433756729740645,
+   "score_peer": 2.886751345948129,
+   "score_combined": 2.886751345948129,
+   "overall_votes": [
+    "above",
+    "above",
+    "inline"
+   ],
+   "overall": "above",
+   "hour": "amc",
+   "eps_estimate": 0.7965,
+   "revenue_estimate": 2053540500,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:41:16.856565+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "a4486f317b4f686093634a6c21bc421a49bab31e0b38f28a6537bcf601f80cf9"
+  },
+  "ARE": {
+   "ticker": "ARE",
+   "index": "SP500",
+   "sector": "Real Estate",
+   "sub_industry": "Office REITs",
+   "last_release": "2026-08-03 20:07:34+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1035443/000103544326000067/a2q26ex991supp.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Leasing volume and occupancy",
+      "last_report": "2Q26 total leasing surpassed 1M RSF; 1.4M RSF leased not occupied expected to add 4.0% occupancy by Nov 2026.",
+      "guidance": "Projected 3Q26 leasing RSF 647,000; 1.4M RSF leased not occupied to add 4.0% occupancy and ~$69M annual rent."
+     },
+     {
+      "id": "D2",
+      "name": "NOI and rental revenue",
+      "last_report": "Focus on steady improvement in occupancy and NOI; 1.4M RSF leased not occupied to generate ~$69M annual rental revenue.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "G&A expense management",
+      "last_report": "G&A 6.6% of NOI, vs S&P 500 REIT average 14.3%; >2x NOI per G&A expense.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Dispositions and capital sources",
+      "last_report": "2026 capital sources guidance midpoint $2.9B; completed dispositions $170.4M and pending $1.16B as of Aug 3.",
+      "guidance": "2026 dispositions/sales/other capital sources midpoint $2.9B; no common equity issuance in 2026."
+     },
+     {
+      "id": "D5",
+      "name": "Leverage and balance sheet",
+      "last_report": "On track for 4Q26 annualized net debt/preferred to adjusted EBITDA of 5.6x-6.2x; fixed-charge coverage 3.6x-4.1x.",
+      "guidance": "4Q26 annualized leverage 5.6x-6.2x; fixed-charge coverage 3.6x-4.1x."
+     }
+    ],
+    "guidance": "4Q26 annualized leverage 5.6x-6.2x; fixed-charge coverage 3.6x-4.1x; 2026 dispositions/sales/other capital sources midpoint $2.9B; non-income-producing assets 11%-16% of gross assets; non-core ARR 5%-10% of total ARR; projected 3Q26 leasing 647,000 RSF.",
+    "kill_conditions": [
+     "3Q26 leasing volume falls below 647,000 RSF projection.",
+     "Occupancy fails to improve from 1.4M RSF leased-not-occupied pipeline.",
+     "Leverage exceeds 6.2x or G&A rises above 6.6% of NOI."
+    ]
+   },
+   "card_provider": "Fireworks",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 17,
+    "found": 16,
+    "share": 0.9411764705882353,
+    "missing": [
+     "647000"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 83,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Priced $1B junior subordinated notes due 2057",
+        "date": "2026-08-12",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Closed $5.0B unsecured senior line of credit",
+        "date": "2026-09-28",
+        "driver": "D5",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Priced $1B Series A junior subordinated notes due 2057",
+        "date": "2026-08-12",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Closed amended $5B unsecured senior line of credit",
+        "date": "2026-09-28",
+        "driver": "D5",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Closed amended $5.0B unsecured senior line of credit",
+        "date": "2026-09-28",
+        "driver": "D5",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Priced $1B Series A junior subordinated notes due 2057",
+        "date": "2026-08-12",
+        "driver": "D4",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "KRC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KRC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "KRC reports strong West Coast leasing, occupancy gains, and positive rent spreads, signaling healthier demand for ARE's leasing."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "ModelRun",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KRC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "West Coast leasing momentum and occupancy gains suggest stronger industry demand, supporting ARE leasing volume/occupancy."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "ModelRun",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KRC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong West Coast leasing, occupancy gains, and positive re-leasing spreads signal improving shared demand, supporting ARE leasing/occupancy."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "ModelRun",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 1.414213562373095,
+   "score_combined": 0.7071067811865475,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": -0.0343,
+   "revenue_estimate": 656084688,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:33:17.458831+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "11a93b31f41a0e49a8a275a6c0a73531c80b75d3c2614bb090966399cd4f3fec"
+  },
+  "BRO": {
+   "ticker": "BRO",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Insurance Brokers",
+   "last_release": "2026-07-27 21:03:54+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/79282/000119312526318245/bro-ex99_1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Organic revenue growth",
+      "last_report": "Q2 Organic Revenue decreased 0.7%; Organic Revenue with Contingents increased 0.7%. Six-month Organic Revenue -0.3%. No next-quarter guidance.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Contingent commission revenue",
+      "last_report": "Q2 Organic Contingents $61M vs $45M; boosted Organic Revenue with Contingents to +0.7% from -0.7% organic. No guidance.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "EBITDAC-adjusted margin",
+      "last_report": "Q2 EBITDAC Margin - Adjusted 35.7% vs 36.7%; Income Before Taxes Margin 22.9% vs 24.2%. No margin guidance.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Acquisition revenue contribution",
+      "last_report": "Total revenue rose 30.4%; acquisitions added $393M to core commissions/fees, likely Accession/RSC. No guidance.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Interest expense and debt",
+      "last_report": "Q2 interest expense $100M vs $51M; long-term debt $7.3B after acquisition financing. No guidance.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Next quarter organic revenue falls further below -0.7% or organic revenue with contingents turns negative.",
+     "EBITDAC-adjusted margin drops below 35.7% or income before taxes margin below 22.9%.",
+     "Contingent commissions decline year over year or integration costs/interest expense rise more than expected."
+    ]
+   },
+   "card_provider": "InferenceNet",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 11,
+    "found": 10,
+    "share": 0.9090909090909091,
+    "missing": [
+     "7.3"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 104,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Brown & Brown increases quarterly dividend 9% to $0.18 per share",
+        "date": "2026-10-21",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Brown & Brown and Marcus & Millichap widen preferred partner relationship to Canada",
+        "date": "2026-10-09",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Brown & Brown introduces COMPASS connected intelligence ecosystem",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Director Bronislaw E. Masojada resigns effective October 21, 2026",
+        "date": "2026-10-23",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Brown & Brown announces Q3 2026 earnings release and conference call dates",
+        "date": "2026-10-01",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Brown & Brown and Marcus & Millichap expand preferred partner relationship to Canada",
+        "date": "2026-10-09",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Brown & Brown increases quarterly dividend from $0.165 to $0.18 per share",
+        "date": "2026-10-21",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Brown & Brown launches COMPASS connected intelligence ecosystem for insurance decision-making",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Director Bronislaw E. Masojada resigns effective October 21, 2026",
+        "date": "2026-10-23",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "MRSH"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MRSH",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Marsh's 5% underlying and 4% US/Canada Risk growth signal healthy brokerage demand/pricing, supporting Brown & Brown organic revenue after Q2 decline."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MRSH",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Peer's 5% underlying growth signals healthy insurance brokerage demand/pricing, supporting BRO organic revenue after -0.7%."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MRSH",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Peer's 5% underlying and 4% US/Canada Risk growth signal healthy brokerage demand/pricing, supporting BRO organic revenue after Q2 decline."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.6708203932499369,
+   "score_peer": 1.414213562373095,
+   "score_combined": 1.3779271744364845,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 1.0977,
+   "revenue_estimate": 1774079200,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:37:16.619079+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "bf88fc1f4c91ef10b84db75013e174036c50647e15844849fd9569f27cd7c883"
+  },
+  "BRX": {
+   "ticker": "BRX",
+   "index": "SP400",
+   "sector": "Real Estate",
+   "sub_industry": "Retail REITs",
+   "last_release": "2026-07-27 20:03:37+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1581068/000158106826000027/brx-20260727ex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Same property NOI growth",
+      "last_report": "Q2 same property NOI +5.8%; six months +6.1%; base rent contributed 440 bps. FY same property NOI growth outlook raised to 5.00%-5.75%.",
+      "guidance": "FY 2026 same property NOI growth 5.00%-5.75%, raised from 4.75%-5.50%."
+     },
+     {
+      "id": "D2",
+      "name": "Leasing rent spreads",
+      "last_report": "Q2 executed 1.4M sf; comparable rent spreads +19.1%, new +31.3%, renewal +15.5%.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Leased occupancy and small shop",
+      "last_report": "Total leased occupancy 94.8%, anchor 95.9%, record small shop 92.6%; leased-to-billed spread 440 bps.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Signed but not commenced rent",
+      "last_report": "Record $71.2M annualized base rent, 3.1M sf; Q2 commenced $12.7M annualized base rent.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Reinvestment and acquisition NOI",
+      "last_report": "Stabilized $5.4M projects at 11% yield; in-process pipeline $347.8M at 10% expected yield; Q2 acquisitions $164.3M, dispositions $15.1M.",
+      "guidance": null
+     }
+    ],
+    "guidance": "FY2026 Nareit FFO per diluted share $2.35-$2.37; same property NOI growth 5.00%-5.75%; uncollectible revenues 60-85 bps of total revenues. No separate Q3 guidance provided.",
+    "kill_conditions": [
+     "Brixmor cuts full-year 2026 FFO or same property NOI growth guidance.",
+     "Signed but not yet commenced rent falls below $71.2M, or leasing spreads turn negative.",
+     "Uncollectible revenues exceed 85 bps of revenues, or small shop leased occupancy drops below 92.6%."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 27,
+    "found": 27,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 61,
+   "news_used": 59,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "EVgo partnership expansion: 500+ fast charging stalls at Brixmor centers",
+        "date": "2026-08-03",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Brixmor and Everview to acquire Slate Grocery REIT for $2.34B",
+        "date": "2026-09-28",
+        "driver": "D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "EVgo expands Brixmor partnership to add 500+ EV fast charging stalls",
+        "date": "2026-08-03",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Brixmor and Everview to acquire Slate Grocery REIT for $2.34B",
+        "date": "2026-09-28",
+        "driver": "D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "EVgo and Brixmor expand partnership to add 500+ EV charging stalls",
+        "date": "2026-08-03",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Brixmor and Everview to acquire Slate Grocery REIT for $2.34B",
+        "date": "2026-09-28",
+        "driver": "D5",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "ADC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ADC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Net lease REIT update; no direct read on BRX shopping-center NOI, occupancy, or rent spreads."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ADC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Net lease retail REIT; no shopping center leasing, occupancy, or same-property NOI data."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ADC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Net lease retail results and acquisitions do not speak to Brixmor's shopping-center NOI, leasing spreads, occupancy, or signed rent."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 3.464101615137755,
+   "score_peer": 0.0,
+   "score_combined": 3.464101615137755,
+   "overall_votes": [
+    "above",
+    "above",
+    "inline"
+   ],
+   "overall": "above",
+   "hour": "amc",
+   "eps_estimate": 0.2289,
+   "revenue_estimate": 358423750,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:41:11.739447+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "f128e30d666294f2bbfc3beb5333c735455cbdf061f2dd7e56a167f04f31ef77"
+  },
+  "CDNS": {
+   "ticker": "CDNS",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Application Software",
+   "last_release": "2026-07-27 20:03:05+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/813672/000081367226000089/cdns07272026ex9901.htm",
+   "release_doc": "type EX-99.01",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Core EDA revenue growth",
+      "last_report": "Core EDA revenue grew 18% YoY on AI portfolio demand and expanded adoption across hyperscalers, top semiconductor companies and startups.",
+      "guidance": "No segment guidance; FY 2026 revenue growth outlook raised to 19%."
+     },
+     {
+      "id": "D2",
+      "name": "IP revenue growth",
+      "last_report": "IP revenue grew more than 40% YoY, driven by Star IP demand, a significant Intel agreement and additional wins.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Hardware revenue",
+      "last_report": "Hardware delivered another record quarter, adding 12 new customers and significant expansions with hyperscalers and leading AI innovators.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "System Design and Analysis",
+      "last_report": "System Design and Analysis revenue grew 37% YoY on PCB/advanced packaging adoption and continued Hexagon D&E integration.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Backlog and RPO conversion",
+      "last_report": "Quarter-end backlog was $8.1B; revenue expected in next 12 months from remaining performance obligations was $4.2B.",
+      "guidance": null
+     }
+    ],
+    "guidance": "FY 2026: revenue $6.26–$6.34B (19% YoY growth), GAAP operating margin 27.75–28.75%, non-GAAP operating margin 43.75–44.75%, GAAP EPS $4.76–$4.86, non-GAAP EPS $8.05–$8.15; operating cash flow ~$2B.",
+    "kill_conditions": [
+     "Core EDA revenue growth decelerates below 18% YoY or IP revenue growth falls below 40% YoY.",
+     "Backlog falls below $8.1B or next-12-month RPO drops below $4.2B.",
+     "FY 2026 non-GAAP operating margin guide falls below 43.75% or revenue outlook cut below $6.26B."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 17,
+    "found": 17,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {
+    "HUBS": "only 1 of 5 earnings-release markers",
+    "WDAY": "no EX-99 exhibit in the filing"
+   },
+   "news_raw": 224,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Cadence introduced RTL Generation Agent in ChipStack AI Super Agent",
+        "date": "2026-10-05",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cadence announced collaboration with NVIDIA and chipmakers on AI semiconductor workflows",
+        "date": "2026-10-15",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Tenstorrent raised $1.5B at $6.2B valuation",
+        "date": "2026-10-19",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Socionext expands agentic AI to advanced SoC physical design",
+        "date": "2026-10-20",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Nokia deploys Cadence AuraStack AI Super Agent on Millennium M2000",
+        "date": "2026-10-21",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cadence announces sovereign AI data center in Munich with OnCloud and NVIDIA",
+        "date": "2026-10-21",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Cadence introduced RTL Generation Agent within ChipStack AI Super Agent",
+        "date": "2026-10-05",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TSMC A14 certification for Cadence, but peers match and pricing power weakens",
+        "date": "2026-10-13",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cadence announced new AI chip design collaboration with NVIDIA and other chipmakers",
+        "date": "2026-10-15",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Socionext expands agentic AI to advanced, large-scale SoC physical design",
+        "date": "2026-10-20",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Nokia deploys Cadence AuraStack AI Super Agent on Millennium M2000 supercomputer",
+        "date": "2026-10-21",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cadence announces availability of sovereign AI data center in Munich with NVIDIA",
+        "date": "2026-10-21",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "PrimeIntellect",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Nokia deploys Cadence AuraStack AI Super Agent on Millennium M2000",
+        "date": "2026-10-21",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cadence unveils Europe's first sovereign AI platform in Munich with NVIDIA",
+        "date": "2026-10-21",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cadence collaborates with NVIDIA and chipmakers on AI chip design workflows",
+        "date": "2026-10-14",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cadence introduces RTL Generation Agent in ChipStack AI Super Agent",
+        "date": "2026-09-30",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cadence gains TSMC A14 process certification",
+        "date": "2026-10-13",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Socionext expands agentic AI in advanced SoC physical design",
+        "date": "2026-10-20",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Tenstorrent raises $1.5B, boosting chip design activity",
+        "date": "2026-10-19",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "APPF",
+    "PEGA",
+    "ORCL"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "APPF",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Real estate vertical SaaS results have no read-through to Cadence's EDA, IP, or semiconductor design demand."
+       },
+       {
+        "peer": "PEGA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Enterprise workflow AI software execution issues do not reveal shared EDA demand or semiconductor design conditions."
+       },
+       {
+        "peer": "ORCL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record AI cloud demand and RPO growth signal sustained AI infrastructure/chip design activity, supporting core EDA demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "APPF",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Real estate software results are unrelated to Cadence's EDA, IP, hardware, and system-design drivers."
+       },
+       {
+        "peer": "PEGA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Enterprise workflow software weakness stems from Pega-specific GTM issues, not clear read-through to Cadence's EDA, IP, or hardware demand."
+       },
+       {
+        "peer": "ORCL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "AI cloud demand and record RPO signal sustained hyperscaler/semiconductor investment, supporting Cadence's Core EDA growth outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ORCL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "AI cloud demand and RPO surge signal sustained AI chip/datacenter investment, supporting Cadence EDA/IP demand."
+       },
+       {
+        "peer": "PEGA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Enterprise workflow software weakness and execution issues do not indicate chip-design EDA demand trends."
+       },
+       {
+        "peer": "APPF",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Real estate software strength is unrelated to semiconductor design or Cadence's EDA/IP/hardware drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 4.157609203101499,
+   "score_peer": 2.1213203435596424,
+   "score_combined": 5.21826937488132,
+   "overall_votes": [
+    "above",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "amc",
+   "eps_estimate": 2.0861,
+   "revenue_estimate": 1645201860,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:33:39.761573+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "ad2a3e1f2f90b08a7eb844707bfc95c9c167ecc2591ab08e293e68353db2aaae"
+  },
+  "CINF": {
+   "ticker": "CINF",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Property & Casualty Insurance",
+   "last_release": "2026-07-27 20:07:58+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/20286/000002028626000043/exhibit9912q26.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "P&C combined ratio",
+      "last_report": "Q2 P&C combined ratio 100.8%, up 5.9 pts; catastrophe losses added 2.3 pts; six-month 98.2%.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Net written premium growth",
+      "last_report": "Q2 P&C net written premiums +3%; commercial renewal pricing near high end of low-single-digit; personal rate increases high-single-digit.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "New business premiums",
+      "last_report": "Q2 P&C new business -13% to $353M; personal lines new business -45%; commercial new business +4%.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Commercial lines underwriting",
+      "last_report": "Q2 commercial lines combined ratio 104.1%, up 11.2 pts; catastrophe losses added 4.9 pts; prior-year reserve benefit lower.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Investment income",
+      "last_report": "Q2 pretax investment income +12% to $319M; bond interest +14%; stock dividends +3%.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Q3 P&C combined ratio above 100.8% or catastrophe losses exceed Q2 2026 level.",
+     "Q3 net written premium growth below 3% or new business premiums decline again.",
+     "Q3 investment income falls or bond interest growth turns negative."
+    ]
+   },
+   "card_provider": "Reka",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 13,
+    "found": 13,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 85,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Board authorized additional 15M share buyback, total 53M shares",
+        "date": "2026-08-25",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Board authorized additional 15M share buyback",
+        "date": "2026-08-21",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Board authorized additional 15M share repurchase",
+        "date": "2026-08-21",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "SIGI",
+    "KNSL",
+    "ORI",
+    "FAF",
+    "CB"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SIGI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Peer NPW -7% on competitive commercial market; implies CINF premium growth may slow."
+       },
+       {
+        "peer": "KNSL",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Peer premium decline on heightened property competition signals industry growth pressure for CINF."
+       },
+       {
+        "peer": "ORI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Lower favorable reserve development and higher combined ratio suggest industry underwriting/reserve pressure for CINF."
+       },
+       {
+        "peer": "FAF",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Title insurer; no read-through to CINF P&C drivers."
+       },
+       {
+        "peer": "CB",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Peer cat losses more than doubled, signaling elevated Q3 catastrophe burden for CINF."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "ModelRun",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SIGI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Commercial NPW -7% and competitive market signal weaker premium growth for CINF."
+       },
+       {
+        "peer": "KNSL",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Heightened property competition and premium declines signal pressure on CINF commercial premium growth."
+       },
+       {
+        "peer": "ORI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Lower favorable reserve development and higher combined ratio signal continued commercial underwriting pressure."
+       },
+       {
+        "peer": "FAF",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Title investment income +11% supports continued higher investment income for CINF."
+       },
+       {
+        "peer": "CB",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "North America Commercial NPW -2.7% signals weak commercial premium growth for CINF."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "ModelRun",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CB",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Higher industry catastrophe losses signal elevated Q3 cat load, pressuring CINF's combined ratio."
+       },
+       {
+        "peer": "FAF",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Title/mortgage trends not relevant to CINF's P&C underwriting or premium drivers."
+       },
+       {
+        "peer": "ORI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Lower favorable reserve development and slightly worse combined ratio signal continued commercial underwriting headwind."
+       },
+       {
+        "peer": "KNSL",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Competitive property market and declining premiums signal commercial pricing/growth pressure for CINF."
+       },
+       {
+        "peer": "SIGI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Close commercial peer's 7% NPW decline amid competition signals slower premium growth for CINF."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.1213203435596424,
+   "score_peer": -3.5777087639996634,
+   "score_combined": 0.3324659615598107,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 2.0298,
+   "revenue_estimate": 3089580000,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:39:39.004425+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "1f321d734f8ecbe0cb6a9422db35b1ee90bd7ea25749472dc7afa31528d413da"
+  },
+  "HIG": {
+   "ticker": "HIG",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Property & Casualty Insurance",
+   "last_release": "2026-07-23 20:06:45+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/874766/000087476626000059/ex991earningsnewsrelease63.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Business Insurance premium growth",
+      "last_report": "Q2 written premiums +5%; Small Business +7%, Middle & Large and Global Specialty single-digit; earned premium +7%.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Business Insurance underlying combined ratio",
+      "last_report": "Q2 underlying combined ratio 89.3, up 1.3 pts; underlying loss ratio 58.3 vs 57.0; Middle & Large 95.3.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Personal Insurance premium and margin",
+      "last_report": "Q2 written premiums -7%, earned premium -3% on competitive market; underlying combined ratio 86.3 improved 1.7 pts; underlying loss ratio 60.0.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Employee Benefits margin",
+      "last_report": "Q2 fully insured ongoing premium +5%; core earnings margin 7.4%; loss ratio 72.5 up from 69.1 on group disability; expense ratio 25.2.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Catastrophe losses and reserve development",
+      "last_report": "Q2 P&C CAY CAT losses $222M vs $212M; net favorable PYD $111M vs $187M; BI PYD less favorable, Personal more favorable.",
+      "guidance": null
+     }
+    ],
+    "guidance": "No quarterly earnings guidance; new $4.2B share repurchase authorization effective Aug. 1, 2026 through 2028.",
+    "kill_conditions": [
+     "Q3 catastrophe losses exceed Q2's $222M or net favorable prior-year development turns unfavorable.",
+     "Business Insurance underlying combined ratio rises again, especially Middle & Large above 95.",
+     "Personal Insurance written premiums decline further or Employee Benefits core margin falls below 7.4%."
+    ]
+   },
+   "card_provider": "Relace",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 17,
+    "found": 17,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 72,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Agreed to acquire Equitable's Employee Benefits business; closed Oct 13, adds $500M premiums",
+        "date": "2026-08-04",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Reinsurance commutation with National Indemnity; Hartford receives $1.12B cash, resolves arbitration",
+        "date": "2026-09-25",
+        "driver": "D5",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.5
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Acquired Equitable's Employee Benefits business",
+        "date": "2026-08-04",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Reinsurance commutation with National Indemnity, $1.12B cash received",
+        "date": "2026-09-25",
+        "driver": "D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CEO succession: Mo Tooker to succeed Christopher Swift",
+        "date": "2026-09-30",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Leadership changes, new chief risk officer",
+        "date": "2026-10-14",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Appointed Priscilla Almodovar to board",
+        "date": "2026-08-11",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Partnership with UC Berkeley Bakar Labs for energy startups",
+        "date": "2026-09-01",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Reinsurance commutation with National Indemnity; receives $1.12B cash, resolves arbitration",
+        "date": "2026-09-25",
+        "driver": "D5",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "SIGI",
+    "KNSL",
+    "ORI",
+    "FAF",
+    "CB"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SIGI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Commercial NPW fell 7% on competitive market; signals HIG Business Insurance premium growth may decelerate."
+       },
+       {
+        "peer": "KNSL",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Specialty property premiums down sharply on competition; pressures HIG Global Specialty premium growth."
+       },
+       {
+        "peer": "ORI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Less favorable prior-year reserve development and higher combined ratio suggest industry PYD headwind for HIG."
+       },
+       {
+        "peer": "FAF",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Title and real estate release not relevant to HIG's P&C or employee benefits drivers."
+       },
+       {
+        "peer": "CB",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D5",
+        "why": "Cat losses jumped to $705M from $285M, signaling higher industry catastrophe burden for HIG's Q3."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SIGI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Selective's commercial NPW fell 7% on competitive market, implying weaker commercial premium growth for Hartford."
+       },
+       {
+        "peer": "KNSL",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Kinsale's property premium decline and competitive market signal specialty pricing pressure for Hartford."
+       },
+       {
+        "peer": "ORI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Old Republic's lower favorable reserve development suggests industry reserve trends less favorable for Hartford."
+       },
+       {
+        "peer": "FAF",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Title and real estate peer not relevant to Hartford's P&C or benefits drivers."
+       },
+       {
+        "peer": "CB",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D5",
+        "why": "Chubb's Q3 catastrophe losses surged, signaling elevated industry cat losses for Hartford."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CB",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D5",
+        "why": "Chubb's Q3 cat losses jumped to $705M from $285M, signaling higher industry catastrophe activity for HIG."
+       },
+       {
+        "peer": "FAF",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Title and mortgage trends not relevant to Hartford's P&C or employee benefits drivers."
+       },
+       {
+        "peer": "ORI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Old Republic's favorable reserve development fell to 1.1 pts from 2.5, implying less favorable PYD for HIG."
+       },
+       {
+        "peer": "KNSL",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Kinsale's property premiums fell 19% amid competitive market, signaling premium growth headwinds for HIG specialty/commercial lines."
+       },
+       {
+        "peer": "SIGI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Selective's commercial NPW fell 7% in competitive market, signaling sharp premium growth headwind for HIG Business Insurance."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": -4.024922359499621,
+   "score_combined": -2.0124611797498106,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 3.2122,
+   "revenue_estimate": 7443559004,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:38:39.499470+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "7e6d5be28faeca011c31e10c6d4c14d2282cb67af5c077e0e7e543e801e2198a"
+  },
+  "NUE": {
+   "ticker": "NUE",
+   "index": "SP500",
+   "sector": "Materials",
+   "sub_industry": "Steel",
+   "last_release": "2026-07-27 20:43:41+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/73309/000119312526318190/d468854dex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Steel mills pricing and volumes",
+      "last_report": "Q2 steel mills earnings $1.556B, up on higher average selling prices and volumes; included $130M raw-material cost refund benefit.",
+      "guidance": "Q3 higher earnings on higher realized pricing across all major product categories with stable volumes."
+     },
+     {
+      "id": "D2",
+      "name": "Steel products volumes and pricing",
+      "last_report": "Q2 steel products earnings $353M, improved on increased volumes and stable average realized pricing.",
+      "guidance": "Q3 increased earnings due to both higher volumes and higher realized pricing."
+     },
+     {
+      "id": "D3",
+      "name": "Raw materials margins",
+      "last_report": "Q2 raw materials earnings $146M, higher on increased average selling prices and shipments.",
+      "guidance": "Q3 decreased earnings due to lower margins."
+     },
+     {
+      "id": "D4",
+      "name": "Steel mills cost refund benefit",
+      "last_report": "Q2 included $130M reduction to cost of products sold from prior-period raw materials procurement cash refunds.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Expects higher consolidated reported earnings in Q3 2026 vs Q2 2026. Steel mills higher on higher realized pricing across all major product categories with stable volumes; steel products higher on higher volumes and pricing; raw materials lower on lower margins.",
+    "kill_conditions": [
+     "Nucor steel mill earnings fall on lower realized pricing or volumes",
+     "Nucor steel products earnings decline on lower volumes or pricing",
+     "Nucor raw materials margins contract more than expected, dragging consolidated earnings"
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 4,
+    "found": 3,
+    "share": 0.75,
+    "missing": [
+     "1.556"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 234,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "US steel prices climb to four-year high as tariffs bite",
+        "date": "2026-10-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cleveland-Cliffs Q3 EBITDA $612M, sales $5.6B, beat estimates, strong pricing",
+        "date": "2026-10-19",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Steel Dynamics Q3 earnings miss estimates, but revenue beat and record shipments",
+        "date": "2026-10-19",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Worthington Steel Q3 results worse-than-expected",
+        "date": "2026-10-16",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "ModelRun",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "US steel prices climb to four-year high on tariffs",
+        "date": "2026-10-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cleveland-Cliffs reports strongest quarter in three years, raises 2027 outlook",
+        "date": "2026-10-19",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Steel Dynamics Q3 earnings miss estimates despite record shipments",
+        "date": "2026-10-19",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Worthington Steel reports worse-than-expected Q3 results",
+        "date": "2026-10-16",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "ModelRun",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "US steel prices climb to four-year high on tariffs",
+        "date": "2026-10-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Steel Dynamics Q3: record shipments, higher prices, but EPS miss",
+        "date": "2026-10-19",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cleveland-Cliffs Q3 strongest in three years, raised 2027 outlook",
+        "date": "2026-10-19",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Worthington Steel Q3 results worse than expected",
+        "date": "2026-10-16",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "ModelRun",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "RS",
+    "STLD",
+    "CLF",
+    "CMC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "RS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record tons and ASP +8% seq signal healthy steel demand/pricing, supporting NUE's higher Q3 pricing guidance."
+       },
+       {
+        "peer": "STLD",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record shipments, +44% seq op income, tight supply and rising prices strongly confirm NUE's steel mills pricing/volume outlook."
+       },
+       {
+        "peer": "CLF",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "ASP and shipments rose, EBITDA beat; import curbs and extended lead times support NUE's higher pricing guidance."
+       },
+       {
+        "peer": "CMC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Strong NA steel and record backlogs support steel products demand, though residential softness tempers; consistent with higher volumes/pricing."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "ModelRun",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "RS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record tons and ASP +8% seq; healthy carbon steel demand and tight supply support NUE pricing/volumes."
+       },
+       {
+        "peer": "STLD",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record steel shipments, prices improving, low imports, tight supply; strongly supports NUE's higher pricing and stable-to-higher volumes."
+       },
+       {
+        "peer": "CLF",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strongest quarter in 3 years; ASP and volumes up, trade supports domestic steel. Positive for NUE pricing, though less direct."
+       },
+       {
+        "peer": "CMC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong North America Steel Group, record backlogs, supportive demand; supports NUE steel products volumes/pricing, despite residential softness."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "ModelRun",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CMC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong NA steel results and record backlogs signal supportive steel demand/pricing, despite residential softness in precast."
+       },
+       {
+        "peer": "CLF",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Q3 ASP, volumes, costs improved; Q4 EBITDA guided higher; low imports and extended lead times support higher steel mill pricing."
+       },
+       {
+        "peer": "STLD",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record shipments, improving steel prices, tight spot market and low imports confirm strong mill pricing/volume environment for Nucor."
+       },
+       {
+        "peer": "RS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record tons and higher carbon steel prices on healthy demand/tight supply support Nucor's realized pricing and volume outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.0124611797498106,
+   "score_peer": 4.024922359499621,
+   "score_combined": 4.024922359499621,
+   "overall_votes": [
+    "above",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "amc",
+   "eps_estimate": 5.9792,
+   "revenue_estimate": 10942712286,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:43:09.498329+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "0c16295f39f84867018a5c3532c95e12ed34323b3fb5e1eb465527c11b687ad8"
+  },
+  "OKE": {
+   "ticker": "OKE",
+   "index": "SP500",
+   "sector": "Energy",
+   "sub_industry": "Oil & Gas Storage & Transportation",
+   "last_release": "2026-04-28 20:22:52+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1039684/000103968426000015/okeq12026earningsrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "NGL raw feed volumes and fee rates",
+      "last_report": "Q1 NGL adj EBITDA +11% to $706M; raw feed volumes +15%, Gulf Coast/Permian +31%; lower fee rates partly offset.",
+      "guidance": "2026 adj EBITDA midpoint $8.25B; no segment-specific Q2 guidance."
+     },
+     {
+      "id": "D2",
+      "name": "Natural Gas Pipelines optimization margins",
+      "last_report": "Q1 segment adj EBITDA $339M vs $212M; $92M optimization/marketing boost from Waha-Katy differentials and Winter Storm Fern.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Refined Products and Crude segment",
+      "last_report": "Q1 adj EBITDA $492M vs $471M; higher refined products volumes and crude marketing offset by $24M Powder Springs JV losses.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Gathering and Processing realized prices",
+      "last_report": "Q1 adj EBITDA $467M vs $491M; lower realized NGL/natural gas prices cut $64M, partly offset by higher volumes.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "2026 capex and financial guidance",
+      "last_report": "Q1 capex $864M; 2026 capex unchanged at ~$2.7–$3.2B; 2026 net income and adjusted EBITDA guidance increased.",
+      "guidance": "2026 net income $3.21–$3.79B; EPS midpoint $5.53; adj EBITDA $8.0–$8.5B; capex ~$2.7–$3.2B."
+     }
+    ],
+    "guidance": "2026 net income $3.21–$3.79B; EPS midpoint $5.53; adjusted EBITDA $8.0–$8.5B; total capex unchanged ~$2.7–$3.2B. No Q2-specific guidance.",
+    "kill_conditions": [
+     "NGL raw feed throughput volumes decline or Gulf Coast/Permian growth stalls",
+     "Natural Gas Pipelines optimization margins fall as Waha-Katy differentials narrow",
+     "Powder Springs JV losses widen or Refined Products volumes drop"
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 22,
+    "found": 22,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 286,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.9
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Q2 2026 earnings release: strong results, second 2026 guidance raise",
+        "date": "2026-08-04",
+        "driver": "D1-D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Brazos Midland acquisition announced: $4.425B Permian expansion",
+        "date": "2026-08-31",
+        "driver": "D1/D4/D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Iran ceasefire ends, oil prices rise, boosting NGL/optimization margins",
+        "date": "2026-08-19",
+        "driver": "D2/D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "India to increase US LPG buying amid Middle East risks",
+        "date": "2026-09-25",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "ModelRun",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Q2 2026 earnings call summary: strong results, second 2026 guidance raise.",
+        "date": "2026-08-04",
+        "driver": "D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Iran ceasefire ends; oil prices rise, benefiting energy infrastructure margins.",
+        "date": "2026-08-19",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Announced $4.425B Brazos Midland acquisition, doubling Permian processing capacity.",
+        "date": "2026-08-31",
+        "driver": "D4",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ONEOK raised quarterly dividend again, signaling confidence in cash flow.",
+        "date": "2026-09-24",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "India expected to increase US LPG purchases amid Middle East risks.",
+        "date": "2026-09-25",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Completed Brazos Midstream Permian Midland Basin acquisition.",
+        "date": "2026-10-06",
+        "driver": "D4",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Declared quarterly dividend of $1.07 per share.",
+        "date": "2026-10-14",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "KMI"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KMI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "KMI's record gas results on rising LNG exports, power demand, and industrial expansion signal favorable gas pipeline conditions for OKE."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KMI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Record nat gas results cite rising LNG exports, power and industrial demand, supporting OKE's Natural Gas Pipelines volumes/optimization."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KMI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "KMI's record gas pipeline results and rising LNG/power demand signal favorable conditions for OKE's Natural Gas Pipelines segment."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 6.7082039324993685,
+   "score_peer": 1.414213562373095,
+   "score_combined": 7.4153107136859155,
+   "overall_votes": [
+    "inline",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "amc",
+   "eps_estimate": 1.5841,
+   "revenue_estimate": 10645967912,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:36:21.255991+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "788eda396ead9e17e312420bdf107fff54c7f6a4c9f26db27993d3106ac5d2d1"
+  },
+  "PFG": {
+   "ticker": "PFG",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Life & Health Insurance",
+   "last_release": "2026-07-27 20:10:05+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1126328/000110465926087091/tm2621379d1_ex99.htm",
+   "release_doc": "type EX-99",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Retirement and Income Solutions",
+      "last_report": "RIS transfer deposits $9B, up 30%; net revenue +9%, operating margin 41.5%, up 60 bps, on market performance and business growth.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Principal Asset Management flows and fees",
+      "last_report": "Investment Management gross sales $30B, +2%; AUM $601.9B, +4%; margin stable 37.5%; enterprise AUM net cash flow -$11.1B; revenue +1%.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "International Pension revenue and encaje",
+      "last_report": "Pre-tax earnings +24%, net revenue +16%, margin 52.5%, AUM $168.5B +18%, driven by favorable encaje returns and FX tailwinds.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Specialty Benefits underwriting and sales",
+      "last_report": "Specialty Benefits sales +11%, premium/fees +4%, pre-tax earnings +25%, margin 18.2%; incurred loss ratio improved to 57.4%, below targeted range.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Life Insurance mortality and premium",
+      "last_report": "Life pre-tax earnings +26% on improved mortality; premium/fees fell 6% on subsidiary move to Corporate; margin 11.2%.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Third-quarter 2026 common stock dividend of $0.84 per share, up $0.02 sequentially and 8% year over year; no earnings or segment guidance provided.",
+    "kill_conditions": [
+     "Retirement transfer deposits fall year over year or RIS operating margin contracts from 41.5%.",
+     "AUM net cash flow stays negative, or Investment Management fee growth and margin stall.",
+     "Specialty Benefits incurred loss ratio rises above target or International Pension encaje/FX tailwinds reverse."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 18,
+    "found": 18,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 82,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Expanded Featured Partner Program for private market access in retirement plans",
+        "date": "2026-08-26",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Completed acquisition of Beam Benefits digital-first employee benefits platform",
+        "date": "2026-09-01",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Reported AUM of $785B as of Sept 30, 2026",
+        "date": "2026-10-19",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Chile annuity sale reduced disposed operations AUM by $2.20B in quarter",
+        "date": "2026-10-19",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Reka",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Principal expands Featured Partner Program for private market access in retirement plans",
+        "date": "2026-08-26",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Principal completes acquisition of Beam Benefits",
+        "date": "2026-09-01",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Principal reports AUM of $785B as of Sept 30, 2026",
+        "date": "2026-10-19",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Chile annuity sale reduces disposed operations AUM by $2.20B",
+        "date": "2026-10-19",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Expands Featured Partner Program for private market access in retirement plans",
+        "date": "2026-08-26",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Completes acquisition of Beam Benefits, digital-first employee benefits platform",
+        "date": "2026-09-01",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Reports Q3 AUM of $785B as of Sept 30",
+        "date": "2026-10-19",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Chile annuity sale cuts disposed operations AUM by $2.20B",
+        "date": "2026-10-19",
+        "driver": "D3",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Reka",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "GL",
+    "PRU"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Life premium and underwriting margin grew, supporting favorable life underwriting/mortality trends for PFG."
+       },
+       {
+        "peer": "PRU",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Q2 financial supplement restatement; no Q3 earnings or operating trends for PFG."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Peer health underwriting margin +12%, premium +8%, sales +5% signals favorable specialty benefits conditions."
+       },
+       {
+        "peer": "PRU",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "PRU filing is a Q2 segment reporting update, not Q3 earnings; no read-through to PFG."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PRU",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "PRU release is a financial supplement with segment reporting changes, not an earnings release; no read-through to PFG's quarter."
+       },
+       {
+        "peer": "GL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Peer life premium and underwriting margin growth signal favorable life insurance demand/mortality trends for PFG's Life segment."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -0.6708203932499369,
+   "score_peer": 1.414213562373095,
+   "score_combined": 0.03628638793661054,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 2.4361,
+   "revenue_estimate": 4313974872,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:40:25.442408+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "871c59bf2f11ca87a481b7d5895f4322e64212b8e21bf709d83bbf48a7945f48"
+  },
+  "PSA": {
+   "ticker": "PSA",
+   "index": "SP500",
+   "sector": "Real Estate",
+   "sub_industry": "Self-Storage REITs",
+   "last_release": "2026-07-29 20:07:48+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1393311/000162828026050608/psa-072926xex99_1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Same-store revenue, occupancy and rent",
+      "last_report": "Q2 same-store revenue -0.6%; occupancy 92.5% (+0.2pp); realized rent per occupied sq ft -0.8%.",
+      "guidance": "FY revenue growth (0.7)% to 0.3%; NOI growth (2.0)% to (0.3)%."
+     },
+     {
+      "id": "D2",
+      "name": "Same-store expenses and margins",
+      "last_report": "Q2 direct costs +4.3%, indirect +5.7%; NOI -2.2%; gross margin 74.2%, down 1.2pp.",
+      "guidance": "FY expense growth 2.0%-3.0%; same-store NOI growth (2.0)% to (0.3)%."
+     },
+     {
+      "id": "D3",
+      "name": "Non-same-store lease-up NOI",
+      "last_report": "Q2 non-same-store revenue +25.6%, NOI +21.5%; 441 lease-up facilities, 39.3M sq ft.",
+      "guidance": "FY non-same-store NOI $343M-$357M; excludes NSA and PS Canada."
+     },
+     {
+      "id": "D4",
+      "name": "NSA merger integration and synergies",
+      "last_report": "Closed July 22; >4,500 locations; JV 313 properties at $3.3B; expects $110M-$130M run-rate synergies.",
+      "guidance": "Accretive to FFO within first year; $0.35-$0.50 annualized FFO accretion at full stabilization."
+     },
+     {
+      "id": "D5",
+      "name": "PS Canada acquisition and external growth",
+      "last_report": "Agreed to acquire PS Canada for $1.2B: 68 properties, 5.3M sq ft; Q2 acquisitions 20 facilities for $222.5M.",
+      "guidance": "PS Canada expected to close in Q3 2026; no separate financial guidance."
+     }
+    ],
+    "guidance": "FY2026: Same Store revenue growth (0.7)% to 0.3%; expense growth 2.0%-3.0%; NOI growth (2.0)% to (0.3)%; Non-Same Store NOI $343M-$357M; Core FFO/share $16.75-$17.05. Raised from prior.",
+    "kill_conditions": [
+     "PSA lowers 2026 Core FFO guidance or same-store NOI misses low end.",
+     "Same-store revenue decline steepens or occupancy falls below 92%.",
+     "NSA synergy targets or PS Canada closing delayed; non-same-store NOI growth stalls."
+    ]
+   },
+   "card_provider": "ModelRun",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 28,
+    "found": 26,
+    "share": 0.9285714285714286,
+    "missing": [
+     "343",
+     "357"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 82,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Self-storage rates rose 0.7% in June but annual growth stayed negative",
+        "date": "2026-07-30",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Public Storage completes acquisition of Public Storage Canada",
+        "date": "2026-09-01",
+        "driver": "D5",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Public Storage prices C$400 million senior notes offering in Canada",
+        "date": "2026-09-09",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Self-storage deliveries projected to fall 19.6% in 2026, aiding recovery",
+        "date": "2026-09-25",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Q2 earnings call: first positive move-in rent growth since 2021",
+        "date": "2026-07-30",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Self-storage rates rose 0.7% in June but annual growth negative",
+        "date": "2026-07-30",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ComEd, Solar Landscape, PSA announce 60 rooftop solar sites",
+        "date": "2026-07-31",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "PSA completes acquisition of Public Storage Canada",
+        "date": "2026-09-01",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PSA prices C$400M senior notes offering in Canada",
+        "date": "2026-09-09",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Self-storage deliveries projected to fall 19.6% in 2026",
+        "date": "2026-09-25",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Rising yields stall REIT M&A, buyers and sellers split",
+        "date": "2026-10-07",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "PS Canada acquisition completed",
+        "date": "2026-09-01",
+        "driver": "D5",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "C$400M senior notes offering priced",
+        "date": "2026-09-09",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Self-storage supply slowdown projected 19.6% drop in 2026 deliveries",
+        "date": "2026-09-25",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "60 rooftop solar sites planned with ComEd and Solar Landscape",
+        "date": "2026-07-31",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Q3 dividend of $3.00 per share declared",
+        "date": "2026-08-06",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "June self-storage rates rose 0.7% but annual growth negative",
+        "date": "2026-07-30",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 0.8944271909999159,
+   "score_peer": null,
+   "score_combined": 0.8944271909999159,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 2.4173,
+   "revenue_estimate": 1336061330,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:45:38.207102+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "8111067d575cae5f455f16293abbe38126a7f3bbfc0d467ad8101453c2caa047"
+  },
+  "RMBS": {
+   "ticker": "RMBS",
+   "index": "SP400",
+   "sector": "Information Technology",
+   "sub_industry": "Semiconductors",
+   "last_release": "2026-07-27 20:06:16+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/917273/000119312526318063/rmbs-ex99_1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Product revenue growth",
+      "last_report": "Record $99.2M, up 13% QoQ and 22% YoY; exceeded total revenue guidance.",
+      "guidance": "Q3 product revenue $110M-$116M."
+     },
+     {
+      "id": "D2",
+      "name": "Royalties and licensing billings",
+      "last_report": "Royalties $84.2M; licensing billings $84.1M. Total revenue exceeded guidance.",
+      "guidance": "Q3 royalties revenue $69M-$75M."
+     },
+     {
+      "id": "D3",
+      "name": "Contract and other revenue",
+      "last_report": "$24.0M in Q2; part of total revenue beat.",
+      "guidance": "Q3 contract and other revenue $25M-$31M."
+     },
+     {
+      "id": "D4",
+      "name": "Operating costs and margin",
+      "last_report": "Non-GAAP operating margin 45%, down from 46% YoY; GAAP opex $92.7M.",
+      "guidance": "Q3 non-GAAP operating costs $115M-$119M; GAAP $133M-$137M."
+     },
+     {
+      "id": "D5",
+      "name": "AI data center product ramp",
+      "last_report": "Expanded DDR5 9600 server/client chipsets and PCIe 7 Switch IP for next-gen AI systems.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q3 2026: revenue $210M-$216M; product $110M-$116M; royalties $69M-$75M; contract/other $25M-$31M; GAAP EPS $0.59-$0.67; non-GAAP EPS $0.75-$0.82; non-GAAP operating costs $115M-$119M.",
+    "kill_conditions": [
+     "Q3 revenue below $210M or product revenue below $110M.",
+     "Q3 royalties below $69M or licensing billings decline sequentially.",
+     "Non-GAAP EPS below $0.75 or non-GAAP operating costs above $119M."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 26,
+    "found": 26,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 78,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Initiated $100M accelerated share repurchase program",
+        "date": "2026-08-05",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Launched CryptoManager Root of Trust supporting Caliptra spec",
+        "date": "2026-09-14",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Announced PMIC for LPDDR6 SOCAMM2 server memory",
+        "date": "2026-10-13",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Partnered with ChipAgents for AI-driven chip design",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Initiated $100M accelerated share repurchase program with Mizuho",
+        "date": "2026-08-05",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Launched CryptoManager Root of Trust supporting Caliptra for data center/AI SoCs",
+        "date": "2026-09-14",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Announced PMIC for LPDDR6 SOCAMM2 server memory modules",
+        "date": "2026-10-13",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Partnered with ChipAgents to accelerate AI-driven chip design",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "ModelRun",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Initiated $100M accelerated share repurchase program with Mizuho",
+        "date": "2026-08-05",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Launched CryptoManager Root of Trust supporting Caliptra specification",
+        "date": "2026-09-14",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Announced PMIC for LPDDR6 SOCAMM2 server memory modules",
+        "date": "2026-10-13",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Partnered with ChipAgents for AI-driven chip design and agentic AI",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "TXN",
+    "MU"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TXN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad data center and semiconductor growth signals healthy demand, supporting Rambus product revenue guidance."
+       },
+       {
+        "peer": "MU",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "Record AI-driven memory demand implies stronger DRAM royalties for Rambus."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TXN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad data center and industrial growth signals healthy semiconductor demand, supporting Rambus product revenue."
+       },
+       {
+        "peer": "MU",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D5",
+        "why": "Record AI-driven memory demand and strong FY27 outlook signal robust DDR5/AI data center demand for Rambus chips/IP."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MU",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D5",
+        "why": "Record AI-driven memory demand and data-center growth imply strong DDR5/memory interface chip demand for Rambus."
+       },
+       {
+        "peer": "TXN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad semiconductor and data-center growth supports Rambus product demand, though less memory-specific."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 3.3541019662496843,
+   "score_peer": 2.886751345948129,
+   "score_combined": 4.797477639223748,
+   "overall_votes": [
+    "above",
+    "above",
+    "inline"
+   ],
+   "overall": "above",
+   "hour": "amc",
+   "eps_estimate": 0.8043,
+   "revenue_estimate": 217449424,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:43:09.273024+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "39155b8e024583e1b301261551ce72e66ef0e8ec0f903b166fa57ebd32258a82"
+  },
+  "SSD": {
+   "ticker": "SSD",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Building Products",
+   "last_release": "2026-07-27 20:20:03+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/920371/000162828026049817/q22026ex991pressrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "North America sales and volumes",
+      "last_report": "Q2 NA net sales $522.3M, +6.0% on 2025 price increases; unit volumes slightly lower. Gross margin 50.2%; operating income $158.0M, +15.8%.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Europe sales and operating margin",
+      "last_report": "Q2 Europe net sales $143.5M, +7.6% on volumes, price, $3.7M FX. Gross margin 38.2%; operating income $19.7M, +25.7%; record 13.7% op margin.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Gross and operating margin",
+      "last_report": "Q2 gross margin 47.4%, +100bps; operating margin 25.2%, +300bps, including $5.5M eminent domain settlement (100bps) and cost savings.",
+      "guidance": "FY2026 operating margin 19.7%-20.5%, includes $10-12M vacant land sale gain."
+     },
+     {
+      "id": "D4",
+      "name": "US housing starts and demand",
+      "last_report": "TTM US housing starts 1,359K, -0.6% YoY; North America unit volumes slightly lower on softer market.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Cost savings and operating expenses",
+      "last_report": "Q2 operating expenses +1.0% YoY; lower personnel, software licensing, T&E; 2025 strategic cost savings initiatives benefit margins.",
+      "guidance": null
+     }
+    ],
+    "guidance": "FY2026 consolidated operating margin 19.7%-20.5%, including projected $10.0-$12.0M gain on vacant land sale; effective tax rate 25.0%-26.0%; capital expenditures $80.0-$90.0M. No quarterly guidance.",
+    "kill_conditions": [
+     "North America sales decline or unit volumes fall more than slightly, showing pricing no longer offsets soft demand.",
+     "Consolidated operating margin guidance cut below 19.7%, or Q3 gross margin falls below 47%.",
+     "Europe sales or operating margin reverses from record 13.7%, or FX turns into material headwind."
+    ]
+   },
+   "card_provider": "DeepInfra",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 28,
+    "found": 27,
+    "share": 0.9642857142857143,
+    "missing": [
+     "12"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 38,
+   "news_used": 37,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Reaffirmed FY2026 guidance ranges unchanged",
+        "date": "2026-10-06",
+        "driver": "D3",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "FY2026 financial guidance ranges remain unchanged",
+        "date": "2026-10-06",
+        "driver": "D3",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "FY2026 guidance ranges reaffirmed unchanged; no operational update",
+        "date": "2026-10-06",
+        "driver": "D3",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "ALLE"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ALLE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Allegion Americas non-residential volume growth and residential price realization support SSD North America sales/volume outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ALLE",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "International organic sales fell on volume declines, signaling softer overseas demand and margin risk for SSD's Europe segment."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ALLE",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "International organic down, volume declines and margin contraction suggest weaker Europe demand/margin for SSD."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": -1.414213562373095,
+   "score_combined": -0.7071067811865475,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 2.4745,
+   "revenue_estimate": 631642890,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:41:03.134181+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "5fcc5f91942cde8358cc8d037320929628cf032881801295406127252a6701ab"
+  },
+  "SUI": {
+   "ticker": "SUI",
+   "index": "SP400",
+   "sector": "Real Estate",
+   "sub_industry": "Single-Family Residential REITs",
+   "last_release": "2026-07-27 20:32:29+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/912593/000091259326000231/exhibit991pressreleaseands.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Same Property NOI Growth",
+      "last_report": "Q2 same property NOI +6.0%; MH +8.8%, RV -0.7%; total revenue +3.9%, expenses +0.1%.",
+      "guidance": "FY 2026 same property NOI growth raised 20 bps to 4.5%-5.3%."
+     },
+     {
+      "id": "D2",
+      "name": "MH Revenue and Occupancy",
+      "last_report": "MH same property revenue +6.2%, NOI +8.8%; MH/annual RV occupancy 97.9% vs 98.1%; revenue-producing sites +250 in Q2.",
+      "guidance": "No separate MH guidance; total same-property NOI growth 4.5%-5.3%."
+     },
+     {
+      "id": "D3",
+      "name": "RV Same Property Performance",
+      "last_report": "RV same property revenue 0.0%, NOI -0.7% in Q2; six-month revenue +1.7%, NOI +2.0%.",
+      "guidance": "No separate RV guidance; total same-property NOI growth 4.5%-5.3%."
+     },
+     {
+      "id": "D4",
+      "name": "Park Holidays Sale",
+      "last_report": "Agreed to sell UK business for ~$1.04B; expected close H2 2026 subject to FCA approval; $1.1B valuation allowance recorded.",
+      "guidance": "Guidance excludes Park Holidays Sale completion/proceeds; expected close H2 2026."
+     },
+     {
+      "id": "D5",
+      "name": "Capital Allocation and Buybacks",
+      "last_report": "Q2 repurchased 0.9M shares for $111.1M; subsequent 0.7M shares for $89.0M; repaid $177.9M Q2 and $258.3M subsequent debt.",
+      "guidance": "$1.0B stock repurchase program through May 27, 2027."
+     }
+    ],
+    "guidance": "Q3 2026: Diluted EPS $1.13-$1.23; Core FFO/share $2.23-$2.33. FY 2026: Diluted EPS $(6.72)-$(6.56); Core FFO/share $6.94-$7.10. FY same-property NOI growth raised to 4.5%-5.3%. Excludes Park Holidays Sale.",
+    "kill_conditions": [
+     "Same-property NOI growth falls below 4.5% or MH NOI turns negative.",
+     "Park Holidays sale delayed or blocked by UK regulatory approval.",
+     "Q3 Core FFO per share misses guidance low end of $2.23."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 28,
+    "found": 28,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 61,
+   "news_used": 59,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Park Holidays sale to Aermont Capital completed",
+        "date": "2026-09-22",
+        "driver": "D4",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Updated share repurchase activity disclosed with sale completion",
+        "date": "2026-09-22",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Park Holidays sale completed to Aermont Capital",
+        "date": "2026-09-22",
+        "driver": "D4 Park Holidays Sale",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Share repurchase update with Park Holidays sale completion",
+        "date": "2026-09-22",
+        "driver": "D5 Capital Allocation and Buybacks",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Robert A. Garechana appointed CFO effective September 8",
+        "date": "2026-08-25",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Sun Communities added to S&P MidCap 400",
+        "date": "2026-08-13",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Completed Park Holidays sale to Aermont Capital, as expected; guidance excluded sale.",
+        "date": "2026-09-22",
+        "driver": "D4",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Provided update on recent share repurchase activity, continuing buyback program.",
+        "date": "2026-09-22",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "ELS"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ELS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Peer core income +6.7% and positive RV trends suggest SUI same-property NOI may meet or beat guidance."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Reka",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ELS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "ELS core NOI +6.7%, revenue +4.4% signals healthy MH/RV industry demand, supporting SUI same-property NOI."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Reka",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ELS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Peer shows RV/marina base rental +2.1% and membership +8.4%, suggesting industry RV demand improving, positive for SUI's weak RV segment."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Reka",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.8660254037844387,
+   "score_peer": 1.414213562373095,
+   "score_combined": 1.5731321849709863,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 1.1846,
+   "revenue_estimate": 591556242,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:41:34.317375+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "84bf94961781272a3f6f59b74fe705448e466a8b6a4897f02bb2f2007eb6661f"
+  },
+  "VZ": {
+   "ticker": "VZ",
+   "index": "SP500",
+   "sector": "Communication Services",
+   "sub_industry": "Integrated Telecommunication Services",
+   "last_release": "2026-07-24 11:00:31+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/732712/000073271226000040/a2026q2exhibit99.htm",
+   "release_doc": "type EX-99",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Mobility and broadband service revenue",
+      "last_report": "Q2 mobility and broadband service revenue grew 2.8% to ~$23.4B.",
+      "guidance": "FY 2026 growth 2.5-3.0%; wireless service revenue approximately flat; Q3 approaching 3.0%, Q4 ~4.0%."
+     },
+     {
+      "id": "D2",
+      "name": "Postpaid phone net additions",
+      "last_report": "Q2 postpaid phone net additions 184,000; best Consumer Q2 in five years; new postpaid account growth.",
+      "guidance": "FY 2026 total retail postpaid phone net additions in upper half of 750,000-1.0M range."
+     },
+     {
+      "id": "D3",
+      "name": "Broadband net additions",
+      "last_report": "Q2 broadband net additions 348,000, up 12.3% YoY; 193,000 fixed wireless, 155,000 fiber; 17.1M connections.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Adjusted EBITDA margin and EPS",
+      "last_report": "Q2 adjusted EBITDA $13.7B, +7.2% YoY; record 40.1% margin; adjusted EPS $1.30, +6.6%.",
+      "guidance": "FY 2026 adjusted EPS $4.99-$5.04, +6-7% YoY."
+     },
+     {
+      "id": "D5",
+      "name": "Equipment revenue and upgrade volumes",
+      "last_report": "Q2 equipment revenue fell nearly 20%, over $1.2B, on lower upgrades and reduced device subsidies.",
+      "guidance": null
+     }
+    ],
+    "guidance": "FY 2026: mobility and broadband service revenue growth 2.5-3.0%; adjusted EPS $4.99-$5.04 (+6-7%); cash flow from operations +2-4%; free cash flow +9-10%; capex $16.0-$16.5B; postpaid phone net adds upper half 750K-1.0M; buyback up to $4.5B.",
+    "kill_conditions": [
+     "Verizon cuts full-year adjusted EPS or free cash flow guidance.",
+     "Q3 mobility and broadband service revenue growth misses ~3% or postpaid phone net additions turn negative.",
+     "Adjusted EBITDA margin falls below 40% or equipment revenue decline steepens beyond 20%."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 27,
+    "found": 25,
+    "share": 0.9259259259259259,
+    "missing": [
+     "10",
+     "750"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 697,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "SpaceX acquires $8B spectrum assets from David Grain's firm",
+        "date": "2026-10-21",
+        "driver": "other",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SpaceX in talks to lease 80,000 US cell sites for wireless network",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": -1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Verizon charges monthly fee for new iPhone feature, above T-Mobile",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Verizon files with FCC to phase out copper landlines",
+        "date": "2026-10-23",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CTIA asks FCC to protect terrestrial 5G from satellite-to-device rules",
+        "date": "2026-10-23",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AT&T Q3: strong fiber growth, raised outlook, but weaker fiber ARPU",
+        "date": "2026-10-21",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "SpaceX acquires $8B spectrum assets, threatening wireless competition",
+        "date": "2026-10-21",
+        "driver": "D1",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SpaceX in talks for 80,000 cell sites to build fourth wireless carrier",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": -1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Verizon charges monthly fee for new iPhone feature, raising service revenue",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Verizon files with FCC to phase out copper landlines, potential cost savings",
+        "date": "2026-10-23",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CTIA asks FCC to protect terrestrial 5G spectrum from satellite rules",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "SpaceX buys $8B spectrum assets, intensifying wireless competition",
+        "date": "2026-10-21",
+        "driver": "D1",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SpaceX reportedly in talks for 80,000 cell sites to build wireless network",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": -1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "AT&T Q3 shows record internet adds but weaker fiber ARPU",
+        "date": "2026-10-21",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Verizon charges monthly fee for new iPhone feature",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Verizon seeks FCC approval to phase out copper landlines",
+        "date": "2026-10-23",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CTIA asks FCC to protect terrestrial 5G spectrum from satellite rules",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "T"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "T",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "AT&T's 379k postpaid phone net adds suggest competitive share gains, pressuring VZ's postpaid phone net additions."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "T",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "AT&T's strong service revenue growth and solid net adds signal healthy industry demand/pricing, supportive for VZ service revenue."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "T",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "AT&T's strong postpaid phone net adds suggest it is taking share, a negative for Verizon's D2."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -1.1338934190276817,
+   "score_peer": -1.414213562373095,
+   "score_combined": -1.8410002002142292,
+   "overall_votes": [
+    "inline",
+    "below",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 1.3111,
+   "revenue_estimate": 35786346491,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:42:04.857569+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "48a008a36d02a3bf685e21bdda80283b7189528ab6ed9ca8b4251f727d064e86"
+  },
+  "WELL": {
+   "ticker": "WELL",
+   "index": "SP500",
+   "sector": "Real Estate",
+   "sub_industry": "Health Care REITs",
+   "last_release": "2026-07-27 20:06:23+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/766704/000076670426000026/a2q26earningsrelease991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "SHO same-store NOI growth",
+      "last_report": "Q2 SHO SSNOI +20.5%; organic same-store revenue +9.2% on 330 bps occupancy growth and 5.2% RevPOR growth.",
+      "guidance": "FY26 SHO SSNOI growth guided ~18.5%-21.5%; blended SSNOI 13.75%-16.00%."
+     },
+     {
+      "id": "D2",
+      "name": "SHO occupancy and RevPOR",
+      "last_report": "Q2 occupancy +330 bps YoY; RevPOR +5.2%; drove SHO organic same-store revenue +9.2%.",
+      "guidance": "No separate Q3 guide; FY26 SHO SSNOI guide implies continued occupancy/RevPOR growth."
+     },
+     {
+      "id": "D3",
+      "name": "Investment and acquisition deployment",
+      "last_report": "YTD closed/under contract $15.5B gross investments; Q2 $6.3B completed; Amica closed April 1; $6.1B post-quarter.",
+      "guidance": "FY26 guidance includes only announced/closed acquisitions; no additional investments included."
+     },
+     {
+      "id": "D4",
+      "name": "Dispositions and OM portfolio",
+      "last_report": "Q2 dispositions/loan repayments $843M, including $561M OM; eight OM properties remain, expected to close before end-2026.",
+      "guidance": "Next twelve months pro rata dispositions $1.1B at 6.8% blended yield; $0.8B property sales."
+     },
+     {
+      "id": "D5",
+      "name": "Balance sheet and G&A costs",
+      "last_report": "Net debt/Adj EBITDA 2.99x; $9.5B liquidity; July C$1.15B notes at 3.95%; dividend raised 15% to $0.85.",
+      "guidance": "FY26 G&A $265M-$270M; stock comp ~$60M; no unannounced capital activity included."
+     }
+    ],
+    "guidance": "FY26 NICS $3.11-$3.19; normalized FFO $6.36-$6.44. SSNOI: blended 13.75%-16.00%; SHO 18.5%-21.5%; SH triple-net 3.5%-4.5%; OM 2.0%-3.0%; LT/PAC 2.0%-3.0%. G&A $265M-$270M; SBC ~$60M; dispositions $1.1B at 6.8% yield.",
+    "kill_conditions": [
+     "Q3 SHO same-store NOI growth below FY26 low end of ~18.5%.",
+     "SHO occupancy or RevPOR growth decelerates materially from Q2's +330 bps/+5.2%.",
+     "OM dispositions delayed past 2026 or net debt/EBITDA rises above 2.99x."
+    ]
+   },
+   "card_provider": "ModelRun",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 32,
+    "found": 32,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 129,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Brookdale to acquire 30 communities from Welltower for $290M",
+        "date": "2026-10-13",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Industry senior housing occupancy reached 90.4% in Q3",
+        "date": "2026-10-21",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "TimeoutError('LLM call exceeded 240 s')",
+     "provider": null,
+     "log": {
+      "attempts": [
+       {
+        "kind": "transport",
+        "error": "TimeoutError('LLM call exceeded 240 s')"
+       }
+      ],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "TimeoutError('LLM call exceeded 240 s')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Brookdale completes acquisition of 17 communities from Welltower",
+        "date": "2026-10-13",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Brookdale agrees to buy 30 more communities from Welltower for $290M",
+        "date": "2026-10-13",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Senior housing occupancy reached 90.4% amid limited construction",
+        "date": "2026-10-21",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 1.1830127018922194,
+   "score_peer": null,
+   "score_combined": 1.1830127018922194,
+   "overall_votes": [
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 0.6719,
+   "revenue_estimate": 3675507331,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T03:03:42.608309+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "20468e118059f2635263f0e26f4e643327c2fbfa7c1d900ed738748cb660ad1f"
+  },
+  "WHR": {
+   "ticker": "WHR",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Household Appliances",
+   "last_release": "2026-08-03 20:15:27+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/106640/000010664026000056/exhibit991pressrelease0630.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "North America MDA price/mix and margin",
+      "last_report": "Q2 organic sales -1.5%, EBIT margin 2.7% down 3.2 pts YoY; sequential sales +8% and margin +240 bps on pricing actions.",
+      "guidance": "Full-year revenue and margin outlook unchanged; largest price increase in over a decade."
+     },
+     {
+      "id": "D2",
+      "name": "Latin America Brazil margin recovery",
+      "last_report": "Q2 net sales +7.8% reported, organic -1.7%; EBIT margin 3.0% down 3.0 pts; negative Brazil price/mix despite volume increase.",
+      "guidance": "Announced price increase and structural cost actions to restore margins in Brazil."
+     },
+     {
+      "id": "D3",
+      "name": "SDA Global sell-out and margin",
+      "last_report": "Q2 net sales +0.5%, organic -1.2%; EBIT margin 11.9% down 5.4 pts; lower retailer inventory despite strong sell-out and share gains.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Structural cost take-out delivery",
+      "last_report": "Q2 progress with cost take-out program; restructuring costs $41M; full-year target over $150M or 100 bps margin expansion.",
+      "guidance": "Over $150 million structural cost take out, or 100 bps of margin expansion, in 2026."
+     },
+     {
+      "id": "D5",
+      "name": "Interest expense and cash flow",
+      "last_report": "Q2 interest expense $63M; completed $2B ABL and $2B secured bonds, clearing debt maturities until 2028; FY EPS outlook revised for new interest expense.",
+      "guidance": "GAAP EPS $2.25-$2.75; ongoing EPS $2.50-$3.00; operating cash flow ~$700M; free cash flow >$300M; net debt below $5.0B."
+     }
+    ],
+    "guidance": "Full year 2026: net sales ~$15.0B; GAAP net margin ~1.0%; ongoing EBIT margin ~4.0%; GAAP EPS $2.25-$2.75; ongoing EPS $2.50-$3.00; operating cash flow ~$700M; FCF >$300M; net debt below $5.0B.",
+    "kill_conditions": [
+     "North America organic sales decline worsens or price/mix fails to offset tariffs and raw-material inflation, cutting segment margin.",
+     "Brazil price increases and structural cost actions fail to restore Latin America margin; negative price/mix persists.",
+     "Structural cost take-out tracks below $150 million/100 bps or free cash flow misses >$300M target."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 24,
+    "found": 24,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 124,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Canada retaliates with up to 50% tariffs on $20B US goods",
+        "date": "2026-08-25",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KitchenAid expands Go cordless system with grater, slicer, shredder",
+        "date": "2026-09-29",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KitchenAid launches Makers Club ambassador program",
+        "date": "2026-10-02",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KitchenAid and Corkcicle introduce Mindfulness Fridge water bottle refill",
+        "date": "2026-10-19",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Canada imposes up to 50% tariffs on $20B US goods, escalating trade war",
+        "date": "2026-08-25",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KitchenAid expands Go Cordless System with new grater, slicer, shredder",
+        "date": "2026-09-29",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KitchenAid launches Makers Club ambassador program for creators",
+        "date": "2026-10-02",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Spin&Load Dishwasher Rack named Fast Company innovation finalist",
+        "date": "2026-10-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KitchenAid and Corkcicle introduce Mindfullness Fridge water bottle refill",
+        "date": "2026-10-19",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Canada imposes up to 50% tariffs on $20B of US goods",
+        "date": "2026-08-25",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KitchenAid expands Go cordless system with grater, slicer, shredder",
+        "date": "2026-09-29",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "KitchenAid launches Makers Club creator ambassador program",
+        "date": "2026-10-02",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Whirlpool Spin&Load dishwasher rack named Fast Company award finalist",
+        "date": "2026-10-16",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "KitchenAid and Corkcicle launch Mindfulness Fridge water bottle refill product",
+        "date": "2026-10-19",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 0.6708203932499369,
+   "score_peer": null,
+   "score_combined": 0.6708203932499369,
+   "overall_votes": [
+    "below",
+    "below",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "amc",
+   "eps_estimate": 0.8046,
+   "revenue_estimate": 3959538855,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-26",
+   "cutoff": "2026-10-23 22:00:00+00:00",
+   "decided_at": "2026-10-26T02:45:50.976843+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "sha256": "065874ce66256cd9d496b0ac6638d4d32d1a31b04e0fdaa601f378cc85973c53"
+  }
+ },
+ "report_date": "2026-10-26",
+ "cutoff": "2026-10-23 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "c364200fc331d6dc5d58286cb6a25025c973bf9ffd6123f7337fc18fb68c92d0",
+ "runs": [
+  {
+   "at": "2026-10-26T03:03:42.676992+00:00",
+   "version": "r5-v2",
+   "code": "aff352789a6410a2c9cacb239d2d5a5bf5f8aa57",
+   "quality": {
+    "counts": {
+     "ok": 17
+    },
+    "attempted": 17,
+    "bad": 0,
+    "bad_share": 0.0,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
