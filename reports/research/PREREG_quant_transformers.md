@@ -306,3 +306,66 @@ on 2013–2025 exists. The 2013–25 S&P data have been seen for the other model
   is labelled descriptive.
 
 **Owner sign-off (Amendment 3):** signed by the owner in session, 2026-10-26 ("Signed, run the test"), before any Timestral test-year score.
+
+## Amendment 4 (2026-10-27): forward S&P 500 paper books, written before any forward week
+Owner (2026-10-26/27): train on all data to now and run "a good mix of the top models with different horizons" as
+live paper books. This replaces the 19-book plan of 2026-10-24.
+
+**Why five books.** The backtest correlations of weekly book returns (2013–25, already seen) show three
+independent bets:
+* MASTER h5;
+* MASTER h20 (0.5–0.6 with h5);
+* one time-series cluster (Chronos-2-ft at 5, 10 and 20 days, zero-shot Chronos-2, Timestral and TFT; 0.67–1.00
+  with each other; about 0.1 with MASTER; −0.73 to −0.88 with ridge).
+
+Strategy variants of one signal correlate 0.8–0.9. Each cluster gets one book, plus an ensemble and a control.
+
+**Books** (never traded):
+
+| Book | Score | Strategy | Primary horizon | Role |
+|---|---|---|---|---|
+| `fw_master_h5` | MASTER h5 (5 seeds averaged) | S1 band | 5 | the only pre-registered pass |
+| `fw_master_h20` | MASTER h20 (5 seeds) | S1 band | 20 | exploratory |
+| `fw_c2ft_h20` | Chronos-2-ft median sum at 20 | S4 | 20 | exploratory; represents the cluster |
+| `fw_ensemble` | mean of the cross-sectional z-scores of the three scores above | S1 band | 5 (also 20 reported) | exploratory; members chosen after seeing results |
+| `fw_ridge_h20` | the five-factor ridge (annual refit) | S3 | 20 | control |
+
+**Common rules.**
+* Strategy rules, the sleeve (1.3x/0.7x on the 200-session trend), broker costs and the beta hedge are exactly
+  Amendment 2's.
+* Decisions are made at each Thursday close. Positions are held from close(d+1) to the next decision's close(d+1).
+* **Models:**
+  * the read's frozen settings (`FINAL`), trained on every row whose target ends by the last close before
+    training (2026-10-26);
+  * retrained each January on all data to then;
+  * ridge is refit on the same schedule.
+* **Universe:** today's S&P 500 list after the last membership row (2026-08-18).
+  * A name without 60 days of continuous prices is ineligible, as in the read. On 2026-10-27, PSKY (last close
+    10-16) and WBD (10-05) are excluded this way and listed in each record.
+* **Records:**
+  * one append-only JSON per Thursday on `research-data` (`fund_state/live/research/spx/`);
+  * each record holds every book's scores, targets, positions, sleeve state and the DTB3 rate, all frozen at
+    first use;
+  * the previous record's positions carry each book's state forward.
+* **Quality gate:** scored names ÷ eligible names ≥ 95% for every model, otherwise the week fails loudly after
+  saving.
+* **Recorded but not booked:** the scores of MASTER h10, ridge h5 and ridge h10, and the ensemble's h20 IC, so
+  that ICs can be compared.
+
+**Evaluation** (on IC, which has far more power than one year of P&L; a book's P&L would need decades to confirm a
++3% per year edge):
+* **Primary metric:** each book's weekly rank IC between its score and the realised residual return over its
+  primary horizon, with NW t (lag h − 1).
+* **Stop rule at 26 forward weeks:** a book whose mean IC < 0 with t < −1 is retired. The record says so, and the
+  book is never restarted.
+* **Review at 52 forward weeks:** a book is "supported" if:
+  * its mean IC > 0 with Holm p < 0.05 across the four non-control books (one-sided);
+  * and its IC exceeds the ridge control's IC at the same horizon.
+
+  P&L is reported in % per year against SPY and the risk-matched S&P (no annualising before 26 weeks), but it
+  does not decide.
+* **After one year, expect** at most "not broken" (the 13-year IC t of 3.07 for MASTER h5 is about 0.85 per
+  year). Confirmation comes from pooling further years, which this rule allows without change.
+* **Out of scope:** anything traded with money. That is a new protocol and the owner's decision.
+
+**Owner sign-off (Amendment 4):** _pending_
