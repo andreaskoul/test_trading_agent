@@ -31,6 +31,12 @@ OUT = os.path.join(ROOT, "reports", "research", "p8")
 os.makedirs(os.path.join(CACHE, "submissions"), exist_ok=True)
 os.makedirs(os.path.join(CACHE, "facts"), exist_ok=True)
 LAST = pd.Timestamp("2025-12-31 23:59:59")                       # never past the validation sample
+# Declared XBRL concepts for the same quantity, in a fixed order of preference (the first present for a firm-period
+# is used): diluted EPS; net income to common holders (diluted first, as diluted EPS uses it); diluted share count.
+PREF = {"eps": ["EarningsPerShareDiluted", "EarningsPerShareBasicAndDiluted"],
+        "ni": ["NetIncomeLossAvailableToCommonStockholdersDiluted", "NetIncomeLoss",
+               "NetIncomeLossAvailableToCommonStockholdersBasic", "ProfitLoss"],
+        "sh": ["WeightedAverageNumberOfDilutedSharesOutstanding", "WeightedAverageNumberOfShareOutstandingBasicAndDiluted"]}
 
 
 def get(url, tries=4):
@@ -164,7 +170,7 @@ def build():
         with gzip.open(os.path.join(CACHE, "facts", f"{c}.json.gz"), "rt") as h:
             f = json.load(h)
         g = ((f or {}).get("facts") or {}).get("us-gaap", {})
-        for concept in ("EarningsPerShareDiluted", "NetIncomeLoss", "WeightedAverageNumberOfDilutedSharesOutstanding"):
+        for concept in {c for cs in PREF.values() for c in cs}:
             for unit, xs in (g.get(concept, {}).get("units") or {}).items():
                 for x in xs:
                     if x.get("filed") and pd.Timestamp(x["filed"]) <= LAST and x.get("start") and x.get("end"):
@@ -184,30 +190,60 @@ def build():
 
 def quarters():
     """Quarterly first-filed diluted EPS per firm. Quarters are 80-100-day periods; Q4 is derived from the fiscal
-    year (330-380 days) as (NI_FY - NI_Q1..Q3) / (shares-weighted Q4 diluted shares), flagged (Amendment 4, D6)."""
+    year (330-380 days) as (NI_FY - NI_Q1..Q3) / (4 x FY diluted shares - shares Q1..Q3), flagged (Amendment 4, D6).
+    Each quantity takes the first concept of its PREF list present for that firm and period."""
     E = pd.read_parquet(os.path.join(CACHE, "facts_first.parquet"))
-    q = E[E["days"].between(80, 100)]
-    a = E[E["days"].between(330, 380)]
-    rows = []
-    for c, g in q[q["concept"] == "EarningsPerShareDiluted"].groupby("cik"):
-        for r in g.itertuples():
-            rows.append({"cik": c, "end": r.end, "eps": r.val, "filed": r.filed, "derived": False})
-    ni_q = q[q["concept"] == "NetIncomeLoss"].set_index(["cik", "end"])["val"]
-    sh_q = q[q["concept"] == "WeightedAverageNumberOfDilutedSharesOutstanding"]
-    for r in a[a["concept"] == "NetIncomeLoss"].itertuples():
-        ins = [x for x in ni_q.loc[r.cik].items()] if r.cik in ni_q.index.get_level_values(0) else []
-        prior = [(e, v) for e, v in ins if r.start < e < r.end]
-        sh_fy = a[(a["cik"] == r.cik) & (a["end"] == r.end) & (a["concept"] == "WeightedAverageNumberOfDilutedSharesOutstanding")]
-        if len(prior) != 3 or not len(sh_fy):
+    E = E[E["unit"].isin(["USD/shares", "USD", "shares"])]
+
+    def pick(kind):
+        rank = {c: i for i, c in enumerate(PREF[kind])}
+        x = E[E["concept"].isin(rank)].assign(r=lambda d: d["concept"].map(rank))
+        return x.sort_values("r").drop_duplicates(["cik", "start", "end"], keep="first")
+
+    eps, ni, sh = pick("eps"), pick("ni"), pick("sh")
+    # one share unit per firm (research/p8/splits.py): values filed before a split are in pre-split shares
+    import splits as SP
+    C = json.load(open(os.path.join(CACHE, "ciks.json")))
+    al = json.load(open(os.path.join(PX.CACHE, "aliases.json")))
+    T = SP.table()
+    ev = {}
+    for t, x in C.items():
+        if x["cik"]:
+            sy = {t, al.get(t, t)}
+            ev.setdefault(x["cik"], []).append(T[T["symbol"].isin(sy)][["ex_date", "ratio"]])
+    ev = {c: pd.concat(v).drop_duplicates("ex_date").sort_values("ex_date") for c, v in ev.items()}
+
+    def factor(d):                      # F(filed) / F(last) for each row: < 1 for values filed before a split
+        out = []
+        for c, f in zip(d["cik"], d["filed"]):
+            g = ev.get(c)
+            out.append(1.0 if g is None or not len(g) else float(g[g["ex_date"] > f]["ratio"].prod()) ** -1)
+        return pd.Series(out, index=d.index)
+
+    eps = eps.assign(val=eps["val"] * factor(eps))
+    sh = sh.assign(val=sh["val"] / factor(sh))
+    q = lambda d: d[d["days"].between(80, 100)]
+    a = lambda d: d[d["days"].between(330, 380)]
+    rows = [{"cik": r.cik, "end": r.end, "eps": r.val, "filed": r.filed, "derived": False, "concept": r.concept}
+            for r in q(eps).itertuples()]
+    niq, shq, sha = q(ni), q(sh), a(sh)
+    niq_by = {c: g for c, g in niq.groupby("cik")}
+    shq_by = {c: g for c, g in shq.groupby("cik")}
+    sha_by = {c: g for c, g in sha.groupby("cik")}
+    for r in a(ni).itertuples():
+        gq, gs, gf = niq_by.get(r.cik), shq_by.get(r.cik), sha_by.get(r.cik)
+        if gq is None or gs is None or gf is None:
             continue
-        shq = sh_q[(sh_q["cik"] == r.cik) & (sh_q["end"] > r.start) & (sh_q["end"] < r.end)]
-        if len(shq) != 3:
+        pn = gq[(gq["end"] > r.start) & (gq["end"] < r.end)]
+        ps = gs[(gs["end"] > r.start) & (gs["end"] < r.end)]
+        fs = gf[gf["end"] == r.end]
+        if len(pn) != 3 or len(ps) != 3 or not len(fs):
             continue
-        sh4 = 4 * float(sh_fy["val"].iloc[0]) - float(shq["val"].sum())   # FY average = mean of the 4 quarters
+        sh4 = 4 * float(fs["val"].iloc[0]) - float(ps["val"].sum())     # FY average = mean of the 4 quarters
         if sh4 <= 0:
             continue
-        rows.append({"cik": r.cik, "end": r.end, "eps": (r.val - sum(v for _, v in prior)) / sh4,
-                     "filed": r.filed, "derived": True})
+        rows.append({"cik": r.cik, "end": r.end, "eps": (r.val - float(pn["val"].sum())) / sh4,
+                     "filed": r.filed, "derived": True, "concept": "derived:" + r.concept})
     Q = pd.DataFrame(rows).sort_values(["cik", "end", "derived"]).drop_duplicates(["cik", "end"], keep="first")
     Q.to_parquet(os.path.join(CACHE, "eps_quarterly.parquet"))
     return Q
