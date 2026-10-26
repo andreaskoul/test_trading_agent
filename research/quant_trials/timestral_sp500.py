@@ -201,7 +201,7 @@ def strategies(d, z):
     """Descriptive: Timestral on S0-S4 and S5 (median / (q90 - q10), then S3), next to the earlier models."""
     import strategies as ST
     preds = {}
-    for p_ in ("ridge", "chronos2", "chronos2_ft", "master_h5", "master_h20"):
+    for p_ in X.PARTS:                                                   # every saved part of the signed read
         zz = np.load(X.part_path(p_))
         for k in zz.files:
             if k.startswith("h"):
@@ -215,7 +215,7 @@ def strategies(d, z):
            "All returns in % per year; same books, sleeve and broker costs as SP500_STRATEGIES.md. Model "
            "`timestral_unc` is the uncertainty-adjusted score (median / (q90 - q10)); its **S3 row is S5**. Rows for "
            "ridge, Chronos-2 and MASTER repeat the earlier table for comparison.\n\n")
-    tab = ST.run_all(d, preds, X.YEARS, ("ridge", "chronos2", "chronos2_ft", "master", "timestral", "timestral_unc"),
+    tab = ST.run_all(d, preds, X.YEARS, ("ridge",) + X.MODELS + ("timestral", "timestral_unc"),
                      path, header=hdr)
     print(tab[(tab.span == "2013-25") & tab.model.str.startswith("timestral")].round(2).to_string(index=False))
 
@@ -334,5 +334,12 @@ def devcheck():
     print(json.dumps(rep, indent=1))
 
 
+def strategies_only():
+    """Re-run the descriptive strategy table after `score` (the read itself is never re-scored)."""
+    if not os.path.exists(OUT):
+        sys.exit("run `score` first")
+    strategies(T.build(), np.load(PART))
+
+
 if __name__ == "__main__":
-    {"smoke": smoke, "devcheck": devcheck, "run": run, "score": score, "news": news}[sys.argv[1]]()
+    {"smoke": smoke, "devcheck": devcheck, "strategies": strategies_only, "run": run, "score": score, "news": news}[sys.argv[1]]()
