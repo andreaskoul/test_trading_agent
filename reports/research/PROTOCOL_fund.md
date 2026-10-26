@@ -655,6 +655,24 @@ week if its gate fails):
 * the horizon-end review applies to every lot that reaches its horizon on a session from **2026-10-20** (the
   commit day), including lots of the 2026-10-07 and 2026-10-14 cohorts.
 
+**Deployment note (2026-10-26, operational; the rules above are unchanged).** The amendment was committed on
+branch `fund/amendment8` (2026-10-16/17), but no pull request was opened, so it never reached `main`. The runner
+clones `main` for every job, so none of the effective dates above took effect:
+* the 2026-10-21 cohort was classified with Amendment 7's horizon table;
+* the lots that reached their horizon on 2026-10-20 (SMCI, VEEV) and 2026-10-21 (ON, NVDA, MSFT, ORCL, NFLX,
+  TSLA) were closed at the horizon without a review.
+
+The gap was found on 2026-10-26, in a review of the trade log. Those lots' outcomes had been seen by then, so the
+rules, parameters and switch-off rule were not touched: the code is the 2026-10-17 commit, merged with `main`.
+Effective dates, now set in the code:
+* the horizon at entry applies to cohorts from **as-of 2026-10-28**, the first desk run after the merge;
+* the horizon-end review applies from session **2026-10-27**. If the merge lands later, it applies from the
+  first session after the merge.
+
+Nothing is back-filled. Recorded days and decisions stand as logged, and a rebuild with the merged code
+reproduces the recorded NAV to the cent (through 2026-10-23: $97,579.04, 95 events). Protocol 7's clock is kept,
+as stated above.
+
 ### A. The horizon at entry
 
 **H = clamp(round((B_type · m − age) · (1 − 0.5 · min(p, 1))), 3, 25)** trading days. If the unrounded value

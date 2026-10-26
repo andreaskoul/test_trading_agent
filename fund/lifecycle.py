@@ -73,10 +73,12 @@ NEWS_AT, PRICES_AT = 1200, 180                      # seconds before the close
 LIVE = os.path.join(LC, "live")
 
 # ---- Amendment 8 (owner, 2026-10-13): contextual horizon at entry and the horizon-end review
-# Cohorts from as-of A8_ASOF get the contextual horizon; from session A8_REVIEW (the commit day) every lot that
-# reaches its horizon is reviewed instead of closed. Both move by environment variable (a failed gate defers by a week).
-A8_ASOF = os.environ.get("FUND_A8_ASOF") or "2026-10-21"
-A8_REVIEW = pd.Timestamp(os.environ.get("FUND_A8_REVIEW") or "2026-10-20")
+# Cohorts from as-of A8_ASOF get the contextual horizon; from session A8_REVIEW every lot that reaches its horizon is
+# reviewed instead of closed. Both move by environment variable (a failed gate defers by a week). The amendment's
+# dates (as-of 10-21, session 10-20) passed before it reached main; these are the first after the merge
+# (PROTOCOL_fund.md, Amendment 8, deployment note of 2026-10-26).
+A8_ASOF = os.environ.get("FUND_A8_ASOF") or "2026-10-28"
+A8_REVIEW = pd.Timestamp(os.environ.get("FUND_A8_REVIEW") or "2026-10-27")
 B_TYPE = {"earnings": 20, "guidance": 20, "capital_return": 20, "analyst_down": 20, "analyst_up": 10,
           "legal_regulatory": 10, "cross_firm": 20, "soft": 5}      # trading days, counted from the news date
 HARD_TYPES = {"earnings", "guidance", "capital_return"}
