@@ -271,16 +271,18 @@ def news():
     p, nw = panel_inputs()
     sec = F.sector_ids(p.names)
     rows, years = [], []
+    allsc = {}                                                           # each arm forecast once, all horizons
+    for arm in (False, True):
+        allsc[arm] = {h_: np.full((len(p.S), p.N), np.nan) for h_ in X.HS}
+        for yr in NEWS_YEARS:
+            days = F.thursdays(p, np.where(p.S.year == yr)[0])
+            s = panel_scores(p, nw, days, arm)
+            for h_ in X.HS:
+                allsc[arm][h_][days] = s[h_][days]
+            X.log("panel", "news" if arm else "no news", yr)
     for h in X.HS:
         y = p.target(h)
-        arms = {}
-        for arm in (False, True):
-            sc = {h_: np.full((len(p.S), p.N), np.nan) for h_ in X.HS}
-            for yr in NEWS_YEARS:
-                days = F.thursdays(p, np.where(p.S.year == yr)[0])
-                s = panel_scores(p, nw, days, arm)
-                sc[h][days] = s[h][days]
-            arms[arm] = sc[h]
+        arms = {arm: allsc[arm][h] for arm in allsc}
         per = {}
         for yr in NEWS_YEARS:
             wk = F.thursdays(p, np.where(p.S.year == yr)[0])
