@@ -166,12 +166,13 @@ jobs:
         if: ${{ !cancelled() && steps.champ.outcome == 'success' }}
         continue-on-error: true
         run: python fund/shadow_info.py
-      - name: Lifecycle desk (Amendment 7)
+      - name: Lifecycle desk (Amendments 7, 8)
         if: ${{ !cancelled() && steps.champ.outcome == 'success' }}
         continue-on-error: true
         env:
           ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: python fund/lifecycle.py desk
       - name: Shadow books
         if: ${{ !cancelled() && steps.champ.outcome == 'success' }}

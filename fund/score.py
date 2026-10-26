@@ -398,6 +398,21 @@ if os.path.exists(nav_p) and n:
     N_ = pd.read_csv(nav_p)
     g += ["", f"Broker (paper) NAV {N_['equity'].iloc[-1]:,.0f} vs {N_['equity'].iloc[0]:,.0f} at the start of its history; "
           f"model fund net cumulative {((1 + Pn['fund'].fillna(0)).prod() - 1) * 100:.2f}%."]
+# Amendment 8: the horizon-end review against its shadow, exiting every reviewed lot at its horizon (a monitor with a
+# pre-registered switch: after 50 reviews the review stops if the closed extensions earned nothing after costs)
+_st = json.load(open(_lc)) if os.path.exists(_lc) else {}
+_rv, _xd = _st.get("reviews", []), _st.get("ext_done", [])
+if _rv:
+    _ext = [x for x in _rv if x["decision"] == "extend"]
+    _pnl = sum(x["ext_pnl"] for x in _xd)
+    _open = {L["id"]: L.get("ext_pnl") for L in _st.get("lots", []) if L.get("ext_pnl") is not None}
+    by_rule = pd.Series([str(x["rule"]) for x in _rv if x["decision"] == "exit"]).value_counts().to_dict()
+    g += ["", f"Horizon-end review (Amendment 8): {len(_rv)} reviews, {len(_ext)} extended, {len(_rv) - len(_ext)} exited "
+          f"(exit rules {by_rule}). Closed extensions {len(_xd)}: P&L after the horizon ${_pnl:,.0f} vs $0 for exiting at it, "
+          f"after costs; open extensions marked ${sum(_open.values()):,.0f}. "
+          + ("SWITCHED OFF: 50 reviews without a gain over exiting at the horizon." if len(_rv) >= 50 and _pnl <= 0 else
+             f"Switch-off test at 50 reviews ({len(_rv)} so far).")]
+    pd.DataFrame(_rv).to_csv(os.path.join(OUT, "horizon_reviews.csv"), index=False)
 open(os.path.join(OUT, "gate.md"), "w").write("\n".join(g) + "\n")
 if len(Px):
     g += ["", "Challengers (shadow, never traded): excess return minus the fund's, %/wk, running",
