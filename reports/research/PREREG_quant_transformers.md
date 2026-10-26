@@ -349,8 +349,8 @@ Strategy variants of one signal correlate 0.8–0.9. Each cluster gets one book,
   * the previous record's positions carry each book's state forward.
 * **Quality gate:** scored names ÷ eligible names ≥ 95% for every model, otherwise the week fails loudly after
   saving.
-* **Recorded but not booked:** the scores of MASTER h10, ridge h5 and ridge h10, and the ensemble's h20 IC, so
-  that ICs can be compared.
+* **Recorded but not booked:** the scores of ridge h5 and ridge h10, and the ensemble's h20 IC, so that ICs can be
+  compared at every horizon.
 
 **Evaluation** (on IC, which has far more power than one year of P&L; a book's P&L would need decades to confirm a
 +3% per year edge):
