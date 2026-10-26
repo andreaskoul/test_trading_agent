@@ -5,9 +5,11 @@ real calls with no deadline and keeps the results out of the live record.
 """
 
 import calendar
+import gzip
 import json
 import os
 import sys
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -85,14 +87,43 @@ def deadline_ok(asof) -> bool:
     return DRYRUN or time.time() < calendar.timegm(pd.Timestamp(asof).timetuple()) + 86400 + 19 * 3600
 
 
+_LOG_LOCK = threading.Lock()
+
+
+def _log_call(system, user, temperature, resp, status, err):
+    """Every attempt of every LLM call, appended to a per-process file <log dir>/<UTC day>.<caller>.<pid>.jsonl.gz:
+    caller, model, provider, tokens, OpenRouter's billed cost and the prompt (per-job spend, replays, model-parity
+    tests). The log dir is ~/.fund-runner/llm_calls on the local runner, else fund_state/<mode>/llm_calls. Logging
+    only: nothing here can change or fail the call."""
+    try:
+        u = (resp or {}).get("usage") or {}
+        row = {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "caller": os.path.basename(sys.argv[0]),
+               "args": sys.argv[1:3], "model": (resp or {}).get("model") or MODEL, "provider": (resp or {}).get("provider"),
+               "status": status, "error": (err or "")[:300] or None, "temperature": temperature,
+               "prompt_tokens": u.get("prompt_tokens"), "completion_tokens": u.get("completion_tokens"),
+               "reasoning_tokens": (u.get("completion_tokens_details") or {}).get("reasoning_tokens"),
+               "cost": u.get("cost"), "system": system, "user": user}
+        runner = os.path.expanduser("~/.fund-runner")
+        d = os.environ.get("FUND_LLM_LOG_DIR") or (os.path.join(runner, "llm_calls") if os.path.isdir(runner)
+                                                   else os.path.join(STATE, MODE, "llm_calls"))
+        os.makedirs(d, exist_ok=True)
+        f = f"{time.strftime('%Y-%m-%d', time.gmtime())}.{row['caller'].removesuffix('.py')}.{os.getpid()}.jsonl.gz"
+        with _LOG_LOCK, gzip.open(os.path.join(d, f), "at") as fh:
+            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+    except Exception:
+        pass
+
+
 def llm(system: str, user: str, check=None, tries: int = 3, temperature: float = 0.0):
     """JSON-mode chat call. Returns (status, output, meta, error)."""
     err = None
     for _ in range(tries):
+        resp = None
         try:
             body = json.dumps({"model": MODEL, "temperature": temperature,
                                **({"provider": PROVIDER} if PROVIDER else {}),
                                "response_format": {"type": "json_object"},
+                               "usage": {"include": True},         # billed cost in the response (logging only)
                                "messages": [{"role": "system", "content": system},
                                             {"role": "user", "content": user}]}).encode()
             req = urllib.request.Request("https://openrouter.ai/api/v1/chat/completions", data=body, headers={
@@ -115,12 +146,15 @@ def llm(system: str, user: str, check=None, tries: int = 3, temperature: float =
             out, meta = json.loads(txt), {"model": resp.get("model"), "provider": resp.get("provider"),
                                           "usage": resp.get("usage"), "raw": txt[:4000]}
             err = check(out) if check else None
+            _log_call(system, user, temperature, resp, "ok" if err is None else "check_failed", err)
             if err is None:
                 return "ok", out, meta, None
         except urllib.error.HTTPError as exc:               # keep the provider's reason (e.g. a data-policy 404)
             err = f"HTTP {exc.code}: {exc.read()[:300].decode(errors='replace')}"
+            _log_call(system, user, temperature, None, "http_error", err)
         except Exception as exc:
             err = repr(exc)
+            _log_call(system, user, temperature, resp, "error", err)       # resp is set if tokens were billed
         time.sleep(3)
     return "failed", None, {}, err
 

@@ -774,3 +774,73 @@ Sources: Savor 2012; Chan 2003; Frazzini 2006; López de Prado, AFML ch. 3.
   * the challenger family.
 * **Not tuned on live data.** The B_type values are re-estimated once, by a future amendment, from the fund's
   own replay: 85% of the 30-day maximum of the signed CAR curve per type, against a placebo baseline.
+
+---
+
+## Research shadow books (2026-10-17): outside Protocol 7
+
+**Status.** Written before any forward record of these books exists. Nothing in the traded fund changes:
+* the lifecycle book, its desks and gates;
+* the weekly shadow book and the challengers C0–C10;
+* `score.py` and its O'Brien–Fleming / Bonferroni family (m = 11).
+
+**What.** `fund/qshadow.py` forms six weekly books on the 31-name news panel of the quant trials
+(`reports/research/quant_trials/DECISION.md`):
+* `q5_h{5,10,20}`: the quant book's five price factors (`fund/screen.py`), refit by ridge.
+* `qn_h{5,10,20}`: the same factors plus the news state (decayed headline vectors against 16 topic prototypes).
+* Ridge is tuned on validation rank IC, refit quarterly on an expanding window (PREREG_thesis_tree.md
+  Amendment 2's refit rule).
+* The owner's primaries (2026-10-17) are `qn_h10` and `q5_h20`.
+* Each book is the top/bottom 5 at 10% of NAV, then the champion's risk rules: sector net ≤ 30%, dollar net
+  ≤ 10% of gross, SPY to zero 60-day beta.
+
+**How they are kept.**
+* Never traded.
+* Not challengers, not in `score.py`, not in any gate or multiple-testing family.
+* The weekly job `qshadow` (Thu 03:30 UTC) writes one record per week to the `research-data` branch. A week is
+  never re-run.
+* `ledger.json` and `LEDGER.md` mark them like `shadow_ledger.py`: Thursday close to Thursday close, 5 bp per
+  side, cash 0.
+
+**History.** History is filled where it can be:
+* walk-forward `backfill` weeks 2018–2025;
+* `catchup` weeks for October 2026, computed late.
+
+Only `live` weeks are forward evidence. The 2022–25 backfill window was read during the research.
+
+**Sealed window.** Jan–Sep 2026 is the sealed P8 holdout:
+* no text from it is used;
+* no decision or target window may touch it;
+* no book is formed in it.
+
+**Live text.** Finnhub news for the 31 names is processed exactly as the thesis panel's history:
+* rewritten with the thesis pipeline's prompt (`deepseek/deepseek-v4-flash`, fact extraction; temperature 0 here
+  under the repository rule);
+* deduplicated at cosine 0.87 (day and 20-day window);
+* embedded with `google/gemini-embedding-001`.
+
+The source mix differs from the history (FNSPID, Benzinga, FMP), which is a known shift.
+* The live fact density is about twice the history's (KO in October 2026: 7.7 facts a day, against 3.5 in 2025).
+* GameStop is outside the S&P 500 news archive, so it has no live headlines. Its news features read "no news";
+  its price factors are unaffected.
+
+**Judgement.** No verdict on these books before ~mid-April 2027 (the shadow-books rule).
+
+**Market exposure (owner policy, 2026-10-19).** Stated by the owner as policy (CLAUDE.md 17), not tested or tuned:
+"the S&P hedge is a dynamic component; when the S&P is very bullish it is counter-intuitive to short it further;
+some strategies should head for more risk and hence more expected return", and "in all strategies both long and
+short positions are possible". The goal is always to beat buy-and-hold of the S&P 500.
+* Every book stays long/short (top 5 long, bottom 5 short, the risk rules above, SPY hedge to zero beta).
+* The ledger also holds each book on top of an SPY sleeve:
+  * 1x SPY ("+ S&P"), and
+  * the dynamic sleeve: **1.3x SPY when SPY closes above its 200-session average at the as-of close, 0.7x
+    otherwise.** The borrowed or idle 0.3 pays or earns the 3-month T-bill rate (FRED DTB3, the last value
+    published before the as-of day); a sleeve change costs 5 bp per side.
+* Each week's trend state and rate are frozen at first use in `exposure.json` on `research-data` and never
+  recomputed (CLAUDE.md 4).
+* Yardsticks: SPY buy-and-hold; the sleeve alone (market timing without stock picking); and a **risk-matched
+  S&P** holding the span's mean sleeve throughout. Beating SPY by holding more of it is not skill, so the
+  risk-matched line is the fair comparison.
+* All lines use the books' holding weeks; a week without a session Wednesday is flat for every line.
+* The 1.3 / 0.7 levels and the 200-session rule are the owner's choice, made before any of these lines was
+  computed; they are never changed because of their results.

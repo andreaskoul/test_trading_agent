@@ -22,24 +22,12 @@ from common import MODE, P7_START, STATE
 
 START, COST = 100_000.0, 5e-4
 # the weekly fund book: the champion until Protocol 7, then shadow c0_weekly; shown as one series
-DESC = {
-    "c0_weekly": "The weekly fund book (after red team and risk), held Thursday to Thursday. It traded the account until 14 Oct; "
-                 "from Protocol 7 (15 Oct) it is the shadow c0_weekly, tested against the lifecycle fund.",
-    "analyst": "Analyst scores straight into the same sizing and risk rules, no red team.",
-    "quant": "Ridge model top and bottom 10 over the whole S&P 500, same risk rules (the primary benchmark).",
-    "core20": "Per-firm scores on the dashboard's 20 names, top and bottom 4 (Protocol 5).",
-    "random": "10 long and 10 short drawn from the covered names, seeded by date (the luck baseline).",
-    "c2_selfconsistency": "C2: the analyst prompt sampled 5 times at temperature 0.7; score = median, confidence from the spread.",
-    "c3_textonly": "C3: news only, with the firm's name, ticker and price facts masked.",
-    "c4_volscaled": "C4: score x confidence / volatility, scaled to the fund's gross, each name at most 10%.",
-    "c5_reversal": "C5: the fund's views plus short-term reversal positions on covered names with no news.",
-    "c8_informed": "C8: the analyst prompt plus the macro brief and each name's news neighbourhood, no red team.",
-    "c9_ranker": "C9: one call ranks C8's views; the champion's caps and hedge, N per side in the ranker's order.",
-    "sp500_hold": "Benchmark: just holding the S&P 500 (100% SPY, dividends reinvested), bought at the first execution day's close "
-                  "and never traded. Long only with full market exposure, unlike the hedged books, so it shows what the market did.",
-}
+# The weekly books shown, in page order. Keys are the record names (C<n> = challenger n in PROTOCOL_fund.md); their
+# names and descriptions live on the page (fund/site/shadow/index.html, NAMES and ABOUT), so wording ships with Pages.
+BOOKS = ("c0_weekly", "analyst", "quant", "core20", "random", "c2_selfconsistency", "c3_textonly", "c4_volscaled",
+         "c5_reversal", "c8_informed", "c9_ranker", "sp500_hold")
 BENCH = {"sp500_hold": {"SPY": 1.0}}           # held through every week, flat weeks included
-ORDER = list(DESC)
+ORDER = list(BOOKS)
 
 
 def _f(v):
@@ -68,7 +56,7 @@ def weeks(base):
             books.update(json.load(open(sp))["books"])
         sc = os.path.join(wd, "screen.json")
         names = {r["ticker"]: r.get("Security") for r in json.load(open(sc))["rows"]} if os.path.exists(sc) else {}
-        out.append({"asof": asof, "books": {k: v for k, v in books.items() if k in DESC}, "names": {**names, "SPY": "SPDR S&P 500 ETF"}})
+        out.append({"asof": asof, "books": {k: v for k, v in books.items() if k in BOOKS}, "names": {**names, "SPY": "SPDR S&P 500 ETF"}})
     return out
 
 
@@ -186,7 +174,7 @@ def build(out_dir, live=False):
     for k in sorted(books, key=lambda k: ORDER.index(k) if k in ORDER else 99):
         B = books[k]
         wk = [x for x in B["weeks"] if x["return"] is not None]
-        out_books.append({"key": k, "desc": DESC.get(k, ""), "started": B["started"], "value": B["value"],
+        out_books.append({"key": k, "started": B["started"], "value": B["value"],
                           "return": B["value"] / START - 1, "week_return": wk[-1]["return"] if wk else None,
                           "series": B["series"], "weeks": B["weeks"][::-1], "positions": B["positions"],
                           # newest execution day first, largest trades first within it

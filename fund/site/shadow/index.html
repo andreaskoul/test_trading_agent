@@ -38,21 +38,28 @@
     <h1>Shadow books</h1>
     <div class="muted">Books scored every week but never sent to Alpaca · notional $100,000 each · updated <span id="upd">…</span> · <a href="../">Trade monitor</a> · <a href="../ledger/">Position ledger</a></div>
   </header>
-  <p class="muted" style="margin:-6px 0 14px"><b>Not a verdict yet.</b> The first judgement of these books is set for mid-April 2027, about 6 months in and at least 3 times the longest holding horizon (40 trading days). Until then the rankings are noise.</p>
+  <p class="muted" style="margin:-6px 0 14px"><b>Not a verdict yet.</b> The first judgement of these books is set for mid-April 2027, about 6 months in and at least 3 times the longest holding horizon (40 trading days). Until then the rankings are noise.<br>Codes in brackets: <b>C<i>n</i></b> = challenger <i>n</i>, an alternative design registered in the fund protocol (PROTOCOL_fund.md) and scored against the fund; <b>Protocol <i>n</i></b> = the fund's <i>n</i>th pre-registered design (Protocol 7 is the one trading now).</p>
   <section><h2>Return since each book started</h2><div class="chartbox"><canvas id="chart"></canvas></div></section>
   <section><h2>Leaderboard</h2><div class="muted" style="margin-bottom:6px">Tap a book to see its positions and trades.</div><div class="scroll" id="board"></div></section>
   <section>
     <div class="bar"><h2 style="margin:0">Book</h2><select id="pick"></select></div>
-    <div class="muted" id="desc"></div>
+    <div class="muted" id="desc" style="line-height:1.6"></div>
     <h3>Positions now</h3><div class="scroll" id="pos"></div>
     <h3>Shadow trades (weight changes at each execution day's close)</h3><div class="scroll" id="trades"></div>
     <h3>Weeks</h3><div class="scroll" id="weeks"></div>
   </section>
   <section id="lcSec" hidden>
-    <h2 id="lcTitle">C10 lifecycle book</h2>
+    <h2 id="lcTitle">Lifecycle fund (C10)</h2>
     <div class="muted" id="lcNote"></div>
     <h3>Open lots</h3><div class="scroll" id="lots"></div>
     <h3>Events</h3><div class="scroll" id="events"></div>
+  </section>
+  <section id="rSec" hidden>
+    <div class="bar"><h2 style="margin:0">Research books (quant trials · never traded)</h2><span><select id="rview"><option value="books">Books (long/short)</option><option value="spx">Against the S&amp;P 500</option></select> <select id="rspan"><option value="all">History + live</option><option value="live">Live only</option></select></span></div>
+    <div class="muted" id="rnote"></div>
+    <div class="chartbox"><canvas id="rchart"></canvas></div>
+    <div class="scroll" id="rboard"></div>
+    <h3>This week's books (primaries)</h3><div class="scroll" id="rpos"></div>
   </section>
   <p class="muted">Marked the way the scorer (score.py) scores each book: a week's weights enter at the execution day's official close and are held to the next execution day's close; costs are 5 bp per side on the change in weights; idle cash earns nothing here. The running week is marked at the latest close, or at Alpaca's latest trades during market hours. These are hypothetical books with no fills, so they differ from the account: in week 1 most of the real orders expired unfilled. SPY rows are each book's market hedge, except in the S&amp;P 500 benchmark, which is simply 100% SPY held throughout (one 5 bp buy at the start). Return = signed price return (dividends included); amount = |weight| × the book's value at entry. The scorer's weekly results in fund-data performance/ stay the record.</p>
 </main>
@@ -62,7 +69,67 @@ const pct = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${(v 
 const usd = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${v < 0 ? "−" : ""}$${fmt(Math.abs(v), 0)}</span>`;
 const wt = v => v == null ? "" : `${v > 0 ? "+" : v < 0 ? "−" : ""}${(Math.abs(v) * 100).toFixed(2)}%`;
 const esc = s => (s ?? "").toString().replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
-const label = k => ({ c0_weekly: "c0_weekly (weekly fund book)", sp500_hold: "S&P 500 (buy & hold)" }[k] || k);
+// readable names for the record keys; C<n> = challenger n in PROTOCOL_fund.md
+const NAMES = {
+  c0_weekly: "Weekly fund book (C0)", analyst: "Analysts, no red team", quant: "Price factors, whole S&P 500",
+  core20: "Fixed 20-stock list, concentrated", random: "Random picks (luck baseline)", c2_selfconsistency: "Self-consistency vote (C2)",
+  c3_textonly: "News only, company hidden (C3)", c4_volscaled: "Inverse-volatility sizing (C4)", c5_reversal: "Fund + short-term reversal (C5)",
+  c8_informed: "Analysts + macro and peer news (C8)", c9_ranker: "LLM ranker on C8 (C9)", c10_lifecycle: "Lifecycle fund (C10)",
+  sp500_hold: "S&P 500 buy & hold",
+};
+const label = k => NAMES[k] || k;
+// Each book in the standard strategy layout: what it tests, universe, signal, portfolio construction, rebalancing
+const UNIV = "Weekly coverage universe: about 45 S&P 500 stocks. It is the fixed 20-stock list, plus names an LLM idea screen nominates, the price model's 6 highest and 6 lowest forecasts, and the 6 largest jumps in news coverage.";
+const NEWS = "LLM news signal. For each stock an LLM analyst reads about 13 weeks of news (grouped into stories and dated events), with recent returns, beta, volatility and earnings dates. It outputs a score from −2 (strong sell) to +2 (strong buy) and a confidence from 0 to 1. Conviction = score × confidence.";
+const RED = "Adversarial review (red team): a second LLM checks each non-zero score for a named error (factual, stale, recycled, contradicted, already priced) and can only move it one notch toward 0.";
+const BUILD = "Long the 10 highest and short the 10 lowest convictions (non-zero only); weight = conviction ÷ 20, at most 10% per stock.";
+const RISK = " Risk limits: sector net at most 30% and dollar net at most 10% of gross; then beta-neutral, with SPY offsetting the book's 60-day market beta.";
+const REBAL = "Weekly. Decided after Wednesday's close, entered at Thursday's close, held to the next Thursday's close; 5 bp cost per side on traded weight.";
+const ABOUT = {
+  c0_weekly: { test: "The original fund design. It traded the account until 14 Oct; it now runs as a shadow benchmark for the lifecycle fund.",
+    universe: UNIV, signal: NEWS + " " + RED, portfolio: BUILD + RISK },
+  analyst: { test: "The value of the red team: the fund without adversarial review.",
+    universe: UNIV, signal: NEWS + " No red team.", portfolio: BUILD + RISK },
+  quant: { test: "Primary benchmark: a pure price-factor model, no LLM and no news.",
+    universe: "All S&P 500 stocks.",
+    signal: "Five price factors: 12-1 month momentum, 1-month reversal, 1-week reversal, low volatility and nearness to the 52-week high. A ridge regression fitted on past data combines them into a return forecast.",
+    portfolio: "Long the 10 highest and short the 10 lowest forecasts, 10% each." + RISK },
+  core20: { test: "Concentration: an equal-weight, unhedged 4-long / 4-short book on a fixed list.",
+    universe: "A fixed list of 20 large-cap, mostly blue-chip S&P 500 stocks, chosen arbitrarily when the project started (not a screen).",
+    signal: NEWS + " No red team.",
+    portfolio: "Long the 4 highest and short the 4 lowest convictions, 25% each (equal weight). No risk limits and no SPY hedge, so it carries market and sector exposure." },
+  random: { test: "Luck baseline (null model).",
+    universe: UNIV, signal: "None: 10 longs and 10 shorts drawn at random, seeded by the date.", portfolio: "10% each." + RISK },
+  c2_selfconsistency: { test: "Self-consistency: does a vote over 5 samples beat a single answer?",
+    universe: UNIV,
+    signal: "The same LLM analyst, sampled 5 times at temperature 0.7 (self-consistency, Wang et al. 2022). Score = the median of the 5; confidence = 1 − (standard deviation ÷ 2), so agreement raises it. No red team.",
+    portfolio: BUILD + RISK },
+  c3_textonly: { test: "Ablation: does the signal come from reading the news, or from prices?",
+    universe: UNIV,
+    signal: "The LLM analyst sees only the news, anonymised: the company's name and ticker are replaced by \"the company\", and there are no price data and no idea-screen hypothesis. No red team.",
+    portfolio: BUILD + RISK },
+  c4_volscaled: { test: "Sizing: inverse-volatility weighting instead of conviction weighting.",
+    universe: UNIV, signal: "The fund's final scores (after the red team); no new LLM call.",
+    portfolio: "Top 10 and bottom 10 by conviction ÷ 60-day volatility; weights proportional to it, scaled to the fund's gross, at most 10% each. A stock whose score falls to 0 is held one more week (turnover band)." + RISK },
+  c5_reversal: { test: "Adds the short-term reversal effect (Jegadeesh 1990; Lehmann 1990) on stocks the news signal leaves out.",
+    universe: UNIV, signal: "The fund's final scores, plus last week's return for stocks with score 0 and no news event in the last 7 days.",
+    portfolio: "The fund's positions, plus reversal positions on those quiet stocks: long last week's losers, short its winners, scaled by rank, at most 3% each." + RISK },
+  c8_informed: { test: "More context: does adding macro and peer information improve the LLM signal?",
+    universe: UNIV,
+    signal: NEWS + " Added inputs: the week's macro brief, market themes, the FX view, news on each stock's most co-mentioned peers and sub-industry, and its 8-K filings. No red team.",
+    portfolio: BUILD + RISK },
+  c9_ranker: { test: "Cross-sectional ranking: does one LLM comparing all stocks at once beat scoring them one at a time?",
+    universe: "Stocks with a non-zero C8 score.",
+    signal: "One LLM call, acting as portfolio manager, reads every C8 memo and the macro brief and ranks the stocks from strongest long to strongest short; longs always rank above shorts.",
+    portfolio: "Long the top 10 and short the bottom 10 in that order; weight = C8 conviction ÷ 20, at most 10% each." + RISK + " No book in a week where more than 25% of C8 memos failed." },
+  sp500_hold: { test: "Market benchmark.",
+    universe: "SPY (S&P 500 ETF).", signal: "None.",
+    portfolio: "100% SPY, long only with beta 1, unlike the beta-neutral books. Dividends reinvested.",
+    rebal: "None: bought at the first entry and held." },
+};
+const about = b => ABOUT[b.key] || { test: b.desc || "" };
+// research books: q5 = five price factors, qn = the same plus news, h<n> = horizon in trading days
+const rlabel = k => { const m = /^(q5|qn)_h(\d+)$/.exec(k); return m ? `${m[1] === "qn" ? "Price factors + news" : "Price factors"}, ${m[2]}-day (${k})` : k; };
 function table(el, cols, rows, rowAttr) {
   const box = document.getElementById(el);
   if (!rows.length) { box.innerHTML = '<div class="empty">None.</div>'; return; }
@@ -84,7 +151,7 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   const sets = B.map((b, i) => b.key === "sp500_hold"
     ? { label: label(b.key), data: line(b.series, d.start), borderColor: "#9a9aa0", borderWidth: 3, pointRadius: 0, spanGaps: true, tension: 0.1 }
     : { label: label(b.key), data: line(b.series, d.start), borderColor: PAL[i % PAL.length], borderWidth: b.key === "c0_weekly" ? 2.5 : 1.3, pointRadius: 0, spanGaps: true, tension: 0.1 });
-  if (d.lifecycle && d.lifecycle.nav.length) sets.push({ label: "c10_lifecycle", data: line(d.lifecycle.nav, d.start), borderColor: "#e67e22", borderWidth: 2.5, borderDash: [6, 3], pointRadius: 0, spanGaps: true });
+  if (d.lifecycle && d.lifecycle.nav.length) sets.push({ label: label("c10_lifecycle"), data: line(d.lifecycle.nav, d.start), borderColor: "#e67e22", borderWidth: 2.5, borderDash: [6, 3], pointRadius: 0, spanGaps: true });
   if (d.account && d.account.length) sets.push({ label: "actual account", data: line(d.account, d.account[0].value), borderColor: getComputedStyle(document.documentElement).getPropertyValue("--ink"), borderWidth: 2, borderDash: [2, 3], pointRadius: 0, spanGaps: true });
   new Chart(document.getElementById("chart"), { type: "line", data: { labels: dates, datasets: sets },
     options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, padding: 6, font: { size: 10 } } },
@@ -99,9 +166,11 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
     table("board", [["#", (r, i) => ranked.indexOf(r) + 1, "n"], ["Book", r => `<b>${esc(label(r.key))}</b>`], ["Return", r => pct(r.return), "n"], ["This week", r => pct(r.week_return), "n"],
       ["Value", r => "$" + fmt(r.value, 0), "n"], ["Since", r => r.started],
       ["Names", r => r.key === "sp500_hold" ? "500 (SPY)" : (r.weeks.find(w => w.names != null) || {}).names ?? "", "n"], ["Stock gross", r => { const w = r.weeks.find(w => w.gross != null); return w ? (w.gross * 100).toFixed(0) + "%" : ""; }, "n"],
-      ["What it tests", r => esc(r.desc), "wrap"]], ranked, r => `class="pick${r.key === k ? " on" : ""}" data-k="${r.key}"`);
+      ["What it tests", r => esc(about(r).test), "wrap"]], ranked, r => `class="pick${r.key === k ? " on" : ""}" data-k="${r.key}"`);
     document.querySelectorAll("#board tr.pick").forEach(tr => tr.onclick = () => { show(tr.dataset.k); sel.scrollIntoView({ behavior: "smooth", block: "start" }); });
-    document.getElementById("desc").textContent = b.desc;
+    const A = about(b);
+    document.getElementById("desc").innerHTML = `<b>Tests:</b> ${esc(A.test)}` +
+      [["Universe", A.universe], ["Signal", A.signal], ["Portfolio", A.portfolio], ["Rebalancing", A.rebal || (A.universe ? REBAL : "")]].filter(x => x[1]).map(([h, t]) => `<br><b>${h}:</b> ${esc(t)}`).join("");
     table("pos", [["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Weight", p => wt(p.weight), "n"], ["Return", p => pct(p.return), "n"], ["P&L", p => usd(p.pnl), "n"],
       ["Side", p => p.side + (p.role === "beta hedge" ? " (hedge)" : "")], ["Name", p => esc(p.name)], ["Amount $", p => "$" + fmt(p.amount, 0), "n"],
       ["Entry", p => p.entry_day], ["Entry $", p => fmt(p.entry_price), "n"], ["Current $", p => fmt(p.current_price), "n"]], b.positions);
@@ -118,7 +187,7 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   if (L) {
     document.getElementById("lcSec").hidden = false;
     const fund = new Date() >= new Date(L.is_fund_from + "T00:00:00");
-    document.getElementById("lcTitle").textContent = fund ? "C10 lifecycle book (trades the account)" : "C10 lifecycle book (shadow until " + L.is_fund_from + ")";
+    document.getElementById("lcTitle").textContent = fund ? "Lifecycle fund (C10, trades the account)" : "Lifecycle book (C10, shadow until " + L.is_fund_from + ")";
     const nav = L.nav[L.nav.length - 1];
     document.getElementById("lcNote").innerHTML = `Each position has its own horizon H (trading days), a stop at −2W and a target at +3W on its hedged return R, and daily news checks against its kill conditions. NAV ${"$" + fmt(nav.value, 0)} on ${nav.date} (${pct(nav.value / d.start - 1)} since start). ` +
       (fund ? "From " + L.is_fund_from + " this book is the fund; its fills are on the trade monitor." : "It becomes the fund on " + L.is_fund_from + " (Protocol 7).");
@@ -129,6 +198,81 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
       ["From $", e => fmt(e.from, 0), "n"], ["To $", e => fmt(e.to, 0), "n"], ["R", e => pct(e.R), "n"], ["W", e => e.W == null ? "" : (e.W * 100).toFixed(1) + "%", "n"], ["Days held", e => e.days_held ?? "", "n"]], L.events);
   }
 }).catch(e => { document.getElementById("board").innerHTML = `<div class="empty">Could not load shadow data (${esc(e.message)}).</div>`; });
+
+// Research shadow books (fund/qshadow.py; PROTOCOL_fund.md "Research shadow books"): weekly NAV from research.json
+fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
+  if (!R.books || !Object.keys(R.books).length) return;
+  document.getElementById("rSec").hidden = false;
+  const PRIM = R.primary || [], names = Object.keys(R.books);
+  const KIND = { backfill: "history (walk-forward)", catchup: "Oct 2026 catch-up (computed late)", live: "live (forward)" };
+  document.getElementById("rnote").innerHTML = "Six books on the 31-name news panel. <b>Price factors</b> (q5) = the quant book's five price factors, refit quarterly; <b>Price factors + news</b> (qn) = the same plus the news state; the day count (h) is how many trading days ahead each book forecasts and holds. Primaries: <b>" + PRIM.map(rlabel).join(", ") +
+    "</b>. History 2018–2025 is walk-forward (2022–25 was read during the research); Jan–Sep 2026 is sealed as the holdout for the next protocol (Protocol 8), so no books there. Only live weeks are forward evidence; no verdict before mid-April 2027. With 5 longs and 5 shorts among 31 names, book returns are dominated by a few moves (e.g. GameStop in January 2021): read the mean IC (rank correlation of the scores with the h-session residual return) as the steadier measure. <b>Against the S&amp;P 500</b>: every book is long/short; each primary is shown on top of SPY, held 1x and through the owner's dynamic sleeve (" + ((R.policy || {}).up ?? "1.3") + "x SPY when SPY closes above its 200-session average at the as-of close, " + ((R.policy || {}).down ?? "0.7") + "x otherwise; the borrowed or idle part pays or earns the T-bill rate). The fair yardstick is the risk-matched S&amp;P, which holds the sleeve's average exposure throughout. Weeks without a session Wednesday are flat for every line." + (R.latest && R.latest.sleeve ? " Sleeve this week: <b>" + R.latest.sleeve + "x</b>." : "") + " Updated " + esc((R.generated || "").replace("T", " ").slice(0, 16)) + " UTC.";
+  let chart = null;
+  // "Against the S&P 500": each primary on top of SPY (1x, and the owner's dynamic sleeve), SPY buy-and-hold, the
+  // sleeve alone and a risk-matched SPY holding the span's mean sleeve; only weeks where every line has a return
+  function lines(span) {
+    const B = R.bench || [], P = R.policy || {};
+    const idx = B.map((b, i) => i).filter(i => B[i].timing != null && (span === "all" || B[i].kind === "live") && PRIM.every(n => R.books[n][i] && R.books[n][i].dyn != null));
+    if (!idx.length) return { idx, L: {} };
+    const sbar = idx.reduce((a, i) => a + B[i].sleeve, 0) / idx.length;
+    const L = { "S&P 500 buy & hold": idx.map(i => B[i].spy), ["risk-matched S&P (" + sbar.toFixed(2) + "x)"]: idx.map(i => sbar * B[i].spy + (1 - sbar) * B[i].rf),
+      ["dynamic sleeve alone (" + P.up + "x / " + P.down + "x)"]: idx.map(i => B[i].timing) };
+    PRIM.forEach(n => { L[rlabel(n) + " + S&P"] = idx.map(i => R.books[n][i].ovl); L[rlabel(n) + " + dynamic sleeve"] = idx.map(i => R.books[n][i].dyn); });
+    return { idx, L };
+  }
+  function drawSpx(span) {
+    const B = R.bench || [], { idx, L } = lines(span), keys = Object.keys(L);
+    if (!keys.length) {                         // ledger built before the S&P lines existed, or no live week yet
+      if (chart) { chart.destroy(); chart = null; }
+      document.getElementById("rchart").parentElement.style.display = "none";
+      document.getElementById("rboard").innerHTML = '<div class="empty">' + (B.length
+        ? "No week in this span has every line yet. Choose History + live, or wait for the next weekly run."
+        : "No S&amp;P comparison in this ledger yet (built " + esc((R.generated || "").slice(0, 10)) + "). It appears after the next weekly research run, Thursday 03:30 UTC.") + "</div>";
+      return;
+    }
+    const dates = idx.map(i => B[i].asof);
+    const sets = keys.map((k, j) => { let v = 1; return { label: k, data: L[k].map(x => (v *= 1 + x) - 1), borderColor: j === 0 ? "#e6e6e6" : PAL[j % PAL.length],
+      borderWidth: j < 3 ? 2.5 : 1.5, borderDash: j === 1 || j === 2 ? [5, 4] : [], pointRadius: 0, tension: 0.1 }; });
+    if (chart) chart.destroy();
+    chart = new Chart(document.getElementById("rchart"), { type: "line", data: { labels: dates, datasets: sets },
+      options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, padding: 6, font: { size: 10 } } },
+        tooltip: { itemSort: (a, b) => b.parsed.y - a.parsed.y, callbacks: { label: c => `${c.dataset.label}: ${(c.parsed.y * 100).toFixed(1)}%` } } },
+        scales: { x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } }, y: { ticks: { callback: v => (v * 100).toFixed(0) + "%" } } } } });
+    const perf = r => { let v = 1, peak = 1, dd = 0; r.forEach(x => { v *= 1 + x; peak = Math.max(peak, v); dd = Math.min(dd, v / peak - 1); });
+      const n = r.length, mu = r.reduce((a, b) => a + b, 0) / n, sd = n > 1 ? Math.sqrt(r.reduce((a, b) => a + (b - mu) ** 2, 0) / (n - 1)) : null;
+      return { cum: v - 1, ann: n >= 26 ? v ** (52 / n) - 1 : null, sharpe: sd ? mu / sd * Math.sqrt(52) : null, dd }; };
+    const P = Object.fromEntries(keys.map(k => [k, perf(L[k])])), spy = P[keys[0]], rm = P[keys[1]];
+    table("rboard", [["Line", r => `<b>${esc(r.k)}</b>`], ["Weeks", r => idx.length, "n"], ["Cumulative", r => pct(P[r.k].cum), "n"], ["Annualised", r => pct(P[r.k].ann), "n"],
+      ["vs S&amp;P (ann.)", r => P[r.k].ann == null ? "" : pct(P[r.k].ann - spy.ann), "n"], ["vs risk-matched (ann.)", r => P[r.k].ann == null ? "" : pct(P[r.k].ann - rm.ann), "n"],
+      ["Sharpe (ann.)", r => P[r.k].sharpe == null ? "" : P[r.k].sharpe.toFixed(2), "n"], ["Max drawdown", r => pct(P[r.k].dd), "n"]], keys.map(k => ({ k })));
+  }
+  function draw(span) {
+    document.getElementById("rchart").parentElement.style.display = "";
+    if (document.getElementById("rview").value === "spx") return drawSpx(span);
+    const rows = k => R.books[k].filter(x => x.ret != null && (span === "all" || x.kind === "live"));
+    const dates = [...new Set(names.flatMap(k => R.books[k].filter(x => span === "all" || x.kind === "live").map(x => x.asof)))].sort();
+    const sets = names.map((k, i) => {
+      let v = 1; const m = {}; R.books[k].forEach(x => { if (span === "live" && x.kind !== "live") return; if (x.ret != null) v *= 1 + x.ret; m[x.asof] = x.ret == null && span === "all" && x.kind !== "live" && x.asof > "2025-12-31" ? null : v - 1; });
+      return { label: rlabel(k) + (PRIM.includes(k) ? " ★" : ""), data: dates.map(d => m[d] ?? null), borderColor: PAL[i % PAL.length], borderWidth: PRIM.includes(k) ? 2.5 : 1.2, pointRadius: 0, spanGaps: false, tension: 0.1 };
+    });
+    if (chart) chart.destroy();
+    chart = new Chart(document.getElementById("rchart"), { type: "line", data: { labels: dates, datasets: sets },
+      options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, padding: 6, font: { size: 10 } } },
+        tooltip: { itemSort: (a, b) => b.parsed.y - a.parsed.y, callbacks: { label: c => `${c.dataset.label}: ${(c.parsed.y * 100).toFixed(1)}%` } } },
+        scales: { x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } }, y: { ticks: { callback: v => (v * 100).toFixed(0) + "%" } } } } });
+    const stat = k => { const r = rows(k).map(x => x.ret), ic = rows(k).map(x => x.ic).filter(x => x != null);
+      const n = r.length, mu = n ? r.reduce((a, b) => a + b, 0) / n : null, sd = n > 1 ? Math.sqrt(r.reduce((a, b) => a + (b - mu) ** 2, 0) / (n - 1)) : null;
+      let v = 1, peak = 1, dd = 0; r.forEach(x => { v *= 1 + x; peak = Math.max(peak, v); dd = Math.min(dd, v / peak - 1); });
+      return { k, n, cum: n ? v - 1 : null, sharpe: sd ? mu / sd * Math.sqrt(52) : null, dd: n ? dd : null, ic: ic.length ? ic.reduce((a, b) => a + b, 0) / ic.length : null }; };
+    table("rboard", [["Book", r => `<b>${esc(rlabel(r.k))}</b>${PRIM.includes(r.k) ? " ★" : ""}`], ["Weeks", r => r.n, "n"], ["Cumulative", r => pct(r.cum), "n"], ["Sharpe (ann.)", r => r.sharpe == null ? "" : r.sharpe.toFixed(2), "n"],
+      ["Max drawdown", r => pct(r.dd), "n"], ["Mean IC", r => r.ic == null ? "" : r.ic.toFixed(3), "n"]], names.map(stat));
+  }
+  const sel = document.getElementById("rspan"); sel.onchange = () => draw(sel.value); draw("all");
+  document.getElementById("rview").onchange = () => draw(sel.value);
+  const L = R.latest;
+  if (L) table("rpos", [["Book", r => `<b>${esc(rlabel(r.book))}</b>`], ["As of", r => L.asof + " (" + (KIND[L.kind] || L.kind) + ")"], ["Ticker", r => esc(r.t)], ["Weight", r => wt(r.w), "n"]],
+    PRIM.flatMap(b => Object.entries(L.books[b] || {}).sort((x, y) => y[1] - x[1]).map(([t, w]) => ({ book: b, t, w }))));
+}).catch(() => {});
 </script>
 </body>
 </html>

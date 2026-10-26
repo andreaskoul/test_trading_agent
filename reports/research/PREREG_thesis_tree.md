@@ -329,3 +329,145 @@ the R0 report: the first post-horizon season. Every later season, and every forw
 | Variants not listed here are not run | ☑ |
 | S&P 400 sub-industry assignments added before any test | ☑ (`fund/chains.json`, `_assigned_at_signoff`) |
 | R5 v1 specified before the first prediction | ☑ (§5, this commit) |
+
+---
+
+## Amendment 1 (2026-10-16): R5 input and robustness defects; r5-v2
+
+**Written before any outcome of the affected firms was examined.** Every criterion below is mechanical: document
+type, content and logged statuses. None depends on a return or a reported result.
+
+**What happened** in the first two R5 runs (15 and 16 Oct, 20 firms; `fund/r5.py` v1):
+
+1. **Wrong input document (7 records).**
+   * v1 chose the press release by file name and, failing a match, used the 8-K itself.
+   * For CFG, CMC, FHN, JBHT, PNC, USB and TRV the card was therefore written from the 8-K cover page (3–10k
+     characters of form text), not from the EX-99.1 release.
+   * CFG failed loudly: the model correctly found no drivers.
+   * The other six were recorded as `ok`, with generic cards (1–4 numbers, against 10–34 from real releases).
+   * Peer blocks were chosen by the same rule.
+2. **Transport (1 record).** SCHW lost 2 of 3 ledger passes, to a dropped connection (`IncompleteRead`) and a time
+   limit across unpinned hosts. Nothing re-ran them, so the median had one pass and the record failed.
+3. **Diagnosability.** Rejected raw answers were not logged.
+
+**How the v1 records are treated.**
+* A v1 record enters the primary R3/R4 analyses only if:
+  * (a) its card source is the filing's document of declared type EX-99.x and that document passes
+    `guards.release_check`, recomputed on the same accession; and
+  * (b) every peer release it used meets the same test.
+* Records failing (a) are excluded. By this rule that is CMC, FHN, JBHT, PNC, USB and TRV.
+* Records failing only (b) enter rung 1 (score_own) and are excluded from analyses that use score_peer or
+  score_combined.
+* All excluded records are reported in a sensitivity analysis.
+* CFG and SCHW stay missing. Nothing is back-filled.
+
+**r5-v2** (from the first run after this amendment is merged):
+* The release is chosen by declared SEC type: EX-99.1, else the first EX-99.x, from the filing index. It is
+  **never** the primary 8-K.
+* It must pass the press-release content contract (`guards.release_check`). If not, the record is
+  `input_defect`: no LLM call, and it counts as missing.
+* Peer releases are held to the same contract; a defective peer is left out and listed in `peer_defects`.
+* **Card grounding.** If the card states ≥ 3 numbers, ≥ 60% must appear in its release. Otherwise the record is
+  `card_ungrounded` and counts as missing.
+* After a schema rejection, the call gets **one repair turn**: the same material, plus the validator's message.
+  It is flagged `repaired`.
+* A failed ledger or peer pass is **re-run once**, flagged `rerun`.
+* Every rejected answer and transport error is logged, with its provider.
+* **Run quality gate.** If input defects plus failures exceed 25% of the firms attempted (from 4 firms up), the
+  run fails *after* its records are saved and committed. The runner then opens an issue and texts the owner.
+
+**Unchanged:** prompts, scores and weights, the cutoff rule, the universe, the record and timestamp proof.
+Because the mapping from a valid input to a score is unchanged, valid v1 records and v2 records are pooled. A
+sensitivity analysis excludes records with `repaired` or `rerun` passes.
+
+---
+
+## Amendment 2 (2026-10-17): the quant validation function, and lessons from the quant trials
+
+**What had been seen.**
+* No result of any P8 test (H or R family, node contract) has been seen. No P8 feature has been computed on the
+  validation or sealed sample.
+* **Disclosure.** The separate quant trials (branch `research/quant-trials`,
+  `reports/research/quant_trials/DECISION.md`) tested a news-embedding return model on 31 large caps. They read
+  2022–25 once, under their own pre-registration (commit 8de9271), and failed.
+* That model is not a P8 hypothesis. The sealed Jan–Sep 2026 window was never loaded.
+* This amendment changes **no** hypothesis, primary statistic, family, split, sample or pass rule.
+
+**Decision (owner, 2026-10-17).**
+* No standalone quant signal desk. The news-embedding return model is closed (failed confirmation; 2022 broke
+  every candidate) and is not a P8 node.
+* The quant function becomes P8's **validation team**. It owns T7 (measurement and learning: node tests, trial
+  ledger, the sealed read) and the neutrality checks behind P1/S5. It also maintains the test harness built for
+  the trials: point-in-time tests, twins, placebos, a ledger, and a guarded single-read runner.
+
+**Practices added to every deterministic P8 test.** These are reporting and process only; the primary statistics
+in §4 and the rules in §2 are unchanged.
+1. **Trial ledger.** Every fitted variant is logged, failures included. The count is stated in the sealed-read
+   report.
+2. **Twins.** Each signal is reported next to a no-signal twin (same model, signal removed) and a placebo (signal
+   permuted across names within date). This sits alongside §2's randomization inference.
+3. **Sector-neutral and regime reporting.**
+   * Every result also shows its sector-neutral version and per-year values, with 2022 on its own row.
+   * 2020–21 is flagged as the COVID regime.
+   * A descriptive "fit excluding 2020" row is added.
+   * A signal whose gain disappears sector-neutral is labelled a sector tilt, not a firm-level signal.
+4. **Model selection.**
+   * Hyper-parameters are chosen within the training window by validation rank IC, never by MSE early stopping.
+     In the trials, MSE early stopping left gradient-boosted trees with 1–30 trees.
+   * Return models are shallow and regularised: ridge, or trees of depth ≤ 3.
+   * Deep nets (MLP, transformers, cross-sectional attention) are not used for return prediction without a new
+     amendment. They added nothing over their placebos in the trials.
+
+**Design input (no change to the tests).**
+* Propagation (E2) uses named links (S2), not embedding similarity. In the trials, text-to-return Granger edges
+  between the 31 names were almost absent: 0–7 of 930 pairs at FDR ≤ 0.10.
+* Embedding similarity stays where §7 puts it: peer identification (S1).
+
+**Optional, not scheduled.** A shadow-only forward log of the trials' best residual: ridge, h = 10, cluster news
+state, 31 names, a sector-neutral increment of +0.02 (t 1.7, not significant).
+* It is never traded and is not a P8 node.
+* It runs only on a separate go-ahead from the owner.
+
+**Refit rule (added 2026-10-17, owner).** From the refit-cadence study (`reports/research/quant_trials/REFIT.md`):
+* Quarterly refits on a 2-year rolling window cut the 2022 loss of the news model to about 0.
+* Expanding windows were needed for the price factors: +0.067 IC at h = 20 in 2022–25, against +0.009 on a
+  2-year rolling window.
+
+So, for every P8 return model (deterministic nodes and Q4 combinations):
+* **Refit quarterly** (first session of each calendar quarter), with an h-session embargo.
+* **Expanding windows** by default. A rolling window needs a pre-registered reason.
+* Encoders (topic clusters, PCA) are refit at the same quarterly dates, on text from before the refit date only.
+
+**Owner's choice of research shadow models (2026-10-17).**
+* The news model: the five quant factors plus the decayed-headline topic state, ridge tuned on rank IC,
+  quarterly expanding refits, at **h = 10**.
+* The quant model: the five price factors refit by ridge, quarterly expanding, at **h = 20**.
+
+Both are research shadow books (see `PROTOCOL_fund.md` and the shadow amendment). They are never traded, and they
+are not P8 nodes unless a later amendment admits them on evidence.
+
+## Amendment 3 (2026-10-19, draft for owner sign-off): transformer research arms; market exposure lines
+
+Written before any transformer outcome on the S&P 500 or on the news panel exists.
+
+**What changes.** Amendment 2 §4 bars deep nets from return prediction without a new amendment. This amendment
+admits exactly three transformer models as **research arms only**: MASTER, the Temporal Fusion Transformer and
+Chronos-2. They run under `reports/research/PREREG_quant_transformers.md`:
+* a single pre-registered S&P 500 read on factors only, against an annually refit ridge (Holm over 3 models × 3
+  horizons);
+* a forward research book on the 31-name news panel only for a model that passes that read.
+
+**What does not change.**
+* They are never traded and are not P8 nodes. Admitting one as a node needs a later amendment on forward
+  evidence.
+* §4's model-selection rule applies: settings by validation rank IC, never MSE.
+* The sealed Jan–Sep 2026 window stays sealed.
+
+**Market exposure lines (owner policy, 2026-10-19; PROTOCOL_fund.md "Market exposure").**
+* The research books are also reported on top of SPY: 1x, and the owner's dynamic sleeve (1.3x SPY above the
+  200-session average, 0.7x otherwise, the rest at the T-bill rate).
+* The yardsticks are SPY buy-and-hold and a risk-matched SPY.
+* All books stay long/short.
+* The sleeve is a stated policy, not a tested or tuned parameter, and is not a P8 input.
+
+**Owner sign-off:** _pending_
