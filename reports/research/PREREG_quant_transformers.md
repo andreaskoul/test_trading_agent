@@ -305,4 +305,4 @@ on 2013–2025 exists. The 2013–25 S&P data have been seen for the other model
   forward-books amendment. There is **no second read of 2013–25**: those years were seen, so any re-run on them
   is labelled descriptive.
 
-**Owner sign-off (Amendment 3):** _pending_
+**Owner sign-off (Amendment 3):** signed by the owner in session, 2026-10-26 ("Signed, run the test"), before any Timestral test-year score.
