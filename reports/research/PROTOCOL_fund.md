@@ -862,3 +862,27 @@ short positions are possible". The goal is always to beat buy-and-hold of the S&
 * All lines use the books' holding weeks; a week without a session Wednesday is flat for every line.
 * The 1.3 / 0.7 levels and the 200-session rule are the owner's choice, made before any of these lines was
   computed; they are never changed because of their results.
+
+---
+
+## Amendment 9 (owner, 2026-10-26, before any horizon-end review was made live): a strong move with support is extended
+
+**Defect.** Amendment 8 B rule 3 exits a lot with z ≥ 1.5 only when it has *neither* CONFIRMING news *nor* a
+pending catalyst. Rule 5 then extends only when 0 < z < 1.5. So a lot with z ≥ 1.5 *and* support also exited,
+and rule 3's exemption could never take effect. The 2026-10-26 plan run showed it: XOM, z 1.60, three of three
+samples CONFIRMING, earnings 4 sessions away, exited by rule 5.
+
+**Change (rule 5 only).** Extend if 0 < z < 1.5 and (CONFIRMING, or a catalyst, or ID ≤ 0 with TO ≥ 1), *or if
+z ≥ 1.5 and (CONFIRMING, or a catalyst)*. Otherwise exit. Everything else is Amendment 8's: rules 1–4, the
+extension length and limits, the re-armed barriers (the stop ratchets to max(old stop, R − 2·W′), so an extended
+strong lot keeps most of its gain), the slot guard, and the switch-off rule after 50 reviews.
+
+**Not changed, stated so it is a decision and not a slip.** Rule 2 also exempts a lot with z ≤ 0 and a pending
+catalyst, and rule 5 then exits it, because it needs z > 0. Extending losing lots into a report is a separate
+judgement. The owner has not made it, so it is left as Amendment 8 wrote it: such lots exit.
+
+**What had been seen.** No live review had been made. The plan run of 2026-10-26 (five lots, scratch copy, no
+orders) is the only review output. No extension has an outcome.
+
+**Effective** with the review, from session 2026-10-27 (`A8_REVIEW`). The rules are in `fund/review_rules.py`,
+with contracts on the plan run's five real reviews in `fund/tests/test_review_rules.py`.

@@ -52,6 +52,7 @@ import numpy as np
 import pandas as pd
 
 from common import MODE, P7_START, STATE, asof_from_env, llm, load, news_cutoff, require, save, save_prompts
+from review_rules import review_rule
 
 mode = sys.argv[1]
 assert mode in ("desk", "daily", "replay", "trade"), mode
@@ -807,19 +808,7 @@ def review_decide(L, d, label, kill_hit, med_new, prev_day, e_today):
     cs = catalyst_session(ce, fut)
     n_cat = fut.index(cs) + 1 if cs in fut else None
     catalyst = n_cat is not None and n_cat + 2 <= room
-    confirming, contradicting = label == "CONFIRMING", label == "CONTRADICTING"
-    if kill_hit or contradicting:
-        dec, rule = "exit", 1
-    elif z <= 0 and not catalyst:
-        dec, rule = "exit", 2
-    elif z >= Z_HI and not confirming and not catalyst:
-        dec, rule = "exit", 3
-    elif idisc > ID_HI and to < TO_LO and not confirming:
-        dec, rule = "exit", 4
-    elif 0 < z < Z_HI and (confirming or catalyst or (idisc <= 0 and to >= TO_LO)):
-        dec, rule = "extend", 5
-    else:
-        dec, rule = "exit", 5
+    dec, rule = review_rule(kill_hit, label, z, idisc, to, catalyst, Z_HI, ID_HI, TO_LO)
     if catalyst:
         h_ext = min(max(h_ext, n_cat + 2), H0, room)
     w_new = sigma * math.sqrt(max(h_ext, 1))

@@ -4,6 +4,7 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-26: Amendment 9 (owner; PROTOCOL_fund.md). The horizon-end review now extends a lot with z ≥ 1.5 when it has CONFIRMING news or a pending catalyst. Before, rule 5 exited it, contrary to rule 3's exemption (XOM in the 10-26 plan run). The rules move into `fund/review_rules.py`, with contract tests on the plan run's real reviews (`fund/tests/test_review_rules.py`). It takes effect with the review from 10-27, and no live review had been made. Could this change a decision? Yes, by design: it is a dated amendment of an untraded rule, made before any of its outcomes.
 - 2026-10-26: Amendment 8 deployed late (PROTOCOL_fund.md, Amendment 8, deployment note). It was committed on branch `fund/amendment8` on 10-16/17 but never merged, so the 10-21 cohort used Amendment 7's horizon table, and eight lots were closed at their horizon on 10-20/21 without the review.
   * The branch is merged with `main`, and the rules and parameters are unchanged. `A8_ASOF` becomes 2026-10-28 and `A8_REVIEW` becomes 2026-10-27 (the first dates after the merge).
   * A rebuild of the recorded book with the merged code reproduces every recorded NAV to the cent (through 10-23: $97,579.04, 95 events, checks pass).
