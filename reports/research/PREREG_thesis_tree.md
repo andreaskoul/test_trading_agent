@@ -471,3 +471,58 @@ Chronos-2. They run under `reports/research/PREREG_quant_transformers.md`:
 * The sleeve is a stated policy, not a tested or tuned parameter, and is not a P8 input.
 
 **Owner sign-off:** _pending_
+
+## Amendment 4 (owner, 2026-10-26): power of the decision rule, §8's open values, data rules
+
+**What had been seen.** No P8 test result. No P8 feature has been computed on validation (2022–25) or sealed
+(2026) data. Prices were fetched only to 2025-12-31 and inspected for coverage only, not for returns. The basis is
+`reports/research/P8_readiness_2026-10-26.md`, whose power figures come from a Gaussian model with no data
+(`reports/research/p8_power.py`).
+
+**Why.** As registered, a monthly signal needs a true annual Sharpe of about 2.0 for a 50% chance to pass:
+the 9-month sealed read alone needs 2.9 for 80% power. The rule spends about 0.25% family-wise false-positive
+risk against the nominal 5%. The owner chose the option in readiness §6.1 ("go", 2026-10-26).
+
+**1. The sealed read (replaces §2's and §6's sealed-test rule).**
+* Validation is unchanged: Holm at 0.05 within each family, both p-values (§2), the stability halves and the net
+  spread > 0.
+* **A validation survivor passes the sealed read if its primary statistic has the pre-registered sign on the
+  sealed sample, and its net long–short spread there is > 0** (for event-level tests: the slope's sign).
+  No significance threshold applies on the sealed sample, and Holm among survivors is dropped.
+* Its p-values on the sealed sample are still computed and reported.
+* Effect, under the readiness model: at a true annual Sharpe of 1.0 the overall pass rate rises from 0.07 to
+  0.26. The false-positive rate per null signal rises from 0.0004 to 0.0038, still below 0.05/7.
+
+**2. §8's open values, fixed before any α exists.** These are textbook rules, not fitted:
+* **α (the Q4 forecast).** α_{i,t} = σ_{e,i} · Σ_k (1/K) · IC_k · z_{ik,t}. This is Grinold's α = IC × volatility
+  × score, with equal weights over the K signals that entered P8.
+  * z_{ik,t} is signal k's score for firm i, standardised cross-sectionally per date.
+  * IC_k is signal k's rank IC on fit data at its H8 horizon.
+  * σ_{e,i} is firm i's residual volatility over that horizon (EWMA, span 60, as Protocol 7).
+  * There are no fitted combination weights. Once R3 passes, the LLM thesis score enters as one more k.
+* **The margin.** Hold while |α_t| > c + m, with c the round-trip cost and **m = c**. That is 20 bp for the
+  S&P 500 (2 × 10 bp) and 40 bp for the S&P 400 (2 × 20 bp; mid-cap costs taken as twice the measured S&P 500
+  cost).
+  * The holding time is then t* = τ · log₂(|α₀| / 2c), where τ is the signal's half-life.
+  * The rule is not tuned on results. A different m needs a later amendment.
+* **No passing signal, no horizon.** If no H signal enters, P8 has no α and nothing is traded under §8. The
+  pre-registered fallbacks (§6) are unchanged.
+
+**3. Data rules (readiness §2), fixed before results.**
+* **D1 prices:** Alpaca SIP bars (adjusted for splits and dividends), with ticker changes resolved by CUSIP,
+  from 2016. yfinance before 2016, marked as fit-only and survivorship-biased. Coverage is reported per year
+  (`reports/research/p8/D1_coverage.md`).
+* **D2 delisting:** the last traded close stands. Delistings are counted per year.
+* **D3 GICS:** today's classification, with a robustness row that excludes Communication Services and Real
+  Estate before their creation dates (2018-09-28 and 2016-08-31).
+* **D4 sector residual:** before XLRE (2015-10-08) and XLC (2018-06-19), names in those sectors use the
+  market-only residual, flagged.
+* **D6 Q4 EPS:** Q4 net income over Q4 average diluted shares (FY minus Q1–Q3 for both), flagged as derived.
+* **D7 peers:** H1 and H2b are also reported on own-embedding peers for 2022–23, where both peer methods
+  exist. The registered statistic is unchanged.
+* **D10 replication:** Cohen–Frazzini is replicated on the earliest window that EDGAR's 10-K text and the price
+  data allow, with survivorship stated. If no window has ≥ 120 months, the placebo checks are the gate for H2.
+
+**Unchanged:** every hypothesis, direction, primary statistic, family, split and sample, and the R family.
+
+**Owner sign-off:** ☑ 2026-10-26 ("go", on the recommendation in readiness §6).
