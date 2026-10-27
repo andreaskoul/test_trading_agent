@@ -1,0 +1,8 @@
+ok   exact: closed-form WCR draws equal brute force (5 draws, |diff| < 1e-9)
+NW(3) one-sided size with the small-sample reference, AR(1) rho .3, T 48: 0.070 (MC se 0.005; t(T-1) gave 0.081-0.086)
+NW(3) size under i.i.d.: 0.057
+ok   Newey-West size; Holm
+beta 0.0: rejection at 5% (R=300, MC se 0.013): wild 0.057, ri 0.053, both 0.050, iid 0.067
+beta 0.03: rejection at 5% (R=300, MC se 0.013): wild 0.737, ri 0.770, both 0.723, iid 0.823
+beta 0.06: rejection at 5% (R=300, MC se 0.013): wild 1.000, ri 1.000, both 1.000, iid 1.000
+ok   size and power

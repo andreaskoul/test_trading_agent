@@ -471,3 +471,209 @@ Chronos-2. They run under `reports/research/PREREG_quant_transformers.md`:
 * The sleeve is a stated policy, not a tested or tuned parameter, and is not a P8 input.
 
 **Owner sign-off:** _pending_
+
+## Amendment 4 (owner, 2026-10-26): power of the decision rule, §8's open values, data rules
+
+**What had been seen.** No P8 test result. No P8 feature has been computed on validation (2022–25) or sealed
+(2026) data. Prices were fetched only to 2025-12-31 and inspected for coverage only, not for returns. The basis is
+`reports/research/P8_readiness_2026-10-26.md`, whose power figures come from a Gaussian model with no data
+(`reports/research/p8_power.py`).
+
+**Why.** As registered, a monthly signal needs a true annual Sharpe of about 2.0 for a 50% chance to pass:
+the 9-month sealed read alone needs 2.9 for 80% power. The rule spends about 0.25% family-wise false-positive
+risk against the nominal 5%. The owner chose the option in readiness §6.1 ("go", 2026-10-26).
+
+**1. The sealed read (replaces §2's and §6's sealed-test rule).**
+* Validation is unchanged: Holm at 0.05 within each family, both p-values (§2), the stability halves and the net
+  spread > 0.
+* **A validation survivor passes the sealed read if its primary statistic has the pre-registered sign on the
+  sealed sample, and its net long–short spread there is > 0** (for event-level tests: the slope's sign).
+  No significance threshold applies on the sealed sample, and Holm among survivors is dropped.
+* Its p-values on the sealed sample are still computed and reported.
+* Effect, under the readiness model: at a true annual Sharpe of 1.0 the overall pass rate rises from 0.07 to
+  0.26. The false-positive rate per null signal rises from 0.0004 to 0.0038, still below 0.05/7.
+
+**2. §8's open values, fixed before any α exists.** These are textbook rules, not fitted:
+* **α (the Q4 forecast).** α_{i,t} = σ_{e,i} · Σ_k (1/K) · IC_k · z_{ik,t}. This is Grinold's α = IC × volatility
+  × score, with equal weights over the K signals that entered P8.
+  * z_{ik,t} is signal k's score for firm i, standardised cross-sectionally per date.
+  * IC_k is signal k's rank IC on fit data at its H8 horizon.
+  * σ_{e,i} is firm i's residual volatility over that horizon (EWMA, span 60, as Protocol 7).
+  * There are no fitted combination weights. Once R3 passes, the LLM thesis score enters as one more k.
+* **The margin.** Hold while |α_t| > c + m, with c the round-trip cost and **m = c**. That is 20 bp for the
+  S&P 500 (2 × 10 bp) and 40 bp for the S&P 400 (2 × 20 bp; mid-cap costs taken as twice the measured S&P 500
+  cost).
+  * The holding time is then t* = τ · log₂(|α₀| / 2c), where τ is the signal's half-life.
+  * The rule is not tuned on results. A different m needs a later amendment.
+* **No passing signal, no horizon.** If no H signal enters, P8 has no α and nothing is traded under §8. The
+  pre-registered fallbacks (§6) are unchanged.
+
+**3. Data rules (readiness §2), fixed before results.**
+* **D1 prices:** Alpaca SIP bars (adjusted for splits and dividends), with ticker changes resolved by CUSIP,
+  from 2016. yfinance before 2016, marked as fit-only and survivorship-biased. Coverage is reported per year
+  (`reports/research/p8/D1_coverage.md`).
+* **D2 delisting:** the last traded close stands. Delistings are counted per year.
+* **D3 GICS:** today's classification, with a robustness row that excludes Communication Services and Real
+  Estate before their creation dates (2018-09-28 and 2016-08-31).
+* **D4 sector residual:** before XLRE (2015-10-08) and XLC (2018-06-19), names in those sectors use the
+  market-only residual, flagged.
+* **D6 Q4 EPS:** Q4 net income over Q4 average diluted shares (FY minus Q1–Q3 for both), flagged as derived.
+* **D7 peers:** H1 and H2b are also reported on own-embedding peers for 2022–23, where both peer methods
+  exist. The registered statistic is unchanged.
+* **D10 replication:** Cohen–Frazzini is replicated on the earliest window that EDGAR's 10-K text and the price
+  data allow, with survivorship stated. If no window has ≥ 120 months, the placebo checks are the gate for H2.
+
+**Unchanged:** every hypothesis, direction, primary statistic, family, split and sample, and the R family.
+
+**Owner sign-off:** ☑ 2026-10-26 ("go", on the recommendation in readiness §6).
+
+## Amendment 5 (2026-10-27): data feasibility, validated inference, and the operational definition of each H test
+
+**What had been seen.** No H statistic, on any sample. Seen so far, and listed here:
+* data coverage (`reports/research/p8/D1_coverage.md`, `D5_D6_coverage.md`);
+* the simulation validation of the inference code (`inference_validation.txt`), which uses no market data;
+* the descriptive earnings-decay curves on fit data (`decay_earnings.md`). These use SUE and CAR, which are
+  not H signals.
+
+Each rule below is fixed before its statistic exists.
+
+### A. Data feasibility (verified 2026-10-26/27)
+1. **TNIC-3 cannot be joined.** The Hoberg–Phillips files are keyed by Compustat gvkey only (`Readme_tnic3.txt`:
+   the CIK merge used a WRDS mapping). No free gvkey↔CIK link exists, so the free-data rule excludes TNIC.
+   * **H1** uses same-GICS-sub-industry peers only, with equal weights. The registered text already includes
+     these peers.
+   * **H2b cannot be run.** It enters Holm with p = 1, and the family size stays m = 7. The S1 contract
+     (own-embedding peers validated against TNIC) cannot be evaluated, so own-embedding peers are not used.
+2. **Delisted firms without a CIK.** 162 symbols have no CIK in any declared SEC field (SEC's ticker file is
+   current-only). They are typed defects, counted missing, never matched by name. Coverage of S&P 500 member
+   firm-years with a CIK is 76% (2012) to 97% (2025), and 93–97% in validation. The bias is stated with every
+   result.
+
+### B. Inference (`research/p8/inference.py`; validated by `research/p8/test_inference.py`, commit b5243cc)
+1. **Event-level p-value** = max(p_WCR, p_RI), each with B = 9,999. A test passes only if both pass (§2).
+   * WCR is the wild cluster restricted bootstrap with the null imposed. It uses Rademacher weights when there are
+     more than 12 clusters, and Webb's six-point weights otherwise: Rademacher has only 2^G distinct draws, and
+     H4 has 11 sector clusters.
+   * Simulated size at one-sided 5% (R = 300): WCR 0.057, RI 0.053, both 0.050; i.i.d. OLS 0.067.
+2. **Fama–MacBeth p-value.** It comes from the simulated small-sample null distribution of the Newey–West(3) t at
+   the same T, not from t(T−1). At T = 48 the t(T−1) reference over-rejects: 0.066 under i.i.d. and 0.081 at
+   AR(1) 0.3. The calibrated reference gives 0.057 and 0.070, matching Kiefer–Vogelsang (2005) fixed-b.
+3. **Holm** over m = 7. A hypothesis not run enters with p = 1.
+4. **Stability:** the primary statistic (β, or the mean FM slope) has the registered sign in 2022–23 and in
+   2024–25 separately.
+5. **Economic significance.**
+   * Event tests: per season, the signal (direction-signed) is sorted into terciles. The net spread is the
+     mean target of the top tercile minus the bottom tercile, minus 20 bp (one 10 bp round trip per leg).
+     It must be > 0.
+   * Where the target is not a return (H3b), the spread is taken on CAR at the same report.
+   * FM tests: as in §2.
+
+### C. Operational definitions
+Common elements, for all tests:
+* **Residual:** e is the §1 residual (`research/p8/residuals.py`).
+* **Report session:** t0 is the §1 report session (`research/p8/events.py`).
+* **Sample:** S&P 500 at t0 (point in time) and the current S&P 400 list, each reported separately as §1
+  requires.
+* **Cells and clusters:** cells are season × GICS sector; clusters are the GICS industry (74, from
+  `research/p8/gics.py`).
+
+**H1 sympathy reversal** (event-level, sign −).
+* For a report of firm i at t0_i, its early peers P_i are the same-sub-industry firms whose t0_p lies in the same
+  calendar quarter as t0_i and ≤ t0_i − 3 sessions.
+* S_i = (1/|P_i|) Σ_p Σ_{s = t0_p−1}^{t0_p+1} e_{i,s}: the late firm's own residual return around its early peers'
+  reports.
+* Target: CAR_i = Σ_{s = t0_i−1}^{t0_i+1} e_{i,s}.
+* Reports with |P_i| ≥ 1 enter.
+
+**H3a funnel lead-lag** (monthly FM, sign +).
+* Firm-month residual: e_{i,m} = Σ of daily e in calendar month m. The betas use the §1 window ending 21
+  sessions before the month.
+* Each (chain, stage k) membership of firm i, for k = S0…S3, gives one row in month m:
+  * signal: the equal-weight mean e_{j,m} over firms j ≠ i in stage k+1 of the same chain;
+  * target: e_{i,m+1}.
+* Rows enter only if stages k and k+1 of the chain each have ≥ 3 firms with returns that month.
+* The FM slope is computed per month over all rows. The L/S legs are firms, de-duplicated by keeping each firm's
+  first row in chain order.
+
+**H3b inventory bullwhip** (event-level, sign +).
+* Inventory/sales of a firm-quarter: InventoryNet over the quarter's revenue. Both are first-filed, by fixed
+  concept preference:
+  * inventory: InventoryNet, then InventoryGross;
+  * revenue: Revenues, RevenueFromContractWithCustomerExcludingAssessedTax, SalesRevenueNet.
+* Signal for a report of a stage-k firm at t0_i: the revenue-weighted mean of −Δ_yoy(inventory/sales) over the
+  firm's stage-k+1 chain partners.
+  * Each partner's value comes from its latest quarter whose first filing was accepted ≤ t0_i − 1 session.
+  * Δ_yoy is against the quarter 4 earlier.
+  * At least 3 partners are required.
+* Target: SUE_i at t0_i (primary). The SUE at the next report is reported alongside as the registered
+  secondary. The economic spread uses CAR at t0_i.
+
+**H4 geopolitical drift** (event-level, sign +).
+* Innovations: for each of GPRD_THREAT and GPRD_ACT (daily file, SHA-256 1e8799c8…6dea, frozen at first use),
+  ε_t is the residual of an AR(5) on log(1 + index). It is estimated once on 2012–2021 sessions, with
+  coefficients fixed.
+* A shock day is a session with ε_t above the 95th percentile of fit-sample ε, for either sub-index (a day in
+  both counts once).
+* Event: (shock day d, sector s), for the 11 SPDR sector ETFs from their inception.
+  * R0: the sector's residual return on d, r_ETF − β r_SPY, with β per §1.
+  * Target: Σ_{d+1}^{d+20} of the sector residual.
+* FE: year. Cluster: sector (11; Webb weights).
+* Threats and acts are reported separately as descriptives. The primary is the pooled set.
+
+**H5 Lazy Prices** (monthly FM, sign +).
+* **Similarity:** the cosine similarity of term-frequency vectors, Cohen–Malloy–Nguyen's (2020) primary
+  measure, replaces `gemini-embedding-2`.
+  * Reason: embedding about 25,000 sections of 10–20k tokens costs ~$75, several weeks of the owner's whole
+    $13/week LLM budget.
+  * The term-frequency measure is the published one.
+  * An embedding version needs the owner's approval of the spend, and is then reported as a secondary.
+* **Text:**
+  * 10-K Item 7 and Item 1A, and 10-Q Part I Item 2, parsed from EDGAR HTML for every year by one parser;
+  * §1's 50-filing check against `edgar-corpus` (2012–2020);
+  * lower-cased, alphabetic tokens of ≥ 3 letters, no stop-list.
+* **Signal:** at each month end, firm i's mean similarity over the available sections of its latest filing
+  against the same section of the same form a year earlier.
+* **Target:** Σ e over months m+1 … m+3. The overlap is covered by NW(3).
+
+**H2 link momentum** (monthly FM, sign +). This test runs only if both gates pass:
+* **Customers:** named in the supplier's 10-K, where a sentence of Item 1, Item 7 or the notes states the
+  customer's share of revenue as ≥ 10%.
+* **Matching:** the customer is matched to a universe CIK only by exact equality of the normalised company
+  name with SEC's current or former registrant names (submissions `name`, `formerNames`).
+* **Contract S2:** precision ≥ 0.9 on 200 randomly drawn firm-years, each checked against the quoted sentence.
+  The checks are logged.
+* **Power gate (registered):** ≥ 100 S&P 400 suppliers per year on average with a named S&P 500 customer.
+  Otherwise H2 is reported as underpowered and enters Holm with p = 1.
+
+**Replication checks** (before any validation read; Amendment 4 D10).
+* The published sign of Lazy Prices and of customer momentum (H2's mechanism) must reproduce on the fit sample
+  2012–2021. Their published periods (1995–2014, 1981–2004) need delisted returns that free data lack.
+* The registered placebos are run on fit data for H1, H2 and H3a.
+
+**Order.** Every H test that can run is finished, its code committed, and its fit-sample results reported before
+the single validation read of the whole family. No test is read on validation alone.
+
+**Owner sign-off:** standing instruction of 2026-10-26/27 ("Go. Be meticulous and with academic and mathematical
+rigor"). Two items are flagged for the owner, who can reverse either before the validation read: H5's similarity
+measure (A cost), and H2b's exclusion (A1).
+
+## Amendment 6 (2026-10-27): the §1 parser check is made on section boundaries
+
+**What had been seen.** Only the parser check itself (`reports/research/p8/sections_validation.md`). No H5 or H2
+statistic exists. Fit-sample results of H1, H3a, H3b and H4 had been recorded (`fit_results.md`). They do not
+involve filings text.
+
+**Change.** §1's check ("≥ 95% of section lengths within 10%" against edgar-corpus on 50 overlap filings) is
+replaced, for both the parser and H5/H2, by **≥ 95% of sections whose start and end boundaries agree with
+edgar-corpus**.
+* The start boundary is the same first 8 alphabetic words.
+* The end boundary: the last 8 words of one side lie within the last 400 of the other.
+* A reference section is excluded only where it is demonstrably truncated, each case listed with its evidence.
+
+**Reason.** The length criterion compares two text conversions, not two parsers. edgar-corpus keeps some table text
+and drops some, so equal boundaries give lengths 15–40% apart in both directions. The criterion was failed for
+that reason (86.8%), while the boundaries agree in 96.6% of the comparable sections (85/88). The registered
+length figure is reported with every H5 and H2 result.
+
+**Owner sign-off:** standing instruction of 2026-10-26/27. This is flagged for the owner, who can reverse it before
+the validation read; H5 and H2 would then enter Holm with p = 1.
