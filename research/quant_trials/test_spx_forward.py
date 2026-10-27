@@ -36,9 +36,10 @@ def test_book_return_matches_backtest_formula():
     w = np.where(rng.random(n) < 0.05, rng.normal(0, 0.02, n), 0.0) * d["elig"][t]
     w2 = np.where(rng.random(n) < 0.05, rng.normal(0, 0.02, n), 0.0) * d["elig"][t2]
     a, b = _rec(d, t, w, -0.1), _rec(d, t2, w2, -0.05)
-    got, Rm_, days_, net = FW.book_return(d, a, b, "b")
+    got, Rm_, days_, net, dw = FW.book_return(d, a, b, "b")
     want = float((w * np.nan_to_num(R)).sum() + -0.1 * Rm) - ST.COST * (np.abs(w2 - w).sum() + abs(-0.05 + 0.1))
     assert abs(got - want) < 1e-12 and abs(net - (w.sum() - 0.1)) < 1e-12
+    assert abs(dw - (np.abs(w2 - w).sum() + 0.05)) < 1e-12
 
 
 def test_unobserved_period_is_none():

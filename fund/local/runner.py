@@ -486,6 +486,8 @@ def job_spx(j, a):
            f"{SPX_ENV}{VR} spx_forward.py weekly" + (f" --asof {a.date}" if a.date else ""))
     j.step("Ledger: realised weeks and ICs, frozen at first computation", f"{SPX_ENV}{VR} spx_forward.py ledger")
     j.step("Commit to research-data", SPX_COMMIT, when="always")
+    j.step("GitHub Pages: rebuild (S&P forward books on the shadow page)", f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main",
+           allow_fail=True)
     issue(j, "Fund research: forward S&P books problem", 'echo "The forward S&P 500 paper books run needs attention (never traded)."')
 
 

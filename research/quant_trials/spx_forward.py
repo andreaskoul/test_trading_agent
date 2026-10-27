@@ -125,8 +125,8 @@ def book_return(d, a, b, bk):
     R, Rm, days = period(d, a, b)
     v, nb = a["books"][bk], b["books"][bk]
     w, w2 = _vec(v["weights"], names), _vec(nb["weights"], names)
-    dw = np.abs(w2 - w).sum() + abs(nb["w_spy"] - v["w_spy"])
-    return float((w * np.nan_to_num(R)).sum() + v["w_spy"] * Rm) - ST.COST * dw, Rm, days, float(w.sum()) + v["w_spy"]
+    dw = float(np.abs(w2 - w).sum() + abs(nb["w_spy"] - v["w_spy"]))
+    return float((w * np.nan_to_num(R)).sum() + v["w_spy"] * Rm) - ST.COST * dw, Rm, days, float(w.sum()) + v["w_spy"], dw
 
 
 def expected_thursday(today=None):
@@ -190,7 +190,7 @@ def weekly(asof=None, dry=False):
         if strat == "S4" and len(chain) >= 2:
             # the last complete week (previous two records), unscaled. Live lags the backtest by one week: at a
             # Thursday decision the Friday close that ends the newest period is not yet known (Amendment 4).
-            r_, *_ = book_return(d, chain[-2], chain[-1], b)
+            r_ = book_return(d, chain[-2], chain[-1], b)[0]
             hist.append(r_ / chain[-2]["books"][b]["scale"] if chain[-2]["books"][b]["scale"] > 0 else 0.0)
         scale = 1.0
         if strat == "S4" and len(hist) >= ST.VOL_WEEKS:
@@ -244,15 +244,19 @@ def ledger(path=None):
         for bk in a["books"]:
             if (bk, a["asof"]) in have_pl:
                 continue
-            book, Rm, days, net = book_return(d, a, b, bk)
+            book, Rm, days, net, dw = book_return(d, a, b, bk)
             mrate = (a["dtb3"] + ST.MARGIN_SPREAD) * days / 360
             total = s * Rm - ST.COST * abs(b["sleeve"]["s"] - s) + book - max(s + net - 1, 0) * mrate
-            led["pl"].append({"bk": bk, "asof": a["asof"], "to": b["asof"], "book": book, "total": total, "spy": Rm,
-                              "s": s, "mrate": mrate, "days": days, "computed_with_data_to": stamp})
+            t, t2 = (int(np.searchsorted(S, pd.Timestamp(r["asof"]))) for r in (a, b))
+            led["pl"].append({"bk": bk, "asof": a["asof"], "to": b["asof"], "start": str(S[t + 1].date()),
+                              "end": str(S[t2 + 1].date()), "book": book, "total": total, "spy": Rm, "s": s,
+                              "s_next": b["sleeve"]["s"], "net": net, "turnover": dw, "mrate": mrate, "days": days,
+                              "computed_with_data_to": stamp})
     for r in recs:
         t = int(np.searchsorted(S, pd.Timestamp(r["asof"])))
-        for bk, v in r["books"].items():
-            for hh in sorted({v["h"], 5, 20}):
+        rec_only = {f"rec_ridge_h{h}": {"model": f"ridge_h{h}", "h": h} for h in (5, 10)}   # recorded, not booked
+        for bk, v in {**r["books"], **rec_only}.items():
+            for hh in (sorted({v["h"], 5, 20}) if bk in r["books"] else [v["h"]]):
                 if (bk, r["asof"], hh) in have_ic or t + 1 + hh >= len(S):
                     continue
                 y = d[f"y{hh}"][t]
@@ -265,31 +269,164 @@ def ledger(path=None):
                                       "ic": float(pd.Series(sc[ok]).rank().corr(pd.Series(y[ok]).rank())),
                                       "computed_with_data_to": stamp})
     json.dump(led, open(lpath, "w"), indent=1)
-    pl, ic = pd.DataFrame(led["pl"]), pd.DataFrame(led["ic"])
-    summ = []
-    for bk, (m, strat, hb) in BOOKS.items():
-        g = pl[pl.bk == bk].sort_values("asof") if len(pl) else pl
-        n = len(g)
-        st = ST.stats(g.assign(year=0, turnover=0.0)) if n else {}
-        gi = ic[(ic.book == bk) & (ic.h == hb)].sort_values("asof").ic if len(ic) else pd.Series(dtype=float)
-        summ.append({"book": bk, "model": m, "strategy": strat, "h": hb, "weeks": n,
-                     "cum_pct": (np.prod(1 + g.total) - 1) * 100 if n else np.nan,
-                     "spy_cum_pct": (np.prod(1 + g.spy) - 1) * 100 if n else np.nan,
-                     "pct_per_yr": st["book_sleeve_pct_yr"] if n >= 26 else np.nan,
-                     "vs_spy_pct_yr": st["vs_spy_pct_yr"] if n >= 26 else np.nan,
-                     "vs_risk_matched_pct_yr": st["vs_risk_matched_pct_yr"] if n >= 26 else np.nan,
-                     "ic_weeks": len(gi), "ic": gi.mean() if len(gi) else np.nan,
-                     "ic_t": F.nw_t(gi.values, max(4, hb - 1)) if len(gi) > 3 else np.nan})
-    out = pd.DataFrame(summ)
+    pg = page(recs, led, stamp)
+    json.dump(pg, open(os.path.join(path, "page.json"), "w"), indent=1, allow_nan=False)
+    out = pd.DataFrame([{"book": b["key"], "weeks": b["weeks"], "cum_pct": _pc(b["cum"]), "pct_per_yr": _pc(b["ann"]),
+                         "vs_spy_pct_yr": _pc(b["vs_spy"]), "vs_risk_matched_pct_yr": _pc(b["vs_rm"]),
+                         "ic_weeks": b["ic"][str(b["h"])]["n"], "ic": b["ic"][str(b["h"])]["mean"],
+                         "ic_t": b["ic"][str(b["h"])]["t"], "status": b["status"]} for b in pg["books"]])
     with open(os.path.join(path, "SPX.md"), "w") as f:
         f.write("# Forward S&P 500 paper books (PREREG_quant_transformers.md Amendment 4; never traded)\n\n"
-                f"Records: {len(recs)} (first {recs[0]['asof'] if recs else '-'}, last {recs[-1]['asof'] if recs else '-'}); "
-                f"prices to {stamp}. Book + the dynamic SPY sleeve, broker costs. Returns annualised (% per year) "
-                "only from 26 weeks; the verdict is on weekly IC at each book's horizon (NW t), reviewed at 52 weeks; "
-                "a book with IC < 0 and t < -1 at 26 weeks is retired.\n\n"
-                + out.round(4).to_markdown(index=False) + "\n")
+                f"Records: {len(recs)} (first {pg['first'] or '-'}, last {pg['last'] or '-'}); prices to {stamp}. "
+                "Book + the dynamic SPY sleeve, broker costs. Returns annualised (% per year) only from 26 weeks; the "
+                "verdict is on weekly IC at each book's horizon (NW t), reviewed at 52 weeks; a book with IC < 0 and "
+                "t < -1 at 26 weeks is retired.\n\n" + out.round(4).to_markdown(index=False) + "\n")
     print(out.round(4).to_string(index=False))
-    return out, pl, ic
+    return out, pd.DataFrame(led["pl"]), pd.DataFrame(led["ic"])
+
+
+# ------------------------------------------------------------------------------------------- page (shadow page)
+MIN_ANN, STOP_N, REVIEW_N, ALPHA = 26, 26, 52, 0.05
+ROLE = {"fw_master_h5": "the only pre-registered pass", "fw_master_h20": "exploratory",
+        "fw_c2ft_h20": "exploratory; represents the time-series cluster", "fw_ensemble": "exploratory; members chosen "
+        "after seeing results", "fw_ridge_h20": "control"}
+LABEL = {"fw_master_h5": "MASTER, 5-day", "fw_master_h20": "MASTER, 20-day", "fw_c2ft_h20": "Chronos-2 fine-tuned, 20-day",
+         "fw_ensemble": "Ensemble of the three", "fw_ridge_h20": "Ridge on five price factors, 20-day (control)"}
+
+
+def _pc(x):
+    return None if x is None else x * 100
+
+
+def _f(x):
+    """JSON-safe float: NaN and infinities become null."""
+    return None if x is None or not np.isfinite(x) else float(x)
+
+
+def series_stats(total, spy, s, mrate, days, turnover=None):
+    """strategies.stats in fractions (not %), on aligned weekly arrays; annualised figures only from MIN_ANN weeks.
+    Annualising: (prod(1 + r)) ** (365.25 / sum(days)) - 1. Sharpe: weekly-equivalent r * 7 / days, mean / sd * sqrt(52).
+    Max drawdown from the running peak (starting at 1). Risk-matched S&P: sbar * spy - max(sbar - 1, 0) * mrate, with
+    sbar the mean sleeve over the same weeks."""
+    total, spy, s, mrate, days = (np.asarray(v, float) for v in (total, spy, s, mrate, days))
+    n = len(total)
+    if not n:
+        return {"weeks": 0, "cum": None, "ann": None, "vs_spy": None, "vs_rm": None, "sharpe": None, "max_dd": None,
+                "turnover_ann": None}
+    yrs = days.sum() / 365.25
+    ann = lambda x: float(np.prod(1 + x) ** (1 / yrs) - 1)
+    sbar = s.mean()
+    rm = sbar * spy - max(sbar - 1, 0) * mrate
+    v = np.cumprod(1 + total)
+    dd = float((v / np.maximum.accumulate(np.concatenate([[1.0], v]))[1:] - 1).min())
+    wk = total * 7 / days
+    sd = wk.std(ddof=1) if n > 1 else 0.0
+    full = n >= MIN_ANN
+    return {"weeks": n, "cum": float(v[-1] - 1), "ann": ann(total) if full else None,
+            "vs_spy": ann(total) - ann(spy) if full else None, "vs_rm": ann(total) - ann(rm) if full else None,
+            "sharpe": float(wk.mean() / sd * np.sqrt(52)) if full and sd > 0 else None, "max_dd": dd,
+            "turnover_ann": float(np.sum(turnover) / yrs) if (full and turnover is not None) else None}
+
+
+def ic_stats(x, h):
+    """Mean weekly IC, NW t with lag max(4, h - 1) (Amendment 4), one-sided normal p."""
+    from scipy import stats as sps
+    x = np.asarray(x, float)
+    t = F.nw_t(x, max(4, h - 1)) if len(x) > 3 else np.nan
+    return {"n": int(len(x)), "mean": _f(x.mean()) if len(x) else None, "t": _f(t),
+            "p": _f(float(sps.norm.sf(t))) if np.isfinite(t) else None}
+
+
+def page(recs, led, stamp):
+    """Everything the shadow page shows, computed here once; the page only formats it."""
+    pl, ic = pd.DataFrame(led["pl"]), pd.DataFrame(led["ic"])
+    last = recs[-1] if recs else None
+    out = {"generated": pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds"), "data_to": stamp,
+           "records": len(recs), "first": recs[0]["asof"] if recs else None, "last": last["asof"] if last else None,
+           "models": last["models"] if last else None,
+           "policy": {"up": ST.UP, "down": ST.DOWN, "trend": ST.TREND, "cost_side": ST.COST,
+                      "margin_spread": ST.MARGIN_SPREAD, "vol_target": ST.VOL_TARGET, "vol_cap": ST.VOL_CAP},
+           "rules": {"min_weeks_annualised": MIN_ANN, "stop_weeks": STOP_N, "review_weeks": REVIEW_N, "alpha": ALPHA},
+           "latest": None, "weeks": [], "lines": {"dates": [], "series": {}}, "bench": {}, "books": []}
+    if last:
+        out["latest"] = {"asof": last["asof"], "sleeve": last["sleeve"], "dtb3": last["dtb3"],
+                         "dtb3_date": last["dtb3_date"], "expected_names": last["expected_names"],
+                         "coverage": last["coverage"], "excluded": last["excluded_members"]}
+    first_bk = next(iter(BOOKS))
+    W = pl[pl.bk == first_bk].sort_values("asof") if len(pl) else pd.DataFrame()
+    if len(W):                                                          # the weeks every book shares
+        for bk in BOOKS:
+            assert list(pl[pl.bk == bk].sort_values("asof")["asof"]) == list(W["asof"]), f"{bk}: weeks differ"
+        out["weeks"] = W[["asof", "to", "start", "end", "days", "spy", "s", "s_next", "mrate"]].to_dict("records")
+        spy, s, s2, mr, dy = (W[c].to_numpy(float) for c in ("spy", "s", "s_next", "mrate", "days"))
+        sbar = float(s.mean())
+        timing = s * spy - ST.COST * np.abs(s2 - s) - np.maximum(s - 1, 0) * mr
+        rm = sbar * spy - max(sbar - 1, 0) * mr
+        cum = lambda r: [0.0] + list(np.cumprod(1 + np.asarray(r, float)) - 1)
+        out["lines"]["dates"] = [W["start"].iloc[0]] + list(W["end"])
+        out["lines"]["series"] = {"spy": cum(spy), "risk_matched": cum(rm), "sleeve": cum(timing)}
+        out["bench"] = {"sbar": sbar, "spy": series_stats(spy, spy, s, mr, dy),
+                        "risk_matched": series_stats(rm, spy, s, mr, dy), "sleeve": series_stats(timing, spy, s, mr, dy)}
+    ridge_ic = {}
+    for h in X.HS:                                                      # the control's IC at every horizon
+        key = "fw_ridge_h20" if h == 20 else f"rec_ridge_h{h}"
+        g = ic[(ic.book == key) & (ic.h == h)].sort_values("asof") if len(ic) else pd.DataFrame()
+        ridge_ic[h] = dict(zip(g["asof"], g["ic"])) if len(g) else {}
+    books = []
+    for bk, (m, strat, hb) in BOOKS.items():
+        g = pl[pl.bk == bk].sort_values("asof") if len(pl) else pl
+        st = series_stats(g.total, g.spy, g.s, g.mrate, g.days, g.turnover) if len(g) else series_stats([], [], [], [], [])
+        ics = {}
+        for h in sorted({hb, 5, 20}):
+            gi = ic[(ic.book == bk) & (ic.h == h)].sort_values("asof") if len(ic) else pd.DataFrame()
+            ics[str(h)] = ic_stats(gi.ic if len(gi) else [], h)
+            common = [a for a in (gi["asof"] if len(gi) else []) if a in ridge_ic[h]]
+            if bk != "fw_ridge_h20" and common:
+                own = dict(zip(gi["asof"], gi["ic"]))
+                ics[str(h)]["vs_ridge"] = _f(float(np.mean([own[a] - ridge_ic[h][a] for a in common])))
+                ics[str(h)]["vs_ridge_weeks"] = len(common)
+        gi = ic[(ic.book == bk) & (ic.h == hb)].sort_values("asof") if len(ic) else pd.DataFrame()
+        x = gi.ic.to_numpy(float) if len(gi) else np.array([])
+        if len(x) >= STOP_N:                                            # evaluated once, on the first 26 IC weeks
+            s26 = ic_stats(x[:STOP_N], hb)
+            status = "retired (stop rule)" if (s26["mean"] < 0 and s26["t"] is not None and s26["t"] < -1) else "running"
+        else:
+            status = f"running ({len(x)} of {STOP_N} IC weeks before the stop-rule check)"
+        L = last["books"][bk] if last else None
+        wts = sorted(L["weights"].items(), key=lambda kv: -kv[1]) if L else []
+        cumser = [0.0] + list(np.cumprod(1 + g.total.to_numpy(float)) - 1) if len(g) else []
+        if len(g):
+            out["lines"]["series"][bk] = cumser
+        books.append({"key": bk, "label": LABEL[bk], "role": ROLE[bk], "model": m, "strategy": strat, "h": hb, **st,
+                      "ic": ics, "status": status, "positions": [{"t": t_, "w": w_} for t_, w_ in wts],
+                      "w_spy": L["w_spy"] if L else None, "scale": L["scale"] if L else None,
+                      "n_long": sum(w_ > 0 for _, w_ in wts), "n_short": sum(w_ < 0 for _, w_ in wts),
+                      "gross_long": float(sum(w_ for _, w_ in wts if w_ > 0)),
+                      "gross_short": float(sum(w_ for _, w_ in wts if w_ < 0)),
+                      "weekly": g[["asof", "to", "start", "end", "book", "total", "turnover"]].to_dict("records")
+                      if len(g) else []})
+    # the 52-week review: Holm over the four non-control books on their first 52 IC weeks (one-sided)
+    cand = []
+    for b in books:
+        if b["key"] == "fw_ridge_h20":
+            continue
+        gi = ic[(ic.book == b["key"]) & (ic.h == b["h"])].sort_values("asof") if len(ic) else pd.DataFrame()
+        if len(gi) >= REVIEW_N:
+            first = gi.iloc[:REVIEW_N]
+            st52 = ic_stats(first.ic.to_numpy(float), b["h"])
+            common = [(a, x) for a, x in zip(first["asof"], first["ic"]) if a in ridge_ic[b["h"]]]
+            st52["vs_ridge"] = _f(float(np.mean([x - ridge_ic[b["h"]][a] for a, x in common]))) if common else None
+            cand.append((b, st52))
+    if len(cand) == len(books) - 1 and all(c[1]["p"] is not None for c in cand):
+        order = sorted(cand, key=lambda c: c[1]["p"])                  # Holm step-down: max_j<=i min(1, (k-j+1) p_(j))
+        k = len(order)
+        run = 0.0
+        for i, (b, st52) in enumerate(order):
+            run = max(run, min(1.0, st52["p"] * (k - i)))
+            beats = st52["vs_ridge"] is not None and st52["vs_ridge"] > 0
+            b["review"] = {**st52, "p_holm": run, "beats_ridge": beats, "supported": bool(run < ALPHA and beats)}
+    out["books"] = books
+    return out
 
 
 if __name__ == "__main__":
