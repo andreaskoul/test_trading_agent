@@ -15,6 +15,10 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   * Fails loudly, after saving, when the expected Thursday's prices are missing or coverage is under 95%. A holiday Thursday is skipped.
   * Could this change a decision? No. No desk of the traded fund reads these books, and the fund's venv, jobs and files are unchanged.
   * Contract tests: `research/quant_trials/test_spx_forward.py` (holding period and book return equal the backtest's; an unobserved week is not booked).
+- 2026-10-27: trade monitor, open positions: a lifecycle clock per lot (owner request).
+  * Columns: horizon (sessions held / H, extensions), sessions left, the expected exit session (the review at the horizon decides), and the thesis type (Protocol 7B structural lots show their next 20-session checkpoint; earlier lots are not classified).
+  * The data are `dashboard.json` → `lifecycle`, from `lifecycle/state.json`, with exit dates on Alpaca's calendar.
+  * Could this change a decision? No: display only, and the ledger never fails on it.
 - 2026-10-27: **Protocol 7B** (owner decision; PROTOCOL_fund.md "Protocol 7B"). From session 2026-10-28 the live book applies three rules:
   * R1: no news increase on a losing lot;
   * R2: structural theses are held to the next earnings report (≤ 63 sessions), with a z ≤ −1 checkpoint every 20 sessions;

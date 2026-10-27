@@ -351,6 +351,53 @@ if os.environ.get("ALPACA_API_KEY"):
         print(f"standard P&L unavailable: {e!r}")
         STD = None
 
+# ---- lifecycle clock per open lot (display only): horizon, sessions held and left, expected exit session.
+# From lifecycle/state.json (rebuilt after each close); the exit session is the (H - days)-th trading session after
+# the last recorded day (Alpaca's calendar when reachable, else business days). At the horizon the Amendment 8/9
+# review decides (exit or extend), so a lot at H shows "review"; Protocol 7B structural lots also show their next
+# 20-session checkpoint.
+def lifecycle_clock():
+    from lifecycle_rules import P7B
+    sp = os.path.join(base, "lifecycle", "state.json")
+    if not os.path.exists(sp):
+        return None
+    st = json.load(open(sp))
+    if not st.get("rows") or not st.get("lots"):
+        return None
+    last = pd.Timestamp(st["rows"][-1]["date"])
+    sessions = None
+    try:
+        import broker as _b
+        s_, cal = _b.api("GET", f"/v2/calendar?start={(last + pd.Timedelta(days=1)).date()}&end={(last + pd.Timedelta(days=130)).date()}")
+        if s_ == 200:
+            sessions = [pd.Timestamp(x["date"]) for x in cal]
+    except Exception:
+        pass
+    if not sessions:
+        sessions = list(pd.bdate_range(last + pd.Timedelta(days=1), periods=90))
+    out = {}
+    for L in st["lots"]:
+        H, days = int(L.get("H", 0)), int(L.get("days", 0))
+        left = H - days
+        structural = bool(L.get("structural"))
+        classified = str(L.get("entry_day") or "") >= str(P7B.date())     # the desk labels theses from Protocol 7B
+        nxt_chk = (days // 20 + 1) * 20 if structural else None
+        out[L["ticker"]] = {
+            "entry_day": L.get("entry_day"), "cohort": L.get("cohort"), "H": H, "H0": int(L.get("H0", H)),
+            "days": days, "left": left, "ext": int(L.get("ext", 0)), "structural": structural, "classified": classified,
+            "exit_day": str(sessions[left - 1].date()) if 0 < left <= len(sessions) else (str(last.date()) if left <= 0 else None),
+            "at_horizon": left <= 0,
+            "checkpoint_day": str(sessions[nxt_chk - days - 1].date()) if structural and nxt_chk < H and nxt_chk - days <= len(sessions) else None,
+            "R": float(L.get("R", 0.0))}
+    return {"as_of": str(last.date()), "lots": out}
+
+
+try:
+    LIFE = lifecycle_clock()
+except Exception as e:                           # display only: never fails the ledger
+    print(f"lifecycle clock unavailable: {e!r}")
+    LIFE = None
+
 recs = []
 for _, r in (P.iterrows() if len(P) else []):
     recs.append((lambda r: (lambda i: [
@@ -493,6 +540,7 @@ dash = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"), "mo
         # standard P&L (pnl.py); null when Alpaca was unreachable, and the page then shows the lot view
         "pnl": {**STD["summary"], "at": STD["at"]} if STD else None,
         "open_std": [{k: _f(v) for k, v in o.items()} for o in STD["open"]] if STD else None,
+        "lifecycle": LIFE,
         "realized": [{k: _f(v) for k, v in t.items()} for t in STD["realized_trades"]] if STD else None}
 
 
