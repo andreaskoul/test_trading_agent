@@ -39,7 +39,7 @@
   </header>
   <div class="kpis" id="kpis"></div>
   <section><h2>Account value</h2><div id="acctEmpty" class="empty" hidden>No trades yet. The first weekly trade is Thursday's close.</div><canvas id="acct"></canvas></section>
-  <section><h2>Open positions</h2><div class="scroll" id="open"></div></section>
+  <section><h2>Open positions</h2><div class="muted" id="lcNote"></div><div class="scroll" id="open"></div></section>
   <section><h2 id="closedTitle">Realized trades (shares closed)</h2><div class="scroll" id="closed"></div></section>
   <section><h2>Filled orders</h2><div class="scroll" id="orders"></div></section>
   <section><h2>Cash activity (dividends, fees, interest)</h2><div class="scroll" id="cash"></div></section>
@@ -83,8 +83,25 @@ fetch("dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   const posCols = [["Week", p => p.week], ["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Name", p => esc(p.name)], ["Side", p => p.side],
     ["Entry", p => p.entry_day], ["Shares", p => fmt(p.shares, 0), "n"], ["Entry $", p => fmt(p.entry_price), "n"],
     ["Invested $", p => p.shares == null || p.entry_price == null ? "" : "$" + fmt(Math.abs(p.shares * p.entry_price), 0), "n"]];
+  // lifecycle clock (display only): horizon, sessions held and left, expected exit session, 7B structural checkpoint
+  const LC = (d.lifecycle && d.lifecycle.lots) || {};
+  const lc = p => LC[p.ticker];
+  const lcCols = [
+    ["Horizon", p => { const x = lc(p); if (!x) return "";
+      const ext = x.ext ? ` (ext ${x.ext}, from ${x.H0})` : "";
+      return `${x.days} / ${x.H} sessions${ext}`; }, "n"],
+    ["Left", p => { const x = lc(p); return !x ? "" : (x.at_horizon ? "review today" : String(x.left)); }, "n"],
+    ["Expected exit", p => { const x = lc(p); if (!x) return "";
+      return x.at_horizon ? "at horizon: review" : (x.exit_day ? x.exit_day + " (review)" : ""); }],
+    ["Thesis type", p => { const x = lc(p); if (!x) return "";
+      if (!x.classified) return "— (before 7B)";
+      return x.structural ? `structural${x.checkpoint_day ? ", check " + x.checkpoint_day : ""}` : "event"; }]];
+  if (d.lifecycle) document.getElementById("lcNote").textContent =
+    `Lifecycle clock as of the ${d.lifecycle.as_of} close. A lot exits at its horizon unless the review extends it ` +
+    `(Amendments 8/9); structural theses (Protocol 7B) are checked every 20 sessions.`;
   if (S) {
     table("open", [["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Name", p => esc(p.name)], ["Side", p => p.side], ["Since", p => p.since],
+      ...lcCols,
       ["Shares", p => fmt(p.shares, 0), "n"], ["Avg cost $", p => fmt(p.avg_cost), "n"], ["Mark $", p => fmt(p.current_price), "n"],
       ["Market value $", p => usd(p.market_value), "n"], ["Return", p => pct(p.return), "n"], ["Unrealized P&L", p => usd(p.unrealized), "n"],
       ["Red team", p => esc(p.redteam)], ["Thesis", p => esc(p.thesis), "thesis"]], d.open_std);
@@ -93,7 +110,7 @@ fetch("dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => {
       ["Return", t => pct(t.return), "n"], ["Realized P&L", t => usd(t.pnl), "n"]], d.realized.slice().reverse());
   } else {
   document.getElementById("closedTitle").textContent = "Closed positions (lot view: Alpaca was unreachable at build time)";
-  table("open", [...posCols, ["Current $", p => fmt(p.current_price), "n"], ["Return", p => pct(p.return), "n"], ["P&L", p => usd(p.pnl), "n"],
+  table("open", [...posCols, ...lcCols, ["Current $", p => fmt(p.current_price), "n"], ["Return", p => pct(p.return), "n"], ["P&L", p => usd(p.pnl), "n"],
     ["Red team", p => esc(p.redteam)], ["Thesis", p => esc(p.thesis), "thesis"]], open);
   table("closed", [...posCols, ["Exit", p => p.exit_day], ["Exit $", p => fmt(p.exit_price), "n"], ["Return", p => pct(p.return), "n"],
     ["P&L", p => usd(p.pnl), "n"], ["Status", p => esc(p.status)]], closed.slice().reverse());
