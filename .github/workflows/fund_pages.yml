@@ -42,6 +42,8 @@ jobs:
           git fetch -q origin +refs/heads/research-data:refs/remotes/origin/research-data || true
           git show "origin/research-data:fund_state/live/research/qshadow/ledger.json" > _site/research.json 2>/dev/null \
             || echo '{"books":{}}' > _site/research.json
+          git show "origin/research-data:fund_state/live/research/spx/page.json" > _site/spx.json 2>/dev/null \
+            || echo '{"books":[],"weeks":[],"records":0}' > _site/spx.json
           [ -f _site/dashboard.json ] || echo '{"updated":"no trades yet","positions":[],"orders":[],"account":[],"cash":[]}' > _site/dashboard.json
           [ -f _site/shadow.json ] || echo '{"updated":"not built yet","marks":"","start":100000,"books":[],"lifecycle":null,"account":null}' > _site/shadow.json
           touch _site/.nojekyll

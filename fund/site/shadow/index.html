@@ -61,6 +61,19 @@
     <div class="scroll" id="rboard"></div>
     <h3>This week's books (primaries)</h3><div class="scroll" id="rpos"></div>
   </section>
+  <section id="sSec" hidden>
+    <h2>S&amp;P 500 forward books (transformer models · never traded)</h2>
+    <div class="muted" id="snote" style="line-height:1.6"></div>
+    <div id="sbody">
+    <div class="chartbox" id="sbox"><canvas id="schart"></canvas></div>
+    <h3>Books and yardsticks</h3><div class="scroll" id="sboard"></div>
+    <h3>Signal quality: weekly rank IC (the verdict measure)</h3><div class="scroll" id="sic"></div>
+    <div class="bar" style="margin-top:14px"><h2 style="margin:0">Book</h2><select id="spick"></select></div>
+    <div class="muted" id="sdesc" style="line-height:1.6"></div>
+    <h3>Positions at the last decision</h3><div class="scroll" id="spos" style="max-height:420px;overflow-y:auto"></div>
+    <h3>Weeks</h3><div class="scroll" id="sweeks" style="max-height:420px;overflow-y:auto"></div>
+    </div>
+  </section>
   <p class="muted">Marked the way the scorer (score.py) scores each book: a week's weights enter at the execution day's official close and are held to the next execution day's close; costs are 5 bp per side on the change in weights; idle cash earns nothing here. The running week is marked at the latest close, or at Alpaca's latest trades during market hours. These are hypothetical books with no fills, so they differ from the account: in week 1 most of the real orders expired unfilled. SPY rows are each book's market hedge, except in the S&amp;P 500 benchmark, which is simply 100% SPY held throughout (one 5 bp buy at the start). Return = signed price return (dividends included); amount = |weight| × the book's value at entry. The scorer's weekly results in fund-data performance/ stay the record.</p>
 </main>
 <script>
@@ -272,6 +285,90 @@ fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
   const L = R.latest;
   if (L) table("rpos", [["Book", r => `<b>${esc(rlabel(r.book))}</b>`], ["As of", r => L.asof + " (" + (KIND[L.kind] || L.kind) + ")"], ["Ticker", r => esc(r.t)], ["Weight", r => wt(r.w), "n"]],
     PRIM.flatMap(b => Object.entries(L.books[b] || {}).sort((x, y) => y[1] - x[1]).map(([t, w]) => ({ book: b, t, w }))));
+}).catch(() => {});
+
+// Forward S&P 500 books (research/quant_trials/spx_forward.py; PREREG_quant_transformers.md Amendment 4). Every number
+// is computed in spx_forward.page() with the backtest's formulas and tested there (test_spx_page.py); this code only
+// formats and plots it. Fractions in the file; shown as %.
+fetch("../spx.json", { cache: "no-store" }).then(r => r.json()).then(X => {
+  document.getElementById("sSec").hidden = false;
+  if (!X.books || !X.books.length) {                // before the first record: say when it comes, not a blank section
+    document.getElementById("sbody").hidden = true;
+    document.getElementById("snote").innerHTML = "Five weekly books on the S&amp;P 500 from the transformer research (PREREG_quant_transformers.md, Amendment 4; never traded). The first decision is Thursday 29 Oct 2026, recorded on Friday at 03:45 UTC; this section fills in after that run.";
+    return;
+  }
+  const P = X.policy || {}, R = X.rules || {}, L = X.latest;
+  const p2 = v => v == null ? "" : pct(v), num = (v, d) => v == null ? "" : Number(v).toFixed(d);
+  const pv = v => v == null ? "" : v < 0.001 ? "&lt; 0.001" : v.toFixed(3);    // a p-value never reads as exactly 0
+  const UNIV = "S&P 500 members (point-in-time membership to 18 Aug 2026, today's list after), about 500 names; a name needs 60 days of continuous prices.";
+  const FAC = "the five price factors (12-1 month momentum, 1-month reversal, 1-week reversal, low volatility, nearness to the 52-week high), z-scored across names each day";
+  const SLEEVE = `Beta-neutral: SPY offsets the book's shrunk 252-day beta. On top sits the owner's SPY sleeve: ${P.up ?? 1.3}x SPY when SPY closes above its ${P.trend ?? 200}-session average at the decision, ${P.down ?? 0.7}x otherwise; borrowing above 1x costs the T-bill rate (DTB3) + ${((P.margin_spread ?? 0.0243) * 100).toFixed(2)}%, idle cash earns 0.`;
+  const S1 = "Band (Novy-Marx & Velikov 2016): long the top 10% and short the bottom 10% of scores, equal weight, 50% of NAV per side; a held name stays until it leaves the top (bottom) 20%. ";
+  const S3 = h => `Signal-weighted (Grinold 1994): weights proportional to the z-score ÷ 60-day volatility over the top and bottom thirds, 50% of NAV per side, moved part-way each week (Gârleanu & Pedersen 2013; half-life ${h} days, λ = 1 − 0.5^(5/${h}) = ${(1 - 0.5 ** (5 / h)).toFixed(3)}). `;
+  const S4 = h => S3(h) + `Then scaled to a ${((P.vol_target ?? 0.1) * 100).toFixed(0)}% annual volatility target on the last 13 weeks (Moreira & Muir 2017), at most ${P.vol_cap ?? 1.5}x. `;
+  const TRAIN = X.models ? ` Trained on all data to ${esc(X.models.replace("live_", ""))}; retrained each January.` : "";
+  const ABOUT = {
+    fw_master_h5: { test: "The only model that passed the pre-registered S&P 500 read (2013–25: IC 0.020, t 3.07).", signal: "MASTER (Li et al., AAAI 2024): a transformer over each stock's last 8 days of " + FAC + ", with attention across stocks and a market-guided gate (SPY trend and volatility). Forecasts the next 5 sessions' residual return; 5 seeds averaged." + TRAIN, portfolio: S1 },
+    fw_master_h20: { test: "Exploratory: the same model at 20 days (2013–25 IC 0.020, t 2.02; not significant after Holm).", signal: "MASTER as above, forecasting the next 20 sessions' residual return; 5 seeds averaged." + TRAIN, portfolio: S1 },
+    fw_c2ft_h20: { test: "Exploratory: represents the time-series cluster (Chronos-2, TFT and Timestral books moved together, correlation 0.67–1.00).", signal: "Chronos-2 (Amazon 2025), a pretrained time-series transformer, fine-tuned on every name's daily residual returns with " + FAC + " as covariates; score = the median forecast summed over the next 20 sessions." + TRAIN, portfolio: S4(20) },
+    fw_ensemble: { test: "Exploratory: does combining the three signals help? Its members were chosen after seeing 2013–25 results, so expect its backtest to shrink.", signal: "The mean of the three models' cross-sectional z-scores (MASTER 5-day, MASTER 20-day, Chronos-2 fine-tuned); only names all three score.", portfolio: S1 },
+    fw_ridge_h20: { test: "Control: the cheap factor model. Shows whether the transformers add anything live.", signal: "Ridge regression on " + FAC + ", forecasting the next 20 sessions' residual return, refit on the same data as the models.", portfolio: S3(20) },
+  };
+  const STRAT = { S1: "S1 band", S3: "S3 partial adjustment", S4: "S4 partial adj. + vol target" };
+  const B = X.books, n = X.weeks.length;
+  const first = X.first ? `${X.records} weekly record${X.records === 1 ? "" : "s"} (${X.first} to ${X.last}), prices to ${X.data_to}` : "no record yet";
+  document.getElementById("snote").innerHTML =
+    `Five weekly books on the S&amp;P 500 from the transformer research (PREREG_quant_transformers.md, Amendment 4, signed 27 Oct 2026): ${first}. ` +
+    `Each book is long/short and beta-neutral, on top of the owner's dynamic SPY sleeve, with broker costs (${((P.cost_side ?? 5e-4) * 1e4).toFixed(0)} bp per side). ` +
+    `<b>The verdict is on signal quality, not profit</b>: a book's weekly rank IC (scores vs the realised residual return over its horizon) is checked once, on its first ${R.stop_weeks ?? 26} IC weeks (retired if IC &lt; 0 with t &lt; −1), and reviewed on its first ${R.review_weeks ?? 52} (supported if IC &gt; 0 at Holm-adjusted p &lt; ${R.alpha ?? 0.05} across the four non-control books and above the ridge control's IC). ` +
+    `One year of profit cannot confirm an edge of a few % a year; returns are annualised only from ${R.min_weeks_annualised ?? 26} weeks. The fair yardstick is the risk-matched S&amp;P, which holds the sleeve's average exposure throughout.` +
+    (L ? ` Last decision ${L.asof}: SPY ${num(L.sleeve.spy, 2)} vs its 200-session average ${num(L.sleeve.ma200, 2)}, so sleeve <b>${L.sleeve.s}x</b>; DTB3 ${(L.dtb3 * 100).toFixed(2)}% (${L.dtb3_date}); ${L.expected_names} eligible names` +
+      (L.excluded && L.excluded.length ? `; members without 60 days of prices (excluded): ${L.excluded.map(esc).join(", ")}` : "") + "." : "") +
+    ` Updated ${esc((X.generated || "").replace("T", " ").slice(0, 16))} UTC.`;
+  // chart: cumulative return from the first period's start (Friday close), one point per period end
+  const box = document.getElementById("sbox");
+  if (n) {
+    const S = X.lines.series, YS = [["spy", "S&P 500 buy & hold"], ["risk_matched", `risk-matched S&P (${num(X.bench.sbar, 2)}x)`], ["sleeve", "dynamic sleeve alone"]];
+    const sets = [...YS.map(([k, lab], j) => ({ label: lab, data: S[k], borderColor: j === 0 ? "#9a9aa0" : "#7f8c8d", borderWidth: 2.5, borderDash: j ? [5, 4] : [], pointRadius: n < 8 ? 3 : 0, tension: 0 })),
+      ...B.filter(b => S[b.key]).map((b, i) => ({ label: b.label, data: S[b.key], borderColor: PAL[i % PAL.length], borderWidth: b.key === "fw_ridge_h20" ? 1.3 : 2, borderDash: b.key === "fw_ridge_h20" ? [2, 3] : [], pointRadius: n < 8 ? 3 : 0, tension: 0 }))];
+    new Chart(document.getElementById("schart"), { type: "line", data: { labels: X.lines.dates, datasets: sets },
+      options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, padding: 6, font: { size: 10 } } },
+        tooltip: { itemSort: (a, b) => b.parsed.y - a.parsed.y, callbacks: { label: c => `${c.dataset.label}: ${(c.parsed.y * 100).toFixed(2)}%` } } },
+        scales: { x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } }, y: { ticks: { callback: v => (v * 100).toFixed(1) + "%" } } } } });
+  } else {
+    box.style.display = "none";
+  }
+  const icOf = (b, h) => (b.ic || {})[String(h)] || {};
+  const yard = n ? [["S&P 500 buy & hold", X.bench.spy], [`Risk-matched S&P (${num(X.bench.sbar, 2)}x)`, X.bench.risk_matched], ["Dynamic sleeve alone", X.bench.sleeve]] : [];
+  const rows = [...B.map(b => ({ b, k: b.label, st: b })), ...yard.map(([k, st]) => ({ k, st, y: true }))];
+  document.getElementById("sboard").innerHTML = "";
+  if (!n) document.getElementById("sboard").innerHTML = `<div class="empty">No realised week yet. The first decision is Thursday 29 Oct 2026; its week is booked at the next Thursday's run (Friday 03:45 UTC), from Friday's close to the next Friday's close.</div>`;
+  else table("sboard", [["Line", r => r.y ? esc(r.k) : `<b>${esc(r.k)}</b>`], ["Strategy · horizon", r => r.y ? "" : `${STRAT[r.b.strategy] || r.b.strategy} · ${r.b.h}d`], ["Role", r => r.y ? "yardstick" : esc(r.b.role), "wrap"],
+    ["Weeks", r => r.st.weeks, "n"], ["Cumulative", r => p2(r.st.cum), "n"], ["% per year", r => p2(r.st.ann), "n"], ["vs S&amp;P (ann.)", r => p2(r.st.vs_spy), "n"],
+    ["vs risk-matched (ann.)", r => p2(r.st.vs_rm), "n"], ["Sharpe (ann.)", r => num(r.st.sharpe, 2), "n"], ["Max drawdown", r => p2(r.st.max_dd), "n"],
+    ["Turnover / yr", r => r.st.turnover_ann == null ? "" : (r.st.turnover_ann * 100).toFixed(0) + "%", "n"], ["Status", r => r.y ? "" : esc(r.b.status)]], rows);
+  table("sic", [["Book", b => `<b>${esc(b.label)}</b>`], ["Horizon", b => b.h + "d", "n"], ["IC weeks", b => icOf(b, b.h).n ?? 0, "n"], ["Mean IC", b => num(icOf(b, b.h).mean, 4), "n"],
+    ["NW t", b => num(icOf(b, b.h).t, 2), "n"], ["p (one-sided)", b => pv(icOf(b, b.h).p), "n"], ["vs ridge IC (same weeks)", b => num(icOf(b, b.h).vs_ridge, 4), "n"],
+    ["IC at 5d / 20d", b => `${num(icOf(b, 5).mean, 4) || "–"} / ${num(icOf(b, 20).mean, 4) || "–"}`, "n"],
+    ["52-week review", b => b.review ? `Holm p ${pv(b.review.p_holm)} · ${b.review.supported ? "<b>supported</b>" : "not supported"}` : (b.key === "fw_ridge_h20" ? "control" : `after ${R.review_weeks ?? 52} IC weeks`)]], B);
+  const sel = document.getElementById("spick");
+  sel.innerHTML = B.map(b => `<option value="${b.key}">${esc(b.label)}</option>`).join("");
+  function show(k) {
+    const b = B.find(x => x.key === k) || B[0]; sel.value = b.key; store.set("spxBook", b.key);
+    const A = ABOUT[b.key] || {};
+    document.getElementById("sdesc").innerHTML = `<b>Tests:</b> ${esc(A.test || "")}<br><b>Universe:</b> ${esc(UNIV)}<br><b>Signal:</b> ${esc(A.signal || "")}<br><b>Portfolio:</b> ${esc((A.portfolio || "") + SLEEVE)}<br><b>Rebalancing:</b> Weekly: decided at Thursday's close, held from Friday's close to the next Friday's close; ${((P.cost_side ?? 5e-4) * 1e4).toFixed(0)} bp per side on traded weight. Never traded.`;
+    const hdr = b.w_spy == null ? [] : [{ t: "SPY", w: b.w_spy, hedge: true }];
+    document.getElementById("spos").innerHTML = "";
+    if (b.positions.length) {
+      const head = `<div class="muted" style="margin-bottom:6px">${b.n_long} long (${(b.gross_long * 100).toFixed(1)}%) · ${b.n_short} short (${(b.gross_short * 100).toFixed(1)}%) · SPY hedge ${wt(b.w_spy)}` + (b.strategy === "S4" ? ` · volatility scale ${num(b.scale, 3)}x` : "") + (L ? ` · sleeve ${L.sleeve.s}x SPY on top · decided ${L.asof}` : "") + "</div>";
+      table("spos", [["Ticker", r => `<b>${esc(r.t)}</b>`], ["Weight", r => wt(r.w), "n"], ["Side", r => r.hedge ? "beta hedge" : r.w > 0 ? "long" : "short"]], [...b.positions, ...hdr]);
+      document.getElementById("spos").insertAdjacentHTML("afterbegin", head);
+    } else document.getElementById("spos").innerHTML = '<div class="empty">No decision yet.</div>';
+    table("sweeks", [["Decision", w => w.asof], ["Held from (close)", w => w.start], ["To (close)", w => w.end], ["Book alone", w => pct(w.book), "n"], ["Book + sleeve, net", w => pct(w.total), "n"],
+      ["Turnover", w => w.turnover == null ? "" : (w.turnover * 100).toFixed(1) + "%", "n"]], (b.weekly || []).slice().reverse());
+  }
+  sel.onchange = () => show(sel.value);
+  show(store.get("spxBook") || B[0].key);
 }).catch(() => {});
 </script>
 </body>

@@ -4,6 +4,11 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-27: shadow page, S&P 500 forward books section (display only).
+  * The `spx` job writes `page.json` next to the records; `fund_pages.yml` publishes it as `spx.json`, and the job asks for a Pages rebuild.
+  * Every figure is computed once in `spx_forward.page()` with the backtest's formulas (strategies.stats; the NW t and Holm rules of Amendment 4); the page only formats it.
+  * Contract tests in `research/quant_trials/test_spx_page.py`: each figure equals an independent computation to 1e-12; nothing is annualised before 26 weeks; the stop rule uses exactly the first 26 IC weeks and never changes later; Holm runs over the four non-control books on their first 52.
+  * Could this change a decision? No: display only, for books no desk reads.
 - 2026-10-27: forward S&P 500 paper books (PREREG_quant_transformers.md Amendment 4; PROTOCOL_fund.md "Forward S&P 500 paper books").
   * New runner job `spx` (Fri 03:45 UTC; shares R5's lock): `research/quant_trials/spx_forward.py` scores five books from live models trained on all data to 2026-10-26 (`~/.fund-runner/cache/spx_models`). Records and a frozen ledger go to `research-data`.
   * A separate research venv (`requirements-research.txt`, `~/.fund-runner/venv-research`) keeps torch and Chronos out of the fund's venv; `install.sh` builds it.
