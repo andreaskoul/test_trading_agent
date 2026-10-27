@@ -1,0 +1,17 @@
+numpy
+pandas
+pyarrow
+scipy
+scikit-learn
+statsmodels
+yfinance
+pandas_market_calendars
+torch
+pytest
+tabulate
+# transformer arms (PREREG_quant_transformers.md), pinned 2026-10-19; native arm64 Python 3.11
+torch==2.14.1
+u8darts[torch]==0.41.0
+chronos-forecasting==2.3.2
+# Timestral (Amendment 3), pinned 2026-10-25: code Apache-2.0, weights Modified MIT (hf mistralai/Timestral-209M); on MPS its float64 scaler bookkeeping runs on CPU (timestral_sp500._mps_safe; devcheck: MPS = CPU to 2e-7)
+timestral @ git+https://github.com/mistralai/timestral.git@a534bdbd244d64f3d9d743f46c7bf6fc330ed4ff

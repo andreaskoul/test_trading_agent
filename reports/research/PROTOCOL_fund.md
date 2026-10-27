@@ -863,6 +863,19 @@ short positions are possible". The goal is always to beat buy-and-hold of the S&
 * The 1.3 / 0.7 levels and the 200-session rule are the owner's choice, made before any of these lines was
   computed; they are never changed because of their results.
 
+### Forward S&P 500 paper books (2026-10-27; PREREG_quant_transformers.md Amendment 4)
+* **Books:** five weekly books on the S&P 500, never traded:
+  * `fw_master_h5` (MASTER h5, S1 band);
+  * `fw_master_h20` (MASTER h20, S1);
+  * `fw_c2ft_h20` (Chronos-2-ft h20, S4);
+  * `fw_ensemble` (z-average of the three, S1);
+  * `fw_ridge_h20` (ridge control, S3).
+* **Runs:** Thursday decisions, run Friday 03:45 UTC (runner job `spx`, research venv `~/.fund-runner/venv-research`).
+* **Records:** one file per Thursday under `fund_state/live/research/spx` on `research-data`. Each realised week
+  and IC is frozen in `ledger.json` at first computation.
+* **Exposure:** the same SPY sleeve, costs and yardsticks as above.
+* **Verdict:** on weekly IC, as in the amendment. No desk of the traded fund reads them.
+
 ---
 
 ## Amendment 9 (owner, 2026-10-26, before any horizon-end review was made live): a strong move with support is extended
