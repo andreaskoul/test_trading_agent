@@ -372,4 +372,4 @@ Strategy variants of one signal correlate 0.8–0.9. Each cluster gets one book,
   year). Confirmation comes from pooling further years, which this rule allows without change.
 * **Out of scope:** anything traded with money. That is a new protocol and the owner's decision.
 
-**Owner sign-off (Amendment 4):** _pending_
+**Owner sign-off (Amendment 4):** signed by the owner in session, 2026-10-27 ("Signed"), before any forward week. The first forward record is Thursday 2026-10-29.
