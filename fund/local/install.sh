@@ -20,6 +20,11 @@ if [ -x "$H/venv/bin/python" ] && ! file -L "$H/venv/bin/python" | grep -q "$(un
 [ -x "$H/venv/bin/python" ] || "$py" -m venv "$H/venv"
 "$H/venv/bin/pip" install -q --upgrade pip
 "$H/venv/bin/pip" install -q -r "$here/../../requirements.txt"
+# research venv (forward S&P paper books; never traded): separate, so its ML stack cannot break the fund's venv
+if [ -x "$H/venv-research/bin/python" ] && ! file -L "$H/venv-research/bin/python" | grep -q "$(uname -m)"; then rm -rf "$H/venv-research"; fi
+[ -x "$H/venv-research/bin/python" ] || "$py" -m venv "$H/venv-research"
+"$H/venv-research/bin/pip" install -q --upgrade pip
+"$H/venv-research/bin/pip" install -q -r "$here/../../requirements-research.txt"
 cp "$here/runner.py" "$H/runner.py"
 if [ ! -f "$H/secrets.env" ]; then cp "$here/secrets.env.example" "$H/secrets.env"; echo "created $H/secrets.env: fill it in"; fi
 chmod 600 "$H/secrets.env"
