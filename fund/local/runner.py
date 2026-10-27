@@ -60,6 +60,9 @@ SCHEDULE = {
     # Research shadow books from the quant trials (PROTOCOL_fund.md "Research shadow books"; never traded): the
     # Wednesday as-of books after the Wednesday archive; records on `research-data`, one file per week, never re-run
     "qshadow":   {"days": "3",       "at": "03:30", "late": 600},
+    # Forward S&P 500 paper books (PREREG_quant_transformers.md Amendment 4; never traded): Friday, after Thursday's
+    # close is in the price feed; records on `research-data` (fund_state/live/research/spx), one file per Thursday
+    "spx":       {"days": "4",       "at": "03:45", "late": 600},
     "filltest-buy":  {"dates": ["2026-10-06"], "at": "16:15", "late": 180, "args": ["buy", "SPY", "1"]},
     "filltest-sell": {"dates": ["2026-10-07"], "at": "16:15", "late": 180, "args": ["sell", "SPY", "1"]},
 }
@@ -75,13 +78,14 @@ NEEDS = {
     "lifecycle": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY", "HF_TOKEN"],
     "r5": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY", "SEC_USER_AGENT"],
     "qshadow": ["OPENROUTER_API_KEY", "HF_TOKEN"],
+    "spx": [],
     "filltest-buy": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "filltest-sell": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
 }
 GROUP = {"archive": "archive", "weekly": "weekly", "execute": "execute", "review": "execute", "filltest": "filltest",
-         "lifecycle": "execute", "prices": "prices", "r5": "r5", "qshadow": "r5"}   # research-data pushes in turn
+         "lifecycle": "execute", "prices": "prices", "r5": "r5", "qshadow": "r5", "spx": "r5"}   # research-data pushes in turn
 # minutes, as the workflows; trade and review wait for the last minute before the close
-TIMEOUT = {"archive": 350, "weekly": 340, "execute": 330, "review": 330, "filltest": 330, "lifecycle": 330, "prices": 20, "r5": 240}
+TIMEOUT = {"archive": 350, "weekly": 340, "execute": 330, "review": 330, "filltest": 330, "lifecycle": 330, "prices": 20, "r5": 240, "spx": 240}
 PAGES_AFTER = {"weekly", "execute", "review", "filltest", "lifecycle"}         # the prices job deploys only when it refreshed                               # fund_pages.yml's workflow_run list
 
 
@@ -469,6 +473,22 @@ def job_qshadow(j, a):
     issue(j, "Fund research: qshadow books problem", 'echo "The research shadow books run needs attention (never traded)."')
 
 
+VR = os.path.join(HOME, "venv-research", "bin", "python")
+SPX_ENV = (f'cd research/quant_trials && SPX_CACHE="{HOME}/cache/spx" SPX_MODELS="{HOME}/cache/spx_models" '
+           'SPX_REC="$PWD/../../fund_state/live/research/spx" PYTHONPATH=. ')
+SPX_COMMIT = QS_COMMIT.replace('git commit -q -m "qshadow research books', 'git commit -q -m "spx forward books')
+
+
+def job_spx(j, a):
+    j.step("Restore research records", R5_RESTORE)
+    j.step("S&P 500 prices to the last close", f"mkdir -p {HOME}/cache/spx && {SPX_ENV}{VR} spx_live.py download")
+    j.step("Forward S&P 500 books (Amendment 4; never traded)",
+           f"{SPX_ENV}{VR} spx_forward.py weekly" + (f" --asof {a.date}" if a.date else ""))
+    j.step("Ledger: realised weeks and ICs, frozen at first computation", f"{SPX_ENV}{VR} spx_forward.py ledger")
+    j.step("Commit to research-data", SPX_COMMIT, when="always")
+    issue(j, "Fund research: forward S&P books problem", 'echo "The forward S&P 500 paper books run needs attention (never traded)."')
+
+
 def job_filltest(j, a):
     side, sym, qty = a.test
     j.step("Restore fund state", RESTORE.format(paths="fund_state"))
@@ -520,7 +540,7 @@ def run(args):
     drift(j)
     res = {"archive": job_archive, "weekly": job_weekly, "execute": job_execute, "review": job_review,
            "filltest": job_filltest, "lifecycle": job_lifecycle, "prices": job_prices, "r5": job_r5,
-     "qshadow": job_qshadow}[name](j, args)
+     "qshadow": job_qshadow, "spx": job_spx}[name](j, args)
     if name in PAGES_AFTER and res != "skip" and not args.no_pages:
         j.step("GitHub Pages: rebuild the dashboard (fund_pages.yml)",
                f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main", when="always", allow_fail=True)
@@ -773,7 +793,7 @@ def main():
     sub = p.add_subparsers(dest="cmd", required=True)
     t = sub.add_parser("tick"); t.add_argument("--init", action="store_true"); t.set_defaults(f=tick)
     r = sub.add_parser("run")
-    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute", "filltest", "lifecycle", "prices", "r5", "qshadow"])
+    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute", "filltest", "lifecycle", "prices", "r5", "qshadow", "spx"])
     r.add_argument("--test", nargs=3, metavar=("SIDE", "SYMBOL", "QTY"), help="filltest: e.g. buy SPY 1")
     r.add_argument("--mode", choices=["plan", "trade", "reconcile"], help="execute: plan|trade|reconcile; review: plan|trade")
     r.add_argument("--asof", help="as-of Wednesday YYYY-MM-DD (weekly, execute)")

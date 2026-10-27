@@ -1,0 +1,13 @@
+# Research venv for the forward S&P 500 paper books (research/quant_trials/spx_forward.py; PREREG_quant_transformers
+# Amendment 4; never traded). Kept apart from requirements.txt so heavy ML dependencies cannot break the fund's jobs.
+# Native arm64 Python 3.11; versions as the signed read (research/quant_trials/requirements-quant.txt).
+numpy
+pandas
+pyarrow
+scipy
+scikit-learn
+yfinance
+pandas_market_calendars
+tabulate
+torch==2.14.1
+chronos-forecasting==2.3.2

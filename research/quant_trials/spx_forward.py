@@ -129,17 +129,36 @@ def book_return(d, a, b, bk):
     return float((w * np.nan_to_num(R)).sum() + v["w_spy"] * Rm) - ST.COST * dw, Rm, days, float(w.sum()) + v["w_spy"]
 
 
+def expected_thursday(today=None):
+    """The latest NYSE Thursday session strictly before `today` (UTC date): the decision this run must record."""
+    import pandas_market_calendars as mcal
+    today = pd.Timestamp(today or pd.Timestamp.now(tz="UTC").date())
+    v = mcal.get_calendar("NYSE").valid_days(start_date=today - pd.Timedelta(days=14), end_date=today - pd.Timedelta(days=1))
+    v = pd.DatetimeIndex(pd.to_datetime(v).tz_localize(None).normalize())
+    th = v[v.weekday == 3]
+    return th[-1] if len(th) else None
+
+
 def weekly(asof=None, dry=False):
+    out = DRY if dry else REC
+    if asof is None:                                                   # scheduled run: the calendar says which Thursday
+        exp = expected_thursday()
+        if exp is None or os.path.exists(os.path.join(out, f"spx_{exp.date()}.json")):
+            print(f"nothing to record: last Thursday session {exp.date() if exp is not None else '-'} already recorded "
+                  "(or a holiday week)")
+            return None
+        asof = str(exp.date())
     d = L.build()
     S = d["S"]
+    if pd.Timestamp(asof) not in S:                                    # coverage vs expectation (CLAUDE.md rule 3)
+        sys.exit(f"prices for {asof} are missing (data to {S[-1].date()}): no record written")
     tag = latest_models()
     trained_to = pd.Timestamp(os.path.basename(tag).split("_")[1])
-    t = int(np.searchsorted(S, pd.Timestamp(asof))) if asof else int(np.where(S.weekday == 3)[0][-1])
-    if t >= len(S) or S[t].weekday() != 3 or (asof and S[t] != pd.Timestamp(asof)):
+    t = int(np.searchsorted(S, pd.Timestamp(asof)))
+    if S[t].weekday() != 3:
         sys.exit(f"{asof}: not a Thursday session in the data")
     if S[t] <= trained_to and not dry:
         sys.exit(f"{S[t].date()} is inside the models' training data (to {trained_to.date()}): use --dry")
-    out = DRY if dry else REC
     os.makedirs(out, exist_ok=True)
     path = os.path.join(out, f"spx_{S[t].date()}.json")
     if os.path.exists(path):
@@ -204,55 +223,71 @@ def weekly(asof=None, dry=False):
 
 
 def ledger(path=None):
-    """Per book: weekly P&L from each record's positions (close(t+1) to the next record's close(t+1)), the S4 state
-    update, and IC once each target window has matured. Returns tables; nothing in a record is changed."""
+    """Per book: the weekly P&L of each record's positions (close(t+1) to the next record's close(t+1)) and, once a
+    target window has matured, the weekly IC. Each realised row is computed once and frozen in ledger.json (prices
+    are dividend-adjusted and revised later: CLAUDE.md rule 4); later runs only append. Writes ledger.json and SPX.md
+    next to the records and returns (summary, P&L rows, IC rows)."""
     path = path or REC
     recs = [json.load(open(p)) for p in records(path)]
-    if len(recs) < 2:
-        print("fewer than two records: no realised week yet")
-        return
+    lpath = os.path.join(path, "ledger.json")
+    led = json.load(open(lpath)) if os.path.exists(lpath) else {"pl": [], "ic": []}
+    have_pl = {(r["bk"], r["asof"]) for r in led["pl"]}
+    have_ic = {(r["book"], r["asof"], r["h"]) for r in led["ic"]}
     d = L.build()
     S, names = d["S"], list(d["names"])
     ix = {n: i for i, n in enumerate(names)}
-    rows, ics = [], []
+    stamp = str(S[-1].date())
     for a, b in zip(recs[:-1], recs[1:]):
         if period(d, a, b) is None:
             break
         s = a["sleeve"]["s"]
         for bk in a["books"]:
+            if (bk, a["asof"]) in have_pl:
+                continue
             book, Rm, days, net = book_return(d, a, b, bk)
             mrate = (a["dtb3"] + ST.MARGIN_SPREAD) * days / 360
             total = s * Rm - ST.COST * abs(b["sleeve"]["s"] - s) + book - max(s + net - 1, 0) * mrate
-            rows.append({"bk": bk, "asof": a["asof"], "book": book, "total": total, "spy": Rm, "s": s,
-                         "mrate": mrate, "days": days})
+            led["pl"].append({"bk": bk, "asof": a["asof"], "to": b["asof"], "book": book, "total": total, "spy": Rm,
+                              "s": s, "mrate": mrate, "days": days, "computed_with_data_to": stamp})
     for r in recs:
         t = int(np.searchsorted(S, pd.Timestamp(r["asof"])))
         for bk, v in r["books"].items():
             for hh in sorted({v["h"], 5, 20}):
-                y = d[f"y{hh}"][t]
-                if t + 1 + hh >= len(S) or not np.isfinite(y).sum():
+                if (bk, r["asof"], hh) in have_ic or t + 1 + hh >= len(S):
                     continue
+                y = d[f"y{hh}"][t]
                 sc = np.full(len(names), np.nan)
                 for n, x in r["scores"][v["model"]].items():
                     sc[ix[n]] = x
                 ok = np.isfinite(sc) & np.isfinite(y)
                 if ok.sum() > 30:
-                    ics.append({"book": bk, "asof": r["asof"], "h": hh,
-                                "ic": float(pd.Series(sc[ok]).rank().corr(pd.Series(y[ok]).rank()))})
-    pl, ic = pd.DataFrame(rows), pd.DataFrame(ics)
+                    led["ic"].append({"book": bk, "asof": r["asof"], "h": hh, "n": int(ok.sum()),
+                                      "ic": float(pd.Series(sc[ok]).rank().corr(pd.Series(y[ok]).rank())),
+                                      "computed_with_data_to": stamp})
+    json.dump(led, open(lpath, "w"), indent=1)
+    pl, ic = pd.DataFrame(led["pl"]), pd.DataFrame(led["ic"])
     summ = []
-    for bk, g in pl.groupby("bk"):
+    for bk, (m, strat, hb) in BOOKS.items():
+        g = pl[pl.bk == bk].sort_values("asof") if len(pl) else pl
         n = len(g)
-        st = ST.stats(g.assign(year=0, turnover=0.0))
-        hb = BOOKS[bk][2]
-        gi = ic[(ic.book == bk) & (ic.h == hb)].ic if len(ic) else pd.Series(dtype=float)
-        summ.append({"book": bk, "weeks": n, "cum_pct": (np.prod(1 + g.total) - 1) * 100,
+        st = ST.stats(g.assign(year=0, turnover=0.0)) if n else {}
+        gi = ic[(ic.book == bk) & (ic.h == hb)].sort_values("asof").ic if len(ic) else pd.Series(dtype=float)
+        summ.append({"book": bk, "model": m, "strategy": strat, "h": hb, "weeks": n,
+                     "cum_pct": (np.prod(1 + g.total) - 1) * 100 if n else np.nan,
+                     "spy_cum_pct": (np.prod(1 + g.spy) - 1) * 100 if n else np.nan,
                      "pct_per_yr": st["book_sleeve_pct_yr"] if n >= 26 else np.nan,
                      "vs_spy_pct_yr": st["vs_spy_pct_yr"] if n >= 26 else np.nan,
                      "vs_risk_matched_pct_yr": st["vs_risk_matched_pct_yr"] if n >= 26 else np.nan,
                      "ic_weeks": len(gi), "ic": gi.mean() if len(gi) else np.nan,
-                     "ic_t": F.nw_t(gi.values, max(X.HS[0] - 1, hb - 1)) if len(gi) > 3 else np.nan})
+                     "ic_t": F.nw_t(gi.values, max(4, hb - 1)) if len(gi) > 3 else np.nan})
     out = pd.DataFrame(summ)
+    with open(os.path.join(path, "SPX.md"), "w") as f:
+        f.write("# Forward S&P 500 paper books (PREREG_quant_transformers.md Amendment 4; never traded)\n\n"
+                f"Records: {len(recs)} (first {recs[0]['asof'] if recs else '-'}, last {recs[-1]['asof'] if recs else '-'}); "
+                f"prices to {stamp}. Book + the dynamic SPY sleeve, broker costs. Returns annualised (% per year) "
+                "only from 26 weeks; the verdict is on weekly IC at each book's horizon (NW t), reviewed at 52 weeks; "
+                "a book with IC < 0 and t < -1 at 26 weeks is retired.\n\n"
+                + out.round(4).to_markdown(index=False) + "\n")
     print(out.round(4).to_string(index=False))
     return out, pl, ic
 

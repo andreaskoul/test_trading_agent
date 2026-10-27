@@ -4,6 +4,12 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-27: forward S&P 500 paper books (PREREG_quant_transformers.md Amendment 4; PROTOCOL_fund.md "Forward S&P 500 paper books").
+  * New runner job `spx` (Fri 03:45 UTC; shares R5's lock): `research/quant_trials/spx_forward.py` scores five books from live models trained on all data to 2026-10-26 (`~/.fund-runner/cache/spx_models`). Records and a frozen ledger go to `research-data`.
+  * A separate research venv (`requirements-research.txt`, `~/.fund-runner/venv-research`) keeps torch and Chronos out of the fund's venv; `install.sh` builds it.
+  * Fails loudly, after saving, when the expected Thursday's prices are missing or coverage is under 95%. A holiday Thursday is skipped.
+  * Could this change a decision? No. No desk of the traded fund reads these books, and the fund's venv, jobs and files are unchanged.
+  * Contract tests: `research/quant_trials/test_spx_forward.py` (holding period and book return equal the backtest's; an unobserved week is not booked).
 - 2026-10-26: Amendment 9 (owner; PROTOCOL_fund.md). The horizon-end review now extends a lot with z ≥ 1.5 when it has CONFIRMING news or a pending catalyst. Before, rule 5 exited it, contrary to rule 3's exemption (XOM in the 10-26 plan run). The rules move into `fund/review_rules.py`, with contract tests on the plan run's real reviews (`fund/tests/test_review_rules.py`). It takes effect with the review from 10-27, and no live review had been made. Could this change a decision? Yes, by design: it is a dated amendment of an untraded rule, made before any of its outcomes.
 - 2026-10-26: Amendment 8 deployed late (PROTOCOL_fund.md, Amendment 8, deployment note). It was committed on branch `fund/amendment8` on 10-16/17 but never merged, so the 10-21 cohort used Amendment 7's horizon table, and eight lots were closed at their horizon on 10-20/21 without the review.
   * The branch is merged with `main`, and the rules and parameters are unchanged. `A8_ASOF` becomes 2026-10-28 and `A8_REVIEW` becomes 2026-10-27 (the first dates after the merge).
