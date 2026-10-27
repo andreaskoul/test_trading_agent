@@ -140,5 +140,49 @@ def gate():
     return avg
 
 
+def build():
+    """Month x supplier rows (registered arm: S&P 400 suppliers; customers S&P 500 members at the month's last
+    session). Signal: mean e_{c,m} over the customers named in the supplier's latest 10-K filed by the end of m."""
+    L = pd.read_parquet(LINKS).sort_values("filed")
+    Em = pd.read_parquet(MO.OUT)
+    C = json.load(open(os.path.join(ED.CACHE, "ciks.json")))
+    sp400 = set(pd.read_csv(os.path.join(PX.ROOT, "data", "raw", "stocks", "sp400_current.csv"))["Symbol"])
+    tick = {}
+    for t, x in C.items():
+        if x["cik"]:
+            tick.setdefault(x["cik"], []).append(t)
+    sessions = pd.DatetimeIndex(pd.read_parquet(os.path.join(PX.CACHE, "alpaca_bars.parquet"))["date"].unique()).union(
+        pd.read_parquet(os.path.join(PX.CACHE, "yf_sp500_close.parquet")).index)
+    mem = PX.members(sessions)
+    months = list(Em.index)
+    rows = []
+    for a, m in enumerate(months[:-1]):
+        end = pd.Period(m).end_time.normalize()
+        last = mem.index[mem.index <= end]
+        if not len(last):
+            continue
+        m500 = set(mem.loc[last[-1]])
+        latest = L[L["filed"] <= end]
+        latest = latest[latest["accession"].isin(latest.groupby("supplier")["accession"].last())]
+        for sup, g in latest.groupby("supplier"):
+            st = [t for t in sorted(tick.get(sup, [])) if t in sp400 and t not in m500 and t in Em.columns]
+            if not st:
+                continue
+            cust = [t for c in g["customer"].unique() for t in sorted(tick.get(c, [])) if t in m500 and t in Em.columns]
+            vals = [Em.at[m, t] for t in dict.fromkeys(cust) if np.isfinite(Em.at[m, t])]
+            y = Em.at[months[a + 1], st[0]]
+            if vals and np.isfinite(y):
+                rows.append({"month": m, "ticker": st[0], "universe": "sp400", "signal": float(np.mean(vals)),
+                             "n_customers": len(vals), "target": float(y)})
+    D = pd.DataFrame(rows)
+    D.to_parquet(ROWS)
+    print(f"rows {len(D):,}; months {D['month'].nunique()}; suppliers per month (median) "
+          f"{D.groupby('month').size().median():.0f}")
+
+
+def stat(D):
+    return I.fm_test(D, "signal", "target", month="month", firm="ticker", direction=1)
+
+
 if __name__ == "__main__":
-    {"links": links, "sample": sample, "gate": gate}[sys.argv[1]]()
+    {"links": links, "sample": sample, "gate": gate, "build": build}[sys.argv[1]]()
