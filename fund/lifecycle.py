@@ -34,6 +34,9 @@ Each week's fund book is a cohort. Every position keeps its own life:
 Files (fund_state/<mode>/): <asof>/lifecycle.json (desk), lifecycle/returns.csv (frozen daily returns),
 lifecycle/entries.json (frozen entry volatility), lifecycle/news/<day>.json (kill checks),
 lifecycle/state.json (lots, events, daily NAV), lifecycle/checks.json (mechanical gates).
+
+Protocol 7B (from session 2026-10-28; PROTOCOL_fund.md): R1 no averaging down, R2 structural theses held to the next
+report with a 20-session checkpoint, R3 slot protection for working carried lots (fund/lifecycle_rules.py).
 """
 
 import glob
@@ -87,6 +90,10 @@ M_LOW, M_COMPLEX, M_HIGH, M_CAP, AV_LOW, AV_HIGH = 1.25, 1.25, 0.8, 1.5, 1.5, 3.
 H8_MAX, P_CAP, SHRINK_K, CAT_W = 25, 1.5, 20, {"earnings": 1, "other": 3}
 Z_HI, ID_HI, TO_LO, EXT_MAX, EXT_TOTAL, SAMPLES, REVERT_N = 1.5, 0.1, 1.0, 2, 40, 3, 50
 LABELS = ("CONFIRMING", "CONTRADICTING", "STALE", "NONE")
+
+# ---- Protocol 7B (owner, 2026-10-27): R1-R3 and their constants live in fund/lifecycle_rules.py (contract-tested)
+from lifecycle_rules import (P7B, P7B_ASOF, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
+                             may_increase, checkpoint_exit, slots, structural_h, structural_mean)
 DESK_SAMPLES, DESK_DRAWS = 5, 8
 
 
@@ -102,7 +109,7 @@ def desk():
         save(asof, "lifecycle.json", {"asof": str(asof.date()), "status": "no_book", "names": {}}); return
     fund = {t: w for t, w in book["books"]["fund"].items() if t != "SPY"}
     memos = load(asof, "analysts.json")["memos"]
-    s_, cal = broker.api("GET", f"/v2/calendar?start={(asof - pd.Timedelta(days=130)).date()}&end={(asof + pd.Timedelta(days=70)).date()}")
+    s_, cal = broker.api("GET", f"/v2/calendar?start={(asof - pd.Timedelta(days=130)).date()}&end={(asof + pd.Timedelta(days=100)).date()}")   # 7B: a structural horizon reaches 63 sessions
     assert s_ == 200 and cal, f"calendar unavailable: {s_}"
     days = [pd.Timestamp(c["date"]) for c in cal]
     t0 = next(d for d in days if d > asof)                 # entry: the execution day's close
@@ -121,6 +128,7 @@ You get the analyst's thesis and the firm's headlines of the last 30 days (oldes
 Return JSON only: {{"event_type": str, "driving_event": str (<= 20 words), "first_reported": "YYYY-MM-DD",
 "catalyst_date": "YYYY-MM-DD" or null, "kill_conditions": [str (<= 25 words)]}}"""
     a8 = str(asof.date()) >= A8_ASOF
+    p7b = a8 and str(asof.date()) >= P7B_ASOF
     if a8:                                                  # Amendment 8: labels only; dates and amounts come from data
         SYSTEM = SYSTEM.replace("Return JSON only: {", """Also label (labels only; never estimate dates, sizes or returns):
 - hard: true if the event carries hard numbers (reported results, guidance figures, a deal value, a buyback size,
@@ -136,6 +144,13 @@ Return JSON only: {{"event_type": str, "driving_event": str (<= 20 words), "firs
 Return JSON only: {""").replace('"kill_conditions": [str (<= 25 words)]}', '"kill_conditions": [str (<= 25 words)], '
                                    '"hard": bool, "first_report": bool, "revision_direction": "up"|"down"|null, '
                                    '"cross_firm": bool, "complex": bool, "catalyst": "earnings"|"other"|null}')
+        if p7b:                                         # Protocol 7B, R2: structural vs event thesis
+            SYSTEM = SYSTEM.replace("Return JSON only: {", """- structural: true if the thesis rests on a lasting change in the firm's fundamentals expected to show over
+  several quarters (multi-year targets or a guidance reset beyond the next quarter, a demand or cost regime change,
+  a business-model change, a multi-year contract or product cycle); false if it rests on a one-off event whose
+  effect is priced within weeks (a launch, a lawsuit, a rumour, a single quarter's beat or miss, a dated catalyst).
+Return JSON only: {""").replace('"catalyst": "earnings"|"other"|null}', '"catalyst": "earnings"|"other"|null, "structural": bool}')
+            assert '"structural": bool' in SYSTEM and "- structural:" in SYSTEM
         assert '"catalyst": "earnings"' in SYSTEM and "Also label" in SYSTEM
         try:
             M8 = m_table(asof, cutoff)
@@ -149,7 +164,7 @@ Return JSON only: {""").replace('"kill_conditions": [str (<= 25 words)]}', '"kil
             print(f"lifecycle M_type: unavailable ({e}); using the table of {M8['asof']}", flush=True)
         S8 = pd.DataFrame(load(asof, "screen.json")["rows"]).set_index("ticker")
         bx = bars(set(fund) | {"SPY"}, asof - pd.Timedelta(days=150), asof)
-        nxt_e = earnings_next(sorted(fund), t0, t0 + pd.Timedelta(days=60))
+        nxt_e = earnings_next(sorted(fund), t0, t0 + pd.Timedelta(days=100 if p7b else 60))
 
     def one(t):
         m = (memos.get(t) or {}).get("memo") or {}
@@ -179,7 +194,7 @@ Return JSON only: {""").replace('"kill_conditions": [str (<= 25 words)]}', '"kil
                 except Exception:
                     return "catalyst_date must be YYYY-MM-DD or null"
             if a8:
-                for k in ("hard", "first_report", "cross_firm", "complex"):
+                for k in ("hard", "first_report", "cross_firm", "complex") + (("structural",) if p7b else ()):
                     if not isinstance(o.get(k), bool):
                         return f"{k} must be true or false"
                 if o.get("revision_direction") not in ("up", "down", None):
@@ -213,6 +228,14 @@ Return JSON only: {""").replace('"kill_conditions": [str (<= 25 words)]}', '"kil
                        inputs=horizon8(t, fund[t], out, g, days, t0, bx, M8, S8, nxt_e.get(t))["inputs"],
                        kill_conditions=out["kill_conditions"], first_reported=out["first_reported"],
                        driving_event=out.get("driving_event"), confidence=(m.get("confidence")))
+            if p7b:                                     # 7B R2: the structural horizon, averaged over the samples
+                flags = [bool(o.get("structural")) for o in oks]
+                rec.update(structural=sum(flags) * 2 > len(flags), structural_votes=flags, H_a8=rec["H"])
+                if any(flags) and not rec["stale"]:
+                    h_s, h_why = structural_h(rec["H"], nxt_e.get(t), days, t0, catalyst_session(nxt_e.get(t), days))
+                    h7, hs7 = structural_mean(flags, hs, h_s)
+                    rec["H"] = int(min(max(round(h7), H_MIN), STRUCT_MAX))
+                    rec["why"] += f"; {h_why}; 7B mean over samples {hs7} = {h7:.1f}"
         elif st == "ok":
             fr = pd.Timestamp(out["first_reported"])
             age = sum(1 for d in days if fr < d <= t0)
@@ -364,7 +387,7 @@ def vote(outs):
     same = [o for o in outs if o["event_type"] == typ]
     frs = sorted(o["first_reported"] for o in same)
     out = {**same[0], "event_type": typ, "first_reported": frs[(len(frs) - 1) // 2]}
-    for k in ("hard", "first_report", "cross_firm", "complex"):
+    for k in ("hard", "first_report", "cross_firm", "complex") + (("structural",) if any("structural" in o for o in outs) else ()):
         out[k] = sum(bool(o.get(k)) for o in outs) * 2 > len(outs)
     out["revision_direction"] = mode([o.get("revision_direction") for o in same if o.get("revision_direction")]) \
         if typ == "analyst_revisions" else None
@@ -803,7 +826,7 @@ def review_decide(L, d, label, kill_hit, med_new, prev_day, e_today):
     v = V[t].loc[:prev_day].dropna()
     to = float(v.iloc[-5:].mean() / v.iloc[-65:-5].median()) if len(v) >= 30 and v.iloc[-65:-5].median() > 0 else 1.0
     H0 = L.get("H0", L["H"])
-    room = min(2 * H0, EXT_TOTAL) - held
+    room = (STRUCT_MAX if L.get("structural") else min(2 * H0, EXT_TOTAL)) - held     # 7B R2: up to STRUCT_MAX in total
     h_ext = min(math.ceil(H0 / 2), room)
     cs = catalyst_session(ce, fut)
     n_cat = fut.index(cs) + 1 if cs in fut else None
@@ -1075,7 +1098,9 @@ def run(replay=False, fetch_news=True, live=None):
                     trade(L, 0.0, "horizon")
                 elif k.get("verdict") == "reduce" and not L.get("reduced"):
                     trade(L, L["n"] * 0.5, "news_reduce"); L["reduced"] = True
-                elif k.get("verdict") == "increase" and not L.get("increased"):
+                elif checkpoint_exit(d, L):
+                    trade(L, 0.0, "structural_checkpoint")              # 7B R2: a structural thesis that is not working
+                elif k.get("verdict") == "increase" and not L.get("increased") and may_increase(d, L):
                     tgt = L["side"] * min(UP * abs(L["w0"]), NAME_CAP) * nav
                     room = GROSS_CAP * nav - sum(abs(x["n"]) for x in lots) - abs(hedge)
                     if abs(tgt) > abs(L["n"]) and abs(tgt) - abs(L["n"]) <= room:
@@ -1134,10 +1159,8 @@ def run(replay=False, fetch_news=True, live=None):
                 # capacity: carried by |w| x share of horizon left, new by |w| - 10 bp; then the caps
                 key = {t: (abs(target[t]) * max(cur[t]["H"] - cur[t]["days"], 0) / cur[t]["H"]) if t in cur else abs(target[t]) - NEW_COST
                        for t in target}
-                keep = []
-                for sgn in (1, -1):
-                    side_ = sorted([t for t in target if np.sign(target[t]) == sgn], key=lambda t: -key[t])
-                    keep += side_[:N_SIDE]
+                # 7B R3: from P7B a carried lot that is working (R >= 0) inside its horizon keeps its slot
+                keep = slots(target, cur, key, d)
                 for t in [t for t in cur if t not in keep]:
                     trade(cur[t], 0.0, "capacity")
                 w_cap, _ = caps(pd.Series({t: target[t] for t in keep}, dtype=float), sector_all, beta_all)
@@ -1158,6 +1181,7 @@ def run(replay=False, fetch_news=True, live=None):
                              "kill_conditions": info["kill_conditions"], "first_reported": info["first_reported"],
                              "score": c["scores"].get(t, 0), "cohort": c["asof"], "entry_day": str(d.date()),
                              "entry_close_ts": close_ts, "driving_event": info.get("driving_event") or (info.get("out") or {}).get("driving_event"),
+                             **({"structural": True} if info.get("structural") and d >= P7B else {}),
                              **({"news_session": info["inputs"]["news_session"]} if (info.get("inputs") or {}).get("news_session") else {})}
                         lots.append(L)
                         trade(L, tw * nav, "entry")

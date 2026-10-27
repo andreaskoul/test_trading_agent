@@ -899,3 +899,62 @@ orders) is the only review output. No extension has an outcome.
 
 **Effective** with the review, from session 2026-10-27 (`A8_REVIEW`). The rules are in `fund/review_rules.py`,
 with contracts on the plan run's five real reviews in `fund/tests/test_review_rules.py`.
+
+---
+
+## Protocol 7B (owner, 2026-10-27; trades from session 2026-10-28): the live book takes the fixes; experiments go to shadow books
+
+**Decision (owner, 2026-10-27).** "Through our tests we know that the live is malfunctioning … this whole thing is in
+paper trading … have the latest and most complete pipeline in live and then experimental alterations in shadow
+books."
+* This changes live decisions, so it is a new protocol and **the evaluation clock restarts on 2026-10-28**.
+* Protocol 7 (with Amendments 8 and 9) continues as the **shadow control**, the baseline 7B is judged against. It
+  starts when its code is merged, and is never traded.
+
+**Evidence** (the trade-log review of 2026-10-26, on the recorded book, descriptive):
+* Closes at the horizon earned +$434 realized, and the names moved against the thesis after the exit (−3.0% mean
+  residual).
+* The losses came from long-horizon guidance and earnings lots, from news increases on losing lots, and from
+  capacity exits of carried lots at day 5.
+* Structural theses (multi-year targets, regime changes) got the same 3–14 sessions as one-off events.
+* The fit-sample earnings decay curves (`reports/research/p8/decay_earnings.md`) show earnings information priced
+  over 10–40 sessions, fading or reversing by 60–120.
+
+**Rules.** They live in `fund/lifecycle_rules.py`, with contract tests on the recorded cases in
+`fund/tests/test_lifecycle_rules.py`. They apply from session `P7B` = 2026-10-28; recorded days are never recomputed.
+* **R1, no averaging down.** A news increase (Amendment 7) needs the lot to be working: R ≥ 0. On 2026-10-21, HPE,
+  NKE and MRVL were increased at R −18.7%, −8.0% and −10.6%.
+* **R2, structural theses.**
+  * From the as-of 2026-10-28 cohort the desk adds the label `structural`, by majority of its samples (Amendment 8).
+    It is true when the thesis rests on a lasting change in fundamentals expected over several quarters, and false
+    for a one-off event priced within weeks.
+  * The structural horizon runs to the next earnings report + 1 session (Finnhub calendar). It lies between the
+    Amendment 8 horizon and **63 sessions**, and is **40** when the calendar has no report date within reach.
+  * **The lot's horizon is the mean over the desk's samples**: each sample's horizon is the structural horizon if
+    that sample votes structural, else its own Amendment 8 horizon. This is Amendment 8's remedy for label splits.
+    In the dry run, majority voting turned two 3–2 splits into jumps from 3 to 40–60 sessions; the mean gives 25 and
+    37.
+  * The lot is treated as structural (checkpoint, review room) when the majority votes so.
+  * **Checkpoint every 20 sessions** inside the horizon: exit when R / (σ_e √days) ≤ −1, with σ_e frozen at entry.
+    A structural lot that is not working is not carried for months.
+  * At the horizon, the Amendment 8/9 review decides. A structural lot's extensions may run to 63 sessions in total.
+* **R3, slot protection.** A carried lot that is working (R ≥ 0) and inside its horizon keeps its slot ahead of the
+  new cohort. Losing carried lots compete as before. On 2026-10-22 the 10-per-side cap closed six carried lots at
+  day 5, with horizons of 9–14 sessions.
+
+**Unchanged:** the desk and its horizon formula (Amendment 8), the barriers, the kill checks, the Amendment 8/9
+review, the caps, the hedge, costs and the live decision times.
+
+**Checks before the switch:**
+* contract tests (5 suites pass);
+* a rebuild of the recorded book with the 7B code reproduces every recorded NAV (through 2026-10-26: $97,798.12,
+  98 events, checks pass);
+* a desk dry run on the as-of 2026-10-21 data, inspected for the content of the structural labels and horizons
+  (`reports/research/p7b_desk_dryrun.md`).
+
+**Evaluation.**
+* 7B against the shadow control, on the same desk output and news, by the existing scoring.
+* No verdict before the shadow-books rule allows (about mid-April 2027: three times the longest horizon, which is
+  now 63 sessions).
+* R2's 63 and 40 sessions and its z ≤ −1 checkpoint are design choices bounded by the decay evidence. They are not
+  fitted, and a change needs a later dated amendment.

@@ -10,6 +10,12 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   * Fails loudly, after saving, when the expected Thursday's prices are missing or coverage is under 95%. A holiday Thursday is skipped.
   * Could this change a decision? No. No desk of the traded fund reads these books, and the fund's venv, jobs and files are unchanged.
   * Contract tests: `research/quant_trials/test_spx_forward.py` (holding period and book return equal the backtest's; an unobserved week is not booked).
+- 2026-10-27: **Protocol 7B** (owner decision; PROTOCOL_fund.md "Protocol 7B"). From session 2026-10-28 the live book applies three rules:
+  * R1: no news increase on a losing lot;
+  * R2: structural theses are held to the next earnings report (≤ 63 sessions), with a z ≤ −1 checkpoint every 20 sessions;
+  * R3: a carried lot that is working keeps its slot.
+  * The desk adds a `structural` label from the as-of 2026-10-28 cohort. The rules are in `fund/lifecycle_rules.py`, with contract tests in `fund/tests/test_lifecycle_rules.py`. They are gated by date, and a rebuild of the recorded book is identical to the cent.
+  * Could this change a decision? Yes, by design: a new protocol, and the evaluation clock restarts. Protocol 7 + Amendments 8/9 continue as the shadow control.
 - 2026-10-26: Amendment 9 (owner; PROTOCOL_fund.md). The horizon-end review now extends a lot with z ≥ 1.5 when it has CONFIRMING news or a pending catalyst. Before, rule 5 exited it, contrary to rule 3's exemption (XOM in the 10-26 plan run). The rules move into `fund/review_rules.py`, with contract tests on the plan run's real reviews (`fund/tests/test_review_rules.py`). It takes effect with the review from 10-27, and no live review had been made. Could this change a decision? Yes, by design: it is a dated amendment of an untraded rule, made before any of its outcomes.
 - 2026-10-26: Amendment 8 deployed late (PROTOCOL_fund.md, Amendment 8, deployment note). It was committed on branch `fund/amendment8` on 10-16/17 but never merged, so the 10-21 cohort used Amendment 7's horizon table, and eight lots were closed at their horizon on 10-20/21 without the review.
   * The branch is merged with `main`, and the rules and parameters are unchanged. `A8_ASOF` becomes 2026-10-28 and `A8_REVIEW` becomes 2026-10-27 (the first dates after the merge).
