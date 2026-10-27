@@ -1,0 +1,813 @@
+{
+ "day": "2026-10-27",
+ "asof": "2026-10-21",
+ "close_et": "16:00",
+ "news_ts": 1793130000,
+ "decided_at": "2026-10-27T19:57:07+00:00",
+ "style": "preclose",
+ "nav_model": 99116.60933568912,
+ "hedge_w": -0.284983463715461,
+ "actions": [
+  {
+   "day": "2026-10-27",
+   "id": "2026-10-07|MRVL",
+   "ticker": "MRVL",
+   "action": "horizon",
+   "from": 8541.75,
+   "to": 0.0,
+   "R": -0.096473,
+   "W": 0.151861,
+   "days_held": 13
+  },
+  {
+   "day": "2026-10-27",
+   "id": "2026-10-07|NKE",
+   "ticker": "NKE",
+   "action": "horizon",
+   "from": -9620.47,
+   "to": 0.0,
+   "R": -0.084636,
+   "W": 0.063732,
+   "days_held": 13
+  },
+  {
+   "day": "2026-10-27",
+   "id": "2026-10-21|WMT",
+   "ticker": "WMT",
+   "action": "horizon",
+   "from": 2873.15,
+   "to": 0.0,
+   "R": -0.016878,
+   "W": 0.028637,
+   "days_held": 3
+  },
+  {
+   "day": "2026-10-27",
+   "id": "2026-10-21|MMM",
+   "ticker": "MMM",
+   "action": "horizon",
+   "from": 2635.71,
+   "to": 0.0,
+   "R": -0.027013,
+   "W": 0.028951,
+   "days_held": 3
+  },
+  {
+   "day": "2026-10-27",
+   "id": "2026-10-21|BA",
+   "ticker": "BA",
+   "action": "stop",
+   "from": 2207.25,
+   "to": 0.0,
+   "R": -0.113415,
+   "W": 0.039426,
+   "days_held": 3
+  },
+  {
+   "day": "2026-10-27",
+   "id": "2026-10-21|XOM",
+   "ticker": "XOM",
+   "action": "horizon",
+   "from": 2496.15,
+   "to": 0.0,
+   "R": 0.012504,
+   "W": 0.025356,
+   "days_held": 3
+  },
+  {
+   "day": "2026-10-27",
+   "id": "2026-10-21|CRM",
+   "ticker": "CRM",
+   "action": "horizon",
+   "from": -4259.34,
+   "to": 0.0,
+   "R": 0.041901,
+   "W": 0.05419,
+   "days_held": 3
+  },
+  {
+   "day": "2026-10-27",
+   "id": "2026-10-21|AVGO",
+   "ticker": "AVGO",
+   "action": "horizon",
+   "from": -2317.91,
+   "to": 0.0,
+   "R": -0.045621,
+   "W": 0.033891,
+   "days_held": 3
+  }
+ ],
+ "cool": {
+  "BA|1": {
+   "until": "2026-10-27",
+   "kind": "stop",
+   "score": 1,
+   "first_reported": "2026-10-20"
+  }
+ },
+ "lots_after": [
+  {
+   "id": "2026-10-21|CSX",
+   "ticker": "CSX",
+   "side": 1,
+   "w0": 0.06087,
+   "beta": 0.6402889768,
+   "sigma_e": 0.012403712798847924,
+   "H": 14,
+   "W": 0.04641044361723182,
+   "kill_conditions": [
+    "CSX issues weak Q4 or FY guidance",
+    "CSX reports operating margin contraction or volume decline",
+    "Peer railroads UNP/NSC report disappointing earnings and negative sector outlook"
+   ],
+   "first_reported": "2026-10-21",
+   "score": 2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.007536891214937835,
+   "days": 3,
+   "e": [
+    -0.01368707,
+    0.00568863,
+    0.01553532
+   ],
+   "news_until": 1793130000,
+   "increased": true,
+   "w": 0.09259633311837925
+  },
+  {
+   "id": "2026-10-21|SMCI",
+   "ticker": "SMCI",
+   "side": 1,
+   "w0": 0.05994,
+   "beta": 2.0551470887,
+   "sigma_e": 0.04617076198201026,
+   "H": 13,
+   "W": 0.16647104975338137,
+   "kill_conditions": [
+    "Company cuts or withdraws its raised FY27 revenue outlook",
+    "Backlog falls below $60B or major orders are cancelled",
+    "Gross margin guidance is reduced or new CFO departs"
+   ],
+   "first_reported": "2026-10-20",
+   "score": 2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.0266007020771312,
+   "days": 3,
+   "e": [
+    -0.01239808,
+    -0.02219249,
+    0.06119127
+   ],
+   "news_until": 1793130000,
+   "increased": true,
+   "w": 0.09433305161408102
+  },
+  {
+   "id": "2026-10-21|TSLA",
+   "ticker": "TSLA",
+   "side": 1,
+   "w0": 0.05072,
+   "beta": 1.6622139812,
+   "sigma_e": 0.021141475729803922,
+   "H": 4,
+   "W": 0.042282951459607844,
+   "kill_conditions": [
+    "Tesla or SpaceX board denies merger talks or disbands special committee",
+    "Merger exploration formally terminated or abandoned",
+    "Musk walks back merger comments, says tie-up not planned"
+   ],
+   "first_reported": "2026-10-21",
+   "score": 2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.07136334148130966,
+   "days": 3,
+   "e": [
+    0.002381,
+    0.04030878,
+    0.02867356
+   ],
+   "news_until": 1793130000,
+   "increased": true,
+   "w": 0.08187549691939947
+  },
+  {
+   "id": "2026-10-21|HAS",
+   "ticker": "HAS",
+   "side": 1,
+   "w0": 0.02536,
+   "beta": 0.8311884956,
+   "sigma_e": 0.025196195918633518,
+   "H": 13,
+   "W": 0.09084617633126964,
+   "kill_conditions": [
+    "Hasbro cuts or withdraws its raised FY2026 sales guidance",
+    "Magic: The Gathering quarterly revenue falls below $600M or declines year-over-year",
+    "Hasbro reduces, suspends, or abandons its doubled buyback target"
+   ],
+   "first_reported": "2026-10-20",
+   "score": 1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.0034626297214966134,
+   "days": 3,
+   "e": [
+    0.00613247,
+    -0.00147825,
+    -0.00119159
+   ],
+   "news_until": 1793130000,
+   "w": 0.025135624168979142
+  },
+  {
+   "id": "2026-10-21|ROL",
+   "ticker": "ROL",
+   "side": -1,
+   "w0": -0.072,
+   "beta": 0.4132383735,
+   "sigma_e": 0.020746454352392717,
+   "H": 14,
+   "W": 0.07762612417699859,
+   "kill_conditions": [
+    "Rollins reports better-than-expected revenue and EPS in Q4 2026",
+    "Rollins raises full-year 2026 revenue and EPS guidance",
+    "Analyst upgrades Rollins to Buy or Overweight"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.040961986247411084,
+   "days": 3,
+   "e": [
+    0.01171883,
+    0.01069045,
+    0.01855271
+   ],
+   "news_until": 1793130000,
+   "increased": true,
+   "w": -0.09709077025026637
+  },
+  {
+   "id": "2026-10-21|LRCX",
+   "ticker": "LRCX",
+   "side": -1,
+   "w0": -0.031,
+   "beta": 2.0246720698,
+   "sigma_e": 0.03262781653407281,
+   "H": 14,
+   "W": 0.12208211074901847,
+   "kill_conditions": [
+    "Lam Research raises Q2 guidance above consensus",
+    "AI chip selloff reverses; SOX index posts multiple up days",
+    "Analysts upgrade LRCX to Buy on improved outlook"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.029198806257730033,
+   "days": 3,
+   "e": [
+    -0.01035718,
+    -0.01777353,
+    -0.00106809
+   ],
+   "news_until": 1793130000,
+   "reduced": true,
+   "w": -0.015891559096320396
+  },
+  {
+   "id": "2026-10-21|NFLX",
+   "ticker": "NFLX",
+   "side": -1,
+   "w0": -0.029,
+   "beta": 0.5883033849,
+   "sigma_e": 0.022376301218358693,
+   "H": 14,
+   "W": 0.08372445274235055,
+   "kill_conditions": [
+    "Netflix raises its full-year revenue or ad-revenue guidance",
+    "Netflix reports accelerating subscriber growth or strong Q4 guidance",
+    "Netflix announces a major content hit or partnership that boosts growth outlook"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.07336597513697947,
+   "days": 3,
+   "e": [
+    0.01482451,
+    0.03379297,
+    0.02474849
+   ],
+   "news_until": 1793130000,
+   "increased": true,
+   "w": -0.04201379851250047
+  },
+  {
+   "id": "2026-10-21|MSFT",
+   "ticker": "MSFT",
+   "side": -1,
+   "w0": -0.0275,
+   "beta": 0.9479008426,
+   "sigma_e": 0.01584356823851591,
+   "H": 5,
+   "W": 0.03542729558747818,
+   "kill_conditions": [
+    "Microsoft beats Q1 estimates and raises FY2027 guidance",
+    "Microsoft reaffirms or re-enters the UK Nscale data center deal",
+    "CoreWeave secures new financing, easing AI capex debt fears"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.011761652447103123,
+   "days": 3,
+   "e": [
+    -0.01153317,
+    -0.00868857,
+    0.00846008
+   ],
+   "news_until": 1793130000,
+   "w": -0.02750578341967436
+  },
+  {
+   "id": "2026-10-21|AAPL",
+   "ticker": "AAPL",
+   "side": -1,
+   "w0": -0.025,
+   "beta": 0.7621233146,
+   "sigma_e": 0.014154727220666097,
+   "H": 8,
+   "W": 0.040035614414315246,
+   "kill_conditions": [
+    "Apple reports stronger-than-expected iPhone 18 demand or raises forward guidance",
+    "Analysts upgrade Apple, citing improving iPhone demand and attractive valuation",
+    "OpenAI trade-secret claims dismissed or settled without material Apple liability"
+   ],
+   "first_reported": "2026-10-20",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.009200638382323347,
+   "days": 3,
+   "e": [
+    -0.00255889,
+    0.01638661,
+    -0.00462708
+   ],
+   "news_until": 1793130000,
+   "w": -0.02445156691879946
+  },
+  {
+   "id": "2026-10-21|CMG",
+   "ticker": "CMG",
+   "side": -1,
+   "w0": -0.025,
+   "beta": 0.7546463915,
+   "sigma_e": 0.02779123548300911,
+   "H": 5,
+   "W": 0.06214309171871257,
+   "kill_conditions": [
+    "Chipotle reports Q3 EPS above consensus and raises FY guidance",
+    "Chipotle announces a new takeover bid or strategic investment",
+    "Chipotle Q3 same-store sales turn positive with margin expansion"
+   ],
+   "first_reported": "2026-10-15",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.013434233671349917,
+   "days": 3,
+   "e": [
+    0.01809134,
+    -0.02697794,
+    0.02232084
+   ],
+   "news_until": 1793130000,
+   "w": -0.024327010982734876
+  }
+ ],
+ "prices": {
+  "CSX": 52.305,
+  "SMCI": 35.095,
+  "TSLA": 406.77,
+  "HAS": 118.41,
+  "ROL": 33.995,
+  "LRCX": 240.65,
+  "NFLX": 62.545,
+  "MSFT": 531.135,
+  "AAPL": 347.08,
+  "CMG": 27.905,
+  "SPY": 769.98
+ },
+ "equity": 99053.0,
+ "current_qty": {
+  "AAPL": -7.0,
+  "AVGO": -7.0,
+  "BA": 13.0,
+  "CMG": -86.0,
+  "CRM": -18.0,
+  "CSX": 175.0,
+  "HAS": 21.0,
+  "LRCX": -7.0,
+  "MMM": 15.0,
+  "MRVL": 35.0,
+  "MSFT": -5.0,
+  "NFLX": -67.0,
+  "NKE": -256.0,
+  "ROL": -283.0,
+  "SMCI": 266.0,
+  "SPY": -37.0,
+  "TSLA": 20.0,
+  "WMT": 24.0,
+  "XOM": 14.0
+ },
+ "target_weights": {
+  "CSX": 0.09259633311837925,
+  "SMCI": 0.09433305161408102,
+  "TSLA": 0.08187549691939947,
+  "HAS": 0.025135624168979142,
+  "ROL": -0.09709077025026637,
+  "LRCX": -0.015891559096320396,
+  "NFLX": -0.04201379851250047,
+  "MSFT": -0.02750578341967436,
+  "AAPL": -0.02445156691879946,
+  "CMG": -0.024327010982734876,
+  "SPY": -0.284983463715461
+ },
+ "orders": [
+  {
+   "symbol": "AVGO",
+   "leg": "close",
+   "side": "buy",
+   "qty": 7,
+   "target_weight": 0.0,
+   "price_ref": 342.375,
+   "client_order_id": "fund-lc-2026-10-27-AVGO-close",
+   "attempts": [
+    "fund-lc-2026-10-27-AVGO-close-a1"
+   ],
+   "ids": [
+    "ee141794-69cd-4554-877d-6d556a65a74d"
+   ],
+   "id": "ee141794-69cd-4554-877d-6d556a65a74d",
+   "filled_qty": 7.0,
+   "fill_price": 342.442857,
+   "status": "filled"
+  },
+  {
+   "symbol": "BA",
+   "leg": "close",
+   "side": "sell",
+   "qty": 13,
+   "target_weight": 0.0,
+   "price_ref": 167.835,
+   "client_order_id": "fund-lc-2026-10-27-BA-close",
+   "attempts": [
+    "fund-lc-2026-10-27-BA-close-a1"
+   ],
+   "ids": [
+    "a43bbdd6-1068-4d14-acf2-3ce3a1d2a498"
+   ],
+   "id": "a43bbdd6-1068-4d14-acf2-3ce3a1d2a498",
+   "filled_qty": 13.0,
+   "fill_price": 168.09,
+   "status": "filled"
+  },
+  {
+   "symbol": "CRM",
+   "leg": "close",
+   "side": "buy",
+   "qty": 18,
+   "target_weight": 0.0,
+   "price_ref": 241.045,
+   "client_order_id": "fund-lc-2026-10-27-CRM-close",
+   "attempts": [
+    "fund-lc-2026-10-27-CRM-close-a1"
+   ],
+   "ids": [
+    "3e4c8e17-7402-4721-8711-03446b8ef701"
+   ],
+   "id": "3e4c8e17-7402-4721-8711-03446b8ef701",
+   "filled_qty": 18.0,
+   "fill_price": 240.841667,
+   "status": "filled"
+  },
+  {
+   "symbol": "MMM",
+   "leg": "close",
+   "side": "sell",
+   "qty": 15,
+   "target_weight": 0.0,
+   "price_ref": 171.94,
+   "client_order_id": "fund-lc-2026-10-27-MMM-close",
+   "attempts": [
+    "fund-lc-2026-10-27-MMM-close-a1"
+   ],
+   "ids": [
+    "309b6ee3-54a2-412d-bd95-6ea1dddb939a"
+   ],
+   "id": "309b6ee3-54a2-412d-bd95-6ea1dddb939a",
+   "filled_qty": 15.0,
+   "fill_price": 171.64733399999997,
+   "status": "filled"
+  },
+  {
+   "symbol": "MRVL",
+   "leg": "close",
+   "side": "sell",
+   "qty": 35,
+   "target_weight": 0.0,
+   "price_ref": 243.865,
+   "client_order_id": "fund-lc-2026-10-27-MRVL-close",
+   "attempts": [
+    "fund-lc-2026-10-27-MRVL-close-a1"
+   ],
+   "ids": [
+    "11fcfc4b-c7f4-434e-be5f-006ef6266987"
+   ],
+   "id": "11fcfc4b-c7f4-434e-be5f-006ef6266987",
+   "filled_qty": 35.0,
+   "fill_price": 243.820286,
+   "status": "filled"
+  },
+  {
+   "symbol": "NKE",
+   "leg": "close",
+   "side": "buy",
+   "qty": 256,
+   "target_weight": 0.0,
+   "price_ref": 37.555,
+   "client_order_id": "fund-lc-2026-10-27-NKE-close",
+   "attempts": [
+    "fund-lc-2026-10-27-NKE-close-a1"
+   ],
+   "ids": [
+    "1c4093e5-416e-4ffe-b991-be4a0ed5106a"
+   ],
+   "id": "1c4093e5-416e-4ffe-b991-be4a0ed5106a",
+   "filled_qty": 256.0,
+   "fill_price": 37.57,
+   "status": "filled"
+  },
+  {
+   "symbol": "WMT",
+   "leg": "close",
+   "side": "sell",
+   "qty": 24,
+   "target_weight": 0.0,
+   "price_ref": 119.385,
+   "client_order_id": "fund-lc-2026-10-27-WMT-close",
+   "attempts": [
+    "fund-lc-2026-10-27-WMT-close-a1"
+   ],
+   "ids": [
+    "f15c8735-db7c-4f0d-a3a2-b1ffb30bb357"
+   ],
+   "id": "f15c8735-db7c-4f0d-a3a2-b1ffb30bb357",
+   "filled_qty": 24.0,
+   "fill_price": 119.28000000000002,
+   "status": "filled"
+  },
+  {
+   "symbol": "XOM",
+   "leg": "close",
+   "side": "sell",
+   "qty": 14,
+   "target_weight": 0.0,
+   "price_ref": 180.37,
+   "client_order_id": "fund-lc-2026-10-27-XOM-close",
+   "attempts": [
+    "fund-lc-2026-10-27-XOM-close-a1"
+   ],
+   "ids": [
+    "5ac76815-39aa-4b49-9e49-99f38681a05a"
+   ],
+   "id": "5ac76815-39aa-4b49-9e49-99f38681a05a",
+   "filled_qty": 14.0,
+   "fill_price": 179.837143,
+   "status": "filled"
+  }
+ ],
+ "problems": [],
+ "status": "submitted",
+ "reviews": [
+  {
+   "id": "2026-10-07|MRVL",
+   "ticker": "MRVL",
+   "day": "2026-10-27",
+   "decision": "exit",
+   "rule": 1,
+   "z": -0.6711738661906432,
+   "id_disc": 0.07692307692307687,
+   "to": 0.8055020164916604,
+   "label": "CONTRADICTING",
+   "kill_hit": false,
+   "catalyst": [
+    "2026-11-26",
+    ""
+   ],
+   "catalyst_sessions": 22,
+   "sigma": 0.039865822801910505,
+   "H0": 13,
+   "held": 13,
+   "h_ext": 0,
+   "ext_no": 0,
+   "R": -0.09647336922147065,
+   "n": 8541.75441009368,
+   "W_new": 0.10547505294482337,
+   "guard": 0.21095010588964674,
+   "median_new": null,
+   "stop_R": null,
+   "target_R": null
+  },
+  {
+   "id": "2026-10-07|NKE",
+   "ticker": "NKE",
+   "day": "2026-10-27",
+   "decision": "exit",
+   "rule": 2,
+   "z": -1.2784918019087135,
+   "id_disc": -0.07692307692307687,
+   "to": 0.8278244248026752,
+   "label": "CONFIRMING",
+   "kill_hit": false,
+   "catalyst": [
+    "2026-12-16",
+    "amc"
+   ],
+   "catalyst_sessions": 36,
+   "sigma": 0.01836064282984627,
+   "H0": 13,
+   "held": 13,
+   "h_ext": 0,
+   "ext_no": 0,
+   "R": -0.08463646306770427,
+   "n": -9620.466365069424,
+   "W_new": 0.04857769483905445,
+   "guard": 0.0971553896781089,
+   "median_new": null,
+   "stop_R": null,
+   "target_R": null
+  },
+  {
+   "id": "2026-10-21|WMT",
+   "ticker": "WMT",
+   "day": "2026-10-27",
+   "decision": "exit",
+   "rule": 2,
+   "z": -0.5482084682715137,
+   "id_disc": -0.3333333333333333,
+   "to": 0.9208053853899629,
+   "label": "NONE",
+   "kill_hit": false,
+   "catalyst": [
+    "2026-11-19",
+    ""
+   ],
+   "catalyst_sessions": 17,
+   "sigma": 0.01777537166565939,
+   "H0": 3,
+   "held": 3,
+   "h_ext": 0,
+   "ext_no": 0,
+   "R": -0.016878158362107674,
+   "n": 2873.147289045752,
+   "W_new": 0.025138171685797944,
+   "guard": 0.025138171685797944,
+   "median_new": null,
+   "stop_R": null,
+   "target_R": null
+  },
+  {
+   "id": "2026-10-21|MMM",
+   "ticker": "MMM",
+   "day": "2026-10-27",
+   "decision": "exit",
+   "rule": 2,
+   "z": -1.150790120337165,
+   "id_disc": -1.0,
+   "to": 1.9520409079203913,
+   "label": "STALE",
+   "kill_hit": false,
+   "catalyst": null,
+   "catalyst_sessions": null,
+   "sigma": 0.013552270389513127,
+   "H0": 3,
+   "held": 3,
+   "h_ext": 0,
+   "ext_no": 0,
+   "R": -0.027012750672620357,
+   "n": 2635.71079352107,
+   "W_new": 0.019165804585796774,
+   "guard": 0.019165804585796774,
+   "median_new": null,
+   "stop_R": null,
+   "target_R": null
+  },
+  {
+   "id": "2026-10-21|XOM",
+   "ticker": "XOM",
+   "day": "2026-10-27",
+   "decision": "exit",
+   "rule": 1,
+   "z": 0.4684403351913349,
+   "id_disc": -0.3333333333333333,
+   "to": 0.8957050652258013,
+   "label": "CONTRADICTING",
+   "kill_hit": false,
+   "catalyst": [
+    "2026-10-30",
+    "bmo"
+   ],
+   "catalyst_sessions": 3,
+   "sigma": 0.015411313578152478,
+   "H0": 3,
+   "held": 3,
+   "h_ext": 0,
+   "ext_no": 0,
+   "R": 0.012504161309947196,
+   "n": 2496.1460538743745,
+   "W_new": 0.02179488867620787,
+   "guard": 0.02179488867620787,
+   "median_new": null,
+   "stop_R": null,
+   "target_R": null
+  },
+  {
+   "id": "2026-10-21|CRM",
+   "ticker": "CRM",
+   "day": "2026-10-27",
+   "decision": "exit",
+   "rule": 5,
+   "z": 0.675390162674234,
+   "id_disc": -1.0,
+   "to": 0.6224698337105606,
+   "label": "STALE",
+   "kill_hit": false,
+   "catalyst": [
+    "2026-12-01",
+    "amc"
+   ],
+   "catalyst_sessions": 25,
+   "sigma": 0.03581844028688324,
+   "H0": 3,
+   "held": 3,
+   "h_ext": 0,
+   "ext_no": 0,
+   "R": 0.041900772378699526,
+   "n": -4259.342855087535,
+   "W_new": 0.05065492403676113,
+   "guard": 0.05065492403676113,
+   "median_new": null,
+   "stop_R": null,
+   "target_R": null
+  },
+  {
+   "id": "2026-10-21|AVGO",
+   "ticker": "AVGO",
+   "day": "2026-10-27",
+   "decision": "exit",
+   "rule": 1,
+   "z": -1.3274078317147278,
+   "id_disc": -1.0,
+   "to": 0.9020022294888087,
+   "label": "CONTRADICTING",
+   "kill_hit": true,
+   "catalyst": [
+    "2026-12-09",
+    "amc"
+   ],
+   "catalyst_sessions": 31,
+   "sigma": 0.01984262585271101,
+   "H0": 3,
+   "held": 3,
+   "h_ext": 0,
+   "ext_no": 0,
+   "R": -0.04562093128603499,
+   "n": -2317.9107570135457,
+   "W_new": 0.02806171059399891,
+   "guard": 0.02806171059399891,
+   "median_new": null,
+   "stop_R": null,
+   "target_R": null
+  }
+ ],
+ "submitted_at": "2026-10-27T20:00:09+00:00"
+}
