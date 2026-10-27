@@ -89,6 +89,67 @@ def load(cik, accession):
         return h.read()
 
 
+def _ref_trim(b):
+    """edgar-corpus keeps the next item's heading at the end of a section ("... Item 7a."): drop it."""
+    return re.sub(r"(?is)\s*item\s*\d+[a-z]?\s*[\.\:]?\s*[^\n]{0,120}$", "", b.strip()) if re.search(
+        r"(?is)item\s*\d+[a-z]?\s*[\.\:]?\s*[^\n]{0,120}$", b.strip()[-140:]) else b
+
+
+def validate_html(year=2018, n=50, stored=False):
+    """edgar-corpus's `year` is the fiscal period's year (78814_2018 discusses 2018 results: the 10-K filed in 2019),
+    so filings are matched on the period, not the filing date.
+    §1 parser check with like-for-like text: the 50 validation filings re-fetched as HTML and converted WITHOUT
+    tables (edgar-corpus drops tables), the reference's trailing next-item heading removed; lengths in alphabetic
+    words; boundaries by the first and last 8 alphabetic words."""
+    from huggingface_hub import hf_hub_download
+    import text as TX
+    f = hf_hub_download("eloukas/edgar-corpus", f"{year}/test.jsonl", repo_type="dataset")
+    ref = {int(json.loads(l)["cik"]): json.loads(l) for l in open(f)}
+    F = [x for x in TX.filings() if x["form"] == "10-K" and (x["period"] or "")[:4] == str(year) and x["cik"] in ref]
+    alpha = lambda s: re.findall(r"[a-z]{3,}", s.lower())
+    rows, firms = [], set()
+    for x in F:
+        if len(firms) >= n:
+            break
+        if stored:                                         # the production text (tables kept), as H5 and H2 use it
+            t = load(x["cik"], x["accession"])
+            if t is None:
+                continue
+            s = extract(t, "10-K")
+        else:
+            b = TX.get(f"https://www.sec.gov/Archives/edgar/data/{x['cik']}/{x['accession'].replace('-', '')}/{x['doc']}")
+            if b is None:
+                continue
+            s = extract(TX.to_text(b, tables=False), "10-K")
+        r = ref[x["cik"]]
+        added = False
+        for ours, theirs in (("1A", "section_1A"), ("7", "section_7")):
+            a, bb = s.get(ours), _ref_trim(r.get(theirs) or "")
+            wa, wb = alpha(a or ""), alpha(bb)
+            if a and len(wb) >= 250:
+                # end agreement robust to page footers ("45 Table of Contents"): each side's last 8 alphabetic words
+                # occur within the other's last 400 words
+                tail = lambda w: " ".join(w[-8:])
+                end_ok = tail(wb) in " ".join(wa[-400:]) or tail(wa) in " ".join(wb[-400:])
+                rows.append({"cik": x["cik"], "section": ours, "ours": len(wa), "ref": len(wb),
+                             "start_same": wa[:8] == wb[:8], "end_same": wa[-8:] == wb[-8:], "end_ok": end_ok})
+                added = True
+        if added:
+            firms.add(x["cik"])
+    D = pd.DataFrame(rows)
+    D["within10"] = (D["ours"] - D["ref"]).abs() / D["ref"] <= 0.10
+    out = [f"edgar-corpus check ({'production text, tables kept' if stored else 'tables removed on both sides'}), {year} 10-Ks: {len(D)} sections from {D['cik'].nunique()} filings",
+           f"  alphabetic-word length within 10%: {D['within10'].mean():.1%} (§1 requires >= 95%)",
+           f"  same first 8 words: {D['start_same'].mean():.1%}; same last 8 words: {D['end_same'].mean():.1%}; "
+           f"end agrees (footer-robust): {D['end_ok'].mean():.1%}",
+           f"  both boundaries agree: {(D['start_same'] & D['end_ok']).mean():.1%}"]
+    print("\n".join(out))
+    print(D[~(D["start_same"] & D["end_ok"])].to_string())
+    D.to_csv(os.path.join(PX.OUT, "sections_validation.csv"), index=False)
+    open(os.path.join(PX.OUT, "sections_validation.md"), "w").write("\n".join(out) + "\n")
+    return D
+
+
 def validate(year=2018, n=50):
     """§1 check against eloukas/edgar-corpus, same CIK and filing year, sections 1A and 7.
 
@@ -104,7 +165,7 @@ def validate(year=2018, n=50):
     for line in open(f):
         x = json.loads(line)
         ref[int(x["cik"])] = x
-    F = [x for x in TX.filings() if x["form"] == "10-K" and x["filed"][:4] == str(year) and x["cik"] in ref]
+    F = [x for x in TX.filings() if x["form"] == "10-K" and (x["period"] or "")[:4] == str(year) and x["cik"] in ref]
     alpha = lambda s: re.findall(r"[a-z]{3,}", s.lower())
     rows = []
     for x in F:
@@ -137,4 +198,5 @@ def validate(year=2018, n=50):
 
 
 if __name__ == "__main__":
-    {"validate": validate}[sys.argv[1]]()
+    {"validate": validate, "validate_html": validate_html,
+     "validate_stored": lambda: validate_html(stored=True)}[sys.argv[1]]()

@@ -44,9 +44,11 @@ def filings():
     return out
 
 
-def to_text(b):
+def to_text(b, tables=True):
     t = b.decode("utf-8", errors="ignore")
     t = re.sub(r"(?is)<(script|style|ix:header)[^>]*>.*?</\1>", " ", t)
+    if not tables:                                       # the parser check compares with edgar-corpus, which drops tables
+        t = re.sub(r"(?is)<table[^>]*>.*?</table>", " ", t)
     t = re.sub(r"(?i)<br\s*/?>|</p>|</div>|</tr>|</h\d>", "\n", t)
     t = re.sub(r"(?s)<[^>]+>", " ", t)
     t = html.unescape(t).replace("\xa0", " ")

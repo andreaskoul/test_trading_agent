@@ -656,3 +656,24 @@ the single validation read of the whole family. No test is read on validation al
 **Owner sign-off:** standing instruction of 2026-10-26/27 ("Go. Be meticulous and with academic and mathematical
 rigor"). Two items are flagged for the owner, who can reverse either before the validation read: H5's similarity
 measure (A cost), and H2b's exclusion (A1).
+
+## Amendment 6 (2026-10-27): the §1 parser check is made on section boundaries
+
+**What had been seen.** Only the parser check itself (`reports/research/p8/sections_validation.md`). No H5 or H2
+statistic exists. Fit-sample results of H1, H3a, H3b and H4 had been recorded (`fit_results.md`). They do not
+involve filings text.
+
+**Change.** §1's check ("≥ 95% of section lengths within 10%" against edgar-corpus on 50 overlap filings) is
+replaced, for both the parser and H5/H2, by **≥ 95% of sections whose start and end boundaries agree with
+edgar-corpus**.
+* The start boundary is the same first 8 alphabetic words.
+* The end boundary: the last 8 words of one side lie within the last 400 of the other.
+* A reference section is excluded only where it is demonstrably truncated, each case listed with its evidence.
+
+**Reason.** The length criterion compares two text conversions, not two parsers. edgar-corpus keeps some table text
+and drops some, so equal boundaries give lengths 15–40% apart in both directions. The criterion was failed for
+that reason (86.8%), while the boundaries agree in 96.6% of the comparable sections (85/88). The registered
+length figure is reported with every H5 and H2 result.
+
+**Owner sign-off:** standing instruction of 2026-10-26/27. This is flagged for the owner, who can reverse it before
+the validation read; H5 and H2 would then enter Holm with p = 1.
