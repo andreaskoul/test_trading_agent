@@ -95,7 +95,8 @@ def scores_at(d, t, tag):
     for h in X.HS:                                                     # ridge: refit on the same rows as the models
         tr, va, train, _ = X.windows(d["S"], year, h)
         sc[f"ridge_h{h}"] = X.ridge_fit_predict(d, d[f"y{h}"], tr, va, train, [t])[0][t]
-    sc["ensemble"] = np.nanmean(np.stack([zs(sc[k]) for k in ENSEMBLE]), 0)
+    zz = np.stack([zs(sc[k]) for k in ENSEMBLE])
+    sc["ensemble"] = np.where(np.isfinite(zz).all(0), zz.mean(0), np.nan)    # only names all three members score
     return sc, w[20][t]
 
 
