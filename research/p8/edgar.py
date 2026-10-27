@@ -31,6 +31,7 @@ OUT = os.path.join(ROOT, "reports", "research", "p8")
 os.makedirs(os.path.join(CACHE, "submissions"), exist_ok=True)
 os.makedirs(os.path.join(CACHE, "facts"), exist_ok=True)
 LAST = pd.Timestamp("2025-12-31 23:59:59")                       # never past the validation sample
+TAG = ""        # file-name suffix: "" for fit/validation; the sealed read (research/p8/sealed.py) sets "_sealed"
 # Declared XBRL concepts for the same quantity, in a fixed order of preference (the first present for a firm-period
 # is used): diluted EPS; net income to common holders (diluted first, as diluted EPS uses it); diluted share count.
 PREF = {"eps": ["EarningsPerShareDiluted", "EarningsPerShareBasicAndDiluted"],
@@ -183,13 +184,13 @@ def build():
                                     "val": x["val"], "filed": x["filed"], "accn": x["accn"], "form": x.get("form"),
                                     "fp": x.get("fp"), "fy": x.get("fy")})
     R = pd.DataFrame(rel).drop_duplicates(["cik", "accession"])
-    R.to_parquet(os.path.join(CACHE, "releases_202.parquet"))
+    R.to_parquet(os.path.join(CACHE, f"releases_202{TAG}.parquet"))
     E = pd.DataFrame(eps)
     E["start"], E["end"], E["filed"] = pd.to_datetime(E["start"]), pd.to_datetime(E["end"]), pd.to_datetime(E["filed"])
     E["days"] = (E["end"] - E["start"]).dt.days
     # first-filed value per (firm, concept, period): later restatements are ignored (§1)
     E = E.sort_values(["filed", "accn"]).drop_duplicates(["cik", "concept", "start", "end"], keep="first")
-    E.to_parquet(os.path.join(CACHE, "facts_first.parquet"))
+    E.to_parquet(os.path.join(CACHE, f"facts_first{TAG}.parquet"))
     print(f"{len(R):,} earnings releases (8-K 2.02); {len(E):,} first-filed facts")
 
 
@@ -197,7 +198,7 @@ def quarters():
     """Quarterly first-filed diluted EPS per firm. Quarters are 80-100-day periods; Q4 is derived from the fiscal
     year (330-380 days) as (NI_FY - NI_Q1..Q3) / (4 x FY diluted shares - shares Q1..Q3), flagged (Amendment 4, D6).
     Each quantity takes the first concept of its PREF list present for that firm and period."""
-    E = pd.read_parquet(os.path.join(CACHE, "facts_first.parquet"))
+    E = pd.read_parquet(os.path.join(CACHE, f"facts_first{TAG}.parquet"))
     E = E[E["unit"].isin(["USD/shares", "USD", "shares"])]
 
     def pick(kind):
@@ -250,7 +251,7 @@ def quarters():
         rows.append({"cik": r.cik, "end": r.end, "eps": (r.val - float(pn["val"].sum())) / sh4,
                      "filed": r.filed, "derived": True, "concept": "derived:" + r.concept})
     Q = pd.DataFrame(rows).sort_values(["cik", "end", "derived"]).drop_duplicates(["cik", "end"], keep="first")
-    Q.to_parquet(os.path.join(CACHE, "eps_quarterly.parquet"))
+    Q.to_parquet(os.path.join(CACHE, f"eps_quarterly{TAG}.parquet"))
     return Q
 
 
@@ -258,7 +259,7 @@ def inv_sales():
     """Quarterly first-filed inventory and revenue per firm (H3b). Revenue: 80-100-day periods, Q4 derived as
     FY - Q1..Q3 (flagged); inventory: the instant at the quarter end (+-5 days). Each quantity takes the first concept
     of its PREF list present. `filed` = the later of the two first-filing dates (the ratio is known only then)."""
-    E = pd.read_parquet(os.path.join(CACHE, "facts_first.parquet"))
+    E = pd.read_parquet(os.path.join(CACHE, f"facts_first{TAG}.parquet"))
     E = E[E["unit"] == "USD"]
 
     def pick(kind):
@@ -299,7 +300,7 @@ def inv_sales():
 
 def coverage():
     Q = quarters()
-    R = pd.read_parquet(os.path.join(CACHE, "releases_202.parquet"))
+    R = pd.read_parquet(os.path.join(CACHE, f"releases_202{TAG}.parquet"))
     C = json.load(open(os.path.join(CACHE, "ciks.json")))
     sp500, sp400 = PX.universe()
     lines = ["# P8 data foundation D5/D6: identifiers, earnings releases, quarterly EPS", "",

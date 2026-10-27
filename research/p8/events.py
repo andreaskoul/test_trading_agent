@@ -21,6 +21,7 @@ import edgar as ED                                               # noqa: E402
 import prices as PX                                              # noqa: E402
 
 OUT = os.path.join(PX.CACHE, "events.parquet")
+T0_LAST = pd.Timestamp("2025-12-31")   # the sealed read (research/p8/sealed.py) sets 2026-09-30 and OUT/ED.TAG
 
 
 def t0_of(acc, sessions):
@@ -49,8 +50,8 @@ def sue_series(g):
 
 
 def build(sessions):
-    Q = pd.read_parquet(os.path.join(ED.CACHE, "eps_quarterly.parquet")).sort_values(["cik", "end"])
-    rel = pd.read_parquet(os.path.join(ED.CACHE, "releases_202.parquet"))
+    Q = pd.read_parquet(os.path.join(ED.CACHE, f"eps_quarterly{ED.TAG}.parquet")).sort_values(["cik", "end"])
+    rel = pd.read_parquet(os.path.join(ED.CACHE, f"releases_202{ED.TAG}.parquet"))
     C = json.load(open(os.path.join(ED.CACHE, "ciks.json")))
     gics = json.load(open(os.path.join(PX.CACHE, "gics.json")))["firms"]
     by_cik = {}
@@ -72,7 +73,7 @@ def build(sessions):
                 continue
             t0 = t0_of(pd.Timestamp(a[0]), sessions)
             # the membership series starts in 2012: earlier reports cannot be placed in a universe
-            if t0 is None or not (pd.Timestamp("2012-01-01") <= t0 <= pd.Timestamp("2025-12-31")):
+            if t0 is None or not (pd.Timestamp("2012-01-01") <= t0 <= T0_LAST):
                 continue
             names = sorted(by_cik.get(c, []))
             mem_t0 = set(mem.loc[t0]) if t0 in mem.index and isinstance(mem.loc[t0], list) else set()

@@ -18,6 +18,7 @@ sys.path.insert(0, os.path.join(ROOT, "fund"))
 CACHE = os.path.join(ROOT, ".cache", "p8")
 OUT = os.path.join(ROOT, "reports", "research", "p8")
 START, END = "2016-01-04", "2025-12-31"          # never past the validation sample
+EXTRA_BARS = []                                   # empty except in the sealed read
 os.makedirs(CACHE, exist_ok=True)
 os.makedirs(OUT, exist_ok=True)
 
@@ -101,7 +102,11 @@ def fetch():
 def panel():
     """Alpaca closes with each old symbol's column filled from its current symbol (same CUSIP)."""
     import json
-    A = pd.read_parquet(os.path.join(CACHE, "alpaca_bars.parquet")).pivot(index="date", columns="ticker", values="close")
+    B = pd.read_parquet(os.path.join(CACHE, "alpaca_bars.parquet"))
+    for extra in EXTRA_BARS:                           # the sealed read appends 2026 bars (research/p8/sealed.py)
+        X = pd.read_parquet(os.path.join(CACHE, extra))
+        B = pd.concat([B, X[X["date"] > B["date"].max()]])
+    A = B.pivot(index="date", columns="ticker", values="close")
     al = json.load(open(os.path.join(CACHE, "aliases.json")))
     cols = {}
     for old, new in al.items():
