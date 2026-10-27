@@ -37,3 +37,40 @@ for event tests.
   * GICS (sub-industry, chains) exists only for firms on today's lists, so the GICS-based tests (H1, H3a, H3b)
     cover surviving firms only;
   * 162 delisted symbols have no CIK.
+
+## H5 Lazy Prices: fit sample, and the replication check (Amendment 5)
+
+| universe | months | slope (3-month target) | t | p | L/S net | rank-signal robustness |
+|---|---|---|---|---|---|---|
+| S&P 500 | 117 | +0.7 bp per sd | +0.10 | 0.46 | +13 bp | −6.3 bp, t −0.71 |
+| S&P 400 (2017–21) | 59 | −52.6 bp per sd | −1.98 | 0.97 | −113 bp | −52.9 bp, t −2.37 |
+
+**Replication outcome.**
+* **S&P 500:** the published sign reproduces, but only barely, and not in the rank version.
+* **S&P 400:** the sign does not reproduce.
+
+**Code audit** (the registered reading of a failed replication is "the code is wrong"):
+* one filing's similarity, recomputed by hand: identical (0.985953);
+* signal timing: 400 random rows checked against their filings, 0 mismatches;
+* signals at most 120 days old: no change (S&P 400 t −2.07).
+
+**Diagnosis.**
+* The S&P 400 reversal comes from 2020: −244 bp per sd. Every other year lies between −39 and +14 bp.
+* Amendment 2 already flags 2020–21 as the COVID regime.
+* The S&P 400 sample is also today's list (survivors), which favours firms whose large changes went well.
+
+No code error was found. H5 goes to the validation read with this replication outcome attached. Its similarity
+measure is the published term-frequency cosine (Amendment 5).
+
+## H2 link momentum: the registered power gate fails
+
+* **Links extracted:** 1,896 named ≥ 10% customer links (exact registrant-name match), from 1,477 10-Ks of 225
+  suppliers.
+* **Gate:** S&P 400 suppliers per year with a named S&P 500 customer average **32.5** (range 29–36), against the
+  registered ≥ 100.
+* **Recall check:** about half of S&P 400 10-Ks (183/350 in 2019, 206/387 in 2023) contain a "10% customer"
+  sentence. In a random sample of 12 of those sentences, none names a ≥ 10% customer ("no individual customer…",
+  "our top five customers…", "one customer accounted for 10%"). SFAS 131 requires the amount, not the name.
+* **Conclusion:** the gate's failure is a property of the disclosures, not of the extraction.
+* **Result:** H2 is reported as underpowered and enters Holm with p = 1 (registered). The S2 precision check is
+  then moot and was not run.

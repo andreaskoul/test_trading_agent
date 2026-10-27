@@ -151,3 +151,9 @@ if __name__ == "__main__":
             o = stat(F[F["universe"] == u])
             print(f"H5 fit {u}: months {o['months']}, slope {o['slope'] * 1e4:+.1f} bp per sd (3-month target), "
                   f"NW t {o['t']:+.2f}, p {o['p']:.4f}; L/S gross {o['ls_gross'] * 1e4:+.1f} bp, net {o['ls_net'] * 1e4:+.1f}")
+            # descriptive robustness: the signal's within-month rank (the registered OLS slope is sensitive to the
+            # similarity's long left tail: min 0.31 vs median 0.991)
+            x = F[F["universe"] == u].copy()
+            x["signal"] = x.groupby("month")["signal"].rank(pct=True)
+            r = stat(x)
+            print(f"   rank-signal robustness: slope {r['slope'] * 1e4:+.1f} bp per sd, t {r['t']:+.2f}")
