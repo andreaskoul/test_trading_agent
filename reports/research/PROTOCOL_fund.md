@@ -852,8 +852,16 @@ short positions are possible". The goal is always to beat buy-and-hold of the S&
 * The ledger also holds each book on top of an SPY sleeve:
   * 1x SPY ("+ S&P"), and
   * the dynamic sleeve: **1.3x SPY when SPY closes above its 200-session average at the as-of close, 0.7x
-    otherwise.** The borrowed or idle 0.3 pays or earns the 3-month T-bill rate (FRED DTB3, the last value
-    published before the as-of day); a sleeve change costs 5 bp per side.
+    otherwise.** A sleeve change costs 5 bp per side.
+* **Costs on the broker's terms** (amended 2026-10-23, owner: "incorporate what paper trading taught us about
+  costs"):
+  * trades cost 5 bp per side, against a measured 0.8 bp slippage and 0.08 bp fees in paper trading (1–22
+    October 2026, 118 fills);
+  * any debit balance (net long exposure above equity, short proceeds counted as cash) pays the margin rate,
+    Alpaca's 6.50% a year on actual/360. That was DTB3 + 2.43% on 2026-10-21, and history uses DTB3 (the last value
+    published before the as-of day) + 2.43%;
+  * idle cash earns nothing;
+  * easy-to-borrow shorts cost nothing (Alpaca shorts only easy-to-borrow names).
 * Each week's trend state and rate are frozen at first use in `exposure.json` on `research-data` and never
   recomputed (CLAUDE.md 4).
 * Yardsticks: SPY buy-and-hold; the sleeve alone (market timing without stock picking); and a **risk-matched
