@@ -46,6 +46,12 @@ jobs:
             || echo '{"books":[],"weeks":[],"records":0}' > _site/spx.json
           [ -f _site/dashboard.json ] || echo '{"updated":"no trades yet","positions":[],"orders":[],"account":[],"cash":[]}' > _site/dashboard.json
           [ -f _site/shadow.json ] || echo '{"updated":"not built yet","marks":"","start":100000,"books":[],"lifecycle":null,"account":null}' > _site/shadow.json
+          # performance report (QuantStats) from the broker's equity curve; never blocks the deploy
+          git show "origin/fund-data:fund_state/live/execution/nav.csv" > /tmp/nav.csv 2>/dev/null || true
+          if [ -s /tmp/nav.csv ]; then
+            pip -q install quantstats yfinance && python fund/perf_report.py /tmp/nav.csv _site/report.html \
+              || echo "::warning::performance report not built"
+          fi
           touch _site/.nojekyll
           ls -la _site
       - uses: actions/configure-pages@v5
