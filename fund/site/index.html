@@ -27,6 +27,9 @@
   td.n { text-align:right; font-variant-numeric:tabular-nums; }
   .pos { color:var(--pos); } .neg { color:var(--neg); }
   td.thesis { white-space:normal; min-width:320px; max-width:520px; color:var(--muted); }
+  /* long text stays three lines per row; the full text shows on hover (and in the title tooltip) */
+  .clamp { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  td:hover .clamp { -webkit-line-clamp:unset; overflow:visible; }
   .empty { color:var(--muted); padding:8px 0; }
   canvas { max-height:260px; }
 </style>
@@ -50,6 +53,7 @@ const fmt = (v, d = 2) => v == null ? "" : Number(v).toLocaleString("en-US", { m
 const pct = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${(v * 100).toFixed(2)}%</span>`;
 const usd = v => v == null ? "" : `<span class="${v >= 0 ? "pos" : "neg"}">${v < 0 ? "−" : ""}$${fmt(Math.abs(v), 0)}</span>`;
 const esc = s => (s ?? "").toString().replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const clamp = t => t ? `<div class="clamp" title="${t.replace(/"/g, "&quot;")}">${t}</div>` : "";   // t is already esc()-ed
 function table(el, cols, rows) {
   const box = document.getElementById(el);
   if (!rows.length) { box.innerHTML = '<div class="empty">None yet.</div>'; return; }
@@ -104,14 +108,14 @@ fetch("dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => {
       ...lcCols,
       ["Shares", p => fmt(p.shares, 0), "n"], ["Avg cost $", p => fmt(p.avg_cost), "n"], ["Mark $", p => fmt(p.current_price), "n"],
       ["Market value $", p => usd(p.market_value), "n"], ["Return", p => pct(p.return), "n"], ["Unrealized P&L", p => usd(p.unrealized), "n"],
-      ["Red team", p => esc(p.redteam)], ["Thesis", p => esc(p.thesis), "thesis"]], d.open_std);
+      ["Red team", p => clamp(esc(p.redteam)), "thesis"], ["Thesis", p => clamp(esc(p.thesis)), "thesis"]], d.open_std);
     table("closed", [["Day", t => t.day], ["Ticker", t => `<b>${esc(t.ticker)}</b>`], ["Name", t => esc(t.name)], ["Closed", t => t.side],
       ["Shares", t => fmt(Math.abs(t.shares), 0), "n"], ["Cost $ (FIFO)", t => fmt(t.entry_price), "n"], ["Close $", t => fmt(t.exit_price), "n"],
       ["Return", t => pct(t.return), "n"], ["Realized P&L", t => usd(t.pnl), "n"]], d.realized.slice().reverse());
   } else {
   document.getElementById("closedTitle").textContent = "Closed positions (lot view: Alpaca was unreachable at build time)";
   table("open", [...posCols, ...lcCols, ["Current $", p => fmt(p.current_price), "n"], ["Return", p => pct(p.return), "n"], ["P&L", p => usd(p.pnl), "n"],
-    ["Red team", p => esc(p.redteam)], ["Thesis", p => esc(p.thesis), "thesis"]], open);
+    ["Red team", p => clamp(esc(p.redteam)), "thesis"], ["Thesis", p => clamp(esc(p.thesis)), "thesis"]], open);
   table("closed", [...posCols, ["Exit", p => p.exit_day], ["Exit $", p => fmt(p.exit_price), "n"], ["Return", p => pct(p.return), "n"],
     ["P&L", p => usd(p.pnl), "n"], ["Status", p => esc(p.status)]], closed.slice().reverse());
   }
