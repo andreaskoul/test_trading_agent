@@ -79,6 +79,7 @@ jobs:
         run: |
           python fund/lifecycle.py daily
           python fund/lifecycle.py replay
+          python fund/lifecycle.py control
 
       - name: Position ledger (Excel)
         if: ${{ always() && steps.m.outputs.mode != 'plan' }}

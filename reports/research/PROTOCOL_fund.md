@@ -960,6 +960,25 @@ review, the caps, the hedge, costs and the live decision times.
 * a desk dry run on the as-of 2026-10-21 data, inspected for the content of the structural labels and horizons
   (`reports/research/p7b_desk_dryrun.md`).
 
+**The shadow control** (`python fund/lifecycle.py control`, nightly after the live rebuild, never traded).
+* **Until P7B** it applies the live logs, so it is the live book to the cent.
+* **From P7B** it decides at each close with the same engine and without the 7B rules:
+  * the Amendment 8 horizon (`H_a8` in the desk record), not the 7B structural horizon;
+  * a news increase on a losing lot;
+  * no slot protection.
+* **Records.** Each decided day is logged once in `lifecycle/control/days/<day>.json`, and every rebuild applies the
+  logs.
+* **Gates,** as the live book's:
+  * a rebuild reproduces the NAV, and recorded days never change;
+  * reconciliation, limits and triggers;
+  * no news after a close.
+* **Shared work.** News checks and review labels are taken from the live book for the lots it also holds. The
+  control's own lots are checked separately, so it adds LLM calls only where the books differ.
+* **Timing.** The live book decides 20 and 3 minutes before the close; the control decides at the close. That is a
+  small difference in information, to be read with every comparison.
+* **Validation.** Forked at 2026-10-22 under the same rules as the live book, the control reproduced every live
+  action and all 7 horizon reviews over four sessions, with a NAV $0.93 below on 10-27 (from deciding at the close).
+
 **Evaluation.**
 * 7B against the shadow control, on the same desk output and news, by the existing scoring.
 * No verdict before the shadow-books rule allows (about mid-April 2027: three times the longest horizon, which is

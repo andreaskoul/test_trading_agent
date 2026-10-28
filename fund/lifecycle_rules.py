@@ -21,22 +21,23 @@ P7B_ASOF = os.environ.get("FUND_P7B_ASOF") or "2026-10-28"
 STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z = 63, 40, 20, -1.0
 
 
-def may_increase(d, L):
-    """7B R1: from P7B a news increase needs the lot to be working (R >= 0); before P7B, Amendment 7 as it was."""
-    return not (d >= P7B and L["R"] < 0)
+def may_increase(d, L, active=True):
+    """7B R1: from P7B a news increase needs the lot to be working (R >= 0); before P7B, Amendment 7 as it was.
+    active=False: the shadow control (Protocol 7 + Amendments 8/9), which never applies 7B."""
+    return not (active and d >= P7B and L["R"] < 0)
 
 
-def checkpoint_exit(d, L):
+def checkpoint_exit(d, L, active=True):
     """7B R2: a structural lot is checked every STRUCT_CHECK sessions inside its horizon; it exits when
     R / (sigma_e sqrt(days)) <= STRUCT_Z (sigma_e frozen at entry)."""
-    return bool(d >= P7B and L.get("structural") and 0 < L["days"] < L["H"] and L["days"] % STRUCT_CHECK == 0
+    return bool(active and d >= P7B and L.get("structural") and 0 < L["days"] < L["H"] and L["days"] % STRUCT_CHECK == 0
                 and L["R"] / (L["sigma_e"] * math.sqrt(L["days"])) <= STRUCT_Z)
 
 
-def slots(target, cur, key, d):
+def slots(target, cur, key, d, active=True):
     """At most N_SIDE names a side by `key`; 7B R3: from P7B a carried lot that is working (R >= 0) inside its horizon
     is ranked ahead of every other name."""
-    prot = {t for t in cur if t in target and d >= P7B and cur[t]["R"] >= 0 and cur[t]["days"] < cur[t]["H"]}
+    prot = {t for t in cur if t in target and active and d >= P7B and cur[t]["R"] >= 0 and cur[t]["days"] < cur[t]["H"]}
     keep = []
     for sgn in (1, -1):
         side_ = sorted([t for t in target if np.sign(target[t]) == sgn], key=lambda t: (t not in prot, -key[t]))

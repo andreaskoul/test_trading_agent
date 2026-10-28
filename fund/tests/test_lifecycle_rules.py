@@ -85,6 +85,18 @@ def test_r3_slots():
     assert "BAC" not in LR.slots(target, cur, key, AFTER)
 
 
+def test_control_switch():
+    # the shadow control (active=False) never applies 7B, whatever the date: HPE could still be increased on 10-21-like
+    # terms, a failing structural lot is not checkpointed, and no carried lot is protected
+    assert LR.may_increase(AFTER, {"R": INCREASES["HPE"]}, active=False)
+    lot = {"structural": True, "sigma_e": 0.02, "H": 63, "days": 20, "R": -0.10}
+    assert not LR.checkpoint_exit(AFTER, lot, active=False)
+    cur = {"BAC": {"R": 0.003524, "days": 5, "H": 6}}
+    target = {"BAC": -0.029, **{f"N{i}": -0.05 for i in range(10)}}
+    key = {t: abs(w) * 0.2 if t in cur else abs(w) - 0.001 for t, w in target.items()}
+    assert "BAC" not in LR.slots(target, cur, key, AFTER, active=False)
+
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in list(globals().items()):

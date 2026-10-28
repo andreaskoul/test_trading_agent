@@ -72,7 +72,7 @@ NEEDS = {
     "weekly": ["OPENROUTER_API_KEY", "FINNHUB_API_KEY", "HF_TOKEN", "ALPACA_API_KEY", "ALPACA_SECRET_KEY", "SEC_USER_AGENT"],
     "trade": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "review": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY"],
-    "reconcile": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
+    "reconcile": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY"],   # + 7B shadow control
     "report": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "IMESSAGE_TO"],
     "prices": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
     "lifecycle": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY", "HF_TOKEN"],
@@ -358,6 +358,10 @@ def job_execute(j, a):
     if mode == "reconcile":
         j.step("C10 lifecycle book: news checks and rebuild (Amendment 7)", "python fund/lifecycle.py daily", when="always")
         j.step("C10 degenerate replay vs the weekly book (mechanical gate)", "python fund/lifecycle.py replay", when="always")
+        # Protocol 7B's shadow control (Protocol 7 + Amendments 8/9, never traded): decided at each close after the
+        # live rebuild; its records go to fund-data with the rest (lifecycle/control/); a failed gate fails the job
+        # after the commit step below has saved the records
+        j.step("Protocol 7B shadow control (P7 + A8/A9)", "python fund/lifecycle.py control", when="always")
     if mode != "plan":
         j.step("Position ledger (Excel)", "python fund/ledger.py", when="always", allow_fail=True)
     if mode != "plan" or a.resume:
