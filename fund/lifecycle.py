@@ -58,7 +58,7 @@ from common import MODE, P7_START, STATE, asof_from_env, llm, load, news_cutoff,
 from review_rules import review_rule
 
 mode = sys.argv[1]
-assert mode in ("desk", "daily", "replay", "trade"), mode
+assert mode in ("desk", "daily", "replay", "trade", "control"), mode
 LC = os.path.join(STATE, MODE, "lifecycle")
 os.makedirs(os.path.join(LC, "news"), exist_ok=True)
 
@@ -881,8 +881,49 @@ def trading_days(R):
     return [d for d in R.index if "SPY" in R.columns and not math.isnan(R.at[d, "SPY"])]
 
 
-def run(replay=False, fetch_news=True, live=None):
+def control_news(day, close_ts, lots, seen, fetch_news):
+    """The shadow control's kill checks for one day: a lot the live book also holds (same id) takes the live check of
+    that day (lifecycle/news/<day>.json; decided at T-20 min); the control's own lots are checked at the close into
+    lifecycle/control/news_own/. The merged record is written to lifecycle/control/news/<day>.json, never rerun."""
+    cdir = os.path.join(LC, "control", "news")
+    os.makedirs(cdir, exist_ok=True)
+    p = os.path.join(cdir, f"{day.date()}.json")
+    if os.path.exists(p):
+        return json.load(open(p))
+    lp = os.path.join(LC, "news", f"{day.date()}.json")
+    live_lots = json.load(open(lp))["lots"] if os.path.exists(lp) else {}
+    shared = {L["id"]: live_lots[L["id"]] for L in lots if L["id"] in live_lots}
+    rest = [L for L in lots if L["id"] not in live_lots]
+    part = kill_check(day, close_ts, rest, seen, os.path.join(LC, "control", "news_own")) if rest and fetch_news else {"lots": {}}
+    rec = {"day": str(day.date()), "close_ts": close_ts, "lots": {**shared, **part.get("lots", {})},
+           "shared_from_live": sorted(shared), "own": sorted(x["id"] for x in rest)}
+    json.dump(rec, open(p, "w"), indent=1)
+    return rec
+
+
+def seed_reviews(day, ids, rv_dir):
+    """The control's review labels: copy the live labels of the same day for the lots it shares with the live book;
+    review_labels() then labels only the rest."""
+    os.makedirs(rv_dir, exist_ok=True)
+    p = os.path.join(rv_dir, f"{day.date()}.json")
+    lp = os.path.join(LC, "reviews", f"{day.date()}.json")
+    if os.path.exists(p) or not os.path.exists(lp):
+        return
+    live_rec = json.load(open(lp))
+    shared = {i: live_rec["lots"][i] for i in ids if i in live_rec.get("lots", {})}
+    if shared:
+        json.dump({"day": live_rec["day"], "close_ts": live_rec["close_ts"], "lots": shared, "shared_from_live": sorted(shared)},
+                  open(p, "w"), indent=1)
+
+
+def run(replay=False, fetch_news=True, live=None, variant=None):
     """Rebuild the book from its inputs. Deterministic: the same inputs give the same NAV.
+
+    variant="control": the shadow control of Protocol 7B (Protocol 7 + Amendments 8/9, never traded). Until P7B it
+    is the live book (it applies the live logs); from P7B it decides at each close without the 7B rules (the
+    Amendment 8 horizon, no R1-R3), logs each decided day to lifecycle/control/days/<day>.json and applies that log on
+    every later rebuild. News checks and review labels of a lot the live book also holds (same id) are taken from the
+    live logs; the control's own lots are checked into lifecycle/control/news_own and reviews.
 
     Days before P7_START: decisions computed at each close (the shadow C10). From P7_START: a completed day applies
     the decisions logged live that day (lifecycle/live/<day>.json); a day without a live log holds (nothing traded).
@@ -932,6 +973,14 @@ def run(replay=False, fetch_news=True, live=None):
             x = json.load(open(f))
             if x.get("status") == "submitted":
                 logs[pd.Timestamp(x["day"])] = x
+    CTRL = variant == "control"
+    CDIR = os.path.join(LC, "control")
+    h_of = (lambda info: info.get("H_a8", info["H"])) if CTRL else (lambda info: info["H"])   # the control: the A8 horizon
+    clogs = {}
+    if CTRL:
+        for f in glob.glob(os.path.join(CDIR, "days", "*.json")):
+            x = json.load(open(f))
+            clogs[pd.Timestamp(x["day"])] = x
     by_entry = {c["entry_day"]: c for c in C}
     nav, hedge, lots, events, rows, cool, seen, nid = CAPITAL, 0.0, [], [], [], {}, {}, 0
     reviews, ext_done = [], []                          # Amendment 8: horizon reviews, and closed extensions with their P&L
@@ -942,6 +991,9 @@ def run(replay=False, fetch_news=True, live=None):
     out_live = None
     for d, r, close_ts, is_live in seq:            # close_ts: the session's real close (a live day: the news cutoff)
         act = "compute" if replay or d < P7_START or is_live else ("apply" if d in logs else "hold")
+        own = CTRL and d >= P7B                     # the control's own decision days
+        if own:
+            act = "apply" if d in clogs else "compute"
         nav0 = nav
         cash0 = nav0 - sum(L["n"] for L in lots) - hedge
         # 1. mark to today's close
@@ -994,12 +1046,12 @@ def run(replay=False, fetch_news=True, live=None):
 
         # 2. exits and changes at today's close (never on the entry day)
         if act == "apply":                          # Protocol 7: the decisions taken live, as logged
-            lg = logs[d]
+            lg = clogs[d] if own else logs[d]
             acts = {}
             for e in lg["actions"]:
                 acts.setdefault(e["id"], e)
             after = {x["id"]: x for x in lg["lots_after"]}
-            nf = os.path.join(LC, "news", f"{d.date()}.json")
+            nf = os.path.join(CDIR if own else LC, "news", f"{d.date()}.json")
             news = json.load(open(nf)) if os.path.exists(nf) else {"lots": {}}
             for L in list(lots):
                 k = news["lots"].get(L["id"], {})
@@ -1041,19 +1093,25 @@ def run(replay=False, fetch_news=True, live=None):
             open_ = [L for L in lots if L["days"] >= 1]
             nd = (live or {}).get("news_dir") if is_live else None
             nf = os.path.join(nd or os.path.join(LC, "news"), f"{d.date()}.json")
-            news = kill_check(d, close_ts, open_, seen, nd) if (open_ and (fetch_news or is_live)) else \
-                (json.load(open(nf)) if os.path.exists(nf) else {"lots": {}})
+            if own:
+                news = control_news(d, close_ts, open_, seen, fetch_news)
+            else:
+                news = kill_check(d, close_ts, open_, seen, nd) if (open_ and (fetch_news or is_live)) else \
+                    (json.load(open(nf)) if os.path.exists(nf) else {"lots": {}})
             stop_of = lambda L: L.get("stop_R", -STOP_K * L["W"])
             tgt_of = lambda L: L.get("target_R", TARGET_K * L["W"])
             # Amendment 8: a lot at its horizon is reviewed (decided live only; a rebuild applies the logged decision).
             # The review switches itself off once 50 reviews have been made and the closed extensions have not earned
             # more than exiting at the horizon would have.
-            reviewing = is_live and d >= A8_REVIEW and not (len(reviews) >= REVERT_N and sum(x["ext_pnl"] for x in ext_done) <= 0)
+            reviewing = (is_live or own) and d >= A8_REVIEW and not (len(reviews) >= REVERT_N and sum(x["ext_pnl"] for x in ext_done) <= 0)
             due = [L for L in open_ if L["days"] >= L["H"] and stop_of(L) < L["R"] < tgt_of(L) and L.get("ext", 0) < EXT_MAX] \
                 if reviewing else []
             labels, med_new = {}, None
             if due:
                 rv_dir = os.path.join(LC, "plan_reviews" if (live or {}).get("news_dir") else "reviews")
+                if own:                                 # the control: live labels for shared lots, its own for the rest
+                    rv_dir = os.path.join(CDIR, "reviews")
+                    seed_reviews(d, [L["id"] for L in due], rv_dir)
                 labels = review_labels(d, close_ts, [{"lot": L, "driving_event": L.get("driving_event") or
                                                       ((info_of.get(L["id"]) or {}).get("out") or {}).get("driving_event")} for L in due],
                                        rv_dir)["lots"]
@@ -1065,7 +1123,7 @@ def run(replay=False, fetch_news=True, live=None):
                         if t_ == "SPY" or not w_ or inf.get("status") != "ok" or inf.get("stale"):
                             continue
                         ev_ = entry_vol(cn["asof"], t_, str(d.date()), float(cn["beta"].get(t_, 1.0)), upto=prev_day)
-                        mets.append(abs(cn["scores"].get(t_, 0)) * ev_["sigma_e"] * math.sqrt(inf["H"]))
+                        mets.append(abs(cn["scores"].get(t_, 0)) * ev_["sigma_e"] * math.sqrt(h_of(inf)))
                     med_new = float(np.median(mets)) if mets else None
             for L in open_:
                 k = news["lots"].get(L["id"], {})
@@ -1098,9 +1156,9 @@ def run(replay=False, fetch_news=True, live=None):
                     trade(L, 0.0, "horizon")
                 elif k.get("verdict") == "reduce" and not L.get("reduced"):
                     trade(L, L["n"] * 0.5, "news_reduce"); L["reduced"] = True
-                elif checkpoint_exit(d, L):
+                elif checkpoint_exit(d, L, active=not CTRL):
                     trade(L, 0.0, "structural_checkpoint")              # 7B R2: a structural thesis that is not working
-                elif k.get("verdict") == "increase" and not L.get("increased") and may_increase(d, L):
+                elif k.get("verdict") == "increase" and not L.get("increased") and may_increase(d, L, active=not CTRL):
                     tgt = L["side"] * min(UP * abs(L["w0"]), NAME_CAP) * nav
                     room = GROSS_CAP * nav - sum(abs(x["n"]) for x in lots) - abs(hedge)
                     if abs(tgt) > abs(L["n"]) and abs(tgt) - abs(L["n"]) <= room:
@@ -1148,7 +1206,7 @@ def run(replay=False, fetch_news=True, live=None):
                             cand[t] = (w, side, info)        # reopens as a new lot below
                             continue
                         if pd.Timestamp(info["first_reported"]) > pd.Timestamp(L["first_reported"]):   # a new event
-                            L["H"] = L["days"] + max(L["H"] - L["days"], info["H"])
+                            L["H"] = L["days"] + max(L["H"] - L["days"], h_of(info))
                             L["kill_conditions"], L["first_reported"] = info["kill_conditions"], info["first_reported"]
                             L["w0"] = side * max(abs(L["n"]) / nav, abs(w))
                     target[t] = L["n"] / nav
@@ -1160,7 +1218,7 @@ def run(replay=False, fetch_news=True, live=None):
                 key = {t: (abs(target[t]) * max(cur[t]["H"] - cur[t]["days"], 0) / cur[t]["H"]) if t in cur else abs(target[t]) - NEW_COST
                        for t in target}
                 # 7B R3: from P7B a carried lot that is working (R >= 0) inside its horizon keeps its slot
-                keep = slots(target, cur, key, d)
+                keep = slots(target, cur, key, d, active=not CTRL)
                 for t in [t for t in cur if t not in keep]:
                     trade(cur[t], 0.0, "capacity")
                 w_cap, _ = caps(pd.Series({t: target[t] for t in keep}, dtype=float), sector_all, beta_all)
@@ -1177,11 +1235,11 @@ def run(replay=False, fetch_news=True, live=None):
                         ev = entry_vol(c["asof"], t, str(d.date()), float(c["beta"].get(t, 1.0)), upto=prev_day if is_live else None)
                         nid += 1
                         L = {"id": f"{c['asof']}|{t}", "ticker": t, "side": side, "n": 0.0, "w0": tw, "beta": ev["beta"],
-                             "sigma_e": ev["sigma_e"], "H": info["H"], "W": ev["sigma_e"] * math.sqrt(info["H"]), "R": 0.0, "days": 0,
+                             "sigma_e": ev["sigma_e"], "H": h_of(info), "W": ev["sigma_e"] * math.sqrt(h_of(info)), "R": 0.0, "days": 0,
                              "kill_conditions": info["kill_conditions"], "first_reported": info["first_reported"],
                              "score": c["scores"].get(t, 0), "cohort": c["asof"], "entry_day": str(d.date()),
                              "entry_close_ts": close_ts, "driving_event": info.get("driving_event") or (info.get("out") or {}).get("driving_event"),
-                             **({"structural": True} if info.get("structural") and d >= P7B else {}),
+                             **({"structural": True} if info.get("structural") and d >= P7B and not CTRL else {}),
                              **({"news_session": info["inputs"]["news_session"]} if (info.get("inputs") or {}).get("news_session") else {})}
                         lots.append(L)
                         trade(L, tw * nav, "entry")
@@ -1197,6 +1255,16 @@ def run(replay=False, fetch_news=True, live=None):
                                    "from": round(hedge, 2), "to": round(-stock_beta, 2)})
                 hedge = -stock_beta
         nav -= cost
+        if own and act == "compute":                # the control's decision for d, logged once and applied on every rebuild
+            os.makedirs(os.path.join(CDIR, "days"), exist_ok=True)
+            json.dump({"day": str(d.date()), "status": "submitted", "decided": "close", "nav_model": nav,
+                       "hedge_w": hedge / nav, "actions": [e for e in events if e["day"] == str(d.date())],
+                       "lots_after": [{**{k: v for k, v in L.items() if k != "n"}, "w": L["n"] / nav} for L in lots],
+                       "reviews": [x for x in reviews if x["day"] == str(d.date())],
+                       "cool": {f"{k[0]}|{k[1]}": {**v, "until": str(v["until"].date()) if v.get("until") is not None else None}
+                                for k, v in cool.items()}},
+                      open(os.path.join(CDIR, "days", f"{d.date()}.json"), "w"), indent=1, default=str)
+            clogs[d] = True
         if is_live:
             out_live = {"day": str(d.date()), "nav": nav, "hedge": hedge, "lots": lots,
                         "actions": [e for e in events if e["day"] == str(d.date())],
@@ -1211,7 +1279,7 @@ def run(replay=False, fetch_news=True, live=None):
                      "net_beta": (sum(L["n"] * L["beta"] for L in lots) + hedge) / nav if not replay else None,
                      "traded": bool(traded or c is not None)})
         prev_day = d
-    if len(rf_used) > n_rf:
+    if len(rf_used) > n_rf and not CTRL:            # the frozen rates are the live book's; the control only reads them
         pd.Series(rf_used).sort_index().rename("v").to_csv(rfp, index_label="date")
     return {"rows": rows, "lots": lots, "events": events, "cohorts": [c["asof"] for c in C], "live": out_live,
             "reviews": reviews, "ext_done": ext_done}
@@ -1275,6 +1343,43 @@ def daily():
           f"{len(st['events'])} events; checks: {'PASS' if not ck['fails'] else ck['fails']}")
     if ck["fails"]:
         raise SystemExit("lifecycle mechanical checks failed: " + "; ".join(ck["fails"]))
+
+
+def control():
+    """Protocol 7B's shadow control (Protocol 7 + Amendments 8/9, never traded): decided at each close from P7B,
+    after the live daily rebuild. Same gates as the live book: a second rebuild from the logged inputs reproduces the
+    NAV, recorded days never change, reconciliation, limits and triggers; and no news after a close is used."""
+    cd = os.path.join(LC, "control")
+    os.makedirs(cd, exist_ok=True)
+    # As the live book: a day is decided once and logged (control/days/<day>.json); the recorded book is always the
+    # rebuild that applies the logs. The deciding pass's own NAV is not recorded (it converts weights to positions at
+    # the post-cost NAV, the apply pass at the pre-cost NAV, a difference of cents).
+    if run(variant="control") is None:
+        print("lifecycle control: no cohort yet"); return
+    st = run(variant="control", fetch_news=False)
+    again = run(variant="control", fetch_news=False)
+    ck = checks(st)
+    if [r["nav"] for r in again["rows"]] != [r["nav"] for r in st["rows"]]:
+        ck["fails"].append("control: a rebuild from the logged inputs does not reproduce the NAV")
+    sp = os.path.join(cd, "state.json")
+    if os.path.exists(sp):
+        old = {r["date"]: r["nav"] for r in json.load(open(sp))["rows"]}
+        drift = [d for d, v in old.items() if any(r["date"] == d and abs(r["nav"] - v) > 0.005 for r in st["rows"])]
+        if drift:
+            ck["fails"].append(f"control: recorded days changed on rebuild: {drift[:5]}")
+    for p in sorted(glob.glob(os.path.join(cd, "news_own", "*.json"))):
+        rec = json.load(open(p))
+        if any(k.get("max_published") and k["max_published"] > rec["close_ts"] for k in rec["lots"].values()):
+            ck["fails"].append(f"control: look-ahead, news after the close used on {rec['day']}")
+    json.dump({**st, "variant": "control", "p7b": str(P7B.date()),
+               "updated": datetime.now(timezone.utc).isoformat(timespec="seconds")}, open(sp, "w"), indent=0, default=str)
+    json.dump(ck, open(os.path.join(cd, "checks.json"), "w"), indent=1)
+    last = st["rows"][-1] if st["rows"] else {}
+    own = len(glob.glob(os.path.join(cd, "days", "*.json")))
+    print(f"lifecycle control: {len(st['rows'])} days ({own} decided by the control), NAV {last.get('nav', CAPITAL):,.2f}, "
+          f"{len(st['lots'])} open lots; checks: {'PASS' if not ck['fails'] else ck['fails']}")
+    if ck["fails"]:
+        raise SystemExit("lifecycle control checks failed: " + "; ".join(ck["fails"]))
 
 
 def replay():
@@ -1415,4 +1520,4 @@ def trade(plan_only):
 if mode == "trade":
     trade("--plan" in sys.argv)
 else:
-    {"desk": desk, "daily": daily, "replay": replay}[mode]()
+    {"desk": desk, "daily": daily, "replay": replay, "control": control}[mode]()

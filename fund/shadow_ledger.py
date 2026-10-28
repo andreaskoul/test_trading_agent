@@ -83,8 +83,9 @@ def prices(tickers, start, live):
     return px
 
 
-def lifecycle(base):
-    p = os.path.join(base, "lifecycle", "state.json")
+def lifecycle(base, sub=None):
+    """The lifecycle book (sub=None, the live fund) or Protocol 7B's shadow control (sub="control")."""
+    p = os.path.join(base, "lifecycle", *([sub] if sub else []), "state.json")
     if not os.path.exists(p):
         return None
     st = json.load(open(p))
@@ -188,7 +189,8 @@ def build(out_dir, live=False):
             acct = [{"date": str(r["date"]), "value": float(r["equity"])} for _, r in N.iterrows()]
     data = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"),
             "marks": f"live {pd.Timestamp.now(tz=broker.ET):%H:%M} ET" if live else "latest close",
-            "start": START, "p7_start": str(P7_START.date()), "books": out_books, "lifecycle": lifecycle(base), "account": acct}
+            "start": START, "p7_start": str(P7_START.date()), "books": out_books, "lifecycle": lifecycle(base),
+            "control": lifecycle(base, "control"), "account": acct}
 
     def clean(v):
         if isinstance(v, dict):

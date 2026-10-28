@@ -159,12 +159,14 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   const B = d.books, byKey = Object.fromEntries(B.map(b => [b.key, b]));
   // chart: cumulative return of every book, plus the account and the lifecycle book for reference
   const dates = [...new Set([...B.flatMap(b => b.series.map(p => p.date)), ...(d.account || []).map(p => p.date),
-                             ...(d.lifecycle ? d.lifecycle.nav.map(p => p.date) : [])])].filter(x => ![0, 6].includes(new Date(x + "T12:00:00Z").getUTCDay())).sort();
+                             ...(d.lifecycle ? d.lifecycle.nav.map(p => p.date) : []), ...(d.control ? d.control.nav.map(p => p.date) : [])])].filter(x => ![0, 6].includes(new Date(x + "T12:00:00Z").getUTCDay())).sort();
   const line = (pts, base) => { const m = Object.fromEntries(pts.map(p => [p.date, p.value / base - 1])); return dates.map(x => m[x] ?? null); };
   const sets = B.map((b, i) => b.key === "sp500_hold"
     ? { label: label(b.key), data: line(b.series, d.start), borderColor: "#9a9aa0", borderWidth: 3, pointRadius: 0, spanGaps: true, tension: 0.1 }
     : { label: label(b.key), data: line(b.series, d.start), borderColor: PAL[i % PAL.length], borderWidth: b.key === "c0_weekly" ? 2.5 : 1.3, pointRadius: 0, spanGaps: true, tension: 0.1 });
   if (d.lifecycle && d.lifecycle.nav.length) sets.push({ label: label("c10_lifecycle"), data: line(d.lifecycle.nav, d.start), borderColor: "#e67e22", borderWidth: 2.5, borderDash: [6, 3], pointRadius: 0, spanGaps: true });
+  // Protocol 7B's shadow control: the same engine without the 7B rules (Protocol 7 + Amendments 8/9), never traded
+  if (d.control && d.control.nav.length) sets.push({ label: "Shadow control: Protocol 7 + A8/A9 (never traded)", data: line(d.control.nav, d.start), borderColor: "#7f8c8d", borderWidth: 2, borderDash: [2, 2], pointRadius: 0, spanGaps: true });
   if (d.account && d.account.length) sets.push({ label: "actual account", data: line(d.account, d.account[0].value), borderColor: getComputedStyle(document.documentElement).getPropertyValue("--ink"), borderWidth: 2, borderDash: [2, 3], pointRadius: 0, spanGaps: true });
   new Chart(document.getElementById("chart"), { type: "line", data: { labels: dates, datasets: sets },
     options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, padding: 6, font: { size: 10 } } },
@@ -204,6 +206,8 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
     const nav = L.nav[L.nav.length - 1];
     document.getElementById("lcNote").innerHTML = `Each position has its own horizon H (trading days), a stop at −2W and a target at +3W on its hedged return R, and daily news checks against its kill conditions. NAV ${"$" + fmt(nav.value, 0)} on ${nav.date} (${pct(nav.value / d.start - 1)} since start). ` +
       (fund ? "From " + L.is_fund_from + " this book is the fund; its fills are on the trade monitor." : "It becomes the fund on " + L.is_fund_from + " (Protocol 7).");
+    const Cn = d.control && d.control.nav.length ? d.control.nav[d.control.nav.length - 1] : null;
+    if (Cn) document.getElementById("lcNote").innerHTML += ` Protocol 7B (from 2026-10-28: no averaging down, structural theses held to the next report, slot protection) is measured against its <b>shadow control</b>, the same engine without the 7B rules (Protocol 7 + Amendments 8/9, never traded): NAV ${"$" + fmt(Cn.value, 0)} on ${Cn.date} (${pct(Cn.value / d.start - 1)}). No verdict before about mid-April 2027.`;
     table("lots", [["Ticker", l => `<b>${esc(l.ticker)}</b>`], ["Side", l => l.side], ["Cohort", l => l.cohort], ["Entry", l => l.entry_day], ["Score", l => l.score ?? "", "n"],
       ["Weight", l => wt(l.weight), "n"], ["Day / H", l => `${l.days ?? ""} / ${l.H ?? ""}`, "n"], ["R (hedged)", l => pct(l.R), "n"], ["Stop", l => pct(l.stop), "n"], ["Target", l => pct(l.target), "n"],
       ["Kill conditions", l => esc(l.kill_conditions.join(" · ")), "wrap"]], L.lots.slice().sort((a, b) => Math.abs(b.weight) - Math.abs(a.weight)));

@@ -15,6 +15,12 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   * Fails loudly, after saving, when the expected Thursday's prices are missing or coverage is under 95%. A holiday Thursday is skipped.
   * Could this change a decision? No. No desk of the traded fund reads these books, and the fund's venv, jobs and files are unchanged.
   * Contract tests: `research/quant_trials/test_spx_forward.py` (holding period and book return equal the backtest's; an unobserved week is not booked).
+- 2026-10-28: Protocol 7B's **shadow control** (PROTOCOL_fund.md "Protocol 7B", "The shadow control"): `lifecycle.py control`, nightly in the reconcile job after the live rebuild (the job now also needs the OpenRouter and Finnhub keys).
+  * It is the live engine without the 7B rules (the rule functions take `active=False`).
+  * It decides from 2026-10-28 at each close and logs each day once; records are in `lifecycle/control/`.
+  * The shadow page shows its NAV next to the live lifecycle fund.
+  * Validated: forked at 10-22 under the live rules, it reproduced every live action and review, with the NAV within $0.93. With the real start date it equals the live book to the cent through 10-27. The live rebuild is unchanged.
+  * Could this change a decision? No: never traded. The live book's code paths change only through the `variant` and `active` switches, both off for the live book.
 - 2026-10-28: trade monitor, compact rows: thesis and red-team text show three lines per row, with the full text on hover and in a tooltip. With the lifecycle columns the table widened, and full-text cells made each row several hundred pixels tall. Could this change a decision? No: display only.
 - 2026-10-27: trade monitor, open positions: a lifecycle clock per lot (owner request).
   * Columns: horizon (sessions held / H, extensions), sessions left, the expected exit session (the review at the horizon decides), and the thesis type (Protocol 7B structural lots show their next 20-session checkpoint; earlier lots are not classified).
