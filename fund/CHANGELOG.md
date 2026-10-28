@@ -15,6 +15,11 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   * Fails loudly, after saving, when the expected Thursday's prices are missing or coverage is under 95%. A holiday Thursday is skipped.
   * Could this change a decision? No. No desk of the traded fund reads these books, and the fund's venv, jobs and files are unchanged.
   * Contract tests: `research/quant_trials/test_spx_forward.py` (holding period and book return equal the backtest's; an unobserved week is not booked).
+- 2026-10-28: **Protocol 7B, Amendment 1** (owner decision; PROTOCOL_fund.md). From session 2026-10-30, a losing lot with earnings expected stays open past the report, and then closes only if the thesis is structurally changed (a kill condition or CONTRADICTING news).
+  * New review rules E1/E2. The hold cap is 40 sessions (63 structural); there are two extensions at most, and the stop still applies.
+  * A held lot keeps its slot, and the structural checkpoint waits for the report.
+  * Both books now count a same-day after-close report as pending, correcting Amendment 8's calendar lookup.
+  * Could this change a decision? Yes, by design. It was decided before any 7B cohort lot reached a review, so the 7B clock is kept. The shadow control keeps Amendments 8/9.
 - 2026-10-28: Protocol 7B's **shadow control** (PROTOCOL_fund.md "Protocol 7B", "The shadow control"): `lifecycle.py control`, nightly in the reconcile job after the live rebuild (the job now also needs the OpenRouter and Finnhub keys).
   * It is the live engine without the 7B rules (the rule functions take `active=False`).
   * It decides from 2026-10-28 at each close and logs each day once; records are in `lifecycle/control/`.

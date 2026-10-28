@@ -19,6 +19,10 @@ N_SIDE = 10                     # as fund/lifecycle.py (Amendment 7)
 P7B = pd.Timestamp(os.environ.get("FUND_P7B") or "2026-10-28")
 P7B_ASOF = os.environ.get("FUND_P7B_ASOF") or "2026-10-28"
 STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z = 63, 40, 20, -1.0
+# Protocol 7B Amendment 1 (owner, 2026-10-28): from session A7B1 a losing lot with earnings expected stays open and
+# closes only if the thesis is structurally changed (fund/review_rules.py, E1/E2). A lot held for its report keeps
+# its slot (slots) and is not closed by the structural checkpoint before its report (checkpoint_exit).
+A7B1 = pd.Timestamp(os.environ.get("FUND_A7B1") or "2026-10-30")
 
 
 def may_increase(d, L, active=True):
@@ -30,6 +34,8 @@ def may_increase(d, L, active=True):
 def checkpoint_exit(d, L, active=True):
     """7B R2: a structural lot is checked every STRUCT_CHECK sessions inside its horizon; it exits when
     R / (sigma_e sqrt(days)) <= STRUCT_Z (sigma_e frozen at entry)."""
+    if active and d >= A7B1 and L.get("report_session") and d <= pd.Timestamp(L["report_session"]):
+        return False                                    # 7B A1: earnings expected, the lot waits for its report
     return bool(active and d >= P7B and L.get("structural") and 0 < L["days"] < L["H"] and L["days"] % STRUCT_CHECK == 0
                 and L["R"] / (L["sigma_e"] * math.sqrt(L["days"])) <= STRUCT_Z)
 
@@ -37,7 +43,8 @@ def checkpoint_exit(d, L, active=True):
 def slots(target, cur, key, d, active=True):
     """At most N_SIDE names a side by `key`; 7B R3: from P7B a carried lot that is working (R >= 0) inside its horizon
     is ranked ahead of every other name."""
-    prot = {t for t in cur if t in target and active and d >= P7B and cur[t]["R"] >= 0 and cur[t]["days"] < cur[t]["H"]}
+    prot = {t for t in cur if t in target and active and d >= P7B and cur[t]["days"] < cur[t]["H"]
+            and (cur[t]["R"] >= 0 or (d >= A7B1 and cur[t].get("held_for_report")))}   # 7B A1: held for its report
     keep = []
     for sgn in (1, -1):
         side_ = sorted([t for t in target if np.sign(target[t]) == sgn], key=lambda t: (t not in prot, -key[t]))

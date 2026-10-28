@@ -55,6 +55,24 @@ def test_unchanged_below_z_hi():
     assert review_rule(False, "CONFIRMING", 0.8, 0.3, 0.9, False, **P) == ("extend", 5)
 
 
+def test_earnings_hold():
+    # Protocol 7B Amendment 1 (owner 2026-10-28): a losing lot with earnings expected stays open; after the report it
+    # closes only if the thesis is structurally changed (rule 1). Real fixture: WMT (10-26 plan run, z -0.48, STALE,
+    # earnings 2026-11-19 within the cap) exited by rule 2 under Amendment 9; with the hold it is extended past the report.
+    assert review_rule(False, "STALE", -0.480, -1.0, 0.922, False, **P) == ("exit", 2)
+    assert review_rule(False, "STALE", -0.480, -1.0, 0.922, False, **P, earnings_hold=True, report_within_cap=True) == ("extend", "E1")
+    # after the report: not contradicted -> kept; contradicted or a kill condition -> closed
+    assert review_rule(False, "NONE", -0.9, 0.3, 0.8, False, **P, earnings_hold=True, after_report=True) == ("extend", "E2")
+    assert review_rule(False, "CONTRADICTING", -0.9, 0.3, 0.8, False, **P, earnings_hold=True, after_report=True) == ("exit", 1)
+    assert review_rule(True, "NONE", -0.9, 0.3, 0.8, False, **P, earnings_hold=True, report_within_cap=True) == ("exit", 1)
+    # no report in reach and not held for one: Amendment 9 as before
+    assert review_rule(False, "STALE", -0.480, -1.0, 0.922, False, **P, earnings_hold=True) == ("exit", 2)
+    # the hold is for losing lots only; a winner keeps the Amendment 9 rules
+    assert review_rule(False, "STALE", 0.501, -1.0, 0.647, False, **P, earnings_hold=True, report_within_cap=True) == ("exit", 5)
+    # the shadow control never holds
+    assert review_rule(False, "STALE", -0.480, -1.0, 0.922, False, **P, earnings_hold=False, report_within_cap=True) == ("exit", 2)
+
+
 def test_losers_are_not_extended_without_a_catalyst():
     assert review_rule(False, "CONFIRMING", -0.1, -1.0, 1.5, False, **P) == ("exit", 2)
     assert review_rule(False, "CONFIRMING", 0.0, -1.0, 1.5, False, **P) == ("exit", 2)

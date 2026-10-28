@@ -985,3 +985,48 @@ review, the caps, the hedge, costs and the live decision times.
   now 63 sessions).
 * R2's 63 and 40 sessions and its z ≤ −1 checkpoint are design choices bounded by the decay evidence. They are not
   fitted, and a change needs a later dated amendment.
+
+## Protocol 7B, Amendment 1 (owner, 2026-10-28; from session 2026-10-30): a losing lot with earnings expected stays open
+
+**Decision (owner, 2026-10-28):** "The losing position should stay open if earnings are expected and then closed
+only if the thesis is structurally changed." This resolves the case Amendment 9 left open: rule 2 exempted a losing
+lot with a pending report, but rule 5 then closed it.
+
+**When it was made.** Before any Protocol 7B cohort lot reached a horizon review (the first 7B entries are at the
+2026-10-29 close). So the 7B clock is kept.
+
+**Rules** (`fund/review_rules.py` E1/E2; `fund/lifecycle.py` review; `fund/lifecycle_rules.py`). They apply to the
+live book only; the shadow control keeps Amendments 8/9.
+* **Rule 1 is unchanged and comes first.** A kill condition met, or CONTRADICTING news, closes the lot. This is the
+  "structurally changed" test.
+* **E1.** At the horizon review, a lot with z ≤ 0 whose next earnings report falls within the **hold cap** is extended
+  to the session after the report's first trading session, and marked `held_for_report`.
+  * The hold cap is 40 sessions of total holding, 63 for structural theses (Finnhub calendar).
+  * Amendment 8's "never beyond the original horizon" does not apply to this hold.
+* **E2.** At the next review, a lot held for its report with z ≤ 0 that is not contradicted is extended again, by
+  half its original horizon within the cap.
+* **What still bounds the hold:**
+  * the two-extension limit, which closes it at the third review;
+  * the hold cap;
+  * the stop, which an extension only tightens (max(old stop, R − 2W′)).
+* **Its slot.** A lot held for its report keeps its slot: neither the review's slot guard nor the 10-per-side cap
+  (R3) closes it.
+* **Structural lots.** A structural lot whose dated report is still ahead is not closed by the 20-session checkpoint
+  before that report.
+
+**Report dates, both books, from the same session.** A report dated on the review day counts as pending: an
+after-close report is pending at the decision and trades the next session; a before-open one is already out.
+Before this, the calendar lookup started the day after the review, which missed same-day after-close reports. That
+is a correction to Amendment 8's own text ("the next earnings release"). It applies to the control too, so the two
+books stay comparable.
+
+**Checks.**
+* Contract tests on recorded cases (`test_review_rules.py: test_earnings_hold`; `test_lifecycle_rules.py:
+  test_a1_earnings_hold_helpers`). Example: WMT in the 2026-10-26 plan run, losing with its report on 2026-11-19, was
+  closed by rule 2 and is held under E1.
+* The live rebuild and the control are unchanged through 2026-10-27.
+* A plan run on live data (scratch copy, start date set to 10-27, three lots made due):
+  * MSFT, short and losing (z −0.28), with its report on 10-28 after the close: held under E1 for 3 sessions, stop
+    tightened to −4.55%. Before the report-date correction it was closed by rule 2.
+  * CSX, losing, with its report 57 sessions away (cap 36): closed by rule 2.
+  * The winners (SMCI, TSLA) keep the Amendment 9 rules.
