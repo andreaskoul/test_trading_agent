@@ -1,0 +1,419 @@
+{
+ "day": "2026-10-28",
+ "asof": "2026-10-21",
+ "close_et": "16:00",
+ "news_ts": 1793216400,
+ "decided_at": "2026-10-28T19:57:09+00:00",
+ "style": "preclose",
+ "nav_model": 99166.7393217963,
+ "hedge_w": -0.28554966847261876,
+ "actions": [
+  {
+   "day": "2026-10-28",
+   "id": "2026-10-21|TSLA",
+   "ticker": "TSLA",
+   "action": "horizon_extend",
+   "from": 8074.92,
+   "to": 8074.92,
+   "R": 0.062332,
+   "W": 0.02952,
+   "days_held": 4,
+   "stop_R": 0.003291152800285066,
+   "target_R": 0.1508922590664739,
+   "new_H": 6
+  }
+ ],
+ "cool": {
+  "BA|1": {
+   "until": "2026-10-27",
+   "kind": "stop",
+   "score": 1,
+   "first_reported": "2026-10-20"
+  }
+ },
+ "lots_after": [
+  {
+   "id": "2026-10-21|CSX",
+   "ticker": "CSX",
+   "side": 1,
+   "w0": 0.06087,
+   "beta": 0.6402889768,
+   "sigma_e": 0.012403712798847924,
+   "H": 14,
+   "W": 0.04641044361723182,
+   "kill_conditions": [
+    "CSX issues weak Q4 or FY guidance",
+    "CSX reports operating margin contraction or volume decline",
+    "Peer railroads UNP/NSC report disappointing earnings and negative sector outlook"
+   ],
+   "first_reported": "2026-10-21",
+   "score": 2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.00019347327214949347,
+   "days": 4,
+   "e": [
+    -0.01368707,
+    0.00568863,
+    0.0151209,
+    -0.00731594
+   ],
+   "news_until": 1793216400,
+   "increased": true,
+   "w": 0.09198331008201084
+  },
+  {
+   "id": "2026-10-21|SMCI",
+   "ticker": "SMCI",
+   "side": 1,
+   "w0": 0.05994,
+   "beta": 2.0551470887,
+   "sigma_e": 0.04617076198201026,
+   "H": 13,
+   "W": 0.16647104975338137,
+   "kill_conditions": [
+    "Company cuts or withdraws its raised FY27 revenue outlook",
+    "Backlog falls below $60B or major orders are cancelled",
+    "Gross margin guidance is reduced or new CFO departs"
+   ],
+   "first_reported": "2026-10-20",
+   "score": 2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.03828215093747463,
+   "days": 4,
+   "e": [
+    -0.01239808,
+    -0.02219249,
+    0.06189758,
+    0.01097515
+   ],
+   "news_until": 1793216400,
+   "increased": true,
+   "w": 0.09587044462599145
+  },
+  {
+   "id": "2026-10-21|TSLA",
+   "ticker": "TSLA",
+   "side": 1,
+   "w0": 0.05072,
+   "beta": 1.6622139812,
+   "sigma_e": 0.021141475729803922,
+   "H": 6,
+   "W": 0.042282951459607844,
+   "kill_conditions": [
+    "Tesla or SpaceX board denies merger talks or disbands special committee",
+    "Merger exploration formally terminated or abandoned",
+    "Musk walks back merger comments, says tie-up not planned"
+   ],
+   "first_reported": "2026-10-21",
+   "score": 2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.06233159530676061,
+   "days": 4,
+   "e": [
+    0.002381,
+    0.04030878,
+    0.03113044,
+    -0.01148863
+   ],
+   "news_until": 1793216400,
+   "increased": true,
+   "H0": 4,
+   "ext": 1,
+   "stop_R": 0.003291152800285066,
+   "target_R": 0.1508922590664739,
+   "ext_pnl": 0.0,
+   "w": 0.08142772367319057
+  },
+  {
+   "id": "2026-10-21|HAS",
+   "ticker": "HAS",
+   "side": 1,
+   "w0": 0.02536,
+   "beta": 0.8311884956,
+   "sigma_e": 0.025196195918633518,
+   "H": 13,
+   "W": 0.09084617633126964,
+   "kill_conditions": [
+    "Hasbro cuts or withdraws its raised FY2026 sales guidance",
+    "Magic: The Gathering quarterly revenue falls below $600M or declines year-over-year",
+    "Hasbro reduces, suspends, or abandons its doubled buyback target"
+   ],
+   "first_reported": "2026-10-20",
+   "score": 1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.0035862016506115584,
+   "days": 4,
+   "e": [
+    0.00613247,
+    -0.00147825,
+    -0.00152226,
+    0.00045425
+   ],
+   "news_until": 1793216400,
+   "w": 0.025178081717351388
+  },
+  {
+   "id": "2026-10-21|ROL",
+   "ticker": "ROL",
+   "side": -1,
+   "w0": -0.072,
+   "beta": 0.4132383735,
+   "sigma_e": 0.020746454352392717,
+   "H": 14,
+   "W": 0.07762612417699859,
+   "kill_conditions": [
+    "Rollins reports better-than-expected revenue and EPS in Q4 2026",
+    "Rollins raises full-year 2026 revenue and EPS guidance",
+    "Analyst upgrades Rollins to Buy or Overweight"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.05831751411390196,
+   "days": 4,
+   "e": [
+    0.01171883,
+    0.01069045,
+    0.01794578,
+    0.01796246
+   ],
+   "news_until": 1793216400,
+   "increased": true,
+   "w": -0.09545739383109873
+  },
+  {
+   "id": "2026-10-21|LRCX",
+   "ticker": "LRCX",
+   "side": -1,
+   "w0": -0.031,
+   "beta": 2.0246720698,
+   "sigma_e": 0.03262781653407281,
+   "H": 14,
+   "W": 0.12208211074901847,
+   "kill_conditions": [
+    "Lam Research raises Q2 guidance above consensus",
+    "AI chip selloff reverses; SOX index posts multiple up days",
+    "Analysts upgrade LRCX to Buy on improved outlook"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.07818149740934444,
+   "days": 4,
+   "e": [
+    -0.01035718,
+    -0.01777353,
+    -0.00275671,
+    -0.04729407
+   ],
+   "news_until": 1793216400,
+   "reduced": true,
+   "w": -0.016742219548671156
+  },
+  {
+   "id": "2026-10-21|NFLX",
+   "ticker": "NFLX",
+   "side": -1,
+   "w0": -0.029,
+   "beta": 0.5883033849,
+   "sigma_e": 0.022376301218358693,
+   "H": 14,
+   "W": 0.08372445274235055,
+   "kill_conditions": [
+    "Netflix raises its full-year revenue or ad-revenue guidance",
+    "Netflix reports accelerating subscriber growth or strong Q4 guidance",
+    "Netflix announces a major content hit or partnership that boosts growth outlook"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.08402061167751476,
+   "days": 4,
+   "e": [
+    0.01482451,
+    0.03379297,
+    0.02489376,
+    0.01050937
+   ],
+   "news_until": 1793216400,
+   "increased": true,
+   "w": -0.04160650643553186
+  },
+  {
+   "id": "2026-10-21|MSFT",
+   "ticker": "MSFT",
+   "side": -1,
+   "w0": -0.0275,
+   "beta": 0.9479008426,
+   "sigma_e": 0.01584356823851591,
+   "H": 5,
+   "W": 0.03542729558747818,
+   "kill_conditions": [
+    "Microsoft beats Q1 estimates and raises FY2027 guidance",
+    "Microsoft reaffirms or re-enters the UK Nscale data center deal",
+    "CoreWeave secures new financing, easing AI capex debt fears"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.007638610299451308,
+   "days": 4,
+   "e": [
+    -0.01153317,
+    -0.00868857,
+    0.00769764,
+    0.00488549
+   ],
+   "news_until": 1793216400,
+   "w": -0.027443482730246854
+  },
+  {
+   "id": "2026-10-21|AAPL",
+   "ticker": "AAPL",
+   "side": -1,
+   "w0": -0.025,
+   "beta": 0.7621233146,
+   "sigma_e": 0.014154727220666097,
+   "H": 8,
+   "W": 0.040035614414315246,
+   "kill_conditions": [
+    "Apple reports stronger-than-expected iPhone 18 demand or raises forward guidance",
+    "Analysts upgrade Apple, citing improving iPhone demand and attractive valuation",
+    "OpenAI trade-secret claims dismissed or settled without material Apple liability"
+   ],
+   "first_reported": "2026-10-20",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.020434012499557196,
+   "days": 4,
+   "e": [
+    -0.00255889,
+    0.01638661,
+    -0.00500388,
+    0.01161017
+   ],
+   "news_until": 1793216400,
+   "w": -0.02421106578726462
+  },
+  {
+   "id": "2026-10-21|CMG",
+   "ticker": "CMG",
+   "side": -1,
+   "w0": -0.025,
+   "beta": 0.7546463915,
+   "sigma_e": 0.02779123548300911,
+   "H": 5,
+   "W": 0.06214309171871257,
+   "kill_conditions": [
+    "Chipotle reports Q3 EPS above consensus and raises FY guidance",
+    "Chipotle announces a new takeover bid or strategic investment",
+    "Chipotle Q3 same-store sales turn positive with margin expansion"
+   ],
+   "first_reported": "2026-10-15",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": -0.01752503653267214,
+   "days": 4,
+   "e": [
+    0.01809134,
+    -0.02697794,
+    0.01936541,
+    -0.02800384
+   ],
+   "news_until": 1793216400,
+   "w": -0.025116345217953976
+  }
+ ],
+ "prices": {
+  "CSX": 51.985,
+  "SMCI": 35.685,
+  "TSLA": 404.75,
+  "HAS": 118.67,
+  "ROL": 33.44,
+  "LRCX": 253.66,
+  "NFLX": 61.97,
+  "MSFT": 530.2,
+  "AAPL": 343.84,
+  "CMG": 28.825,
+  "SPY": 771.9
+ },
+ "equity": 99088.99,
+ "current_qty": {
+  "AAPL": -7.0,
+  "CMG": -86.0,
+  "CSX": 175.0,
+  "HAS": 21.0,
+  "LRCX": -7.0,
+  "MSFT": -5.0,
+  "NFLX": -67.0,
+  "ROL": -283.0,
+  "SMCI": 266.0,
+  "SPY": -37.0,
+  "TSLA": 20.0
+ },
+ "target_weights": {
+  "CSX": 0.09198331008201084,
+  "SMCI": 0.09587044462599145,
+  "TSLA": 0.08142772367319057,
+  "HAS": 0.025178081717351388,
+  "ROL": -0.09545739383109873,
+  "LRCX": -0.016742219548671156,
+  "NFLX": -0.04160650643553186,
+  "MSFT": -0.027443482730246854,
+  "AAPL": -0.02421106578726462,
+  "CMG": -0.025116345217953976,
+  "SPY": -0.28554966847261876
+ },
+ "orders": [],
+ "problems": [],
+ "status": "submitted",
+ "reviews": [
+  {
+   "id": "2026-10-21|TSLA",
+   "ticker": "TSLA",
+   "day": "2026-10-28",
+   "decision": "extend",
+   "rule": 5,
+   "z": 1.4930475400400958,
+   "id_disc": -0.5,
+   "to": 1.406061879386577,
+   "label": "STALE",
+   "kill_hit": false,
+   "catalyst": null,
+   "catalyst_sessions": null,
+   "sigma": 0.02087394863029167,
+   "H0": 4,
+   "held": 4,
+   "h_ext": 2,
+   "ext_no": 1,
+   "R": 0.06233159530676061,
+   "n": 8074.92184706655,
+   "W_new": 0.02952022125323777,
+   "guard": 0.05904044250647554,
+   "median_new": null,
+   "stop_R": 0.003291152800285066,
+   "target_R": 0.1508922590664739
+  }
+ ],
+ "submitted_at": "2026-10-28T20:00:09+00:00"
+}
