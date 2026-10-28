@@ -92,7 +92,7 @@ Z_HI, ID_HI, TO_LO, EXT_MAX, EXT_TOTAL, SAMPLES, REVERT_N = 1.5, 0.1, 1.0, 2, 40
 LABELS = ("CONFIRMING", "CONTRADICTING", "STALE", "NONE")
 
 # ---- Protocol 7B (owner, 2026-10-27): R1-R3 and their constants live in fund/lifecycle_rules.py (contract-tested)
-from lifecycle_rules import (P7B, P7B_ASOF, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
+from lifecycle_rules import (P7B, P7B_ASOF, A7B1, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
                              may_increase, checkpoint_exit, slots, structural_h, structural_mean)
 DESK_SAMPLES, DESK_DRAWS = 5, 8
 
@@ -232,7 +232,10 @@ Return JSON only: {""").replace('"catalyst": "earnings"|"other"|null}', '"cataly
                 flags = [bool(o.get("structural")) for o in oks]
                 rec.update(structural=sum(flags) * 2 > len(flags), structural_votes=flags, H_a8=rec["H"])
                 if any(flags) and not rec["stale"]:
-                    h_s, h_why = structural_h(rec["H"], nxt_e.get(t), days, t0, catalyst_session(nxt_e.get(t), days))
+                    cs_ = catalyst_session(nxt_e.get(t), days)
+                    h_s, h_why = structural_h(rec["H"], nxt_e.get(t), days, t0, cs_)
+                    if cs_ is not None and cs_ > t0:
+                        rec["report_session"] = str(cs_.date())   # 7B A1: a structural lot waits for this report
                     h7, hs7 = structural_mean(flags, hs, h_s)
                     rec["H"] = int(min(max(round(h7), H_MIN), STRUCT_MAX))
                     rec["why"] += f"; {h_why}; 7B mean over samples {hs7} = {h7:.1f}"
@@ -800,7 +803,7 @@ def review_labels(day, close_ts, due, rv_dir):
 _RV_DATA = {}
 
 
-def review_decide(L, d, label, kill_hit, med_new, prev_day, e_today):
+def review_decide(L, d, label, kill_hit, med_new, prev_day, e_today, hold=False):
     """Rules 1-5 of Amendment 8 (first match wins), on data: z = R / (sigma x sqrt(days held)) with sigma re-estimated on
     the last 60 sessions without the news session; ID = sign(R) x (%neg - %pos) of the daily hedged returns since
     entry; TO = 5-session volume over its 60-session median; a pending earnings release from Finnhub's calendar."""
@@ -810,7 +813,9 @@ def review_decide(L, d, label, kill_hit, med_new, prev_day, e_today):
         s_, cal = broker.api("GET", f"/v2/calendar?start={(d + pd.Timedelta(days=1)).date()}&end={(d + pd.Timedelta(days=90)).date()}")
         _RV_DATA[(t, d)] = (bars({t, "SPY"}, prev_day - pd.Timedelta(days=150), prev_day),   # once, at the T-20 pass
                             [pd.Timestamp(x["date"]) for x in cal] if s_ == 200 else [],
-                            earnings_next([t], d, d + pd.Timedelta(days=60)).get(t))
+                            # from A7B1 (both books) a report dated d itself counts: an after-close report today is
+                            # pending at the decision (it trades the next session); a before-open one is not in `fut`
+                            earnings_next([t], d - pd.Timedelta(days=1) if d >= A7B1 else d, d + pd.Timedelta(days=100)).get(t))
     bx, fut, ce = _RV_DATA[(t, d)]
     C, V = bx["close"], bx["volume"]
     r = C.pct_change().dropna()
@@ -831,19 +836,29 @@ def review_decide(L, d, label, kill_hit, med_new, prev_day, e_today):
     cs = catalyst_session(ce, fut)
     n_cat = fut.index(cs) + 1 if cs in fut else None
     catalyst = n_cat is not None and n_cat + 2 <= room
-    dec, rule = review_rule(kill_hit, label, z, idisc, to, catalyst, Z_HI, ID_HI, TO_LO)
-    if catalyst:
+    # 7B A1 (hold=True: the live book from A7B1): a losing lot waits for its report, within the hold cap
+    hold_cap = (STRUCT_MAX if L.get("structural") else EXT_TOTAL) - held
+    report_within_cap = bool(hold and n_cat is not None and n_cat + 2 <= hold_cap)
+    after_report = bool(hold and L.get("held_for_report"))
+    dec, rule = review_rule(kill_hit, label, z, idisc, to, catalyst, Z_HI, ID_HI, TO_LO,
+                            earnings_hold=hold, report_within_cap=report_within_cap, after_report=after_report)
+    if rule == "E1":
+        h_ext = n_cat + 2                                # to the session after the report's first trading session
+    elif rule == "E2":
+        h_ext = min(math.ceil(H0 / 2), hold_cap)
+    elif catalyst:
         h_ext = min(max(h_ext, n_cat + 2), H0, room)
     w_new = sigma * math.sqrt(max(h_ext, 1))
     guard = abs(L.get("score") or 0) * w_new
     if dec == "extend" and (L.get("ext", 0) >= EXT_MAX or h_ext < 1):
         dec, rule = "exit", "limit"
-    if dec == "extend" and med_new is not None and guard < med_new:
+    if dec == "extend" and med_new is not None and guard < med_new and rule not in ("E1", "E2"):
         dec, rule = "exit", "slot"
     return {"id": L["id"], "ticker": t, "day": str(d.date()), "decision": dec, "rule": rule, "z": z, "id_disc": idisc, "to": to,
             "label": label, "kill_hit": kill_hit, "catalyst": ce and list(ce), "catalyst_sessions": n_cat, "sigma": sigma,
             "H0": H0, "held": held, "h_ext": h_ext if dec == "extend" else 0, "ext_no": L.get("ext", 0) + (dec == "extend"),
             "R": L["R"], "n": L["n"], "W_new": w_new, "guard": guard, "median_new": med_new,
+            "hold_cap": hold_cap, "report_within_cap": report_within_cap, "after_report": after_report,
             "stop_R": max(L.get("stop_R", -STOP_K * L["W"]), L["R"] - STOP_K * w_new) if dec == "extend" else None,
             "target_R": L["R"] + TARGET_K * w_new if dec == "extend" else None}
 
@@ -1068,7 +1083,8 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
                     lots.append(L)
                 else:
                     new_ext = x.get("ext", 0) > L.get("ext", 0) and L.get("ext_pnl") is None
-                    for k in ("H", "kill_conditions", "first_reported", "w0", "reduced", "increased", "H0", "ext", "stop_R", "target_R"):
+                    for k in ("H", "kill_conditions", "first_reported", "w0", "reduced", "increased", "H0", "ext", "stop_R", "target_R",
+                              "held_for_report", "report_session"):
                         if k in x:
                             L[k] = x[k]
                 if lid in acts:
@@ -1140,11 +1156,13 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
                     trade(L, 0.0, "news_exit")
                 elif L["days"] >= L["H"] and L in due:
                     rv = review_decide(L, d, (labels.get(L["id"]) or {}).get("label", "NONE"), k.get("verdict") == "reduce",
-                                       med_new, prev_day, (L.get("e") or [0.0])[-1])
+                                       med_new, prev_day, (L.get("e") or [0.0])[-1], hold=(d >= A7B1 and not CTRL))
                     reviews.append(rv)
                     if rv["decision"] == "extend":
                         L.setdefault("H0", L["H"])
                         L.update(H=L["days"] + rv["h_ext"], ext=rv["ext_no"], stop_R=rv["stop_R"], target_R=rv["target_R"])
+                        if rv["rule"] == "E1":
+                            L["held_for_report"] = True          # 7B A1: the next review is after the report
                         if L.get("ext_pnl") is None:
                             L["ext_pnl"] = 0.0
                         events.append({"day": str(d.date()), "id": L["id"], "ticker": L["ticker"], "action": "horizon_extend",
@@ -1240,6 +1258,7 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
                              "score": c["scores"].get(t, 0), "cohort": c["asof"], "entry_day": str(d.date()),
                              "entry_close_ts": close_ts, "driving_event": info.get("driving_event") or (info.get("out") or {}).get("driving_event"),
                              **({"structural": True} if info.get("structural") and d >= P7B and not CTRL else {}),
+                             **({"report_session": info["report_session"]} if info.get("report_session") and not CTRL else {}),
                              **({"news_session": info["inputs"]["news_session"]} if (info.get("inputs") or {}).get("news_session") else {})}
                         lots.append(L)
                         trade(L, tw * nav, "entry")

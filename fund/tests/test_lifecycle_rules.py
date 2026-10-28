@@ -85,6 +85,23 @@ def test_r3_slots():
     assert "BAC" not in LR.slots(target, cur, key, AFTER)
 
 
+def test_a1_earnings_hold_helpers():
+    # Protocol 7B Amendment 1: a losing lot held for its report keeps its slot; a structural lot waiting for its report
+    # is not closed by the checkpoint before it; neither applies before A7B1 or in the shadow control
+    A1 = LR.A7B1
+    cur = {"DAL": {"R": -0.030457, "days": 5, "H": 18, "held_for_report": True}}
+    target = {"DAL": -0.06, **{f"N{i}": -0.05 for i in range(10)}}
+    key = {t: abs(w) * 0.2 if t in cur else abs(w) - 0.001 for t, w in target.items()}
+    assert "DAL" in LR.slots(target, cur, key, A1)
+    assert "DAL" not in LR.slots(target, cur, key, A1 - pd.Timedelta(days=1))      # before A7B1: R < 0 is not protected
+    assert "DAL" not in LR.slots(target, cur, key, A1, active=False)
+    lot = {"structural": True, "sigma_e": 0.02, "H": 63, "days": 20, "R": -0.10}
+    report = str((A1 + pd.Timedelta(days=10)).date())
+    assert not LR.checkpoint_exit(A1, {**lot, "report_session": report})        # waits for its report
+    assert LR.checkpoint_exit(A1 + pd.Timedelta(days=11), {**lot, "report_session": report})   # after it: the checkpoint
+    assert LR.checkpoint_exit(A1, lot)                                           # no dated report: the checkpoint
+
+
 def test_control_switch():
     # the shadow control (active=False) never applies 7B, whatever the date: HPE could still be increased on 10-21-like
     # terms, a failing structural lot is not checkpointed, and no carried lot is protected
