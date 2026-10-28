@@ -9,14 +9,30 @@ First match wins:
 5. extend if 0 < z < z_hi and (CONFIRMING, or a catalyst, or ID <= 0 with TO >= to_lo);
    Amendment 9: also extend if z >= z_hi and (CONFIRMING, or a catalyst), the case rule 3 exempts;
    otherwise exit.
+
+Protocol 7B Amendment 1 (owner, 2026-10-28; live book only, from session A7B1): a losing lot with earnings expected
+stays open, and closes only if the thesis is structurally changed. After rule 1 (kill condition or CONTRADICTING
+news, which still closes it):
+E1. z <= 0 and the firm's next earnings report falls within the hold cap: extend past the report;
+E2. z <= 0, the lot was held for a report that has now passed, and the news did not contradict it: extend.
+The extension limit (two), the hold cap (40 sessions in total, 63 for structural theses) and the stop still bound it.
 """
 
 
-def review_rule(kill_hit, label, z, idisc, to, catalyst, z_hi, id_hi, to_lo):
-    """(decision, rule) for a lot at its horizon: decision is "exit" or "extend"."""
+def review_rule(kill_hit, label, z, idisc, to, catalyst, z_hi, id_hi, to_lo,
+                earnings_hold=False, report_within_cap=False, after_report=False):
+    """(decision, rule) for a lot at its horizon: decision is "exit" or "extend".
+    earnings_hold: Protocol 7B Amendment 1 applies (the live book from A7B1; never the shadow control).
+    report_within_cap: the next earnings report falls within the hold cap. after_report: the lot was held for a report
+    that has passed."""
     confirming, contradicting = label == "CONFIRMING", label == "CONTRADICTING"
     if kill_hit or contradicting:
         return "exit", 1
+    if earnings_hold and z <= 0:
+        if report_within_cap:
+            return "extend", "E1"
+        if after_report:
+            return "extend", "E2"
     if z <= 0 and not catalyst:
         return "exit", 2
     if z >= z_hi and not confirming and not catalyst:
