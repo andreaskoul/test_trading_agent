@@ -677,3 +677,29 @@ length figure is reported with every H5 and H2 result.
 
 **Owner sign-off:** standing instruction of 2026-10-26/27. This is flagged for the owner, who can reverse it before
 the validation read; H5 and H2 would then enter Holm with p = 1.
+
+## Amendment 7 (owner, 2026-10-29): R5 answer cap and no retry of a runaway call (cost)
+
+**What had been seen.** The OpenRouter bill and the per-call log (`~/.fund-runner/llm_calls`). No R5 outcome has
+been examined for this change. From 2026-10-20 to 10-29:
+* 363 R5 calls ran past the 240 s deadline. `common.llm` abandoned each one and retried it, up to 3 times.
+* The provider still generated and billed every abandoned call to the end, about $0.045 each (≈ 75k reasoning
+  tokens). Those calls carry no cost in the log.
+* On 10-23 there was no timeout, and the bill equalled the logged cost. In the week of 10-26 the bill was $22.99
+  against $11.33 logged, with 265 timeouts. R5 was about 85% of the week's spend.
+
+**Change (r5 calls only; from the 2026-10-30 run).**
+* Every R5 call (card, own ledger, peers) sends `max_tokens` = 24,000, reasoning included.
+* A call that is cut by the cap or reaches the deadline is not retried inside `common.llm`. It is a failed attempt.
+* The existing repair turn and the one re-run of a failed pass (Amendment 1) still apply.
+* A cut answer has no content, so it is a transport failure. It is counted in the quality gate like any other.
+* `VERSION` stays `r5-v2`. Records from 10-30 carry the cap through this amendment's date.
+
+**Effect on predictions.** 3 of the 2,525 successful or schema-checked R5 answers to 10-29 exceeded 24k tokens
+(0.12%; 14 exceeded 20k). Those passes would now fail and be re-run once. A timed-out pass was already a failure.
+The cap bounds a runaway attempt at about $0.015, against about $0.045, and stops the in-call retries.
+
+**Not changed.** Prompts, schemas, temperature, model, passes, scores. Calls without a cap are unchanged: the traded
+desks, the shadow desks and qshadow send the same request as before, and keep their retries.
+
+**Owner sign-off:** 2026-10-29 ("yes", to the proposed cap and the retry change).

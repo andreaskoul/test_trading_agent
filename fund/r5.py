@@ -43,6 +43,9 @@ import guards
 from common import MODE, MODEL, ROOT, STATE, require
 
 VERSION = "r5-v2"          # Amendment 1 (2026-10-16): typed exhibit, content and grounding checks, repair, re-runs, gate
+# Amendment 7 (2026-10-29): answers capped at 24k tokens (reasoning included); a cut or timed-out call is not retried
+# inside the call, only by the pass re-run. Cost only: 3 of 2,525 answers to 10-29 were longer (0.12%).
+MAX_TOKENS = 24000
 NEWS_MAX, PEERS_MAX, CARD_CHARS, PEER_CHARS, SEASON_DAYS, SUMMARY = 60, 5, 15000, 4000, 45, 150
 HARD_W, PEER_W, PASSES = 1.5, 0.5, 3
 UA = os.environ.get("SEC_USER_AGENT", "").strip()
@@ -304,7 +307,7 @@ def one(t, D, C, U, season_rel, prompts):
     src = {"last_release": str(acc), "release_url": card_url, "release_doc": how}
     if defect:                                              # input contract: no LLM call on the wrong document
         return {**rec, **src, "status": "input_defect", "error": defect}
-    st, card, meta, err, glog = guards.guarded_llm(CARD, f"Company {t} ({U.loc[t, 'Security']}). Earnings release accepted {acc:%Y-%m-%d}:\n\n{card_txt}", chk_card)
+    st, card, meta, err, glog = guards.guarded_llm(CARD, f"Company {t} ({U.loc[t, 'Security']}). Earnings release accepted {acc:%Y-%m-%d}:\n\n{card_txt}", chk_card, max_tokens=MAX_TOKENS)
     prompts.append({"ticker": t, "task": "card", "system": CARD, "user": card_txt[:200] + "..."})
     if st != "ok":
         return {**rec, **src, "status": "card_failed", "error": err, "card_log": glog}
@@ -322,7 +325,7 @@ def one(t, D, C, U, season_rel, prompts):
         k, (sysp, xs) = k_sys_xs
         user = (f"Company {t} ({U.loc[t, 'Security']}). Last earnings release: {acc:%Y-%m-%d}. News up to {C:%Y-%m-%d %H:%M} UTC.\n"
                 f"DRIVERS:\n{drivers}\nGUIDANCE: {card.get('guidance')}\n\nNEWS ({len(xs)} items):\n{listing(xs) or 'none'}")
-        s_, o, m_, e_, lg = guards.guarded_llm(sysp, user, chk_ledger)
+        s_, o, m_, e_, lg = guards.guarded_llm(sysp, user, chk_ledger, max_tokens=MAX_TOKENS)
         prompts.append({"ticker": t, "task": f"ledger{k}", "system": sysp, "user": user})
         return {"status": s_, "out": o, "error": e_, "provider": m_.get("provider"), "log": lg}
 
@@ -354,7 +357,7 @@ def one(t, D, C, U, season_rel, prompts):
         def peer_pass(k_idx):
             k, idx = k_idx
             user = (f"Company {t} ({U.loc[t, 'Security']}). DRIVERS:\n{drivers}\n\nPEER RELEASES:\n" + "\n\n".join(blocks[i] for i in idx))
-            s_, o, m_, e_, lg = guards.guarded_llm(PEERS, user, chk_peers(names))
+            s_, o, m_, e_, lg = guards.guarded_llm(PEERS, user, chk_peers(names), max_tokens=MAX_TOKENS)
             prompts.append({"ticker": t, "task": f"peers{k}", "system": PEERS, "user": user})
             return {"status": s_, "out": o, "error": e_, "provider": m_.get("provider"), "log": lg}
 

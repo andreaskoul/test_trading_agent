@@ -4,6 +4,10 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-29: R5 LLM cost cap (PREREG_thesis_tree.md Amendment 7; research only).
+  * R5's calls send `max_tokens` 24,000, and a call cut by the cap or the 240 s deadline is not retried inside `common.llm`. A call abandoned at the deadline was still billed to the end by the provider (≈ $0.045, about half the OpenRouter bill in the week of 10-26).
+  * `common.llm(..., max_tokens=None)`: without a cap, the request and the retries are byte-for-byte as before. Contract test: `test_capped_call_is_bounded_and_not_retried`.
+  * Could this change a decision? No. The traded and shadow desks send no cap. R5 is research, and the effect of the cap on R5 is stated in the amendment (0.12% of answers).
 - 2026-10-27: shadow page, S&P 500 forward books section (display only).
   * The `spx` job writes `page.json` next to the records; `fund_pages.yml` publishes it as `spx.json`, and the job asks for a Pages rebuild.
   * Every figure is computed once in `spx_forward.page()` with the backtest's formulas (strategies.stats; the NW t and Holm rules of Amendment 4); the page only formats it.

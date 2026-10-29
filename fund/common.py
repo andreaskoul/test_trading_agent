@@ -114,13 +114,21 @@ def _log_call(system, user, temperature, resp, status, err):
         pass
 
 
-def llm(system: str, user: str, check=None, tries: int = 3, temperature: float = 0.0):
-    """JSON-mode chat call. Returns (status, output, meta, error)."""
+class _Cut(Exception):
+    """A generation stopped by the deadline or by max_tokens: with a cap set, not retried (it would loop again)."""
+
+
+def llm(system: str, user: str, check=None, tries: int = 3, temperature: float = 0.0, max_tokens: int | None = None):
+    """JSON-mode chat call. Returns (status, output, meta, error).
+    max_tokens (research desks only; R5 from PREREG_thesis_tree.md Amendment 7): a provider-side cap on the answer,
+    reasoning included. A call abandoned at the deadline is still generated and billed by the provider to the end, so
+    the cap is what bounds its cost. With a cap, a call cut by the deadline or by the cap is not retried here."""
     err = None
     for _ in range(tries):
         resp = None
         try:
             body = json.dumps({"model": MODEL, "temperature": temperature,
+                               **({"max_tokens": max_tokens} if max_tokens else {}),
                                **({"provider": PROVIDER} if PROVIDER else {}),
                                "response_format": {"type": "json_object"},
                                "usage": {"include": True},         # billed cost in the response (logging only)
@@ -139,6 +147,8 @@ def llm(system: str, user: str, check=None, tries: int = 3, temperature: float =
                     if time.time() - t0 > CALL_LIMIT:
                         raise TimeoutError(f"LLM call exceeded {CALL_LIMIT} s")
             resp = json.loads(buf)
+            if max_tokens and resp["choices"][0].get("finish_reason") == "length":
+                raise _Cut(f"answer cut at max_tokens {max_tokens}")
             txt = (resp["choices"][0]["message"].get("content") or "").strip()
             if not txt:                          # reasoning spent the budget: nothing to parse, retry
                 raise ValueError("empty content")
@@ -155,6 +165,8 @@ def llm(system: str, user: str, check=None, tries: int = 3, temperature: float =
         except Exception as exc:
             err = repr(exc)
             _log_call(system, user, temperature, resp, "error", err)       # resp is set if tokens were billed
+            if max_tokens and isinstance(exc, (_Cut, TimeoutError)):
+                break
         time.sleep(3)
     return "failed", None, {}, err
 
