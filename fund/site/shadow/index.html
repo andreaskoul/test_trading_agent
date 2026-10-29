@@ -71,15 +71,8 @@
     <details class="fold" id="f-weeks"><summary><h3>Weeks</h3><span class="cnt"></span></summary><div class="scroll" id="weeks"></div></details>
     <details class="fold" id="f-arch"><summary><h3>Not part of any current test</h3><span class="cnt"></span></summary><div class="muted" id="archNote" style="line-height:1.6"></div><div class="scroll" id="arch"></div></details>
   </section>
-  <section id="rSec" hidden>
-    <div class="bar"><h2 style="margin:0">3 · Research: does adding news to price signals improve stock picks? (31 large caps, paper only)</h2><span><select id="rview"><option value="books">Books (long/short)</option><option value="spx">Against the S&amp;P 500</option></select> <select id="rspan"><option value="live">Live weeks only</option><option value="all">Backtest 2018–25 + live (not evidence)</option></select> <select id="rset"><option value="prim">The two judged books</option><option value="all">All six books</option></select></span></div>
-    <div class="muted" id="rnote"></div>
-    <div class="chartbox"><canvas id="rchart"></canvas></div>
-    <div class="scroll" id="rboard"></div>
-    <details class="fold" id="f-rpos"><summary><h3>This week's positions (the two judged books)</h3><span class="cnt"></span></summary><div class="scroll" id="rpos"></div></details>
-  </section>
   <section id="sSec" hidden>
-    <h2>4 · Research: can AI forecasting models rank the S&amp;P 500's 500 stocks? (paper only)</h2>
+    <h2>3 · Research: can AI forecasting models rank the S&amp;P 500's 500 stocks? (paper only)</h2>
     <div class="muted" id="snote" style="line-height:1.6"></div>
     <div id="sbody">
     <div class="chartbox" id="sbox"><canvas id="schart"></canvas></div>
@@ -90,6 +83,13 @@
     <details class="fold" id="f-spos"><summary><h3>Positions at the last decision</h3><span class="cnt"></span></summary><div class="scroll" id="spos" style="max-height:420px;overflow-y:auto"></div></details>
     <details class="fold" id="f-sweeks"><summary><h3>Weeks</h3><span class="cnt"></span></summary><div class="scroll" id="sweeks" style="max-height:420px;overflow-y:auto"></div></details>
     </div>
+  </section>
+  <section id="rSec" hidden>
+    <div class="bar"><h2 style="margin:0">4 · Research: does adding news to price signals improve stock picks? (31 large caps, paper only)</h2><span><select id="rview"><option value="books">Books (long/short)</option><option value="spx">Against the S&amp;P 500</option></select> <select id="rspan"><option value="live">Live weeks only</option><option value="all">Backtest 2018–25 + live (not evidence)</option></select> <select id="rset"><option value="prim">The two judged books</option><option value="all">All six books</option></select></span></div>
+    <div class="muted" id="rnote"></div>
+    <div class="chartbox"><canvas id="rchart"></canvas></div>
+    <div class="scroll" id="rboard"></div>
+    <details class="fold" id="f-rpos"><summary><h3>This week's positions (the two judged books)</h3><span class="cnt"></span></summary><div class="scroll" id="rpos"></div></details>
   </section>
   <section><details class="fold" id="f-gloss"><summary><h2>Glossary: plain names, record names and design documents</h2><span class="cnt"></span></summary>
     <div class="muted" style="margin-bottom:6px">For checking against the records and the design documents (reports/research/PROTOCOL_fund.md for the fund and its experiments; reports/research/PREREG_quant_transformers.md for the S&amp;P research). Every design was written down before its results were seen.</div>
@@ -196,7 +196,7 @@ const store = { get: k => { try { return localStorage.getItem(k); } catch (e) { 
 const PAL = ["#2c5aa0", "#c0392b", "#1a7f4b", "#8e44ad", "#d35400", "#16a085", "#7f8c8d", "#b8860b", "#e84393", "#00a8ff", "#6c5ce7"];
 
 // ---- "What is being tested": one row per question, filled in as each data file arrives ----------------------------
-const QROWS = {}, QORDER = ["p7b", "p7", "news", "exper", "research", "spx"];
+const QROWS = {}, QORDER = ["p7b", "p7", "news", "exper", "spx", "research"];
 function qset(k, row) {
   QROWS[k] = row;
   table("qboard", [["#", r => r.n, "n"], ["Question", r => `<b>${r.q}</b>`, "wrap"], ["Books compared", r => r.books, "wrap"], ["Live window", r => r.win],
@@ -405,7 +405,7 @@ fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
   const redraw = () => { names = rset.value === "all" ? ALLN : ALLN.filter(k => PRIM.includes(k)); draw(sel.value); };
   sel.onchange = redraw; rset.onchange = redraw; redraw();
   const nLive = PRIM.length ? Math.min(...PRIM.map(k => R.books[k].filter(x => x.kind === "live" && x.ret != null).length)) : 0;
-  qset("research", { n: 5, q: "Do price factors + news predict 31 large caps?", books: PRIM.map(rlabel).join(" and ") + " (5 longs / 5 shorts each; paper only)",
+  qset("research", { n: 6, q: "Do price factors + news predict 31 large caps?", books: PRIM.map(rlabel).join(" and ") + " (5 longs / 5 shorts each; paper only)",
     win: "live weeks from 2026-10-21", res: nLive ? `${nLive} realised live week${nLive === 1 ? "" : "s"}; ` + PRIM.map(k => { let v = 1; R.books[k].filter(x => x.kind === "live" && x.ret != null).forEach(x => v *= 1 + x.ret); return `${esc(rlabel(k))} ${pct(v - 1)}`; }).join(" · ") : "no realised live week yet: " + firstBook(),
     verdict: "mid-April 2027, on ranking accuracy; the 2018–25 history is a backtest" });
   document.getElementById("rview").onchange = () => draw(sel.value);
@@ -421,7 +421,7 @@ fetch("../spx.json", { cache: "no-store" }).then(r => r.json()).then(X => {
   document.getElementById("sSec").hidden = false;
   {                                                 // its row in "What is tested": the verdict measure is IC
     const m5 = (X.books || []).find(b => b.key === "fw_master_h5"), ic = m5 && m5.ic ? m5.ic[String(m5.h)] : null;
-    qset("spx", { n: 6, q: "Can AI forecasting models rank the S&amp;P 500's stocks?", books: "MASTER (5- and 20-day), Chronos-2, and their average, vs a simple price-factor model (paper only)",
+    qset("spx", { n: 5, q: "Can AI forecasting models rank the S&amp;P 500's stocks?", books: "MASTER (5- and 20-day), Chronos-2, and their average, vs a simple price-factor model (paper only)",
       win: X.first ? `decisions from ${X.first}` : "first decision 2026-10-29", res: !X.records ? "first positions Friday 30 Oct; first realised week Friday 6 Nov" : ic && ic.n ? `MASTER, 5-day: ranking accuracy ${ic.mean.toFixed(4)} over ${ic.n} week${ic.n === 1 ? "" : "s"}` : `${X.records} record${X.records === 1 ? "" : "s"}, no matured IC yet`,
       verdict: "a book is stopped if its ranking accuracy is clearly negative after 26 weeks; judged at 52 weeks" });
   }
