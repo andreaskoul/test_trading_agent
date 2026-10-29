@@ -4,6 +4,7 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-29: shadow page: the S&P 500 research books (about 500 stocks) now come before the 31-name research books, which have far less statistical power and whose news idea already failed its 2022–25 test; scorecard rows 5 and 6 swap to match. Display only. Could this change a decision? No.
 - 2026-10-29: shadow page in plain language (owner request: "remove abbreviations; these will not be understood in 3 months"; display only).
   * Books and tests are named by what they do. For example, "Live fund" and "Control: same fund without the 28 Oct fixes" replace Protocol 7B and its shadow control; "Original weekly news fund" replaces C0; "Ranking accuracy" replaces IC; "checked at 13, 26, 39 and 52 weeks, stricter early" replaces O'Brien–Fleming.
   * A folded glossary at the bottom maps every plain name to its record key and its name in PROTOCOL_fund.md and PREREG_quant_transformers.md.
