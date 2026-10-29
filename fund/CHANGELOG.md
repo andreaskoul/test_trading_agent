@@ -4,6 +4,11 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-29: shadow page in plain language (owner request: "remove abbreviations; these will not be understood in 3 months"; display only).
+  * Books and tests are named by what they do. For example, "Live fund" and "Control: same fund without the 28 Oct fixes" replace Protocol 7B and its shadow control; "Original weekly news fund" replaces C0; "Ranking accuracy" replaces IC; "checked at 13, 26, 39 and 52 weeks, stricter early" replaces O'Brien–Fleming.
+  * A folded glossary at the bottom maps every plain name to its record key and its name in PROTOCOL_fund.md and PREREG_quant_transformers.md.
+  * Empty sections give dates. The research books' first live week (decided 2026-10-21) is expected on the 2026-11-05 run, computed from the record dates. The S&P books' first positions appear on 2026-10-30, and their first realised week on 2026-11-06.
+  * Could this change a decision? No: display only.
 - 2026-10-29: shadow page organised by question (owner request; display only).
   * A "What is being tested" scorecard opens the page, with one row per question: 7B vs its shadow control; the lifecycle fund vs C0 (the pre-registered paired test); C0 vs price factors and the S&P 500; the challengers vs C0; the research books; and the S&P transformer books. Each row shows the comparison, the live window, the result so far and when the verdict is due.
   * Sections follow the questions, and each says what is tested, how it works and how it performs:
