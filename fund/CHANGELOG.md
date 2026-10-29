@@ -4,6 +4,20 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-29: shadow page organised by question (owner request; display only).
+  * A "What is being tested" scorecard opens the page, with one row per question: 7B vs its shadow control; the lifecycle fund vs C0 (the pre-registered paired test); C0 vs price factors and the S&P 500; the challengers vs C0; the research books; and the S&P transformer books. Each row shows the comparison, the live window, the result so far and when the verdict is due.
+  * Sections follow the questions, and each says what is tested, how it works and how it performs:
+    * the live fund (7B vs control, with C0 and the S&P 500 from the Protocol 7 start);
+    * the weekly-book experiments ("vs C0" over each book's own dates, with price factors, random and the S&P 500 as references);
+    * the research books;
+    * the S&P books.
+  * Every comparison uses one start and one end date for both sides: the last close every side has recorded.
+  * Removed as headline views:
+    * the 15-line chart of every book since 10-01;
+    * the single ranked leaderboard, which mixed challengers, benchmarks and legacy books;
+    * core20 (Protocol 5's arbitrary list, unhedged, in no test family), now under "Not part of any current test" and still selectable;
+    * the research books' 2018–25 history as the default view: it is now behind "Backtest 2018–25 + live (not evidence)", and the four non-primary books sit behind "All six books".
+  * No record, score or book changes. Could this change a decision? No: display only.
 - 2026-10-29: trade monitor and shadow page, collapsible tables (owner request; display only). Long tables fold behind their heading and open with a click; the heading shows the table's row count, and each page remembers which you left open.
   * Open by default: open positions, the shadow leaderboards, a book's positions now, the lifecycle open lots, and the S&P books' board and IC table.
   * Folded by default: realized trades, filled orders, cash activity, shadow trades, weeks, lifecycle events, the research books' weekly positions, and the S&P books' positions and weeks.

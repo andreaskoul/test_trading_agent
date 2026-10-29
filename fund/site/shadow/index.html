@@ -40,6 +40,7 @@
   details.fold > summary .cnt { color:var(--muted); font-size:12px; }
   details.fold > summary:hover h2, details.fold > summary:hover h3 { color:var(--accent); }
   details.fold[open] > summary { margin-bottom:8px; }
+  #qboard td.wrap { min-width:150px; max-width:300px; }
   .chartbox { position:relative; height:340px; } @media (max-width:600px) { .chartbox { height:420px; } }
 </style>
 </head>
@@ -49,31 +50,36 @@
     <h1>Shadow books</h1>
     <div class="muted">Books scored every week but never sent to Alpaca · notional $100,000 each · updated <span id="upd">…</span> · <a href="../">Trade monitor</a> · <a href="../ledger/">Position ledger</a></div>
   </header>
-  <p class="muted" style="margin:-6px 0 14px"><b>Not a verdict yet.</b> The first judgement of these books is set for mid-April 2027, about 6 months in and at least 3 times the longest holding horizon (40 trading days). Until then the rankings are noise.<br>Codes in brackets: <b>C<i>n</i></b> = challenger <i>n</i>, an alternative design registered in the fund protocol (PROTOCOL_fund.md) and scored against the fund; <b>Protocol <i>n</i></b> = the fund's <i>n</i>th pre-registered design (Protocol 7 is the one trading now).</p>
-  <section><h2>Return since each book started</h2><div class="chartbox"><canvas id="chart"></canvas></div></section>
-  <section><h2>Leaderboard</h2><div class="muted" style="margin-bottom:6px">Tap a book to see its positions and trades.</div><div class="scroll" id="board"></div></section>
+  <p class="muted" style="margin:-6px 0 14px;line-height:1.6"><b>How to read this page.</b> Only the live fund trades the account; every other book is paper, scored the same way and never sent to Alpaca. Each section answers one question and compares a book only with what it is meant to beat, over the same dates. Live results are a few weeks old: <b>no verdict before mid-April 2027</b> (about 6 months, at least 3 times the longest holding horizon), so until then differences are mostly noise. Backtests are labelled and never mixed with live weeks.<br><b>C<i>n</i></b> = challenger <i>n</i>, an alternative design registered in the fund protocol (PROTOCOL_fund.md); <b>Protocol <i>n</i></b> = the fund's <i>n</i>th pre-registered design (Protocol 7B trades now).</p>
+  <section><h2>What is being tested</h2><div class="muted" style="margin-bottom:6px">One row per question. "Result so far" is live data only, over the dates shown.</div><div class="scroll" id="qboard"></div></section>
+  <section id="lcSec" hidden>
+    <h2 id="lcTitle">1 · The live fund: does Protocol 7B beat its shadow control?</h2>
+    <div class="muted" id="lcNote" style="line-height:1.6"></div>
+    <div class="chartbox"><canvas id="lchart"></canvas></div>
+    <details class="fold" id="f-lots" open><summary><h3>Open lots</h3><span class="cnt"></span></summary><div class="scroll" id="lots"></div></details>
+    <details class="fold" id="f-events"><summary><h3>Events</h3><span class="cnt"></span></summary><div class="scroll" id="events"></div></details>
+  </section>
   <section>
-    <div class="bar"><h2 style="margin:0">Book</h2><select id="pick"></select></div>
+    <h2>2 · Weekly-book experiments: which design ideas beat the weekly fund book (C0)?</h2>
+    <div class="muted" id="xNote" style="line-height:1.6"></div>
+    <div class="chartbox"><canvas id="chart"></canvas></div>
+    <div class="scroll" id="board"></div>
+    <div class="bar" style="margin-top:14px"><h2 style="margin:0">Book</h2><select id="pick"></select></div>
     <div class="muted" id="desc" style="line-height:1.6"></div>
     <details class="fold" id="f-pos" open><summary><h3>Positions now</h3><span class="cnt"></span></summary><div class="scroll" id="pos"></div></details>
     <details class="fold" id="f-trades"><summary><h3>Shadow trades (weight changes at each execution day's close)</h3><span class="cnt"></span></summary><div class="scroll" id="trades"></div></details>
     <details class="fold" id="f-weeks"><summary><h3>Weeks</h3><span class="cnt"></span></summary><div class="scroll" id="weeks"></div></details>
-  </section>
-  <section id="lcSec" hidden>
-    <h2 id="lcTitle">Lifecycle fund (C10)</h2>
-    <div class="muted" id="lcNote"></div>
-    <details class="fold" id="f-lots" open><summary><h3>Open lots</h3><span class="cnt"></span></summary><div class="scroll" id="lots"></div></details>
-    <details class="fold" id="f-events"><summary><h3>Events</h3><span class="cnt"></span></summary><div class="scroll" id="events"></div></details>
+    <details class="fold" id="f-arch"><summary><h3>Not part of any current test</h3><span class="cnt"></span></summary><div class="muted" id="archNote" style="line-height:1.6"></div><div class="scroll" id="arch"></div></details>
   </section>
   <section id="rSec" hidden>
-    <div class="bar"><h2 style="margin:0">Research books (quant trials · never traded)</h2><span><select id="rview"><option value="books">Books (long/short)</option><option value="spx">Against the S&amp;P 500</option></select> <select id="rspan"><option value="all">History + live</option><option value="live">Live only</option></select></span></div>
+    <div class="bar"><h2 style="margin:0">3 · Research books: do price factors + news predict 31 large caps?</h2><span><select id="rview"><option value="books">Books (long/short)</option><option value="spx">Against the S&amp;P 500</option></select> <select id="rspan"><option value="live">Live weeks only</option><option value="all">Backtest 2018–25 + live (not evidence)</option></select> <select id="rset"><option value="prim">Primaries</option><option value="all">All six books</option></select></span></div>
     <div class="muted" id="rnote"></div>
     <div class="chartbox"><canvas id="rchart"></canvas></div>
     <div class="scroll" id="rboard"></div>
     <details class="fold" id="f-rpos"><summary><h3>This week's books (primaries)</h3><span class="cnt"></span></summary><div class="scroll" id="rpos"></div></details>
   </section>
   <section id="sSec" hidden>
-    <h2>S&amp;P 500 forward books (transformer models · never traded)</h2>
+    <h2>4 · S&amp;P 500 forward books: do transformer models rank 500 stocks?</h2>
     <div class="muted" id="snote" style="line-height:1.6"></div>
     <div id="sbody">
     <div class="chartbox" id="sbox"><canvas id="schart"></canvas></div>
@@ -164,39 +170,108 @@ const store = { get: k => { try { return localStorage.getItem(k); } catch (e) { 
                 set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
 const PAL = ["#2c5aa0", "#c0392b", "#1a7f4b", "#8e44ad", "#d35400", "#16a085", "#7f8c8d", "#b8860b", "#e84393", "#00a8ff", "#6c5ce7"];
 
+// ---- "What is being tested": one row per question, filled in as each data file arrives ----------------------------
+const QROWS = {}, QORDER = ["p7b", "p7", "news", "exper", "research", "spx"];
+function qset(k, row) {
+  QROWS[k] = row;
+  table("qboard", [["#", r => r.n, "n"], ["Question", r => `<b>${r.q}</b>`, "wrap"], ["Books compared", r => r.books, "wrap"], ["Live window", r => r.win],
+    ["Result so far", r => r.res, "wrap"], ["Verdict", r => r.verdict, "wrap"]], QORDER.filter(k => QROWS[k]).map(k => QROWS[k]));
+}
+// Returns are ratios of recorded values: V(end) / V(base) - 1, with V(base) the last recorded value on or before the
+// base date. A comparison always uses one base date for both sides.
+const sorted = pts => pts.slice().sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+const valAt = (pts, day) => { let v = null; for (const p of sorted(pts)) { if (p.date <= day) v = p.value; else break; } return v; };
+const lastOf = pts => { const s = sorted(pts); return s.length ? s[s.length - 1] : null; };
+const retSince = (pts, base) => { const v0 = valAt(pts, base), z = lastOf(pts); return v0 && z ? z.value / v0 - 1 : null; };
+// a comparison ends on the latest date every side has recorded, so both returns cover exactly the same closes
+const commonEnd = (...series) => series.map(p => lastOf(p).date).sort()[0];
+const retWin = (pts, base, end, v0) => { const a = v0 ?? valAt(pts, base), b = valAt(pts, end); return a && b ? b / a - 1 : null; };
+const dayBefore = (pts, day) => { let d0 = null; for (const p of sorted(pts)) { if (p.date < day) d0 = p.date; else break; } return d0; };
+const diffTxt = (a, b, an, bn) => a == null || b == null ? "not enough data yet" : `${an} ${pct(a)} vs ${bn} ${pct(b)}: <b>${pct(a - b)}</b>`;
+const P7B_START = "2026-10-28";                   // first session under Protocol 7B (PROTOCOL_fund.md)
+const EXPER = ["c2_selfconsistency", "c3_textonly", "c4_volscaled", "c5_reversal", "c8_informed", "c9_ranker", "analyst"];
+const REFS = ["quant", "random", "sp500_hold"], ARCH = ["core20"];
+const lineOpts = { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, padding: 6, font: { size: 10 } } },
+  tooltip: { itemSort: (a, b) => b.parsed.y - a.parsed.y, callbacks: { label: c => `${c.dataset.label}: ${(c.parsed.y * 100).toFixed(2)}%` } } },
+  scales: { x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8, callback: function (v) { return this.getLabelForValue(v).slice(5); } } }, y: { ticks: { callback: v => (v * 100).toFixed(1) + "%" } } } };
+const weekday = x => ![0, 6].includes(new Date(x + "T12:00:00Z").getUTCDay());
+
 fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   document.getElementById("upd").textContent = d.updated.replace("T", " ").replace("+00:00", " UTC") + ` · prices: ${d.marks}`;
   if (!d.books.length) { document.getElementById("board").innerHTML = '<div class="empty">No shadow books yet.</div>'; return; }
   const B = d.books, byKey = Object.fromEntries(B.map(b => [b.key, b]));
-  // chart: cumulative return of every book, plus the account and the lifecycle book for reference
-  const dates = [...new Set([...B.flatMap(b => b.series.map(p => p.date)), ...(d.account || []).map(p => p.date),
-                             ...(d.lifecycle ? d.lifecycle.nav.map(p => p.date) : []), ...(d.control ? d.control.nav.map(p => p.date) : [])])].filter(x => ![0, 6].includes(new Date(x + "T12:00:00Z").getUTCDay())).sort();
-  const line = (pts, base) => { const m = Object.fromEntries(pts.map(p => [p.date, p.value / base - 1])); return dates.map(x => m[x] ?? null); };
-  const sets = B.map((b, i) => b.key === "sp500_hold"
-    ? { label: label(b.key), data: line(b.series, d.start), borderColor: "#9a9aa0", borderWidth: 3, pointRadius: 0, spanGaps: true, tension: 0.1 }
-    : { label: label(b.key), data: line(b.series, d.start), borderColor: PAL[i % PAL.length], borderWidth: b.key === "c0_weekly" ? 2.5 : 1.3, pointRadius: 0, spanGaps: true, tension: 0.1 });
-  if (d.lifecycle && d.lifecycle.nav.length) sets.push({ label: label("c10_lifecycle"), data: line(d.lifecycle.nav, d.start), borderColor: "#e67e22", borderWidth: 2.5, borderDash: [6, 3], pointRadius: 0, spanGaps: true });
-  // Protocol 7B's shadow control: the same engine without the 7B rules (Protocol 7 + Amendments 8/9), never traded
-  if (d.control && d.control.nav.length) sets.push({ label: "Shadow control: Protocol 7 + A8/A9 (never traded)", data: line(d.control.nav, d.start), borderColor: "#7f8c8d", borderWidth: 2, borderDash: [2, 2], pointRadius: 0, spanGaps: true });
-  if (d.account && d.account.length) sets.push({ label: "actual account", data: line(d.account, d.account[0].value), borderColor: getComputedStyle(document.documentElement).getPropertyValue("--ink"), borderWidth: 2, borderDash: [2, 3], pointRadius: 0, spanGaps: true });
-  new Chart(document.getElementById("chart"), { type: "line", data: { labels: dates, datasets: sets },
-    options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, padding: 6, font: { size: 10 } } },
-      tooltip: { itemSort: (a, b) => b.parsed.y - a.parsed.y, callbacks: { label: c => `${c.dataset.label}: ${(c.parsed.y * 100).toFixed(2)}%` } } },
-      scales: { x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 6, callback: function (v) { return this.getLabelForValue(v).slice(5); } } }, y: { ticks: { callback: v => (v * 100).toFixed(1) + "%" } } } } });
+  const c0 = byKey.c0_weekly, spy = byKey.sp500_hold, quant = byKey.quant;
+  const L = d.lifecycle, C = d.control, A = d.account || [];
+  const nav = L && L.nav.length ? L.nav : [], cnav = C && C.nav && C.nav.length ? C.nav : [];
 
+  // 1 · the live fund vs its shadow control, the weekly book it replaced and the S&P 500, all from the Protocol 7 start
+  const p7 = d.p7_start || "2026-10-15", base7 = nav.length ? dayBefore(nav, p7) || sorted(nav)[0].date : null;
+  const base7b = nav.length ? dayBefore(nav, P7B_START) : null;
+  if (L) {
+    document.getElementById("lcSec").hidden = false;
+    const fund = new Date() >= new Date(L.is_fund_from + "T00:00:00");
+    // the control equals the live book to the cent until P7B_START, so the fund's value at that base is the control's
+    const end7b = cnav.length ? commonEnd(nav, cnav) : null;
+    const c0v = base7b && cnav.length ? (valAt(cnav, base7b) ?? valAt(nav, base7b)) : null;
+    const r7bF = end7b ? retWin(nav, base7b, end7b) : null, r7bC = end7b ? retWin(cnav, base7b, end7b, c0v) : null;
+    document.getElementById("lcNote").innerHTML =
+      `<b>What is tested.</b> Protocol 7B (from ${P7B_START}) adds three fixes to the live lifecycle book: no averaging down, structural theses held to the next earnings report, and slot protection for working lots. Its <b>shadow control</b> is the same engine without those fixes (Protocol 7 + Amendments 8/9): it follows the live book to the cent until ${P7B_START}, then decides at each close on its own. Second test (pre-registered with Protocol 7): the lifecycle fund against <b>C0</b>, the weekly book it replaced.<br>` +
+      `<b>How it works.</b> Each position has its own horizon H (trading days) from its thesis, a stop at −2W and a target at +3W on its hedged return R (W = expected move over H), and daily news checks against its kill conditions; the book is beta-hedged with SPY.<br>` +
+      `<b>How it performs.</b> ` + (nav.length ? `Fund NAV $${fmt(lastOf(nav).value, 0)} on ${lastOf(nav).date}. ` : "") +
+      (cnav.length ? `From the ${base7b} close (the last before 7B) to ${end7b}: ${diffTxt(r7bF, r7bC, "7B fund", "control")}. ` : `The shadow control has no recorded day yet (it is built nightly from ${P7B_START}). `) +
+      (fund ? "The fund's fills are on the trade monitor." : `It becomes the fund on ${L.is_fund_from}.`);
+    // chart from the Protocol 7 base: each line rebased to its value on that close. The control is the live book
+    // until P7B_START (Protocol 7B), so before its own record starts it is rebased on the fund's base value.
+    const lines = [["Live fund (Protocol 7B from " + P7B_START + ")", nav, "#e67e22", 2.8, []], ["Shadow control (no 7B fixes)", cnav, "#7f8c8d", 2, [2, 2]],
+      ["Weekly fund book (C0)", c0 ? c0.series : [], "#2c5aa0", 1.6, []], ["S&P 500 buy & hold", spy ? spy.series : [], "#9a9aa0", 2.5, []],
+      ["Actual account", A, getComputedStyle(document.documentElement).getPropertyValue("--ink"), 1.5, [2, 3]]].filter(x => x[1].length);
+    const dates = [...new Set(lines.flatMap(x => x[1].map(p => p.date)))].filter(x => weekday(x) && base7 && x >= base7).sort();
+    const v0nav = base7 ? valAt(nav, base7) : null;
+    const sets = lines.map(([lab, pts, col, w, dash]) => { const v0 = valAt(pts, base7) ?? (pts === cnav ? v0nav : null);
+      const m = Object.fromEntries(pts.map(p => [p.date, v0 ? p.value / v0 - 1 : null]));
+      return { label: lab, data: dates.map(x => x === base7 ? 0 : m[x] ?? null), borderColor: col, borderWidth: w, borderDash: dash, pointRadius: 0, spanGaps: true, tension: 0.1 }; });
+    if (dates.length) new Chart(document.getElementById("lchart"), { type: "line", data: { labels: dates, datasets: sets }, options: lineOpts });
+    table("lots", [["Ticker", l => `<b>${esc(l.ticker)}</b>`], ["Side", l => l.side], ["Cohort", l => l.cohort], ["Entry", l => l.entry_day], ["Score", l => l.score ?? "", "n"],
+      ["Weight", l => wt(l.weight), "n"], ["Day / H", l => `${l.days ?? ""} / ${l.H ?? ""}`, "n"], ["R (hedged)", l => pct(l.R), "n"], ["Stop", l => pct(l.stop), "n"], ["Target", l => pct(l.target), "n"],
+      ["Kill conditions", l => esc(l.kill_conditions.join(" · ")), "wrap"]], L.lots.slice().sort((a, b) => Math.abs(b.weight) - Math.abs(a.weight)));
+    table("events", [["Day", e => e.day], ["Ticker", e => `<b>${esc(e.ticker)}</b>`], ["Action", e => esc((e.action || "").replace("_", " "))],
+      ["From $", e => fmt(e.from, 0), "n"], ["To $", e => fmt(e.to, 0), "n"], ["R", e => pct(e.R), "n"], ["W", e => e.W == null ? "" : (e.W * 100).toFixed(1) + "%", "n"], ["Days held", e => e.days_held ?? "", "n"]], L.events);
+    qset("p7b", { n: 1, q: "Do the Protocol 7B fixes improve the live fund?", books: "Live fund (7B) vs shadow control (same engine, no fixes)",
+      win: end7b ? `${base7b} → ${end7b}` : "from " + P7B_START, res: cnav.length ? diffTxt(r7bF, r7bC, "7B", "control") : "control not recorded yet",
+      verdict: "mid-April 2027 (7B against the control, existing scoring)" });
+    const end7 = base7 && c0 ? commonEnd(nav, c0.series) : null;
+    const r7F = end7 ? retWin(nav, base7, end7) : null, r7C0 = end7 ? retWin(c0.series, base7, end7) : null;
+    qset("p7", { n: 2, q: "Does the lifecycle fund beat the weekly book it replaced?", books: "Live fund vs C0 weekly book (pre-registered paired test)",
+      win: end7 ? `${base7} → ${end7}` : "", res: diffTxt(r7F, r7C0, "fund", "C0"), verdict: "at the O'Brien–Fleming looks (13/26/39/52 weeks); C0 takes the account back if it wins at its boundary" });
+  }
+
+  // 2 · weekly-book experiments against C0, with the price-factor, random and S&P references
+  const ex = EXPER.filter(k => byKey[k]), refs = REFS.filter(k => byKey[k]);
+  document.getElementById("xNote").innerHTML =
+    "<b>What is tested.</b> Each challenger changes one thing in the weekly LLM news book (C0) and is judged against C0 over the same dates; the no-red-team book (analyst) measures what the red team adds. References: the price-factor model (no LLM, whole S&amp;P 500), random picks (luck) and the S&amp;P 500. " +
+    "<b>How it works.</b> Weekly: the LLM analysts score about 45 covered stocks after Wednesday's close; long the 10 best and short the 10 worst convictions, beta-neutral with SPY, entered at Thursday's close; 5 bp per side. Click a row for the full design. " +
+    "<b>How it performs.</b> Below, since each book started; <b>vs C0</b> is the book's return minus C0's over the book's own dates. Judged against the registered boundaries (α = 0.05/11 across C0–C10) from mid-April 2027.";
+  const datesX = [...new Set([c0, ...ex.map(k => byKey[k]), ...refs.map(k => byKey[k])].filter(Boolean).flatMap(b => b.series.map(p => p.date)))].filter(weekday).sort();
+  const lineX = b => { const m = Object.fromEntries(b.series.map(p => [p.date, p.value / d.start - 1])); return datesX.map(x => m[x] ?? null); };
+  const setsX = [...(c0 ? [{ label: label("c0_weekly"), data: lineX(c0), borderColor: "#2c5aa0", borderWidth: 3, pointRadius: 0, spanGaps: true, tension: 0.1 }] : []),
+    ...ex.map((k, i) => ({ label: label(k), data: lineX(byKey[k]), borderColor: PAL[(i + 1) % PAL.length], borderWidth: 1.3, pointRadius: 0, spanGaps: true, tension: 0.1 })),
+    ...refs.map(k => ({ label: label(k) + " (reference)", data: lineX(byKey[k]), borderColor: k === "sp500_hold" ? "#9a9aa0" : "#b0b0b5", borderWidth: k === "sp500_hold" ? 2.5 : 1.3, borderDash: k === "sp500_hold" ? [] : [4, 3], pointRadius: 0, spanGaps: true, tension: 0.1 }))];
+  new Chart(document.getElementById("chart"), { type: "line", data: { labels: datesX, datasets: setsX }, options: lineOpts });
+  const vsC0 = b => { if (!c0 || b.key === "c0_weekly") return null; const base = sorted(b.series)[0].date, end = commonEnd(b.series, c0.series);
+    const r = retWin(b.series, base, end), rc = retWin(c0.series, base, end); return r == null || rc == null ? null : r - rc; };
+  const rowsX = [c0, ...ex.map(k => byKey[k]), ...refs.map(k => byKey[k])].filter(Boolean);
   const sel = document.getElementById("pick");
-  sel.innerHTML = B.map(b => `<option value="${b.key}">${esc(label(b.key))}</option>`).join("");
-  const ranked = B.slice().sort((a, b) => b.return - a.return);
+  sel.innerHTML = B.map(b => `<option value="${b.key}">${esc(label(b.key))}${ARCH.includes(b.key) ? " (not in a current test)" : ""}</option>`).join("");
   function show(k) {
-    const b = byKey[k] || B[0]; k = b.key; sel.value = k; store.set("shadowBook", k); history.replaceState(null, "", "#" + k);
-    table("board", [["#", (r, i) => ranked.indexOf(r) + 1, "n"], ["Book", r => `<b>${esc(label(r.key))}</b>`], ["Return", r => pct(r.return), "n"], ["This week", r => pct(r.week_return), "n"],
-      ["Value", r => "$" + fmt(r.value, 0), "n"], ["Since", r => r.started],
-      ["Names", r => r.key === "sp500_hold" ? "500 (SPY)" : (r.weeks.find(w => w.names != null) || {}).names ?? "", "n"], ["Stock gross", r => { const w = r.weeks.find(w => w.gross != null); return w ? (w.gross * 100).toFixed(0) + "%" : ""; }, "n"],
-      ["What it tests", r => esc(about(r).test), "wrap"]], ranked, r => `class="pick${r.key === k ? " on" : ""}" data-k="${r.key}"`);
+    const b = byKey[k] || c0 || B[0]; k = b.key; sel.value = k; store.set("shadowBook", k);
+    table("board", [["Book", r => `<b>${esc(label(r.key))}</b>`], ["Role", r => r.key === "c0_weekly" ? "comparator" : REFS.includes(r.key) ? "reference" : r.key === "analyst" ? "baseline (no red team)" : "challenger"], ["Since", r => r.started],
+      ["Return", r => pct(r.return), "n"], ["vs C0", r => r.key === "c0_weekly" ? "" : pct(vsC0(r)), "n"], ["This week", r => pct(r.week_return), "n"],
+      ["Names", r => r.key === "sp500_hold" ? "500 (SPY)" : (r.weeks.find(w => w.names != null) || {}).names ?? "", "n"], ["What it tests", r => esc(about(r).test), "wrap"]],
+      rowsX, r => `class="pick${r.key === k ? " on" : ""}" data-k="${r.key}"`);
     document.querySelectorAll("#board tr.pick").forEach(tr => tr.onclick = () => { show(tr.dataset.k); sel.scrollIntoView({ behavior: "smooth", block: "start" }); });
-    const A = about(b);
-    document.getElementById("desc").innerHTML = `<b>Tests:</b> ${esc(A.test)}` +
-      [["Universe", A.universe], ["Signal", A.signal], ["Portfolio", A.portfolio], ["Rebalancing", A.rebal || (A.universe ? REBAL : "")]].filter(x => x[1]).map(([h, t]) => `<br><b>${h}:</b> ${esc(t)}`).join("");
+    const A_ = about(b);
+    document.getElementById("desc").innerHTML = `<b>Tests:</b> ${esc(A_.test)}` +
+      [["Universe", A_.universe], ["Signal", A_.signal], ["Portfolio", A_.portfolio], ["Rebalancing", A_.rebal || (A_.universe ? REBAL : "")]].filter(x => x[1]).map(([h, t]) => `<br><b>${h}:</b> ${esc(t)}`).join("");
     table("pos", [["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Weight", p => wt(p.weight), "n"], ["Return", p => pct(p.return), "n"], ["P&L", p => usd(p.pnl), "n"],
       ["Side", p => p.side + (p.role === "beta hedge" ? " (hedge)" : "")], ["Name", p => esc(p.name)], ["Amount $", p => "$" + fmt(p.amount, 0), "n"],
       ["Entry", p => p.entry_day], ["Entry $", p => fmt(p.entry_price), "n"], ["Current $", p => fmt(p.current_price), "n"]], b.positions);
@@ -208,22 +283,16 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
   }
   sel.onchange = () => show(sel.value);
   show(location.hash.slice(1) || store.get("shadowBook") || "c0_weekly");
-
-  const L = d.lifecycle;
-  if (L) {
-    document.getElementById("lcSec").hidden = false;
-    const fund = new Date() >= new Date(L.is_fund_from + "T00:00:00");
-    document.getElementById("lcTitle").textContent = fund ? "Lifecycle fund (C10, trades the account)" : "Lifecycle book (C10, shadow until " + L.is_fund_from + ")";
-    const nav = L.nav[L.nav.length - 1];
-    document.getElementById("lcNote").innerHTML = `Each position has its own horizon H (trading days), a stop at −2W and a target at +3W on its hedged return R, and daily news checks against its kill conditions. NAV ${"$" + fmt(nav.value, 0)} on ${nav.date} (${pct(nav.value / d.start - 1)} since start). ` +
-      (fund ? "From " + L.is_fund_from + " this book is the fund; its fills are on the trade monitor." : "It becomes the fund on " + L.is_fund_from + " (Protocol 7).");
-    const Cn = d.control && d.control.nav.length ? d.control.nav[d.control.nav.length - 1] : null;
-    if (Cn) document.getElementById("lcNote").innerHTML += ` Protocol 7B (from 2026-10-28: no averaging down, structural theses held to the next report, slot protection) is measured against its <b>shadow control</b>, the same engine without the 7B rules (Protocol 7 + Amendments 8/9, never traded): NAV ${"$" + fmt(Cn.value, 0)} on ${Cn.date} (${pct(Cn.value / d.start - 1)}). No verdict before about mid-April 2027.`;
-    table("lots", [["Ticker", l => `<b>${esc(l.ticker)}</b>`], ["Side", l => l.side], ["Cohort", l => l.cohort], ["Entry", l => l.entry_day], ["Score", l => l.score ?? "", "n"],
-      ["Weight", l => wt(l.weight), "n"], ["Day / H", l => `${l.days ?? ""} / ${l.H ?? ""}`, "n"], ["R (hedged)", l => pct(l.R), "n"], ["Stop", l => pct(l.stop), "n"], ["Target", l => pct(l.target), "n"],
-      ["Kill conditions", l => esc(l.kill_conditions.join(" · ")), "wrap"]], L.lots.slice().sort((a, b) => Math.abs(b.weight) - Math.abs(a.weight)));
-    table("events", [["Day", e => e.day], ["Ticker", e => `<b>${esc(e.ticker)}</b>`], ["Action", e => esc((e.action || "").replace("_", " "))],
-      ["From $", e => fmt(e.from, 0), "n"], ["To $", e => fmt(e.to, 0), "n"], ["R", e => pct(e.R), "n"], ["W", e => e.W == null ? "" : (e.W * 100).toFixed(1) + "%", "n"], ["Days held", e => e.days_held ?? "", "n"]], L.events);
+  document.getElementById("archNote").innerHTML = "Still recorded and selectable above, but no current question uses them. <b>Fixed 20-stock list (core20)</b>: Protocol 5's design on a list chosen arbitrarily when the project started, 4 longs and 4 shorts at 25% each, unhedged (200% gross); it is not in the challenger family, so its return mixes concentration, market and sector exposure and tests nothing the protocol asks.";
+  table("arch", [["Book", r => `<b>${esc(label(r.key))}</b>`], ["Since", r => r.started], ["Return", r => pct(r.return), "n"], ["This week", r => pct(r.week_return), "n"]], ARCH.filter(k => byKey[k]).map(k => byKey[k]));
+  const best = ex.map(k => [k, vsC0(byKey[k])]).filter(x => x[1] != null).sort((a, b) => b[1] - a[1]);
+  qset("exper", { n: 4, q: "Which weekly-book design ideas help?", books: `${ex.length - (ex.includes("analyst") ? 1 : 0)} challengers and the no-red-team baseline vs C0 (red team, self-consistency, text only, inverse-volatility sizing, reversal, macro/peer context, LLM ranker)`,
+    win: "since each book started", res: best.length ? `best ${esc(label(best[0][0]))} ${pct(best[0][1])} vs C0; worst ${esc(label(best[best.length - 1][0]))} ${pct(best[best.length - 1][1])}` : "",
+    verdict: "mid-April 2027, at α = 0.05/11 across C0–C10" });
+  if (c0 && quant && spy) {
+    const base = sorted(c0.series)[0].date, end = commonEnd(c0.series, quant.series, spy.series);
+    qset("news", { n: 3, q: "Do LLM news books beat a price-factor model and the market?", books: "C0 (LLM news) vs price factors (no LLM) vs S&amp;P 500", win: `${base} → ${end}`,
+      res: `C0 ${pct(retWin(c0.series, base, end))} · price factors ${pct(retWin(quant.series, base, end))} · S&amp;P 500 ${pct(retWin(spy.series, base, end))}`, verdict: "mid-April 2027; the books are beta-neutral, so the S&amp;P 500 is context, not their target" });
   }
 }).catch(e => { document.getElementById("board").innerHTML = `<div class="empty">Could not load shadow data (${esc(e.message)}).</div>`; });
 
@@ -231,9 +300,10 @@ fetch("../shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
 fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
   if (!R.books || !Object.keys(R.books).length) return;
   document.getElementById("rSec").hidden = false;
-  const PRIM = R.primary || [], names = Object.keys(R.books);
+  const PRIM = R.primary || [], ALLN = Object.keys(R.books);
+  let names = ALLN.filter(k => PRIM.includes(k));
   const KIND = { backfill: "history (walk-forward)", catchup: "Oct 2026 catch-up (computed late)", live: "live (forward)" };
-  document.getElementById("rnote").innerHTML = "Six books on the 31-name news panel. <b>Price factors</b> (q5) = the quant book's five price factors, refit quarterly; <b>Price factors + news</b> (qn) = the same plus the news state; the day count (h) is how many trading days ahead each book forecasts and holds. Primaries: <b>" + PRIM.map(rlabel).join(", ") +
+  document.getElementById("rnote").innerHTML = "<b>What is tested.</b> Whether adding the news state to five price factors improves weekly long/short picks on 31 large caps (the panel with stored headline embeddings). <b>How it works.</b> A ridge model refit quarterly scores each name; long the 5 best, short the 5 worst, beta-hedged, held h trading days. <b>How it performs.</b> Live weeks only by default (none realised yet); the backtest is one click away and labelled. Six books on the 31-name news panel. <b>Price factors</b> (q5) = the quant book's five price factors, refit quarterly; <b>Price factors + news</b> (qn) = the same plus the news state; the day count (h) is how many trading days ahead each book forecasts and holds. Primaries: <b>" + PRIM.map(rlabel).join(", ") +
     "</b>. History 2018–2025 is walk-forward (2022–25 was read during the research); Jan–Sep 2026 is sealed as the holdout for the next protocol (Protocol 8), so no books there. Only live weeks are forward evidence; no verdict before mid-April 2027. With 5 longs and 5 shorts among 31 names, book returns are dominated by a few moves (e.g. GameStop in January 2021): read the mean IC (rank correlation of the scores with the h-session residual return) as the steadier measure. <b>Against the S&amp;P 500</b>: every book is long/short; each primary is shown on top of SPY, held 1x and through the owner's dynamic sleeve (" + ((R.policy || {}).up ?? "1.3") + "x SPY when SPY closes above its 200-session average at the as-of close, " + ((R.policy || {}).down ?? "0.7") + "x otherwise). Costs are the broker's: 5 bp per side on trades (paper fills have averaged under 1 bp), a debit balance pays the margin rate (the T-bill rate + 2.43%, Alpaca's 6.50% today), idle cash earns nothing, and easy-to-borrow shorts cost nothing. The fair yardstick is the risk-matched S&amp;P, which holds the sleeve's average exposure throughout. Weeks without a session Wednesday are flat for every line." + (R.latest && R.latest.sleeve ? " Sleeve this week: <b>" + R.latest.sleeve + "x</b>." : "") + " Updated " + esc((R.generated || "").replace("T", " ").slice(0, 16)) + " UTC.";
   let chart = null;
   // "Against the S&P 500": each primary on top of SPY (1x, and the owner's dynamic sleeve), SPY buy-and-hold, the
@@ -277,6 +347,12 @@ fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
   function draw(span) {
     document.getElementById("rchart").parentElement.style.display = "";
     if (document.getElementById("rview").value === "spx") return drawSpx(span);
+    if (span === "live" && !names.some(k => R.books[k].some(x => x.kind === "live" && x.ret != null))) {
+      if (chart) { chart.destroy(); chart = null; }
+      document.getElementById("rchart").parentElement.style.display = "none";
+      document.getElementById("rboard").innerHTML = '<div class="empty">No realised live week yet: the first live books (as-of 2026-10-21 and 10-28) are booked when their holding weeks end. To see the 2018–25 walk-forward backtest, choose "Backtest 2018–25 + live" (not evidence: part of it was read during the research).</div>';
+      return;
+    }
     const rows = k => R.books[k].filter(x => x.ret != null && (span === "all" || x.kind === "live"));
     const dates = [...new Set(names.flatMap(k => R.books[k].filter(x => span === "all" || x.kind === "live").map(x => x.asof)))].sort();
     const sets = names.map((k, i) => {
@@ -295,7 +371,13 @@ fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
     table("rboard", [["Book", r => `<b>${esc(rlabel(r.k))}</b>${PRIM.includes(r.k) ? " ★" : ""}`], ["Weeks", r => r.n, "n"], ["Cumulative", r => pct(r.cum), "n"], ["Sharpe (ann.)", r => r.sharpe == null ? "" : r.sharpe.toFixed(2), "n"],
       ["Max drawdown", r => pct(r.dd), "n"], ["Mean IC", r => r.ic == null ? "" : r.ic.toFixed(3), "n"]], names.map(stat));
   }
-  const sel = document.getElementById("rspan"); sel.onchange = () => draw(sel.value); draw("all");
+  const sel = document.getElementById("rspan"), rset = document.getElementById("rset");
+  const redraw = () => { names = rset.value === "all" ? ALLN : ALLN.filter(k => PRIM.includes(k)); draw(sel.value); };
+  sel.onchange = redraw; rset.onchange = redraw; redraw();
+  const nLive = PRIM.length ? Math.min(...PRIM.map(k => R.books[k].filter(x => x.kind === "live" && x.ret != null).length)) : 0;
+  qset("research", { n: 5, q: "Do price factors + news predict 31 large caps?", books: "Primaries " + PRIM.map(rlabel).join(" and ") + ", 5 longs / 5 shorts each",
+    win: "live weeks from 2026-10-21", res: nLive ? `${nLive} realised live week${nLive === 1 ? "" : "s"}; ` + PRIM.map(k => { let v = 1; R.books[k].filter(x => x.kind === "live" && x.ret != null).forEach(x => v *= 1 + x.ret); return `${esc(rlabel(k))} ${pct(v - 1)}`; }).join(" · ") : "no realised live week yet",
+    verdict: "mid-April 2027, on mean IC; the 2018–25 history is a backtest" });
   document.getElementById("rview").onchange = () => draw(sel.value);
   const L = R.latest;
   if (L) table("rpos", [["Book", r => `<b>${esc(rlabel(r.book))}</b>`], ["As of", r => L.asof + " (" + (KIND[L.kind] || L.kind) + ")"], ["Ticker", r => esc(r.t)], ["Weight", r => wt(r.w), "n"]],
@@ -307,6 +389,12 @@ fetch("../research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
 // formats and plots it. Fractions in the file; shown as %.
 fetch("../spx.json", { cache: "no-store" }).then(r => r.json()).then(X => {
   document.getElementById("sSec").hidden = false;
+  {                                                 // its row in "What is tested": the verdict measure is IC
+    const m5 = (X.books || []).find(b => b.key === "fw_master_h5"), ic = m5 && m5.ic ? m5.ic[String(m5.h)] : null;
+    qset("spx", { n: 6, q: "Do transformer models rank 500 S&amp;P stocks?", books: "MASTER 5d and 20d, Chronos-2, their ensemble, vs a ridge control (Amendment 4)",
+      win: X.first ? `decisions from ${X.first}` : "first decision 2026-10-29", res: !X.records ? "first record Friday 30 Oct" : ic && ic.n ? `MASTER 5d: mean IC ${ic.mean.toFixed(4)} over ${ic.n} week${ic.n === 1 ? "" : "s"}` : `${X.records} record${X.records === 1 ? "" : "s"}, no matured IC yet`,
+      verdict: "stop rule at 26 IC weeks; review at 52 (Holm, vs ridge)" });
+  }
   if (!X.books || !X.books.length) {                // before the first record: say when it comes, not a blank section
     document.getElementById("sbody").hidden = true;
     document.getElementById("snote").innerHTML = "Five weekly books on the S&amp;P 500 from the transformer research (PREREG_quant_transformers.md, Amendment 4; never traded). The first decision is Thursday 29 Oct 2026, recorded on Friday at 03:45 UTC; this section fills in after that run.";
