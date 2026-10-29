@@ -29,6 +29,17 @@
   .empty { color:var(--muted); padding:8px 0; }
   .bar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:8px; }
   select { font:inherit; padding:4px 8px; border-radius:6px; border:1px solid var(--line); background:var(--card); color:var(--ink); }
+  /* collapsible tables: click a heading to show or hide its table; the count is the table's rows */
+  details.fold { margin-top:12px; }
+  section > details.fold:first-child { margin-top:0; }
+  details.fold > summary { cursor:pointer; list-style:none; display:flex; align-items:baseline; gap:8px; user-select:none; }
+  details.fold > summary::-webkit-details-marker { display:none; }
+  details.fold > summary::before { content:"\25B6"; color:var(--muted); font-size:11px; display:inline-block; width:12px; transition:transform .15s; }
+  details.fold[open] > summary::before { transform:rotate(90deg); }
+  details.fold > summary h2, details.fold > summary h3 { display:inline; margin:0; }
+  details.fold > summary .cnt { color:var(--muted); font-size:12px; }
+  details.fold > summary:hover h2, details.fold > summary:hover h3 { color:var(--accent); }
+  details.fold[open] > summary { margin-bottom:8px; }
   .chartbox { position:relative; height:340px; } @media (max-width:600px) { .chartbox { height:420px; } }
 </style>
 </head>
@@ -44,34 +55,34 @@
   <section>
     <div class="bar"><h2 style="margin:0">Book</h2><select id="pick"></select></div>
     <div class="muted" id="desc" style="line-height:1.6"></div>
-    <h3>Positions now</h3><div class="scroll" id="pos"></div>
-    <h3>Shadow trades (weight changes at each execution day's close)</h3><div class="scroll" id="trades"></div>
-    <h3>Weeks</h3><div class="scroll" id="weeks"></div>
+    <details class="fold" id="f-pos" open><summary><h3>Positions now</h3><span class="cnt"></span></summary><div class="scroll" id="pos"></div></details>
+    <details class="fold" id="f-trades"><summary><h3>Shadow trades (weight changes at each execution day's close)</h3><span class="cnt"></span></summary><div class="scroll" id="trades"></div></details>
+    <details class="fold" id="f-weeks"><summary><h3>Weeks</h3><span class="cnt"></span></summary><div class="scroll" id="weeks"></div></details>
   </section>
   <section id="lcSec" hidden>
     <h2 id="lcTitle">Lifecycle fund (C10)</h2>
     <div class="muted" id="lcNote"></div>
-    <h3>Open lots</h3><div class="scroll" id="lots"></div>
-    <h3>Events</h3><div class="scroll" id="events"></div>
+    <details class="fold" id="f-lots" open><summary><h3>Open lots</h3><span class="cnt"></span></summary><div class="scroll" id="lots"></div></details>
+    <details class="fold" id="f-events"><summary><h3>Events</h3><span class="cnt"></span></summary><div class="scroll" id="events"></div></details>
   </section>
   <section id="rSec" hidden>
     <div class="bar"><h2 style="margin:0">Research books (quant trials · never traded)</h2><span><select id="rview"><option value="books">Books (long/short)</option><option value="spx">Against the S&amp;P 500</option></select> <select id="rspan"><option value="all">History + live</option><option value="live">Live only</option></select></span></div>
     <div class="muted" id="rnote"></div>
     <div class="chartbox"><canvas id="rchart"></canvas></div>
     <div class="scroll" id="rboard"></div>
-    <h3>This week's books (primaries)</h3><div class="scroll" id="rpos"></div>
+    <details class="fold" id="f-rpos"><summary><h3>This week's books (primaries)</h3><span class="cnt"></span></summary><div class="scroll" id="rpos"></div></details>
   </section>
   <section id="sSec" hidden>
     <h2>S&amp;P 500 forward books (transformer models · never traded)</h2>
     <div class="muted" id="snote" style="line-height:1.6"></div>
     <div id="sbody">
     <div class="chartbox" id="sbox"><canvas id="schart"></canvas></div>
-    <h3>Books and yardsticks</h3><div class="scroll" id="sboard"></div>
-    <h3>Signal quality: weekly rank IC (the verdict measure)</h3><div class="scroll" id="sic"></div>
+    <details class="fold" id="f-sboard" open><summary><h3>Books and yardsticks</h3><span class="cnt"></span></summary><div class="scroll" id="sboard"></div></details>
+    <details class="fold" id="f-sic" open><summary><h3>Signal quality: weekly rank IC (the verdict measure)</h3><span class="cnt"></span></summary><div class="scroll" id="sic"></div></details>
     <div class="bar" style="margin-top:14px"><h2 style="margin:0">Book</h2><select id="spick"></select></div>
     <div class="muted" id="sdesc" style="line-height:1.6"></div>
-    <h3>Positions at the last decision</h3><div class="scroll" id="spos" style="max-height:420px;overflow-y:auto"></div>
-    <h3>Weeks</h3><div class="scroll" id="sweeks" style="max-height:420px;overflow-y:auto"></div>
+    <details class="fold" id="f-spos"><summary><h3>Positions at the last decision</h3><span class="cnt"></span></summary><div class="scroll" id="spos" style="max-height:420px;overflow-y:auto"></div></details>
+    <details class="fold" id="f-sweeks"><summary><h3>Weeks</h3><span class="cnt"></span></summary><div class="scroll" id="sweeks" style="max-height:420px;overflow-y:auto"></div></details>
     </div>
   </section>
   <p class="muted">Marked the way the scorer (score.py) scores each book: a week's weights enter at the execution day's official close and are held to the next execution day's close; costs are 5 bp per side on the change in weights; idle cash earns nothing here. The running week is marked at the latest close, or at Alpaca's latest trades during market hours. These are hypothetical books with no fills, so they differ from the account: in week 1 most of the real orders expired unfilled. SPY rows are each book's market hedge, except in the S&amp;P 500 benchmark, which is simply 100% SPY held throughout (one 5 bp buy at the start). Return = signed price return (dividends included); amount = |weight| × the book's value at entry. The scorer's weekly results in fund-data performance/ stay the record.</p>
@@ -374,6 +385,20 @@ fetch("../spx.json", { cache: "no-store" }).then(r => r.json()).then(X => {
   sel.onchange = () => show(sel.value);
   show(store.get("spxBook") || B[0].key);
 }).catch(() => {});
+
+// Collapsible tables (display only): each <details class="fold"> remembers whether you left it open, and its heading
+// shows how many rows its table has. Nothing here changes data.
+document.querySelectorAll("details.fold").forEach(d => {
+  const key = "fold:" + location.pathname + ":" + d.id;
+  try { const v = localStorage.getItem(key); if (v != null) d.open = v === "1"; } catch (e) {}
+  d.addEventListener("toggle", () => { try { localStorage.setItem(key, d.open ? "1" : "0"); } catch (e) {} });
+  const cnt = d.querySelector(":scope > summary .cnt");
+  if (!cnt) return;
+  const upd = () => { const n = d.querySelectorAll("tbody tr").length, s = n ? `(${n} row${n === 1 ? "" : "s"})` : "";
+    if (cnt.textContent !== s) cnt.textContent = s; };                  // only on change: no observer loop
+  new MutationObserver(upd).observe(d, { childList: true, subtree: true });
+  upd();
+});
 </script>
 </body>
 </html>

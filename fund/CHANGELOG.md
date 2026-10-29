@@ -4,6 +4,10 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-29: trade monitor and shadow page, collapsible tables (owner request; display only). Long tables fold behind their heading and open with a click; the heading shows the table's row count, and each page remembers which you left open.
+  * Open by default: open positions, the shadow leaderboards, a book's positions now, the lifecycle open lots, and the S&P books' board and IC table.
+  * Folded by default: realized trades, filled orders, cash activity, shadow trades, weeks, lifecycle events, the research books' weekly positions, and the S&P books' positions and weeks.
+  * Element ids and the rendering code are unchanged. Could this change a decision? No: display only.
 - 2026-10-27: shadow page, S&P 500 forward books section (display only).
   * The `spx` job writes `page.json` next to the records; `fund_pages.yml` publishes it as `spx.json`, and the job asks for a Pages rebuild.
   * Every figure is computed once in `spx_forward.page()` with the backtest's formulas (strategies.stats; the NW t and Holm rules of Amendment 4); the page only formats it.

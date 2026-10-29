@@ -32,6 +32,17 @@
   td:hover .clamp { -webkit-line-clamp:unset; overflow:visible; }
   .empty { color:var(--muted); padding:8px 0; }
   canvas { max-height:260px; }
+  /* collapsible tables: click a heading to show or hide its table; the count is the table's rows */
+  details.fold { margin-top:12px; }
+  section > details.fold:first-child { margin-top:0; }
+  details.fold > summary { cursor:pointer; list-style:none; display:flex; align-items:baseline; gap:8px; user-select:none; }
+  details.fold > summary::-webkit-details-marker { display:none; }
+  details.fold > summary::before { content:"\25B6"; color:var(--muted); font-size:11px; display:inline-block; width:12px; transition:transform .15s; }
+  details.fold[open] > summary::before { transform:rotate(90deg); }
+  details.fold > summary h2, details.fold > summary h3 { display:inline; margin:0; }
+  details.fold > summary .cnt { color:var(--muted); font-size:12px; }
+  details.fold > summary:hover h2, details.fold > summary:hover h3 { color:var(--accent); }
+  details.fold[open] > summary { margin-bottom:8px; }
 </style>
 </head>
 <body>
@@ -42,10 +53,10 @@
   </header>
   <div class="kpis" id="kpis"></div>
   <section><h2>Account value</h2><div id="acctEmpty" class="empty" hidden>No trades yet. The first weekly trade is Thursday's close.</div><canvas id="acct"></canvas></section>
-  <section><h2>Open positions</h2><div class="muted" id="lcNote"></div><div class="scroll" id="open"></div></section>
-  <section><h2 id="closedTitle">Realized trades (shares closed)</h2><div class="scroll" id="closed"></div></section>
-  <section><h2>Filled orders</h2><div class="scroll" id="orders"></div></section>
-  <section><h2>Cash activity (dividends, fees, interest)</h2><div class="scroll" id="cash"></div></section>
+  <section><details class="fold" id="f-open" open><summary><h2>Open positions</h2><span class="cnt"></span></summary><div class="muted" id="lcNote"></div><div class="scroll" id="open"></div></details></section>
+  <section><details class="fold" id="f-closed"><summary><h2 id="closedTitle">Realized trades (shares closed)</h2><span class="cnt"></span></summary><div class="scroll" id="closed"></div></details></section>
+  <section><details class="fold" id="f-orders"><summary><h2>Filled orders</h2><span class="cnt"></span></summary><div class="scroll" id="orders"></div></details></section>
+  <section><details class="fold" id="f-cash"><summary><h2>Cash activity (dividends, fees, interest)</h2><span class="cnt"></span></summary><div class="scroll" id="cash"></div></details></section>
   <p class="muted">Standard broker accounting from Alpaca's own records: cost basis is FIFO over every fill (Alpaca's method). Realized P&amp;L comes only from shares actually sold or bought back; unrealized P&amp;L is open shares × (mark − average cost), at Alpaca's marks from the same moment as the account value. Account P&amp;L = realized + unrealized + dividends, fees &amp; interest. Returns are price returns, signed for shorts. SPY rows are the market hedge. Invested = |shares| × entry price; an order's amount = filled shares × fill price. The Excel ledger also keeps a week-by-week lot view, which is not realized P&amp;L.</p>
 </main>
 <script>
@@ -124,6 +135,20 @@ fetch("dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => {
     ["Amount $", o => o.qty == null || o.fill_price == null ? "" : "$" + fmt(Math.abs(o.qty * o.fill_price), 0), "n"], ["Close $", o => fmt(o.official_close), "n"], ["Slippage (bp)", o => fmt(o.slippage_bp, 1), "n"]], d.orders.slice().reverse());
   table("cash", [["Date", c => c.date], ["Type", c => esc(c.type)], ["Ticker", c => esc(c.ticker)], ["Amount", c => usd(c.amount), "n"]], d.cash.slice().reverse());
 }).catch(e => { document.getElementById("kpis").innerHTML = `<div class="empty">Could not load dashboard data (${esc(e.message)}).</div>`; });
+
+// Collapsible tables (display only): each <details class="fold"> remembers whether you left it open, and its heading
+// shows how many rows its table has. Nothing here changes data.
+document.querySelectorAll("details.fold").forEach(d => {
+  const key = "fold:" + location.pathname + ":" + d.id;
+  try { const v = localStorage.getItem(key); if (v != null) d.open = v === "1"; } catch (e) {}
+  d.addEventListener("toggle", () => { try { localStorage.setItem(key, d.open ? "1" : "0"); } catch (e) {} });
+  const cnt = d.querySelector(":scope > summary .cnt");
+  if (!cnt) return;
+  const upd = () => { const n = d.querySelectorAll("tbody tr").length, s = n ? `(${n} row${n === 1 ? "" : "s"})` : "";
+    if (cnt.textContent !== s) cnt.textContent = s; };                  // only on change: no observer loop
+  new MutationObserver(upd).observe(d, { childList: true, subtree: true });
+  upd();
+});
 </script>
 </body>
 </html>
