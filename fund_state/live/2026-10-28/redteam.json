@@ -1,0 +1,1287 @@
+{
+ "cutoff": "2026-10-28 22:00:00",
+ "asof": "2026-10-28",
+ "reviews": {
+  "NVDA": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Wafer",
+    "usage": {
+     "prompt_tokens": 8308,
+     "completion_tokens": 2080,
+     "total_tokens": 10388,
+     "cost": 0.00293052,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.00293052,
+      "upstream_inference_prompt_cost": 0.00157852,
+      "upstream_inference_completions_cost": 0.001352
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2002,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\":\"uphold\",\"flaw\":null,\"adjusted_score\":1,\"critique\":\"Catalysts dated Oct 26-27 are within 7 days and supported by cited articles. The ~6% one-month decline matches price facts. Neocloud debt and crash-warning risks are acknowledged, not ignored. No factual, stale, recycled, contra, or priced flaw.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "Catalysts dated Oct 26-27 are within 7 days and supported by cited articles. The ~6% one-month decline matches price facts. Neocloud debt and crash-warning risks are acknowledged, not ignored. No factual, stale, recycled, contra, or priced flaw."
+   }
+  },
+  "AAPL": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Morph",
+    "usage": {
+     "prompt_tokens": 7336,
+     "completion_tokens": 736,
+     "total_tokens": 8072,
+     "cost": 0.000604672,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.000604672,
+      "upstream_inference_prompt_cost": 0.000322784,
+      "upstream_inference_completions_cost": 0.000281888
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 663,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\":\"uphold\",\"flaw\":null,\"adjusted_score\":1,\"critique\":\"No named flaw: Oct 26 production ramp and Oct 28 touchscreen Mac launch are fresh and corroborated; hinge defects and weak iPhone 18 demand are acknowledged. Earnings Nov 2 is within the holding week, and recent return is not excessive.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "No named flaw: Oct 26 production ramp and Oct 28 touchscreen Mac launch are fresh and corroborated; hinge defects and weak iPhone 18 demand are acknowledged. Earnings Nov 2 is within the holding week, and recent return is not excessive."
+   }
+  },
+  "MSFT": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Baidu",
+    "usage": {
+     "prompt_tokens": 9020,
+     "completion_tokens": 5724,
+     "total_tokens": 14744,
+     "cost": 0.0013979208,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0013979208,
+      "upstream_inference_prompt_cost": 0.000395076,
+      "upstream_inference_completions_cost": 0.0010028448
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 5605,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": 2, \"critique\": \"All claims verified against material: Oct 28 FQ1 beat with Azure accelerating, Oct 26 Truist $600 and Oppenheimer $625 target raises, Oct 26 60k buyout offers, and 2.29% below 52-week high. Catalyst is within 7 days and ret_1w -0.36% shows reaction unspent; stated AI-capex/debt risk is acknowledged, not ignored.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 2,
+    "critique": "All claims verified against material: Oct 28 FQ1 beat with Azure accelerating, Oct 26 Truist $600 and Oppenheimer $625 target raises, Oct 26 60k buyout offers, and 2.29% below 52-week high. Catalyst is within 7 days and ret_1w -0.36% shows reaction unspent; stated AI-capex/debt risk is acknowledged, not ignored."
+   }
+  },
+  "GOOGL": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Morph",
+    "usage": {
+     "prompt_tokens": 7562,
+     "completion_tokens": 466,
+     "total_tokens": 8028,
+     "cost": 0.000511206,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.000511206,
+      "upstream_inference_prompt_cost": 0.000332728,
+      "upstream_inference_completions_cost": 0.000178478
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 378,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\":\"uphold\",\"flaw\":null,\"adjusted_score\":-2,\"critique\":\"The driving event is dated Oct 28, the as-of date, and the material confirms a Q3 revenue miss with shares down ~7% after hours, not yet in the close. The memo acknowledges cloud strength and buy-the-dip risk. No factual, stale, recycled, contra, or priced flaw is evidenced.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": -2,
+    "critique": "The driving event is dated Oct 28, the as-of date, and the material confirms a Q3 revenue miss with shares down ~7% after hours, not yet in the close. The memo acknowledges cloud strength and buy-the-dip risk. No factual, stale, recycled, contra, or priced flaw is evidenced."
+   }
+  },
+  "AMZN": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "InferenceNet",
+    "usage": {
+     "prompt_tokens": 8293,
+     "completion_tokens": 3319,
+     "total_tokens": 11612,
+     "cost": 0.002845579,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.002845579,
+      "upstream_inference_prompt_cost": 0.000854179,
+      "upstream_inference_completions_cost": 0.0019914
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 3238,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\":\"weaken\",\"flaw\":\"factual\",\"adjusted_score\":0,\"critique\":\"Memo says AWS's $266B cloud backlog, but material shows $266B is Anthropic's computing-bill risk, not AWS backlog; AWS backlog is cited as $496B. Misstates a number/event. Other supports remain, so one-step weaken to 0.\"}"
+   },
+   "review": {
+    "verdict": "weaken",
+    "flaw": "factual",
+    "adjusted_score": 0,
+    "critique": "Memo says AWS's $266B cloud backlog, but material shows $266B is Anthropic's computing-bill risk, not AWS backlog; AWS backlog is cited as $496B. Misstates a number/event. Other supports remain, so one-step weaken to 0."
+   }
+  },
+  "META": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "DigitalOcean",
+    "usage": {
+     "prompt_tokens": 8371,
+     "completion_tokens": 23198,
+     "total_tokens": 31569,
+     "cost": 0.022761675,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.022761675,
+      "upstream_inference_prompt_cost": 0.001883475,
+      "upstream_inference_completions_cost": 0.0208782
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 23088,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\n  \"verdict\": \"weaken\",\n  \"flaw\": \"priced\",\n  \"adjusted_score\": 0,\n  \"critique\": \"The $95B offering implies only ~6% dilution, yet META already fell 12.2% this week (and 15.5% over the month), exceeding any plausible offering reaction. With no earnings next week and the Q3 selloff and $25B fine (Oct 21-22) already reflected, the incremental negative is largely priced.\"\n}"
+   },
+   "review": {
+    "verdict": "weaken",
+    "flaw": "priced",
+    "adjusted_score": 0,
+    "critique": "The $95B offering implies only ~6% dilution, yet META already fell 12.2% this week (and 15.5% over the month), exceeding any plausible offering reaction. With no earnings next week and the Q3 selloff and $25B fine (Oct 21-22) already reflected, the incremental negative is largely priced."
+   }
+  },
+  "AVGO": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Morph",
+    "usage": {
+     "prompt_tokens": 4220,
+     "completion_tokens": 468,
+     "total_tokens": 4688,
+     "cost": 0.000364924,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.000364924,
+      "upstream_inference_prompt_cost": 0.00018568,
+      "upstream_inference_completions_cost": 0.000179244
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 376,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\":\"uphold\",\"flaw\":null,\"adjusted_score\":1,\"critique\":\"Driving event is dated 2026-10-26, within 7 days of the 2026-10-28 as-of date. The $63B financing, bank hesitation, and ~4% weekly move are accurately stated. Drivers are event-based, not recycled commentary. No material contradiction or excessive priced-in move is evident.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "Driving event is dated 2026-10-26, within 7 days of the 2026-10-28 as-of date. The $63B financing, bank hesitation, and ~4% weekly move are accurately stated. Drivers are event-based, not recycled commentary. No material contradiction or excessive priced-in move is evident."
+   }
+  },
+  "TSLA": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "CoreWeave",
+    "usage": {
+     "prompt_tokens": 9127,
+     "completion_tokens": 4561,
+     "total_tokens": 13688,
+     "cost": 0.00415116,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.00415116,
+      "upstream_inference_prompt_cost": 0.00118651,
+      "upstream_inference_completions_cost": 0.00296465
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 4447,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": 1, \"critique\": \"Catalysts are fresh and match the material: Oct 20 merger committees, Oct 26 Barclays upgrade, Oct 27-28 ARK $4,400 target. Q3 profit -43% and +14% month are accurate. Merger story share is genuinely rising (28% then 19%). The memo already flags the priced risk. No factual, stale, recycled, contra, or priced flaw.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "Catalysts are fresh and match the material: Oct 20 merger committees, Oct 26 Barclays upgrade, Oct 27-28 ARK $4,400 target. Q3 profit -43% and +14% month are accurate. Merger story share is genuinely rising (28% then 19%). The memo already flags the priced risk. No factual, stale, recycled, contra, or priced flaw."
+   }
+  },
+  "AMD": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "InferenceNet",
+    "usage": {
+     "prompt_tokens": 6266,
+     "completion_tokens": 2583,
+     "total_tokens": 8849,
+     "cost": 0.002195198,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.002195198,
+      "upstream_inference_prompt_cost": 0.000645398,
+      "upstream_inference_completions_cost": 0.0015498
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2485,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": 1, \"critique\": \"Memo's key facts check: Oct 27 Meta Helios/$1B equity deal, Nov 3 earnings $1.94 EPS +2.55% ESP/62% growth, and +5.4% pop all match material. Driving event is fresh; memo acknowledges priced move and chip selloff risk. No named flaw.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "Memo's key facts check: Oct 27 Meta Helios/$1B equity deal, Nov 3 earnings $1.94 EPS +2.55% ESP/62% growth, and +5.4% pop all match material. Driving event is fresh; memo acknowledges priced move and chip selloff risk. No named flaw."
+   }
+  },
+  "INTC": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "InferenceNet",
+    "usage": {
+     "prompt_tokens": 6243,
+     "completion_tokens": 9265,
+     "total_tokens": 15508,
+     "cost": 0.006202029,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.006202029,
+      "upstream_inference_prompt_cost": 0.000643029,
+      "upstream_inference_completions_cost": 0.005559
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 9193,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"weaken\", \"flaw\": \"recycled\", \"adjusted_score\": 0, \"critique\": \"Drivers are only opinion/price-target/generic: Intel Turnaround Rally, Edge AI market forecasts, sector rally, New Street upgrade. No hard fundamental driver; earnings is outside holding week.\"}"
+   },
+   "review": {
+    "verdict": "weaken",
+    "flaw": "recycled",
+    "adjusted_score": 0,
+    "critique": "Drivers are only opinion/price-target/generic: Intel Turnaround Rally, Edge AI market forecasts, sector rally, New Street upgrade. No hard fundamental driver; earnings is outside holding week."
+   }
+  },
+  "TSM": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "ModelRun",
+    "usage": {
+     "prompt_tokens": 3839,
+     "completion_tokens": 4740,
+     "total_tokens": 8579,
+     "cost": 0.00382843,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.00382843,
+      "upstream_inference_prompt_cost": 0.00065263,
+      "upstream_inference_completions_cost": 0.0031758
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 4662,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": 1, \"critique\": \"Memo's dates and figures match material: Q3 EPS beat, Oct 27 packaging price hike, Oct 22 Terafab/rare-earth items. Fresh catalyst within 7 days; no contradiction or priced move shown. Uphold.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "Memo's dates and figures match material: Q3 EPS beat, Oct 27 packaging price hike, Oct 22 Terafab/rare-earth items. Fresh catalyst within 7 days; no contradiction or priced move shown. Uphold."
+   }
+  },
+  "JPM": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Wafer",
+    "usage": {
+     "prompt_tokens": 4454,
+     "completion_tokens": 2490,
+     "total_tokens": 6944,
+     "cost": 0.00246476,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.00246476,
+      "upstream_inference_prompt_cost": 0.00084626,
+      "upstream_inference_completions_cost": 0.0016185
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2425,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": 1, \"critique\": \"No factual, stale, recycled, contra, or priced flaw found. Catalysts are dated within the window, tokenization and Anthropic news are fresh, returns are modest, and risks are acknowledged.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "No factual, stale, recycled, contra, or priced flaw found. Catalysts are dated within the window, tokenization and Anthropic news are fresh, returns are modest, and risks are acknowledged."
+   }
+  },
+  "LLY": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "InferenceNet",
+    "usage": {
+     "prompt_tokens": 5653,
+     "completion_tokens": 2637,
+     "total_tokens": 8290,
+     "cost": 0.002140139,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 256,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.002140139,
+      "upstream_inference_prompt_cost": 0.000557939,
+      "upstream_inference_completions_cost": 0.0015822
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2545,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": 1, \"critique\": \"Memo accurately cites Oct 28 TRANSCEND-T2D-2 results and Oct 27 court ruling. Dates, figures, and risks match material. Driving events are fresh, not stale or recycled. It already notes rich valuation, binary Q3 print, and side-effect risks. No named flaw applies.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "Memo accurately cites Oct 28 TRANSCEND-T2D-2 results and Oct 27 court ruling. Dates, figures, and risks match material. Driving events are fresh, not stale or recycled. It already notes rich valuation, binary Q3 print, and side-effect risks. No named flaw applies."
+   }
+  },
+  "WMT": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Morph",
+    "usage": {
+     "prompt_tokens": 3849,
+     "completion_tokens": 2596,
+     "total_tokens": 6445,
+     "cost": 0.001163624,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.001163624,
+      "upstream_inference_prompt_cost": 0.000169356,
+      "upstream_inference_completions_cost": 0.000994268
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2538,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\":\"weaken\",\"flaw\":\"factual\",\"adjusted_score\":0,\"critique\":\"Memo says Burry is 'trimming' WMT; the cited article only says he 'may trim' over valuation concerns. That overstates a supporting driver, though the fresh FTC order remains.\"}"
+   },
+   "review": {
+    "verdict": "weaken",
+    "flaw": "factual",
+    "adjusted_score": 0,
+    "critique": "Memo says Burry is 'trimming' WMT; the cited article only says he 'may trim' over valuation concerns. That overstates a supporting driver, though the fresh FTC order remains."
+   }
+  },
+  "ORCL": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "InferenceNet",
+    "usage": {
+     "prompt_tokens": 4811,
+     "completion_tokens": 3804,
+     "total_tokens": 8615,
+     "cost": 0.002777933,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.002777933,
+      "upstream_inference_prompt_cost": 0.000495533,
+      "upstream_inference_completions_cost": 0.0022824
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 3730,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": 1, \"critique\": \"Catalysts dated Oct 26-27 are within 7 days and supported by rising AI Market Growth coverage. Debt concerns are disclosed as risks. No factual, stale, recycled, contra, or priced flaw is evidenced.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "Catalysts dated Oct 26-27 are within 7 days and supported by rising AI Market Growth coverage. Debt concerns are disclosed as risks. No factual, stale, recycled, contra, or priced flaw is evidenced."
+   }
+  },
+  "CRM": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Baidu",
+    "usage": {
+     "prompt_tokens": 3646,
+     "completion_tokens": 6438,
+     "total_tokens": 10084,
+     "cost": 0.001276643856,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 256,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.001276643856,
+      "upstream_inference_prompt_cost": 0.000148706256,
+      "upstream_inference_completions_cost": 0.0011279376
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 6356,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\":\"uphold\",\"flaw\":null,\"adjusted_score\":1,\"critique\":\"Braze deal date/amount and Agentforce 41% vs 26% match material; deal story and Agentforce expansion remain active within 7 days. No contradiction ignored, no stale/recycled driver, and CRM\u2019s small 1-week return does not show a priced reaction.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "Braze deal date/amount and Agentforce 41% vs 26% match material; deal story and Agentforce expansion remain active within 7 days. No contradiction ignored, no stale/recycled driver, and CRM\u2019s small 1-week return does not show a priced reaction."
+   }
+  },
+  "NFLX": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Morph",
+    "usage": {
+     "prompt_tokens": 3793,
+     "completion_tokens": 1519,
+     "total_tokens": 5312,
+     "cost": 0.000748669,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.000748669,
+      "upstream_inference_prompt_cost": 0.000166892,
+      "upstream_inference_completions_cost": 0.000581777
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1418,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": -1, \"critique\": \"Memo's dates and events match the material: Oct 20-22 Q3/guide, Oct 26 Bloomberg engagement report, Oct 14 layoffs, Oct 15 content-chief change. The Oct 26 report prevents staleness; drivers are events, not just chatter. Selloff debate is acknowledged as a risk, not a direct contradiction. No factual or priced flaw.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": -1,
+    "critique": "Memo's dates and events match the material: Oct 20-22 Q3/guide, Oct 26 Bloomberg engagement report, Oct 14 layoffs, Oct 15 content-chief change. The Oct 26 report prevents staleness; drivers are events, not just chatter. Selloff debate is acknowledged as a risk, not a direct contradiction. No factual or priced flaw."
+   }
+  },
+  "BA": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Morph",
+    "usage": {
+     "prompt_tokens": 4952,
+     "completion_tokens": 951,
+     "total_tokens": 5903,
+     "cost": 0.000582121,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.000582121,
+      "upstream_inference_prompt_cost": 0.000217888,
+      "upstream_inference_completions_cost": 0.000364233
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 872,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\":\"uphold\",\"flaw\":null,\"adjusted_score\":-1,\"critique\":\"No named flaw: Q3 miss and guidance are Oct 27, within the 7-day window. The memo acknowledges the 10.7% drop and MAX 10 certification as a risk. Drivers are specific, not recycled, and no material event directly contradicts the thesis.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": -1,
+    "critique": "No named flaw: Q3 miss and guidance are Oct 27, within the 7-day window. The memo acknowledges the 10.7% drop and MAX 10 certification as a risk. Drivers are specific, not recycled, and no material event directly contradicts the thesis."
+   }
+  },
+  "XOM": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Decart",
+    "usage": {
+     "prompt_tokens": 3688,
+     "completion_tokens": 5895,
+     "total_tokens": 9583,
+     "cost": 0.001134972,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 3584,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.001134972,
+      "upstream_inference_prompt_cost": 7.3872e-05,
+      "upstream_inference_completions_cost": 0.0010611
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 5474,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\":\"uphold\",\"flaw\":null,\"adjusted_score\":-1,\"critique\":\"No flaw found. The memo's figures match the material: Iran story share 35% vs 10% 4-wk avg, XOM 1.4% below 52w high, 44% 12-1m run, Q3 earnings Oct 30, Kashagan dismissal. Drivers are current news, not recycled. Bearish thesis is supported by windfall-tax and war-easing risks.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": -1,
+    "critique": "No flaw found. The memo's figures match the material: Iran story share 35% vs 10% 4-wk avg, XOM 1.4% below 52w high, 44% 12-1m run, Q3 earnings Oct 30, Kashagan dismissal. Drivers are current news, not recycled. Bearish thesis is supported by windfall-tax and war-easing risks."
+   }
+  },
+  "EQT": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "ModelRun",
+    "usage": {
+     "prompt_tokens": 2459,
+     "completion_tokens": 3792,
+     "total_tokens": 6251,
+     "cost": 0.002916686,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 256,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.002916686,
+      "upstream_inference_prompt_cost": 0.000376046,
+      "upstream_inference_completions_cost": 0.00254064
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 3719,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\":\"uphold\",\"flaw\":null,\"adjusted_score\":1,\"critique\":\"No factual, stale, recycled, contra, or priced flaw found. The Oct 26 acquisition is fresh, correctly described, and the memo acknowledges the +15.8% move and bearish gas risks. The thesis is supported by the material.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "No factual, stale, recycled, contra, or priced flaw found. The Oct 26 acquisition is fresh, correctly described, and the memo acknowledges the +15.8% move and bearish gas risks. The thesis is supported by the material."
+   }
+  },
+  "LH": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Decart",
+    "usage": {
+     "prompt_tokens": 2344,
+     "completion_tokens": 4067,
+     "total_tokens": 6411,
+     "cost": 0.00094302,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.00094302,
+      "upstream_inference_prompt_cost": 0.00021096,
+      "upstream_inference_completions_cost": 0.00073206
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 4171,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\":\"uphold\",\"flaw\":null,\"adjusted_score\":1,\"critique\":\"No specific flaw. Q3 beat/guidance raise is same-day, not stale. Memo already flags priced risk from 11% weekly gain and 52w high. Drivers are earnings, not recycled. No direct contradiction in material.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "No specific flaw. Q3 beat/guidance raise is same-day, not stale. Memo already flags priced risk from 11% weekly gain and 52w high. Drivers are earnings, not recycled. No direct contradiction in material."
+   }
+  },
+  "CDNS": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Wafer",
+    "usage": {
+     "prompt_tokens": 3183,
+     "completion_tokens": 1370,
+     "total_tokens": 4553,
+     "cost": 0.001449702,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 256,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.001449702,
+      "upstream_inference_prompt_cost": 0.000559202,
+      "upstream_inference_completions_cost": 0.0008905
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1280,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": 1, \"critique\": \"Memo's key facts match the material: Oct 26 Q3 beat/raise, $2.5B buyback, Oct 27 PT hikes, and Maestro launch. The 5% weekly move is acknowledged as partly priced, and risks include valuation and fading AI-design share. No factual, stale, recycled, contra, or priced flaw is supported.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "Memo's key facts match the material: Oct 26 Q3 beat/raise, $2.5B buyback, Oct 27 PT hikes, and Maestro launch. The 5% weekly move is acknowledged as partly priced, and risks include valuation and fading AI-design share. No factual, stale, recycled, contra, or priced flaw is supported."
+   }
+  },
+  "BIIB": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "ModelRun",
+    "usage": {
+     "prompt_tokens": 2876,
+     "completion_tokens": 4961,
+     "total_tokens": 7837,
+     "cost": 0.003770806,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 256,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.003770806,
+      "upstream_inference_prompt_cost": 0.000446936,
+      "upstream_inference_completions_cost": 0.00332387
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 4865,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": 2, \"critique\": \"No factual errors: Q3 EPS/rev, guidance, growth +49%, Leqembi Y32.2bn all match sources. Event is same-day, not stale. Drivers are fresh earnings, not recycled. No direct contradiction. 1-week +1.3% is muted, not priced. Uphold.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 2,
+    "critique": "No factual errors: Q3 EPS/rev, guidance, growth +49%, Leqembi Y32.2bn all match sources. Event is same-day, not stale. Drivers are fresh earnings, not recycled. No direct contradiction. 1-week +1.3% is muted, not priced. Uphold."
+   }
+  },
+  "HAS": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Relace",
+    "usage": {
+     "prompt_tokens": 2012,
+     "completion_tokens": 2905,
+     "total_tokens": 4917,
+     "cost": 0.00159334,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.00159334,
+      "upstream_inference_prompt_cost": 0.00014084,
+      "upstream_inference_completions_cost": 0.0014525
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2820,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": 1, \"critique\": \"No factual, stale, recycled, contra, or priced flaw found. Dates, numbers, and events match material; memo already acknowledges the 35% run and 52-week high. Thesis is supported by Q3 beat, Magic sales, and WotC leadership news.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 1,
+    "critique": "No factual, stale, recycled, contra, or priced flaw found. Dates, numbers, and events match material; memo already acknowledges the 35% run and 52-week high. Thesis is supported by Q3 beat, Magic sales, and WotC leadership news."
+   }
+  },
+  "CRL": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "InferenceNet",
+    "usage": {
+     "prompt_tokens": 2495,
+     "completion_tokens": 5549,
+     "total_tokens": 8044,
+     "cost": 0.003586385,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.003586385,
+      "upstream_inference_prompt_cost": 0.000256985,
+      "upstream_inference_completions_cost": 0.0033294
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 5456,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": -1, \"critique\": \"Memo accurately cites the 41% story share, -0.48% ESP, 4.8% revenue decline, and Nov 4 earnings date. Positive FDA/Labcorp and Ipsen items are correctly assessed as immaterial. No factual, stale, recycled, contra, or priced flaw found.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": -1,
+    "critique": "Memo accurately cites the 41% story share, -0.48% ESP, 4.8% revenue decline, and Nov 4 earnings date. Positive FDA/Labcorp and Ipsen items are correctly assessed as immaterial. No factual, stale, recycled, contra, or priced flaw found."
+   }
+  },
+  "EQIX": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "InferenceNet",
+    "usage": {
+     "prompt_tokens": 2115,
+     "completion_tokens": 997,
+     "total_tokens": 3112,
+     "cost": 0.000816045,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.000816045,
+      "upstream_inference_prompt_cost": 0.000217845,
+      "upstream_inference_completions_cost": 0.0005982
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 882,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": 2, \"critique\": \"Earnings landed Oct 28, same as the as-of date, so the beat is fresh, not stale. Figures match the material: FFO +10.75%, EPS beat, record bookings, raised 2026 guidance, $5.16 dividend, +1.3% week, ~9% below high. No contradiction or priced-in return (1.27% 1w). Memo stands.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": 2,
+    "critique": "Earnings landed Oct 28, same as the as-of date, so the beat is fresh, not stale. Figures match the material: FFO +10.75%, EPS beat, record bookings, raised 2026 guidance, $5.16 dividend, +1.3% week, ~9% below high. No contradiction or priced-in return (1.27% 1w). Memo stands."
+   }
+  },
+  "BSX": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Together",
+    "usage": {
+     "prompt_tokens": 3450,
+     "completion_tokens": 3488,
+     "total_tokens": 6938,
+     "cost": 0.0052206,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.0052206,
+      "upstream_inference_prompt_cost": 0.001035,
+      "upstream_inference_completions_cost": 0.0041856
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 3393,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": -2, \"critique\": \"No flaw found. The Oct 28 guidance cut, Q4 EPS/sales miss, cyber hit, and 2027 headwinds are all supported by the material. Event is same-day, not stale; drivers are specific, not recycled; no direct contradiction; ~6% drop does not clearly exceed plausible reaction.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": -2,
+    "critique": "No flaw found. The Oct 28 guidance cut, Q4 EPS/sales miss, cyber hit, and 2027 headwinds are all supported by the material. Event is same-day, not stale; drivers are specific, not recycled; no direct contradiction; ~6% drop does not clearly exceed plausible reaction."
+   }
+  },
+  "BRO": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Fireworks",
+    "usage": {
+     "prompt_tokens": 3119,
+     "completion_tokens": 4052,
+     "total_tokens": 7171,
+     "cost": 0.00405867,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.00405867,
+      "upstream_inference_prompt_cost": 0.00065499,
+      "upstream_inference_completions_cost": 0.00340368
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 3923,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": -1, \"critique\": \"Facts check out: Oct 26 Q3 miss (EPS $1.07 vs $1.09; sales $1.725B vs $1.757B), 1.2% organic growth, Aon's 6% beat. Catalyst is fresh (2 days old), drivers are specific events, and the memo already discounts the 5% drop. No flaw found.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": -1,
+    "critique": "Facts check out: Oct 26 Q3 miss (EPS $1.07 vs $1.09; sales $1.725B vs $1.757B), 1.2% organic growth, Aon's 6% beat. Catalyst is fresh (2 days old), drivers are specific events, and the memo already discounts the 5% drop. No flaw found."
+   }
+  },
+  "HCA": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Wafer",
+    "usage": {
+     "prompt_tokens": 2505,
+     "completion_tokens": 2335,
+     "total_tokens": 4840,
+     "cost": 0.001948132,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 256,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.001948132,
+      "upstream_inference_prompt_cost": 0.000430382,
+      "upstream_inference_completions_cost": 0.00151775
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 2257,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": -1, \"critique\": \"Memo accurately cites fresh Oct 27 Q3 beat, $400M uninsured hit, flat 2027 outlook, and UHS -6%. It acknowledges raised FY26 guidance and PT raises as risks. No factual, stale, recycled, contra, or priced flaw is supported by the material.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": -1,
+    "critique": "Memo accurately cites fresh Oct 27 Q3 beat, $400M uninsured hit, flat 2027 outlook, and UHS -6%. It acknowledges raised FY26 guidance and PT raises as risks. No factual, stale, recycled, contra, or priced flaw is supported by the material."
+   }
+  },
+  "UHS": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "CoreWeave",
+    "usage": {
+     "prompt_tokens": 690,
+     "completion_tokens": 1866,
+     "total_tokens": 2556,
+     "cost": 0.001253448,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 384,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.001253448,
+      "upstream_inference_prompt_cost": 4.0548e-05,
+      "upstream_inference_completions_cost": 0.0012129
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 1796,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": -1, \"critique\": \"No verifiable flaw: earnings date unknown, recent 5.85% drop is consistent with the miss, and no material contradicts the thesis. The memo already acknowledges pricing risk. Uphold.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": -1,
+    "critique": "No verifiable flaw: earnings date unknown, recent 5.85% drop is consistent with the miss, and no material contradicts the thesis. The memo already acknowledges pricing risk. Uphold."
+   }
+  },
+  "VLO": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Morph",
+    "usage": {
+     "prompt_tokens": 3574,
+     "completion_tokens": 3133,
+     "total_tokens": 6707,
+     "cost": 0.001357195,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.001357195,
+      "upstream_inference_prompt_cost": 0.000157256,
+      "upstream_inference_completions_cost": 0.001199939
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 3060,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\":\"uphold\",\"flaw\":null,\"adjusted_score\":-1,\"critique\":\"Memo's Oct 28 Russian diesel and margin-shrink catalysts are fresh and supported by cited articles; Q3 beat date and ~8% drop match material. No factual, stale, recycled, contra, or clearly priced flaw is established.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": -1,
+    "critique": "Memo's Oct 28 Russian diesel and margin-shrink catalysts are fresh and supported by cited articles; Q3 beat date and ~8% drop match material. No factual, stale, recycled, contra, or clearly priced flaw is established."
+   }
+  },
+  "COIN": {
+   "status": "failed",
+   "error": "TimeoutError('LLM call exceeded 240 s')",
+   "meta": {},
+   "review": null
+  },
+  "MRNA": {
+   "status": "ok",
+   "error": null,
+   "meta": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "InferenceNet",
+    "usage": {
+     "prompt_tokens": 3617,
+     "completion_tokens": 6837,
+     "total_tokens": 10454,
+     "cost": 0.004474751,
+     "is_byok": false,
+     "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+     },
+     "cost_details": {
+      "upstream_inference_cost": 0.004474751,
+      "upstream_inference_prompt_cost": 0.000372551,
+      "upstream_inference_completions_cost": 0.0041022
+     },
+     "completion_tokens_details": {
+      "reasoning_tokens": 6752,
+      "image_tokens": 0,
+      "audio_tokens": 0
+     }
+    },
+    "raw": "{\"verdict\": \"uphold\", \"flaw\": null, \"adjusted_score\": -1, \"critique\": \"Memo is supported by Oct22 leak/selloff, Oct24 42% data, and Oct26 defense; event is within 7 days. It acknowledges rebound risks. No factual misstatement, stale driver, recycled opinion, direct contradiction, or clearly priced reaction found.\"}"
+   },
+   "review": {
+    "verdict": "uphold",
+    "flaw": null,
+    "adjusted_score": -1,
+    "critique": "Memo is supported by Oct22 leak/selloff, Oct24 42% data, and Oct26 defense; event is within 7 days. It acknowledges rebound risks. No factual misstatement, stale driver, recycled opinion, direct contradiction, or clearly priced reaction found."
+   }
+  }
+ },
+ "final_score": {
+  "NVDA": 1,
+  "AAPL": 1,
+  "MSFT": 2,
+  "GOOGL": -2,
+  "AMZN": 0,
+  "META": 0,
+  "AVGO": 1,
+  "TSLA": 1,
+  "AMD": 1,
+  "INTC": 0,
+  "TSM": 1,
+  "JPM": 1,
+  "LLY": 1,
+  "WMT": 0,
+  "BRK.B": 0,
+  "ORCL": 1,
+  "CRM": 1,
+  "NFLX": -1,
+  "BA": -1,
+  "XOM": -1,
+  "EQT": 1,
+  "PNR": 0,
+  "LH": 1,
+  "ROP": 0,
+  "NUE": 0,
+  "CDNS": 1,
+  "AON": 0,
+  "BIIB": 2,
+  "HAS": 1,
+  "CRL": -1,
+  "EQIX": 2,
+  "OKE": 0,
+  "BSX": -2,
+  "LII": 0,
+  "BRO": -1,
+  "HCA": -1,
+  "UHS": -1,
+  "GL": 0,
+  "TYL": 0,
+  "NVR": 0,
+  "ALGN": 0,
+  "VLO": -1,
+  "COIN": 1,
+  "CTAS": 0,
+  "MRNA": -1
+ },
+ "calibration": {
+  "reviewed": 33,
+  "ok": 32,
+  "uphold": 28,
+  "weaken": 4,
+  "flaws": {
+   "factual": 2,
+   "priced": 1,
+   "recycled": 1
+  }
+ },
+ "system": "You are the red team at a long-short equity fund. An analyst wants to put capital behind\nthe memo below for NEXT WEEK. You check it for specific errors, using only the material the\nanalyst had. You are a filter for mistakes, not a second opinion: a memo you merely disagree\nwith, or that you find \"not certain enough\", is upheld.\n\nWeaken the memo ONLY if you can name one of these flaws, citing the evidence:\n  factual   - the memo misstates a date, number or event in the material\n  stale     - its driving event is more than 7 days before the as-of date and nothing newer supports it\n  recycled  - its drivers are only opinion, price-target chatter or generic commentary\n  contra    - a story or event in the material directly contradicts the thesis and the memo ignores it\n  priced    - the recent return already exceeds any plausible reaction to the driving news\nYou cannot reverse a view: arguing the other side needs its own evidence, which is the analyst's job.\nWeakening moves the score one step toward 0 (two steps only for a factual error that removes the\nthesis entirely).\n\nRules: use only this material; ignore anything you think happened after the as-of date.\n\nReturn JSON only: {\"verdict\": \"uphold\"|\"weaken\", \"flaw\": null|\"factual\"|\"stale\"|\"recycled\"|\"contra\"|\"priced\",\n\"adjusted_score\": int in {-2,-1,0,1,2}, \"critique\": str <= 60 words}"
+}

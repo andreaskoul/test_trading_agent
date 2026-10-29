@@ -1,0 +1,397 @@
+{
+ "asof": "2026-10-28",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "CoreWeave",
+  "usage": {
+   "prompt_tokens": 40655,
+   "completion_tokens": 42766,
+   "total_tokens": 83421,
+   "cost": 0.03308305,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 0,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.03308305,
+    "upstream_inference_prompt_cost": 0.00528515,
+    "upstream_inference_completions_cost": 0.0277979
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 41985,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"long_ideas\":[{\"ticker\":\"EQT\",\"hypothesis\":\"EQT-Range combination and AI power demand for natural gas could drive re-rating; attention elevated.\"},{\"ticker\":\"PNR\",\"hypothesis\":\"Pentair sees pool-sales recovery after destocking ends, RBC says; +22% weekly move on improving outlook.\"},{\"ticker\":\"LH\",\"hypothesis\":\"Labcorp Q3 beat and raised outlook; stock at 52-week high with strong momentum.\"},{\"ticker\":\"ROP\",\"hypothesis\":\"Roper earnings beat, AI/Deltek cloud migration and M&A support buy case; +10.8% weekly.\"},{\"ticker\":\"NUE\",\"hypothesis\":\"Nucor Q3 revenue beat, Q4 guidance in-line or higher; shares jumped 6% on results.\"},{\"ticker\":\"CDNS\",\"hypothesis\":\"Cadence record $8.2B backlog and third outlook raise; earnings momentum supports further upside.\"},{\"ticker\":\"AON\",\"hypothesis\":\"Aon Q3 beat with 6% organic growth and wider margins; shares soared 5% on results.\"},{\"ticker\":\"BIIB\",\"hypothesis\":\"Biogen crushed Q3 estimates; new bets offset fading old blockbusters, supporting upside.\"},{\"ticker\":\"HAS\",\"hypothesis\":\"Hasbro UBS price target raise on multiple earnings drivers through 2028; momentum strong.\"},{\"ticker\":\"CRL\",\"hypothesis\":\"Charles River strong earnings and improving biopharma demand; stock at 52-week high.\"},{\"ticker\":\"EQIX\",\"hypothesis\":\"Equinix Q3 FFO beat, strong EPS, raised 2026 guidance; data-center demand remains robust.\"},{\"ticker\":\"OKE\",\"hypothesis\":\"ONEOK Q3 earnings surpassed estimates on higher volumes and marketing gains; positive momentum.\"}],\"short_ideas\":[{\"ticker\":\"BSX\",\"hypothesis\":\"Boston Scientific cut Q4 sales and FY EPS guidance on cyberattack impact; negative surprise.\"},{\"ticker\":\"LII\",\"hypothesis\":\"Lennox slashed earnings guidance on heightened competitive pressure; HVAC margin squeeze.\"},{\"ticker\":\"BRO\",\"hypothesis\":\"Brown & Brown Q3 revenue miss and weak 1.2% organic growth in challenging rate environment.\"},{\"ticker\":\"HCA\",\"hypothesis\":\"HCA Q3 earnings exposed margin strain; ACA coverage losses pressure bottom line.\"},{\"ticker\":\"UHS\",\"hypothesis\":\"Universal Health Services missed Q3 earnings despite higher patient volumes; margin concerns.\"},{\"ticker\":\"GL\",\"hypothesis\":\"Globe Life Q3 Medicare claims and group health volatility weighed on margins; negative reaction.\"},{\"ticker\":\"TYL\",\"hypothesis\":\"Tyler Technologies in-line Q3 missed revenue estimates; guidance concerns may pressure shares.\"},{\"ticker\":\"NVR\",\"hypothesis\":\"NVR Q3 earnings miss on lower settlements and margin pressure; housing weakness persists.\"},{\"ticker\":\"ALGN\",\"hypothesis\":\"Align Technology Q4 revenue guidance missed consensus despite Q3 sales beat; negative outlook.\"},{\"ticker\":\"VLO\",\"hypothesis\":\"Valero and refiners had worst day since tariff shock; margin and demand worries persist.\"},{\"ticker\":\"COIN\",\"hypothesis\":\"Coinbase faces deadline as 14 crypto assets face restrictions; regulatory overhang pressures shares.\"},{\"ticker\":\"CTAS\",\"hypothesis\":\"FTC moved to block Cintas' $5.5B UniFirst deal; regulatory risk and deal break weigh.\"}],\"themes\":[\"AI data-center power demand lifts natural gas and utilities\",\"Q3 earnings beats drive momentum in healthcare, industrials, semis\",\"Healthcare margin pressure hits hospitals and insurers\",\"Refining and crypto regulatory headwinds\",\"M&A and guidance cuts create single-stock catalysts\"]}"
+ },
+ "llm": {
+  "long_ideas": [
+   {
+    "ticker": "EQT",
+    "hypothesis": "EQT-Range combination and AI power demand for natural gas could drive re-rating; attention elevated."
+   },
+   {
+    "ticker": "PNR",
+    "hypothesis": "Pentair sees pool-sales recovery after destocking ends, RBC says; +22% weekly move on improving outlook."
+   },
+   {
+    "ticker": "LH",
+    "hypothesis": "Labcorp Q3 beat and raised outlook; stock at 52-week high with strong momentum."
+   },
+   {
+    "ticker": "ROP",
+    "hypothesis": "Roper earnings beat, AI/Deltek cloud migration and M&A support buy case; +10.8% weekly."
+   },
+   {
+    "ticker": "NUE",
+    "hypothesis": "Nucor Q3 revenue beat, Q4 guidance in-line or higher; shares jumped 6% on results."
+   },
+   {
+    "ticker": "CDNS",
+    "hypothesis": "Cadence record $8.2B backlog and third outlook raise; earnings momentum supports further upside."
+   },
+   {
+    "ticker": "AON",
+    "hypothesis": "Aon Q3 beat with 6% organic growth and wider margins; shares soared 5% on results."
+   },
+   {
+    "ticker": "BIIB",
+    "hypothesis": "Biogen crushed Q3 estimates; new bets offset fading old blockbusters, supporting upside."
+   },
+   {
+    "ticker": "HAS",
+    "hypothesis": "Hasbro UBS price target raise on multiple earnings drivers through 2028; momentum strong."
+   },
+   {
+    "ticker": "CRL",
+    "hypothesis": "Charles River strong earnings and improving biopharma demand; stock at 52-week high."
+   },
+   {
+    "ticker": "EQIX",
+    "hypothesis": "Equinix Q3 FFO beat, strong EPS, raised 2026 guidance; data-center demand remains robust."
+   },
+   {
+    "ticker": "OKE",
+    "hypothesis": "ONEOK Q3 earnings surpassed estimates on higher volumes and marketing gains; positive momentum."
+   }
+  ],
+  "short_ideas": [
+   {
+    "ticker": "BSX",
+    "hypothesis": "Boston Scientific cut Q4 sales and FY EPS guidance on cyberattack impact; negative surprise."
+   },
+   {
+    "ticker": "LII",
+    "hypothesis": "Lennox slashed earnings guidance on heightened competitive pressure; HVAC margin squeeze."
+   },
+   {
+    "ticker": "BRO",
+    "hypothesis": "Brown & Brown Q3 revenue miss and weak 1.2% organic growth in challenging rate environment."
+   },
+   {
+    "ticker": "HCA",
+    "hypothesis": "HCA Q3 earnings exposed margin strain; ACA coverage losses pressure bottom line."
+   },
+   {
+    "ticker": "UHS",
+    "hypothesis": "Universal Health Services missed Q3 earnings despite higher patient volumes; margin concerns."
+   },
+   {
+    "ticker": "GL",
+    "hypothesis": "Globe Life Q3 Medicare claims and group health volatility weighed on margins; negative reaction."
+   },
+   {
+    "ticker": "TYL",
+    "hypothesis": "Tyler Technologies in-line Q3 missed revenue estimates; guidance concerns may pressure shares."
+   },
+   {
+    "ticker": "NVR",
+    "hypothesis": "NVR Q3 earnings miss on lower settlements and margin pressure; housing weakness persists."
+   },
+   {
+    "ticker": "ALGN",
+    "hypothesis": "Align Technology Q4 revenue guidance missed consensus despite Q3 sales beat; negative outlook."
+   },
+   {
+    "ticker": "VLO",
+    "hypothesis": "Valero and refiners had worst day since tariff shock; margin and demand worries persist."
+   },
+   {
+    "ticker": "COIN",
+    "hypothesis": "Coinbase faces deadline as 14 crypto assets face restrictions; regulatory overhang pressures shares."
+   },
+   {
+    "ticker": "CTAS",
+    "hypothesis": "FTC moved to block Cintas' $5.5B UniFirst deal; regulatory risk and deal break weigh."
+   }
+  ],
+  "themes": [
+   "AI data-center power demand lifts natural gas and utilities",
+   "Q3 earnings beats drive momentum in healthcare, industrials, semis",
+   "Healthcare margin pressure hits hospitals and insurers",
+   "Refining and crypto regulatory headwinds",
+   "M&A and guidance cuts create single-stock catalysts"
+  ]
+ },
+ "core": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM"
+ ],
+ "nominated": [
+  "EQT",
+  "PNR",
+  "LH",
+  "ROP",
+  "NUE",
+  "CDNS",
+  "AON",
+  "BIIB",
+  "HAS",
+  "CRL",
+  "EQIX",
+  "OKE",
+  "BSX",
+  "LII",
+  "BRO",
+  "HCA",
+  "UHS",
+  "GL",
+  "TYL",
+  "NVR",
+  "ALGN",
+  "VLO",
+  "COIN",
+  "CTAS"
+ ],
+ "rule_based": [
+  "MRNA",
+  "FFIV",
+  "FICO",
+  "HOOD",
+  "XYL",
+  "CSGP",
+  "PNR",
+  "LMT",
+  "DOW",
+  "ALLE",
+  "LH",
+  "FTV",
+  "CMS",
+  "FFIV",
+  "CSGP",
+  "FTV",
+  "PNR",
+  "ALLE"
+ ],
+ "coverage": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM",
+  "EQT",
+  "PNR",
+  "LH",
+  "ROP",
+  "NUE",
+  "CDNS",
+  "AON",
+  "BIIB",
+  "HAS",
+  "CRL",
+  "EQIX",
+  "OKE",
+  "BSX",
+  "LII",
+  "BRO",
+  "HCA",
+  "UHS",
+  "GL",
+  "TYL",
+  "NVR",
+  "ALGN",
+  "VLO",
+  "COIN",
+  "CTAS",
+  "MRNA"
+ ],
+ "why": {
+  "NVDA": [
+   "core"
+  ],
+  "AAPL": [
+   "core"
+  ],
+  "MSFT": [
+   "core"
+  ],
+  "GOOGL": [
+   "core"
+  ],
+  "AMZN": [
+   "core"
+  ],
+  "META": [
+   "core"
+  ],
+  "AVGO": [
+   "core"
+  ],
+  "TSLA": [
+   "core"
+  ],
+  "AMD": [
+   "core"
+  ],
+  "INTC": [
+   "core"
+  ],
+  "TSM": [
+   "core"
+  ],
+  "JPM": [
+   "core"
+  ],
+  "LLY": [
+   "core"
+  ],
+  "WMT": [
+   "core"
+  ],
+  "BRK.B": [
+   "core"
+  ],
+  "ORCL": [
+   "core"
+  ],
+  "CRM": [
+   "core"
+  ],
+  "NFLX": [
+   "core"
+  ],
+  "BA": [
+   "core"
+  ],
+  "XOM": [
+   "core"
+  ],
+  "EQT": [
+   "nominated"
+  ],
+  "PNR": [
+   "nominated",
+   "rule"
+  ],
+  "LH": [
+   "nominated",
+   "rule"
+  ],
+  "ROP": [
+   "nominated"
+  ],
+  "NUE": [
+   "nominated"
+  ],
+  "CDNS": [
+   "nominated"
+  ],
+  "AON": [
+   "nominated"
+  ],
+  "BIIB": [
+   "nominated"
+  ],
+  "HAS": [
+   "nominated"
+  ],
+  "CRL": [
+   "nominated"
+  ],
+  "EQIX": [
+   "nominated"
+  ],
+  "OKE": [
+   "nominated"
+  ],
+  "BSX": [
+   "nominated"
+  ],
+  "LII": [
+   "nominated"
+  ],
+  "BRO": [
+   "nominated"
+  ],
+  "HCA": [
+   "nominated"
+  ],
+  "UHS": [
+   "nominated"
+  ],
+  "GL": [
+   "nominated"
+  ],
+  "TYL": [
+   "nominated"
+  ],
+  "NVR": [
+   "nominated"
+  ],
+  "ALGN": [
+   "nominated"
+  ],
+  "VLO": [
+   "nominated"
+  ],
+  "COIN": [
+   "nominated"
+  ],
+  "CTAS": [
+   "nominated"
+  ],
+  "MRNA": [
+   "rule"
+  ]
+ },
+ "prompt_chars": 113005
+}

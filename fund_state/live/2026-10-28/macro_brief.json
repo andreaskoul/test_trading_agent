@@ -1,0 +1,120 @@
+{
+ "asof": "2026-10-28",
+ "cutoff": "2026-10-28T22:00:00+00:00",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "CoreWeave",
+  "usage": {
+   "prompt_tokens": 2803,
+   "completion_tokens": 2572,
+   "total_tokens": 5375,
+   "cost": 0.001692126,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 2688,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.001692126,
+    "upstream_inference_prompt_cost": 2.0326e-05,
+    "upstream_inference_completions_cost": 0.0016718
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 1840,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"calendar\": [{\"date\": \"2026-10-29\", \"release\": \"FOMC Press Release\", \"why\": \"Rate decision sets discount rates; hawkish hold risk for all equities.\"}, {\"date\": \"2026-10-29\", \"release\": \"Gross Domestic Product\", \"why\": \"Q3 real GDP; KXGDP 59% above 3.0% \u2014 growth read for cyclicals.\"}, {\"date\": \"2026-10-29\", \"release\": \"Personal Income and Outlays\", \"why\": \"Core PCE; KXPCECORE 97% above 0.2% \u2014 sticky inflation, rate path.\"}, {\"date\": \"2026-10-29\", \"release\": \"GDPNow\", \"why\": \"Q4 nowcast; momentum check right after the Q3 print.\"}, {\"date\": \"2026-10-29\", \"release\": \"H.4.1 Factors Affecting Reserve Balances\", \"why\": \"Reserve balances and balance sheet; liquidity backdrop for risk assets.\"}, {\"date\": \"2026-10-29\", \"release\": \"H.15 Selected Interest Rates\", \"why\": \"Policy-sensitive rates; curve shape drives banks, REITs, utilities.\"}, {\"date\": \"2026-10-29\", \"release\": \"ICE BofA Indices\", \"why\": \"Credit spreads; corporate bond stress gauge for equity risk appetite.\"}, {\"date\": \"2026-10-29\", \"release\": \"Risk-On Risk-Off Index\", \"why\": \"Direct risk-appetite read before next week's single-stock calls.\"}], \"regime\": \"Rates: hawkish hold \u2014 KXFED 83% sees upper bound above 4.00% post-December; core PCE 97% above 0.2%. Growth firm: GDP 59% above 3.0%, payrolls 75% above 20k, claims low. Risk appetite mixed: AI-capex coverage up to 0.538 but negative tone; sanctions tone -2.92; GPR 40th percentile.\", \"themes\": [{\"name\": \"AI capex and data-center power demand\", \"evidence\": \"GDELT ai_capex coverage 0.538 vs 0.442 prior week (tone -0.62); ideation flags AI data-center power demand lifting natural gas and utilities.\", \"sectors\": [\"Utilities\", \"Energy\", \"Information Technology\", \"Industrials\"]}, {\"name\": \"Hawkish hold with sticky core inflation\", \"evidence\": \"KXPCECORE 97% above 0.2%; KXFED 83% upper bound above 4.00% post-December; Fed chair 'talks tough on inflation'; hawkish-hold podcast.\", \"sectors\": [\"Financials\", \"Real Estate\", \"Utilities\", \"Consumer Discretionary\"]}, {\"name\": \"Q3 earnings beats drive single-stock momentum\", \"evidence\": \"Ideation: Q3 beats drive momentum in healthcare, industrials, semis; Phillips 66 record profit; GE Vernova beat-and-raise despite share slip.\", \"sectors\": [\"Health Care\", \"Industrials\", \"Information Technology\", \"Energy\"]}], \"fx_view\": \"Ridge forecast: carry robust but slow \u2014 long top-ranked carry-positive currencies, short bottom-ranked; ignore unstable momentum. Hawkish hold supports USD.\"}"
+ },
+ "brief": {
+  "calendar": [
+   {
+    "date": "2026-10-29",
+    "release": "FOMC Press Release",
+    "why": "Rate decision sets discount rates; hawkish hold risk for all equities."
+   },
+   {
+    "date": "2026-10-29",
+    "release": "Gross Domestic Product",
+    "why": "Q3 real GDP; KXGDP 59% above 3.0% \u2014 growth read for cyclicals."
+   },
+   {
+    "date": "2026-10-29",
+    "release": "Personal Income and Outlays",
+    "why": "Core PCE; KXPCECORE 97% above 0.2% \u2014 sticky inflation, rate path."
+   },
+   {
+    "date": "2026-10-29",
+    "release": "GDPNow",
+    "why": "Q4 nowcast; momentum check right after the Q3 print."
+   },
+   {
+    "date": "2026-10-29",
+    "release": "H.4.1 Factors Affecting Reserve Balances",
+    "why": "Reserve balances and balance sheet; liquidity backdrop for risk assets."
+   },
+   {
+    "date": "2026-10-29",
+    "release": "H.15 Selected Interest Rates",
+    "why": "Policy-sensitive rates; curve shape drives banks, REITs, utilities."
+   },
+   {
+    "date": "2026-10-29",
+    "release": "ICE BofA Indices",
+    "why": "Credit spreads; corporate bond stress gauge for equity risk appetite."
+   },
+   {
+    "date": "2026-10-29",
+    "release": "Risk-On Risk-Off Index",
+    "why": "Direct risk-appetite read before next week's single-stock calls."
+   }
+  ],
+  "regime": "Rates: hawkish hold \u2014 KXFED 83% sees upper bound above 4.00% post-December; core PCE 97% above 0.2%. Growth firm: GDP 59% above 3.0%, payrolls 75% above 20k, claims low. Risk appetite mixed: AI-capex coverage up to 0.538 but negative tone; sanctions tone -2.92; GPR 40th percentile.",
+  "themes": [
+   {
+    "name": "AI capex and data-center power demand",
+    "evidence": "GDELT ai_capex coverage 0.538 vs 0.442 prior week (tone -0.62); ideation flags AI data-center power demand lifting natural gas and utilities.",
+    "sectors": [
+     "Utilities",
+     "Energy",
+     "Information Technology",
+     "Industrials"
+    ]
+   },
+   {
+    "name": "Hawkish hold with sticky core inflation",
+    "evidence": "KXPCECORE 97% above 0.2%; KXFED 83% upper bound above 4.00% post-December; Fed chair 'talks tough on inflation'; hawkish-hold podcast.",
+    "sectors": [
+     "Financials",
+     "Real Estate",
+     "Utilities",
+     "Consumer Discretionary"
+    ]
+   },
+   {
+    "name": "Q3 earnings beats drive single-stock momentum",
+    "evidence": "Ideation: Q3 beats drive momentum in healthcare, industrials, semis; Phillips 66 record profit; GE Vernova beat-and-raise despite share slip.",
+    "sectors": [
+     "Health Care",
+     "Industrials",
+     "Information Technology",
+     "Energy"
+    ]
+   }
+  ],
+  "fx_view": "Ridge forecast: carry robust but slow \u2014 long top-ranked carry-positive currencies, short bottom-ranked; ignore unstable momentum. Hawkish hold supports USD."
+ },
+ "text": "MACRO BRIEF (same for every name this week; context, not a view on any stock):\nRegime: Rates: hawkish hold \u2014 KXFED 83% sees upper bound above 4.00% post-December; core PCE 97% above 0.2%. Growth firm: GDP 59% above 3.0%, payrolls 75% above 20k, claims low. Risk appetite mixed: AI-capex coverage up to 0.538 but negative tone; sanctions tone -2.92; GPR 40th percentile.\nHolding-week calendar: 2026-10-29 FOMC Press Release (Rate decision sets discount rates; hawkish hold risk for all equities.); 2026-10-29 Gross Domestic Product (Q3 real GDP; KXGDP 59% above 3.0% \u2014 growth read for cyclicals.); 2026-10-29 Personal Income and Outlays (Core PCE; KXPCECORE 97% above 0.2% \u2014 sticky inflation, rate path.); 2026-10-29 GDPNow (Q4 nowcast; momentum check right after the Q3 print.); 2026-10-29 H.4.1 Factors Affecting Reserve Balances (Reserve balances and balance sheet; liquidity backdrop for risk assets.); 2026-10-29 H.15 Selected Interest Rates (Policy-sensitive rates; curve shape drives banks, REITs, utilities.); 2026-10-29 ICE BofA Indices (Credit spreads; corporate bond stress gauge for equity risk appetite.); 2026-10-29 Risk-On Risk-Off Index (Direct risk-appetite read before next week's single-stock calls.)\nThemes: AI capex and data-center power demand [Utilities, Energy, Information Technology, Industrials]: GDELT ai_capex coverage 0.538 vs 0.442 prior week (tone -0.62); ideation flags AI data-center power demand lifting natural gas and utilities. | Hawkish hold with sticky core inflation [Financials, Real Estate, Utilities, Consumer Discretionary]: KXPCECORE 97% above 0.2%; KXFED 83% upper bound above 4.00% post-December; Fed chair 'talks tough on inflation'; hawkish-hold podcast. | Q3 earnings beats drive single-stock momentum [Health Care, Industrials, Information Technology, Energy]: Ideation: Q3 beats drive momentum in healthcare, industrials, semis; Phillips 66 record profit; GE Vernova beat-and-raise despite share slip.\nFX: Ridge forecast: carry robust but slow \u2014 long top-ranked carry-positive currencies, short bottom-ranked; ignore unstable momentum. Hawkish hold supports USD.",
+ "inputs": {
+  "calendar_ahead": 232,
+  "kalshi": 12,
+  "gdelt": 8,
+  "headlines": 30,
+  "gpr": "latest 2026-09-30: 168, 40th percentile of the last year (median 180)"
+ }
+}
