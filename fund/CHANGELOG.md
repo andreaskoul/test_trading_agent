@@ -8,6 +8,30 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   * R5's calls send `max_tokens` 24,000, and a call cut by the cap or the 240 s deadline is not retried inside `common.llm`. A call abandoned at the deadline was still billed to the end by the provider (≈ $0.045, about half the OpenRouter bill in the week of 10-26).
   * `common.llm(..., max_tokens=None)`: without a cap, the request and the retries are byte-for-byte as before. Contract test: `test_capped_call_is_bounded_and_not_retried`.
   * Could this change a decision? No. The traded and shadow desks send no cap. R5 is research, and the effect of the cap on R5 is stated in the amendment (0.12% of answers).
+- 2026-10-29: shadow page: the S&P 500 research books (about 500 stocks) now come before the 31-name research books, which have far less statistical power and whose news idea already failed its 2022–25 test; scorecard rows 5 and 6 swap to match. Display only. Could this change a decision? No.
+- 2026-10-29: shadow page in plain language (owner request: "remove abbreviations; these will not be understood in 3 months"; display only).
+  * Books and tests are named by what they do. For example, "Live fund" and "Control: same fund without the 28 Oct fixes" replace Protocol 7B and its shadow control; "Original weekly news fund" replaces C0; "Ranking accuracy" replaces IC; "checked at 13, 26, 39 and 52 weeks, stricter early" replaces O'Brien–Fleming.
+  * A folded glossary at the bottom maps every plain name to its record key and its name in PROTOCOL_fund.md and PREREG_quant_transformers.md.
+  * Empty sections give dates. The research books' first live week (decided 2026-10-21) is expected on the 2026-11-05 run, computed from the record dates. The S&P books' first positions appear on 2026-10-30, and their first realised week on 2026-11-06.
+  * Could this change a decision? No: display only.
+- 2026-10-29: shadow page organised by question (owner request; display only).
+  * A "What is being tested" scorecard opens the page, with one row per question: 7B vs its shadow control; the lifecycle fund vs C0 (the pre-registered paired test); C0 vs price factors and the S&P 500; the challengers vs C0; the research books; and the S&P transformer books. Each row shows the comparison, the live window, the result so far and when the verdict is due.
+  * Sections follow the questions, and each says what is tested, how it works and how it performs:
+    * the live fund (7B vs control, with C0 and the S&P 500 from the Protocol 7 start);
+    * the weekly-book experiments ("vs C0" over each book's own dates, with price factors, random and the S&P 500 as references);
+    * the research books;
+    * the S&P books.
+  * Every comparison uses one start and one end date for both sides: the last close every side has recorded.
+  * Removed as headline views:
+    * the 15-line chart of every book since 10-01;
+    * the single ranked leaderboard, which mixed challengers, benchmarks and legacy books;
+    * core20 (Protocol 5's arbitrary list, unhedged, in no test family), now under "Not part of any current test" and still selectable;
+    * the research books' 2018–25 history as the default view: it is now behind "Backtest 2018–25 + live (not evidence)", and the four non-primary books sit behind "All six books".
+  * No record, score or book changes. Could this change a decision? No: display only.
+- 2026-10-29: trade monitor and shadow page, collapsible tables (owner request; display only). Long tables fold behind their heading and open with a click; the heading shows the table's row count, and each page remembers which you left open.
+  * Open by default: open positions, the shadow leaderboards, a book's positions now, the lifecycle open lots, and the S&P books' board and IC table.
+  * Folded by default: realized trades, filled orders, cash activity, shadow trades, weeks, lifecycle events, the research books' weekly positions, and the S&P books' positions and weeks.
+  * Element ids and the rendering code are unchanged. Could this change a decision? No: display only.
 - 2026-10-27: shadow page, S&P 500 forward books section (display only).
   * The `spx` job writes `page.json` next to the records; `fund_pages.yml` publishes it as `spx.json`, and the job asks for a Pages rebuild.
   * Every figure is computed once in `spx_forward.page()` with the backtest's formulas (strategies.stats; the NW t and Holm rules of Amendment 4); the page only formats it.
