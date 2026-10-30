@@ -101,7 +101,7 @@ def grounding(claims_text, source_text, min_numbers=3, min_share=0.6):
 
 
 # ----------------------------------------------------------------------------- the call
-def guarded_llm(system, user, check, temperature=0.0, repair=True):
+def guarded_llm(system, user, check, temperature=0.0, repair=True, max_tokens=None):
     """common.llm with a log of every rejected answer, and one repair turn when the last failure was a schema
     rejection. Returns (status, out, meta, err, log); log = {"attempts": [...], "repaired": bool}."""
     attempts = []
@@ -112,14 +112,14 @@ def guarded_llm(system, user, check, temperature=0.0, repair=True):
             attempts.append({"kind": "schema", "error": e, "raw": json.dumps(o, ensure_ascii=False)[:1500]})
         return e
 
-    st, out, meta, err = llm(system, user, chk, temperature=temperature)
+    st, out, meta, err = llm(system, user, chk, temperature=temperature, max_tokens=max_tokens)
     if st != "ok" and (not attempts or attempts[-1]["error"] != err):
         attempts.append({"kind": "transport", "error": err})
     repaired = False
     if st != "ok" and repair and attempts and attempts[-1]["kind"] == "schema":
         user2 = (user + "\n\nYOUR PREVIOUS ANSWER WAS REJECTED BY THE VALIDATOR: " + attempts[-1]["error"]
                  + ". Answer again from the same material, as JSON only, in exactly the required format.")
-        st, out, meta, err = llm(system, user2, chk, temperature=temperature, tries=2)
+        st, out, meta, err = llm(system, user2, chk, temperature=temperature, tries=2, max_tokens=max_tokens)
         if st != "ok" and (not attempts or attempts[-1]["error"] != err):
             attempts.append({"kind": "transport", "error": err})
         repaired = st == "ok"

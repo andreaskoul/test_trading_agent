@@ -4,6 +4,10 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-29: R5 LLM cost cap (PREREG_thesis_tree.md Amendment 7; research only).
+  * R5's calls send `max_tokens` 24,000, and a call cut by the cap or the 240 s deadline is not retried inside `common.llm`. A call abandoned at the deadline was still billed to the end by the provider (≈ $0.045, about half the OpenRouter bill in the week of 10-26).
+  * `common.llm(..., max_tokens=None)`: without a cap, the request and the retries are byte-for-byte as before. Contract test: `test_capped_call_is_bounded_and_not_retried`.
+  * Could this change a decision? No. The traded and shadow desks send no cap. R5 is research, and the effect of the cap on R5 is stated in the amendment (0.12% of answers).
 - 2026-10-29: shadow page: the S&P 500 research books (about 500 stocks) now come before the 31-name research books, which have far less statistical power and whose news idea already failed its 2022–25 test; scorecard rows 5 and 6 swap to match. Display only. Could this change a decision? No.
 - 2026-10-29: shadow page in plain language (owner request: "remove abbreviations; these will not be understood in 3 months"; display only).
   * Books and tests are named by what they do. For example, "Live fund" and "Control: same fund without the 28 Oct fixes" replace Protocol 7B and its shadow control; "Original weekly news fund" replaces C0; "Ranking accuracy" replaces IC; "checked at 13, 26, 39 and 52 weeks, stricter early" replaces O'Brien–Fleming.

@@ -72,7 +72,7 @@ def test_quality_gate():
 def test_guarded_llm_logs_rejections_and_repairs_once():
     calls = []
 
-    def fake(system, user, check=None, tries=3, temperature=0.0):
+    def fake(system, user, check=None, tries=3, temperature=0.0, max_tokens=None):
         calls.append(user)
         out = {"drivers": []} if len(calls) == 1 else {"drivers": [{"id": "D1", "name": "x"}]}
         e = check(out)
@@ -97,6 +97,43 @@ def test_guarded_llm_records_transport_errors():
         assert not log["repaired"]                       # transport failures are re-run by the caller, not "repaired"
     finally:
         guards.llm = real
+
+
+def test_capped_call_is_bounded_and_not_retried():
+    # R5, 2026-10-20/29: 363 calls ran past the 240 s deadline. Each was abandoned and retried up to 3 times, but the
+    # provider generated and billed every one to the end (~$0.045 each, about half the OpenRouter bill). Amendment 7:
+    # R5 sends max_tokens, and a call cut by the cap or the deadline is not retried inside the call. Without a cap
+    # (the champion desks) the request and the retries are unchanged.
+    import io, json, tempfile, common
+    os.environ["FUND_LLM_LOG_DIR"] = tempfile.mkdtemp()
+    sent = []
+
+    class R(io.BytesIO):
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    def fake_open(finish):
+        def f(req, timeout=None):
+            sent.append(json.loads(req.data))
+            msg = {"content": "" if finish == "length" else '{"a": 1}'}
+            return R(json.dumps({"choices": [{"message": msg, "finish_reason": finish}], "usage": {}}).encode())
+        return f
+
+    real_open, real_sleep = common.urllib.request.urlopen, common.time.sleep
+    common.time.sleep = lambda s: None
+    try:
+        common.urllib.request.urlopen = fake_open("length")
+        st, out, meta, err = common.llm("s", "u", max_tokens=24000)
+        assert st == "failed" and len(sent) == 1 and sent[0]["max_tokens"] == 24000 and "max_tokens" in err
+        sent.clear()
+        st, *_ = common.llm("s", "u")                      # no cap: the request has no max_tokens, empty answers retry
+        assert st == "failed" and len(sent) == 3 and all("max_tokens" not in b for b in sent)
+        sent.clear()
+        common.urllib.request.urlopen = fake_open("stop")
+        st, out, *_ = common.llm("s", "u", max_tokens=24000)
+        assert st == "ok" and out == {"a": 1} and len(sent) == 1
+    finally:
+        common.urllib.request.urlopen, common.time.sleep = real_open, real_sleep
 
 
 if __name__ == "__main__":
