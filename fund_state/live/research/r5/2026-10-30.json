@@ -1,0 +1,5809 @@
+{
+ "records": {
+  "ABBV": {
+   "ticker": "ABBV",
+   "index": "SP500",
+   "sector": "Health Care",
+   "sub_industry": "Biotechnology",
+   "status": "already_reported",
+   "last_release": "2026-10-05 20:07:45+00:00",
+   "hour": "bmo",
+   "eps_estimate": 3.8259,
+   "revenue_estimate": 17664390304,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:31:11.999324+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "615f78b04c543f71e0aea4b38546b84a66f2e28206b841596acddc548eae57cf"
+  },
+  "AN": {
+   "ticker": "AN",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Automotive Retail",
+   "last_release": "2026-07-31 11:01:35+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/350698/000162828026051209/anearningsrelease63026ex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "After-Sales / Parts & Service",
+      "last_report": "Record After-Sales gross profit; Customer Pay growth 7%; parts and service revenue +3.4%, gross profit +1.4%.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "New Vehicle Volume & Margin",
+      "last_report": "New vehicle revenue -3.1%, gross profit -17.9%, retail units -4.0%; same-store new units -5%.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Used Vehicle Volume & Margin",
+      "last_report": "Used vehicle revenue +1.3%, gross profit -8.2%, retail used units -7.5%; wholesale revenue +15.2%.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "AutoNation Finance / CFS",
+      "last_report": "CFS gross profit per unit up 3%; AN Finance portfolio growth 50%+, YTD profit up 10X; finance income $10.7M.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "SG&A, Buybacks & Acquisitions",
+      "last_report": "SG&A +0.2%; adjusted operating income -7%; H1 buybacks $457M, shares -12%; acquisitions add ~$600M annual revenue.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "After-Sales Customer Pay growth falls below 7% or parts/service gross profit declines.",
+     "New or used vehicle gross profit per unit falls further, with same-store unit declines steeper than Q2.",
+     "AutoNation Finance portfolio growth stalls or credit losses/impairments rise."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 15,
+    "found": 15,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 71,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Management warns of softer Q3 service growth and lower vehicle margins",
+        "date": "2026-09-18",
+        "driver": "D1",
+        "direction": -1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "CarMax Q2 earnings beat, revenue jumps 20%, used market strength",
+        "date": "2026-09-29",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Asbury Automotive Q3 earnings and revenue miss estimates",
+        "date": "2026-10-27",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "AutoNation warns of softer Q3 service growth, lower vehicle margins, profit pressure",
+        "date": "2026-09-18",
+        "driver": "D1/D2/D3/D5",
+        "direction": -1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Asbury Automotive misses Q3 earnings and revenue estimates",
+        "date": "2026-10-27",
+        "driver": "D2/D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CarMax beats earnings estimates with 20% revenue jump",
+        "date": "2026-09-29",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Management warns of softer Q3 service growth and lower vehicle margins",
+        "date": "2026-09-18",
+        "driver": "D1",
+        "direction": -1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "ORLY",
+    "MUSA",
+    "CVNA",
+    "PAG",
+    "LAD"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ORLY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong aftermarket demand and professional service growth support AN after-sales."
+       },
+       {
+        "peer": "MUSA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Fuel and convenience results not relevant to AN's auto retail drivers."
+       },
+       {
+        "peer": "CVNA",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Carvana's 39% unit growth on flat industry signals share losses and used margin pressure for AN."
+       },
+       {
+        "peer": "PAG",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Peer new units -2% and new GPU down signal continued new-vehicle pressure for AN."
+       },
+       {
+        "peer": "LAD",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Peer used retail GPU +11% signals improving used-vehicle profitability for AN."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ORLY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Aftermarket comps +7.2% and pro demand strong signal healthy repair/after-sales demand for AN."
+       },
+       {
+        "peer": "MUSA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Fuel/convenience results not relevant to AutoNation's vehicle, aftersales, or finance drivers."
+       },
+       {
+        "peer": "CVNA",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Carvana units +39% with flat industry signals major used share gains, pressuring AN used volume/margin."
+       },
+       {
+        "peer": "PAG",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 2,
+        "driver": "D2",
+        "why": "New units -2% and GPU down, used +2% but GPU down; mixed industry signals for AN."
+       },
+       {
+        "peer": "LAD",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Used GPU +11% and aftersales margin up signal industry used/aftersales strength, positive for AN."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "LAD",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Used GPU +11% and aftersales/finance growth suggest industry used margin and F&I strength; positive for AN."
+       },
+       {
+        "peer": "PAG",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "New units -2% and new GPU down sequentially signal continued new-vehicle pressure; negative for AN."
+       },
+       {
+        "peer": "CVNA",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Carvana used units +39% with flat industry indicates major used share gains, pointing to AN used volume share loss."
+       },
+       {
+        "peer": "MUSA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Fuel/convenience retailer; no read-through to AutoNation's auto retail drivers."
+       },
+       {
+        "peer": "ORLY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Aftermarket comps +7.2% and professional growth signal strong vehicle repair demand, supportive for AN after-sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -1.5,
+   "score_peer": -0.4472135954999579,
+   "score_combined": -1.723606797749979,
+   "overall_votes": [
+    "below",
+    "below",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "bmo",
+   "eps_estimate": 5.2313,
+   "revenue_estimate": 7176206956,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:32:08.415308+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "74734a4ea2f9fa0f1c4d0a5193e4bbdd3d8e85daab3c2de04562e27cd4913fcf"
+  },
+  "BTSG": {
+   "ticker": "BTSG",
+   "index": "SP400",
+   "sector": "Health Care",
+   "sub_industry": "Health Care Services",
+   "last_release": "2026-07-31 10:05:14+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1865782/000119312526326654/btsg-ex99_1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Pharmacy script volume and per-script economics",
+      "last_report": "Pharmacy revenue +22%; prescriptions flat at 10.84M; revenue per script +22%; gross profit per script +28%.",
+      "guidance": "FY Pharmacy revenue $13.2–$13.5B, 15.3–17.9% growth."
+     },
+     {
+      "id": "D2",
+      "name": "Provider home health census growth",
+      "last_report": "Provider revenue +30%; segment EBITDA +33%; home health average daily census 46,448, up 54%.",
+      "guidance": "FY Provider revenue $1.9–$1.925B, 29.7–31.4% growth."
+     },
+     {
+      "id": "D3",
+      "name": "Amedisys and LHC acquisition contribution",
+      "last_report": "Acquisition expected to contribute approximately $35M in Adjusted EBITDA in 2026; no Q2 contribution detail.",
+      "guidance": "Approximately $35M Adjusted EBITDA in 2026 from Amedisys and LHC branches."
+     },
+     {
+      "id": "D4",
+      "name": "Corporate cost leverage",
+      "last_report": "Corporate costs $49M vs $39M prior year; total Adjusted EBITDA +44% to $206M.",
+      "guidance": "FY Adjusted EBITDA $820–$845M, 32.8–36.8% growth."
+     },
+     {
+      "id": "D5",
+      "name": "Rehab and personal care volumes",
+      "last_report": "Rehab persons served +9%; Personal Care persons served +1%; Provider Services revenue +30%.",
+      "guidance": null
+     }
+    ],
+    "guidance": "FY2026 revenue $15,100–$15,425M (17.0–19.5% growth); Adj EBITDA $820–$845M (32.8–36.8% growth); Pharmacy revenue $13,200–$13,500M; Provider revenue $1,900–$1,925M; Amedisys/LHC branches ~$35M Adj EBITDA. No Q3 guidance.",
+    "kill_conditions": [
+     "Pharmacy prescriptions dispensed decline or per-script gross profit growth slows materially.",
+     "Home health average daily census growth decelerates or Provider segment EBITDA margin contracts.",
+     "Amedisys/LHC contribution falls short of ~$35M 2026 target or FY guidance is cut."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 30,
+    "found": 25,
+    "share": 0.8333333333333334,
+    "missing": [
+     "1.9",
+     "1.925",
+     "10.84",
+     "13.2",
+     "13.5"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 96,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Acute infusion volume growth above 20%; targeting 12-15 new states",
+        "date": "2026-09-04",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "New oncology distribution wins expand pharmacy addressable market",
+        "date": "2026-10-14",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AI/automation deployment yields early margin gains, more expected later",
+        "date": "2026-09-30",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Management outlined specialty pharmacy and provider growth strategy at Bernstein conference",
+        "date": "2026-09-27",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Acute infusion volume growth 20%+; targeting 12-15 new states",
+        "date": "2026-09-04",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Deploys AI/automation across operations; early margin gains expected",
+        "date": "2026-09-30",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "New oncology distribution wins expand pharmacy footprint",
+        "date": "2026-10-14",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Acute infusion volume growth 20%+; targeting 12-15 new states",
+        "date": "2026-09-04",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "New oncology distribution wins expand pharmacy addressable market",
+        "date": "2026-10-14",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AI and automation deployment yields early margin gains, more expected in 2026",
+        "date": "2026-09-30",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.55
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "DVA",
+    "LH",
+    "CHE",
+    "DGX"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "DVA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dialysis volume flat; no clear read-through to BTSG pharmacy or provider drivers."
+       },
+       {
+        "peer": "LH",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Lab diagnostics strength not directly relevant to BTSG pharmacy scripts or home health census."
+       },
+       {
+        "peer": "CHE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "VITAS hospice ADC +9.4% and margin expansion signal strong home-based care demand, positive for BTSG Provider census."
+       },
+       {
+        "peer": "DGX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Diagnostic volume growth not directly tied to BTSG pharmacy or provider volumes."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "DVA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dialysis-specific metrics; no read-through to BTSG pharmacy or home health."
+       },
+       {
+        "peer": "LH",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Lab testing demand not directly tied to BTSG pharmacy or provider drivers."
+       },
+       {
+        "peer": "CHE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Hospice ADC +9.4%, admissions +7.2%, margin expansion support home health/hospice demand."
+       },
+       {
+        "peer": "DGX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Lab volume strength not directly relevant to BTSG pharmacy or provider drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "DGX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Quest's 14.5% volume growth and raised guidance signal strong healthcare utilization, supporting BTSG Provider home health census."
+       },
+       {
+        "peer": "CHE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "VITAS hospice ADC +9.4%, admissions +7.2%, margin expansion confirm robust home/end-of-life demand, supporting BTSG Provider census."
+       },
+       {
+        "peer": "LH",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Labcorp's 7% revenue growth and raised guidance indicate resilient healthcare utilization, positive for BTSG Provider volumes."
+       },
+       {
+        "peer": "DVA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dialysis-specific metrics show slow volume growth; no clear read-through to BTSG's pharmacy or home health drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 3.5777087639996634,
+   "score_peer": 1.414213562373095,
+   "score_combined": 4.284815545186211,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.4813,
+   "revenue_estimate": 3947610783,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:40:56.507028+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "75e110b95b03d9022f63dd3cd791a3a77ced8297263e16e6616e572923aceab7"
+  },
+  "CBOE": {
+   "ticker": "CBOE",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Financial Exchanges & Data",
+   "last_release": "2026-07-31 11:30:14+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1374310/000162828026051217/cboe-20260731xex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Options net revenue and volumes",
+      "last_report": "Record Options net revenue $473.9M, +30%; total options ADV +26%, index options ADV +32%, RPC +6%; market share 30.0%, down from 30.2%.",
+      "guidance": "No segment guidance; 2026 organic total net revenue growth target raised to mid-to-high teens."
+     },
+     {
+      "id": "D2",
+      "name": "Data Vantage organic growth",
+      "last_report": "Data Vantage net revenue grew 15% year over year; no further segment detail in release.",
+      "guidance": "2026 organic Data Vantage net revenue growth target raised to 'low teens' from 'low double-digit'."
+     },
+     {
+      "id": "D3",
+      "name": "N.A. Equities revenue and share",
+      "last_report": "Record N.A. Equities net revenue $114.7M, +17%; on-exchange market share 9.4%, down from 10.5%; off-exchange share 18.8%, up from 14.9%.",
+      "guidance": "No specific segment guidance; included in 2026 organic total net revenue growth target."
+     },
+     {
+      "id": "D4",
+      "name": "Europe/APAC and Australia divestiture",
+      "last_report": "Europe/APAC net revenue $84.8M, +20%; Cboe Australia sale expected to complete in Q3 2026.",
+      "guidance": "2026 organic total and Data Vantage growth exclude Cboe Australia; adjusted opex guidance reduced by $11M for expected Q3 sale."
+     },
+     {
+      "id": "D5",
+      "name": "Adjusted operating expenses and capex",
+      "last_report": "Adjusted operating expenses $216.7M, up 2%; 2026 adjusted opex guidance reaffirmed $838-$853M; capex guidance raised to $98-$108M.",
+      "guidance": "2026 adjusted opex $838-$853M; D&A $54-$58M; adjusted tax rate 27.5-29.5%; capex $98-$108M."
+     }
+    ],
+    "guidance": "2026 organic total net revenue growth 'mid to high teens'; Data Vantage organic growth 'low teens'; adjusted operating expenses $838-$853M (reduced by $11M for expected Q3 Cboe Australia sale); D&A $54-$58M; adjusted tax rate 27.5-29.5%; capex $98-$108M.",
+    "kill_conditions": [
+     "Options ADV or index options volume declines, or options RPC falls, slowing Options net revenue growth below 30%.",
+     "Data Vantage organic growth misses low-teens target or decelerates below 15% year over year.",
+     "Adjusted operating expenses exceed $853M, capex tops $108M, or Cboe Australia sale is delayed."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 25,
+    "found": 25,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 182,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "S&P 500 options license extended through 2051",
+        "date": "2026-10-11",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cboe launches extended trading sessions for select options",
+        "date": "2026-10-19",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SEC approves Cboe KPI/prediction market contracts",
+        "date": "2026-10-15",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cboe increases share buyback by $550M, declares dividend",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cboe Clear U.S. gets SEC temporary clearing registration",
+        "date": "2026-10-23",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "S&P 500 options license extended through 2051",
+        "date": "2026-10-11",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cboe expands options trading hours for stocks and ETFs",
+        "date": "2026-10-15",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SEC approves Cboe KPI contracts and prediction markets",
+        "date": "2026-10-15",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cboe Clear U.S. receives SEC approval for clearing expansion",
+        "date": "2026-10-23",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cboe increases share buyback authorization by $550M",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "S&P 500 options license extended through 2051",
+        "date": "2026-10-11",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SEC approves Cboe KPI binary options contracts",
+        "date": "2026-10-15",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cboe launches extended trading sessions for select options",
+        "date": "2026-10-19",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cboe Clear U.S. granted SEC temporary clearing registration",
+        "date": "2026-10-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cboe increases share buyback authorization by $550M",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "COIN",
+    "ICE",
+    "MORN",
+    "SPGI",
+    "NDAQ"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "COIN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release excerpt only disclaimers; no operating metrics to infer Cboe conditions."
+       },
+       {
+        "peer": "ICE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong exchange transaction revenue +23% signals robust trading volumes, supportive for Cboe options activity."
+       },
+       {
+        "peer": "MORN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Organic revenue +6.8% and AI data adoption indicate healthy data/analytics demand for Cboe Data Vantage."
+       },
+       {
+        "peer": "SPGI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Revenue +7% and strong benchmark/data demand support Cboe Data Vantage growth outlook."
+       },
+       {
+        "peer": "NDAQ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Solutions revenue +17% and ARR +12% signal strong data/analytics demand, supportive for Cboe Data Vantage."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "COIN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release is boilerplate disclaimers with no operating metrics; reveals nothing about Cboe's options, data, or equities drivers."
+       },
+       {
+        "peer": "ICE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record exchange quarter, transaction revenues +23% y/y, signals strong industry trading activity supporting Cboe options volumes."
+       },
+       {
+        "peer": "MORN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Organic revenue +6.8% with healthy data/analytics demand, modestly supportive of Cboe Data Vantage growth."
+       },
+       {
+        "peer": "SPGI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Revenue +7%, strong demand for benchmarks and data/IP, supportive read-through for Cboe Data Vantage and market data."
+       },
+       {
+        "peer": "NDAQ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Revenue +13%, Index +39% with record inflows, signals robust index/derivatives demand benefiting Cboe index options."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NDAQ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong index revenue and solutions growth suggest robust trading/data demand, positive for Cboe options and Data Vantage."
+       },
+       {
+        "peer": "SPGI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Solid organic growth and strong benchmark demand support data/analytics demand, modest positive for Cboe Data Vantage."
+       },
+       {
+        "peer": "MORN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Organic revenue growth and data/analytics demand positive for Cboe Data Vantage, though less direct."
+       },
+       {
+        "peer": "ICE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong exchange transaction revenue growth (+23%) signals robust trading activity, positive for Cboe options volumes."
+       },
+       {
+        "peer": "COIN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release contains only disclaimers, no operating metrics or industry conditions relevant to Cboe."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 6.123724356957946,
+   "score_peer": 3.1304951684997055,
+   "score_combined": 7.688971941207798,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 3.5041,
+   "revenue_estimate": 721597388,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:32:47.231132+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "19eb02704b5f4013c618a76a3384c3bb616fbd87af54bb9a1c361fcb7b2d96d2"
+  },
+  "CHD": {
+   "ticker": "CHD",
+   "index": "SP500",
+   "sector": "Consumer Staples",
+   "sub_industry": "Household Products",
+   "last_release": "2026-07-31 11:04:30+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/313927/000119312526326749/chd-ex99_1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Organic sales growth and volume",
+      "last_report": "Q2 organic +5.8%, volume +4.3%, price/mix +1.5%; all three divisions grew. Exceeded 3% outlook.",
+      "guidance": "Q3 organic sales growth ~3%; FY 2026 organic sales +4% to 5%, raised from +3% to 4%."
+     },
+     {
+      "id": "D2",
+      "name": "Domestic segment power brands",
+      "last_report": "Q2 Domestic organic +5.1% on volume +3.6%, price/mix +1.5%, led by THERABREATH, HERO, ARM & HAMMER cat litter, ZICAM.",
+      "guidance": "Q3 reported sales decline ~1% driven entirely by 2025 strategic portfolio actions; no segment guidance."
+     },
+     {
+      "id": "D3",
+      "name": "International segment growth",
+      "last_report": "Q2 International net sales +7.2%, organic +9.1% on volume +7.3%, price/mix +1.8%, driven by THERABREATH, HERO, BATISTE.",
+      "guidance": "No segment guidance; FY organic sales +4% to 5% overall."
+     },
+     {
+      "id": "D4",
+      "name": "Gross margin and tariff costs",
+      "last_report": "Q2 adjusted gross margin 45.4%, +40 bps; higher volume, productivity, mix offset inflation and transport cost increases.",
+      "guidance": "Q3 gross margin expansion continues; FY adjusted gross margin expansion 100-120 bps. ~$15M H2 tariff refunds to invest/offset inflation."
+     },
+     {
+      "id": "D5",
+      "name": "Marketing, SG&A and adjusted EPS",
+      "last_report": "Q2 adjusted EPS $0.89 exceeded $0.88 outlook; marketing up, adjusted SG&A 15.8%, +220 bps on Touchland.",
+      "guidance": "Q3 adjusted EPS ~$0.89, +10% YoY; marketing ~12% of sales, higher SG&A, tax ~21.5%."
+     }
+    ],
+    "guidance": "Q3 2026: organic sales growth ~3%, reported sales decline ~1% from 2025 portfolio actions, gross margin expansion continues, marketing ~12% of sales, tax ~21.5%, adjusted EPS ~$0.89 (+10%). FY 2026: reported sales flat to +1%, organic +4-5%, adjusted gross margin +100-120 bps, adjusted EPS +6-8%, cash from operations ~$1.175B.",
+    "kill_conditions": [
+     "Q3 organic sales growth reported below 3%, or volume turns negative.",
+     "Adjusted gross margin expansion stalls or tariff/inflation costs outweigh productivity and refunds.",
+     "Adjusted EPS misses ~$0.89 as marketing or SG&A exceed Q3 guidance."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 22,
+    "found": 22,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 107,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "CHD presented at Barclays Global Consumer Staples Conference",
+        "date": "2026-09-09",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "ARM & HAMMER Baking Soda Rocket Day marketing event",
+        "date": "2026-10-07",
+        "driver": "D2",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "FourKites recognized CHD for supply chain transformation",
+        "date": "2026-10-08",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.9
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "P&G Q1 earnings and revenue beat estimates",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Haleon cuts 2026 organic revenue growth outlook to ~2.5%",
+        "date": "2026-10-29",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Reynolds faces $400M commodity headwinds",
+        "date": "2026-08-25",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "CHD presents at Barclays Global Consumer Staples Conference",
+        "date": "2026-09-09",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "KMB"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KMB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "KMB's China social media disruption and Kenvue deal are company-specific; no clear read on CHD."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KMB",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "KMB cites ~1.7% category growth, below CHD's ~3% Q3 organic guide, signaling softer industry demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KMB",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "KMB's low ~1.7% category growth and China social-media hit signal softer staples demand, downside risk to CHD organic sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": -0.7071067811865475,
+   "score_combined": -0.35355339059327373,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.9102,
+   "revenue_estimate": 1593924500,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:32:24.574768+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "f70c8b31284f914a0ffe35b07ad4fe48e0c3738f381c80f0091f56b39c562ca6"
+  },
+  "CL": {
+   "ticker": "CL",
+   "index": "SP500",
+   "sector": "Consumer Staples",
+   "sub_industry": "Household Products",
+   "last_release": "2026-07-31 11:58:00+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/21665/000002166526000041/q22026pressreleasetables.htm",
+   "release_doc": "type EX-99",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Organic sales growth",
+      "last_report": "Q2 organic sales +2.4%; net sales +4.9%; growth in three of four categories and four of five divisions.",
+      "guidance": "FY 2026 organic sales growth 1% to 4%, including private label pet food exit impact."
+     },
+     {
+      "id": "D2",
+      "name": "Gross profit margin",
+      "last_report": "Q2 GAAP and Base Business gross profit margin +140 bps to 61.5%.",
+      "guidance": "FY 2026 GAAP and Base Business gross profit margin now roughly flat versus down previously."
+     },
+     {
+      "id": "D3",
+      "name": "Advertising investment",
+      "last_report": "Q2 advertising increased 15%; company continues investing in long-term brand health.",
+      "guidance": "Strong investment levels continue in back half; FY advertising up in dollars and as % of net sales."
+     },
+     {
+      "id": "D4",
+      "name": "North America sales",
+      "last_report": "Q2 net and organic sales -3.0%; volume -3.9%; pricing +0.9%; operating profit +3%, margin +120 bps.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Hill's Pet Nutrition",
+      "last_report": "Q2 net sales +3.4%, organic +2.1%, volume -1.2%; operating profit +2%, margin -40 bps.",
+      "guidance": "FY organic sales includes impact from exit from private label pet food business."
+     }
+    ],
+    "guidance": "FY 2026: net sales +2% to 6%; organic sales +1% to 4%; GAAP and Base gross margin roughly flat; advertising up in dollars and as % of net sales; GAAP EPS double-digit growth; Base Business EPS mid-single-digit growth.",
+    "kill_conditions": [
+     "Q3 organic sales growth falls below 1% or company cuts full-year organic sales guidance.",
+     "North America organic sales decline deepens or volume remains negative.",
+     "Gross margin declines or higher advertising fails to improve volume growth."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 12,
+    "found": 12,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 284,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Oil price surge to $114 on Middle East supply jitters",
+        "date": "2026-10-23",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "US inflation measure expected to accelerate in September",
+        "date": "2026-10-27",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Haleon cuts 2026 organic growth outlook; Q3 below expectations",
+        "date": "2026-10-29",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Colgate India appoints Akash Parekh EVP marketing; Gunjit Jain departs",
+        "date": "2026-10-24",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Colgate-Palmolive India appoints new marketing EVP after leadership exit",
+        "date": "2026-10-24",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Haleon cuts 2026 organic revenue growth outlook, Q3 below expectations",
+        "date": "2026-10-29",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Oil prices surge to $114 on Middle East supply jitters",
+        "date": "2026-10-23",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Colgate India marketing head exits; Akash Parekh appointed EVP marketing",
+        "date": "2026-10-24",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "KMB"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KMB",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "KMB sees ~1.7% category growth and China social media headwinds, suggesting softer industry demand for CL's organic sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KMB",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D1",
+        "why": "KMB cites ~1.7% category growth and China social media disruption; industry demand modest, no clear read for CL."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KMB",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "KMB cites China social media disruptions and soft 1.7% category growth, implying weaker industry demand for CL's organic sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -1.7320508075688774,
+   "score_peer": -0.7071067811865475,
+   "score_combined": -2.085604198162151,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.9535,
+   "revenue_estimate": 5494503955,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:32:23.336804+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "969126c6ca7b8d8e230bce961042db7bed335101fc3d0a76c34bdd4ea068671f"
+  },
+  "CVX": {
+   "ticker": "CVX",
+   "index": "SP500",
+   "sector": "Energy",
+   "sub_industry": "Integrated Oil & Gas",
+   "last_release": "2026-07-31 10:16:46+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/93410/000009341026000162/a06302026ex9918-k.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Upstream production volumes",
+      "last_report": "Worldwide production 4,070 MBOED, up 20% YoY; record U.S. 2,077 MBOED; Hess, Permian, Gulf growth; Partitioned Zone curtailments.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Crude oil and gas realizations",
+      "last_report": "Brent averaged $104/bbl; U.S. liquids $70.80/bbl, international $96.41/bbl; U.S. natural gas $0.91/Mcf.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Refining margins and throughput",
+      "last_report": "U.S. downstream earnings $2,411M; record U.S. crude throughput 1.07 MBD, 97% utilization; international earnings $2,457M on higher margins.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Cost reductions and Hess synergies",
+      "last_report": "Achieved $3B annual structural cost reductions six months early; $1.5B Hess synergies ahead of schedule, exceeding target by 50%.",
+      "guidance": "Aims to reduce structural costs by $3-4B by end-2026; achieved $3B run-rate."
+     },
+     {
+      "id": "D5",
+      "name": "Timing effects and working capital",
+      "last_report": "Favorable timing effects of $1.4B; CFFO $22.6B, FCF $18.1B; debt reduced $8.4B.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Aims to reduce structural costs by $3-4B by end-2026; achieved $3B run-rate. Hess synergies $1.5B achieved ahead of schedule.",
+    "kill_conditions": [
+     "Chevron reports lower sequential production or Permian/Gulf output decline.",
+     "Chevron reports weaker refining margins or crude unit utilization below 97%.",
+     "Chevron reports reversal of timing effects or working capital drag reducing cash flow."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 16,
+    "found": 16,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 719,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Brent crude averaged $114/bbl in September, up from $104 last release",
+        "date": "2026-09-30",
+        "driver": "D2",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Oil hits six-month high on Middle East war supply concerns",
+        "date": "2026-10-28",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Shell and TotalEnergies report soaring Q3 profits on higher hydrocarbon prices",
+        "date": "2026-10-29",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TotalEnergies acquires 25% interest in 26 Chevron-operated US offshore exploration leases",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Chevron outlines proposed $13.8B Vaca Muerta shale investment through 2035",
+        "date": "2026-10-27",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Trump to relax methane leak rules for oil firms",
+        "date": "2026-10-27",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Cyprus Aphrodite gas project advances toward development",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "US emergency oil reserve at 1982 low, supporting higher crude prices",
+        "date": "2026-10-27",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump says Iran wants a deal; Venezuelan oil arrives in Texas",
+        "date": "2026-10-28",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Washington discusses Russian oil deals for US majors in Ukraine peace talks",
+        "date": "2026-10-27",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Brent crude surged to six-month high, averaged $114 in September on Middle East war",
+        "date": "2026-10-28",
+        "driver": "D2",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TotalEnergies acquired 25% interest in 26 Chevron-operated offshore exploration leases",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump announced relaxed methane leak rules for oil firms",
+        "date": "2026-10-27",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Brent crude averaged $114/bbl in September, above last release's $104",
+        "date": "2026-09-30",
+        "driver": "D2",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Shell and TotalEnergies reported soaring Q3 profits on higher hydrocarbon prices",
+        "date": "2026-10-29",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 3.6181361349331636,
+   "score_peer": null,
+   "score_combined": 3.6181361349331636,
+   "overall_votes": [
+    "above",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 4.9317,
+   "revenue_estimate": 61724979773,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:36:01.784416+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "3ba9e4d08a9ec4e9ef1db720d116fb6f156cdc8d5739a55ea9d7b213c08500b6"
+  },
+  "D": {
+   "ticker": "D",
+   "index": "SP500",
+   "sector": "Utilities",
+   "sub_industry": "Multi-Utilities",
+   "last_release": "2026-07-31 11:31:04+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/715957/000119312526326812/d-ex99.htm",
+   "release_doc": "type EX-99",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Dominion Energy Virginia earnings",
+      "last_report": "Q2 operating earnings $670M, up $121M YoY; EPS $0.76 vs $0.64.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Dominion Energy South Carolina earnings",
+      "last_report": "Q2 operating earnings $105M, down $4M YoY; EPS $0.12 vs $0.13.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Contracted Energy earnings",
+      "last_report": "Q2 operating earnings $31M, down $16M YoY; EPS $0.03 vs $0.05.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Corporate and Other losses",
+      "last_report": "Q2 operating loss $94M vs $56M loss; EPS $(0.12) vs $(0.07).",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Operations and maintenance costs",
+      "last_report": "Q2 other O&M $1,878M vs $933M; total operating expenses $4,151M vs $2,714M.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Reaffirms full-year 2026 operating EPS $3.45-$3.69, midpoint $3.57, and all financial guidance from Q4 2025 call, including operating earnings, credit, dividend and long-term growth.",
+    "kill_conditions": [
+     "Dominion lowers or withdraws full-year 2026 operating EPS guidance below $3.45.",
+     "Virginia segment operating earnings decline year over year or data-center demand weakens.",
+     "CVOW timeline slips, cost estimates rise, or NextEra merger is terminated/blocked."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 18,
+    "found": 18,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 164,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Virginia SCC approves Dominion fuel cost recovery and securitization",
+        "date": "2026-10-07",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Virginia merger hearings begin with opposition and support",
+        "date": "2026-10-07",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Virginia governor seeks 6-year rate freeze if merger approved",
+        "date": "2026-10-20",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Virginia officials approve 3-GW Dominion gas-fired power station",
+        "date": "2026-10-21",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "NextEra shareholders approve merger with Dominion",
+        "date": "2026-10-23",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Virginia SCC approves Dominion fuel cost recovery and securitization",
+        "date": "2026-10-07",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Public hearings begin on NextEra-Dominion merger; opposition voiced",
+        "date": "2026-10-07",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Virginia governor seeks 6-year rate freeze if Dominion-NextEra merger approved",
+        "date": "2026-10-20",
+        "driver": "D1",
+        "direction": -1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Virginia officials approve 3-GW Dominion gas-fired power station",
+        "date": "2026-10-21",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "NextEra shareholders approve merger with Dominion Energy",
+        "date": "2026-10-23",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Virginia regulators approve Dominion fuel cost recovery and securitization",
+        "date": "2026-10-07",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Virginia officials approve 3-GW Dominion gas-fired power station",
+        "date": "2026-10-21",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Virginia governor seeks 6-year rate freeze if NextEra-Dominion merger approved",
+        "date": "2026-10-20",
+        "driver": "D1",
+        "direction": -1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Virginia merger hearings begin; Lt. Gov. opposes NextEra-Dominion deal",
+        "date": "2026-10-08",
+        "driver": "other",
+        "direction": -1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "XEL",
+    "NI",
+    "OGE",
+    "CMS",
+    "CNP"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "XEL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Unseasonably warm weather plus infrastructure-investment recovery lifted utility earnings; signals favorable demand and rate-recovery backdrop for Dominion Virginia."
+       },
+       {
+        "peer": "NI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Raised 10-11% EPS CAGR on data-center-driven capital plan; supports strong electric demand growth in Dominion's Virginia data center territory."
+       },
+       {
+        "peer": "OGE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record-setting warm weather drove strong sales, exceeding guidance; implies favorable weather-driven demand for Dominion's regulated electric utilities."
+       },
+       {
+        "peer": "CMS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Adjusted EPS beat and reaffirmed 6-8% growth show stable regulated utility economics, mild positive read-across to Dominion Virginia."
+       },
+       {
+        "peer": "CNP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Weather and usage added $0.03 while O&M was flat; suggests industry cost pressure contained, tempering Dominion's elevated O&M trajectory."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "XEL",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Higher financing costs at peer imply continued pressure on Dominion corporate and other losses."
+       },
+       {
+        "peer": "NI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Data-center and infrastructure investment growth supports positive read-through to Dominion Energy Virginia."
+       },
+       {
+        "peer": "OGE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Significantly warmer weather drove strong sales and guidance raise, favoring Dominion's electric utility earnings."
+       },
+       {
+        "peer": "CMS",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Impairment and restructuring at peer's independent power unit suggests pressure on Dominion's contracted energy earnings."
+       },
+       {
+        "peer": "CNP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Peer O&M was flat, suggesting industry cost pressure is contained versus Dominion's elevated O&M trend."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CNP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "O&M flat industry-wide, suggesting Dominion's Q2 O&M spike may not persist."
+       },
+       {
+        "peer": "CMS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Reaffirms guidance; no clear read-through to Dominion drivers."
+       },
+       {
+        "peer": "OGE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Warmer weather drove strong sales; implies favorable weather/usage for Dominion Virginia."
+       },
+       {
+        "peer": "NI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Data center demand and infrastructure investment growth positive for Dominion Virginia."
+       },
+       {
+        "peer": "XEL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Warm weather and rate recovery positive; higher financing costs a partial offset."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 3.6742346141747673,
+   "score_combined": 1.8371173070873836,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 1.2356,
+   "revenue_estimate": 4998435366,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:33:03.391238+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "60fd7a0e5dd95a0e2facdda5fe0112b008d1c36b0e345300086e21fe8914ae94"
+  },
+  "EXC": {
+   "ticker": "EXC",
+   "index": "SP500",
+   "sector": "Utilities",
+   "sub_industry": "Electric Utilities",
+   "last_release": "2026-07-30 10:56:06+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1109357/000110935726000077/exc-20260730ex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "ComEd rate base and AFUDC",
+      "last_report": "Q2 adjusted earnings rose to $249M on higher distribution/transmission rate base, reliability investments, and higher AFUDC.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "PECO depreciation, interest, tax costs",
+      "last_report": "Q2 adjusted earnings fell to $130M on higher depreciation, interest, income taxes; partly offset by favorable weather and no surcharge credits.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "BGE rate case and credit loss",
+      "last_report": "Q2 adjusted earnings rose to $70M on approved distribution rates; higher credit loss offset. Filed $156M electric rate case, decision expected Q1 2027.",
+      "guidance": "BGE filed $156M annual electric distribution rate increase; decision expected Q1 2027."
+     },
+     {
+      "id": "D4",
+      "name": "PHI depreciation and rate recovery",
+      "last_report": "Q2 adjusted earnings fell to $126M on higher depreciation, partly offset by approved distribution and transmission rates.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Financing plan and interest expense",
+      "last_report": "Executed ~86% of 2026 planned debt financings; higher interest expense at PECO and holding company offset lower holding costs.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Affirms FY2026 adjusted operating EPS $2.81-$2.91; operating EPS CAGR near top end of 5-7% from 2025 to 2029. No Q3 2026 guidance given.",
+    "kill_conditions": [
+     "BGE Maryland electric rate case rejected or materially cut below $156M request.",
+     "PECO or PHI reports wider earnings decline from depreciation, interest, or credit losses.",
+     "ComEd or PHI rate recovery/AFUDC slows; adverse regulatory order hits next quarter."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 8,
+    "found": 8,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 149,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "ComEd energizes 8 MW community solar array at DeKalb Taylor Municipal Airport",
+        "date": "2026-10-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ComEd energizes high-voltage substation and infrastructure for grocery distribution center in Belvidere",
+        "date": "2026-10-05",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ComEd and Richardson Electronics announce expansion of battery energy storage systems and demo project",
+        "date": "2026-10-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Illinois Commerce Commission approves ComEd GRIT transmission project in Cook and DuPage counties",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "ComEd and SunVest energize 8 MW community solar array",
+        "date": "2026-10-02",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ComEd energizes grocery distribution center in Belvidere",
+        "date": "2026-10-05",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ComEd and Richardson expand battery storage, plan largest commercial system",
+        "date": "2026-10-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ICC approves ComEd GRIT transmission project in Cook and DuPage",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "ComEd and SunVest energize near-8 MW community solar array at DeKalb Taylor Municipal Airport",
+        "date": "2026-10-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ComEd energizes high-voltage substation and electric infrastructure for grocery distribution center in Belvidere",
+        "date": "2026-10-05",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ComEd and Richardson Electronics announce expansion and plans to install Illinois' largest commercial battery energy storage system",
+        "date": "2026-10-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Illinois Commerce Commission approves ComEd GRIT transmission project in Cook County and DuPage County",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "EIX",
+    "POR",
+    "IDA",
+    "WEC",
+    "AEP"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "EIX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Higher parent interest expense signals continued financing cost pressure for Exelon; wildfire/GRC items are not relevant."
+       },
+       {
+        "peer": "POR",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Northwest mild weather is regional; data-center load growth is a mild industry positive but no clear Exelon driver."
+       },
+       {
+        "peer": "IDA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Customer and large-load growth plus base-rate increases support utility rate-base recovery, modest positive for Exelon."
+       },
+       {
+        "peer": "WEC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Favorable Midwest weather and capital investment support demand/rate base, modest positive for Exelon's ComEd/PECO."
+       },
+       {
+        "peer": "AEP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Accelerating large-load demand and expanded capital plan support utility rate-base growth, positive for Exelon's wires investments."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "EIX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Higher parent interest expense signals financing cost pressure relevant to Exelon's interest expense."
+       },
+       {
+        "peer": "POR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Industrial and data-center load growth supports utility rate-base demand, a modest positive."
+       },
+       {
+        "peer": "IDA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Customer growth and large-contract demand support rate base and AFUDC outlook."
+       },
+       {
+        "peer": "WEC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Capital plan execution and demand growth support rate-base investment; favorable weather is modestly positive."
+       },
+       {
+        "peer": "AEP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Expanded capital plan and large-load contracts signal strong industry rate-base growth."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "AEP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong load growth and expanded rate-base investment support regulated utility growth, positive for Exelon's ComEd rate base/AFUDC."
+       },
+       {
+        "peer": "WEC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Retail load growth and raised guidance support regulated demand trend, modest positive for Exelon's rate-base outlook."
+       },
+       {
+        "peer": "IDA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Customer growth and large-contract demand support rate base; higher depreciation/O&M is a modest offset."
+       },
+       {
+        "peer": "POR",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D1",
+        "why": "Industrial load growth positive, but mild-weather guidance cut is local; net signal for Exelon unclear."
+       },
+       {
+        "peer": "EIX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Higher parent interest expense signals elevated financing costs, a headwind for Exelon's D5 interest expense."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 3.1304951684997055,
+   "score_peer": 1.2247448713915892,
+   "score_combined": 3.7428676041955002,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.8003,
+   "revenue_estimate": 6788821342,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:32:51.395368+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "b21a34fbd9665d07d3e49d41524659cb51b9e062f83221791e9860a7cade6a22"
+  },
+  "FRT": {
+   "ticker": "FRT",
+   "index": "SP500",
+   "sector": "Real Estate",
+   "sub_industry": "Retail REITs",
+   "last_release": "2026-07-31 11:33:30+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/34903/000003490326000040/frt-6302026xex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Comparable POI growth",
+      "last_report": "Q2 comparable POI +2.8%; adjusted comparable POI +4.2%, excluding straight-line rents and in-place lease amortization.",
+      "guidance": "FY 2026 comparable POI growth 3.25%-3.75%; adjusted ~75 bps higher."
+     },
+     {
+      "id": "D2",
+      "name": "Leasing spreads and volume",
+      "last_report": "Signed 124 comparable leases for 819,273 sq ft, record volume; cash rent +15%, straight-line +28%.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Occupancy and leased rate",
+      "last_report": "Overall occupancy 93.8%, leased rate 96.1%, small shop leased 93.9%; occupancy flat sequentially, leased up 70 bps YoY.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Core FFO per share",
+      "last_report": "Q2 Core FFO $1.88/share, +6.8% YoY; Nareit FFO $1.88/share, down 1.6% on prior-year tax credit.",
+      "guidance": "FY 2026 Core FFO $7.48-$7.56, 5.9%-7.1% growth; Nareit FFO same range."
+     },
+     {
+      "id": "D5",
+      "name": "Development and transactions",
+      "last_report": "Delivered Blayr residential; acquired Kingstowne parcel for $19.7M; sold two properties for $66.1M.",
+      "guidance": null
+     }
+    ],
+    "guidance": "FY 2026: EPS $4.22-$4.30; Nareit FFO and Core FFO $7.48-$7.56; comparable POI growth 3.25%-3.75%; Core FFO growth 5.9%-7.1%. No separate Q3 guidance.",
+    "kill_conditions": [
+     "FRT cuts FY 2026 Core FFO guidance below $7.48 per share",
+     "Q3 comparable POI growth below 3.25% or adjusted POI growth below 4.0%",
+     "Portfolio occupancy falls below 93.8% or small shop leased rate below 93.9%"
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 24,
+    "found": 24,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 85,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Priced $400M 3.500% exchangeable senior notes due 2031",
+        "date": "2026-08-07",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Acquired The Summit, Alabama retail destination, for $508M, immediately accretive to FFO",
+        "date": "2026-10-01",
+        "driver": "D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Priced $400M 3.500% exchangeable senior notes due 2031",
+        "date": "2026-08-07",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Acquired The Summit for $508M, immediately accretive to FFO",
+        "date": "2026-10-01",
+        "driver": "D5. Development and transactions",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Acquired The Summit for $508M, accretive to FFO",
+        "date": "2026-10-01",
+        "driver": "D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Priced $400M 3.500% exchangeable senior notes due 2031",
+        "date": "2026-08-07",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "KIM",
+    "BRX",
+    "ADC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KIM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record occupancy, 4.9% same-property NOI growth, strong rent spreads, raised outlook signal robust shopping-center demand and pricing."
+       },
+       {
+        "peer": "BRX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "6.6% same-property NOI growth, record occupancy, strong leasing spreads, raised outlook imply accelerating retail demand for FRT."
+       },
+       {
+        "peer": "ADC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Net-lease retail focus; no clear read-through to FRT's shopping-center occupancy, leasing spreads, or same-property NOI."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KIM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong shopping-center demand, record occupancy, rent spreads, and 4.9% same-property NOI support FRT's POI growth."
+       },
+       {
+        "peer": "BRX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record occupancy, 25%+ rent spreads, and 6.6% same-property NOI growth signal stronger industry pricing/demand for FRT."
+       },
+       {
+        "peer": "ADC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Net-lease retail results have limited read-through to FRT's grocery-anchored shopping-center operations."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ADC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Net-lease retail strength has limited direct read-through to FRT's shopping-center leasing, occupancy, and POI drivers."
+       },
+       {
+        "peer": "BRX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong same-property NOI, record occupancy and 25% rent spreads signal sector demand above FRT's guidance."
+       },
+       {
+        "peer": "KIM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record occupancy and 4.9% same-property NOI growth, with strong new-lease spreads, support FRT's leasing and POI outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.598076211353316,
+   "score_peer": 2.886751345948129,
+   "score_combined": 4.041451884327381,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.7315,
+   "revenue_estimate": 340709026,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:36:43.109130+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "ceb4694fa882076efcf5665d0de1115231129a336d0683ad609d456e1e55edd0"
+  },
+  "KRG": {
+   "ticker": "KRG",
+   "index": "SP400",
+   "sector": "Real Estate",
+   "sub_industry": "Retail REITs",
+   "last_release": "2026-07-30 10:47:23+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1286043/000128604326000045/exhibit99_1xq22026.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Same Property NOI Growth",
+      "last_report": "Q2 Same Property NOI increased 3.7%; full-year guidance raised to 3.00%-4.00% from 2.50%-3.50%.",
+      "guidance": "FY 2026 Same Property NOI growth 3.00%-4.00%, raised from 2.50%-3.50%."
+     },
+     {
+      "id": "D2",
+      "name": "Leasing Spreads and Occupancy",
+      "last_report": "Blended cash leasing spreads +15.9%; new leases +28.4%; retail leased occupancy 94.8%, up 150 bps year-over-year.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Capital Recycling Activity",
+      "last_report": "Sold $314.0M non-core assets; post-quarter sold Tysons Corner for $25.9M; acquired two centers for $136.0M.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Leverage and Interest Expense",
+      "last_report": "Net debt to Adjusted EBITDA 5.1x; priced $345M 3.25% exchangeable notes due 2032; repaying $300M 4.00% notes.",
+      "guidance": "FY 2026 interest expense, net, $114.7M midpoint; leverage near low end of long-term target."
+     },
+     {
+      "id": "D5",
+      "name": "FFO and Core FFO",
+      "last_report": "Q2 Core FFO $0.52 per diluted share; NAREIT FFO $0.53 per diluted share.",
+      "guidance": "FY 2026 NAREIT and Core FFO $2.06-$2.12 per diluted share; net income $1.02-$1.08."
+     }
+    ],
+    "guidance": "2026 net income $1.02-$1.08 per diluted share; NAREIT and Core FFO $2.06-$2.12; Same Property NOI growth 3.00%-4.00%; bad debt reserve 0.90% of total revenues; interest expense net $114.7M midpoint.",
+    "kill_conditions": [
+     "KRG cuts 2026 Core FFO guidance below $2.06 or reports Q3 Core FFO below $0.52.",
+     "Same Property NOI growth falls below 3.0% or full-year guidance is lowered.",
+     "Retail leased occupancy declines or blended cash leasing spreads turn negative."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 24,
+    "found": 24,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 40,
+   "news_used": 39,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fitch upgrades KRG to BBB+ with Stable Outlook",
+        "date": "2026-09-14",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fitch upgrades KRG to BBB+ with stable outlook",
+        "date": "2026-09-14",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fitch upgraded KRG to BBB+ with stable outlook",
+        "date": "2026-09-14",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "KIM",
+    "BRX",
+    "ADC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KIM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong shopping-center leasing, record occupancy, and +4.9% same-property NOI signal sector momentum for KRG."
+       },
+       {
+        "peer": "BRX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Peer's +6.6% same-property NOI, record occupancy, 25% rent spreads, and raised outlook signal strong sector conditions."
+       },
+       {
+        "peer": "ADC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Net-lease retail results do not directly inform KRG's shopping-center leasing, occupancy, or same-property NOI."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KIM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Direct shopping-center peer posts record occupancy, 31.5% new rent spreads, +4.9% same-property NOI and raises outlook; positive read for KRG."
+       },
+       {
+        "peer": "BRX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Direct peer shows +6.6% same-property NOI, record occupancy, 25.3% rent spreads and raised guidance; strong positive read for KRG."
+       },
+       {
+        "peer": "ADC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Net-lease retail peer; no direct read on KRG's shopping-center NOI, occupancy, leasing spreads, or capital recycling."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ADC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Net-lease retail focus; little read on KRG's shopping-center NOI, leasing, or capital recycling."
+       },
+       {
+        "peer": "BRX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong same-property NOI +6.6%, record occupancy, and 25% rent spreads signal robust shopping-center demand for KRG."
+       },
+       {
+        "peer": "KIM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "Record 96.6% occupancy and 31.5% new-lease spreads indicate continued pricing power and leasing momentum for KRG."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.1213203435596424,
+   "score_peer": 2.886751345948129,
+   "score_combined": 3.564696016533707,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.0808,
+   "revenue_estimate": 193230503,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:33:06.826647+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "f2c38418e368dc2fd72cf924f2d749eccbc32f85d04de4449520311291b70d9f"
+  },
+  "KVUE": {
+   "ticker": "KVUE",
+   "index": "SP500",
+   "sector": "Consumer Staples",
+   "sub_industry": "Personal Care Products",
+   "last_release": "2026-08-06 10:48:04+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1944048/000194404826000141/q226earningspressrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Organic sales growth",
+      "last_report": "Q2 organic sales +1.6%, driven by value realization +0.9% and volume +0.7%; broad-based gains across every segment and region.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Gross and operating margin",
+      "last_report": "Q2 gross margin 58.2% vs 58.9%; adjusted gross margin 60.2% vs 60.9%; adjusted operating margin 22.1% vs 22.7%.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Skin Health and Beauty",
+      "last_report": "Q2 net sales +5.1%, organic +3.7%; value realization +2.7%, volume +1.0%; grew every region on Hair and Face Care.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Self Care and Tylenol",
+      "last_report": "Q2 net sales +2.2%, organic +0.6%; volume -0.6%; U.S. returned to organic growth; FDA approved Tylenol with Naproxen.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Cost savings and restructuring",
+      "last_report": "Q2 margins offset by productivity, supply-chain optimization, cost actions, Our Vue Forward; 2026 Restructuring Initiative expected ~$250M FY2026 pre-tax charges.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Kenvue reports negative organic sales growth or volume declines in key segments.",
+     "Gross margin falls further as tariffs, inflation, or FX outweigh productivity savings.",
+     "Kimberly-Clark transaction delayed past Q4 2026 or foreign regulatory approval blocked."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 13,
+    "found": 13,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 116,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Tylenol pregnancy study links to uterus/ovary changes in daughters",
+        "date": "2026-09-09",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Neutrogena boycott calls after Hayden Panettiere's death",
+        "date": "2026-08-20",
+        "driver": "D3",
+        "direction": -1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Sorbent acquires Kenvue's Stayfree and Carefree ANZ business",
+        "date": "2026-09-14",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tylenol with Naproxen launch",
+        "date": "2026-09-15",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Neutrogena, Aveeno, Regaine present 12 new scientific data sets at EADV",
+        "date": "2026-09-30",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Listerine launches Oral Care Counts campaign on World Smile Day",
+        "date": "2026-10-01",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Tylenol pregnancy study links to uterus/ovary changes",
+        "date": "2026-09-09",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Neutrogena boycott by Hayden Panettiere fans",
+        "date": "2026-08-20",
+        "driver": "D3",
+        "direction": -1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Sorbent acquires Stayfree/Carefree in Australia/NZ",
+        "date": "2026-09-14",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Neutrogena/Aveeno/Regaine present scientific evidence",
+        "date": "2026-09-30",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Neutrogena boycott calls by Hayden Panettiere fans",
+        "date": "2026-08-20",
+        "driver": "D3",
+        "direction": -1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Reuters study links Tylenol use in pregnancy to uterus/ovary changes",
+        "date": "2026-09-09",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Sorbent to acquire Kenvue's Stayfree and Carefree ANZ business",
+        "date": "2026-09-14",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tylenol with Naproxen launch",
+        "date": "2026-09-15",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "PG"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "PG Beauty organic +5.4% and Skin/Hair mid-single growth signal healthy category demand, supporting KVUE Skin Health and Beauty."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "PG Beauty/Skin Care organic mid-single-digit growth signals healthy category demand, supportive for Kenvue Skin Health and Beauty."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "PG Beauty/Skin Care organic mid-single-digit growth and favorable premium mix signal healthy category demand/pricing for Kenvue Skin Health."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -0.6708203932499369,
+   "score_peer": 1.414213562373095,
+   "score_combined": 0.03628638793661054,
+   "overall_votes": [
+    "below",
+    "below",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "bmo",
+   "eps_estimate": 0.3004,
+   "revenue_estimate": 3939498978,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:33:27.224490+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "6d52bca7a6a25250fec61895f7103c865ebbeb702dae9fd499a8791b436753d3"
+  },
+  "LEA": {
+   "ticker": "LEA",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Automotive Parts & Equipment",
+   "last_release": "2026-07-31 11:00:14+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/842162/000084216226000065/lear-2026jul31_8xkxex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Seating segment margins",
+      "last_report": "Seating margins 6.2% and adjusted 6.7% of sales; reported margin decreased from 6.4%, adjusted flat vs 6.7% in 2025.",
+      "guidance": "No segment guidance; FY net sales $23.54-$24.01B and core operating earnings $1.08-$1.20B."
+     },
+     {
+      "id": "D2",
+      "name": "E-Systems segment margins",
+      "last_report": "E-Systems margins 5.4% and adjusted 5.8% of sales, up from 3.5% and 4.9% in 2025.",
+      "guidance": "No segment guidance; FY net sales $23.54-$24.01B and core operating earnings $1.08-$1.20B."
+     },
+     {
+      "id": "D3",
+      "name": "Global vehicle production",
+      "last_report": "Global vehicle production flat; North America flat, Europe down 2%, China down 4%; Lear sales-weighted down ~1%.",
+      "guidance": "FY outlook assumes global industry production decreases ~2% from 2025 on Lear sales-weighted basis."
+     },
+     {
+      "id": "D4",
+      "name": "New business awards",
+      "last_report": "New/conquest awards with Audi, Leapmotor, Renault, Stellantis, BAIC; GM Supplier of Year; PACE finalist.",
+      "guidance": "No specific guidance; outlook excludes future tariff changes or production disruptions."
+     },
+     {
+      "id": "D5",
+      "name": "Free cash flow and buybacks",
+      "last_report": "Free cash flow $288M, up 69%; repurchased $100M shares; remaining authorization ~$600M; cash $1.0B, liquidity $3.0B.",
+      "guidance": "FY operating cash flow $1.25-$1.35B; capex ~$660M; free cash flow $590-$690M."
+     }
+    ],
+    "guidance": "Full-year 2026: net sales $23,540-$24,010M; core operating earnings $1,080-$1,200M; adjusted EBITDA $1,700-$1,820M; operating cash flow $1,250-$1,350M; capex ~$660M; free cash flow $590-$690M; assumes sales-weighted global production down ~2%.",
+    "kill_conditions": [
+     "Lear cuts or withdraws full-year 2026 revenue, core operating earnings, or free cash flow guidance.",
+     "Seating margins fall below 6.2% or E-Systems adjusted margin drops below 5.8%.",
+     "Global production outlook worsens beyond down ~2%, especially North America or China, or major program cancellations."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 30,
+    "found": 24,
+    "share": 0.8,
+    "missing": [
+     "1.08",
+     "1.20",
+     "1.25",
+     "1.35",
+     "23.54",
+     "24.01"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 46,
+   "news_used": 46,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Lear increases share repurchase authorization to $1.5B through 2029",
+        "date": "2026-09-24",
+        "driver": "D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Shelf registration for 1,725,000 ESOP shares and future funding",
+        "date": "2026-08-02",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Increases share repurchase authorization to $1.5B through 2029",
+        "date": "2026-09-24",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Appoints Jared Fedele CFO effective March 2027, succeeding Jason Cardew",
+        "date": "2026-10-19",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Lear increases share repurchase authorization to $1.5B through 2029",
+        "date": "2026-09-24",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "BWA",
+    "GNTX",
+    "ALV",
+    "VC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BWA",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Organic sales -3.1% and lower industry production point to weaker global vehicle output than Lear's -2% assumption."
+       },
+       {
+        "peer": "GNTX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Global LVP down >2% and North America down 5%, worse than Lear's flat NA setup; pressures Lear sales."
+       },
+       {
+        "peer": "ALV",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D3",
+        "why": "Global LVP -1.9% is in line with Lear's -2% guidance; no clear incremental signal for Lear."
+       },
+       {
+        "peer": "VC",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Visteon's 10% growth-over-market and $0.9B display wins suggest share gains in cockpit electronics, pressuring Lear E-Systems awards."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BWA",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Lower industry production and organic sales decline signal weaker global vehicle output, pressuring Lear volumes and margins."
+       },
+       {
+        "peer": "GNTX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Global LVP down >2% and North America down 5% indicate weaker production than Lear's flat NA assumption."
+       },
+       {
+        "peer": "ALV",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D3",
+        "why": "Global LVP down ~1.9% and EMEA weakness align with Lear's cautious outlook, but margin pressure persists."
+       },
+       {
+        "peer": "VC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Customer production down 5% signals weaker vehicle output, a negative for Lear's volumes and margins."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VC",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Visteon's 10% growth-over-market and $0.9B display wins signal competitive share gains vs Lear E-Systems."
+       },
+       {
+        "peer": "ALV",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D3",
+        "why": "Confirms global LVP down ~2%, in line with Lear's guidance; regional mix weak EMEA, strong Asia."
+       },
+       {
+        "peer": "GNTX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "NA LVP down 5% and China headwinds suggest weaker production than Lear's flat NA setup."
+       },
+       {
+        "peer": "BWA",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Organic sales -3.1% and lower industry production point to weaker global LVP than Lear's -2% guidance."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.1213203435596424,
+   "score_peer": -2.6832815729997477,
+   "score_combined": 0.7796795570597685,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 3.4003,
+   "revenue_estimate": 5866253265,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:33:51.805917+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "d5e8bd6ed23ae5b412893f7311c09e8f90948c9f549b328e4c09b1d3e3379190"
+  },
+  "LYB": {
+   "ticker": "LYB",
+   "index": "SP500",
+   "sector": "Materials",
+   "sub_industry": "Specialty Chemicals",
+   "last_release": "2026-07-31 10:31:44+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1489393/000148939326000057/a2026q2ex991_pressrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "North American O&P utilization and margins",
+      "last_report": "Q2 operated advantaged North American assets at ~90% utilization; polymer margins expanded and co-product pricing favorable on tighter global supply.",
+      "guidance": "Q3 North American O&P operating rate expected at 85%."
+     },
+     {
+      "id": "D2",
+      "name": "European O&P and Clinton downtime",
+      "last_report": "O&P Europe, Asia and International benefited from improved polymer spreads and stronger JV contributions; European asset divestiture completed.",
+      "guidance": "Q3 European O&P operating rate 70%; planned Clinton downtime to impact polyolefins volumes in H2."
+     },
+     {
+      "id": "D3",
+      "name": "Intermediates & Derivatives Bayport restart",
+      "last_report": "Higher earnings on oxyfuels, methanol and PO derivatives margins, partly offset by Bayport PO/TBA unplanned outage; Bayport restarted in June at full rates.",
+      "guidance": "Q3 Intermediates & Derivatives operating rate 85%; Bayport restart should provide volume uplift in H2."
+     },
+     {
+      "id": "D4",
+      "name": "Cash Improvement Plan delivery",
+      "last_report": "Continued fixed-cost reductions and lower capex; on target to deliver $500 million incremental cash by end 2026.",
+      "guidance": "$500 million incremental cash by end 2026."
+     },
+     {
+      "id": "D5",
+      "name": "Middle East supply and pricing volatility",
+      "last_report": "Geopolitical instability created supply-constrained markets; Middle East conditions fluid, recovery timing uncertain, likely extending into 2027.",
+      "guidance": "No material demand deterioration expected, but near-term price uncertainty may affect buying patterns."
+     }
+    ],
+    "guidance": "Q3 2026 operating rates: North American O&P 85%, European O&P 70%, Intermediates & Derivatives 85%. On target for $500 million incremental cash from Cash Improvement Plan by end 2026. No EPS or EBITDA guidance.",
+    "kill_conditions": [
+     "Q3 operating rates miss guidance, especially North American O&P below 85% or European O&P below 70%.",
+     "Bayport PO/TBA restart is delayed, or Intermediates & Derivatives volumes miss despite full rates.",
+     "Cash Improvement Plan target is cut or $500 million incremental cash by 2026 is delayed."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 4,
+    "found": 4,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 84,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Ineos mothballs UK chemical plants on high gas prices",
+        "date": "2026-09-23",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.5
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Declared $0.69 quarterly dividend; later reports describe it as a dividend cut",
+        "date": "2026-08-14",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Submitted non-binding offer for Shell's US chemicals assets",
+        "date": "2026-08-24",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Ineos mothballed UK chemical plants on high gas costs, tightening European supply",
+        "date": "2026-09-23",
+        "driver": "D2 European O&P and Clinton downtime",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.72
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Dividend cut to $0.69/share announced",
+        "date": "2026-08-14",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "AXTA",
+    "NEU",
+    "PPG",
+    "ECL",
+    "SHW"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "AXTA",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D2",
+        "why": "European volume declines consistent with LYB's low European O&P guidance; no new negative."
+       },
+       {
+        "peer": "NEU",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D5",
+        "why": "Confirms Middle East supply chain disruptions persist, in line with LYB's D5 guidance."
+       },
+       {
+        "peer": "PPG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong packaging and industrial coatings demand signals healthy polyolefin demand, potential upside to LYB's NA O&P."
+       },
+       {
+        "peer": "ECL",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D5",
+        "why": "Confirms ongoing Middle East disruptions, but demand resilient, in line with LYB's D5 view."
+       },
+       {
+        "peer": "SHW",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Muted architectural coatings demand signals weak construction, negative for LYB's NA O&P volumes."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "AXTA",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Europe refinish volumes weak, confirming soft European demand; negative for LYB European O&P."
+       },
+       {
+        "peer": "NEU",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D5",
+        "why": "Middle East disruptions persist, consistent with LYB's guidance; no clear incremental impact."
+       },
+       {
+        "peer": "PPG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Packaging/industrial coatings volume growth suggests resilient demand for LYB polyolefins."
+       },
+       {
+        "peer": "ECL",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D5",
+        "why": "Middle East disruptions ongoing but demand resilient; consistent with LYB's guidance, no clear direction."
+       },
+       {
+        "peer": "SHW",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Muted underlying market volumes indicate weak NA demand, negative for LYB O&P volumes."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SHW",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D1",
+        "why": "Muted coatings demand but higher raw material costs; mixed read-through for LYB margins."
+       },
+       {
+        "peer": "ECL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Ongoing Middle East disruptions and pricing power support LYB's supply-constrained pricing."
+       },
+       {
+        "peer": "PPG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Coatings cost inflation and pricing actions suggest tight chemical supply, supporting LYB polymer margins."
+       },
+       {
+        "peer": "NEU",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D5",
+        "why": "Confirms Middle East disruptions but lubricant additive softness not directly LYB; mixed."
+       },
+       {
+        "peer": "AXTA",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D2",
+        "why": "European volume declines signal weak regional demand, modest negative for LYB's European O&P."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 1.0606601717798212,
+   "score_peer": 0.4082482904638631,
+   "score_combined": 1.2647843170117528,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 2.5939,
+   "revenue_estimate": 8962862210,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:38:25.777942+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "978cfd0671ca3749ceb6454faf3910b12a0847eb48f4371e2c332c33a2c888c4"
+  },
+  "MOG.A": {
+   "ticker": "MOG.A",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Aerospace & Defense",
+   "last_release": "2026-07-31 12:44:50+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/67887/000162828026051250/ex991-73126.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Space & Defense",
+      "last_report": "Q3 sales +17% to $336M; margin 15.7%, up 240 bps on defense demand; higher product development and readiness investments.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Military Aircraft",
+      "last_report": "Q3 sales +9% to $245M; margin 14.7%, up 650 bps on aftermarket and MV-75; prior-year termination charge absent.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Commercial Aircraft",
+      "last_report": "Q3 sales +17% to $254M; margin 15.2%, up 50 bps on volume, pricing, aftermarket; less favorable mix and prior non-core sale absence.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Industrial",
+      "last_report": "Q3 sales +18% to $282M; margin 17.4%, up 770 bps on data center cooling pumps, medical, energy, and tariff refund.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "One-time tariff/tax benefits",
+      "last_report": "Q3 included $30M IEEPA tariff claims (270 bps margin) and $43M tax benefits; FY guidance includes tariff refund and R&D tax credit.",
+      "guidance": "FY26 guidance includes contributions from tariff refund and current-year R&D tax credit."
+     }
+    ],
+    "guidance": "FY2026: net sales $4.4B, adjusted operating margin 14.1%, adjusted diluted EPS $11.65 +/- $0.10, free cash flow conversion 70%; raised from $4.3B, 13.4%, $10.60, 60%.",
+    "kill_conditions": [
+     "Q4 adjusted EPS below $11.65 or adjusted operating margin below 14.1%.",
+     "No repeat of tariff refund or R&D tax credit, or one-time benefits reverse.",
+     "Industrial data center cooling pump sales or Space & Defense demand decelerate; backlog falls."
+    ]
+   },
+   "card_provider": "Together",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 27,
+    "found": 26,
+    "share": 0.9629629629629629,
+    "missing": [
+     "43"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 0,
+   "news_used": 0,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.9
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "ATI",
+    "HII",
+    "HWM",
+    "TXT",
+    "LHX"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ATI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Broad aerospace demand growth and raised guidance positive for Moog's Commercial Aircraft volume and aftermarket."
+       },
+       {
+        "peer": "HII",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Defense shipbuilding strength and record awards signal robust defense demand, positive for Moog's Space & Defense."
+       },
+       {
+        "peer": "HWM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Commercial aerospace robust with production volume increases, positive for Moog's Commercial Aircraft volume and aftermarket."
+       },
+       {
+        "peer": "TXT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "MV-75 Cheyenne funding secured via ATR approval, positive for Moog's Military Aircraft aftermarket and program."
+       },
+       {
+        "peer": "LHX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record defense backlog and raised guidance signal strong defense demand, positive for Moog's Space & Defense."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ATI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Broad aerospace/defense materials demand strong; supports Moog commercial aircraft volume and pricing."
+       },
+       {
+        "peer": "HII",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Defense shipbuilding demand and awards strong; positive read-through for Moog defense demand."
+       },
+       {
+        "peer": "HWM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Commercial aerospace robust, production increases; strongly positive for Moog commercial aircraft."
+       },
+       {
+        "peer": "TXT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "MV-75 funding approved and Bell progress; positive for Moog military aircraft aftermarket/program."
+       },
+       {
+        "peer": "LHX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record defense/space backlog and missile growth; positive for Moog space & defense demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "LHX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong defense/space demand, record backlog, raised guidance supports Moog Space & Defense."
+       },
+       {
+        "peer": "TXT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "MV-75 funding and program progress support Moog Military Aircraft; aviation aftermarket also strong."
+       },
+       {
+        "peer": "HWM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Robust commercial aerospace, aftermarket/spares, and production growth support Moog Commercial Aircraft."
+       },
+       {
+        "peer": "HII",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Strong naval defense demand signals healthy defense spending; modest positive read-through to Moog Space & Defense."
+       },
+       {
+        "peer": "ATI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Broad aerospace/defense materials demand growth supports Moog Commercial Aircraft and defense volumes."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 4.08248290463863,
+   "score_combined": 2.041241452319315,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 2.7724,
+   "revenue_estimate": 1154024360,
+   "fiscal": "2026Q4",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:33:48.930520+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "2e786d96b9ef0b86d0cef68358542b579f523900f15cfc302ffa0fe0de3fbc0e"
+  },
+  "NVT": {
+   "ticker": "NVT",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Electrical Components & Equipment",
+   "last_release": "2026-07-31 10:40:45+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1720635/000162828026051203/q22026nvtpressrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Systems Protection growth/margin",
+      "last_report": "Q2 sales $1,072M, +70% reported, +62% organic; adjusted ROS 23.2%, up 150 bps.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Electrical Connections growth/margin",
+      "last_report": "Q2 sales $399M, +21% reported, +18% organic; adjusted ROS 27.3%, down 140 bps.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Data center and liquid cooling demand",
+      "last_report": "Significant data center growth; new products added >30 points to sales; announced liquid cooling manufacturing expansion.",
+      "guidance": "Q3 organic sales growth 32-35%; FY organic sales growth 32-34%."
+     },
+     {
+      "id": "D4",
+      "name": "Adjusted EPS and operating margin",
+      "last_report": "Q2 adjusted EPS $1.45, +69%; adjusted ROS 21.9%, up 110 bps.",
+      "guidance": "Q3 adjusted EPS $1.35-$1.38; FY adjusted EPS $5.00-$5.10."
+     },
+     {
+      "id": "D5",
+      "name": "Free cash flow and working capital",
+      "last_report": "Q2 FCF $167M, +125%; operating cash flow $189M, +107%; receivables and inventories built.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q3 2026: reported sales growth 32-35%, organic 32-35%, GAAP EPS $1.18-$1.21, adjusted EPS $1.35-$1.38. FY 2026: reported sales growth 37-39%, organic 32-34%, GAAP EPS $4.29-$4.39, adjusted EPS $5.00-$5.10.",
+    "kill_conditions": [
+     "Q3 organic sales growth below 32% or full-year organic guidance cut.",
+     "Systems Protection adjusted ROS falls below 23% or data center orders slow.",
+     "Free cash flow turns negative or working capital build worsens."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 32,
+    "found": 32,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 141,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Announced acquisition of Maverick Power for $1.75B",
+        "date": "2026-08-24",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Completed acquisition of Maverick Power",
+        "date": "2026-10-01",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AMD collaboration for rack-level cooling in Helios",
+        "date": "2026-10-13",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Leased new production space in Goodyear, Arizona",
+        "date": "2026-10-27",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Announced acquisition of Maverick Power for $1.75B, data center power distribution",
+        "date": "2026-08-24",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AMD collaboration for rack-level cooling in Helios AI platform",
+        "date": "2026-10-13",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Leased new 400k sq ft Goodyear, AZ facility for engineered buildings/data centers",
+        "date": "2026-10-27",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Announced acquisition of Maverick Power for $1.75B",
+        "date": "2026-08-24",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Completed acquisition of Maverick Power",
+        "date": "2026-10-01",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Collaborated with AMD on liquid/air cooling for Helios rack-scale AI platform",
+        "date": "2026-10-13",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Leased new 400k sq ft manufacturing space in Goodyear, AZ for data center/power infrastructure",
+        "date": "2026-10-27",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "NXT",
+    "VRT",
+    "ST",
+    "VICR",
+    "EMR"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NXT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Record clean-power bookings/backlog indicate solid electrical infrastructure demand; modest positive for NVT connections."
+       },
+       {
+        "peer": "VRT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Data center buildout accelerating, orders >100%, raised guidance; strongly positive for NVT data center/liquid cooling."
+       },
+       {
+        "peer": "ST",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Core industrial growth and margin expansion modestly support NVT Electrical Connections demand/pricing."
+       },
+       {
+        "peer": "VICR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "AI power demand and backlog surge, capacity expansion; positive read-through for NVT data center/liquid cooling."
+       },
+       {
+        "peer": "EMR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Only pension restatement; no operating or demand update for NVT."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NXT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Solar tracker demand not relevant to nVent's data center or electrical protection drivers."
+       },
+       {
+        "peer": "VRT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Data center buildout accelerating; strong orders and raised guidance support nVent liquid cooling demand."
+       },
+       {
+        "peer": "ST",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Auto/industrial sensor results say little about nVent's data center and electrical growth."
+       },
+       {
+        "peer": "VICR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "AI power demand and capacity expansion signal strong data center build, positive for liquid cooling."
+       },
+       {
+        "peer": "EMR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Pension restatement only; no operating update relevant to nVent's coming results."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "EMR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Pension restatement only; no operational update or demand/margin read-through for nVent."
+       },
+       {
+        "peer": "VICR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "AI/data center power demand strong; backlog +166%, capacity expansion; positive read-through for nVent liquid cooling/data center."
+       },
+       {
+        "peer": "ST",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Modest organic growth and margin expansion suggest stable industrial demand; slight positive for Electrical Connections."
+       },
+       {
+        "peer": "VRT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Data center infrastructure demand accelerating; 55% organic growth, orders +100%, raised guidance; strongly positive for nVent data center/liquid cooling."
+       },
+       {
+        "peer": "NXT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Record solar bookings/backlog signal strong electrical infrastructure demand; modest positive for nVent Electrical Connections."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 6.037383539249432,
+   "score_peer": 3.1304951684997055,
+   "score_combined": 7.602631123499284,
+   "overall_votes": [
+    "inline",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 1.3839,
+   "revenue_estimate": 1437718900,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:38:02.210974+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "12d4b45a602ac85bb0b4abf8b849adaaf71171ac482e6ff0acb5fe82b9f711e2"
+  },
+  "RBC": {
+   "ticker": "RBC",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Industrial Machinery & Supplies & Components",
+   "last_release": "2026-07-31 13:24:45+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1324948/000121390026083672/ea029998301ex99-1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Aerospace & Defense revenue growth",
+      "last_report": "Aerospace & Defense net sales up 36.9%; VACCO added $34.4M; backlog $2.3B.",
+      "guidance": "Q2 total net sales $505 to $515M, +10.9% to 13.1% y/y; no segment breakdown."
+     },
+     {
+      "id": "D2",
+      "name": "Industrial segment revenue growth",
+      "last_report": "Industrial net sales increased 8.4%.",
+      "guidance": "Q2 total net sales $505 to $515M, +10.9% to 13.1% y/y; no segment guidance."
+     },
+     {
+      "id": "D3",
+      "name": "Gross margin",
+      "last_report": "Q1 gross margin 47.7% adjusted, up from 45.4%; record margins.",
+      "guidance": "Q2 gross margin expected 45.5% to 45.75%."
+     },
+     {
+      "id": "D4",
+      "name": "SG&A expense ratio",
+      "last_report": "SG&A $85.8M, 16.5% of net sales, down from 16.9%.",
+      "guidance": "Q2 SG&A expected 16.5% to 16.75% of net sales."
+     },
+     {
+      "id": "D5",
+      "name": "Backlog and demand",
+      "last_report": "Backlog $2.3B, flat vs March 2026, up from $1.0B last year; record levels.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q2 fiscal 2027 net sales $505 to $515M, +10.9% to 13.1% y/y; gross margin 45.5% to 45.75%; SG&A 16.5% to 16.75% of net sales.",
+    "kill_conditions": [
+     "Q2 net sales below $505M or growth under 10.9% y/y.",
+     "Q2 gross margin below 45.5% or SG&A above 16.75% of net sales.",
+     "Backlog falls below $2.3B or Aerospace & Defense growth decelerates sharply."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 17,
+    "found": 15,
+    "share": 0.8823529411764706,
+    "missing": [
+     "505",
+     "515"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 60,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Dodge Industrial acquires PSC Couplings assets for $24.2M cash",
+        "date": "2026-08-10",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Manufacturing activity hits four-year high, seven months of sector growth",
+        "date": "2026-08-05",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Dodge Industrial acquires PSC Couplings assets for $24.2M cash",
+        "date": "2026-08-10",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Dodge Industrial subsidiary acquired PSC Couplings assets for $24.2M cash",
+        "date": "2026-08-10",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "IR",
+    "SPXC",
+    "FLS",
+    "FTV",
+    "IEX"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "IR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Improved industrial demand, strong organic orders and book-to-bill support RBC Industrial; aerospace P&ST modestly positive."
+       },
+       {
+        "peer": "SPXC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "HVAC and data center strength not relevant to RBC's aerospace or industrial bearing demand."
+       },
+       {
+        "peer": "FLS",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D5",
+        "why": "Record backlog and bookings positive, but organic sales decline and Middle East delays create mixed read for RBC."
+       },
+       {
+        "peer": "FTV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Accelerating core growth and raised guidance indicate broad industrial demand strength, supportive for RBC Industrial segment."
+       },
+       {
+        "peer": "IEX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Gross margin expansion despite inflation and record orders support RBC's margin and industrial demand outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "IR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Broad industrial orders +21% and improved demand support RBC backlog/demand; aerospace P&ST modestly positive."
+       },
+       {
+        "peer": "SPXC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "HVAC/data-center strength not tied to RBC's bearings, aerospace, or industrial drivers."
+       },
+       {
+        "peer": "FLS",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D5",
+        "why": "Middle East delays cut organic sales, but record bookings/backlog keep industrial demand read mixed."
+       },
+       {
+        "peer": "FTV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Accelerating 7.2% core growth and raised guidance support healthy industrial demand for RBC's Industrial segment."
+       },
+       {
+        "peer": "IEX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Gross margin up 70 bps despite inflation supports RBC's gross-margin setup; record organic sales also positive."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "IEX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Broad industrial demand and orders growth support RBC Industrial revenue; margin expansion is favorable."
+       },
+       {
+        "peer": "FTV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Fortive's accelerating core industrial growth and raised guidance signal healthy industrial demand for RBC."
+       },
+       {
+        "peer": "FLS",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D2",
+        "why": "Middle East sales weakness is negative, but record bookings/backlog suggest mixed industrial demand signals."
+       },
+       {
+        "peer": "SPXC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "SPX's HVAC/data center strength is not a direct read-through to RBC's bearing demand."
+       },
+       {
+        "peer": "IR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "Broad industrial orders/revenue growth and improved demand support RBC Industrial; A&D also positive."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 1.0606601717798212,
+   "score_peer": 2.6832815729997477,
+   "score_combined": 2.402300958279695,
+   "overall_votes": [
+    "above",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 3.5675,
+   "revenue_estimate": 519978300,
+   "fiscal": "2027Q2",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:41:45.657369+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "7025add477e93cf41e1f073cc87d1778405094c75cde78d860a9a2454811bba2"
+  },
+  "REGN": {
+   "ticker": "REGN",
+   "index": "SP500",
+   "sector": "Health Care",
+   "sub_industry": "Biotechnology",
+   "status": "already_reported",
+   "last_release": "2026-10-06 11:51:50+00:00",
+   "hour": "bmo",
+   "eps_estimate": 16.4787,
+   "revenue_estimate": 4630208644,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:33:48.931538+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "8aea2704ed89979a65f81c4042dc3a878a2479e00f94f4e053a085d3518ced66"
+  },
+  "XOM": {
+   "ticker": "XOM",
+   "index": "SP500",
+   "sector": "Energy",
+   "sub_industry": "Integrated Oil & Gas",
+   "last_release": "2026-07-31 10:31:39+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/2115436/000211543626000006/livef8k2q26991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Upstream production volumes",
+      "last_report": "Highest production in over two decades ex-Middle East disruptions; record Permian >1.8 Moebd; Middle East disruptions offset.",
+      "guidance": "Permian 9% CAGR through 2030; Guyana FPSO startup 4Q26 adds 250 Kbd."
+     },
+     {
+      "id": "D2",
+      "name": "Energy Products refining margins",
+      "last_report": "Earnings rose on strong U.S. Gulf Coast utilization and record diesel, partly offset by scheduled maintenance.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Chemical Products margins",
+      "last_report": "Earnings improved on North American feed advantage and reliability; structural savings offset higher expenses and unfavorable forex.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Specialty Products basestock margins",
+      "last_report": "Earnings increased on higher basestock margins and high-value product growth despite Middle East disruptions.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Structural cost savings",
+      "last_report": "Cumulative structural cost savings $16.3B, more than all other IOCs combined; corporate adjusted loss $791M.",
+      "guidance": null
+     }
+    ],
+    "guidance": "No quarterly earnings guidance. 2026 planned investments 20% higher than nearest IOC; Permian 9% CAGR through 2030; Guyana FPSO startup 4Q26 adds 250 Kbd; 3Q dividend $1.03.",
+    "kill_conditions": [
+     "Exxon reports Permian production decline or Guyana FPSO startup slips past 4Q26.",
+     "Energy Products earnings fall on weaker refining margins or heavier-than-planned maintenance.",
+     "Chemical or Specialty margins weaken, or structural cost savings fail to offset expenses."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 6,
+    "found": 6,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 730,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Oil prices hit six-month high",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Shell and Total report soaring Q3 profits on Middle East war",
+        "date": "2026-10-29",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Exxon wins dismissal of Kazakhstan $12B Kashagan claim",
+        "date": "2026-10-27",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump rolls back methane rules, touting $45B savings",
+        "date": "2026-10-28",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Gulf oil exports passed pre-conflict levels",
+        "date": "2026-10-26",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "1M barrels Venezuelan oil arrive in Texas",
+        "date": "2026-10-28",
+        "driver": "other",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "US discusses Russian deals for US oil majors",
+        "date": "2026-10-27",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Trump could allow more Russian diesel into US",
+        "date": "2026-10-28",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Emergency oil reserve at 1982 low",
+        "date": "2026-10-27",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Iran wants a deal, potentially easing oil prices",
+        "date": "2026-10-28",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Q3 refining margins strong, projected $4.5B boost",
+        "date": "2026-10-26",
+        "driver": "D2",
+        "direction": 1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Q3 average crude prices lower, headwind for upstream",
+        "date": "2026-10-26",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Iran war drove Q3 oil and refining margins higher",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Shell and Total Q3 profits soar on Mideast war",
+        "date": "2026-10-29",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Middle East war drove Brent to six-month high, boosting oil prices",
+        "date": "2026-10-28",
+        "driver": "other",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Exxon wins dismissal of Kazakhstan's $12B Kashagan arbitration claim",
+        "date": "2026-10-27",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "1M barrels Venezuelan oil arrive in Texas; Trump says Iran wants deal",
+        "date": "2026-10-28",
+        "driver": "other",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "US emergency oil reserve at 1982 low, supporting oil prices",
+        "date": "2026-10-27",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump rolls back methane rules, touting $45B in savings",
+        "date": "2026-10-28",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Treasury says Gulf oil exports passed pre-conflict levels; Brent fell 1%",
+        "date": "2026-10-26",
+        "driver": "other",
+        "direction": -1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Washington discusses Russian deals for US oil majors in Ukraine peace talks",
+        "date": "2026-10-27",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Exxon and Chevron cancel UAE oil show trips amid safety concerns",
+        "date": "2026-10-29",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Shell and Total report soaring Q3 profits on Mideast war",
+        "date": "2026-10-29",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 3.478505426185217,
+   "score_peer": null,
+   "score_combined": 3.478505426185217,
+   "overall_votes": [
+    "above",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 4.1205,
+   "revenue_estimate": 104506896295,
+   "fiscal": "2026Q3",
+   "report_date": "2026-10-30",
+   "cutoff": "2026-10-29 22:00:00+00:00",
+   "decided_at": "2026-10-30T02:34:49.177322+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "sha256": "c26edbee98aa36e8eff982e03a26d6969ce4acbe3f2308bc3955acfface16878"
+  }
+ },
+ "report_date": "2026-10-30",
+ "cutoff": "2026-10-29 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "fe2fb0f72a4a42e64fc8b11120fbc62df7747fe9e048a44d35a7934f4f984a91",
+ "runs": [
+  {
+   "at": "2026-10-30T02:41:45.735003+00:00",
+   "version": "r5-v2",
+   "code": "83520819aa3af21768312b3d343a9f8e697a7754",
+   "quality": {
+    "counts": {
+     "already_reported": 2,
+     "ok": 17
+    },
+    "attempted": 17,
+    "bad": 0,
+    "bad_share": 0.0,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
