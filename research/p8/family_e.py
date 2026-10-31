@@ -3,6 +3,8 @@
     python research/p8/family_e.py live       # every firm's filing history from SEC's live API (SEC_USER_AGENT)
     python research/p8/family_e.py items      # 8-K items with acceptance times -> .cache/p8/items8k.parquet
     python research/p8/family_e.py dry-fit    # E1/E2 cell selection, E3 pipeline check -> reports/research/p8/E_DRY_FIT.*
+    python research/p8/family_e.py rehearse   # the validation code on the fit sample: no lock, B = 199, nothing written
+    python research/p8/family_e.py validate   # ONCE: E1 and E2 on 2022-2025 -> E_VALIDATION.lock, .md, .json
 
 No lock: the fit sample (event sessions 2016-01-01 .. 2021-12-31, target windows ending by 2021-12-31) chooses each
 module's one primary cell by the written rule. Validation (2022-2025) and sealed (2026) data are never loaded here:
@@ -21,6 +23,7 @@ Definitions (PREREG_family_E.md §1-§4):
 """
 import json
 import os
+import subprocess
 import sys
 from datetime import datetime, timezone
 
@@ -31,6 +34,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import edgar as ED                                               # noqa: E402
 import events as EV                                              # noqa: E402
 import prices as PX                                              # noqa: E402
+import inference as I                                            # noqa: E402
 import residuals as RS                                           # noqa: E402
 sys.path.insert(0, os.path.join(PX.ROOT, "fund"))
 from edgar_time import et_from_api                               # noqa: E402
@@ -329,5 +333,149 @@ def dry_fit():
     print("\n".join(L))
 
 
+# ======================================================================= the validation read (§5 rule B, steps 1-3)
+V0, V1 = pd.Timestamp("2022-01-01"), pd.Timestamp("2025-12-31")
+VHALVES = ((pd.Timestamp("2022-01-01"), pd.Timestamp("2023-12-31")), (pd.Timestamp("2024-01-01"), pd.Timestamp("2025-12-31")))
+FHALVES = ((pd.Timestamp("2016-01-01"), pd.Timestamp("2018-12-31")), (pd.Timestamp("2019-01-01"), pd.Timestamp("2021-12-31")))
+N_BEFORE = 34                                     # hypotheses read on 2022-2025 before Family E (DATA_USE.md)
+LOCK = os.path.join(PX.OUT, "E_VALIDATION.lock")
+
+
+def gics_of():
+    return json.load(open(os.path.join(PX.CACHE, "gics.json")))["firms"]
+
+
+def e1_rows(R, a, b, entry, h):
+    E = pd.read_parquet(os.path.join(PX.CACHE, "events.parquet"))
+    sessions = R.index
+    E["et"] = live_202_time(E)
+    E = E[E["et"].notna()].copy()
+    E["t0"] = E["et"].map(lambda x: EV.t0_of(x, sessions))
+    E = E[E["t0"].notna() & (E["universe"] == "sp500") & E["sue"].notna()]
+    E = E[(E["t0"] >= a) & (E["t0"] <= b)].copy()
+    E["season"] = pd.to_datetime(E["t0"]).dt.to_period("Q").astype(str)
+    E["i0"] = E["t0"].map(lambda d: sessions.get_loc(d) if d in sessions else -1)
+    rows = []
+    for r in first_per_window(E[E["i0"] >= 0], h).itertuples():
+        if r.ticker not in R:
+            continue
+        D, end = resid_sum(R, r.ticker, r.i0 + (0 if entry == "t0" else 1), h, r.i0 - 1)
+        if end is None or end > b or not np.isfinite(D):
+            continue
+        rows.append({"t0": r.t0, "season": r.season, "sector": r.sector, "industry": r.industry, "sue": r.sue, "D": D})
+    X = pd.DataFrame(rows)
+    # names without a current GICS code (mostly delisted; kept by the survivorship-free prices) share one "NA"
+    # sector cell and one "NA" industry cluster: fixed before the read, the conservative choice for clustering
+    X["sector"], X["industry"] = X["sector"].fillna("NA"), X["industry"].fillna("NA").astype(str)
+    X["cell"] = X["season"] + "|" + X["sector"]
+    g = X.groupby("cell")["sue"]
+    X["z"] = (X["sue"] - g.transform("mean")) / g.transform("std")
+    return X[X["z"].notna()]
+
+
+def cr1_month(y, s, cell, month, direction=1):
+    """Slope of y on s with cell fixed effects, CR1 clustered by calendar month; one-sided p from t(G-1)."""
+    d = pd.DataFrame({"y": y, "s": s, "c": cell, "m": month})
+    yt = d["y"] - d.groupby("c")["y"].transform("mean")
+    st = d["s"] - d.groupby("c")["s"].transform("mean")
+    D = float(st @ st)
+    b = float(st @ yt) / D
+    e = yt - b * st
+    sc = (st * e).groupby(d["m"]).sum()
+    G, N, C = sc.size, len(d), d["c"].nunique()
+    V = G / (G - 1) * (N - 1) / (N - 1 - C) * float(sc @ sc) / D ** 2
+    t = b / np.sqrt(V)
+    return float(t), float(I.stats.t.sf(direction * t, G - 1))
+
+
+def e1_read(R, a, b, halves, entry, h, B):
+    X = e1_rows(R, a, b, entry, h)
+    ev = I.event_test(X["D"].values, X["z"].values, X["cell"].values, X["industry"].values, direction=1, B=B)
+    t_m, p_m = cr1_month(X["D"].values, X["z"].values, X["cell"].values, pd.to_datetime(X["t0"]).dt.strftime("%Y-%m").values)
+    half = []
+    for lo, hi in halves:
+        Y = X[(X["t0"] >= lo) & (X["t0"] <= hi)]
+        st = Y["z"] - Y.groupby("cell")["z"].transform("mean")
+        yt = Y["D"] - Y.groupby("cell")["D"].transform("mean")
+        half.append(float(st @ yt / (st @ st)))
+    ics = X.groupby("season").apply(lambda g: g["sue"].rank().corr(g["D"].rank()) if len(g) >= 20 else np.nan).dropna()
+    q = X["sue"].rank(pct=True)
+    S = (X.loc[q > 2 / 3, "D"].mean() - X.loc[q <= 1 / 3, "D"].mean()) * 1e4
+    return {"n": int(len(X)), "n_no_gics": int((X["industry"] == "NA").sum()), "beta_bp_per_sd": ev["beta"] * 1e4, "t": ev["t"], "p_wild": ev["p_wild"], "p_ri": ev["p_ri"],
+            "t_month": t_m, "p_cr1_month": p_m, "p": max(ev["p_wild"], ev["p_ri"], p_m), "half_betas_bp": [x * 1e4 for x in half],
+            "half_signs_ok": all(x > 0 for x in half), "ic": float(ics.mean()), "ic_seasons": int(len(ics)),
+            "tercile_spread_bp": float(S), "net_live_bp": float(S - 2 * C_LIVE), "net_stress_bp": float(S - 2 * C_STRESS),
+            "economic_ok": bool(S - 2 * C_LIVE > C_LIVE and S - 2 * C_STRESS >= 0)}
+
+
+def e2_read(R, a, b, halves, h, B):
+    E2 = filing_events("hard", R)
+    gi = gics_of()
+    rows = []
+    for r in first_per_window(E2[(E2["t0"] >= a) & (E2["t0"] <= b)], h).itertuples():
+        d = np.sign(day0(R, r.ticker, r.i0))
+        if not d:
+            continue
+        s_, end = resid_sum(R, r.ticker, r.i0 + 1, h, r.i0 - 1)
+        if end is None or end > b or not np.isfinite(s_):
+            continue
+        rows.append({"y": d * s_, "t0": r.t0, "industry": (gi.get(r.ticker) or {}).get("industry_code", "NA")})
+    X = pd.DataFrame(rows)
+    mt = I.mean_test(X["y"].values, pd.to_datetime(X["t0"]).dt.strftime("%G-%V").values, X["industry"].values, B=B)
+    half = [float(X.loc[(X["t0"] >= lo) & (X["t0"] <= hi), "y"].mean()) for lo, hi in halves]
+    m = mt["mean"] * 1e4
+    return {"n": mt["n"], "mean_bp": m, "t_week": mt["t_week"], "t_two_way": mt["t_two_way"], "p": mt["p"],
+            "p_parts": mt["p_parts"], "half_means_bp": [x * 1e4 for x in half], "half_signs_ok": all(x > 0 for x in half),
+            "net_live_bp": m - C_LIVE, "net_stress_bp": m - C_STRESS,
+            "economic_ok": bool(m - C_LIVE > C_LIVE and m - C_STRESS >= 0)}
+
+
+def read(a, b, halves, B):
+    fit = json.load(open(os.path.join(PX.OUT, "E_DRY_FIT.json")))
+    c1, c2 = fit["E1"]["chosen"], fit["E2"]["chosen"]
+    R = returns_2016()
+    out = {"E1": {"cell": {"entry": c1["entry"], "h": c1["h"]}, **e1_read(R, a, b, halves, c1["entry"], c1["h"], B)},
+           "E2": {"cell": {"h": c2["h"]}, **e2_read(R, a, b, halves, c2["h"], B)}}
+    adj, ok = I.holm([out["E1"]["p"], out["E2"]["p"]])
+    for k, ad, o in zip(("E1", "E2"), adj, ok):
+        out[k].update(p_holm=float(ad), bonferroni_all_reads=float(min(1.0, out[k]["p"] * (N_BEFORE + 2))),
+                      passes=bool(o and out[k]["half_signs_ok"] and out[k]["economic_ok"]))
+    return out
+
+
+def rehearse():
+    out = read(FIT0, FIT1, FHALVES, B=199)
+    print(json.dumps({k: {x: v[x] for x in ("n", "p", "half_signs_ok", "economic_ok", "passes")} for k, v in out.items()}, indent=1))
+    print("rehearsal on the fit sample only: no lock, nothing written")
+
+
+def validate():
+    if os.path.exists(LOCK):
+        raise SystemExit(f"{LOCK} exists: the validation read has been made")
+    commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, cwd=PX.ROOT).stdout.strip()
+    open(LOCK, "w").write(f"{datetime.now(timezone.utc).isoformat()} commit {commit}\n")
+    out = read(V0, V1, VHALVES, B=9999)
+    out["lock"] = open(LOCK).read().strip()
+    json.dump(out, open(os.path.join(PX.OUT, "E_VALIDATION.json"), "w"), indent=1)
+    L = ["# Family E validation read (2022-2025, once)", "", f"Lock: {out['lock']}", "",
+         "Rule B (PREREG_family_E.md §5): Holm p <= 0.05 over E1 and E2; the registered sign in 2022-23 and in 2024-25; "
+         "net per event at the live cost above the 4 bp margin and >= 0 at the 20 bp stress. A passing module then goes "
+         "to the sealed 2026 check.", "",
+         "| module | n | effect | p (max of tests) | Holm p | halves | net live bp | net stress bp | passes |", "|---|---:|---|---:|---:|---|---:|---:|---|"]
+    e1, e2 = out["E1"], out["E2"]
+    L.append(f"| E1 earnings_post (t0+1, h {e1['cell']['h']}) | {e1['n']} | slope {e1['beta_bp_per_sd']:+.1f} bp/sd, IC {e1['ic']:+.4f} | "
+             f"{e1['p']:.4f} | {e1['p_holm']:.4f} | {'ok' if e1['half_signs_ok'] else 'no'} {[round(x, 1) for x in e1['half_betas_bp']]} | "
+             f"{e1['net_live_bp']:+.1f} | {e1['net_stress_bp']:+.1f} | **{'PASS' if e1['passes'] else 'no'}** |")
+    L.append(f"| E2 news_8k (h {e2['cell']['h']}) | {e2['n']} | mean {e2['mean_bp']:+.1f} bp | {e2['p']:.4f} | {e2['p_holm']:.4f} | "
+             f"{'ok' if e2['half_signs_ok'] else 'no'} {[round(x, 1) for x in e2['half_means_bp']]} | {e2['net_live_bp']:+.1f} | "
+             f"{e2['net_stress_bp']:+.1f} | **{'PASS' if e2['passes'] else 'no'}** |")
+    L += ["", f"Diagnostic: Bonferroni over every hypothesis read on 2022-2025 ({N_BEFORE} before + 2): "
+          f"E1 {e1['bonferroni_all_reads']:.4f}, E2 {e2['bonferroni_all_reads']:.4f}.",
+          f"E1 tests: wild (industry) {e1['p_wild']:.4f}, randomisation {e1['p_ri']:.4f}, CR1 (month) {e1['p_cr1_month']:.4f}. "
+          f"E2 tests: {', '.join(f'{k} {v:.4f}' for k, v in e2['p_parts'].items())}."]
+    open(os.path.join(PX.OUT, "E_VALIDATION.md"), "w").write("\n".join(L) + "\n")
+    print("\n".join(L))
+
+
 if __name__ == "__main__":
-    {"live": live, "items": items, "dry-fit": dry_fit}[sys.argv[1]]()
+    {"live": live, "items": items, "dry-fit": dry_fit, "rehearse": rehearse, "validate": validate}[sys.argv[1]]()
