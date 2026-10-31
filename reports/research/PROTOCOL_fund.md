@@ -1106,3 +1106,10 @@ below.
 * The degenerate replay matches the weekly book within 0.002 bp.
 * The control runs and passes its gates.
 
+**Addendum to Amendment 2 (owner, 2026-10-31): Amendment 8's reference-move table reads release times in Eastern
+time.** The table `m_table` (the "hard" group's median |2-day abnormal move|) places each earnings release in its
+session by its 8-K item 2.02 acceptance time. SEC's API gives that time in UTC; it was read as Eastern clock time, so
+a release made during market hours was placed one session late (`reports/research/p8/DATA_DEFECT_2026-10-31.md`).
+From the as-of 2026-11-04 desk, the time is converted to Eastern, as B1 already does (`fund/edgar_time.py`). Tables of
+earlier as-ofs stay as recorded.
+
