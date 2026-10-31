@@ -113,7 +113,25 @@ def test_webb_size():
     print(f"WCR with Webb weights, 11 clusters, one-sided 5%: {rej / R:.3f} (MC se {np.sqrt(.05 * .95 / R):.3f})")
 
 
+def test_mean_test_size_power():
+    # Family E (PREREG_family_E.md section 3) before any read: under the null the one-sided rejection rate at 5% is
+    # at most nominal (the test takes the largest of four p-values); a 2-standard-error effect is usually found.
+    rng = np.random.default_rng(7)
+
+    def draw(mu):
+        weeks, inds = rng.integers(0, 150, 1500), rng.integers(0, 60, 1500)
+        shock_w, shock_i = rng.normal(0, 0.4, 150), rng.normal(0, 0.3, 60)
+        return mu + shock_w[weeks] + shock_i[inds] + rng.normal(0, 1, 1500), weeks, inds
+    rej0 = np.mean([I.mean_test(*draw(0.0), B=99, seed=k)["p"] <= 0.05 for k in range(400)])
+    rej1 = np.mean([I.mean_test(*draw(0.15), B=99, seed=k)["p"] <= 0.05 for k in range(100)])
+    print(f"mean_test: size {rej0:.3f}, power at 0.15 {rej1:.2f}")
+    assert rej0 <= 0.065 and rej1 >= 0.5        # 400 null draws: 0.065 is 1.4 Monte-Carlo SE above 5%
+    r = I.mean_test(np.r_[np.ones(40), np.zeros(40)] + 4, np.repeat(np.arange(20), 4), np.tile(np.arange(10), 8), null=4.0, B=99)
+    assert abs(r["mean"] - 4.5) < 1e-12 and r["n"] == 80
+
+
 if __name__ == "__main__":
+    test_mean_test_size_power()
     test_webb_size()
     test_exact()
     test_nw_holm()
