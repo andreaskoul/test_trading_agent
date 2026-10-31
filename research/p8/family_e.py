@@ -210,7 +210,7 @@ def day0(R, t, i0):
 
 def week_t(y, dates):
     """Mean and its CR1 t clustered by calendar week (descriptive in the dry fit)."""
-    y = pd.Series(np.asarray(y, float)); w = pd.Series(pd.to_datetime(dates)).dt.strftime("%G-%V")
+    y = pd.Series(np.asarray(y, float)); w = pd.Series(pd.to_datetime(np.asarray(dates))).dt.strftime("%G-%V")
     ok = y.notna()
     y, w = y[ok], w[ok]
     m, G = y.mean(), w.nunique()

@@ -29,11 +29,17 @@ are hypotheses whose statistic was computed. Tests that could not be built (p = 
 **Running count of hypotheses read on 2022–2025: 34.** That is rows 4–9, counting the overlapping 2013–2025 reads.
 Family E reports the Bonferroni p over this count plus its own reads as a diagnostic.
 
+## Data defect affecting rows 1, 2, 9 and 10 (found 2026-10-31)
+
+SEC acceptance times in the P8 cache were read as Eastern time, but SEC's bulk file mixes UTC encodings. 21.5% of
+earnings events (2016–2025) had their report session recorded one trading day late. Family H's reads are spent and
+not re-run. See `p8/DATA_DEFECT_2026-10-31.md`. Family E uses SEC's live-API times (PREREG_family_E.md Amendment 1).
+
 ## Family E (pending; PREREG_family_E.md)
 
 | # | window | universe | hypotheses | kind | lock | result |
 |---|---|---|---|---|---|---|
-| E-fit | 2016–2021; Finnhub 2025-11 – 2026-04 | S&P 500 point in time | E1 and E2 cell selection; E3 pipeline check | fit, open | — | `p8/E_DRY_FIT.json` (pending) |
+| E-fit | 2016–2021 | S&P 500 point in time | E1 and E2 cell selection; E3 pipeline check on 8-K soft events | fit, open (2026-10-31) | — | `p8/E_DRY_FIT.json`, `.md`: E1 chosen t0+1, h 10; E2 chosen h 10. The Finnhub fit window is still pending |
 | E-val | 2022–2025 | S&P 500 point in time | E1, E2 (m = 2) | locked | `p8/E_VALIDATION.lock` | pending |
 | E-soft | 8-K 2022–2025 + Finnhub 2026-05 – 2026-10 | S&P 500 | E3 / rule A | locked | `p8/E_SOFT_READ.lock` | pending |
 | E-sealed | 2026-01 – 2026-09 | S&P 500 point in time | E1 and E2 survivors | locked | `p8/E_SEALED.lock` | pending |
