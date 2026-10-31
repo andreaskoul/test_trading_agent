@@ -1047,7 +1047,7 @@ control uses those checks as made. A lot without one is checked at the close as 
 records yet, because the installed local runner predated its step (CHANGELOG 2026-10-31). Recorded days do not
 change. The traded book is unaffected.
 
-## Protocol 7B, Amendment 2 (owner; plan approved 2026-10-30; from session 2026-11-05, desk as-of 2026-11-04): timing corrections
+## Protocol 7B, Amendment 2 (owner; plan approved 2026-10-30, amendment and its 60-article cap approved 2026-10-31; from session 2026-11-05, desk as-of 2026-11-04): timing corrections
 
 Written before any outcome of these rules has been examined. Gated by date (`P7B2`, `P7B2_ASOF` in
 `fund/lifecycle_rules.py`), so recorded days never change. Rules in `fund/amend7b2.py`, contract tests in
@@ -1084,7 +1084,7 @@ below.
 
   The checks read 43% of their windows' articles. With the late articles first and a cap of 60, the same windows
   would have been read at about 69%, and 81% of windows in full (100: 84% and 91%).
-* **Cost.** Longer prompts on busy windows; the owner may set another cap.
+* **Cost.** Longer prompts on busy windows. The owner confirmed the cap of 60 on 2026-10-31.
 
 **B3. New names are checked before entry (live book only).**
 * **The check.** On the entry day, at T−20 min, each new name's kill conditions are checked against the articles
