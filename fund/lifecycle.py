@@ -55,6 +55,7 @@ import numpy as np
 import pandas as pd
 
 from common import MODE, P7_START, STATE, asof_from_env, llm, load, news_cutoff, require, save, save_prompts
+import amend7b2 as A2
 from entry_check import entry_day_check
 from newsio import finnhub_news, norm
 from review_rules import review_rule
@@ -94,7 +95,7 @@ Z_HI, ID_HI, TO_LO, EXT_MAX, EXT_TOTAL, SAMPLES, REVERT_N = 1.5, 0.1, 1.0, 2, 40
 LABELS = ("CONFIRMING", "CONTRADICTING", "STALE", "NONE")
 
 # ---- Protocol 7B (owner, 2026-10-27): R1-R3 and their constants live in fund/lifecycle_rules.py (contract-tested)
-from lifecycle_rules import (P7B, P7B_ASOF, A7B1, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
+from lifecycle_rules import (P7B, P7B_ASOF, A7B1, P7B2, P7B2_ASOF, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
                              may_increase, checkpoint_exit, slots, structural_h, structural_mean)
 DESK_SAMPLES, DESK_DRAWS = 5, 8
 
@@ -167,6 +168,15 @@ Return JSON only: {""").replace('"catalyst": "earnings"|"other"|null}', '"cataly
         S8 = pd.DataFrame(load(asof, "screen.json")["rows"]).set_index("ticker")
         bx = bars(set(fund) | {"SPY"}, asof - pd.Timedelta(days=150), asof)
         nxt_e = earnings_next(sorted(fund), t0, t0 + pd.Timedelta(days=100 if p7b else 60))
+        a2 = str(asof.date()) >= P7B2_ASOF             # 7B A2 (B1): when this week's earnings/guidance news was released
+        acc_all, cur_e = {}, {}
+        if a2:
+            try:
+                for t_, a_ in edgar_202(sorted(fund), asof - pd.Timedelta(days=10)):
+                    acc_all.setdefault(t_, []).append(a_)
+            except Exception as e:                      # the calendar flag, else Amendment 8's rule; logged
+                print(f"lifecycle B1: EDGAR unavailable ({e}); release sessions from the calendar only", flush=True)
+            cur_e = earnings_next(sorted(fund), asof - pd.Timedelta(days=10), asof + pd.Timedelta(days=1))
 
     def one(t):
         m = (memos.get(t) or {}).get("memo") or {}
@@ -241,6 +251,8 @@ Return JSON only: {""").replace('"catalyst": "earnings"|"other"|null}', '"cataly
                     h7, hs7 = structural_mean(flags, hs, h_s)
                     rec["H"] = int(min(max(round(h7), H_MIN), STRUCT_MAX))
                     rec["why"] += f"; {h_why}; 7B mean over samples {hs7} = {h7:.1f}"
+            if a2:
+                rec["release"] = A2.release_session(out["event_type"], out["first_reported"], acc_all.get(t, []), cur_e.get(t), days)
         elif st == "ok":
             fr = pd.Timestamp(out["first_reported"])
             age = sum(1 for d in days if fr < d <= t0)
@@ -638,7 +650,7 @@ Return JSON only: {"conditions": [{"id": int, "status": "matched"|"partial"|"not
 "hard_news_same_direction": {"present": bool, "quote": str, "article": int or null}}"""
 
 
-def kill_check(day, close_ts, lots, seen, news_dir=None):
+def kill_check(day, close_ts, lots, seen, news_dir=None, lookback=True):
     """One day's checks for the open lots, on news published up to close_ts; logged to lifecycle/news/<day>.json
     (a plan run writes elsewhere) and never rerun."""
     news_dir = news_dir or os.path.join(LC, "news")
@@ -652,12 +664,13 @@ def kill_check(day, close_ts, lots, seen, news_dir=None):
 
     def one(lot):
         t = lot["ticker"]
-        lo = pd.Timestamp(lot.get("news_until") or lot["entry_close_ts"], unit="s", tz="UTC")
+        lo = pd.Timestamp(A2.news_lo(lot, day, P7B2) if lookback else (lot.get("news_until") or lot["entry_close_ts"]),
+                          unit="s", tz="UTC")                          # 7B A2 (B2): a 24-hour look-back from P7B2
         arts = finnhub_news(t, lo, hi)
         if arts is None:
             return lot["id"], {"status": "news_unavailable"}
-        arts = sorted([a for a in arts if norm(a.get("headline")) not in seen.get(lot["id"], set())],
-                      key=lambda a: a["datetime"])[-25:]
+        arts = A2.select_articles(sorted([a for a in arts if norm(a.get("headline")) not in seen.get(lot["id"], set())],
+                                         key=lambda a: a["datetime"]), lot.get("news_until") if lookback else None, day, P7B2)
         if not arts:
             return lot["id"], {"status": "no_new_news", "news_until": int(hi.timestamp())}
         listing = lambda xs: "\n".join(f"[{i}] {datetime.fromtimestamp(a['datetime'], timezone.utc):%Y-%m-%d %H:%M} "
@@ -942,6 +955,30 @@ def seed_reviews(day, ids, rv_dir):
                   open(p, "w"), indent=1)
 
 
+def amend_entries(cand, c, d, r, R, check_news, live, h_of, ctrl):
+    """Protocol 7B Amendment 2 for the names entering at d. cand {ticker: (w, side, info)}. B1: each name's horizon
+    from its release to the entry decision (fund/amend7b2.py); a name priced in or stale at entry is not entered. A
+    structural lot of the live book keeps 7B R2's horizon. B3 (check_news: the live book's decision): each remaining
+    name's kill conditions against the articles published after the desk's cutoff, logged in lifecycle/entry_news/."""
+    k = {"P_CAP": P_CAP, "H_MIN": H_MIN, "H8_MAX": H8_MAX, "STALE_AT": STALE_AT}
+    log, out = {"b1": {}, "b3": {}}, {}
+    for t, (w, side, info) in cand.items():
+        if info.get("structural") and d >= P7B and not ctrl:
+            out[t] = (w, side, info); log["b1"][t] = {"b1": "structural: 7B R2 horizon"}; continue
+        H, lg = A2.b1_horizon(t, info, side, R, float(c.get("beta", {}).get(t, 1.0)), r, d, h_of(info), k)
+        log["b1"][t] = lg
+        if H is not None:
+            out[t] = (w, side, {**info, "H": H, **({"H_a8": H} if "H_a8" in info else {})})
+    if check_news and out:
+        cut = int(pd.Timestamp(news_cutoff(pd.Timestamp(c["asof"]))).tz_localize("UTC").timestamp())
+        nd = os.path.join(LC, "plan_entry_news" if (live or {}).get("news_dir") else "entry_news")
+        pseudo = [{"id": f"{c['asof']}|{t}", "ticker": t, "side": side, "kill_conditions": info["kill_conditions"],
+                   "entry_day": c["asof"], "news_until": cut, "entry_close_ts": cut} for t, (w, side, info) in out.items()]
+        rec = kill_check(d, live["news_ts"], pseudo, {}, nd, lookback=False)
+        out, log["b3"] = A2.b3_apply(out, {i.split("|", 1)[1]: v for i, v in rec["lots"].items()})
+    return out, log
+
+
 def run(replay=False, fetch_news=True, live=None, variant=None):
     """Rebuild the book from its inputs. Deterministic: the same inputs give the same NAV.
 
@@ -1015,6 +1052,7 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
     sector_all = {t: s for c in C for t, s in c.get("sector", {}).items()}
     prev_day = None
     out_live = None
+    a2_logs = {}                                        # 7B A2: per day, B1 horizons and B3 checks of the new names
     for d, r, close_ts, is_live in seq:            # close_ts: the session's real close (a live day: the news cutoff)
         act = "compute" if replay or d < P7_START or is_live else ("apply" if d in logs else "hold")
         own = CTRL and d >= P7B                     # the control's own decision days
@@ -1241,6 +1279,10 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
                     target[t] = L["n"] / nav
                 lots = [L for L in lots if L["n"] != 0.0]
                 cur = {L["ticker"]: L for L in lots}
+                if d >= P7B2:                           # 7B A2: B1 in both books, B3 in the live book only
+                    new_ = {t: x for t, x in cand.items() if t not in cur}
+                    kept, a2_logs[str(d.date())] = amend_entries(new_, c, d, r, R, is_live and not CTRL, live, h_of, CTRL)
+                    cand = {**{t: x for t, x in cand.items() if t in cur}, **kept}
                 for t, (w, side, info) in cand.items():
                     target[t] = w
                 # capacity: carried by |w| x share of horizon left, new by |w| - 10 bp; then the caps
@@ -1292,7 +1334,8 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
                        "lots_after": [{**{k: v for k, v in L.items() if k != "n"}, "w": L["n"] / nav} for L in lots],
                        "reviews": [x for x in reviews if x["day"] == str(d.date())],
                        "cool": {f"{k[0]}|{k[1]}": {**v, "until": str(v["until"].date()) if v.get("until") is not None else None}
-                                for k, v in cool.items()}},
+                                for k, v in cool.items()},
+                       "a2": a2_logs.get(str(d.date()))},
                       open(os.path.join(CDIR, "days", f"{d.date()}.json"), "w"), indent=1, default=str)
             clogs[d] = True
         if is_live:
@@ -1300,7 +1343,8 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
                         "actions": [e for e in events if e["day"] == str(d.date())],
                         "reviews": [x for x in reviews if x["day"] == str(d.date())],
                         "cool": {f"{k[0]}|{k[1]}": {**v, "until": str(v["until"].date()) if v.get("until") is not None else None}
-                                 for k, v in cool.items()}}
+                                 for k, v in cool.items()},
+                        "a2": a2_logs.get(str(d.date()))}
             break
         rows.append({"date": str(d.date()), "nav": nav, "pnl_lots": pnl_lots, "pnl_hedge": pnl_hedge, "cash_income": cash_inc,
                      "cost": cost, "r_gross": (pnl_lots + pnl_hedge) / nav0, "r_cost": cost / nav0, "r_cash": cash_inc / nav0,
@@ -1539,7 +1583,7 @@ def trade(plan_only):
            "lots_after": [{**{k: v for k, v in L.items() if k != "n"}, "w": L["n"] / nav} for L in lv["lots"]],
            "prices": {t: px.get(t) for t in target}, "equity": equity, "current_qty": cur, "target_weights": target,
            "orders": orders, "problems": [], "status": "planned" if plan_only else "sending", "reviews": lv.get("reviews", []),
-           "prices_meta": {"news": meta_news, "decision": meta_dec}, "entry_check": entry_check}
+           "prices_meta": {"news": meta_news, "decision": meta_dec}, "entry_check": entry_check, "a2": lv.get("a2")}
     json.dump(rec, open(log_p, "w"), indent=1, default=str)
     print(f"lifecycle {day.date()}: {len(lv['lots'])} lots, actions "
           f"{[(e['ticker'], e['action']) for e in lv['actions']]}; {len(orders)} orders", flush=True)

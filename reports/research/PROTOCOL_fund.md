@@ -1047,3 +1047,62 @@ control uses those checks as made. A lot without one is checked at the close as 
 records yet, because the installed local runner predated its step (CHANGELOG 2026-10-31). Recorded days do not
 change. The traded book is unaffected.
 
+## Protocol 7B, Amendment 2 (owner; plan approved 2026-10-30, amendment and its 60-article cap approved 2026-10-31; from session 2026-11-05, desk as-of 2026-11-04): timing corrections
+
+Written before any outcome of these rules has been examined. Gated by date (`P7B2`, `P7B2_ASOF` in
+`fund/lifecycle_rules.py`), so recorded days never change. Rules in `fund/amend7b2.py`, contract tests in
+`fund/tests/test_amend7b2.py`. Evidence: `reports/Fund pipeline against research and forums.md` and the news audit
+below.
+
+**B1. "Already priced in" is measured from the release to the entry decision (both books).**
+* **Release session.** For an earnings or guidance event, the news session is the session of the release:
+  * the 8-K item 2.02 acceptance time within one calendar day of the first report (EDGAR, read by the desk);
+  * else the earnings calendar's before-open or after-close flag;
+  * else Amendment 8's rule.
+
+  The desk records it with the cohort as `release`.
+* **At the entry decision,** CAR runs from that session to the decision price (T−3 min live; the close for the
+  control). p is recomputed, and the desk's horizon is rescaled by Amendment 8's factor (1 − min(p, 1)/2) with the new
+  p. When p ≥ 1, hard news enters with H = 3 and soft news is not entered; a horizon ≤ 2 is stale and not entered (both
+  as Amendment 8).
+* A structural lot of the live book keeps 7B R2's horizon.
+* **Why.** Amendment 8's p stopped at the as-of close and dated the news by the first article of its first-report day,
+  often a midnight preview. So GOOGL (earnings after the 2026-10-28 close) entered with p = 0 and H = 24 after moving
+  about 12% against SPY before the entry decision. Earnings released Monday or Tuesday got p ≥ 1 and H = 3. A scratch
+  run of the control with B1 active gives GOOGL H = 3 and leaves MSFT at 25.
+
+**B2. News checks look back 24 hours and read up to 60 articles (both books).**
+* A check reads the unseen articles published from 24 hours before the previous check's cutoff to T−20 min:
+  * those published at or before the previous cutoff (served late) first;
+  * then the newest;
+  * up to 60. It read the 25 newest.
+* **Why.** The audit of the 16 live check days (`fund/news_audit.py`, 2026-10-09 to 10-30) found:
+  * the checks read 3,289 articles;
+  * 967 more were served after the check (lag lower bound: median 150 min);
+  * 4,030 were cut by the 25-article cap;
+  * near-duplicates barely change these counts.
+
+  The checks read 43% of their windows' articles. With the late articles first and a cap of 60, the same windows
+  would have been read at about 69%, and 81% of windows in full (100: 84% and 91%).
+* **Cost.** Longer prompts on busy windows. The owner confirmed the cap of 60 on 2026-10-31.
+
+**B3. New names are checked before entry (live book only).**
+* **The check.** On the entry day, at T−20 min, each new name's kill conditions are checked against the articles
+  published after the desk's cutoff (Wednesday 22:00 UTC). Same three-pass checker, up to 60 articles.
+* **Outcome:**
+  * matched in ≥ 2 passes: not entered;
+  * partial in ≥ 2: entered at half weight;
+  * otherwise as decided. No increase at entry.
+
+  Logged in `lifecycle/entry_news/<day>.json` and in the day's live record (`a2`).
+* **The control enters as before.** It is the counterfactual for B3.
+* **Cost.** About 3 passes × 20 new names a week.
+
+**Unchanged:** the 7B clock, scoring, costs, execution, the hedge, and every other rule.
+
+**Checks done before merging.**
+* A rebuild of the live record with this code reproduces all 16 recorded days to the cent, and every mechanical gate
+  passes.
+* The degenerate replay matches the weekly book within 0.002 bp.
+* The control runs and passes its gates.
+

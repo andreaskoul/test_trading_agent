@@ -22,11 +22,12 @@ import pandas as pd
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from common import MODE, STATE                                    # noqa: E402
 from newsio import finnhub_news, norm                             # noqa: E402
+from amend7b2 import CAP_A2, CAP_BEFORE                           # noqa: E402
+from lifecycle_rules import P7B2                                  # noqa: E402
 
 LC = os.path.join(STATE, MODE, "lifecycle")
 OUT = os.path.join(LC, "news_audit")
 MAX_DAYS, SETTLE_H = int(os.environ.get("NEWS_AUDIT_MAX_DAYS", 4)), 6                         # days audited per run; hours after a check before it is audited
-CAP = 25                                          # kill_check reads the 25 newest articles of a window (lifecycle.py)
 
 
 def audit_day(rec, prior, fetch=finnhub_news):
@@ -51,7 +52,7 @@ def audit_day(rec, prior, fetch=finnhub_news):
         # article newer than the oldest one checked was not there when the check ran ("late": served after it).
         t_own = [a["datetime"] for a in arts if norm(a.get("headline")) in own]
         oldest = min(t_own) if t_own else None
-        full = len(own) >= CAP
+        full = len(own) >= (CAP_A2 if pd.Timestamp(rec["day"]) >= P7B2 else CAP_BEFORE)   # the check's cap that day
         kinds = ["capped" if full and oldest is not None and a["datetime"] < oldest else "late" for a in miss]
         n_seen += len(own); n_missed += len(miss)
         n_late += kinds.count("late"); n_capped += kinds.count("capped")
@@ -76,7 +77,7 @@ def main():
             json.dump(a, open(p, "w"), indent=1)
             done += 1
             print(f"news audit {rec['day']}: {a['n_checked']} articles checked live; never checked: {a['n_late']} served "
-                  f"after the check, {a['n_capped']} cut by the {CAP}-article cap")
+                  f"after the check, {a['n_capped']} cut by the article cap")
         for i, k in rec["lots"].items():                 # the next window starts where this check ended
             if k.get("news_until"):
                 u, h = prior.get(i, (None, set()))

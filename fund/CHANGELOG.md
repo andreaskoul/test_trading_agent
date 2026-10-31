@@ -4,6 +4,17 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-31: Protocol 7B Amendment 2 (PROTOCOL_fund.md), from session 2026-11-05 (desk as-of 2026-11-04):
+  * **B1:** "already priced in" measured from the release (8-K 2.02 or calendar) to the entry decision;
+  * **B2:** news checks look back 24 hours, reading late-served articles first, up to 60 (were the 25 newest);
+  * **B3:** new names checked against news since the desk's cutoff before entry (live only).
+
+  Could this change a decision? **Yes:**
+  * horizons and entries of names whose news came after the signal close;
+  * news exits from late-served or previously capped articles;
+  * entries with contradicting news on entry day.
+
+  Recorded days are unchanged (rebuild to the cent); gated by date.
 - 2026-10-31: measurement and records (order-timing review, `reports/Order timing implementation plan.md`; plan approved 2026-10-30).
   * Go-live gate: under Protocol 7 "weeks fully executed" now reads the lifecycle live records (every session submitted, no unfilled order; `fund/ops_stats.py`). It read the retired weekly execution.json files and showed 0% while every order had filled. The gate also prints the signed, value-weighted cost against the official close with a day-block bootstrap bound (+0.92 bp, 95% upper 1.93 bp on 116 lifecycle fills). The registered rule (median |slippage| ≤ 10 bp) is unchanged until an amendment.
   * Decision prices keep their provenance: `broker.quotes()` logs the source (IEX latest trade, or a daily-bar fallback), trade time and IEX bid/ask with each phase of the live decision (`prices_meta`), and the quote each order met at the send (read in a background thread, so it cannot delay a send). `broker.prices()` returns the same values as before.

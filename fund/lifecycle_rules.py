@@ -23,6 +23,10 @@ STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z = 63, 40, 20, -1.0
 # closes only if the thesis is structurally changed (fund/review_rules.py, E1/E2). A lot held for its report keeps
 # its slot (slots) and is not closed by the structural checkpoint before its report (checkpoint_exit).
 A7B1 = pd.Timestamp(os.environ.get("FUND_A7B1") or "2026-10-30")
+# Protocol 7B Amendment 2 (owner, 2026-10-30 plan; fund/amend7b2.py): timing corrections from session P7B2; the desk
+# records release sessions from as-of P7B2_ASOF. Gated by date so recorded days never change.
+P7B2 = pd.Timestamp(os.environ.get("FUND_P7B2") or "2026-11-05")
+P7B2_ASOF = os.environ.get("FUND_P7B2_ASOF") or "2026-11-04"
 
 
 def may_increase(d, L, active=True):
