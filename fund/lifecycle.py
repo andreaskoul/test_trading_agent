@@ -443,7 +443,11 @@ def m_table(asof, cutoff):
     ab = rx - pd.DataFrame(np.outer(r["SPY"].values, beta.reindex(rx.columns).fillna(1.0).values), index=rx.index, columns=rx.columns)
     two = (ab + ab.shift(-1)).abs()                              # |2-day abnormal| starting at each session
     days = list(two.index[:-1])                                  # the next session must have closed by the as-of
-    ev = [(t, *session_of(a, days)) for t, a in edgar_202(S.index, asof - pd.Timedelta(days=730)) if a <= cutoff.tz_convert(broker.ET).tz_localize(None)]
+    # Amendment 8's earnings sessions from 8-K 2.02 acceptance times. The API's time is UTC: from as-of P7B2_ASOF it is
+    # converted to Eastern (owner, 2026-10-31); earlier tables, as recorded, read it as Eastern clock time
+    conv = et_from_api if str(asof.date()) >= P7B2_ASOF else (lambda a: a)
+    ev = [(t, *session_of(a, days)) for t, a in ((t, conv(a)) for t, a in edgar_202(S.index, asof - pd.Timedelta(days=730)))
+          if a <= cutoff.tz_convert(broker.ET).tz_localize(None)]
     hard = pd.DataFrame([{"t": t, "s": s, "v": two.at[s, t]} for t, s, _ in ev if s is not None and t in two and not math.isnan(two.at[s, t])])
     # news-shock sessions from the archive (as far back as it goes, at most a year)
     A = infoflow.news(cutoff - pd.Timedelta(days=365), cutoff)
