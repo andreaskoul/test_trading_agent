@@ -20,6 +20,7 @@ for the live account too (owner, 2026-10-09): no closing-auction orders.
 import json
 import os
 import re
+import threading
 import time
 import urllib.error
 import urllib.request
@@ -117,17 +118,28 @@ def positions():
     return {p["symbol"]: (-1 if p["side"] == "short" else 1) * abs(float(p["qty"])) for p in pos}
 
 
-def prices(symbols):
-    """Latest trade (IEX), else today's or the previous daily close."""
+def quotes(symbols):
+    """Per symbol: the price prices() uses (IEX latest trade, else today's or the previous daily close) with its
+    provenance: src (latestTrade | dailyBar | prevDailyBar), trade_ts, and the IEX bid, ask and quote_ts of the same
+    snapshot. Logged with every decision so a stale or fallback price is visible (2026-10-31, operational)."""
     out, symbols = {}, sorted(set(symbols))
     for i in range(0, len(symbols), 100):
         s, snap = api("GET", "/v2/stocks/snapshots?feed=iex&symbols=" + ",".join(symbols[i:i + 100]), base=DATA)
         for k, v in (snap or {}).items():
+            q = (v or {}).get("latestQuote") or {}
             for f in ("latestTrade", "dailyBar", "prevDailyBar"):
-                px = ((v or {}).get(f) or {}).get("p" if f == "latestTrade" else "c")
+                b = (v or {}).get(f) or {}
+                px = b.get("p" if f == "latestTrade" else "c")
                 if px:
-                    out[k] = float(px); break
+                    out[k] = {"px": float(px), "src": f, "trade_ts": b.get("t"), "bid": q.get("bp"), "ask": q.get("ap"),
+                              "quote_ts": q.get("t")}
+                    break
     return out
+
+
+def prices(symbols):
+    """Latest trade (IEX), else today's or the previous daily close."""
+    return {k: v["px"] for k, v in quotes(symbols).items()}
 
 
 def fills(ids):
@@ -210,6 +222,10 @@ def send(orders, close_at, clock, log=print):
     for o in rest:
         if not o["attempts"]:
             submit(o, "day")
+    snap = {}                                       # the quote the orders met, read in the background: logged only,
+                                                    # so a slow data API can never delay a send or a retry
+    snapper = threading.Thread(target=lambda: snap.update(q=quotes({o["symbol"] for o in orders})), daemon=True)
+    snapper.start()
     progress = {id(o): (filled(o), clock.now()) for o in orders}
     while clock.now() < close_at - LAST_SEND:
         time.sleep(POLL); refresh()
@@ -254,6 +270,9 @@ def send(orders, close_at, clock, log=print):
             o["status"] = "skipped: flatten leg not filled"
         else:
             o["status"] = fill_status(o["qty"], fq, bool(xs))
+    snapper.join(timeout=5)
+    for o in orders:
+        o["quote_at_send"] = (snap.get("q") or {}).get(o["symbol"])
     return orders
 
 

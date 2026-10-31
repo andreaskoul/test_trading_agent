@@ -69,7 +69,7 @@ Thu ─── 10 execution (last minute before close)  Fri/Mon/Tue/Wed ─ 12 da
 | 7 IC memo | `ic_memo.py` | yes | `ic_memo.md`: the week's written record |
 | 8 Macro FX | `fx_desk.py` | yes | `fx.json`: 17-currency book (scored, not traded) |
 | 9 Performance | `score.py` | no | `performance/`: weekly returns per book (net of 5 bp/side, in excess of cash), attribution, monitors, and the go-live gate `gate.md` |
-| 10 Execution | `execute.py` | no | `execution.json`: closing-auction orders on Alpaca; `execution/fills.csv`, `nav.csv`, `activities.csv`; risk halts |
+| 10 Execution | `execute.py`, `broker.py` | no | market orders in the last minute before the close (`broker.send`; Alpaca paper has no closing auction); reconcile: `execution/fills.csv` (slippage vs the official close, plus the Alpaca close beside yfinance's), `nav.csv`, `activities.csv`; risk halts |
 | 11 Shadow | `shadow.py` | yes | `shadow.json`, `shadow_book.json`: challenger analysts and the weekly model canary; never traded |
 | 12 Daily review | `review.py` | yes | `reviews/<day>.json`: exit, reduce or increase held names on confirmed material new news |
 | 13 Macro brief | `macro_desk.py` | yes, 1 call | `macro_brief.json`: holding-week calendar, regime, themes, FX view from the context archive (Amendment 6, shadow) |
@@ -77,6 +77,8 @@ Thu ─── 10 execution (last minute before close)  Fri/Mon/Tue/Wed ─ 12 da
 | 15 C8 / C9 | `shadow_info.py` | yes, one per name + 1 | `shadow_info.json`: informed analysts and the ranker; books in `shadow_book.json` (Amendment 6) |
 | 16 Lifecycle C10 | `lifecycle.py` | yes, one per name + daily news checks | `lifecycle.json` per week; `lifecycle/state.json`: per-position horizon, stop/target, news exits, daily NAV (Amendment 7, shadow) |
 | 17 Review context | `review_context.py` | no | `reviews/context/<day>.json`: what a macro-aware review would have seen (Amendment 6, logged only) |
+| Decision ledger | `attribution.py` | no | `performance/attribution.json`, `.md`: the residual return after every lifecycle decision, the shadow control's, and the cohort names not entered (reporting only) |
+| News audit | `news_audit.py` | no | `lifecycle/news_audit/<day>.json`: articles published before a live check's cutoff but served after it (measurement only) |
 | Ledger | `ledger.py` | no | `ledger/fund_positions.xlsx` and `ledger/dashboard.json`: actual Alpaca trades only |
 | Standard P&L | `pnl.py` | no | used by the ledger: FIFO realized/unrealized P&L from Alpaca's fills, reconciled to the account value |
 

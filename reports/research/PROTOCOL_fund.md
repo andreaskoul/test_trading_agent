@@ -1030,3 +1030,20 @@ books stay comparable.
     tightened to −4.55%. Before the report-date correction it was closed by rule 2.
   * CSX, losing, with its report 57 sessions away (cap 36): closed by rule 2.
   * The winners (SMCI, TSLA) keep the Amendment 9 rules.
+
+## Note to Protocol 7B (2026-10-31, shadow control only): the control reads news at the fund's time
+
+**What was wrong.** The control's own lots (those the fund does not hold) were checked for news in the nightly job,
+at the close and about five hours after the fund's T−20 min check. Finnhub serves articles 1.5–3 hours late, so the
+control saw about 15× more of the day's late articles (25% vs 1.7% of those stamped in the last two hours before the
+cutoff). That is an information edge the comparison must not contain.
+
+**Change.** From the first session after this note merges, the trade run checks the control's own open lots right
+after the fund's T−20 check, with the same cutoff, into `lifecycle/control/news_own_live/<day>.json`. The nightly
+control uses those checks as made. A lot without one is checked at the close as before and listed under
+`own_at_close` in `lifecycle/control/news/<day>.json`.
+
+**Why now.** No comparison of the Protocol 7B rules with their control has been made. The control has produced no
+records yet, because the installed local runner predated its step (CHANGELOG 2026-10-31). Recorded days do not
+change. The traded book is unaffected.
+
