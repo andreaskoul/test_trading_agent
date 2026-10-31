@@ -4,6 +4,11 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-31: EDGAR acceptance times are UTC (`fund/edgar_time.py`).
+  * **The finding.** The live SEC API writes acceptance times in UTC ("…Z"), verified on Apple's filing index pages. The code read them as Eastern clock time. SEC's bulk submissions.zip mixes encodings (mostly UTC plus the Eastern offset, some true UTC), so it is not used for times.
+  * **Fixed for Amendment 2's B1** (release sessions from the as-of 2026-11-04 desk). Without the fix, an earnings release made during market hours would be dated a session late, the error B1 exists to remove. Contract tests: `fund/tests/test_edgar_time.py`.
+  * **Not changed, flagged for the owner:** Amendment 8's reference-move table (`m_table`, the "news" vs "hard" median moves) reads the same times. Its intraday-release sessions are one session late. Changing it would change a frozen rule's input.
+  * Could this change a decision? Yes, through B1 only, which the owner approved with "the release time" as its input.
 - 2026-10-31: Protocol 7B Amendment 2 (PROTOCOL_fund.md), from session 2026-11-05 (desk as-of 2026-11-04):
   * **B1:** "already priced in" measured from the release (8-K 2.02 or calendar) to the entry decision;
   * **B2:** news checks look back 24 hours, reading late-served articles first, up to 60 (were the 25 newest);

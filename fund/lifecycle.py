@@ -56,6 +56,7 @@ import pandas as pd
 
 from common import MODE, P7_START, STATE, asof_from_env, llm, load, news_cutoff, require, save, save_prompts
 import amend7b2 as A2
+from edgar_time import et_from_api
 from entry_check import entry_day_check
 from newsio import finnhub_news, norm
 from review_rules import review_rule
@@ -173,7 +174,7 @@ Return JSON only: {""").replace('"catalyst": "earnings"|"other"|null}', '"cataly
         if a2:
             try:
                 for t_, a_ in edgar_202(sorted(fund), asof - pd.Timedelta(days=10)):
-                    acc_all.setdefault(t_, []).append(a_)
+                    acc_all.setdefault(t_, []).append(et_from_api(a_))   # the API's time is UTC (fund/edgar_time.py)
             except Exception as e:                      # the calendar flag, else Amendment 8's rule; logged
                 print(f"lifecycle B1: EDGAR unavailable ({e}); release sessions from the calendar only", flush=True)
             cur_e = earnings_next(sorted(fund), asof - pd.Timedelta(days=10), asof + pd.Timedelta(days=1))
