@@ -1,0 +1,666 @@
+{
+ "day": "2026-10-30",
+ "status": "submitted",
+ "decided": "close",
+ "nav_model": 97933.67381213696,
+ "hedge_w": -0.27790229764483587,
+ "actions": [
+  {
+   "day": "2026-10-30",
+   "id": "2026-10-21|CSX",
+   "ticker": "CSX",
+   "action": "news_reduce",
+   "from": 9122.56,
+   "to": 4561.28,
+   "R": 0.013384,
+   "W": 0.04641,
+   "days_held": 6
+  },
+  {
+   "day": "2026-10-30",
+   "id": "2026-10-28|EQIX",
+   "ticker": "EQIX",
+   "action": "news_increase",
+   "from": 6732.82,
+   "to": 9793.96,
+   "R": -0.008094,
+   "W": 0.069776,
+   "days_held": 1
+  },
+  {
+   "day": "2026-10-30",
+   "id": "2026-10-28|BSX",
+   "ticker": "BSX",
+   "action": "news_increase",
+   "from": -5803.6,
+   "to": -8814.56,
+   "R": 0.009119,
+   "W": 0.039436,
+   "days_held": 1
+  },
+  {
+   "day": "2026-10-30",
+   "id": "2026-10-28|CRL",
+   "ticker": "CRL",
+   "action": "news_reduce",
+   "from": -2349.94,
+   "to": -1174.97,
+   "R": 0.024917,
+   "W": 0.060341,
+   "days_held": 1
+  }
+ ],
+ "lots_after": [
+  {
+   "id": "2026-10-21|CSX",
+   "ticker": "CSX",
+   "side": 1,
+   "w0": 0.06087,
+   "beta": 0.6402889768,
+   "sigma_e": 0.012403712798847924,
+   "H": 14,
+   "W": 0.04641044361723182,
+   "kill_conditions": [
+    "CSX issues weak Q4 or FY guidance",
+    "CSX reports operating margin contraction or volume decline",
+    "Peer railroads UNP/NSC report disappointing earnings and negative sector outlook"
+   ],
+   "first_reported": "2026-10-21",
+   "score": 2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.013383519847912011,
+   "days": 6,
+   "e": [
+    -0.01368707,
+    0.00568863,
+    0.0151209,
+    -0.00775268,
+    0.00744764,
+    0.00656609
+   ],
+   "news_until": 1793389200,
+   "increased": true,
+   "reduced": true,
+   "w": 0.04657520705557448
+  },
+  {
+   "id": "2026-10-21|SMCI",
+   "ticker": "SMCI",
+   "side": 1,
+   "w0": 0.05994,
+   "beta": 2.0551470887,
+   "sigma_e": 0.04617076198201026,
+   "H": 13,
+   "W": 0.16647104975338137,
+   "kill_conditions": [
+    "Company cuts or withdraws its raised FY27 revenue outlook",
+    "Backlog falls below $60B or major orders are cancelled",
+    "Gross margin guidance is reduced or new CFO departs"
+   ],
+   "first_reported": "2026-10-20",
+   "score": 2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.0035129593140648813,
+   "days": 6,
+   "e": [
+    -0.01239808,
+    -0.02219249,
+    0.06189758,
+    0.01344263,
+    -0.03068666,
+    -0.00655002
+   ],
+   "news_until": 1793389200,
+   "increased": true,
+   "w": 0.08963723390842211
+  },
+  {
+   "id": "2026-10-21|HAS",
+   "ticker": "HAS",
+   "side": 1,
+   "w0": 0.02536,
+   "beta": 0.8311884956,
+   "sigma_e": 0.025196195918633518,
+   "H": 13,
+   "W": 0.09084617633126964,
+   "kill_conditions": [
+    "Hasbro cuts or withdraws its raised FY2026 sales guidance",
+    "Magic: The Gathering quarterly revenue falls below $600M or declines year-over-year",
+    "Hasbro reduces, suspends, or abandons its doubled buyback target"
+   ],
+   "first_reported": "2026-10-20",
+   "score": 1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.02462376468358171,
+   "days": 6,
+   "e": [
+    0.00613247,
+    -0.00147825,
+    -0.00152226,
+    9.598e-05,
+    0.01067406,
+    0.01072177
+   ],
+   "news_until": 1793389200,
+   "w": 0.02558532738877739
+  },
+  {
+   "id": "2026-10-21|ROL",
+   "ticker": "ROL",
+   "side": -1,
+   "w0": -0.072,
+   "beta": 0.4132383735,
+   "sigma_e": 0.020746454352392717,
+   "H": 14,
+   "W": 0.07762612417699859,
+   "kill_conditions": [
+    "Rollins reports better-than-expected revenue and EPS in Q4 2026",
+    "Rollins raises full-year 2026 revenue and EPS guidance",
+    "Analyst upgrades Rollins to Buy or Overweight"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -2,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.013211112162866218,
+   "days": 6,
+   "e": [
+    0.01171883,
+    0.01069045,
+    0.01794578,
+    0.0164184,
+    -0.03710084,
+    -0.00646151
+   ],
+   "news_until": 1793389200,
+   "increased": true,
+   "w": -0.10018572599708472
+  },
+  {
+   "id": "2026-10-21|NFLX",
+   "ticker": "NFLX",
+   "side": -1,
+   "w0": -0.029,
+   "beta": 0.5883033849,
+   "sigma_e": 0.022376301218358693,
+   "H": 14,
+   "W": 0.08372445274235055,
+   "kill_conditions": [
+    "Netflix raises its full-year revenue or ad-revenue guidance",
+    "Netflix reports accelerating subscriber growth or strong Q4 guidance",
+    "Netflix announces a major content hit or partnership that boosts growth outlook"
+   ],
+   "first_reported": "2026-10-21",
+   "score": -1,
+   "cohort": "2026-10-21",
+   "entry_day": "2026-10-22",
+   "entry_close_ts": 1792698000,
+   "R": 0.06988553424427538,
+   "days": 6,
+   "e": [
+    0.01482451,
+    0.03379297,
+    0.02489376,
+    0.01050286,
+    -0.00321505,
+    -0.01091352
+   ],
+   "news_until": 1793389200,
+   "increased": true,
+   "w": -0.04220515018560803
+  },
+  {
+   "id": "2026-10-28|EQIX",
+   "ticker": "EQIX",
+   "side": 1,
+   "w0": 0.07,
+   "beta": 0.7932288333,
+   "sigma_e": 0.014876331742039213,
+   "H": 22,
+   "W": 0.06977618085122227,
+   "R": -0.008094313964826273,
+   "days": 1,
+   "kill_conditions": [
+    "Equinix cuts FY 2026 guidance or withdraws outlook",
+    "Q3 FFO beat is revised lower or restated",
+    "Major AI data center customer cancels or delays leases"
+   ],
+   "first_reported": "2026-10-28",
+   "score": 2,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Q3 2026 FFO beat, EPS beat, record bookings, raised 2026 guidance",
+   "news_session": "2026-10-28",
+   "e": [
+    -0.00809431
+   ],
+   "news_until": 1793389200,
+   "increased": true,
+   "w": 0.10000602874741012
+  },
+  {
+   "id": "2026-10-28|MSFT",
+   "ticker": "MSFT",
+   "side": 1,
+   "w0": 0.062,
+   "beta": 0.9533507742,
+   "sigma_e": 0.01501942418059176,
+   "H": 25,
+   "W": 0.07509712090295881,
+   "R": 0.0013777752416677547,
+   "days": 1,
+   "kill_conditions": [
+    "Microsoft reports Azure growth decelerating below prior quarter",
+    "Microsoft cuts FY27 guidance or issues weak cloud outlook",
+    "Analysts downgrade MSFT or cut price targets on Azure concerns"
+   ],
+   "first_reported": "2026-10-28",
+   "score": 2,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Microsoft Q1 FY27 earnings beat with Azure growth accelerating",
+   "news_session": "2026-10-28",
+   "e": [
+    0.00137778
+   ],
+   "news_until": 1793389200,
+   "w": 0.06130484781664142
+  },
+  {
+   "id": "2026-10-28|BIIB",
+   "ticker": "BIIB",
+   "side": 1,
+   "w0": 0.06,
+   "beta": 0.6102588062,
+   "sigma_e": 0.02079515211660678,
+   "H": 19,
+   "W": 0.09064396659184491,
+   "R": 0.026721554679000323,
+   "days": 1,
+   "kill_conditions": [
+    "Biogen cuts or withdraws its FY2026 EPS guidance",
+    "Leqembi quarterly sales decline or growth-product growth stalls",
+    "Q4 results miss estimates, reversing the post-earnings drift"
+   ],
+   "first_reported": "2026-10-28",
+   "score": 2,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Q3 2026 earnings beat, revenue +10.6%, FY profit guidance floor raised",
+   "news_session": "2026-10-28",
+   "e": [
+    0.02672155
+   ],
+   "news_until": 1793389200,
+   "w": 0.061221118939629136
+  },
+  {
+   "id": "2026-10-28|AVGO",
+   "ticker": "AVGO",
+   "side": 1,
+   "w0": 0.0325,
+   "beta": 1.6503890861,
+   "sigma_e": 0.019923098618249216,
+   "H": 3,
+   "W": 0.03450781905101294,
+   "R": -0.02558079607906983,
+   "days": 1,
+   "kill_conditions": [
+    "Broadcom's Anthropic chip financing deal is terminated or collapses",
+    "Anthropic cancels or significantly delays its custom chip orders from Broadcom",
+    "Banks withdraw from Broadcom's Anthropic chip financing deal"
+   ],
+   "first_reported": "2026-10-27",
+   "score": 1,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Broadcom secures $63B financing for Anthropic chips",
+   "news_session": "2026-10-27",
+   "e": [
+    -0.0255808
+   ],
+   "news_until": 1793389200,
+   "w": 0.03085222663620673
+  },
+  {
+   "id": "2026-10-28|CDNS",
+   "ticker": "CDNS",
+   "side": 1,
+   "w0": 0.03,
+   "beta": 1.2511482026,
+   "sigma_e": 0.02441685681506069,
+   "H": 3,
+   "W": 0.042291236564819513,
+   "R": -0.021173581757318077,
+   "days": 1,
+   "kill_conditions": [
+    "Cadence cuts its FY2026 guidance",
+    "Cadence reports Q4 revenue below its guidance",
+    "Cadence cancels or reduces its $2.5B buyback plan"
+   ],
+   "first_reported": "2026-10-26",
+   "score": 1,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Q3 beat-and-raise with record backlog and raised 2026 outlook",
+   "news_session": "2026-10-26",
+   "e": [
+    -0.02117358
+   ],
+   "news_until": 1793389200,
+   "w": 0.028825048569291765
+  },
+  {
+   "id": "2026-10-28|LH",
+   "ticker": "LH",
+   "side": 1,
+   "w0": 0.025,
+   "beta": 0.5760277194,
+   "sigma_e": 0.020129919608164418,
+   "H": 3,
+   "W": 0.03486604351361776,
+   "R": -0.008176336188452933,
+   "days": 1,
+   "kill_conditions": [
+    "Labcorp cuts or withdraws its FY2026 EPS and sales guidance",
+    "Q4 2026 results miss estimates and management signals weakening test volumes",
+    "Company discloses reimbursement or pricing pressure that resets full-year outlook lower"
+   ],
+   "first_reported": "2026-10-28",
+   "score": 1,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Labcorp Q3 2026 EPS and sales beat with raised FY2026 guidance",
+   "news_session": "2026-10-28",
+   "e": [
+    -0.00817634
+   ],
+   "news_until": 1793389200,
+   "w": 0.0246477694563259
+  },
+  {
+   "id": "2026-10-28|NVDA",
+   "ticker": "NVDA",
+   "side": 1,
+   "w0": 0.025,
+   "beta": 1.5772061851,
+   "sigma_e": 0.01656536945904255,
+   "H": 21,
+   "W": 0.07591205946097215,
+   "R": -0.014254283418305185,
+   "days": 1,
+   "kill_conditions": [
+    "Nvidia cuts or withdraws its growth guidance",
+    "Nvidia cancels or writes down the $3B Meta investment",
+    "A major customer shifts orders materially to rival AI chips"
+   ],
+   "first_reported": "2026-10-28",
+   "score": 1,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Nvidia's $3B Meta investment and Vera Rubin $40B/gigawatt revenue guide",
+   "news_session": "2026-10-28",
+   "e": [
+    -0.01425428
+   ],
+   "news_until": 1793390400,
+   "w": 0.024049463721077902
+  },
+  {
+   "id": "2026-10-28|GOOGL",
+   "ticker": "GOOGL",
+   "side": -1,
+   "w0": -0.062,
+   "beta": 1.1700192879,
+   "sigma_e": 0.01414938508260503,
+   "H": 24,
+   "W": 0.06931754725306065,
+   "R": -0.006720324832732022,
+   "days": 1,
+   "kill_conditions": [
+    "Alphabet reports stronger-than-expected Q4 revenue or raises guidance",
+    "Search revenue growth reaccelerates above prior trend",
+    "Alphabet announces major buyback or capital return that lifts shares"
+   ],
+   "first_reported": "2026-10-28",
+   "score": -2,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Alphabet Q3 revenue miss with slowing Search growth overshadowing strong cloud; shares fell ~7% after hours.",
+   "news_session": "2026-10-28",
+   "e": [
+    -0.00672032
+   ],
+   "news_until": 1793389200,
+   "w": -0.06139833168508569
+  },
+  {
+   "id": "2026-10-28|BSX",
+   "ticker": "BSX",
+   "side": -1,
+   "w0": -0.06,
+   "beta": 0.4237163959,
+   "sigma_e": 0.02276843865272232,
+   "H": 3,
+   "W": 0.03943609255553013,
+   "R": 0.00911945252908683,
+   "days": 1,
+   "kill_conditions": [
+    "Boston Scientific raises or restores its FY2026 guidance",
+    "Company reports cyberattack impact resolved with no Q4 revenue hit",
+    "Q4 organic revenue grows instead of declining 1% to 3%"
+   ],
+   "first_reported": "2026-10-28",
+   "score": -2,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Boston Scientific cuts FY26 guidance a third time after cyberattack, Q4 outlook below consensus",
+   "news_session": "2026-10-28",
+   "e": [
+    0.00911945
+   ],
+   "news_until": 1793389200,
+   "increased": true,
+   "w": -0.09000542587266909
+  },
+  {
+   "id": "2026-10-28|BRO",
+   "ticker": "BRO",
+   "side": -1,
+   "w0": -0.03,
+   "beta": 0.194812866,
+   "sigma_e": 0.02429659560580743,
+   "H": 3,
+   "W": 0.042082938040213194,
+   "R": -0.031755728286993815,
+   "days": 1,
+   "kill_conditions": [
+    "Brown & Brown reports organic revenue growth reaccelerating above 5% in a subsequent quarter",
+    "Brown & Brown raises full-year guidance or reports margin expansion",
+    "Analysts upgrade Brown & Brown citing improving organic growth and margins"
+   ],
+   "first_reported": "2026-10-26",
+   "score": -1,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Brown & Brown Q3 2026 earnings miss with 1.2% organic growth and margin contraction",
+   "news_session": "2026-10-26",
+   "e": [
+    -0.03175573
+   ],
+   "news_until": 1793389200,
+   "w": -0.03098417751370248
+  },
+  {
+   "id": "2026-10-28|BA",
+   "ticker": "BA",
+   "side": -1,
+   "w0": -0.0275,
+   "beta": 1.1024324946,
+   "sigma_e": 0.0256193959037,
+   "H": 3,
+   "W": 0.04437409536443037,
+   "R": -0.013173778067704433,
+   "days": 1,
+   "kill_conditions": [
+    "Boeing raises FY2027 free cash flow guidance",
+    "737 Max production ramp accelerates ahead of schedule",
+    "FAA certifies 777X ahead of schedule"
+   ],
+   "first_reported": "2026-10-27",
+   "score": -1,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Q3 2026 earnings miss with negative guidance on 737 Max ramp and 2027 FCF",
+   "news_session": "2026-10-27",
+   "e": [
+    -0.01317378
+   ],
+   "news_until": 1793389200,
+   "w": -0.027444474426734453
+  },
+  {
+   "id": "2026-10-28|VLO",
+   "ticker": "VLO",
+   "side": -1,
+   "w0": -0.0275,
+   "beta": 0.3188022476,
+   "sigma_e": 0.028308971754577812,
+   "H": 21,
+   "W": 0.12972800591171965,
+   "R": -0.04489068206808106,
+   "days": 1,
+   "kill_conditions": [
+    "US blocks or reverses the Russian diesel import plan",
+    "Valero reports Q4 refining margins above Q3 levels"
+   ],
+   "first_reported": "2026-10-28",
+   "score": -1,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "US Energy Secretary opens door to more Russian diesel imports, shrinking refining margins and pressuring refiners.",
+   "news_session": "2026-10-28",
+   "e": [
+    -0.04489068
+   ],
+   "news_until": 1793389200,
+   "w": -0.028704240514103134
+  },
+  {
+   "id": "2026-10-28|MRNA",
+   "ticker": "MRNA",
+   "side": -1,
+   "w0": -0.0275,
+   "beta": 1.426101813,
+   "sigma_e": 0.15298867204866884,
+   "H": 3,
+   "W": 0.264984152970787,
+   "R": -0.020614687996855202,
+   "days": 1,
+   "kill_conditions": [
+    "Moderna announces new positive Phase 3 or regulatory news for its cancer vaccine beyond melanoma",
+    "FDA grants breakthrough designation or accepts filing for intismeran",
+    "Multiple analysts upgrade MRNA on broader cancer-use potential"
+   ],
+   "first_reported": "2026-10-23",
+   "score": -1,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Leaked Phase 3 melanoma vaccine data met expectations, triggering sell-the-news collapse in Moderna shares",
+   "news_session": "2026-10-23",
+   "e": [
+    -0.02061469
+   ],
+   "news_until": 1793389200,
+   "w": -0.027491500168796472
+  },
+  {
+   "id": "2026-10-28|CRL",
+   "ticker": "CRL",
+   "side": -1,
+   "w0": -0.025,
+   "beta": 1.097608772,
+   "sigma_e": 0.026985477198847436,
+   "H": 5,
+   "W": 0.06034136142189348,
+   "R": 0.024916966068728324,
+   "days": 1,
+   "kill_conditions": [
+    "CRL reports revenue growth or positive Earnings ESP",
+    "Major unexpected positive business development announced"
+   ],
+   "first_reported": "2026-10-09",
+   "score": -1,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Risk of Q3 earnings miss (4.8% revenue decline, negative ESP) despite recent stock rally",
+   "news_session": "2026-10-09",
+   "e": [
+    0.02491697
+   ],
+   "news_until": 1793389200,
+   "reduced": true,
+   "w": -0.011997614982404108
+  },
+  {
+   "id": "2026-10-28|HCA",
+   "ticker": "HCA",
+   "side": -1,
+   "w0": -0.025,
+   "beta": 0.4653015283,
+   "sigma_e": 0.019137119140922663,
+   "H": 16,
+   "W": 0.07654847656369065,
+   "R": 0.0019790728440589756,
+   "days": 1,
+   "kill_conditions": [
+    "HCA raises 2027 guidance above 2026 levels",
+    "HCA reports uninsured payer mix improving or ACA coverage losses reversing",
+    "HCA announces cost cuts or buyback that offset margin strain"
+   ],
+   "first_reported": "2026-10-27",
+   "score": -1,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "HCA Q3 2026 earnings beat with $400M uninsured hit and flat 2027 outlook",
+   "news_session": "2026-10-27",
+   "e": [
+    0.00197907
+   ],
+   "news_until": 1793390400,
+   "w": -0.024852671285248363
+  }
+ ],
+ "reviews": [],
+ "cool": {
+  "BA|1": {
+   "until": "2026-10-27",
+   "kind": "stop",
+   "score": 1,
+   "first_reported": "2026-10-20"
+  }
+ },
+ "a2": null
+}

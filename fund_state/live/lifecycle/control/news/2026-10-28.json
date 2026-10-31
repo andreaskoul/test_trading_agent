@@ -1,0 +1,1250 @@
+{
+ "day": "2026-10-28",
+ "close_ts": 1793217600,
+ "lots": {
+  "2026-10-21|CSX": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1793216400,
+   "headlines": [
+    "is csx stock riskier than it looks"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": null,
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": null,
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": null,
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": null,
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "OpenInference"
+    }
+   ],
+   "max_published": 1793132499
+  },
+  "2026-10-21|SMCI": {
+   "status": "checked",
+   "verdict": "increase",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 2,
+   "news_until": 1793216400,
+   "headlines": [
+    "sector update tech stocks gain late afternoon",
+    "sp 500 top movers oct 27 2026 us session",
+    "tech stocks post best 3day rally in 5 weeks",
+    "update nasdaq sp 500 notch backtoback gains following fresh earnings reports",
+    "why is super micro smci stock soaring today",
+    "sp 500 nasdaq jump on chipmaker strength as investors eye october fed decision orcl hood jblu rivn smci in focus",
+    "does super micro computer smci have a bigger ai infrastructure story now",
+    "fpe better than preferred stock index funds but inflation is a real risk",
+    "2 popular ai stocks to sell before they drop 57 and 60 according to wall street analysts",
+    "super micro is down 32 in a year is it time to sell or load up",
+    "dell is up 299 in 2026 take profits or buy more",
+    "the ai trade is back why sandisk stock is rising before big tech earnings",
+    "earnings beat could be a big test for nutanix stock ntnx"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Super Micro-backed cloud computing firm Argentum AI is negotiating a $5 billion financing deal for artificial intelligence chips",
+       "article": 4
+      }
+     },
+     "error": null,
+     "provider": "ModelRun"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "No article reports that Super Micro cut or withdrew an FY27 revenue outlook.",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "No article reports that Super Micro's backlog fell below $60B or that major orders were cancelled; the only backlog figure mentioned is Dell's '$95 billion backlog' in article 10, not SMCI's.",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "No article reports reduced gross margin guidance or a new CFO departure for Super Micro.",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "No qualifying new quantified company event for SMCI after the opening; article 4's '$5 billion financing deal' is for Super Micro-backed Argentum AI, and article 6's product/collaboration news has no quantified company event.",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Super Micro-backed cloud computing firm Argentum AI is negotiating a $5 billion financing deal for artificial intelligence chips",
+       "article": 12
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    }
+   ],
+   "max_published": 1793200081
+  },
+  "2026-10-21|TSLA": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1793216400,
+   "headlines": [
+    "teslas free cash flow just turned positive heres why thats only half the story",
+    "tesla bears are falling off but not because teslas improving",
+    "hidden gems in the spacex filing soaring compute rates and deep tesla ties",
+    "man repairs 2 wrecked teslas they pass inspection but the carmaker cuts fast charging anyway now he owes 15k",
+    "bmo launches canadas first single stock autocallable income etfs",
+    "tesla could go beyond robotaxis into underground travel and electric aviation tsla could own transportation ark says",
+    "tesla stock heads for third day of gains its about more than spacex",
+    "electric vehicles update indonesias battery market growth and its future opportunities",
+    "tesla just reclaimed 400 as spacex merger hopes build",
+    "tsla q3 earnings call highlights autonomy and expansion plans",
+    "final trades rtx tesla and nutrien",
+    "american advanced materials raises 125 million to make globallycompetitive titanium sponge in america and announces signed letters of intent with industry buyers worth over 1 billion",
+    "elon musk says robots will need more memory than everything else on earth this analyst sees much bigger volume story for micron sk hynix",
+    "badly crippled gm moves to nasdaq",
+    "rothera receives cftc approval for first kpi swap",
+    "is teslas narrative shifting why the stock deserves a second look",
+    "tesla cancels cybertruck in two countries an omen for the vehicles future",
+    "global frontofthemeter battery market report 2026 capitalize on 228 cagr through 2030 tesla byd catl and siemens dominate",
+    "3 magnificent seven stocks to buy hand over fist in november",
+    "hog or tsla which is the better value stock right now",
+    "global battery passport market report 2026 capitalize on 342 cagr to 2030 as tesla siemens sap and circulor scale eu compliance ai and blockchain",
+    "neocloud stocks like coreweave rebound despite elon musk predicting guppylevel death",
+    "jpmorgan cocacola join pushback against okxice tokenized stock trading",
+    "tesla gains another 4 as ark restates 4400 robotaxi target and musk teases a storm of cybercabs",
+    "spacex retreats as russias putin says this about elon musk"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Morph"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Wall Street is betting a SpaceX merger explains the move, but no deal has been signed",
+        "article": 8
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "no deal has been signed",
+        "article": 8
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Wall Street is betting a SpaceX merger explains the move, but no deal has been signed",
+        "article": 8
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Morph"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    }
+   ],
+   "max_published": 1793207409
+  },
+  "2026-10-21|HAS": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1793216400,
+   "headlines": [
+    "hasbro has could be 18 below fair value following wizards leadership change",
+    "pop marts q3 revenue slumps 4550 as demand outside china falls",
+    "hasbro names third wizards of the coast president in under 5 years",
+    "hasbro has multiple drivers for earnings growth through 2028 ubs says"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "ModelRun"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Recent news around raised",
+        "article": 0
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "giving him oversight of Magic: The Gathering, Dungeons & Dragons and related digital titles",
+        "article": 0
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Hasbro (HAS) has several growth drivers in toys and gaming that could support earnings expansion",
+        "article": 3
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "naming Dan Ayoub President of Wizards of the Coast & Hasbro Digital Games",
+       "article": 0
+      }
+     },
+     "error": null,
+     "provider": "Morph"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Relace"
+    }
+   ],
+   "max_published": 1793208372
+  },
+  "2026-10-21|ROL": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1793216400,
+   "headlines": [
+    "dividend announcements october 1723 2026 part 2 of 2"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Morph"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "I track dividend announcements across 1,200+ stocks.",
+        "article": 0
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "I track dividend announcements across 1,200+ stocks.",
+        "article": 0
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "I track dividend announcements across 1,200+ stocks.",
+        "article": 0
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "I track dividend announcements across 1,200+ stocks.",
+       "article": 0
+      }
+     },
+     "error": null,
+     "provider": "Alibaba"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Morph"
+    }
+   ],
+   "max_published": 1793188890
+  },
+  "2026-10-21|LRCX": {
+   "status": "checked",
+   "verdict": "reduce",
+   "passes_ok": 3,
+   "matched": 1,
+   "partial": 3,
+   "hard": 0,
+   "news_until": 1793216400,
+   "headlines": [
+    "applied materials top quality and undervalued ai leader",
+    "zacks investment ideas feature highlights teradyne lam research and ati",
+    "the case for lam research stock rests on one thing",
+    "parnassus mid cap fund q3 2026 portfolio review",
+    "sk hynix stock gains 19 on ai chip demand dividend hopes",
+    "amd broadcom and micron stocks lead chip sector higher for third day in a row",
+    "lynx sees sk hynix results rekindling interest in this chip stock",
+    "chip equipment stocks shed 18 in a monthearnings show why selectivity matters",
+    "credo sinks 13 in a week as maxlinear says the market is diversifying",
+    "lam research sees record foundry sales can the momentum continue",
+    "top 5 ai stocks in billionaires ray dalio and philippe laffonts portfolios",
+    "now in full force applied materials is up 73 in a year take profits or buy more",
+    "chip equipment stocks rally as sk hynix signals memory shortage into 2030 lam research jumps 5 applied materials climbs 4 kla gains 3"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "partial",
+        "quote": "Chip equipment stocks are leading a third straight day of gains across semiconductors",
+        "article": 12
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Alibaba"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "matched",
+        "quote": "AMD, Broadcom, and Micron stocks lead chip sector higher for third day in a row",
+        "article": 5
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "partial",
+        "quote": "chip sector higher for third day in a row",
+        "article": 2
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Alibaba"
+    }
+   ],
+   "max_published": 1793203425
+  },
+  "2026-10-21|NFLX": {
+   "status": "checked",
+   "verdict": "increase",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 3,
+   "news_until": 1793216400,
+   "headlines": [
+    "poor reception for communication services",
+    "what does netflix nflx leadership shakeup mean for its streaming future",
+    "investing 1000 in each of these 3 stocks 20 years ago would have created a portfolio worth 674000 today",
+    "why did nflx open whr stocks tumble to 52week lows today",
+    "netflix and servicenow have fallen more than 30 from their records both are stocks to buy and hold through 2030",
+    "wall street is treating netflix like its broken but im still bullish",
+    "top treasury trade official leaving for netflix axios",
+    "bill ackmans test for a great stock should be enormously valuable even if markets shut for 20 years",
+    "youtube is beating netflix in the living room but crypto bettors doubt a 12 billion ad quarter for the alphabet platform",
+    "cyclicals lead sectors in wednesday trading as real estate trails",
+    "netflixs advertising business expands rapidly can momentum continue",
+    "netflix price increases are no longer providing unchecked upside downgrade"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Netflix (NasdaqGS:NFLX) has launched a major restructuring that includes about 1,000 employee layoffs across creative and corporate teams.",
+       "article": 1
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "NFLX expects advertising revenues to grow more than 80% in 2026, but rollout delays, a reduced forecast and streaming rivals test its ad momentum.",
+        "article": 10
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Netflix's growth is moderating, with revenue up 12% but representing the slowest pace in three years",
+        "article": 5
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "rollout delays, a reduced forecast and streaming rivals test its ad momentum",
+        "article": 10
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Netflix (NasdaqGS:NFLX) has launched a major restructuring that includes about 1,000 employee layoffs across creative and corporate teams.",
+       "article": 1
+      }
+     },
+     "error": null,
+     "provider": "Baidu"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "about 1,000 employee layoffs across creative and corporate teams. Longtime content leaders Dan Lin and Bela Bajaria are exiting",
+       "article": 0
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    }
+   ],
+   "max_published": 1793193300
+  },
+  "2026-10-21|MSFT": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1793216400,
+   "headlines": [
+    "megacap earnings could spoil the markets appetite for ai",
+    "wall street takes a deep breath ahead of fed big tech earnings wave",
+    "ubs thinks the street is too low on aws amazons quarter is the test",
+    "jpmorgan cocacola among 7 more companies objecting to okxice tokenized stocks",
+    "microsoft alphabet earnings put focus on ai cash flow drain",
+    "it management as a service global strategic business report capitalize on 161 cagr to 357 billion by 2032 as ibm microsoft servicenow cisco and broadcom disrupt enterprise it",
+    "microsoft results to test whether ai investment is paying off",
+    "apple is at a record going into earnings wall streets target is below it",
+    "top midday stories ge vernova to acquire trench group for 9 billion wendys receives 14 billion takeover offer from trianled group",
+    "stocks are calm but there is real volatility hiding in big tech",
+    "advanced micro devices vs dell technologies which technology stock is a better buy in 2026",
+    "update us equity indexes mixed ahead of fed policy announcements mag7 earnings",
+    "can uipaths rising arr drive sustained growth for path stock",
+    "wall street may be underestimating this magnificent seven stock",
+    "micron sk hynix google microsoft vertiv wendys enphase and more stocks that explain todays market",
+    "is oracle stock worth buying as autonomous database use keeps growing",
+    "will strong aws performance boost amazons q3 earnings report",
+    "cms energy ceo predicts data center progress after midterms",
+    "optical stocks climb as analysts flag ai bottleneck lumentum rises 4 applied optoelectronics and corning gain 3 coherent sits out the rally",
+    "exchangetraded funds us equities mixed after midday",
+    "update equities rise intraday as fed decision looms",
+    "update us equity indexes gain moderately ahead of fed policy moves mag7 earnings",
+    "reindeer joins the microsoft for startups pegasus program and launches on microsoft marketplace",
+    "microsoft earnings live microsoft to report q1 earnings with wall street looking for further azure growth",
+    "microsoft might be the adult in the room when it comes ai heres why"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Microsoft Corp (NASDAQ:MSFT) reports fiscal first-quarter results after the market close on Wednesday",
+        "article": 6
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Morph"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Relace"
+    }
+   ],
+   "max_published": 1793209418
+  },
+  "2026-10-21|AAPL": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1793216400,
+   "headlines": [
+    "nvidia vs apple opposing philosophies racing toward the same 6 trillion goal",
+    "openai is buying googles ai chips a hit to nvidias biggest customer bond",
+    "trump is using tariffs as a tool for grift raskin says in demand for donor records",
+    "seeking clues to apple aapl q4 earnings a peek into wall street projections for key metrics",
+    "the postjobs postcook era begins what john ternus must prove in his debut call",
+    "qualcomm stock has an ai opportunity most nvidia investors may be overlooking",
+    "apple brings touch to the mac reversing yearsold stance on touchscreen laptop",
+    "apple is moving against the nasdaq for the first time on record",
+    "if youd invested 10000 in apple stock 10 years ago heres how much youd have today",
+    "peltz makes a move to buy wendys ai remains hot and chipotle earnings expectations",
+    "buy 10 shares of nvidia today heres what different 2030 scenarios could look like",
+    "south korea fines google apple for pushing app developers onto their payment systems",
+    "3 magnificent seven stocks to buy hand over fist in november",
+    "ambient computing global strategic business report 2026 capitalize on 231 cagr to us2415 billion by 2032 outmaneuver amazon apple google cisco and huawei",
+    "update google apple fined in korea over prohibited app market practices",
+    "apple is at a record going into earnings wall streets target is below it",
+    "jpmorgan cocacola join pushback against okxice tokenized stock trading",
+    "onq unveils retail security brackets for apple iphone duo and apple homeview",
+    "stocks are calm but there is real volatility hiding in big tech",
+    "warren buffetts successor greg abel has 589 of berkshire hathaways portfolio invested in just 5 stocks heres my top pick for november",
+    "apple unveils groundbreaking macbook pro with proled xdr display and touch for the first time on mac",
+    "new touch screen macbooks point to fresh device strategy for apple",
+    "apple announces 2899 macbook pro its first touchscreen laptop",
+    "macbook pro apple launches its first ever touchscreen mac and brings back iconic feature",
+    "why retail investors are flocking to prediction markets"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Morph"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "AtlasCloud"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    }
+   ],
+   "max_published": 1793210164
+  },
+  "2026-10-21|CMG": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1793216400,
+   "headlines": [
+    "earnings from google and microsoft and a fed rate decision what to watch",
+    "traders are betting big against this restaurant giant into earnings",
+    "chipotles stock needs a jolt an earnings beat might not be enough",
+    "parnassus mid cap fund q3 2026 portfolio review",
+    "options action chipotle options reverse course",
+    "whats going to happen with mcdonalds stock soon",
+    "peltz makes a move to buy wendys ai remains hot and chipotle earnings expectations",
+    "3 things chipotle needs to deliver in its q3 earnings results",
+    "yumc vs cmg which stock is the better value option",
+    "chipotles bet on discounts expected to sustain q3 sales momentum"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Chipotle's (CMG) upcoming earnings report on Wednesday",
+        "article": 7
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Peltz makes a move to buy Wendy's ... Chipotle earnings expectations",
+        "article": 6
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Chipotle's bet on discounts expected to sustain Q3 sales momentum",
+        "article": 9
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "No article reports a quantified CMG company event after the open; articles discuss 'upcoming earnings report' and 'expected to sustain Q3 sales momentum'",
+       "article": 7
+      }
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Baidu"
+    }
+   ],
+   "max_published": 1793205912
+  }
+ },
+ "shared_from_live": [
+  "2026-10-21|AAPL",
+  "2026-10-21|CMG",
+  "2026-10-21|CSX",
+  "2026-10-21|HAS",
+  "2026-10-21|LRCX",
+  "2026-10-21|MSFT",
+  "2026-10-21|NFLX",
+  "2026-10-21|ROL",
+  "2026-10-21|SMCI",
+  "2026-10-21|TSLA"
+ ],
+ "own": [],
+ "own_at_live_time": [],
+ "own_at_close": []
+}
