@@ -278,3 +278,22 @@ V_industry − V_week∩industry, at least either one-way variance, t with min(G
 covers five p-values. With it, the rejection rate under the null is 4.0% in 400 draws, and power is 0.82 at a 0.15 sd
 effect. Only rule A and E2's primary use this test.
 
+## Amendment 3 (2026-10-31): Finnhub shocks — when the market knew, and when the fund could
+
+**What had been seen.** No Finnhub shock data was fetched before this amendment. The validation read (E1, E2) does
+not involve E3.
+
+**Change.** §2 applied the vendor's serving lag to "count for that session". That would also move the reaction day
+used for the direction d to the session after the news, so d would measure the day after the news, not the news.
+The two times are now separate:
+* **Market time.** A shock's articles are counted, and its event session set, by publish time with the 16:00 ET rule
+  (as the 8-K events). d is the sign of the residual on that session.
+* **Fund time.** The fund's entry uses publish time plus L, where L is the 95th percentile of the late-served lag
+  measured by `fund/news_audit.py` over the live check days to date. It is recorded in the E3 output. The as-of is the
+  first Wednesday whose 22:00 UTC cutoff is at or after the fund time; entry is the next session. This is the
+  conservative side: a later entry.
+* **Counts.** Articles per session come from Finnhub company news, fetched in windows small enough that no response is
+  truncated: a window returning 200 or more articles is split.
+
+Everything else in §4 E3 and rule A is unchanged.
+
