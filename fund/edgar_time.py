@@ -1,14 +1,15 @@
 """SEC EDGAR acceptance times in US Eastern (the clock the market and the session rules use).
 
-Two sources, two encodings, both written as "...Z". Verified 2026-10-31 on Apple's filing index pages, where SEC
-shows the acceptance in Eastern time (0000320193-24-000005: "Accepted 2024-02-01 16:30:30"), and on 31,973 filings
-of 8 large filers, where the bulk value minus the live value was +4.0 h (20,451) or +5.0 h (11,521), with one equal:
+The live API (data.sec.gov/submissions/CIK*.json) writes acceptanceDateTime in true UTC ("...Z"). Verified
+2026-10-31 on Apple's filing index pages, where SEC shows the acceptance in Eastern time: 0000320193-24-000005,
+"Accepted 2024-02-01 16:30:30", reads "2024-02-01T21:30:30.000Z" in the API. The code had read it as Eastern clock
+time, which puts a release made during market hours one session late.
 
-* live API (data.sec.gov/submissions/CIK*.json) gives true UTC: "2024-02-01T21:30:30.000Z" = 16:30:30 EST;
-* SEC's bulk submissions.zip gives UTC plus the Eastern offset: "2024-02-02T02:30:30.000Z" for the same filing.
+SEC's bulk submissions.zip is not a substitute. It mixes encodings for the same field:
+* on 31,973 filings of 8 large filers it read 4 or 5 hours later than the API (UTC plus the Eastern offset);
+* on a sample of other filers it matched the API (true UTC) for 7% of filings and all of those in an odd-hour sample.
 
-The code had read both as Eastern clock time. For the live API that puts a release made during market hours one
-session late. For the bulk file it puts most before-open releases one session late.
+So no single conversion is right for it. Use the live API for acceptance times.
 """
 
 import pandas as pd
@@ -21,10 +22,3 @@ def et_from_api(s):
     t = pd.Timestamp(s)
     t = t.tz_localize("UTC") if t.tzinfo is None else t.tz_convert("UTC")
     return t.tz_convert(ET).tz_localize(None)
-
-
-def et_from_bulk(s):
-    """Eastern clock time (naive) of a bulk submissions.zip acceptanceDateTime (string, or naive Timestamp as stored)."""
-    t = pd.Timestamp(str(s)[:19])                       # the value as written, without its misleading "Z"
-    utc = t.tz_localize("UTC").tz_convert(ET).tz_localize(None)       # value - offset = the true UTC clock
-    return et_from_api(utc)
