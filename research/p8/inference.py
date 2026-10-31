@@ -165,3 +165,59 @@ def holm(p, alpha=0.05):
         run = max(run, min(1.0, (m - r) * p[i]))
         adj[i] = run
     return adj, adj <= alpha
+
+
+def _mean_p(y, g, null, direction, B, rng):
+    """One clustering: the CR1 t of mean(y) - null against t(G-1), and a wild cluster restricted bootstrap (null
+    imposed; Rademacher, Webb under 13 clusters). One-sided p-values (direction +1: H0 mean <= null)."""
+    G = g.max() + 1
+    n = len(y)
+
+    def tstat(v):
+        m = v.mean()
+        sc = np.bincount(g, weights=v - m, minlength=G)
+        se = np.sqrt(G / (G - 1) * (sc @ sc)) / n
+        return (m - null) / se if se > 0 else 0.0
+
+    t0 = tstat(y)
+    p_cr1 = float(stats.t.sf(direction * t0, G - 1))
+    u = y - null
+    pool = WEBB if G < 13 else RADEMACHER
+    hits = 0
+    for _ in range(B):
+        w = rng.choice(pool, size=G)
+        hits += direction * tstat(null + w[g] * u) >= direction * t0
+    return float(t0), p_cr1, float((1 + hits) / (B + 1))
+
+
+def mean_test(y, week, industry, null=0.0, direction=1, B=9999, seed=0):
+    """PREREG_family_E.md section 3: a mean with no cross-sectional regressor. One-sided p = the largest of the CR1 and
+    wild-bootstrap p-values under clustering by calendar week and by industry. Returns mean, t (week clusters), p."""
+    y = np.asarray(y, float)
+    ok = np.isfinite(y)
+    y = y[ok]
+    gw, gi = _codes(np.asarray(week)[ok]), _codes(np.asarray(industry)[ok])
+    rng = np.random.default_rng(seed)
+    tw, pw1, pw2 = _mean_p(y, gw, null, direction, B, rng)
+    ti, pi1, pi2 = _mean_p(y, gi, null, direction, B, rng)
+    t2, p2 = _two_way(y, gw, gi, null, direction)
+    return {"n": int(len(y)), "mean": float(y.mean()), "t_week": tw, "t_industry": ti, "t_two_way": t2,
+            "p": max(pw1, pw2, pi1, pi2, p2),
+            "p_parts": {"cr1_week": pw1, "wild_week": pw2, "cr1_ind": pi1, "wild_ind": pi2, "cr1_two_way": p2}}
+
+
+def _two_way(y, gw, gi, null, direction):
+    """Cameron-Gelbach-Miller two-way clustered variance of the mean (week, industry): V_w + V_i - V_wi, with V_w or
+    V_i alone if that is larger (Family E Amendment 2: the one-way tests over-rejected under both shocks)."""
+    n, m = len(y), y.mean()
+
+    def v(g):
+        G = g.max() + 1
+        sc = np.bincount(g, weights=y - m, minlength=G)
+        return G / (G - 1) * (sc @ sc) / n ** 2, G
+    (vw, Gw), (vi, Gi) = v(gw), v(gi)
+    vwi, _ = v(_codes(gw.astype(np.int64) * (gi.max() + 1) + gi))
+    V = max(vw + vi - vwi, vw, vi)
+    t = (m - null) / np.sqrt(V) if V > 0 else 0.0
+    return float(t), float(stats.t.sf(direction * t, min(Gw, Gi) - 1))
+

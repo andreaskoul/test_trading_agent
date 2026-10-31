@@ -233,3 +233,48 @@ book stays Protocol 7B, plus whatever market-exposure policy the owner sets.
 5. E4 at R5's read (about mid-March 2027).
 
 Each read writes `reports/research/p8/E_*.md` and `.json`, and a row in DATA_USE.md.
+
+## Amendment 1 (2026-10-31): acceptance times from SEC's live API
+
+**What had been seen.** No Family E statistic: no return, drift or IC of any Family E event. Only data-quality views
+of the 8-K item table were seen, which are not outcomes:
+* filing counts by year and item;
+* the hour of acceptance;
+* a comparison of acceptance times with SEC's live API.
+
+**What was found.** SEC's live API (data.sec.gov/submissions) gives acceptanceDateTime in true UTC. SEC's filing
+index pages confirm it (Apple 0000320193-24-000005: API `2024-02-01T21:30:30.000Z`, index *Accepted 2024-02-01
+16:30:30* EST).
+
+SEC's bulk submissions.zip, which built the P8 cache, mixes encodings for the same field:
+* 31,973 filings of 8 large filers read 4–5 hours later than the API;
+* in samples of other filers, 7% of ordinary filings and 360 of 360 odd-hour filings read the same as the API.
+
+The P8 code had read the bulk value as Eastern clock time.
+
+**Change.**
+* Family E takes every acceptance time from the live API (`research/p8/family_e.py live`) and converts it from UTC
+  to Eastern (`fund/edgar_time.py`) before the session rules of §2.
+* E1's events keep their firm-quarters from `events.parquet`. Each takes the live time of the firm's 8-K 2.02 that
+  its bulk time encodes (equal, or 4 or 5 hours later, to the second). An event with no or several matches is
+  dropped and counted.
+* No other rule changes.
+
+**Consequence outside Family E.** Family H's spent reads used the bulk times as Eastern. That defect is reported in
+`reports/research/p8/DATA_DEFECT_2026-10-31.md` and in DATA_USE.md. Family H's reads are not repeated here.
+
+## Amendment 2 (2026-10-31): two-way clustering in the mean test
+
+**What had been seen.** No Family E statistic. Only the simulation in `research/p8/test_inference.py`
+(`test_mean_test_size_power`), which §3 requires before any read.
+
+**Found.** With shocks by both calendar week and industry (simulated sd 0.4 and 0.3 against an idiosyncratic sd of
+1, 1,500 events), §3's one-sided mean test rejected a true null in 8.3% of 120 draws at the 5% level. It takes the
+largest of the CR1 and wild p-values clustered by week and by industry, but clustering on one dimension at a time
+misses the dependence along the other.
+
+**Change.** The test also takes the Cameron–Gelbach–Miller two-way clustered p-value (week × industry: V_week +
+V_industry − V_week∩industry, at least either one-way variance, t with min(G) − 1 degrees of freedom). The maximum
+covers five p-values. With it, the rejection rate under the null is 4.0% in 400 draws, and power is 0.82 at a 0.15 sd
+effect. Only rule A and E2's primary use this test.
+
