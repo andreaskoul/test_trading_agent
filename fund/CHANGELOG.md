@@ -4,6 +4,17 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-31: measurement and records (order-timing review, `reports/Order timing implementation plan.md`; plan approved 2026-10-30).
+  * Go-live gate: under Protocol 7 "weeks fully executed" now reads the lifecycle live records (every session submitted, no unfilled order; `fund/ops_stats.py`). It read the retired weekly execution.json files and showed 0% while every order had filled. The gate also prints the signed, value-weighted cost against the official close with a day-block bootstrap bound (+0.92 bp, 95% upper 1.93 bp on 116 lifecycle fills). The registered rule (median |slippage| ≤ 10 bp) is unchanged until an amendment.
+  * Decision prices keep their provenance: `broker.quotes()` logs the source (IEX latest trade, or a daily-bar fallback), trade time and IEX bid/ask with each phase of the live decision (`prices_meta`), and the quote each order met at the send (read in a background thread, so it cannot delay a send). `broker.prices()` returns the same values as before.
+  * Each entering name logs its move from the signal date's close to the decision and Amendment 8's "already priced in" fraction recomputed with it (`entry_check`, `fund/entry_check.py`). The desk's own fraction stops at the as-of close, so an after-close release (GOOGL, 2026-10-28) is invisible to it.
+  * Reconcile records the Alpaca SIP close beside the yfinance close used for slippage (`close_alpaca`).
+  * New nightly reports: `fund/news_audit.py` (articles published before a live check's cutoff but served after it; no model calls) and `fund/attribution.py` (decision ledger: residual returns after every decision and the names not entered).
+  * The Finnhub fetch and headline normaliser moved unchanged to `fund/newsio.py`.
+  * The local runner opens an issue when its installed copy differs from main's: on 2026-10-30 the installed runner dated from 10-27 12:46 and had never run the Protocol 7B shadow control step (merged 10-27 14:06).
+  * Contract tests: `fund/tests/test_timing_ops.py` (real fixtures from fund-data).
+  * Could this change a decision? No. Nothing added is read by a decision; the live prices, orders and rules are unchanged.
+- 2026-10-31: Protocol 7B shadow control: its own lots are checked for news at the fund's check time (T−20 min, in the trade run) instead of at the close in the nightly job, which saw about 15× more of the day's late-served articles. A lot without a live-time check is still checked at the close and listed as such. Dated note in PROTOCOL_fund.md. Could this change a decision? Not of the traded book; it changes the shadow control's news input from the first session with a live-time check, before any comparison was made.
 - 2026-10-29: R5 LLM cost cap (PREREG_thesis_tree.md Amendment 7; research only).
   * R5's calls send `max_tokens` 24,000, and a call cut by the cap or the 240 s deadline is not retried inside `common.llm`. A call abandoned at the deadline was still billed to the end by the provider (≈ $0.045, about half the OpenRouter bill in the week of 10-26).
   * `common.llm(..., max_tokens=None)`: without a cap, the request and the retries are byte-for-byte as before. Contract test: `test_capped_call_is_bounded_and_not_retried`.

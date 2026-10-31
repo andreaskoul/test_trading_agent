@@ -37,6 +37,24 @@ import broker
 from broker import ET, api
 from common import MODE, P7_START, STATE, week_dir
 
+def alpaca_closes(syms, day):
+    """Unadjusted SIP daily-bar closes of `day` from Alpaca, beside the yfinance close used for slippage, so a gap
+    between close sources shows up in reconciliation (2026-10-31, operational). Empty on any failure."""
+    out = {}
+    try:
+        for i in range(0, len(syms), 100):
+            q = (f"/v2/stocks/bars?symbols={','.join(syms[i:i + 100])}&timeframe=1Day&feed=sip&adjustment=raw"
+                 f"&start={pd.Timestamp(day).date()}&end={(pd.Timestamp(day) + pd.Timedelta(days=1)).date()}")
+            s_, r = api("GET", q, base=broker.DATA)
+            for k, bars in ((r or {}).get("bars") or {}).items():
+                for b in bars:
+                    if str(pd.Timestamp(b["t"]).tz_convert("America/New_York").date()) == str(pd.Timestamp(day).date()):
+                        out[k] = float(b["c"])
+    except Exception as exc:
+        print(f"reconcile: Alpaca closes unavailable ({exc!r})")
+    return out
+
+
 mode = sys.argv[1]
 assert mode in ("plan", "trade", "reconcile", "filltest"), mode
 GROSS_MAX, NAME_MAX, BOOK_GROSS_MAX = 1.8, 0.12, 3.0
@@ -119,6 +137,7 @@ if mode == "reconcile":
             close = px.rename(columns=lambda c: c.replace("-", ".")).iloc[-1] if len(px) else pd.Series(dtype=float)
             F["close"] = F["symbol"].map(close)
             F["slip_bp"] = np.where(F["side"] == "buy", 1, -1) * (F["fill"] / F["close"] - 1) * 1e4   # + = worse than the close
+            F["close_alpaca"] = F["symbol"].map(alpaca_closes(syms, day))   # the second close source, compared only
         F.insert(0, "asof", ex["asof"]); F.insert(1, "exec_day", dstr); F.insert(2, "source", kind)
         fp = os.path.join(EXEC, "fills.csv")
         old = pd.read_csv(fp, dtype={"asof": str, "exec_day": str}) if os.path.exists(fp) else pd.DataFrame({"asof": [], "exec_day": []})

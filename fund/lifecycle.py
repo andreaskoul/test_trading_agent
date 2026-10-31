@@ -55,6 +55,8 @@ import numpy as np
 import pandas as pd
 
 from common import MODE, P7_START, STATE, asof_from_env, llm, load, news_cutoff, require, save, save_prompts
+from entry_check import entry_day_check
+from newsio import finnhub_news, norm
 from review_rules import review_rule
 
 mode = sys.argv[1]
@@ -636,20 +638,6 @@ Return JSON only: {"conditions": [{"id": int, "status": "matched"|"partial"|"not
 "hard_news_same_direction": {"present": bool, "quote": str, "article": int or null}}"""
 
 
-def finnhub_news(t, lo, hi):
-    key = os.environ["FINNHUB_API_KEY"]
-    url = f"https://finnhub.io/api/v1/company-news?symbol={t.replace('.', '-')}&from={lo.date()}&to={hi.date()}&token={key}"
-    for k in range(3):
-        try:
-            with urllib.request.urlopen(url, timeout=60) as r:
-                arts = json.load(r)
-            time.sleep(1.05)
-            return [a for a in arts if lo.timestamp() < a.get("datetime", 0) <= hi.timestamp()]
-        except Exception:
-            time.sleep(5 * (k + 1))
-    return None
-
-
 def kill_check(day, close_ts, lots, seen, news_dir=None):
     """One day's checks for the open lots, on news published up to close_ts; logged to lifecycle/news/<day>.json
     (a plan run writes elsewhere) and never rerun."""
@@ -863,10 +851,6 @@ def review_decide(L, d, label, kill_hit, med_new, prev_day, e_today, hold=False)
             "target_R": L["R"] + TARGET_K * w_new if dec == "extend" else None}
 
 
-def norm(s):
-    return " ".join("".join(ch for ch in str(s or "").lower() if ch.isalnum() or ch == " ").split())
-
-
 # ======================================================================= the book
 def caps(w, sector, beta):
     """The champion's risk rules (pm_risk.risk, in the same order): sector net, dollar net, then the SPY hedge."""
@@ -909,11 +893,38 @@ def control_news(day, close_ts, lots, seen, fetch_news):
     live_lots = json.load(open(lp))["lots"] if os.path.exists(lp) else {}
     shared = {L["id"]: live_lots[L["id"]] for L in lots if L["id"] in live_lots}
     rest = [L for L in lots if L["id"] not in live_lots]
-    part = kill_check(day, close_ts, rest, seen, os.path.join(LC, "control", "news_own")) if rest and fetch_news else {"lots": {}}
-    rec = {"day": str(day.date()), "close_ts": close_ts, "lots": {**shared, **part.get("lots", {})},
-           "shared_from_live": sorted(shared), "own": sorted(x["id"] for x in rest)}
+    # 2026-10-31 (operational, shadow only): own lots checked at the live check's time by trade() are used as made, so
+    # the control reads no later news than the fund; a lot without such a check is checked here, at the close
+    ep = os.path.join(LC, "control", "news_own_live", f"{day.date()}.json")
+    early = json.load(open(ep))["lots"] if os.path.exists(ep) else {}
+    at_live = {L["id"]: early[L["id"]] for L in rest if L["id"] in early}
+    late = [L for L in rest if L["id"] not in early]
+    part = kill_check(day, close_ts, late, seen, os.path.join(LC, "control", "news_own")) if late and fetch_news else {"lots": {}}
+    rec = {"day": str(day.date()), "close_ts": close_ts, "lots": {**shared, **at_live, **part.get("lots", {})},
+           "shared_from_live": sorted(shared), "own": sorted(x["id"] for x in rest),
+           "own_at_live_time": sorted(at_live), "own_at_close": sorted(x["id"] for x in late)}
     json.dump(rec, open(p, "w"), indent=1)
     return rec
+
+
+def control_early_checks(day, hi_ts):
+    """Called by trade() right after the fund's T-20 news checks: the control's own open lots (as of its last rebuild,
+    not held by the fund today) get the same kill check with the same cutoff, into control/news_own_live/<day>.json,
+    which control_news() then uses. Shadow only; a failure leaves the nightly check at the close."""
+    sp = os.path.join(LC, "control", "state.json")
+    if not os.path.exists(sp):
+        return "no control state"
+    lp = os.path.join(LC, "news", f"{day.date()}.json")
+    live_ids = set(json.load(open(lp))["lots"]) if os.path.exists(lp) else set()
+    own = [L for L in json.load(open(sp)).get("lots", []) if L["id"] not in live_ids]
+    if not own:
+        return "no own lots"
+    seen = {}
+    for f in sorted(glob.glob(os.path.join(LC, "control", "news", "*.json"))):
+        for i, k in json.load(open(f))["lots"].items():
+            seen.setdefault(i, set()).update(k.get("headlines", []))
+    kill_check(day, hi_ts, own, seen, os.path.join(LC, "control", "news_own_live"))
+    return f"{len(own)} own lots checked at the live time"
 
 
 def seed_reviews(day, ids, rv_dir):
@@ -1386,7 +1397,7 @@ def control():
         drift = [d for d, v in old.items() if any(r["date"] == d and abs(r["nav"] - v) > 0.005 for r in st["rows"])]
         if drift:
             ck["fails"].append(f"control: recorded days changed on rebuild: {drift[:5]}")
-    for p in sorted(glob.glob(os.path.join(cd, "news_own", "*.json"))):
+    for p in sorted(glob.glob(os.path.join(cd, "news_own", "*.json")) + glob.glob(os.path.join(cd, "news_own_live", "*.json"))):
         rec = json.load(open(p))
         if any(k.get("max_published") and k["max_published"] > rec["close_ts"] for k in rec["lots"].values()):
             ck["fails"].append(f"control: look-ahead, news after the close used on {rec['day']}")
@@ -1470,19 +1481,34 @@ def trade(plan_only):
         s_, cal = broker.api("GET", f"/v2/calendar?start={(day - pd.Timedelta(days=10)).date()}&end={day.date()}")
         prev = max(pd.Timestamp(x["date"]) for x in cal if pd.Timestamp(x["date"]) < day)
         last = closes(set(tickers), prev - pd.Timedelta(days=10), prev).loc[:prev].iloc[-1]
-        px = broker.prices(tickers)
+        meta = broker.quotes(tickers)                   # the prices below with their source and timestamps (logged)
+        px = {t: q["px"] for t, q in meta.items()}
         ret = {t: px[t] / last[t] - 1 for t in tickers if t in px and t in last and last[t] > 0}
         st = run(live={"day": day, "ret": ret, "news_ts": int(close_at - NEWS_AT), "news_dir": news_dir})
         print(f"lifecycle {phase}: {len(st['live']['lots'])} lots, {len(st['live']['actions'])} actions", flush=True)
-        return st["live"], px, ret
+        return st["live"], px, ret, meta
 
     if clock.now() < close_at - NEWS_AT and not plan_only:
         print(f"lifecycle trade: waiting for the news checks at {datetime.fromtimestamp(close_at - NEWS_AT, broker.ET):%H:%M:%S} ET", flush=True)
         clock.sleep_until(close_at - NEWS_AT)
-    decide("news checks (T-20 min)")                       # kill checks run and are logged now; prices refresh below
-    if not plan_only:
+    meta_news = decide("news checks (T-20 min)")[3]        # kill checks run and are logged now; prices refresh below
+    early = {}
+    if not plan_only:                                     # the shadow control's own lots, checked at the same time
+        import threading
+
+        def _early():
+            try:
+                early["status"] = control_early_checks(day, int(close_at - NEWS_AT))
+            except Exception as exc:                      # shadow only: never delays or fails the trade
+                early["status"] = f"failed: {exc!r}"
+        early_th = threading.Thread(target=_early, daemon=True)
+        early_th.start()
         clock.sleep_until(close_at - PRICES_AT)
-    lv, px, ret = decide("decision (T-3 min)")
+    lv, px, ret, meta_dec = decide("decision (T-3 min)")
+    try:                                                  # logged only: the move on entry day, "priced in" at entry
+        entry_check = entry_day_check(C, day, ret, {"P_CAP": P_CAP, "H_MIN": H_MIN, "H8_MAX": H8_MAX, "STALE_AT": STALE_AT})
+    except Exception as exc:                              # a logging failure must never stop the trade
+        entry_check = {"error": repr(exc)}
     nav = lv["nav"]
     target = {L["ticker"]: L["n"] / nav for L in lv["lots"]}
     if abs(lv["hedge"]) > 1e-9:
@@ -1512,7 +1538,8 @@ def trade(plan_only):
            "style": broker.STYLE, "nav_model": nav, "hedge_w": lv["hedge"] / nav, "actions": lv["actions"], "cool": lv["cool"],
            "lots_after": [{**{k: v for k, v in L.items() if k != "n"}, "w": L["n"] / nav} for L in lv["lots"]],
            "prices": {t: px.get(t) for t in target}, "equity": equity, "current_qty": cur, "target_weights": target,
-           "orders": orders, "problems": [], "status": "planned" if plan_only else "sending", "reviews": lv.get("reviews", [])}
+           "orders": orders, "problems": [], "status": "planned" if plan_only else "sending", "reviews": lv.get("reviews", []),
+           "prices_meta": {"news": meta_news, "decision": meta_dec}, "entry_check": entry_check}
     json.dump(rec, open(log_p, "w"), indent=1, default=str)
     print(f"lifecycle {day.date()}: {len(lv['lots'])} lots, actions "
           f"{[(e['ticker'], e['action']) for e in lv['actions']]}; {len(orders)} orders", flush=True)
@@ -1526,8 +1553,10 @@ def trade(plan_only):
         if not x["client_order_id"].startswith(mine):
             broker.api("DELETE", f"/v2/orders/{x['id']}")
     broker.send(orders, close_at, clock)
+    early_th.join(timeout=600)
     rec.update(orders=orders, problems=broker.problems_of(orders), status="submitted",
-               submitted_at=datetime.now(timezone.utc).isoformat(timespec="seconds"))
+               submitted_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+               control_early=early.get("status", "still running at the record"))
     json.dump(rec, open(log_p, "w"), indent=1, default=str)
     print(f"lifecycle {day.date()}: {sum(o['status'] == 'filled' for o in orders)}/{len(orders)} orders fully filled")
     if rec["problems"]:

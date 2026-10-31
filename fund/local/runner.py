@@ -18,6 +18,7 @@ import argparse
 import calendar
 import datetime as dt
 import fcntl
+import hashlib
 import json
 import os
 import re
@@ -362,6 +363,11 @@ def job_execute(j, a):
         # live rebuild; its records go to fund-data with the rest (lifecycle/control/); a failed gate fails the job
         # after the commit step below has saved the records
         j.step("Protocol 7B shadow control (P7 + A8/A9)", "python fund/lifecycle.py control", when="always")
+        # measurement and reporting only (2026-10-31): late-served news, and what followed each decision
+        j.step("News audit: articles served after the live check (measurement only)", "python fund/news_audit.py",
+               when="always", allow_fail=True)
+        j.step("Decision ledger: what followed each decision (reporting only)", "python fund/attribution.py",
+               when="always", allow_fail=True)
     if mode != "plan":
         j.step("Position ledger (Excel)", "python fund/ledger.py", when="always", allow_fail=True)
     if mode != "plan" or a.resume:
@@ -569,14 +575,35 @@ def run(args):
 KNOWN = {"archive": {"archive", "context_archive"},
          "weekly": {"common", "screen", "ideate", "emb_store", "research", "commit_state", "analysts", "redteam", "pm_risk",
                     "fx_desk", "shadow", "macro_desk", "neighbours", "shadow_info", "lifecycle", "ic_memo", "score", "ledger"},
-         "execute": {"execute", "ledger", "broker", "lifecycle"},
+         "execute": {"execute", "ledger", "broker", "lifecycle", "news_audit", "attribution"},
          "review": {"review", "ledger", "broker", "review_context"},
          "lifecycle": {"lifecycle", "ledger", "broker"}}
 WORKFLOW = {"archive": "fund_archive.yml", "weekly": "fund_weekly.yml", "execute": "fund_execute.yml", "review": "fund_review.yml",
             "lifecycle": "fund_lifecycle.yml"}
 
 
+def stale_runner(j):
+    """The installed runner (~/.fund-runner/runner.py) must equal fund/local/runner.py on main. On 2026-10-30 it was
+    found three days old: the Protocol 7B shadow control step, merged on 10-27, had never run. One issue per new
+    version of main's runner; the job itself still runs."""
+    try:
+        mine, main_ = open(os.path.abspath(__file__)).read(), open(os.path.join(j.work, "fund", "local", "runner.py")).read()
+    except OSError:
+        return
+    if mine == main_:
+        return
+    h = hashlib.sha256(main_.encode()).hexdigest()[:12]
+    mark = os.path.join(HOME, "stale-runner")
+    log(f"WARNING: the installed runner differs from main's fund/local/runner.py ({h}): run bash fund/local/install.sh")
+    if not os.path.exists(mark) or open(mark).read() != h:
+        open(mark, "w").write(h)
+        subprocess.run(["gh", "issue", "create", "-R", GH_REPO, "--title", f"Fund local runner is out of date (main {h})",
+                        "--body", "~/.fund-runner/runner.py differs from fund/local/runner.py on main, so jobs run the old "
+                                  "steps. Re-run `bash fund/local/install.sh` from a checkout of main. @andreaskoul"], env=j.env)
+
+
 def drift(j):
+    stale_runner(j)
     if j.name not in WORKFLOW:                      # local-only jobs (filltest) have no workflow to compare
         return
     try:

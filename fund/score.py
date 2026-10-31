@@ -16,6 +16,7 @@ import pandas as pd
 import yfinance as yf
 
 from common import MODE, P7_START, STATE
+import ops_stats
 
 base = os.path.join(STATE, MODE)
 OUT = os.path.join(base, "performance")
@@ -333,11 +334,16 @@ dq = nw_t((Pn["fund"] - Pn["quant"]).dropna()) if {"fund", "quant"} <= set(Pn) e
 xs_t = nw_t(X.b_analyst) if len(X) else np.nan
 weeks = [a for a in books_ok if first and a >= first and pd.Timestamp(a) + pd.Timedelta(days=8, hours=23) <= now]
 on_time = np.mean([books_ok[a] for a in weeks]) if weeks else np.nan
-exs = {a: json.load(open(os.path.join(base, a, "execution.json"))) for a in weeks if os.path.exists(os.path.join(base, a, "execution.json"))}
-executed = np.mean([exs.get(a, {}).get("status") == "submitted" and (exs[a].get("reconciled") or {}).get("n_not_filled", 1) == 0
-                    for a in weeks]) if weeks else np.nan
+if P7_FIRST and first == P7_FIRST:                  # Protocol 7 trades every session: read the lifecycle live records
+    executed, not_executed = ops_stats.executed_share(weeks, os.path.join(base, "lifecycle", "live"),
+                                                      LC.index if len(LC) else [])
+else:
+    exs = {a: json.load(open(os.path.join(base, a, "execution.json"))) for a in weeks if os.path.exists(os.path.join(base, a, "execution.json"))}
+    executed = np.mean([exs.get(a, {}).get("status") == "submitted" and (exs[a].get("reconciled") or {}).get("n_not_filled", 1) == 0
+                        for a in weeks]) if weeks else np.nan
 fills = pd.read_csv(os.path.join(EXEC, "fills.csv")) if os.path.exists(os.path.join(EXEC, "fills.csv")) else pd.DataFrame()
 slip = float(fills.loc[fills["leg"] != "flatten", "slip_bp"].abs().median()) if len(fills) else np.nan
+cost = ops_stats.cost_stats(fills) if len(fills) else ops_stats.cost_stats(pd.DataFrame(columns=["source"]))
 halted = os.path.exists(os.path.join(base, "HALT"))
 ops_ok = bool(on_time >= 0.9 and executed >= 0.9 and slip <= 10)
 look = max([L for L in LOOKS if n >= L], default=None)
@@ -392,6 +398,8 @@ g = [f"# Go-live gate ({MODE})", "", f"**{verdict}**", "",
      f"| decisions on time | {on_time:.0%} | ≥ 90% |",
      f"| weeks fully executed | {executed:.0%} | ≥ 90% |",
      f"| median abs slippage vs close | {slip:.1f} bp | ≤ 10 bp |",
+     f"| signed cost vs close, value-weighted (lifecycle fills: {cost['n']}, {cost['days']} sessions) | "
+     f"{cost['mean_bp']:+.2f} bp (95% upper {cost['upper95_bp']:+.2f}) | reported; the registered model cost is 5 bp/side |",
      f"| risk halt | {'yes' if halted else 'no'} | 10% drawdown or 5% weekly loss on broker NAV |"]
 nav_p = os.path.join(EXEC, "nav.csv")
 if os.path.exists(nav_p) and n:

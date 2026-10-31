@@ -81,6 +81,15 @@ jobs:
           python fund/lifecycle.py replay
           python fund/lifecycle.py control
 
+      - name: News audit and decision ledger (measurement and reporting only)
+        if: ${{ always() && steps.m.outputs.mode == 'reconcile' }}
+        continue-on-error: true
+        env:
+          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
+        run: |
+          python fund/news_audit.py
+          python fund/attribution.py
+
       - name: Position ledger (Excel)
         if: ${{ always() && steps.m.outputs.mode != 'plan' }}
         continue-on-error: true
