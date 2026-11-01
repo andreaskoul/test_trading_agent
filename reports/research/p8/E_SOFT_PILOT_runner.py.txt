@@ -1,0 +1,213 @@
+"""E3 classifier on a free OpenRouter model (PREREG_family_E.md Amendment 4). Temporary runner: the repo's model
+setting (fund/common.py MODEL) is not changed; this process alone switches common.MODEL per call.
+
+    python3 ~/.claude/hooks/with_secrets.py 'python3 /tmp/soft_free.py pilot <model>'   # 100 fit shocks; one process per model
+    python3 ~/.claude/hooks/with_secrets.py 'python3 /tmp/soft_free.py decide'  # the Amendment 4 rule -> soft_model.json
+    python3 ~/.claude/hooks/with_secrets.py 'python3 /tmp/soft_free.py label'   # resumable; stops at the daily allowance
+"""
+import json
+import os
+import threading
+from concurrent.futures import ThreadPoolExecutor
+import random
+import sys
+import time
+import urllib.request
+
+WT = "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/bridge-cse_019mcjbKCjkxWjxJxaR8xan9"
+os.environ.setdefault("FUND_LLM_LOG_DIR", os.path.join(WT, ".cache/p8/llm_calls"))   # keep out of the runner's spend log
+sys.path.insert(0, os.path.join(WT, "research/p8"))
+sys.path.insert(0, os.path.join(WT, "fund"))
+import numpy as np                                    # noqa: E402
+import family_e_soft as FS                            # noqa: E402
+import common                                         # noqa: E402
+import guards                                         # noqa: E402
+
+FUND_MODEL = common.MODEL
+CANDS = ["google/gemma-4-31b-it:free", "thinkingmachines/inkling:free", "nvidia/nemotron-3-ultra-550b-a55b:free"]
+PILOT = os.path.join(FS.PX.CACHE, "soft_pilot.jsonl")
+CHOICE = os.path.join(FS.PX.CACHE, "soft_model.json")
+PLIST = os.path.join(FS.PX.CACHE, "soft_pilot_list.json")      # the 100 pilot shocks, drawn once and frozen
+GAP, FLOOR, WAIT_429, MAX_429 = 4.0, 25, 60, 15        # 15 requests a minute; stop below 25 left today
+_orig = common.llm
+_last = {"t": 0.0, "n": 0, "left": None}
+_lock = threading.Lock()
+WORKERS = {"free": 3, "paid": 6}                       # free: 3 in flight, still at most 15 starts a minute
+
+
+class DailyLimit(Exception):
+    pass
+
+
+def allowance():
+    r = urllib.request.Request("https://openrouter.ai/api/v1/key",
+                               headers={"Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}"})
+    return json.load(urllib.request.urlopen(r, timeout=30))["data"]["free_model_daily_requests"]["remaining"]
+
+
+def _gate():
+    """One process = one model: request starts at least GAP s apart; stop near the account's daily free allowance."""
+    with _lock:
+        if _last["n"] % 20 == 0 or _last["left"] is None:
+            _last["left"] = allowance()
+        if _last["left"] - (_last["n"] % 20) < FLOOR:
+            raise DailyLimit(f"free daily allowance below {FLOOR}; resume after 00:00 UTC")
+        w = _last["t"] + GAP - time.time()
+        if w > 0:
+            time.sleep(w)
+        _last["t"] = time.time()
+        _last["n"] += 1
+
+
+def limited_llm(system, user, check=None, tries=3, temperature=0.0, max_tokens=None):
+    """common.llm one request at a time, behind the rate gate for free models; a 429 is waited out, never a try."""
+    free = common.MODEL.endswith(":free")
+    for _ in range(tries):
+        n429 = 0
+        while True:
+            if free:
+                _gate()
+            st, out, meta, err = _orig(system, user, check, tries=1, temperature=temperature, max_tokens=max_tokens)
+            if st != "ok" and err and err.startswith("HTTP 429"):
+                n429 += 1
+                if n429 > MAX_429:
+                    raise RuntimeError(f"{common.MODEL}: {n429} rate-limit answers in a row: {err[:200]}")
+                time.sleep(WAIT_429)
+                continue
+            break
+        if st == "ok":
+            return st, out, meta, err
+        if max_tokens and err and ("max_tokens" in err or "TimeoutError" in err):
+            break
+    return st, out, meta, err
+
+
+guards.llm = limited_llm
+
+
+def label(model, r):
+    assert common.MODEL == model
+    user = f"Company ticker {r['ticker']}. Headlines of {r['session'].date()}:\n" + "\n".join(f"- {h}" for h in r["headlines"])
+    st, out, meta, err, glog = guards.guarded_llm(FS.SYSTEM, user, FS._check, max_tokens=FS.MAX_TOKENS)
+    return {"ticker": r["ticker"], "session": str(r["session"].date()), "status": st, "out": out, "error": err,
+            "model": model, "served": meta.get("model"), "provider": meta.get("provider"), "rejected": glog["attempts"]}
+
+
+def soft(o):
+    return o["event_type"] in FS.SOFT and not o["hard"]
+
+
+def shocks_win():
+    S = FS.shocks(FS.returns_soft().index)
+    S["win"] = np.where(S["session"] >= FS.HOLD[0], "hold", np.where(S["session"] >= FS.FIT[0], "fit", "pre"))
+    return S[S["win"] != "pre"]
+
+
+def pilot(model):
+    """One model per process (common.MODEL is process-wide), so the models run side by side, each under its own gate."""
+    common.MODEL = model
+    S = shocks_win()
+    if not os.path.exists(PLIST):
+        fit = sorted(S[S["win"] == "fit"].index)
+        idx = sorted(random.Random(2).sample(fit, 100))
+        json.dump({"names": len(set(S["ticker"])), "shocks": [[S.loc[i, "ticker"], str(S.loc[i, "session"].date())] for i in idx]},
+                  open(PLIST, "w"))
+    pl = json.load(open(PLIST))
+    keys = {tuple(k) for k in pl["shocks"]}
+    S = S[[(t, str(d.date())) in keys for t, d in zip(S["ticker"], S["session"])]]
+    assert len(S) == 100, f"pilot list: {len(S)} of 100 found"
+    done = {(x["model"], x["ticker"], x["session"]) for x in map(json.loads, open(PILOT))} if os.path.exists(PILOT) else set()
+    todo = [r for _, r in S.iterrows() if (model, r["ticker"], str(r["session"].date())) not in done]
+    names = pl["names"]
+
+    def one(r):
+        try:
+            x = label(model, r)
+        except DailyLimit as e:
+            return {"stop": str(e)}
+        except RuntimeError as e:                              # a model that will not serve: the answer fails
+            x = {"ticker": r["ticker"], "session": str(r["session"].date()), "status": "failed", "out": None,
+                 "error": str(e), "model": model}
+        x["pilot_n_names"] = names
+        return x
+    k = 0
+    with ThreadPoolExecutor(WORKERS["free" if model.endswith(":free") else "paid"]) as ex:
+        for x in ex.map(one, todo):
+            if "stop" in x:
+                print(x["stop"]); continue
+            with _lock, open(PILOT, "a") as fh:
+                fh.write(json.dumps(x, default=str) + "\n")
+            k += 1
+    print(f"{model}: {k} labelled", flush=True)
+
+
+def decide():
+    keys = {tuple(k) for k in json.load(open(PLIST))["shocks"]}
+    P = [x for x in map(json.loads, open(PILOT)) if (x["ticker"], x["session"]) in keys]
+    ref = {(x["ticker"], x["session"]): soft(x["out"]) for x in P if x["model"] == FUND_MODEL and x["status"] == "ok"}
+    rows = []
+    for k, m in enumerate(CANDS):
+        mine = {(x["ticker"], x["session"]): x for x in P if x["model"] == m}
+        ok = {key: soft(x["out"]) for key, x in mine.items() if x["status"] == "ok"}
+        both = [key for key in ok if key in ref]
+        agree = float(np.mean([ok[key] == ref[key] for key in both])) if both else 0.0
+        rows.append({"model": m, "n": len(mine), "valid": len(ok), "both": len(both), "soft_agreement": agree,
+                     "qualifies": len(mine) == 100 and len(ok) >= 95 and agree >= 0.85, "order": k})
+    q = sorted([r for r in rows if r["qualifies"]], key=lambda r: (-r["soft_agreement"], -r["valid"], r["order"]))
+    out = {"fund_model": FUND_MODEL, "fund_valid": len(ref), "candidates": rows, "chosen": q[0]["model"] if q else FUND_MODEL,
+           "rule": "PREREG_family_E.md Amendment 4"}
+    json.dump(out, open(CHOICE, "w"), indent=1)
+    print(json.dumps(out, indent=1))
+
+
+def run_label():
+    model = json.load(open(CHOICE))["chosen"]
+    if not model.endswith(":free"):
+        raise SystemExit(f"chosen model is the fund's ({model}): run family_e_soft.py classify instead")
+    S = shocks_win()
+    done = {(x["ticker"], x["session"]) for x in map(json.loads, open(FS.LABELS))
+            if x["status"] != "budget_stop"} if os.path.exists(FS.LABELS) else set()
+    pick = []                                                     # the same selection as family_e_soft.classify
+    for w in ("hold", "fit"):
+        g = S[S["win"] == w]
+        room = FS.CAP - len(pick)
+        idx = list(g.index)
+        if len(idx) > room:
+            random.Random(0).shuffle(idx)
+            idx = sorted(idx[:room])
+        pick += idx
+    todo = [S.loc[i] for i in pick if (S.loc[i, "ticker"], str(S.loc[i, "session"].date())) not in done]
+    kept = {(x["ticker"], x["session"]): x for x in map(json.loads, open(PILOT)) if x["model"] == model and x["status"] == "ok"}
+    print(f"model {model}; shocks {len(S)} ({(S['win'] == 'hold').sum()} holdout); selected {len(pick)}; to do {len(todo)}", flush=True)
+    common.MODEL = model
+
+    def one(r):
+        key = (r["ticker"], str(r["session"].date()))
+        if key in kept:
+            x = {**kept[key], "from_pilot": True}
+        else:
+            try:
+                x = label(model, r)
+            except DailyLimit as e:
+                return {"stop": str(e)}
+        x.update({"win": r["win"], "n": int(r["n"]), "first_et": str(r["first_et"])})
+        return x
+    k = 0
+    with open(FS.LABELS, "a") as fh, ThreadPoolExecutor(WORKERS["free"]) as ex:
+        for x in ex.map(one, todo):                            # in selection order: the holdout first
+            if "stop" in x:
+                continue
+            fh.write(json.dumps(x, default=str) + "\n"); fh.flush()
+            k += 1
+            if k % 100 == 1:
+                print(f"labelled {k}/{len(todo)}", flush=True)
+    print(f"this run: {k} of {len(todo)}" + ("" if k == len(todo) else "; the daily allowance stopped the rest"))
+    L = [json.loads(x) for x in open(FS.LABELS)]
+    print(f"labels: {len(L)}, ok {sum(x['status'] == 'ok' for x in L)}")
+
+
+if __name__ == "__main__":
+    if sys.argv[1] == "pilot":
+        pilot(sys.argv[2])
+    else:
+        {"decide": decide, "label": run_label}[sys.argv[1]]()

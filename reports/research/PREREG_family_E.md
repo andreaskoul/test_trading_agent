@@ -278,3 +278,58 @@ V_industry − V_week∩industry, at least either one-way variance, t with min(G
 covers five p-values. With it, the rejection rate under the null is 4.0% in 400 draws, and power is 0.82 at a 0.15 sd
 effect. Only rule A and E2's primary use this test.
 
+## Amendment 3 (2026-10-31): Finnhub shocks — when the market knew, and when the fund could
+
+**What had been seen.** No Finnhub shock data was fetched before this amendment. The validation read (E1, E2) does
+not involve E3.
+
+**Change.** §2 applied the vendor's serving lag to "count for that session". That would also move the reaction day
+used for the direction d to the session after the news, so d would measure the day after the news, not the news.
+The two times are now separate:
+* **Market time.** A shock's articles are counted, and its event session set, by publish time with the 16:00 ET rule
+  (as the 8-K events). d is the sign of the residual on that session.
+* **Fund time.** The fund's entry uses publish time plus L, where L is the 95th percentile of the late-served lag
+  measured by `fund/news_audit.py` over the live check days to date. It is recorded in the E3 output. The as-of is the
+  first Wednesday whose 22:00 UTC cutoff is at or after the fund time; entry is the next session. This is the
+  conservative side: a later entry.
+* **Counts.** Articles per session come from Finnhub company news, fetched in windows small enough that no response is
+  truncated: a window returning 200 or more articles is split.
+
+Everything else in §4 E3 and rule A is unchanged.
+
+
+## Amendment 4 (2026-11-01): the classifier's model
+
+**What had been seen.** Finnhub articles for about 430 of 503 names (headlines and publish times). No shock had been
+labelled, no classifier call had been made, and no return had been joined to a shock.
+
+**Change (owner's request).** E3's classifier runs on one free OpenRouter model instead of the fund's model, if the
+free model labels like the fund's model. The fund's model is unchanged everywhere else, including the live desks.
+Rule A asks whether the *fund's* soft entries pay, so a stand-in must agree with it. The rule:
+1. **Candidates** (free on 2026-11-01, general-purpose instruct models, no previews or routers):
+   `google/gemma-4-31b-it:free`, `thinkingmachines/inkling:free`, `nvidia/nemotron-3-ultra-550b-a55b:free`.
+2. **Pilot.** 100 fit-window shocks (2025-11-01 – 2026-04-30), a seeded random draw (seed 2) from the shocks of the
+   names downloaded at the time; the list is saved with the pilot. Each candidate and the fund's model
+   (`deepseek/deepseek-v4.1-flash`) label them with E3's prompt, schema, temperature 0 and `guards.guarded_llm`.
+3. **Qualifies** if ≥ 95 of the 100 answers pass the schema and its soft / not-soft label agrees with the fund's model
+   on ≥ 85% of the shocks both labelled. The qualifying candidate with the highest agreement is used (ties: more valid
+   answers, then the order above). If none qualifies, the fund's model labels everything, as registered (≤ $5).
+4. **One model labels every shock**; models are never mixed. The model id served is recorded with each label. The
+   chosen model's pilot labels are kept as its labels for those shocks.
+5. **Rate limits.** Free models: at most 15 requests a minute, one at a time; a 429 answer is waited out (60 s) and
+   the request repeated, and it is never a label. Labelling stops when the account's free daily allowance falls below
+   25 requests and resumes the next UTC day. The holdout is still labelled first.
+6. Pilot agreement and the chosen model are reported in the E3 output. Nothing else in E3 or rule A changes.
+
+## Amendment 5 (2026-11-01): Finnhub symbols for class shares
+
+**What had been seen.** The download of all 503 names, and labels for about 1,700 holdout shocks of 501 of them. No
+return had been joined to a shock.
+
+**Defect.** The download wrote Finnhub symbols with a dash (`BRK-B`, `BF-B`), as for Yahoo. Finnhub uses the dot:
+`BRK.B` returned 249 October articles where `BRK-B` returned none (likewise `BF.B` 21, `BF-B` 0). So BRK.B and BF.B had
+no articles, against the declared universe (CLAUDE.md rule 3).
+
+**Change.** Those two names are fetched again under their own symbols, and their shocks are labelled like the others.
+Nothing else changes. (The same dash mapping is in the live fund's news fetches, `fund/screen.py` and
+`fund/newsio.py`; that is reported to the owner as an operational defect, not changed here.)
