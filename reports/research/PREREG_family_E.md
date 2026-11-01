@@ -297,3 +297,26 @@ The two times are now separate:
 
 Everything else in §4 E3 and rule A is unchanged.
 
+
+## Amendment 4 (2026-11-01): the classifier's model
+
+**What had been seen.** Finnhub articles for about 430 of 503 names (headlines and publish times). No shock had been
+labelled, no classifier call had been made, and no return had been joined to a shock.
+
+**Change (owner's request).** E3's classifier runs on one free OpenRouter model instead of the fund's model, if the
+free model labels like the fund's model. The fund's model is unchanged everywhere else, including the live desks.
+Rule A asks whether the *fund's* soft entries pay, so a stand-in must agree with it. The rule:
+1. **Candidates** (free on 2026-11-01, general-purpose instruct models, no previews or routers):
+   `google/gemma-4-31b-it:free`, `thinkingmachines/inkling:free`, `nvidia/nemotron-3-ultra-550b-a55b:free`.
+2. **Pilot.** 100 fit-window shocks (2025-11-01 – 2026-04-30), a seeded random draw (seed 2) from the shocks of the
+   names downloaded at the time; the list is saved with the pilot. Each candidate and the fund's model
+   (`deepseek/deepseek-v4.1-flash`) label them with E3's prompt, schema, temperature 0 and `guards.guarded_llm`.
+3. **Qualifies** if ≥ 95 of the 100 answers pass the schema and its soft / not-soft label agrees with the fund's model
+   on ≥ 85% of the shocks both labelled. The qualifying candidate with the highest agreement is used (ties: more valid
+   answers, then the order above). If none qualifies, the fund's model labels everything, as registered (≤ $5).
+4. **One model labels every shock**; models are never mixed. The model id served is recorded with each label. The
+   chosen model's pilot labels are kept as its labels for those shocks.
+5. **Rate limits.** Free models: at most 15 requests a minute, one at a time; a 429 answer is waited out (60 s) and
+   the request repeated, and it is never a label. Labelling stops when the account's free daily allowance falls below
+   25 requests and resumes the next UTC day. The holdout is still labelled first.
+6. Pilot agreement and the chosen model are reported in the E3 output. Nothing else in E3 or rule A changes.
