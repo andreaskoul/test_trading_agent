@@ -43,6 +43,7 @@ W0, W1 = pd.Timestamp("2025-10-25"), pd.Timestamp("2026-10-31")
 FIT = (pd.Timestamp("2025-11-01"), pd.Timestamp("2026-04-30"))
 HOLD = (pd.Timestamp("2026-05-01"), pd.Timestamp("2026-10-31"))
 CAP, SPLIT_AT = 3000, 200
+BUDGET, MAX_TOKENS = 5.0, 1500                                # $ per classify run; provider-side answer cap
 SOFT = {"product_launch", "partnership", "leadership", "macro_readthrough", "mna_rumour", "other"}
 TYPES = ["earnings", "guidance", "capital_return", "analyst_revisions", "legal_regulatory", "product_launch", "partnership",
          "leadership", "macro_readthrough", "mna_rumour", "dated_catalyst", "other"]
@@ -204,7 +205,8 @@ def classify():
     S = shocks(R.index)
     S["win"] = np.where(S["session"] >= HOLD[0], "hold", np.where(S["session"] >= FIT[0], "fit", "pre"))
     S = S[S["win"] != "pre"]
-    done = {(x["ticker"], x["session"]) for x in map(json.loads, open(LABELS))} if os.path.exists(LABELS) else set()
+    done = {(x["ticker"], x["session"]) for x in map(json.loads, open(LABELS))
+            if x["status"] != "budget_stop"} if os.path.exists(LABELS) else set()
     pick = []
     for w in ("hold", "fit"):
         g = S[S["win"] == w]
@@ -217,9 +219,14 @@ def classify():
     todo = [S.loc[i] for i in pick if (S.loc[i, "ticker"], str(S.loc[i, "session"].date())) not in done]
     print(f"shocks: {len(S)} ({(S['win'] == 'hold').sum()} holdout); labelled {len(pick)} at most; to do {len(todo)}", flush=True)
 
+    spent = [0.0]
+
     def one(r):
+        if spent[0] >= BUDGET:                                     # cost stop: the rest is not labelled (missing)
+            return {"ticker": r["ticker"], "session": str(r["session"].date()), "win": r["win"], "status": "budget_stop"}
         user = f"Company ticker {r['ticker']}. Headlines of {r['session'].date()}:\n" + "\n".join(f"- {h}" for h in r["headlines"])
-        st, out, meta, err, glog = guards.guarded_llm(SYSTEM, user, _check)
+        st, out, meta, err, glog = guards.guarded_llm(SYSTEM, user, _check, max_tokens=MAX_TOKENS)
+        spent[0] += float((meta.get("usage") or {}).get("cost") or 0)
         return {"ticker": r["ticker"], "session": str(r["session"].date()), "win": r["win"], "n": r["n"],
                 "first_et": str(r["first_et"]), "status": st, "out": out, "error": err, "provider": meta.get("provider"),
                 "rejected": glog["attempts"]}
@@ -227,9 +234,9 @@ def classify():
         for k, x in enumerate(ex.map(one, todo)):
             fh.write(json.dumps(x, default=str) + "\n")
             if k % 200 == 0:
-                print(f"labelled {k + 1}/{len(todo)}", flush=True)
+                print(f"labelled {k + 1}/{len(todo)}, ${spent[0]:.2f}", flush=True)
     L = [json.loads(x) for x in open(LABELS)]
-    print(f"labels: {len(L)}, ok {sum(x['status'] == 'ok' for x in L)}")
+    print(f"labels: {len(L)}, ok {sum(x['status'] == 'ok' for x in L)}; this run ${spent[0]:.2f}")
 
 
 # ----------------------------------------------------------------------------- rule A
