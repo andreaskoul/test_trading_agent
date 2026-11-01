@@ -43,3 +43,4 @@ not re-run. See `p8/DATA_DEFECT_2026-10-31.md`. Family E uses SEC's live-API tim
 | E-val | 2022–2025 | S&P 500 point in time | E1, E2 (m = 2) | locked (2026-10-31, commit 8409c3b) | `p8/E_VALIDATION.lock` | `p8/E_VALIDATION.md`: **neither passes**. E1: IC 0.025, p 0.24, net −19 bp at the stress cost. E2: p 0.18, n 221. No sealed read follows |
 | E-soft | 8-K 2022–2025 + Finnhub 2026-05 – 2026-10 | S&P 500 | E3 / rule A | locked | `p8/E_SOFT_READ.lock` | pending |
 | E-sealed | 2026-01 – 2026-09 | S&P 500 point in time | E1 and E2 survivors | locked | `p8/E_SEALED.lock` | **not run: no survivor** |
+| E-soft-fit | Finnhub 2025-11 – 2026-04 | S&P 500 (today's list) | E3 pipeline check | fit, open (2026-11-01) | — | `p8/E_SOFT_CHECK.md`: 444 soft shocks, mean −29.5 bp, t −1.06 (descriptive). Holdout labels exist; no holdout return joined |
