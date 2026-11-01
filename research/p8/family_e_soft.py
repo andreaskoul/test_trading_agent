@@ -3,6 +3,7 @@
     python3 ~/.claude/hooks/with_secrets.py 'python3 research/p8/family_e_soft.py news'      # Finnhub, resumable
     python3 ~/.claude/hooks/with_secrets.py 'python3 research/p8/family_e_soft.py bars'      # Alpaca 2024-06 .. now
     python3 ~/.claude/hooks/with_secrets.py 'python3 research/p8/family_e_soft.py classify'  # guarded LLM, capped
+    (the same, with 'classify retry')                                                       # failed calls, once
     python3 research/p8/family_e_soft.py check       # pipeline check on the fit window; sample for inspection
     python3 research/p8/family_e_soft.py read        # ONCE: rule A on the pooled holdout -> E_SOFT_READ.*
 
@@ -205,8 +206,16 @@ def classify():
     S = shocks(R.index)
     S["win"] = np.where(S["session"] >= HOLD[0], "hold", np.where(S["session"] >= FIT[0], "fit", "pre"))
     S = S[S["win"] != "pre"]
-    done = {(x["ticker"], x["session"]) for x in map(json.loads, open(LABELS))
-            if x["status"] != "budget_stop"} if os.path.exists(LABELS) else set()
+    prior = [json.loads(x) for x in open(LABELS)] if os.path.exists(LABELS) else []
+    retry = len(sys.argv) > 2 and sys.argv[2] == "retry"          # CLAUDE.md rule 7: a failed call is re-run once
+    nfail = {}
+    for x in prior:
+        if x["status"] == "failed":
+            nfail[(x["ticker"], x["session"])] = nfail.get((x["ticker"], x["session"]), 0) + 1
+    ok_keys = {(x["ticker"], x["session"]) for x in prior if x["status"] == "ok"}
+    done = {(x["ticker"], x["session"]) for x in prior if x["status"] != "budget_stop"
+            and not (retry and x["status"] == "failed" and nfail[(x["ticker"], x["session"])] == 1
+                     and (x["ticker"], x["session"]) not in ok_keys)}
     pick = []
     for w in ("hold", "fit"):
         g = S[S["win"] == w]
