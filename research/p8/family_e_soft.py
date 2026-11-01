@@ -44,6 +44,7 @@ W0, W1 = pd.Timestamp("2025-10-25"), pd.Timestamp("2026-10-31")
 FIT = (pd.Timestamp("2025-11-01"), pd.Timestamp("2026-04-30"))
 HOLD = (pd.Timestamp("2026-05-01"), pd.Timestamp("2026-10-31"))
 CAP, SPLIT_AT = 3000, 200
+AMEND5 = {"BRK.B", "BF.B"}                                     # re-fetched under Finnhub's own symbols
 BUDGET, MAX_TOKENS = 5.0, 8000                                # $ per classify run; provider-side answer cap
 SOFT = {"product_launch", "partnership", "leadership", "macro_readthrough", "mna_rumour", "other"}
 TYPES = ["earnings", "guidance", "capital_return", "analyst_revisions", "legal_regulatory", "product_launch", "partnership",
@@ -226,6 +227,12 @@ def classify():
             idx = sorted(idx[:room])
         pick += idx
     todo = [S.loc[i] for i in pick if (S.loc[i, "ticker"], str(S.loc[i, "session"].date())) not in done]
+    if retry:
+        # The pass after the 3,000: failed calls once more, and Amendment 5's two re-fetched names in both windows. The
+        # seeded sample is not redrawn: adding two names would reshuffle the fit window's draw.
+        key = lambda r: (r["ticker"], str(r["session"].date()))
+        todo = [S.loc[i] for i in S.index if key(S.loc[i]) not in done
+                and (key(S.loc[i]) in nfail or S.loc[i, "ticker"] in AMEND5)]
     print(f"shocks: {len(S)} ({(S['win'] == 'hold').sum()} holdout); labelled {len(pick)} at most; to do {len(todo)}", flush=True)
 
     spent = [0.0]
