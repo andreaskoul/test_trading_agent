@@ -43,7 +43,7 @@ W0, W1 = pd.Timestamp("2025-10-25"), pd.Timestamp("2026-10-31")
 FIT = (pd.Timestamp("2025-11-01"), pd.Timestamp("2026-04-30"))
 HOLD = (pd.Timestamp("2026-05-01"), pd.Timestamp("2026-10-31"))
 CAP, SPLIT_AT = 3000, 200
-BUDGET, MAX_TOKENS = 5.0, 1500                                # $ per classify run; provider-side answer cap
+BUDGET, MAX_TOKENS = 5.0, 8000                                # $ per classify run; provider-side answer cap
 SOFT = {"product_launch", "partnership", "leadership", "macro_readthrough", "mna_rumour", "other"}
 TYPES = ["earnings", "guidance", "capital_return", "analyst_revisions", "legal_regulatory", "product_launch", "partnership",
          "leadership", "macro_readthrough", "mna_rumour", "dated_catalyst", "other"]
