@@ -320,3 +320,16 @@ Rule A asks whether the *fund's* soft entries pay, so a stand-in must agree with
    the request repeated, and it is never a label. Labelling stops when the account's free daily allowance falls below
    25 requests and resumes the next UTC day. The holdout is still labelled first.
 6. Pilot agreement and the chosen model are reported in the E3 output. Nothing else in E3 or rule A changes.
+
+## Amendment 5 (2026-11-01): Finnhub symbols for class shares
+
+**What had been seen.** The download of all 503 names, and labels for about 1,700 holdout shocks of 501 of them. No
+return had been joined to a shock.
+
+**Defect.** The download wrote Finnhub symbols with a dash (`BRK-B`, `BF-B`), as for Yahoo. Finnhub uses the dot:
+`BRK.B` returned 249 October articles where `BRK-B` returned none (likewise `BF.B` 21, `BF-B` 0). So BRK.B and BF.B had
+no articles, against the declared universe (CLAUDE.md rule 3).
+
+**Change.** Those two names are fetched again under their own symbols, and their shocks are labelled like the others.
+Nothing else changes. (The same dash mapping is in the live fund's news fetches, `fund/screen.py` and
+`fund/newsio.py`; that is reported to the owner as an operational defect, not changed here.)

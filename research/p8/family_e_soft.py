@@ -58,7 +58,7 @@ def universe():
 # ----------------------------------------------------------------------------- data
 def _company_news(t, a, b, key):
     import urllib.request
-    url = f"https://finnhub.io/api/v1/company-news?symbol={t.replace('.', '-')}&from={a.date()}&to={b.date()}&token={key}"
+    url = f"https://finnhub.io/api/v1/company-news?symbol={t}&from={a.date()}&to={b.date()}&token={key}"   # class shares: BRK.B
     for k in range(4):
         try:
             with urllib.request.urlopen(url, timeout=60) as r:
