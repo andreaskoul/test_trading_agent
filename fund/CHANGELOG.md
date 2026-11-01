@@ -4,6 +4,7 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-10-31: Amendment 8's reference-move table (`m_table`) converts SEC acceptance times from UTC to Eastern, from the as-of 2026-11-04 desk (owner decision; PROTOCOL_fund.md, addendum to Amendment 2). Earlier tables stay as recorded (gated by as-of). Could this change a decision? Yes: M_type for the "hard" group, and hence "already priced in" and horizons, from the 2026-11-04 cohort.
 - 2026-10-31: EDGAR acceptance times are UTC (`fund/edgar_time.py`).
   * **The finding.** The live SEC API writes acceptance times in UTC ("…Z"), verified on Apple's filing index pages. The code read them as Eastern clock time. SEC's bulk submissions.zip mixes encodings (mostly UTC plus the Eastern offset, some true UTC), so it is not used for times.
   * **Fixed for Amendment 2's B1** (release sessions from the as-of 2026-11-04 desk). Without the fix, an earnings release made during market hours would be dated a session late, the error B1 exists to remove. Contract tests: `fund/tests/test_edgar_time.py`.
