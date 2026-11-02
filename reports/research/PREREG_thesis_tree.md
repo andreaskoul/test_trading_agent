@@ -718,3 +718,37 @@ fetches use the same function (fund CHANGELOG, 2026-11-02).
 
 **Effect.** No recorded prediction changes. BF.B's next release, due 2026-12-02, will be the first R5 record to read
 its news. Nothing else changes.
+
+## Amendment 9 (2026-11-02): R3's news-tone control is defined, measured on the news each R5 forecast saw
+
+**What had been seen.** No R5 outcome: no SUE, CAR or return has been joined to an R5 record. The R5 records and
+prompts were read only for their news lists.
+
+**Defect.** R3's pass rule requires "a positive increment of z over … the mean news tone of the quarter". The control
+had no operational definition and no code, so the read could not apply its own rule.
+
+**Definition.**
+* **The news.** The items in each record's first own-ledger prompt (`ledger0`, archived on `research-data`): at most 60,
+  from the last release to the cutoff. They are frozen at first use and never fetched again.
+* **tone_LM.** (P − N)/(P + N) over all items' words, where P and N count Loughran–McDonald (2014) positive and
+  negative words (`research/p8/data/lm_2014_*.txt`). It is 0 when P + N = 0.
+* **tone_emb.** Each item, "headline. summary", is embedded with `google/gemini-embedding-001` through OpenRouter and
+  L2-normalised.
+  * The tone direction is w = mean(positive) − mean(negative), with midpoint m = (mean(positive) + mean(negative))/2.
+    Both come from the Financial PhraseBank sentences on which all annotators agreed (Malo et al. 2014; file sha256
+    5fb370b3…a516594): 570 positive and 303 negative.
+  * Item tone is (x − m)·w/|w|. tone_emb is the mean over the items.
+  * The direction comes from text labels only. No price or return enters it.
+  * Embeddings are cached by the text's sha256 at first use.
+* **Contract, checked before tone_emb is used.**
+  * On a seeded 50/50 stratified split (seed 0), the direction fitted on one half must separate positive from negative
+    sentences in the other half with AUC ≥ 0.90.
+  * The other half's neutral sentences must score, on average, between the two class means.
+  * If it passes, w and m are refitted on all agreed sentences. If it fails, tone_emb is not used and tone_LM alone is
+    the control.
+* **The control in R3.** The increment of z is tested with both tone_LM and tone_emb (if the contract passes) among the
+  controls. That is the stricter reading of "the mean news tone".
+* **Descriptive only:** the share of items whose headline carries a number ("quantified"), and the item counts.
+
+**Records.** `research/p8/r5_news_features.py` writes `reports/research/p8/R5_NEWS_FEATURES.csv`, one row per R5
+record. Everything else in §5 is unchanged.
