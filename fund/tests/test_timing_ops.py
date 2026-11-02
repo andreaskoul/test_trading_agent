@@ -102,6 +102,38 @@ def test_decision_ledger_rows_and_one_value_by_hand():
     assert all(c["t"] is None or c["weeks"] >= 5 for c in rep["stats"])   # no t-statistic below 5 weeks
 
 
+def test_ledger_agreement_reproduces_rule_a():
+    # Rule A's applicability count (reports/research/p8/E_SOFT_READ.md): live soft entries from the 2026-10-15
+    # session whose side matches the residual move on the news session, 7 of 12. The ledger must give the same.
+    rep = A.build(os.path.join(FX, "base"))
+    R = [r for r in rep["rows"] if r["book"] == "live" and r["action"] == "entry" and r["class"] == "soft"
+         and r["day"] >= "2026-10-15" and r.get("agree") is not None]
+    assert (sum(r["agree"] for r in R), len(R)) == (7, 12)
+    orcl = next(r for r in R if r["ticker"] == "ORCL")             # short on 10-15 after a -7% residual day: agrees
+    assert orcl["side"] == -1 and orcl["news_session"] == "2026-10-14" and orcl["news_move"] < -0.05 and orcl["agree"] == 1
+    lo, hi = A.wilson(7, 12)
+    assert abs(lo - 0.32) < 0.01 and abs(hi - 0.81) < 0.01
+
+
+def test_ledger_segments_add_up_by_hand():
+    # One real lot (MRVL, entered long 2026-10-08): its per-session rows are side x (r - beta r_SPY) for each session
+    # after entry up to its closing event, numbered from 1; 'before entry' is the move from the as-of close to entry.
+    ev = json.load(open(os.path.join(FX, "base", "lifecycle", "state.json")))["events"]
+    R = pd.read_csv(os.path.join(FX, "base", "lifecycle", "returns.csv"), parse_dates=["date"]).pivot_table(
+        index="date", columns="ticker", values="ret")
+    coh = A.cohort_info(os.path.join(FX, "base"))
+    rows = [r for r in A.segments(ev, coh, R, "live") if r["id"] == "2026-10-07|MRVL"]
+    b = coh["2026-10-07"]["beta"]["MRVL"]
+    res = R["MRVL"] - b * R["SPY"]
+    held = [r for r in rows if r["k"] >= 1]
+    shut = min(e["day"] for e in ev if e["id"] == "2026-10-07|MRVL" and e["action"] != "entry" and abs(e["to"]) < 1e-9)
+    assert [r["k"] for r in held] == list(range(1, len(held) + 1)) and held[-1]["day"] == shut
+    assert all(abs(r["y"] - res[pd.Timestamp(r["day"])]) < 1e-12 for r in held)       # long: side = +1
+    assert all(r["seg"] == ("1-3" if r["k"] <= 3 else "4-15" if r["k"] <= 15 else "16+") for r in held)
+    pre = next(r for r in rows if r["seg"] == "before entry")
+    assert abs(pre["y"] - res[(res.index > pd.Timestamp("2026-10-07")) & (res.index <= pd.Timestamp("2026-10-08"))].sum()) < 1e-12
+
+
 def test_entry_day_check_sees_the_move_after_the_signal_close():
     # The failure class: GOOGL's earnings came after the 2026-10-28 close; the desk's p was 0 and H 24, while the
     # stock had moved ~12% against SPY by the entry decision. The log must show the entry-day move and p >= 1.
