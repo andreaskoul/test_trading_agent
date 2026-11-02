@@ -19,6 +19,7 @@ import pandas as pd
 import yfinance as yf
 
 from common import MODE, ROOT, STATE, asof_from_env, require, save
+from newsio import finnhub_symbol
 
 require("FINNHUB_API_KEY")
 asof = asof_from_env()
@@ -87,7 +88,7 @@ Z = Z.join(meta, how="left")
 lo, hi = (asof - pd.Timedelta(days=6)).date(), asof.date()
 counts, heads = {}, {}
 for i, t in enumerate(Z.index):
-    url = (f"https://finnhub.io/api/v1/company-news?symbol={ymap[t]}&from={lo}&to={hi}"
+    url = (f"https://finnhub.io/api/v1/company-news?symbol={finnhub_symbol(t)}&from={lo}&to={hi}"
            f"&token={os.environ['FINNHUB_API_KEY']}")
     for attempt in range(4):
         try:

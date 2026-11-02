@@ -40,6 +40,7 @@ from datetime import datetime, timezone
 import pandas as pd
 
 import guards
+from newsio import finnhub_symbol
 from common import MODE, MODEL, ROOT, STATE, require
 
 VERSION = "r5-v2"          # Amendment 1 (2026-10-16): typed exhibit, content and grounding checks, repair, re-runs, gate
@@ -174,7 +175,7 @@ def own_news(t, lo, hi):
     arts, a = [], lo
     while a < hi:
         b = min(a + pd.Timedelta(days=30), hi)
-        x = finnhub(f"company-news?symbol={t.replace('.', '-')}&from={a.date()}&to={b.date()}")
+        x = finnhub(f"company-news?symbol={finnhub_symbol(t)}&from={a.date()}&to={b.date()}")   # Amendment 8
         arts += [y for y in (x or []) if lo.timestamp() < y.get("datetime", 0) <= hi.timestamp()]
         a = b + pd.Timedelta(days=1) if b < hi else hi
     arts = sorted({y["id"]: y for y in arts if y.get("headline")}.values(), key=lambda y: y["datetime"])
