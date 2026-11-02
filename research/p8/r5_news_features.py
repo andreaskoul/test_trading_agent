@@ -42,6 +42,11 @@ PB = os.path.join(ROOT, ".cache", "p8", "phrasebank", "Sentences_AllAgree.txt")
 PB_SHA = "5fb370b3005b9a2759f708849a691ad2e4d2593d4c995c1afde229398a516594"
 CONTRACT = os.path.join(ROOT, "reports", "research", "p8", "R5_TONE_CONTRACT.json")
 AUC_MIN = 0.90
+PB75 = os.path.join(ROOT, ".cache", "p8", "phrasebank", "Sentences_75Agree.txt")
+PB75_SHA = "a7ca39fb9dc60aed1c323ee635494aed4acdfc05e0349a9e74367502325303a4"
+CONTRACT10 = os.path.join(ROOT, "reports", "research", "p8", "R5_TONE_CONTRACT_A10.json")
+RHO_MIN = 0.50
+ORD = {"negative": -1, "neutral": 0, "positive": 1}
 ITEM = re.compile(r"^\[(\d+)\] (\d{4}-\d{2}-\d{2}) (.*?): (.*?)(?: :: (.*))?$")
 WORD = re.compile(r"[a-z]+")
 
@@ -157,6 +162,80 @@ def direction():
     return w_all, m_all, c
 
 
+def load_pb(path, digest):
+    raw = open(path, "rb").read()
+    assert hashlib.sha256(raw).hexdigest() == digest, f"{path} changed"
+    return pd.DataFrame([l.rsplit("@", 1) for l in raw.decode("latin-1").splitlines() if "@" in l], columns=["text", "label"])
+
+
+def unit_rows(A):
+    return A / np.linalg.norm(A, axis=1, keepdims=True)
+
+
+def make(kind, X, lab, words=None):
+    """Fit candidate `kind` (Amendment 10) on sentence vectors X with labels lab; returns a scoring function."""
+    mu = {k: X[lab == k].mean(0) for k in ("positive", "neutral", "negative")}
+    if kind == "A":
+        w = mu["positive"] - mu["negative"]
+        w, m = w / np.linalg.norm(w), (mu["positive"] + mu["negative"]) / 2
+        return lambda Z: (Z - m) @ w
+    if kind == "C":
+        up, un = (lambda v: v / np.linalg.norm(v))(mu["positive"] - mu["neutral"]), (lambda v: v / np.linalg.norm(v))(mu["negative"] - mu["neutral"])
+        return lambda Z: (Z - mu["neutral"]) @ up - (Z - mu["neutral"]) @ un
+    Wp, Wn, wmean = words                                       # B: label-free keyword similarity
+    sm = X.mean(0)
+    return lambda Z: (unit_rows(Z - sm) @ Wp.T).mean(1) - (unit_rows(Z - sm) @ Wn.T).mean(1)
+
+
+def spearman(score, lab):
+    return float(pd.Series(score).rank().corr(pd.Series([ORD[x] for x in lab]).rank()))
+
+
+def select_and_confirm():
+    """Amendment 10: 5-fold selection among A, B, C on the all-agree sentences, then one confirmation on the unseen
+    75%-agreement sentences. Returns (scorer or None, record)."""
+    S = load_pb(PB, PB_SHA)
+    F75 = load_pb(PB75, PB75_SHA)
+    F = F75[~F75["text"].isin(set(S["text"]))].reset_index(drop=True)
+    P, N = lexicon()
+    words = sorted(P) + sorted(N)
+    E = embed(list(S["text"]) + words + list(F["text"]))
+    X, lab = np.stack([E[t] for t in S["text"]]), S["label"].to_numpy()
+    Wv = np.stack([E[w] for w in words])
+    Wc = unit_rows(Wv - Wv.mean(0))
+    WB = (Wc[:len(P)], Wc[len(P):], Wv.mean(0))
+    rng = np.random.default_rng(0)
+    fold = np.zeros(len(S), int)
+    for k in ORD:
+        idx = rng.permutation(np.flatnonzero(lab == k))
+        fold[idx] = np.arange(len(idx)) % 5
+    cv = {}
+    for kind in ("B", "A", "C"):                                # tie order: fewest fitted quantities first
+        sc = np.zeros(len(S))
+        for f in range(5):
+            tr, te = fold != f, fold == f
+            sc[te] = make(kind, X[tr], lab[tr], WB)(X[te])
+        cv[kind] = spearman(sc, lab)
+    win = max(("B", "A", "C"), key=lambda k: (round(cv[k], 6), -("B", "A", "C").index(k)))
+    scorer = make(win, X, lab, WB)
+    Z, fl = np.stack([E[t] for t in F["text"]]), F["label"].to_numpy()
+    sc = scorer(Z)
+    ms = {k: float(sc[fl == k].mean()) for k in ORD}
+    se_neu = float(sc[fl == "neutral"].std(ddof=1) / np.sqrt((fl == "neutral").sum()))
+    a, rho = auc(sc[fl == "positive"], sc[fl == "negative"]), spearman(sc, fl)
+    lo, hi = ms["neutral"] - 1.96 * se_neu, ms["neutral"] + 1.96 * se_neu
+    ok = bool(a >= AUC_MIN and rho >= RHO_MIN and ms["negative"] < lo and hi < ms["positive"])
+    rec = {"model": EMB_MODEL, "cv_spearman": cv, "winner": win, "confirm_n": {k: int((fl == k).sum()) for k in ORD},
+           "confirm_auc": a, "confirm_spearman": rho, "confirm_means": ms, "neutral_ci95": [lo, hi],
+           "thresholds": {"auc": AUC_MIN, "spearman": RHO_MIN}, "passed": ok,
+           "sha256": {"all_agree": PB_SHA, "agree75": PB75_SHA}}
+    json.dump(rec, open(CONTRACT10, "w"), indent=1)
+    print(f"A10 selection (Spearman, 5-fold): {', '.join(f'{k} {v:.3f}' for k, v in cv.items())} -> {win}; confirmation on "
+          f"{len(F)} unseen: AUC {a:.3f}, Spearman {rho:.3f}, means neg {ms['negative']:+.3f} / neutral {ms['neutral']:+.3f} "
+          f"[{lo:+.3f}, {hi:+.3f}] / pos {ms['positive']:+.3f} -> {'PASS' if ok else 'FAIL'}", flush=True)
+    return (scorer if ok else None), rec
+
+
 def git(*a, text=True):
     return subprocess.run(["git", *a], capture_output=True, text=text, cwd=ROOT).stdout
 
@@ -193,12 +272,12 @@ def main():
             rows.append({"report_date": D, "ticker": t, "run": run, "news_raw": r.get("news_raw"),
                          "news_used_record": r.get("news_used"), **features(its, P, N),
                          "_texts": [f"{h}. {s_}".strip() for _, _, h, s_ in its]})
-    w, m, c = direction()
+    scorer, c = select_and_confirm()                          # Amendment 10 (Amendment 9's direction A failed)
     allt = sorted({x for r in rows for x in r.get("_texts", [])})
-    E = embed(allt) if c["passed"] else {}
+    E = embed(allt) if scorer else {}
     for r in rows:
         ts = r.pop("_texts", [])
-        r["tone_emb"] = float(np.mean([(E[x] - m) @ w for x in ts])) if (c["passed"] and ts) else None
+        r["tone_emb"] = float(np.mean(scorer(np.stack([E[x] for x in ts])))) if (scorer and ts) else None
     X = pd.DataFrame(rows)
     X.to_csv(OUT, index=False)
     ok = X[X.get("defect").isna()] if "defect" in X else X

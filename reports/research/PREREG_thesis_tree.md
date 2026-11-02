@@ -752,3 +752,40 @@ had no operational definition and no code, so the read could not apply its own r
 
 **Records.** `research/p8/r5_news_features.py` writes `reports/research/p8/R5_NEWS_FEATURES.csv`, one row per R5
 record. Everything else in §5 is unchanged.
+
+## Amendment 10 (2026-11-02): the embedding tone is chosen on labelled text, then confirmed on unseen sentences
+
+**What had been seen.** Amendment 9's contract result (`R5_TONE_CONTRACT.json`): direction A gave held-out AUC 0.982,
+but neutral sentences scored at the positive mean (+0.091 against +0.088), so it failed. No R5 outcome has been seen.
+R5's news has not been embedded.
+
+**Change (owner's suggestion: similarity to keyword embeddings).** A fixed list of three candidates is compared on the
+all-agree sentences. The winner is confirmed once on sentences never used before. The candidates:
+
+* **A.** Amendment 9's direction: unit(μ_pos − μ_neg), score (x − m)·w with m the midpoint.
+* **B. Keyword similarity.** Each Loughran–McDonald positive and negative word is embedded alone.
+  * Sentence vectors are centred by the fit sentences' mean, word vectors by all words' mean, and both are
+    L2-normalised.
+  * Score = mean cosine to the positive words − mean cosine to the negative words.
+  * It uses no label.
+* **C. Neutral-anchored.** u_p = unit(μ_pos − μ_neu), u_n = unit(μ_neg − μ_neu), score (x − μ_neu)·u_p − (x − μ_neu)·u_n.
+
+**Selection.**
+* Five folds of the all-agree sentences (seed 0, stratified). Each candidate is fitted on four folds and scores the
+  fifth.
+* The criterion is the Spearman correlation between score and the ordered label (negative −1, neutral 0, positive
+  +1), pooled over folds. It rewards separation and the middle position of neutral together.
+* The largest wins. Ties go to B, then A, then C, the order of fewest fitted quantities.
+
+**Confirmation.**
+* The winner is refitted on all all-agree sentences and scored on the 1,189 sentences of `Sentences_75Agree.txt` (sha256
+  a7ca39fb…5303a4) that are not in the all-agree file: 317 positive, 117 negative, 755 neutral. They have never been
+  embedded.
+* It passes if all three hold:
+  * AUC(positive vs negative) ≥ 0.90;
+  * Spearman ≥ 0.50;
+  * the neutral mean's 95% interval lies strictly between the negative and positive means.
+* **If it passes,** tone_emb (the mean item score) joins tone_LM among R3's controls, as in Amendment 9. **If it
+  fails,** tone_LM alone, and no further candidate is tried.
+
+Recorded in `reports/research/p8/R5_TONE_CONTRACT_A10.json`. Everything else is unchanged.
