@@ -1,4 +1,4 @@
-# Design rules for locked reads (proposed 2026-11-02; binding once the owner signs)
+# Design rules for locked reads (signed 2026-11-02)
 
 Every pre-registration written after these rules are signed follows them. Reads already made, and Family E, stay as
 registered.
@@ -88,4 +88,4 @@ The estimate counts in N (rule 2) only if it can admit something.
   before any outcome of the read is examined, as for every pre-registration.
 * `DATA_USE.md` records N after each read.
 
-**Owner sign-off:** pending.
+**Owner sign-off:** 2026-11-02 (merged #134 after the request to sign or change it).
