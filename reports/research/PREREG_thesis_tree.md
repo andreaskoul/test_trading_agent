@@ -718,3 +718,74 @@ fetches use the same function (fund CHANGELOG, 2026-11-02).
 
 **Effect.** No recorded prediction changes. BF.B's next release, due 2026-12-02, will be the first R5 record to read
 its news. Nothing else changes.
+
+## Amendment 9 (2026-11-02): R3's news-tone control is defined, measured on the news each R5 forecast saw
+
+**What had been seen.** No R5 outcome: no SUE, CAR or return has been joined to an R5 record. The R5 records and
+prompts were read only for their news lists.
+
+**Defect.** R3's pass rule requires "a positive increment of z over … the mean news tone of the quarter". The control
+had no operational definition and no code, so the read could not apply its own rule.
+
+**Definition.**
+* **The news.** The items in each record's first own-ledger prompt (`ledger0`, archived on `research-data`): at most 60,
+  from the last release to the cutoff. They are frozen at first use and never fetched again.
+* **tone_LM.** (P − N)/(P + N) over all items' words, where P and N count Loughran–McDonald (2014) positive and
+  negative words (`research/p8/data/lm_2014_*.txt`). It is 0 when P + N = 0.
+* **tone_emb.** Each item, "headline. summary", is embedded with `google/gemini-embedding-001` through OpenRouter and
+  L2-normalised.
+  * The tone direction is w = mean(positive) − mean(negative), with midpoint m = (mean(positive) + mean(negative))/2.
+    Both come from the Financial PhraseBank sentences on which all annotators agreed (Malo et al. 2014; file sha256
+    5fb370b3…a516594): 570 positive and 303 negative.
+  * Item tone is (x − m)·w/|w|. tone_emb is the mean over the items.
+  * The direction comes from text labels only. No price or return enters it.
+  * Embeddings are cached by the text's sha256 at first use.
+* **Contract, checked before tone_emb is used.**
+  * On a seeded 50/50 stratified split (seed 0), the direction fitted on one half must separate positive from negative
+    sentences in the other half with AUC ≥ 0.90.
+  * The other half's neutral sentences must score, on average, between the two class means.
+  * If it passes, w and m are refitted on all agreed sentences. If it fails, tone_emb is not used and tone_LM alone is
+    the control.
+* **The control in R3.** The increment of z is tested with both tone_LM and tone_emb (if the contract passes) among the
+  controls. That is the stricter reading of "the mean news tone".
+* **Descriptive only:** the share of items whose headline carries a number ("quantified"), and the item counts.
+
+**Records.** `research/p8/r5_news_features.py` writes `reports/research/p8/R5_NEWS_FEATURES.csv`, one row per R5
+record. Everything else in §5 is unchanged.
+
+## Amendment 10 (2026-11-02): the embedding tone is chosen on labelled text, then confirmed on unseen sentences
+
+**What had been seen.** Amendment 9's contract result (`R5_TONE_CONTRACT.json`): direction A gave held-out AUC 0.982,
+but neutral sentences scored at the positive mean (+0.091 against +0.088), so it failed. No R5 outcome has been seen.
+R5's news has not been embedded.
+
+**Change (owner's suggestion: similarity to keyword embeddings).** A fixed list of three candidates is compared on the
+all-agree sentences. The winner is confirmed once on sentences never used before. The candidates:
+
+* **A.** Amendment 9's direction: unit(μ_pos − μ_neg), score (x − m)·w with m the midpoint.
+* **B. Keyword similarity.** Each Loughran–McDonald positive and negative word is embedded alone.
+  * Sentence vectors are centred by the fit sentences' mean, word vectors by all words' mean, and both are
+    L2-normalised.
+  * Score = mean cosine to the positive words − mean cosine to the negative words.
+  * It uses no label.
+* **C. Neutral-anchored.** u_p = unit(μ_pos − μ_neu), u_n = unit(μ_neg − μ_neu), score (x − μ_neu)·u_p − (x − μ_neu)·u_n.
+
+**Selection.**
+* Five folds of the all-agree sentences (seed 0, stratified). Each candidate is fitted on four folds and scores the
+  fifth.
+* The criterion is the Spearman correlation between score and the ordered label (negative −1, neutral 0, positive
+  +1), pooled over folds. It rewards separation and the middle position of neutral together.
+* The largest wins. Ties go to B, then A, then C, the order of fewest fitted quantities.
+
+**Confirmation.**
+* The winner is refitted on all all-agree sentences and scored on the 1,189 sentences of `Sentences_75Agree.txt` (sha256
+  a7ca39fb…5303a4) that are not in the all-agree file: 317 positive, 117 negative, 755 neutral. They have never been
+  embedded.
+* It passes if all three hold:
+  * AUC(positive vs negative) ≥ 0.90;
+  * Spearman ≥ 0.50;
+  * the neutral mean's 95% interval lies strictly between the negative and positive means.
+* **If it passes,** tone_emb (the mean item score) joins tone_LM among R3's controls, as in Amendment 9. **If it
+  fails,** tone_LM alone, and no further candidate is tried.
+
+Recorded in `reports/research/p8/R5_TONE_CONTRACT_A10.json`. Everything else is unchanged.

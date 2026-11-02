@@ -1,0 +1,34 @@
+{
+ "model": "google/gemini-embedding-001",
+ "cv_spearman": {
+  "B": 0.6338324846391381,
+  "A": 0.4655889115624494,
+  "C": 0.770523632175357
+ },
+ "winner": "C",
+ "confirm_n": {
+  "negative": 117,
+  "neutral": 755,
+  "positive": 317
+ },
+ "confirm_auc": 0.9870042330610154,
+ "confirm_spearman": 0.6417024343146364,
+ "confirm_means": {
+  "negative": -0.05485529260721265,
+  "neutral": 0.0017134317112218536,
+  "positive": 0.036581416566610354
+ },
+ "neutral_ci95": [
+  -0.00013627032724994347,
+  0.0035631337496936505
+ ],
+ "thresholds": {
+  "auc": 0.9,
+  "spearman": 0.5
+ },
+ "passed": true,
+ "sha256": {
+  "all_agree": "5fb370b3005b9a2759f708849a691ad2e4d2593d4c995c1afde229398a516594",
+  "agree75": "a7ca39fb9dc60aed1c323ee635494aed4acdfc05e0349a9e74367502325303a4"
+ }
+}
