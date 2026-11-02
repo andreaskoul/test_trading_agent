@@ -1,0 +1,255 @@
+{
+ "day": "2026-11-02",
+ "close_ts": 1793652000,
+ "checked_at": "2026-11-02T20:45:58+00:00",
+ "lots": {
+  "2026-10-28|NVDA": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1793652000,
+   "headlines": [
+    "amgen just gave its shareholders great news",
+    "this upandcoming tech company just delivered 44 revenue growth and it has nothing to do with ai",
+    "amd slides 3 ahead of earnings as pc worries linger intel drops 5 nvidia edges higher",
+    "cipher mining inc q3 2026 earnings call summary",
+    "idexx laboratories inc q3 2026 earnings call summary",
+    "prediction anthropic will be worth more than bitcoin by the end of the year on polymarket the current odds are 79",
+    "why spacex stock is rising today",
+    "why cerebras systems stock is plummeting today",
+    "xmax doubles down on nvidia to dominate the ai arms race",
+    "1 of greg abels favorite stocks and a top 5 berkshire hathaway holding just suffered a devastating decline",
+    "can these 4 etfs build a retirement portfolio on their own",
+    "active fund managers staged a big comeback can it last",
+    "why lumentum stock fell 149 today",
+    "eli lilly just delivered another blowout quarter is this unstoppable growth stock still a buy",
+    "why did enphase energy stock bounce back today",
+    "not newmont not barrick this gold stock collects cash without running a mine",
+    "675 straight monthly dividends heres why i keep adding to this 6 yielder",
+    "qualcomm qcom joins 700 million hark funding round in ai assistant bet",
+    "tower semiconductor q3 earnings call highlights",
+    "why cloudflare stock took a dive on monday",
+    "verizons ceo has a warning for spacex and its mobile plans",
+    "sofi added a record 12 million members last quarter its stock is still down more than 30 in 2026",
+    "these 2 tech stocks both fell 29 on friday are they buying opportunities now",
+    "why marvell technology plunged today",
+    "the fed is suddenly on hold when could it start hiking interest rates again"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Cohere"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "NVIDIA Edges Higher",
+        "article": 2
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "No article reports Nvidia cancelling or writing down a $3B Meta investment.",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "No article reports a major customer shifting orders materially to rival AI chips.",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "No article reports a new, material, quantified Nvidia-specific event after the opening in the position's favour.",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Baidu"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Together"
+    }
+   ],
+   "max_published": 1793649000
+  },
+  "2026-10-28|HCA": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1793652000,
+   "headlines": [
+    "hca q3 deep dive payer mix shifts and resiliency initiatives shape outlook",
+    "wells fargo maintains equalweight on hca healthcare raises price target to 468",
+    "hca announces proposed public offering of senior notes"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "The company expects the full year\u2019s revenue to be around $78.25 billion",
+        "article": 0
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "payer mix shifts and resiliency initiatives shape outlook",
+        "article": 0
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "proposes to offer senior notes",
+        "article": 2
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Cohere"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    }
+   ],
+   "max_published": 1793626020
+  }
+ }
+}
