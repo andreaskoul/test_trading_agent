@@ -37,6 +37,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from common import MODE, STATE                                    # noqa: E402
+from lifecycle_rules import soft_view                             # noqa: E402
 
 H = (1, 5, 10, 20)
 HARD = {"earnings", "guidance", "capital_return"}
@@ -101,7 +102,8 @@ def rows_of(events, coh, E, book):
 
 
 def not_entered(coh, events, E):
-    """Cohort names with a desk weight that never got an entry event (stale, priced in, capacity or other)."""
+    """Cohort names with a desk weight that never got an entry event (stale, priced in, a soft view under 7B A3,
+    capacity or other)."""
     entered = {(e["id"].split("|", 1)[0], e["ticker"]) for e in events if e.get("action") == "entry" and "|" in str(e.get("id"))}
     rows = []
     for a, c in coh.items():
@@ -111,8 +113,9 @@ def not_entered(coh, events, E):
             if t == "SPY" or not w or (a, t) in entered:
                 continue
             n = c["names"].get(t) or {}
+            a3 = soft_view(n, pd.Timestamp(c["entry_day"]))       # 7B A3: a soft view the live book did not act on
             r = {"book": "not_entered", "day": c["entry_day"], "cohort": a, "ticker": t,
-                 "action": "stale" if n.get("stale") else "not_entered", "side": int(np.sign(w)),
+                 "action": "stale" if n.get("stale") else ("a3_soft" if a3 else "not_entered"), "side": int(np.sign(w)),
                  "class": event_class(n.get("out")), "notional": 0.0}
             r.update({f"y{h}": int(np.sign(w)) * forward(E, c["entry_day"], t, h, c["beta"].get(t, 1.0)) for h in H})
             rows.append(r)

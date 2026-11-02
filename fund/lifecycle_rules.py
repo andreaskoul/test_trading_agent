@@ -27,6 +27,12 @@ A7B1 = pd.Timestamp(os.environ.get("FUND_A7B1") or "2026-10-30")
 # records release sessions from as-of P7B2_ASOF. Gated by date so recorded days never change.
 P7B2 = pd.Timestamp(os.environ.get("FUND_P7B2") or "2026-11-05")
 P7B2_ASOF = os.environ.get("FUND_P7B2_ASOF") or "2026-11-04"
+# Protocol 7B Amendment 3 (owner, 2026-11-02; Family E rule A, read once 2026-11-01: STOP): from session A7B3 a soft view
+# opens, extends, enlarges and flips nothing in the live book; lots already open run out under their own rules. Soft =
+# the desk's event type in SOFT and not labelled hard (the rule's definition). The control keeps soft entries: it is
+# the counterfactual.
+A7B3 = pd.Timestamp(os.environ.get("FUND_A7B3") or "2026-11-05")
+SOFT = {"product_launch", "partnership", "leadership", "macro_readthrough", "mna_rumour", "other"}
 
 
 def may_increase(d, L, active=True):
@@ -74,3 +80,10 @@ def structural_mean(flags, hs, h_struct):
     else its own Amendment 8 horizon (0 if it would not enter); H is the mean, at most STRUCT_MAX."""
     hs7 = [h_struct if f else h for f, h in zip(flags, hs)]
     return min(float(sum(hs7)) / len(hs7), STRUCT_MAX), hs7
+
+
+
+def soft_view(info, d, active=True):
+    """7B A3: a desk view the live book does not act on from session A7B3 (info: the cohort's record of the name)."""
+    o = info.get("out") or {}
+    return bool(active and d >= A7B3 and o.get("event_type") in SOFT and not o.get("hard"))
