@@ -467,24 +467,34 @@ fetch("../spx.json", { cache: "no-store" }).then(r => r.json()).then(X => {
     ` Updated ${esc((X.generated || "").replace("T", " ").slice(0, 16))} UTC.`;
   // chart: cumulative return from the first period's start (Friday close), one point per period end
   const box = document.getElementById("sbox");
-  if (n) {
-    const S = X.lines.series, YS = [["spy", "S&P 500 buy & hold"], ["risk_matched", `risk-matched S&P (${num(X.bench.sbar, 2)}x)`], ["sleeve", "dynamic sleeve alone"]];
-    const sets = [...YS.map(([k, lab], j) => ({ label: lab, data: S[k], borderColor: j === 0 ? "#9a9aa0" : "#7f8c8d", borderWidth: 2.5, borderDash: j ? [5, 4] : [], pointRadius: n < 8 ? 3 : 0, tension: 0 })),
-      ...B.filter(b => S[b.key]).map((b, i) => ({ label: b.label, data: S[b.key], borderColor: PAL[i % PAL.length], borderWidth: b.key === "fw_ridge_h20" ? 1.3 : 2, borderDash: b.key === "fw_ridge_h20" ? [2, 3] : [], pointRadius: n < 8 ? 3 : 0, tension: 0 }))];
-    new Chart(document.getElementById("schart"), { type: "line", data: { labels: X.lines.dates, datasets: sets },
+  // booked weeks (solid) and the running week (dashed, provisional: marked at the latest close, booked on Friday);
+  // both are computed in spx_forward.py (page and attach_running); this only plots them
+  const RL = X.running && X.running.lines ? X.running.lines : null;
+  const bookedDates = n ? X.lines.dates : [], dates = [...bookedDates, ...(RL ? RL.dates : [])], nb = bookedDates.length;
+  const ser = k => [...(n ? (X.lines.series[k] || bookedDates.map(() => null)) : []), ...(RL ? (RL.series[k] || RL.dates.map(() => null)) : [])];
+  if (dates.length) {
+    const dash = (base) => ({ borderDash: ctx => ctx.p0DataIndex >= nb - 1 && nb > 0 || nb === 0 ? [5, 4] : base });
+    const pr = dates.length < 12 ? 3 : 0;
+    const YS = [["spy", "S&P 500 buy & hold", "#9a9aa0", []], ["risk_matched", `risk-matched S&P (${num(X.bench && X.bench.sbar != null ? X.bench.sbar : X.running && X.running.sleeve, 2)}x)`, "#7f8c8d", [5, 4]], ["sleeve", "S&P holding alone (1.3x / 0.7x)", "#7f8c8d", [2, 3]]];
+    const sets = [...YS.map(([k, lab, col, bd]) => ({ label: lab, data: ser(k), borderColor: col, borderWidth: 2.5, borderDash: bd, segment: bd.length ? {} : dash([]), pointRadius: pr, tension: 0 })),
+      ...B.map((b, i) => ({ label: b.label, data: ser(b.key), borderColor: PAL[i % PAL.length], borderWidth: b.key === "fw_ridge_h20" ? 1.3 : 2, segment: dash(b.key === "fw_ridge_h20" ? [2, 3] : []), pointRadius: pr, tension: 0 }))];
+    new Chart(document.getElementById("schart"), { type: "line", data: { labels: dates, datasets: sets },
       options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false }, plugins: { legend: { position: "bottom", labels: { boxWidth: 10, padding: 6, font: { size: 10 } } },
-        tooltip: { itemSort: (a, b) => b.parsed.y - a.parsed.y, callbacks: { label: c => `${c.dataset.label}: ${(c.parsed.y * 100).toFixed(2)}%` } } },
+        tooltip: { itemSort: (a, b) => b.parsed.y - a.parsed.y, callbacks: { label: c => `${c.dataset.label}: ${(c.parsed.y * 100).toFixed(2)}%` + (c.dataIndex >= nb && RL ? " (provisional)" : "") } } },
         scales: { x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } }, y: { ticks: { callback: v => (v * 100).toFixed(1) + "%" } } } } });
+    if (RL) box.insertAdjacentHTML("beforebegin", `<div class="muted" style="margin:6px 0">Solid: booked weeks. <b>Dashed: the running week</b> (decided ${X.running.asof}, held from the ${X.running.from} close), marked at the ${X.running.to} close; provisional and before the costs of the next rebalance, until it is booked at the weekly run.</div>`);
   } else {
     box.style.display = "none";
   }
   const icOf = (b, h) => (b.ic || {})[String(h)] || {};
-  const yard = n ? [["S&P 500 buy & hold", X.bench.spy], [`Risk-matched S&P (${num(X.bench.sbar, 2)}x)`, X.bench.risk_matched], ["Dynamic sleeve alone", X.bench.sleeve]] : [];
-  const rows = [...B.map(b => ({ b, k: b.label, st: b })), ...yard.map(([k, st]) => ({ k, st, y: true }))];
+  const yard = n || X.running ? [["S&P 500 buy & hold", n ? X.bench.spy : {}, "spy"], [n ? `Risk-matched S&P (${num(X.bench.sbar, 2)}x)` : "Risk-matched S&P", n ? X.bench.risk_matched : {}, "risk_matched"],
+    ["S&P holding alone (1.3x / 0.7x)", n ? X.bench.sleeve : {}, "sleeve"]] : [];
+  const rows = [...B.map(b => ({ b, k: b.label, st: b, key: b.key })), ...yard.map(([k, st, key]) => ({ k, st, key, y: true }))];
   document.getElementById("sboard").innerHTML = "";
-  if (!n) document.getElementById("sboard").innerHTML = `<div class="empty">No realised week yet. The first decision is Thursday 29 Oct 2026; its week is booked at the next Thursday's run (Friday 03:45 UTC), from Friday's close to the next Friday's close.</div>`;
+  const runOf = r => { const v = X.running && X.running.series[r.key]; return v ? v[v.length - 1] : null; };
+  if (!n && !X.running) document.getElementById("sboard").innerHTML = `<div class="empty">No realised week yet. A decision's week is booked at the next weekly run (Friday 03:45 UTC), from Friday's close to the next Friday's close.</div>`;
   else table("sboard", [["Line", r => r.y ? esc(r.k) : `<b>${esc(r.k)}</b>`], ["Strategy · horizon", r => r.y ? "" : `${STRAT[r.b.strategy] || r.b.strategy} · ${r.b.h}d`], ["Role", r => r.y ? "yardstick" : esc(r.b.role), "wrap"],
-    ["Weeks", r => r.st.weeks, "n"], ["Cumulative", r => p2(r.st.cum), "n"], ["% per year", r => p2(r.st.ann), "n"], ["vs S&amp;P (ann.)", r => p2(r.st.vs_spy), "n"],
+    ["Running week (provisional)", r => p2(runOf(r)), "n"], ["Weeks booked", r => r.st.weeks ?? 0, "n"], ["Cumulative", r => p2(r.st.cum), "n"], ["% per year", r => p2(r.st.ann), "n"], ["vs S&amp;P (ann.)", r => p2(r.st.vs_spy), "n"],
     ["vs risk-matched (ann.)", r => p2(r.st.vs_rm), "n"], ["Sharpe (ann.)", r => num(r.st.sharpe, 2), "n"], ["Max drawdown", r => p2(r.st.max_dd), "n"],
     ["Turnover / yr", r => r.st.turnover_ann == null ? "" : (r.st.turnover_ann * 100).toFixed(0) + "%", "n"], ["Status", r => r.y ? "" : esc(r.b.status)]], rows);
   table("sic", [["Book", b => `<b>${esc(b.label)}</b>`], ["Horizon", b => b.h + "d", "n"], ["Weeks measured", b => icOf(b, b.h).n ?? 0, "n"], ["Ranking accuracy", b => num(icOf(b, b.h).mean, 4), "n"],

@@ -49,6 +49,25 @@ def test_unobserved_period_is_none():
     assert FW.period(d, a, b) is None
 
 
+def test_running_mark_equals_booked_week_before_rebalance_costs():
+    """At the next record's exit close, the provisional mark of a book equals its booked week plus the costs that are
+    only charged at booking (turnover into the next positions, and a sleeve change)."""
+    d = T.build()
+    (t, R, Rm, days), (t2, *_) = ST.periods(d, [2021])[:2]
+    rng = np.random.default_rng(1)
+    n = len(d["names"])
+    w = np.where(rng.random(n) < 0.05, rng.normal(0, 0.02, n), 0.0) * d["elig"][t]
+    w2 = np.where(rng.random(n) < 0.05, rng.normal(0, 0.02, n), 0.0) * d["elig"][t2]
+    a, b = _rec(d, t, w, -0.1, s=1.3), _rec(d, t2, w2, -0.05, s=0.7)
+    run = FW.running(d, a)
+    k = run["dates"].index(str(d["S"][t2 + 1].date()))
+    book, Rm_, days_, net, dw = FW.book_return(d, a, b, "b")
+    mrate = (a["dtb3"] + ST.MARGIN_SPREAD) * days_ / 360
+    booked = 1.3 * Rm_ - ST.COST * abs(0.7 - 1.3) + book - max(1.3 + net - 1, 0) * mrate
+    assert abs(run["series"]["b"][k] - (booked + ST.COST * dw + ST.COST * abs(0.7 - 1.3))) < 1e-12
+    assert abs(run["series"]["spy"][k] - Rm_) < 1e-12 and run["series"]["b"][0] == 0.0
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):

@@ -2,6 +2,7 @@
 
     python spx_forward.py weekly [--asof YYYY-MM-DD] [--dry]   # score the Thursday, write one append-only record
     python spx_forward.py ledger                               # books' P&L (% per year) and weekly ICs to date
+    python spx_forward.py mark                                 # daily: the running week, marked at the latest close
 
 Each record freezes everything a later reader needs: the models' tag, scores per name, every book's positions and
 state, the sleeve's trend state and the DTB3 rate. The next week starts from the previous record's positions; a
@@ -127,6 +128,71 @@ def book_return(d, a, b, bk):
     w, w2 = _vec(v["weights"], names), _vec(nb["weights"], names)
     dw = float(np.abs(w2 - w).sum() + abs(nb["w_spy"] - v["w_spy"]))
     return float((w * np.nan_to_num(R)).sum() + v["w_spy"] * Rm) - ST.COST * dw, Rm, days, float(w.sum()) + v["w_spy"], dw
+
+
+def running(d, last, sbar=None):
+    """The running week of the last record, marked at each close since entry: the provisional path of every book and
+    of SPY and the sleeve alone, before the costs of the next rebalance (which are booked when the week closes).
+    Same arithmetic as book_return over a partial period; None before the entry close (Friday) is in the data."""
+    S, names = d["S"], list(d["names"])
+    t = int(np.searchsorted(S, pd.Timestamp(last["asof"])))
+    if t + 1 >= len(S):
+        return None
+    s = last["sleeve"]["s"]
+    lr = np.vstack([np.zeros((1, len(names))), np.cumsum(np.log1p(np.nan_to_num(d["r"][t + 2:])), 0)])
+    lm = np.concatenate([[0.0], np.cumsum(np.log1p(np.nan_to_num(d["rm"][t + 2:])))])
+    out = {"from": str(S[t + 1].date()), "to": str(S[-1].date()), "asof": last["asof"], "sleeve": s,
+           "dates": [str(x.date()) for x in S[t + 1:]], "series": {}}
+    days = np.array([(x - S[t + 1]).days for x in S[t + 1:]], float)
+    mrate = (last["dtb3"] + ST.MARGIN_SPREAD) * days / 360
+    Rm = np.expm1(lm)
+    out["series"]["spy"] = [float(x) for x in Rm]
+    out["series"]["sleeve"] = [float(x) for x in s * Rm - max(s - 1, 0) * mrate]
+    sb = s if sbar is None else sbar                                   # the risk-matched S&P at the booked weeks' mean
+    out["series"]["risk_matched"] = [float(x) for x in sb * Rm - max(sb - 1, 0) * mrate]
+    for bk, v in last["books"].items():
+        w = _vec(v["weights"], names)
+        book = np.expm1(lr) @ w + v["w_spy"] * Rm
+        net = float(w.sum()) + v["w_spy"]
+        out["series"][bk] = [float(x) for x in s * Rm + book - max(s + net - 1, 0) * mrate]
+        out.setdefault("book_only", {})[bk] = float(book[-1])
+    return out
+
+
+def attach_running(pg, run):
+    """Put the running week on the page: `run` itself, and `run["lines"]`, the cumulative lines continued from the last
+    booked value, (1 + booked) * (1 + running) - 1, on the dates after the last booked end. Display only."""
+    pg["running"] = run
+    if run is None:
+        return
+    L_ = pg.get("lines") or {"dates": [], "series": {}}
+    booked_end = L_["dates"][-1] if L_["dates"] else None
+    if booked_end is not None and booked_end != run["from"]:
+        run["lines"] = None                                            # the ledger is behind: show nothing provisional
+        return
+    k0 = 1 if booked_end is not None else 0                            # the entry close is already the last booked point
+    run["lines"] = {"dates": run["dates"][k0:], "series": {}}
+    for k, v in run["series"].items():
+        base = L_["series"][k][-1] if L_["series"].get(k) else 0.0
+        run["lines"]["series"][k] = [float((1 + base) * (1 + x) - 1) for x in v[k0:]]
+
+
+def mark(path=None):
+    """Daily: add the running week to page.json (display only; records and the ledger are never touched)."""
+    path = path or REC
+    recs = [json.load(open(p)) for p in records(path)]
+    pp = os.path.join(path, "page.json")
+    if not recs or not os.path.exists(pp):
+        print("no record or page yet: nothing to mark")
+        return None
+    pg = json.load(open(pp))
+    attach_running(pg, running(L.build(), recs[-1], (pg.get("bench") or {}).get("sbar")))
+    pg["running_marked"] = pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds")
+    json.dump(pg, open(pp, "w"), indent=1, allow_nan=False)
+    r = pg["running"]
+    print("running week:", "none yet" if r is None else f'{r["from"]} -> {r["to"]}: ' +
+          ", ".join(f"{k} {v[-1] * 100:+.2f}%" for k, v in r["series"].items()))
+    return pg["running"]
 
 
 def expected_thursday(today=None):
@@ -270,6 +336,8 @@ def ledger(path=None):
                                       "computed_with_data_to": stamp})
     json.dump(led, open(lpath, "w"), indent=1)
     pg = page(recs, led, stamp)
+    attach_running(pg, running(d, recs[-1], (pg.get("bench") or {}).get("sbar")) if recs else None)   # newest week, to date
+    pg["running_marked"] = pg["generated"]
     json.dump(pg, open(os.path.join(path, "page.json"), "w"), indent=1, allow_nan=False)
     out = pd.DataFrame([{"book": b["key"], "weeks": b["weeks"], "cum_pct": _pc(b["cum"]), "pct_per_yr": _pc(b["ann"]),
                          "vs_spy_pct_yr": _pc(b["vs_spy"]), "vs_risk_matched_pct_yr": _pc(b["vs_rm"]),
@@ -431,11 +499,13 @@ def page(recs, led, stamp):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=("weekly", "ledger"))
+    ap.add_argument("cmd", choices=("weekly", "ledger", "mark"))
     ap.add_argument("--asof")
     ap.add_argument("--dry", action="store_true")
     a = ap.parse_args()
     if a.cmd == "weekly":
         weekly(a.asof, a.dry)
+    elif a.cmd == "mark":
+        mark(DRY if a.dry else None)
     else:
         ledger(DRY if a.dry else None)

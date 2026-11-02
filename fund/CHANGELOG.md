@@ -4,6 +4,13 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-11-02: forward S&P 500 books, running week on the shadow page (owner: "I still don't see any of the models' charts"; display only).
+  * The chart showed booked weeks only, and the first is booked on 2026-11-06.
+  * A new runner job, `spxmark` (Mon–Fri 21:45 UTC, R5 lock), downloads closes and runs `spx_forward.py mark`. It adds the newest record's running week to `page.json`: each book, SPY, the S&P holding alone and the risk-matched S&P, marked at the latest close, before the costs of the next rebalance. The weekly ledger does the same.
+  * The page draws booked weeks solid and the running week dashed, labelled provisional, with a "Running week" column.
+  * Records and `ledger.json` are never touched; the running week is replaced by the booked week at the Friday run.
+  * Contract test: at the week's exit close, the mark equals the booked week plus exactly the rebalance and sleeve-change costs charged at booking.
+  * Could this change a decision? No: display only.
 - 2026-11-02: decision ledger (`fund/attribution.py`), two new tables, measurement only.
   * **Agreement:** for every entry and every name not entered, does the desk's side match the residual move on the news session? It reproduces rule A's 7/12 on the live soft entries since 10-15. To date, live hard entries agree 18/26 and soft 11/17.
   * **Holding-period segments:** residual return per session held (1-3, 4-15, 16+), by side and by earnings session, plus the move between the as-of close and the entry.
