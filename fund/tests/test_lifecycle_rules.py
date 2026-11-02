@@ -114,6 +114,24 @@ def test_control_switch():
     assert "BAC" not in LR.slots(target, cur, key, AFTER, active=False)
 
 
+def test_a3_soft_views():
+    """7B A3 on the 2026-10-28 cohort's desk labels (real record): the four soft views (a partnership, an M&A rumour
+    and two macro read-throughs, none with hard figures) are not acted on from A7B3; partnerships with stated
+    figures (AVGO's $63B financing, NVDA's $3B investment) are hard and stay; before A7B3 and in the control nothing
+    changes."""
+    import json
+    C = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", "timing",
+                                    "lifecycle_labels_2026-10-28.json")))["names"]
+    soft = {t for t, x in C.items() if LR.soft_view(x, LR.A7B3)}
+    assert soft == {"ORCL", "TSLA", "VLO", "XOM"}, soft
+    assert not LR.soft_view(C["AVGO"], LR.A7B3) and not LR.soft_view(C["NVDA"], LR.A7B3)
+    assert not any(LR.soft_view(x, LR.A7B3 - pd.Timedelta(days=1)) for x in C.values())        # recorded days
+    assert not any(LR.soft_view(x, LR.A7B3, active=False) for x in C.values())                  # the control
+    assert not LR.soft_view({"out": {"event_type": "analyst_revisions", "hard": False}}, LR.A7B3)  # not in rule A
+    assert LR.soft_view({"out": {"event_type": "other"}}, LR.A7B3)                              # no hard label: soft
+    assert not LR.soft_view({"status": "failed"}, LR.A7B3)
+
+
 if __name__ == "__main__":
     fails = 0
     for name, fn in list(globals().items()):

@@ -1113,3 +1113,55 @@ a release made during market hours was placed one session late (`reports/researc
 From the as-of 2026-11-04 desk, the time is converted to Eastern, as B1 already does (`fund/edgar_time.py`). Tables of
 earlier as-ofs stay as recorded.
 
+
+## Protocol 7B, Amendment 3 (owner, 2026-11-02; from session 2026-11-05, desk as-of 2026-11-04): soft news is not traded
+
+The mechanical consequence of Family E rule A. The rule was registered before any of its data (PREREG_family_E.md,
+rule A), read once on 2026-11-01 (`reports/research/p8/E_SOFT_READ.md`), and returned **STOP**.
+* **Return leg (passed):** pooled +11.4 bp, p 0.0895 against 4 bp.
+* **Desk agreement leg (failed):** 7/12 = 58%, under the 60% bar.
+* **Post-read diagnostics** (`E_SOFT_DIAG.md`) show that STOP also holds on the desk's own profit and loss:
+  * break-even agreement is 0.675 at the holdout mean;
+  * all soft-news rows give +3.7 ± 4.1 bp gross, about zero after costs.
+
+Gated by date (`A7B3` in `fund/lifecycle_rules.py`), so recorded days never change. Contract test:
+`fund/tests/test_lifecycle_rules.py::test_a3_soft_views`, on the 2026-10-28 cohort's desk labels.
+
+**The rule (live book).**
+* **Soft view.** From session A7B3, a cohort name is a soft view when the desk's event type is product_launch,
+  partnership, leadership, macro_readthrough, mna_rumour or other, and its `hard` label is not true. This is rule A's
+  definition. `hard` means hard numbers: results, guidance figures, a deal value, a buyback size, a ruling or fine.
+* **What a soft view does: nothing.**
+  * It opens no lot.
+  * On a name already held, it does not extend the horizon, enlarge the lot or flip its side. The lot runs on under
+    its own rules: stops, targets, reviews, horizon and the 7B rules.
+  * It does not count as a new candidate in the slot guard.
+* **Freed weight is not reallocated.** Other names keep their desk weights. A slot left empty stays empty, so gross
+  falls by the stopped weight.
+  * Why: a zero-edge name optimally gets zero weight, and the other names' optimal sizes do not depend on it
+    (Grinold–Kahn; `reports/Portfolio construction after a signal stop.md`).
+  * The fund's sizing rule already works this way.
+* **Records.** The day's live record lists each stopped view (`a3`: event type, hard label, side, held or not). The
+  decision ledger (`fund/attribution.py`) keeps never-entered soft views as counterfactual rows with action `a3_soft`.
+
+**The control acts on soft views as before.** It is the counterfactual: control minus live measures the stop.
+
+**Owner reading of "do not enter" (rule A).** Rule A says cohorts "do not enter" soft names and that open lots "run
+out under their own rules". A soft view that extended, enlarged or flipped a held lot would be acting on soft news. So
+those actions are also not taken.
+
+**Not covered: the views that remain are not proven either.** Rule A tested soft types only. Other views have no
+passed test of their own:
+* analyst revisions, dated catalysts and legal news;
+* earnings and guidance.
+
+In the one cohort with the desk's `hard` label (2026-10-28, from Amendment 8), 16 of 20 views survive, all labelled
+hard. The earlier cohorts had no label, so their survivors cannot be classed. Whether the remaining views are tested
+or limited is a separate owner decision.
+
+**Unchanged:** the 7B clock, scoring, costs, execution, the hedge, Amendment 2 and every other rule.
+
+**Checks done before merging.**
+* A rebuild of the live record with this code reproduces all 17 recorded days to the cent, with all 129 events
+  identical. The book's checks pass.
+* All contract tests pass.

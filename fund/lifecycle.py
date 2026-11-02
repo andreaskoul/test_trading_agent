@@ -96,7 +96,7 @@ Z_HI, ID_HI, TO_LO, EXT_MAX, EXT_TOTAL, SAMPLES, REVERT_N = 1.5, 0.1, 1.0, 2, 40
 LABELS = ("CONFIRMING", "CONTRADICTING", "STALE", "NONE")
 
 # ---- Protocol 7B (owner, 2026-10-27): R1-R3 and their constants live in fund/lifecycle_rules.py (contract-tested)
-from lifecycle_rules import (P7B, P7B_ASOF, A7B1, P7B2, P7B2_ASOF, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
+from lifecycle_rules import (P7B, P7B_ASOF, A7B1, P7B2, P7B2_ASOF, A7B3, soft_view, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
                              may_increase, checkpoint_exit, slots, structural_h, structural_mean)
 DESK_SAMPLES, DESK_DRAWS = 5, 8
 
@@ -1058,6 +1058,7 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
     prev_day = None
     out_live = None
     a2_logs = {}                                        # 7B A2: per day, B1 horizons and B3 checks of the new names
+    a3_logs = {}                                        # 7B A3: per day, the soft views not acted on
     for d, r, close_ts, is_live in seq:            # close_ts: the session's real close (a live day: the news cutoff)
         act = "compute" if replay or d < P7_START or is_live else ("apply" if d in logs else "hold")
         own = CTRL and d >= P7B                     # the control's own decision days
@@ -1190,7 +1191,7 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
                     mets = []
                     for t_, w_ in cn["w"].items():
                         inf = cn["names"].get(t_, {})
-                        if t_ == "SPY" or not w_ or inf.get("status") != "ok" or inf.get("stale"):
+                        if t_ == "SPY" or not w_ or inf.get("status") != "ok" or inf.get("stale") or soft_view(inf, d, not CTRL):
                             continue
                         ev_ = entry_vol(cn["asof"], t_, str(d.date()), float(cn["beta"].get(t_, 1.0)), upto=prev_day)
                         mets.append(abs(cn["scores"].get(t_, 0)) * ev_["sigma_e"] * math.sqrt(h_of(inf)))
@@ -1268,6 +1269,13 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
                     if cd and cd["kind"] == "target" and not new_event:
                         continue
                     cand[t] = (w, side, info)
+                # 7B A3: a soft view opens, extends, enlarges and flips nothing (live book; the control acts on it)
+                a3 = {t: {"event_type": info["out"]["event_type"], "hard": info["out"].get("hard"), "side": side,
+                          "held": t in cur, "action": "none: held lot unchanged" if t in cur else "not entered"}
+                      for t, (w, side, info) in cand.items() if soft_view(info, d, not CTRL)}
+                if a3:
+                    a3_logs[str(d.date())] = a3
+                    cand = {t: x for t, x in cand.items() if t not in a3}
                 # re-selection rules for names already held
                 target = {}
                 for t, L in cur.items():
@@ -1340,7 +1348,7 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
                        "reviews": [x for x in reviews if x["day"] == str(d.date())],
                        "cool": {f"{k[0]}|{k[1]}": {**v, "until": str(v["until"].date()) if v.get("until") is not None else None}
                                 for k, v in cool.items()},
-                       "a2": a2_logs.get(str(d.date()))},
+                       "a2": a2_logs.get(str(d.date())), "a3": a3_logs.get(str(d.date()))},
                       open(os.path.join(CDIR, "days", f"{d.date()}.json"), "w"), indent=1, default=str)
             clogs[d] = True
         if is_live:
@@ -1349,7 +1357,7 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
                         "reviews": [x for x in reviews if x["day"] == str(d.date())],
                         "cool": {f"{k[0]}|{k[1]}": {**v, "until": str(v["until"].date()) if v.get("until") is not None else None}
                                  for k, v in cool.items()},
-                        "a2": a2_logs.get(str(d.date()))}
+                        "a2": a2_logs.get(str(d.date())), "a3": a3_logs.get(str(d.date()))}
             break
         rows.append({"date": str(d.date()), "nav": nav, "pnl_lots": pnl_lots, "pnl_hedge": pnl_hedge, "cash_income": cash_inc,
                      "cost": cost, "r_gross": (pnl_lots + pnl_hedge) / nav0, "r_cost": cost / nav0, "r_cash": cash_inc / nav0,
