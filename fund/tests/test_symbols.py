@@ -49,6 +49,11 @@ def test_screen_uses_finnhubs_symbol():
     assert "company-news?symbol={finnhub_symbol(t)}" in src and "company-news?symbol={ymap" not in src
 
 
+def test_r5_uses_finnhubs_symbol():
+    src = open(os.path.join(os.path.dirname(HERE), "r5.py")).read()     # PREREG_thesis_tree.md Amendment 8
+    assert "company-news?symbol={finnhub_symbol(t)}" in src and "company-news?symbol={t.replace" not in src
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):

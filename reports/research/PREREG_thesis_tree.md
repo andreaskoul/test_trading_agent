@@ -703,3 +703,18 @@ The cap bounds a runaway attempt at about $0.015, against about $0.045, and stop
 desks, the shadow desks and qshadow send the same request as before, and keep their retries.
 
 **Owner sign-off:** 2026-10-29 ("yes", to the proposed cap and the retry change).
+
+## Amendment 8 (2026-11-02): R5's news fetch uses Finnhub's symbols for class shares
+
+**What had been seen.** No R5 outcome. Every R5 record on `research-data` for this season was checked (12 day files
+to 2026-11-02). None is for BRK.B or BF.B.
+
+**Defect.** `own_news` asked Finnhub for `BRK-B` and `BF-B`, Yahoo's form. Finnhub uses the dot. On October 2026
+company news, `BRK.B` returned 249 articles and `BRK-B` none; `BF.B` returned 21 and `BF-B` none. An R5 ledger for either
+name would have read no news.
+
+**Change.** `own_news` uses `fund/newsio.finnhub_symbol`, which returns the ticker unchanged. The live fund's news
+fetches use the same function (fund CHANGELOG, 2026-11-02).
+
+**Effect.** No recorded prediction changes. BF.B's next release, due 2026-12-02, will be the first R5 record to read
+its news. Nothing else changes.
