@@ -45,6 +45,15 @@ rows compare like with like. Scripts and raw results are in [`research/trendspid
 4. **The one lever that does move results against the S&P has been ruled out of research.** CLAUDE.md rule 17 says
    market exposure, leverage and hedges are "strategic policy, never tested or optimised". The traded book is
    beta-neutral. The 1.3×/0.7× SPY sleeve exists only in the research ledger (`fund/qshadow.py:59`).
+
+   **The owner then authorised the test (§1.6), and the owner's own sleeve passed.** Over 1927–2026 the 1.3×/0.7×
+   200-day sleeve on the US market made **12.2% a year against 9.7% for buy-and-hold**:
+   * the same volatility (17.2%);
+   * Sharpe 0.58 against 0.45, a gain of +0.13 with 90% interval [+0.08, +0.18], passing after Holm correction;
+   * a smaller worst drawdown (−75% against −84%).
+
+   The edge has shrunk in recent decades: about +0.7% a year since 2000, and +0.4% a year on SPY over 2016–26.
+   The one policy with a century of evidence behind it is the one the traded book doesn't hold.
 5. **On the evidence so far, the stock-picking machine has shown no skill. It is also too complex and changes too
    often to show any within a useful time.**
    * The fund is down 3.8% in 5 weeks, against a roughly flat S&P (−1.1% to +0.5%, depending on the mark).
@@ -254,6 +263,58 @@ number was computed once; results are in `research/trendspider/results/{B,C,D}.j
 3. **Nothing tested here beats SPY on data the author never saw.** That includes the TrendSpider rules (long, short
    and long/short), their walk-forward re-selection, longer bars, zero costs, and the best published intraday
    long/short model.
+
+### 1.6 Third round: market exposure over a century (owner-authorised, 2026-11-04)
+
+The owner asked for this study after reading §6 item 4. Its method was committed before any of its code existed
+([`research/exposure/PREREG.md`](../research/exposure/PREREG.md), commit `d4c0aaf`), and the read was made once
+(`research/exposure/results.json`).
+* **Data:** Ken French's daily US market total return (CRSP, all US listed stocks, dividends included) and the
+  one-month T-bill, 1926-07 → 2026-09. The evaluation starts on 1927-06-01, when every policy is defined: 103 years.
+* **Costs and financing:** 2 bp per side on weight changes. Borrowed money costs the T-bill rate plus 1% a year.
+* **Policies:** each puts a weight on the market, with the rest in cash, decided from the previous close:
+
+| 1927-06 → 2026-09 | Return | Volatility | Sharpe | Max drawdown | Worst 12 months | Avg / max weight |
+|---|---:|---:|---:|---:|---:|---:|
+| P0 buy-and-hold, 1.0× (the null) | 9.7% | 17.2% | 0.45 | −84.1% | −64.3% | 1.00 / 1.0 |
+| P1 constant leverage for 16% volatility | 9.0% | 15.0% | 0.45 | −79.1% | −51.5% | 0.88 / 1.5 |
+| P2 volatility-managed (previous month's volatility, 16% target, ≤ 1.5×) | 10.9% | 16.6% | 0.53 | **−69.0%** | **−46.3%** | 1.22 / 1.5 |
+| **P3 the owner's sleeve: 1.3× above the 200-day average, else 0.7×** | **12.2%** | 17.2% | **0.58** | −75.2% | −50.4% | 1.14 / 1.3 |
+| Buy-and-hold at P3's volatility (risk-matched) | 9.7% | 17.2% | 0.45 | −84.2% | −64.5% | 1.00 |
+
+**Pre-registered tests** (Sharpe above P0's after Holm correction, and drawdown no worse):
+
+| | Sharpe gain | 90% interval | One-sided p | Holm | Drawdown | Verdict |
+|---|---:|---:|---:|---|---|---|
+| P1 | 0.00 | [−0.04, +0.04] | 0.50 | no | better | **FAIL** (a tie) |
+| P2 | +0.07 | [−0.01, +0.15] | 0.065 | no | better | **FAIL** (close; best drawdown) |
+| **P3** | **+0.13** | **[+0.08, +0.18]** | < 0.001 | **yes** | better | **PASS** |
+
+The sign holds in every sub-period, but the edge shrinks:
+
+| Sharpe (return a year) | 1927–62 | 1963–99 | 2000–26 | SPY 2016-03 → 2026-11 |
+|---|---:|---:|---:|---:|
+| P0 buy-and-hold | 0.44 (7.8%) | 0.52 (12.7%) | 0.42 (8.5%) | 0.77 (15.4%) |
+| P2 volatility-managed | 0.60 (10.0%) | 0.47 (13.1%) | 0.49 (9.4%) | 0.79 (15.6%) |
+| P3 owner's sleeve | 0.62 (11.4%) | 0.65 (15.2%) | 0.46 (9.2%) | 0.82 (15.8%) |
+
+* At 10 bp per side P3 still has a Sharpe of 0.56 (11.9% a year), so its costs (3.3× turnover a year) are small.
+
+**What this changes.**
+1. **My stated expectation was wrong on P3.** I wrote that the 200-day sleeve would not beat a constant risk-matched
+   exposure. It did, by about 2.5% a year at the same volatility over a century.
+2. **Why it works where the intraday and short rules failed:** it never leaves the market. It *leans*
+   (1.3× ↔ 0.7×) on a slow trend and keeps the market's drift at all times, so the cost of being wrong is small.
+   Every rule in §1.3–1.5 went flat or short and paid the full drift whenever it was wrong.
+3. **Caveats.**
+   * **Old data.** Daily index data before the 1960s carry stale-price autocorrelation (non-synchronous trading),
+     which flatters trend rules. However, 1963–99 is just as strong.
+   * **Decay.** Since 2000 the gain is about +0.7% a year and not significant on its own; on SPY in 2016–26 it is
+     +0.4% a year.
+   * **Not fresh for the literature.** These are the decades Faber and others used. Treat it as a well-supported
+     tilt worth roughly 0.5–1% a year now, not 2.5%.
+4. **Volatility management (P2)** gives the best drawdown and worst year (−46% against −64%), at no Sharpe cost. It is
+   a defensible risk overlay, but it did not earn a significant Sharpe gain.
 
 ---
 
@@ -507,8 +568,17 @@ windows are weekends, and Mon, Tue and Fri 02:00–15:30 UTC.
    Pass criterion: Sharpe above the 1.0× core at t ≥ 2 after deflation, with the drawdown not worse. My expectation,
    stated in advance: volatility targeting passes on drawdown and roughly ties on Sharpe; the 200-day sleeve does not
    beat a constant risk-matched exposure.
-5. **Implement the winner with SPY plus margin (≤ 1.5×), not leveraged ETFs.** Daily-reset decay and fees make SSO
-   and UPRO poor long-term holdings (§1.4).
+
+   **Done (§1.6).** The owner's 200-day sleeve **passed**, and the volatility-managed core narrowly failed the
+   Sharpe test but gave the best drawdown.
+5. **Make the sleeve the fund's core, as a new protocol.** The traded fund is SPY at 1.3× above the 200-session
+   average and 0.7× below, with the long/short stock book as an overlay on top. This turns a policy that is now
+   *tested* into the fund's base.
+   * Expect it to beat buy-and-hold SPY by roughly 0.5–1% a year at the same risk, not the century's 2.5%, and to
+     lag in sharp V-shaped recoveries.
+   * Implement it with SPY plus margin (≤ 1.3×), not leveraged ETFs. Daily-reset decay and fees make SSO and UPRO
+     poor long-term holdings (§1.4).
+   * Optional and separate: P2's volatility scaling as a drawdown overlay, judged forward only.
 
 ### Level 3: the stock-picking book (the traded fund)
 6. **A real freeze, from the session of 5 Nov (7B with Amendments 2 and 3), to the 13-week look in late January
@@ -553,10 +623,11 @@ windows are weekends, and Mon, Tue and Fri 02:00–15:30 UTC.
     * long free history;
     * a known economic reason;
     * evidence outside the US large-cap set.
-17. **Candidates that still meet the bar** (intraday SPY momentum has now been tested and **failed** after its
-    sample, §1.5 D; the index-timing family is closed):
-    * **(a) The volatility-targeted core of item 4.** It is the only candidate aimed at the owner's goal that the
-      tests above don't contradict. It is a risk policy, not an alpha bet.
+17. **Candidates that still meet the bar.** Short-horizon index timing that goes flat or short is closed: intraday
+    momentum failed after its sample (§1.5 D), and the TrendSpider rules failed long, short and long/short. The slow
+    sleeve passed and moves to item 5.
+    * **(a) The sleeve as the core (item 5), with a forward record from now.** The century says it works, and the
+      last 25 years say the edge is small. A forward record keeps us honest about which is true.
     * **(b) Earnings-surprise drift in mid and small caps** (S&P 400/600), where the anomaly survives better than in
       the large caps where our version failed. Long and short by construction.
     * **(c) Optional:** keep the intraday momentum model as a zero-cost forward paper record from November 2026, as
@@ -604,6 +675,7 @@ python3 research/trendspider/replica.py read plus/vwap_over   # the one read -> 
 PYTHONPATH=research/trendspider python3 research/trendspider/tests2.py B   # short mirror, long/short (once)
 PYTHONPATH=research/trendspider python3 research/trendspider/tests2.py C   # robustness of the long rules
 PYTHONPATH=research/trendspider python3 research/trendspider/tests2.py D   # intraday momentum, long and short (once)
+python3 research/exposure/exposure.py                    # market exposure policies 1927-2026 (once)
 ```
 
 * The published TrendSpider curve was decoded from the share page's embedded chart data: 1,001 points,
