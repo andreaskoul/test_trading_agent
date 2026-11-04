@@ -2,20 +2,22 @@
 
 Run through the redacting wrapper (CLAUDE.md rule 16):  python3 research/trendspider/download.py [SYM ...]
 
-Writes .cache/trendspider/<SYM>_15m.csv (ts_utc, open, high, low, close, volume). Keys come from the environment only.
+Writes .cache/trendspider/<SYM>_<tf>.csv (ts_utc, open, high, low, close, volume). Keys come from the environment only.
 """
 import os, sys, time, json, urllib.request, urllib.parse
 import pandas as pd
 
 OUT = ".cache/trendspider"
 SYMS = sys.argv[1:] or ["SSO", "SPY", "QLD", "UPRO"]
+TF = os.environ.get("TF", "15Min")                       # TF=1Min for the intraday momentum test
+TAG = {"15Min": "15m", "1Min": "1m"}[TF]
 
 
 def get(sym):
     h = {"APCA-API-KEY-ID": os.environ["ALPACA_API_KEY"], "APCA-API-SECRET-KEY": os.environ["ALPACA_SECRET_KEY"]}
     rows, tok = [], None
     while True:
-        q = {"symbols": sym, "timeframe": "15Min", "start": "2016-01-01T00:00:00Z", "end": "2026-11-04T00:00:00Z",
+        q = {"symbols": sym, "timeframe": TF, "start": "2016-01-01T00:00:00Z", "end": "2026-11-04T00:00:00Z",
              "limit": 10000, "adjustment": "all", "feed": "sip"}
         if tok:
             q["page_token"] = tok
@@ -44,5 +46,5 @@ if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     for s in SYMS:
         df = get(s)
-        df.to_csv(f"{OUT}/{s}_15m.csv", index=False)
+        df.to_csv(f"{OUT}/{s}_{TAG}.csv", index=False)
         print(s, len(df), df.ts_utc.min(), df.ts_utc.max())
