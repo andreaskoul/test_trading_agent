@@ -1,0 +1,258 @@
+{
+ "day": "2026-11-04",
+ "close_ts": 1793824800,
+ "checked_at": "2026-11-04T20:44:22+00:00",
+ "lots": {
+  "2026-10-28|NVDA": {
+   "status": "checked",
+   "verdict": "reduce",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 2,
+   "hard": 2,
+   "news_until": 1793824800,
+   "headlines": [
+    "apples pain could be microns gain as memory prices surge",
+    "marvells deal to acquire lumentum could be a game changer for the stock",
+    "1 dividend king to buy before the new year and hold forever",
+    "nvidia is far from the only threat to amd",
+    "advantage solutions inc q3 2026 earnings call summary",
+    "amds ai data center guarantees reach 85 billion as it challenges nvidia",
+    "acushnet holdings corp q3 2026 earnings call summary",
+    "selectquote inc q1 2027 earnings call summary",
+    "cpi card group inc q3 2026 earnings call summary",
+    "ralliant corp q3 2026 earnings call summary",
+    "ag mortgage investment trust inc q3 2026 earnings call summary",
+    "wayfair inc q3 2026 earnings call summary",
+    "kyndryl holdings inc q2 2027 earnings call summary",
+    "the kraft heinz company q3 2026 earnings call summary",
+    "nomad foods limited q3 2026 earnings call summary",
+    "townsquare media inc q3 2026 earnings call summary",
+    "uber technologies inc q3 2026 earnings call summary",
+    "super micros ai boom just got much bigger",
+    "should you buy anthropics ipo on day 1",
+    "fermaca unveils nvidiapowered ai factory platform to power mexico and latin america",
+    "why cricut stock soared 50 today",
+    "nvidia stocks decline 135 as 108 billion guide sets the next revenue hurdle",
+    "is kimberlyclark the safest dividend stock you can buy now",
+    "alibaba and tencent face stunning nvidia chip shortfall despite millions of orders",
+    "tesla wants to build 20000 optimus robots a week heres the supplier that gets paid for every single one and its not nvidia"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "partial",
+        "quote": "AMD is taking on billions of dollars in potential financial obligations to help customers build AI data centers, as it steps up its challenge to Nvidia Corp. (NASDAQ:NVDA).",
+        "article": 5
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Revenue nearly quadrupled as AI server demand overwhelmed Wall Street expectations.",
+       "article": 17
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Makora"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "partial",
+        "quote": "Broadcom is pulling AI budgets toward custom chips that undercut GPU pricing.",
+        "article": 0
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Revenue nearly quadrupled as AI server demand overwhelmed Wall Street expectations.",
+       "article": 22
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    }
+   ],
+   "max_published": 1793821200
+  },
+  "2026-10-28|HCA": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1793824800,
+   "headlines": [
+    "sp 500 premarket movers for nov 4",
+    "hca healthcare centene oscar ride blue wave to buy points",
+    "policy relief sparks surge in health insurance and hospital stocks",
+    "top stocks to watch on democratic gains first solar nextera energy hca healthcare",
+    "healthcare stocks bounce on midterm results a bull market case is developing",
+    "dow soars 1200 points sp 500 and nasdaq jump 2 as wall street celebrates midterm results"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "No article states HCA raised 2027 guidance above 2026 levels.",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "No article states HCA reported uninsured payer mix improving or ACA coverage losses reversing; article 2 says 'positive for health insurers focused on Medicaid and the Affordable Care Act marketplaces, as well as for hospital operators.'",
+        "article": 2
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "No article states HCA announced cost cuts or a buyback that offset margin strain.",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "No article reports a new quantified HCA company event (earnings, guidance, order/deal, buyback, dividend) after the opening.",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    }
+   ],
+   "max_published": 1793818604
+  }
+ }
+}
