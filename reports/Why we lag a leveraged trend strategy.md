@@ -21,6 +21,13 @@ rows compare like with like. Scripts and raw results are in [`research/trendspid
      backtest makes you worse off than picking at random.
 
    It is a well-fitted backtest, not a strategy.
+
+   **Short and long/short versions fail too** (§1.5, a second pre-registered round):
+   * The same rules mirrored to the short side lost **7.9% a year** over 2016–26, including in the 2022 bear market.
+   * Long/short together made **2.9% a year (Sharpe 0.24)**, against SPY's 15.4% (0.90).
+   * The best-known *published* long/short intraday strategy on SPY (Zarattini, Aziz & Barbon 2024) replicates in
+     its own sample: 20.2% a year, Sharpe 1.35 over 2016–24, against the paper's 19.6% and 1.33. **In the 22 months
+     after its sample it lost 7.5% a year**, and both its long and its short legs lost money.
 2. **Its headline still reveals what actually beats the S&P on paper: more S&P.** The strategy's results over its
    own window come from three things:
    * 2× leverage on the index;
@@ -167,6 +174,86 @@ to that path.
 * **What the TrendSpider author got right, in process if not in result.** One liquid instrument, a simple hypothesis,
   many years of intraday data, and an evaluation that takes seconds. We have none of those for the stock-picking
   book, because it can't be backtested at all (§3.4).
+
+### 1.5 Second round: the short side, robustness, and a published long/short strategy
+
+The owner's rule is that every strategy must be able to go short, so the second round tests short and long/short
+versions, not only long ones. Its method was committed before any of its code existed
+([`research/trendspider/PREREG_2.md`](../research/trendspider/PREREG_2.md), commit `4aaefe9`). Each confirmatory
+number was computed once; results are in `research/trendspider/results/{B,C,D}.json`.
+
+**B. The TrendSpider rules mirrored to the short side** (new rules, read once over 2016-03 → 2026-11).
+* Costs are 2 bp per side, plus a 3% a year borrow fee while short.
+* Before the read I checked that the long/short simulator, run long-only, reproduces the replica exactly (270
+  trades, identical returns).
+
+| 2016-03 → 2026-11 | Return | Volatility | Max drawdown | Sharpe | Trades | Winning trades |
+|---|---:|---:|---:|---:|---:|---:|
+| SSO long only (the replica) | 11.8% | 16.2% | −27.4% | 0.77 | 266 | 37% |
+| **SSO short only (the mirror)** | **−7.9%** | 16.7% | **−64.5%** | **−0.41** | 271 | 21% |
+| **SSO long/short** | **2.9%** | 22.5% | −59.8% | **0.24** | 495 | 30% |
+| SPY long only / short only / long/short (descriptive) | 5.7% / −4.8% / 1.0% | | | 0.69 / −0.48 / 0.14 | | |
+| SPY buy-and-hold | **15.4%** | 17.7% | −33.8% | **0.90** | | |
+
+* **B1, short-only: FAIL.** The bootstrap probability that its mean return is ≤ 0 is 0.94.
+* **B2, long/short: FAIL.** Its Sharpe is below both the long-only replica's and SPY's. The bootstrap probability
+  that it does not beat SPY is 0.94.
+* The short mirror **lost money even in 2022 (−4.8%)**, a year in which SSO fell 39%. Breakout shorts on a leveraged
+  index ETF are stopped out by bear-market rallies. In the years the index rises (2016, 2017, 2021, 2024, 2026) they
+  lose 13–19%.
+* Shorting the S&P on momentum signals fights the market's positive drift. That drift is the single most reliable
+  number in this report: about 15% a year since 2016.
+
+**C. How robust the published long rules are** (descriptive; that read is spent).
+* **Costs:** 0, 1, 2, 5 and 10 bp per side give 13.2%, 12.5%, 11.8%, 10.1% and 7.8% a year (Sharpe 0.84 down to
+  0.54). Even at zero cost it is below SPY's 15.4% and 0.90.
+* **Longer bars:** on 30-minute bars it makes 9.9% a year (Sharpe 0.77); on 60-minute bars, 10.4% (0.82).
+* **Walk-forward selection.** Every 6 months, pick the best of the 301 variants on the previous 2 years and trade it
+  for the next 6. Result over 2018–26: 12.1% a year, Sharpe 0.80. SPY over the same span made 14.2% at Sharpe 0.80.
+  Choosing parameters on recent history ties SPY's risk-adjusted return at best and lags its return. **The published
+  setting was never chosen** (0 of 18 segments).
+* **Bootstrap**, replica minus SPY Sharpe over 2016–26: −0.13, 90% interval [−0.69, +0.41]. Ten years of 15-minute
+  data can't separate this strategy from the index, and the point estimate is negative.
+
+**D. Intraday momentum on SPY, long and short** (Zarattini, Aziz & Barbon 2024, the paper's final model).
+* **Rules.** A position opens when SPY leaves its time-of-day "noise area" (the average move from the open at that
+  time over the last 14 days). It goes long above the area, short below it, and the VWAP and the area's edge act as
+  trailing stops. Decisions are made only on the half-hour; everything is flat at the close.
+* **Sizing and costs.** Size targets 2% daily volatility, capped at 4×. Costs are the paper's ($0.0045 a share per
+  side).
+
+| | Return | Volatility | Max drawdown | Sharpe | NW t |
+|---|---:|---:|---:|---:|---:|
+| **2016-03 → 2024-12, inside the paper's sample (replication)** | | | | | |
+| Full model, long and short | **20.2%** | 14.4% | −26.2% | **1.35** | 4.19 |
+| Long leg only / short leg only | 11.1% / 8.2% | 8.6% / 11.9% | | 1.26 / 0.72 | |
+| SPY buy-and-hold | 15.2% | 17.9% | −33.8% | 0.88 | |
+| **2025-01 → 2026-11, after the paper's sample (confirmatory)** | | | | | |
+| Full model, long and short | **−7.5%** | 14.3% | −23.2% | **−0.47** | −0.68 |
+| Long leg only / short leg only | −2.0% / −5.6% | 7.3% / 12.2% | | −0.24 / −0.41 | |
+| Costs doubled / next-bar fills / no volatility sizing | −8.3% / −7.4% / −1.3% | | | −0.53 / −0.47 / −0.19 | |
+| SPY buy-and-hold | **16.0%** | 16.2% | −18.7% | **1.00** | |
+| SPY risk-matched to the strategy's volatility | 14.2% | 14.3% | −16.7% | 1.00 | |
+
+* **The implementation is right.** Inside the paper's sample it reproduces the published 19.6% a year and Sharpe
+  1.33, at 15-minute rather than 1-minute resolution.
+* **The pre-registered read fails.** The criterion was a positive mean with NW t ≥ 1.65, and t is −0.68.
+* The read had only about 55% power, but the point estimate is not "small", it is negative. If the strategy's true
+  Sharpe were the published 1.33, a result of −0.47 or worse over 461 sessions would have a probability of about 0.7%.
+* **Both legs lost money** after publication: long −2.0% a year, short −5.6%.
+* Inside its own sample it was also regime-dependent: it lost 12.5% in 2016 and 9.0% in 2017, two calm years, and
+  made 61% in 2018.
+* Its correlation with SPY is near zero (−0.04 to −0.08). That makes it a diversifier when it works and pure drag
+  when it doesn't.
+
+**What the second round shows:**
+1. **Every short or long/short timing rule we tested on the S&P index lost to holding it.** The index's positive
+   drift (about 15% a year over 2016–26) is a high bar for any rule that is sometimes flat or short.
+2. **The published, peer-reviewed-style version did what McLean and Pontiff (2016) predict**: strong in its sample,
+   gone afterwards. One more reason to judge every strategy only on data its author never saw.
+3. **Nothing tested here beats SPY on data the author never saw.** That includes the TrendSpider rules (long, short
+   and long/short), their walk-forward re-selection, longer bars, zero costs, and the best published intraday
+   long/short model.
 
 ---
 
@@ -355,9 +442,9 @@ That is a solid research *process* aimed at a target where the expected prize is
 * Gao, Han, Li & Zhou (2018, *Journal of Financial Economics*): on SPY, 1993–2013, the first half-hour's return
   predicts the last half-hour's.
 * Zarattini, Aziz & Barbon (2024, Swiss Finance Institute RP 24-97) report an intraday SPY momentum strategy at 19.6%
-  a year and Sharpe 1.33 net of costs over 2007–24. Like every published anomaly, expect decay after publication.
-* This is the *credible* version of what the TrendSpider strategy gestures at, and it is testable on the Alpaca bars
-  we already have.
+  a year and Sharpe 1.33 net of costs over 2007–24.
+* This is the *credible* version of what the TrendSpider strategy gestures at. **We tested it (§1.5 D):** it
+  replicates in its own sample and lost 7.5% a year in the 22 months after it.
 
 **Backtest overfitting and multiple testing.**
 * Bailey & López de Prado (2014, *Journal of Portfolio Management*): the deflated Sharpe ratio.
@@ -466,12 +553,15 @@ windows are weekends, and Mon, Tue and Fri 02:00–15:30 UTC.
     * long free history;
     * a known economic reason;
     * evidence outside the US large-cap set.
-17. **Three candidates that meet the bar:**
-    * **(a) Intraday SPY momentum** (Gao et al.; Zarattini et al.). Pre-register a replication on Alpaca 1-minute
-      bars 2016–26, one read, published costs. It is cheap, fast and exactly the right shape for the owner's goal.
+17. **Candidates that still meet the bar** (intraday SPY momentum has now been tested and **failed** after its
+    sample, §1.5 D; the index-timing family is closed):
+    * **(a) The volatility-targeted core of item 4.** It is the only candidate aimed at the owner's goal that the
+      tests above don't contradict. It is a risk policy, not an alpha bet.
     * **(b) Earnings-surprise drift in mid and small caps** (S&P 400/600), where the anomaly survives better than in
-      the large caps where our version failed.
-    * **(c) The volatility-targeted core of item 4.**
+      the large caps where our version failed. Long and short by construction.
+    * **(c) Optional:** keep the intraday momentum model as a zero-cost forward paper record from November 2026, as
+      a check on whether 2025–26 was a regime or the end of it. Judge it no earlier than 2028, and never trade it on
+      the in-sample record.
 18. **Keep the MASTER 5-day forward book and R5 on their registered schedules.** They are running and cheap. Read
     them when registered, not before.
 
@@ -501,6 +591,7 @@ windows are weekends, and Mon, Tue and Fri 02:00–15:30 UTC.
     | How many variants were tried? | unknown; LLM-searched |
     | Out-of-sample record? | none published; our read fails |
     | Does it transfer to related instruments? | no |
+    | Does its short or long/short version work? | no: short −7.9%, long/short +2.9% a year against SPY's 15.4% |
 
 ---
 
@@ -510,6 +601,9 @@ windows are weekends, and Mon, Tue and Fri 02:00–15:30 UTC.
 python3 research/trendspider/download.py           # through the redacting wrapper (CLAUDE.md rule 16); Alpaca 15-min bars
 python3 research/trendspider/replica.py calibrate  # in-sample variant choice -> results/calibration_in_sample.csv
 python3 research/trendspider/replica.py read plus/vwap_over   # the one read -> results/read.json, read_table.csv
+PYTHONPATH=research/trendspider python3 research/trendspider/tests2.py B   # short mirror, long/short (once)
+PYTHONPATH=research/trendspider python3 research/trendspider/tests2.py C   # robustness of the long rules
+PYTHONPATH=research/trendspider python3 research/trendspider/tests2.py D   # intraday momentum, long and short (once)
 ```
 
 * The published TrendSpider curve was decoded from the share page's embedded chart data: 1,001 points,
