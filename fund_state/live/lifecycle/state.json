@@ -292,18 +292,35 @@
 {
 "date": "2026-11-02",
 "nav": 96320.22936919436,
-"pnl_lots": -1926.6653146189317,
-"pnl_hedge": 79.82141472537693,
-"cash_income": 39.24141027496049,
+"pnl_lots": -1926.6653146189308,
+"pnl_hedge": 79.82141472537577,
+"cash_income": 39.24141027496048,
 "cost": 1.0375403602226911,
 "r_gross": -0.018820596947681904,
 "r_cost": 1.0573242783447714e-05,
-"r_cash": 0.0003998966921277005,
+"r_cash": 0.0003998966921277004,
 "n_long": 9,
 "n_short": 10,
 "stock_gross": 0.8465944894616043,
-"hedge": -0.1721745397925368,
-"net_beta": -0.0068634412950748895,
+"hedge": -0.17217453979253683,
+"net_beta": -0.006863441295074927,
+"traded": true
+},
+{
+"date": "2026-11-03",
+"nav": 96418.47967588215,
+"pnl_lots": 142.65989589121943,
+"pnl_hedge": -49.612757771298675,
+"cash_income": 12.983585576466249,
+"cost": 7.780417008602243,
+"r_gross": 0.0009660186518376334,
+"r_cost": 8.077656230219294e-05,
+"r_cash": 0.00013479604088877643,
+"n_long": 7,
+"n_short": 7,
+"stock_gross": 0.7484831608426575,
+"hedge": -0.17251365068230365,
+"net_beta": 0.04473205854901983,
 "traded": true
 }
 ],
@@ -327,9 +344,9 @@
 "cohort": "2026-10-21",
 "entry_day": "2026-10-22",
 "entry_close_ts": 1792698000,
-"n": 4533.431188306147,
-"R": 0.009333836567407718,
-"days": 7,
+"n": 4454.390350075316,
+"R": -0.010016769626517133,
+"days": 8,
 "e": [
 -0.01368707,
 0.00568863,
@@ -337,9 +354,10 @@
 -0.00775268,
 0.00744764,
 0.00656609,
--0.00404968
+-0.00404968,
+-0.01935061
 ],
-"news_until": 1793652000,
+"news_until": 1793738400,
 "increased": true,
 "reduced": true
 },
@@ -362,9 +380,9 @@
 "cohort": "2026-10-21",
 "entry_day": "2026-10-22",
 "entry_close_ts": 1792698000,
-"n": 8109.792121583406,
-"R": -0.06281863520135274,
-"days": 7,
+"n": 8362.890101724806,
+"R": -0.03775792582296341,
+"days": 8,
 "e": [
 -0.01239808,
 -0.02219249,
@@ -372,9 +390,10 @@
 0.01344263,
 -0.03068666,
 -0.00655002,
--0.06633159
+-0.06633159,
+0.02506071
 ],
-"news_until": 1793652000,
+"news_until": 1793738400,
 "increased": true
 },
 {
@@ -396,9 +415,9 @@
 "cohort": "2026-10-21",
 "entry_day": "2026-10-22",
 "entry_close_ts": 1792698000,
-"n": 2490.3058363342466,
-"R": 0.02247545109877654,
-"days": 7,
+"n": 2482.1001986511583,
+"R": 0.016693815994931027,
+"days": 8,
 "e": [
 0.00613247,
 -0.00147825,
@@ -406,9 +425,10 @@
 9.598e-05,
 0.01067406,
 0.01072177,
--0.00214831
+-0.00214831,
+-0.00578164
 ],
-"news_until": 1793652000
+"news_until": 1793738400
 },
 {
 "id": "2026-10-21|ROL",
@@ -429,9 +449,9 @@
 "cohort": "2026-10-21",
 "entry_day": "2026-10-22",
 "entry_close_ts": 1792698000,
-"n": -10199.375945234144,
-"R": -0.028295187066881652,
-"days": 7,
+"n": -10573.041675117827,
+"R": -0.06369507000936334,
+"days": 8,
 "e": [
 0.01171883,
 0.01069045,
@@ -439,9 +459,10 @@
 0.0164184,
 -0.03710084,
 -0.00646151,
--0.0415063
+-0.0415063,
+-0.03539988
 ],
-"news_until": 1793652000,
+"news_until": 1793738400,
 "increased": true
 },
 {
@@ -463,9 +484,9 @@
 "cohort": "2026-10-21",
 "entry_day": "2026-10-22",
 "entry_close_ts": 1792698000,
-"n": -2075.5355706469854,
-"R": 0.06287933791980634,
-"days": 7,
+"n": -2111.492876009493,
+"R": 0.04731496978747141,
+"days": 8,
 "e": [
 0.01482451,
 0.03379297,
@@ -473,44 +494,12 @@
 0.01050286,
 -0.00321505,
 -0.01091352,
--0.0070062
+-0.0070062,
+-0.01556437
 ],
-"news_until": 1793652000,
+"news_until": 1793738400,
 "increased": true,
 "reduced": true
-},
-{
-"id": "2026-10-21|AAPL",
-"ticker": "AAPL",
-"side": -1,
-"w0": -0.025,
-"beta": 0.7621233146,
-"sigma_e": 0.014154727220666097,
-"H": 8,
-"W": 0.040035614414315246,
-"kill_conditions": [
-"Apple reports stronger-than-expected iPhone 18 demand or raises forward guidance",
-"Analysts upgrade Apple, citing improving iPhone demand and attractive valuation",
-"OpenAI trade-secret claims dismissed or settled without material Apple liability"
-],
-"first_reported": "2026-10-20",
-"score": -1,
-"cohort": "2026-10-21",
-"entry_day": "2026-10-22",
-"entry_close_ts": 1792698000,
-"n": -2362.387931474886,
-"R": 0.01659686629817336,
-"days": 7,
-"e": [
--0.00255889,
-0.01638661,
--0.00500388,
-0.01204497,
--0.01768583,
--0.00124493,
-0.01465882
-],
-"news_until": 1793652000
 },
 {
 "id": "2026-10-28|EQIX",
@@ -533,14 +522,15 @@
 "entry_close_ts": 1793302800,
 "driving_event": "Q3 2026 FFO beat, EPS beat, record bookings, raised 2026 guidance",
 "news_session": "2026-10-28",
-"n": 5997.967952694997,
-"R": -0.024034209549938082,
-"days": 2,
+"n": 6122.974661326776,
+"R": -0.005565741604644226,
+"days": 3,
 "e": [
 -0.00809431,
--0.0159399
+-0.0159399,
+0.01846847
 ],
-"news_until": 1793652000
+"news_until": 1793738400
 },
 {
 "id": "2026-10-28|MSFT",
@@ -563,14 +553,16 @@
 "entry_close_ts": 1793302800,
 "driving_event": "Microsoft Q1 FY27 earnings beat with Azure growth accelerating",
 "news_session": "2026-10-28",
-"n": 5301.6074383238065,
-"R": -0.02239376611797695,
-"days": 2,
+"n": 8147.76871285846,
+"R": 0.0021046958202473945,
+"days": 3,
 "e": [
 0.00137778,
--0.02377154
+-0.02377154,
+0.02449846
 ],
-"news_until": 1793652000
+"news_until": 1793738400,
+"increased": true
 },
 {
 "id": "2026-10-28|BIIB",
@@ -594,14 +586,15 @@
 "driving_event": "Q3 2026 earnings beat, revenue +10.6%, FY profit guidance floor raised",
 "report_session": "2027-02-05",
 "news_session": "2026-10-28",
-"n": 5349.733903395367,
-"R": 0.011467976144780848,
-"days": 2,
+"n": 5348.0151824111845,
+"R": 0.009321039348880143,
+"days": 3,
 "e": [
 0.02672155,
--0.01525358
+-0.01525358,
+-0.00214694
 ],
-"news_until": 1793652000
+"news_until": 1793738400
 },
 {
 "id": "2026-10-28|AVGO",
@@ -626,74 +619,15 @@
 "structural": true,
 "report_session": "2026-12-10",
 "news_session": "2026-10-27",
-"n": 2713.475780689427,
-"R": -0.02948212989729211,
-"days": 2,
+"n": 2796.842972536323,
+"R": -0.003696076264223226,
+"days": 3,
 "e": [
 -0.0255808,
--0.00390133
+-0.00390133,
+0.02578605
 ],
-"news_until": 1793652000
-},
-{
-"id": "2026-10-28|CDNS",
-"ticker": "CDNS",
-"side": 1,
-"w0": 0.027255029974241552,
-"beta": 1.2511482026,
-"sigma_e": 0.02441685681506069,
-"H": 3,
-"W": 0.042291236564819513,
-"kill_conditions": [
-"Cadence cuts its FY2026 guidance",
-"Cadence reports Q4 revenue below its guidance",
-"Cadence cancels or reduces its $2.5B buyback plan"
-],
-"first_reported": "2026-10-26",
-"score": 1,
-"cohort": "2026-10-28",
-"entry_day": "2026-10-29",
-"entry_close_ts": 1793302800,
-"driving_event": "Q3 beat-and-raise with record backlog and raised 2026 outlook",
-"news_session": "2026-10-26",
-"n": 2578.149532486936,
-"R": -0.010239732997012939,
-"days": 2,
-"e": [
--0.02117358,
-0.01093385
-],
-"news_until": 1793652000
-},
-{
-"id": "2026-10-28|LH",
-"ticker": "LH",
-"side": 1,
-"w0": 0.02271252497853463,
-"beta": 0.5760277194,
-"sigma_e": 0.020129919608164418,
-"H": 3,
-"W": 0.03486604351361776,
-"kill_conditions": [
-"Labcorp cuts or withdraws its FY2026 EPS and sales guidance",
-"Q4 2026 results miss estimates and management signals weakening test volumes",
-"Company discloses reimbursement or pricing pressure that resets full-year outlook lower"
-],
-"first_reported": "2026-10-28",
-"score": 1,
-"cohort": "2026-10-28",
-"entry_day": "2026-10-29",
-"entry_close_ts": 1793302800,
-"driving_event": "Labcorp Q3 2026 EPS and sales beat with raised FY2026 guidance",
-"news_session": "2026-10-28",
-"n": 2158.4831308245575,
-"R": -0.021466229859978467,
-"days": 2,
-"e": [
--0.00817634,
--0.01328989
-],
-"news_until": 1793652000
+"news_until": 1793738400
 },
 {
 "id": "2026-10-28|GOOGL",
@@ -716,14 +650,15 @@
 "entry_close_ts": 1793302800,
 "driving_event": "Alphabet Q3 revenue miss with slowing Search growth overshadowing strong cloud; shares fell ~7% after hours.",
 "news_session": "2026-10-28",
-"n": -5996.635256311603,
-"R": -0.009287423930019934,
-"days": 2,
+"n": -6018.989106508972,
+"R": -0.009514898963102614,
+"days": 3,
 "e": [
 -0.00672032,
--0.0025671
+-0.0025671,
+-0.00022748
 ],
-"news_until": 1793652000
+"news_until": 1793738400
 },
 {
 "id": "2026-10-28|BSX",
@@ -748,45 +683,16 @@
 "structural": true,
 "report_session": "2027-02-03",
 "news_session": "2026-10-28",
-"n": -9327.076151832844,
-"R": -0.04865103471417175,
-"days": 2,
+"n": -9154.508407146404,
+"R": -0.028881629752062234,
+"days": 3,
 "e": [
 0.00911945,
--0.05777049
+-0.05777049,
+0.0197694
 ],
-"news_until": 1793652000,
+"news_until": 1793738400,
 "increased": true
-},
-{
-"id": "2026-10-28|BRO",
-"ticker": "BRO",
-"side": -1,
-"w0": -0.03,
-"beta": 0.194812866,
-"sigma_e": 0.02429659560580743,
-"H": 3,
-"W": 0.042082938040213194,
-"kill_conditions": [
-"Brown & Brown reports organic revenue growth reaccelerating above 5% in a subsequent quarter",
-"Brown & Brown raises full-year guidance or reports margin expansion",
-"Analysts upgrade Brown & Brown citing improving organic growth and margins"
-],
-"first_reported": "2026-10-26",
-"score": -1,
-"cohort": "2026-10-28",
-"entry_day": "2026-10-29",
-"entry_close_ts": 1793302800,
-"driving_event": "Brown & Brown Q3 2026 earnings miss with 1.2% organic growth and margin contraction",
-"news_session": "2026-10-26",
-"n": -3127.6185986830224,
-"R": -0.06307881625980094,
-"days": 2,
-"e": [
--0.03175573,
--0.03132309
-],
-"news_until": 1793652000
 },
 {
 "id": "2026-10-28|BA",
@@ -811,14 +717,15 @@
 "structural": true,
 "report_session": "2027-01-26",
 "news_session": "2026-10-27",
-"n": -2748.9446999654915,
-"R": -0.040897013953215655,
-"days": 2,
+"n": -2716.1893155702355,
+"R": -0.025683329608840823,
+"days": 3,
 "e": [
 -0.01317378,
--0.02772324
+-0.02772324,
+0.01521368
 ],
-"news_until": 1793652000
+"news_until": 1793738400
 },
 {
 "id": "2026-10-28|VLO",
@@ -840,44 +747,15 @@
 "entry_close_ts": 1793302800,
 "driving_event": "US Energy Secretary opens door to more Russian diesel imports, shrinking refining margins and pressuring refiners.",
 "news_session": "2026-10-28",
-"n": -2683.9634610963353,
-"R": -0.000879079623824941,
-"days": 2,
+"n": -2727.5164779898137,
+"R": -0.016152470695414645,
+"days": 3,
 "e": [
 -0.04489068,
-0.0440116
+0.0440116,
+-0.01527339
 ],
-"news_until": 1793652000
-},
-{
-"id": "2026-10-28|MRNA",
-"ticker": "MRNA",
-"side": -1,
-"w0": -0.0275,
-"beta": 1.426101813,
-"sigma_e": 0.15298867204866884,
-"H": 3,
-"W": 0.264984152970787,
-"kill_conditions": [
-"Moderna announces new positive Phase 3 or regulatory news for its cancer vaccine beyond melanoma",
-"FDA grants breakthrough designation or accepts filing for intismeran",
-"Multiple analysts upgrade MRNA on broader cancer-use potential"
-],
-"first_reported": "2026-10-23",
-"score": -1,
-"cohort": "2026-10-28",
-"entry_day": "2026-10-29",
-"entry_close_ts": 1793302800,
-"driving_event": "Leaked Phase 3 melanoma vaccine data met expectations, triggering sell-the-news collapse in Moderna shares",
-"news_session": "2026-10-23",
-"n": -2682.4019750720877,
-"R": -0.023431834851042117,
-"days": 2,
-"e": [
--0.02061469,
--0.00281715
-],
-"news_until": 1793652000
+"news_until": 1793738400
 },
 {
 "id": "2026-10-28|CRL",
@@ -899,14 +777,15 @@
 "entry_close_ts": 1793302800,
 "driving_event": "Risk of Q3 earnings miss (4.8% revenue decline, negative ESP) despite recent stock rally",
 "news_session": "2026-10-09",
-"n": -1107.2889326814159,
-"R": 0.0777266612874107,
-"days": 2,
+"n": -1150.8883935210308,
+"R": 0.04163533035666073,
+"days": 3,
 "e": [
 0.02491697,
-0.0528097
+0.0528097,
+-0.03609133
 ],
-"news_until": 1793652000,
+"news_until": 1793738400,
 "reduced": true
 }
 ],
@@ -2320,6 +2199,72 @@
 "R": 0.062879,
 "W": 0.083724,
 "days_held": 7
+},
+{
+"day": "2026-11-03",
+"id": "2026-10-21|AAPL",
+"ticker": "AAPL",
+"action": "horizon",
+"from": -2317.56,
+"to": 0.0,
+"R": 0.037853,
+"W": 0.040036,
+"days_held": 8
+},
+{
+"day": "2026-11-03",
+"id": "2026-10-28|CDNS",
+"ticker": "CDNS",
+"action": "horizon",
+"from": 2533.08,
+"to": 0.0,
+"R": -0.031463,
+"W": 0.042291,
+"days_held": 3
+},
+{
+"day": "2026-11-03",
+"id": "2026-10-28|LH",
+"ticker": "LH",
+"action": "horizon",
+"from": 2148.35,
+"to": 0.0,
+"R": -0.027886,
+"W": 0.034866,
+"days_held": 3
+},
+{
+"day": "2026-11-03",
+"id": "2026-10-28|BRO",
+"ticker": "BRO",
+"action": "horizon",
+"from": -3085.85,
+"to": 0.0,
+"R": -0.04914,
+"W": 0.042083,
+"days_held": 3
+},
+{
+"day": "2026-11-03",
+"id": "2026-10-28|MRNA",
+"ticker": "MRNA",
+"action": "horizon",
+"from": -2774.84,
+"to": 0.0,
+"R": -0.053626,
+"W": 0.264984,
+"days_held": 3
+},
+{
+"day": "2026-11-03",
+"id": "2026-10-28|MSFT",
+"ticker": "MSFT",
+"action": "news_increase",
+"from": 5446.61,
+"to": 8147.77,
+"R": 0.002105,
+"W": 0.075097,
+"days_held": 3
 }
 ],
 "cohorts": [
@@ -2619,6 +2564,160 @@
 "after_report": false,
 "stop_R": null,
 "target_R": null
+},
+{
+"id": "2026-10-21|AAPL",
+"ticker": "AAPL",
+"day": "2026-11-03",
+"decision": "exit",
+"rule": 1,
+"z": 1.0755437575299636,
+"id_disc": 0.0,
+"to": 1.3068357796105494,
+"label": "CONTRADICTING",
+"kill_hit": true,
+"catalyst": [
+"2027-01-27",
+""
+],
+"catalyst_sessions": 57,
+"sigma": 0.01252994371370445,
+"H0": 8,
+"held": 8,
+"h_ext": 0,
+"ext_no": 0,
+"R": 0.03811730590636575,
+"n": -2316.790883731534,
+"W_new": 0.0250598874274089,
+"guard": 0.0250598874274089,
+"median_new": null,
+"hold_cap": 32,
+"report_within_cap": false,
+"after_report": false,
+"stop_R": null,
+"target_R": null
+},
+{
+"id": "2026-10-28|CDNS",
+"ticker": "CDNS",
+"day": "2026-11-03",
+"decision": "exit",
+"rule": 2,
+"z": -0.7412797096372851,
+"id_disc": -0.3333333333333333,
+"to": 1.3039972493970506,
+"label": "STALE",
+"kill_hit": false,
+"catalyst": null,
+"catalyst_sessions": null,
+"sigma": 0.023434821087485794,
+"H0": 3,
+"held": 3,
+"h_ext": 0,
+"ext_no": 0,
+"R": -0.030088766383561845,
+"n": 2536.3683467763954,
+"W_new": 0.03314184181370942,
+"guard": 0.03314184181370942,
+"median_new": null,
+"hold_cap": 37,
+"report_within_cap": false,
+"after_report": false,
+"stop_R": null,
+"target_R": null
+},
+{
+"id": "2026-10-28|LH",
+"ticker": "LH",
+"day": "2026-11-03",
+"decision": "exit",
+"rule": 2,
+"z": -1.3467897985130899,
+"id_disc": -1.0,
+"to": 1.7797648701945397,
+"label": "STALE",
+"kill_hit": false,
+"catalyst": null,
+"catalyst_sessions": null,
+"sigma": 0.013218530568546013,
+"H0": 3,
+"held": 3,
+"h_ext": 0,
+"ext_no": 0,
+"R": -0.030834976739577996,
+"n": 2141.881282170757,
+"W_new": 0.018693825204681113,
+"guard": 0.018693825204681113,
+"median_new": null,
+"hold_cap": 37,
+"report_within_cap": false,
+"after_report": false,
+"stop_R": null,
+"target_R": null
+},
+{
+"id": "2026-10-28|BRO",
+"ticker": "BRO",
+"day": "2026-11-03",
+"decision": "exit",
+"rule": 2,
+"z": -1.3004656348695216,
+"id_disc": -0.3333333333333333,
+"to": 1.8741918429292241,
+"label": "STALE",
+"kill_hit": false,
+"catalyst": [
+"2027-01-25",
+"amc"
+],
+"catalyst_sessions": 56,
+"sigma": 0.021668701987184052,
+"H0": 3,
+"held": 3,
+"h_ext": 0,
+"ext_no": 0,
+"R": -0.04880815648724758,
+"n": -3084.759607034403,
+"W_new": 0.030644172229296524,
+"guard": 0.030644172229296524,
+"median_new": null,
+"hold_cap": 37,
+"report_within_cap": false,
+"after_report": false,
+"stop_R": null,
+"target_R": null
+},
+{
+"id": "2026-10-28|MRNA",
+"ticker": "MRNA",
+"day": "2026-11-03",
+"decision": "exit",
+"rule": 1,
+"z": -0.13018965922134446,
+"id_disc": -1.0,
+"to": 0.7123687544666619,
+"label": "CONTRADICTING",
+"kill_hit": false,
+"catalyst": [
+"2026-11-06",
+"bmo"
+],
+"catalyst_sessions": 3,
+"sigma": 0.23490673792857023,
+"H0": 3,
+"held": 3,
+"h_ext": 0,
+"ext_no": 0,
+"R": -0.052970319391457125,
+"n": -2772.774980073837,
+"W_new": 0.3322082946714064,
+"guard": 0.3322082946714064,
+"median_new": null,
+"hold_cap": 37,
+"report_within_cap": true,
+"after_report": false,
+"stop_R": null,
+"target_R": null
 }
 ],
 "ext_done": [
@@ -2631,5 +2730,5 @@
 "ext": 1
 }
 ],
-"updated": "2026-11-03T01:10:40+00:00"
+"updated": "2026-11-04T01:10:36+00:00"
 }
