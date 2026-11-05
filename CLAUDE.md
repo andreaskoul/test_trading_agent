@@ -68,5 +68,6 @@ a research script.
 16. **Secrets:** never open, source or print the runner's key file. Run key-needing commands through the
     redacting wrapper (`python3 ~/.claude/hooks/with_secrets.py '<command>'`), and keep those commands free of
     other file edits.
-17. **Instruments and hedges** (SPY, sector ETFs, net exposure) are the owner's strategic policy, stated as
-    policy. They are not tested or optimised. The S&P 500 is a yardstick, not a design input.
+17. **Instruments and hedges** (SPY, sector ETFs, net exposure) are the owner's strategic policy. They may be
+    tested once, pre-registered, on long history; they are never tuned on recent results. The 1.3×/0.7× 200-day
+    S&P core passed on 2026-11-04 (`research/exposure/`) and is the fund's core from Protocol 9.

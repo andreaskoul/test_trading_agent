@@ -9,6 +9,7 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   * New pre-trade check (`ops_stats.margin_check`), logged as `margin` in each live record: projected gross against 1.95x equity (Reg T overnight is 2x), the account multiplier when the book is levered, and shorting enabled when the target has shorts. A failed check opens an issue after the orders are sent and the record is saved; it changes no order.
   * Contract test `fund/tests/test_halt_margin.py` on the 2026-11-04 record and the real account fields.
   * Could this change a decision? Only under a risk halt, which the registered rule already required to be flat. Otherwise no: today's projected gross is 0.97x and the check only logs.
+- 2026-11-05: Protocol 9 registered (PROTOCOL_fund.md; owner). From session 2026-11-16 the account holds an SPY trend core (1.3x above the 200-session average, 0.7x below) under the 7B book scaled to 1/3; shadow-logged from 2026-11-09. CLAUDE.md rule 17 now allows one pre-registered test on long history. Could this change a decision? **Yes:** a new protocol. The 7B model, its NAV and its clock are unchanged.
 
 - 2026-11-02: forward S&P 500 books, running week on the shadow page (owner: "I still don't see any of the models' charts"; display only).
   * The chart showed booked weeks only, and the first is booked on 2026-11-06.

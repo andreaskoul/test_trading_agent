@@ -1165,3 +1165,78 @@ or limited is a separate owner decision.
 * A rebuild of the live record with this code reproduces all 17 recorded days to the cent, with all 129 events
   identical. The book's checks pass.
 * All contract tests pass.
+
+## Protocol 9 (owner, 2026-11-05; shadow from session 2026-11-09, trades from session 2026-11-16): an S&P trend core under the stock book
+
+**Decision.**
+* The owner asked for the market-exposure study ("Run it", 2026-11-04) and then for its result to become the traded
+  fund ("plan it", 2026-11-05).
+* The study was pre-registered (`research/exposure/PREREG.md`, commit d4c0aaf) and read once on CRSP daily data,
+  1927–2026 (`research/exposure/results.json`). Of three policies tested against buy-and-hold, only the owner's
+  200-day sleeve passed:
+  * 12.2% a year against 9.7% at the same volatility;
+  * Sharpe 0.58 against 0.45, Holm-significant;
+  * maximum drawdown −75% against −84%.
+* The edge is smaller now: about +0.7% a year since 2000 at T-bill + 1% financing, and **about +0.3% a year at
+  Alpaca's margin rate**. The rule's main gain is that the fund finally holds the market it is measured against.
+* The name is Protocol 9 because "Protocol 8" is the Thesis Tree's.
+
+**The rule.** The account holds two parts, and both are decided every session at the lifecycle decision (T−3 min).
+* **Core.** SPY at weight **s = 1.3** if SPY's adjusted close at the previous session is above the mean of its
+  last 200 adjusted closes (ending at that session), **else s = 0.7**.
+  * This is policy P3 as tested, decided on the previous close.
+  * Each session's state (close, mean, s) is written once to `fund_state/live/core/state.json` at first use and
+    never recomputed.
+* **Overlay.** The Protocol 7B lifecycle book scaled by **λ = 1/3**.
+  * The model (`lifecycle.run`: its lots, rules, hedge and NAV) is unchanged. Only the account's sizes change.
+  * Account weights: each stock is λ × the model's weight; SPY is s + λ × the model's hedge weight. That is one net
+    SPY position.
+* **Limits.**
+  * **Gross.** If the account's projected gross (sum of |weights|) exceeds **1.9× equity**, the overlay alone
+    (stocks and λ × hedge) is scaled down until it fits. The core is never scaled by this rule. Reg T allows 2×
+    overnight.
+  * **Account check before sending** (`ops_stats.margin_check`):
+    * If shorting is disabled, the overlay is dropped for that session.
+    * If the account multiplier is below 2, the core is capped at 1.0 and the overlay dropped.
+    * Either case opens an issue.
+  * **Risk halt** (`HALT`, unchanged rule): the whole account, core included, is flat until it is resumed by hand.
+* **Shadow sessions, 2026-11-09 → 2026-11-13.** The account weights are computed and logged to
+  `fund_state/live/core/shadow/<day>.json`, but only the model's orders are sent, as under 7B.
+* **First traded session: 2026-11-16 (`P9_START`).** That day is one rebalance into the core and down to the scaled
+  overlay.
+
+**Scoring** (`fund/score.py`, a Protocol 9 block beside the 7B gate).
+* **Record.** The account's weekly return (Thursday close to Thursday close) from broker NAV, in % a year, against:
+  * SPY buy-and-hold (total return);
+  * a **risk-matched SPY**: SPY held at the span's mean core weight, the borrowed part paying DTB3 + 2.43%.
+* **Model composite.** The rule on paper: the qshadow sleeve formula with costs of 5 bp per side and margin at DTB3 +
+  2.43%, plus λ × the 7B model's return, financed by the same `fin()` rule (`fund/qshadow.py`).
+* **Gate: implementation fidelity, not alpha.**
+  * |account − model composite| ≤ 30 bp in every calendar month;
+  * projected and actual gross ≤ 1.95× at every close;
+  * the existing operations gates: decisions on time, orders filled, slippage.
+  * A breach opens an issue and is an operational matter.
+* **No alpha verdict on the core.** At about +0.3% a year over SPY against about 3% tracking error, a forward test
+  would need decades. The evidence for the core is the century study. The forward record checks that the rule is
+  implemented as written.
+* **The 7B gate is unchanged.** It keeps its 2026-10-28 clock, its looks and its STOP rules on the model NAV.
+* **Challengers.** Books retired with Protocol 9 keep their records. The remaining challengers keep the m = 11
+  O'Brien–Fleming boundaries; the stricter bound stays.
+
+**Overlay kill rule** (mechanical, at the 7B 26-week look, about 2027-04-28). λ becomes 0 from the next session, and
+the fund is the core alone, if either holds:
+* the 7B model's weekly return in excess of cash has NW t (lags 2) < 0;
+* the model's mean weekly return is not above the random book's.
+
+**Fixed parameters.** λ = 1/3, 1.3 / 0.7, the 200-session rule, the 1.9× cap and the 30 bp fidelity bound. They are
+design choices made before any record of this protocol. A change needs a later dated amendment, never a result.
+
+**Checks before the first traded session.**
+* Contract tests (`fund/tests/test_core.py`) pass, together with the CLAUDE.md suite.
+* A rebuild of every recorded lifecycle day is unchanged to the cent: before `P9_START` the account target is the
+  7B target.
+* Every shadow session is inspected for content:
+  * s against a hand computation;
+  * the account weights against model × 1/3 plus the core;
+  * gross against Alpaca's Reg T buying power.
+* The owner gives go/no-go on 2026-11-14.
