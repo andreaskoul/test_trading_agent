@@ -1185,7 +1185,7 @@ or limited is a separate owner decision.
 * **Core.** SPY at weight **s = 1.3** if SPY's adjusted close at the previous session is above the mean of its
   last 200 adjusted closes (ending at that session), **else s = 0.7**.
   * This is policy P3 as tested, decided on the previous close.
-  * Each session's state (close, mean, s) is written once to `fund_state/live/core/state.json` at first use and
+  * Each session's state (close, mean, s) is written once to `fund_state/live/lifecycle/core/state.json` at first use and
     never recomputed.
 * **Overlay.** The Protocol 7B lifecycle book scaled by **λ = 1/3**.
   * The model (`lifecycle.run`: its lots, rules, hedge and NAV) is unchanged. Only the account's sizes change.
@@ -1201,7 +1201,7 @@ or limited is a separate owner decision.
     * Either case opens an issue.
   * **Risk halt** (`HALT`, unchanged rule): the whole account, core included, is flat until it is resumed by hand.
 * **Shadow sessions, 2026-11-09 → 2026-11-13.** The account weights are computed and logged to
-  `fund_state/live/core/shadow/<day>.json`, but only the model's orders are sent, as under 7B.
+  `fund_state/live/lifecycle/core/shadow/<day>.json`, but only the model's orders are sent, as under 7B.
 * **First traded session: 2026-11-16 (`P9_START`).** That day is one rebalance into the core and down to the scaled
   overlay.
 

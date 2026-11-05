@@ -60,7 +60,7 @@ SECTOR_CAP, DOLLAR_CAP, COST = 0.30, 0.10, 5e-4
 # under every book, 1.3x SPY when SPY closes above its 200-session average at the as-of close, 0.7x otherwise;
 # financing on the broker's terms (MARGIN_SPREAD below). Trend state and the T-bill rate are frozen per
 # week at first use (exposure.json), never recomputed.
-SLEEVE_UP, SLEEVE_DOWN, TREND_WIN = 1.3, 0.7, 200
+from core import SLEEVE_UP, SLEEVE_DOWN, TREND_WIN, trend_state  # noqa: E402,F401  (the rule lives in fund/core.py since Protocol 9)
 # Financing on the broker's terms (Alpaca, docs read 2026-10-23): a debit balance pays the margin rate, 6.50% a year
 # on actual/360, which was DTB3 (4.07% on 2026-10-21) + 2.43%; history uses DTB3 + that spread. Idle cash earns
 # nothing; easy-to-borrow shorts cost $0. Debit = net long exposure above equity (short proceeds count as cash).
@@ -546,17 +546,6 @@ def dtb3():
         return pd.Series(dtype=float)
     s.columns = ["date", "v"]
     return s.assign(date=pd.to_datetime(s.date)).set_index("date")["v"].dropna() / 100
-
-
-def trend_state(spy, S, d):
-    """SPY's trend at the as-of close d (session index): close vs the mean of the last TREND_WIN closes, d included.
-    Uses closes <= d only."""
-    win = spy[max(0, d - TREND_WIN + 1): d + 1]
-    if len(win) < TREND_WIN or not np.isfinite(win).all():
-        return None
-    ma = float(win.mean())
-    up = bool(spy[d] > ma)
-    return {"spy": round(float(spy[d]), 4), "ma": round(ma, 4), "up": up, "sleeve": SLEEVE_UP if up else SLEEVE_DOWN}
 
 
 def exposure(p, recs):
