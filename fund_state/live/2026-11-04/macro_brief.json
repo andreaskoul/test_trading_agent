@@ -1,0 +1,117 @@
+{
+ "asof": "2026-11-04",
+ "cutoff": "2026-11-04T22:00:00+00:00",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "Wafer",
+  "usage": {
+   "prompt_tokens": 2661,
+   "completion_tokens": 3727,
+   "total_tokens": 6388,
+   "cost": 0.00292814,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 0,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.00292814,
+    "upstream_inference_prompt_cost": 0.00050559,
+    "upstream_inference_completions_cost": 0.00242255
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 2903,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"calendar\":[{\"date\":\"2026-11-05\",\"release\":\"FOMC Press Release\",\"why\":\"Policy signal; Dec hike odds 81% per Kalshi.\"},{\"date\":\"2026-11-05\",\"release\":\"Unemployment Insurance Weekly Claims Report\",\"why\":\"Labor-market pulse; Kalshi claims market active.\"},{\"date\":\"2026-11-05\",\"release\":\"Productivity and Costs\",\"why\":\"Wage/inflation pressure input for rates and margins.\"},{\"date\":\"2026-11-05\",\"release\":\"H.15 Selected Interest Rates\",\"why\":\"Rates backdrop for valuation and financials.\"},{\"date\":\"2026-11-05\",\"release\":\"H.4.1 Factors Affecting Reserve Balances\",\"why\":\"Balance-sheet/liquidity read for risk appetite.\"},{\"date\":\"2026-11-05\",\"release\":\"Primary Mortgage Market Survey\",\"why\":\"Housing affordability and rate-sensitive demand.\"},{\"date\":\"2026-11-06\",\"release\":\"Chicago Fed Advance Retail Trade Summary\",\"why\":\"Consumer-spending read for discretionary/staples.\"},{\"date\":\"2026-11-06\",\"release\":\"CBOE Market Statistics\",\"why\":\"Volatility/positioning gauge for equity risk.\"}],\"regime\":\"Rates: hawkish\u2014Kalshi shows 81% Dec hike, core CPI >0.1% at 88%, CPI YoY >3.7% at 68%. Growth: resilient\u2014Q4 GDP >1.5% at 86%, payrolls >-25k at 96%, U-3 >4.4% at 1%. Risk appetite: post-midterm rally, but AI/data-center split; geopolitical risk low (12th percentile).\",\"themes\":[{\"name\":\"AI data-center and power selloff on Democratic sweep and policy fears\",\"evidence\":\"Headlines: 'Wall Street rallies after Democrats win Congress; data center stocks slide'; 'post-election rally masks a sharp split in the AI trade.'\",\"sectors\":[\"Information Technology\",\"Utilities\",\"Industrials\"]},{\"name\":\"Post-midterm housing, healthcare, and consumer rallies on policy relief\",\"evidence\":\"Markets cheer Democratic win, betting divided Washington means fewer policy shocks; Democrats map affordability agenda.\",\"sectors\":[\"Health Care\",\"Consumer Discretionary\",\"Consumer Staples\",\"Real Estate\",\"Financials\"]},{\"name\":\"Oil and refining weakness as Democratic Senate win pressures energy\",\"evidence\":\"Reuters explainer: How the Democratic sweep could change US energy policy; ideation flags oil/refining weakness.\",\"sectors\":[\"Energy\"]}],\"fx_view\":\"Carry is reliable: long MXN, ZAR, HUF, CLP; short CHF, SEK, EUR, CAD. Avoid JPY, NZD, ILS.\"}"
+ },
+ "brief": {
+  "calendar": [
+   {
+    "date": "2026-11-05",
+    "release": "FOMC Press Release",
+    "why": "Policy signal; Dec hike odds 81% per Kalshi."
+   },
+   {
+    "date": "2026-11-05",
+    "release": "Unemployment Insurance Weekly Claims Report",
+    "why": "Labor-market pulse; Kalshi claims market active."
+   },
+   {
+    "date": "2026-11-05",
+    "release": "Productivity and Costs",
+    "why": "Wage/inflation pressure input for rates and margins."
+   },
+   {
+    "date": "2026-11-05",
+    "release": "H.15 Selected Interest Rates",
+    "why": "Rates backdrop for valuation and financials."
+   },
+   {
+    "date": "2026-11-05",
+    "release": "H.4.1 Factors Affecting Reserve Balances",
+    "why": "Balance-sheet/liquidity read for risk appetite."
+   },
+   {
+    "date": "2026-11-05",
+    "release": "Primary Mortgage Market Survey",
+    "why": "Housing affordability and rate-sensitive demand."
+   },
+   {
+    "date": "2026-11-06",
+    "release": "Chicago Fed Advance Retail Trade Summary",
+    "why": "Consumer-spending read for discretionary/staples."
+   },
+   {
+    "date": "2026-11-06",
+    "release": "CBOE Market Statistics",
+    "why": "Volatility/positioning gauge for equity risk."
+   }
+  ],
+  "regime": "Rates: hawkish\u2014Kalshi shows 81% Dec hike, core CPI >0.1% at 88%, CPI YoY >3.7% at 68%. Growth: resilient\u2014Q4 GDP >1.5% at 86%, payrolls >-25k at 96%, U-3 >4.4% at 1%. Risk appetite: post-midterm rally, but AI/data-center split; geopolitical risk low (12th percentile).",
+  "themes": [
+   {
+    "name": "AI data-center and power selloff on Democratic sweep and policy fears",
+    "evidence": "Headlines: 'Wall Street rallies after Democrats win Congress; data center stocks slide'; 'post-election rally masks a sharp split in the AI trade.'",
+    "sectors": [
+     "Information Technology",
+     "Utilities",
+     "Industrials"
+    ]
+   },
+   {
+    "name": "Post-midterm housing, healthcare, and consumer rallies on policy relief",
+    "evidence": "Markets cheer Democratic win, betting divided Washington means fewer policy shocks; Democrats map affordability agenda.",
+    "sectors": [
+     "Health Care",
+     "Consumer Discretionary",
+     "Consumer Staples",
+     "Real Estate",
+     "Financials"
+    ]
+   },
+   {
+    "name": "Oil and refining weakness as Democratic Senate win pressures energy",
+    "evidence": "Reuters explainer: How the Democratic sweep could change US energy policy; ideation flags oil/refining weakness.",
+    "sectors": [
+     "Energy"
+    ]
+   }
+  ],
+  "fx_view": "Carry is reliable: long MXN, ZAR, HUF, CLP; short CHF, SEK, EUR, CAD. Avoid JPY, NZD, ILS."
+ },
+ "text": "MACRO BRIEF (same for every name this week; context, not a view on any stock):\nRegime: Rates: hawkish\u2014Kalshi shows 81% Dec hike, core CPI >0.1% at 88%, CPI YoY >3.7% at 68%. Growth: resilient\u2014Q4 GDP >1.5% at 86%, payrolls >-25k at 96%, U-3 >4.4% at 1%. Risk appetite: post-midterm rally, but AI/data-center split; geopolitical risk low (12th percentile).\nHolding-week calendar: 2026-11-05 FOMC Press Release (Policy signal; Dec hike odds 81% per Kalshi.); 2026-11-05 Unemployment Insurance Weekly Claims Report (Labor-market pulse; Kalshi claims market active.); 2026-11-05 Productivity and Costs (Wage/inflation pressure input for rates and margins.); 2026-11-05 H.15 Selected Interest Rates (Rates backdrop for valuation and financials.); 2026-11-05 H.4.1 Factors Affecting Reserve Balances (Balance-sheet/liquidity read for risk appetite.); 2026-11-05 Primary Mortgage Market Survey (Housing affordability and rate-sensitive demand.); 2026-11-06 Chicago Fed Advance Retail Trade Summary (Consumer-spending read for discretionary/staples.); 2026-11-06 CBOE Market Statistics (Volatility/positioning gauge for equity risk.)\nThemes: AI data-center and power selloff on Democratic sweep and policy fears [Information Technology, Utilities, Industrials]: Headlines: 'Wall Street rallies after Democrats win Congress; data center stocks slide'; 'post-election rally masks a sharp split in the AI trade.' | Post-midterm housing, healthcare, and consumer rallies on policy relief [Health Care, Consumer Discretionary, Consumer Staples, Real Estate, Financials]: Markets cheer Democratic win, betting divided Washington means fewer policy shocks; Democrats map affordability agenda. | Oil and refining weakness as Democratic Senate win pressures energy [Energy]: Reuters explainer: How the Democratic sweep could change US energy policy; ideation flags oil/refining weakness.\nFX: Carry is reliable: long MXN, ZAR, HUF, CLP; short CHF, SEK, EUR, CAD. Avoid JPY, NZD, ILS.",
+ "inputs": {
+  "calendar_ahead": 207,
+  "kalshi": 12,
+  "gdelt": 0,
+  "headlines": 30,
+  "gpr": "latest 2026-10-31: 110, 12th percentile of the last year (median 179)"
+ }
+}

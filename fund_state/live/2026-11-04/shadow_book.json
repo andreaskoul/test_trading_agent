@@ -1,0 +1,188 @@
+{
+ "asof": "2026-11-04",
+ "books": {
+  "c2_selfconsistency": {
+   "NFLX": 0.05,
+   "AME": 0.05,
+   "EL": 0.05,
+   "FOXA": 0.05,
+   "TT": 0.05,
+   "AMD": 0.04,
+   "INTC": 0.03,
+   "ETN": 0.03,
+   "QCOM": 0.02551,
+   "ORCL": -0.06594,
+   "NVDA": -0.04367,
+   "MRNA": -0.04367,
+   "VST": -0.04367,
+   "VRT": -0.04367,
+   "MPC": -0.04367,
+   "CVS": -0.04367,
+   "DDOG": -0.04367,
+   "NOW": -0.04367,
+   "ZBRA": -0.04367,
+   "SPY": 0.10587
+  },
+  "c3_textonly": {
+   "EL": 0.0325,
+   "XOM": 0.03,
+   "VLO": 0.03,
+   "QCOM": 0.029,
+   "AMD": 0.0275,
+   "MPC": 0.0275,
+   "ETN": 0.0275,
+   "FOXA": 0.025,
+   "TT": 0.025,
+   "SMCI": 0.025,
+   "MRVL": -0.06,
+   "ZBRA": -0.035,
+   "BA": -0.0325,
+   "FIS": -0.031,
+   "MRNA": -0.03,
+   "WMB": -0.03,
+   "CVS": -0.03,
+   "DDOG": -0.03,
+   "NFLX": -0.03,
+   "NVDA": -0.03,
+   "SPY": 0.09975
+  },
+  "c8_informed": {
+   "EL": 0.0325,
+   "LLY": 0.03,
+   "AMD": 0.0275,
+   "AME": 0.0275,
+   "TT": 0.0275,
+   "SMCI": 0.0275,
+   "INTC": 0.025,
+   "NFLX": 0.025,
+   "FOXA": 0.025,
+   "MPC": 0.025,
+   "ORCL": -0.05621,
+   "MRVL": -0.05621,
+   "CVS": -0.03092,
+   "DDOG": -0.03045,
+   "FIS": -0.02811,
+   "ZBRA": -0.02811,
+   "VLO": -0.02576,
+   "NVDA": -0.02576,
+   "VRT": -0.02576,
+   "QCOM": -0.02576,
+   "SPY": 0.13086
+  },
+  "c9_ranker": {
+   "EL": 0.0325,
+   "LLY": 0.03,
+   "AMD": 0.0275,
+   "AME": 0.0275,
+   "TT": 0.0275,
+   "SMCI": 0.0275,
+   "MPC": 0.025,
+   "ETN": 0.025,
+   "NFLX": 0.025,
+   "FOXA": 0.025,
+   "ORCL": -0.05621,
+   "MRVL": -0.05621,
+   "DDOG": -0.03045,
+   "CVS": -0.03092,
+   "ZBRA": -0.02811,
+   "FIS": -0.02811,
+   "NVDA": -0.02576,
+   "AAPL": -0.02576,
+   "CAT": -0.02576,
+   "VLO": -0.02576,
+   "SPY": 0.11103
+  }
+ },
+ "risk": {
+  "c2_selfconsistency": {
+   "n_long": 9,
+   "n_short": 10,
+   "stock_gross": 0.8344557834937072,
+   "stock_net": -0.08344557834937073,
+   "stock_beta": -0.10587185175281705,
+   "spy": 0.10587185175281705,
+   "net_beta": 0.0,
+   "gross_incl_spy": 0.9403276352465242,
+   "max_name": 0.06594249621731942,
+   "sector_net": {
+    "Communication Services": 0.1,
+    "Consumer Staples": 0.05,
+    "Energy": -0.044,
+    "Health Care": -0.087,
+    "Industrials": 0.086,
+    "Information Technology": -0.145,
+    "Utilities": -0.044
+   },
+   "log": [
+    "dollar net -0.15 of gross 0.90: heavy leg x0.87"
+   ]
+  },
+  "c3_textonly": {
+   "n_long": 10,
+   "n_short": 10,
+   "stock_gross": 0.6175000000000002,
+   "stock_net": -0.05949999999999997,
+   "stock_beta": -0.0997469885673,
+   "spy": 0.0997469885673,
+   "net_beta": 0.0,
+   "gross_incl_spy": 0.7172469885673002,
+   "max_name": 0.06,
+   "sector_net": {
+    "Communication Services": -0.005,
+    "Consumer Staples": 0.032,
+    "Energy": 0.058,
+    "Financials": -0.031,
+    "Health Care": -0.06,
+    "Industrials": 0.02,
+    "Information Technology": -0.073
+   },
+   "log": []
+  },
+  "c8_informed": {
+   "n_long": 10,
+   "n_short": 10,
+   "stock_gross": 0.6055555555555556,
+   "stock_net": -0.06055555555555554,
+   "stock_beta": -0.13086041668995035,
+   "spy": 0.13086041668995035,
+   "net_beta": 0.0,
+   "gross_incl_spy": 0.7364159722455059,
+   "max_name": 0.056211908110642285,
+   "sector_net": {
+    "Communication Services": 0.05,
+    "Consumer Staples": 0.032,
+    "Energy": -0.001,
+    "Financials": -0.028,
+    "Health Care": -0.001,
+    "Industrials": 0.029,
+    "Information Technology": -0.143
+   },
+   "log": [
+    "dollar net -0.08 of gross 0.63: heavy leg x0.94"
+   ]
+  },
+  "c9_ranker": {
+   "n_long": 10,
+   "n_short": 10,
+   "stock_gross": 0.6055555555555556,
+   "stock_net": -0.06055555555555554,
+   "stock_beta": -0.11102613293800438,
+   "spy": 0.11102613293800438,
+   "net_beta": 0.0,
+   "gross_incl_spy": 0.71658168849356,
+   "max_name": 0.056211908110642285,
+   "sector_net": {
+    "Communication Services": 0.05,
+    "Consumer Staples": 0.032,
+    "Energy": -0.001,
+    "Financials": -0.028,
+    "Health Care": -0.001,
+    "Industrials": 0.054,
+    "Information Technology": -0.168
+   },
+   "log": [
+    "dollar net -0.08 of gross 0.63: heavy leg x0.94"
+   ]
+  }
+ }
+}
