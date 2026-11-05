@@ -47,7 +47,8 @@ a research script.
 
     ```
     python fund/tests/test_guards.py
-    python fund/tests/test_levels.py
+    python fund/tests/test_core.py
+    python fund/tests/test_halt_margin.py
     ```
 
 ## Discipline
