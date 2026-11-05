@@ -57,3 +57,37 @@ def cost_stats(fills, source="lifecycle", B=9999, seed=0):
     out.update(n=int(len(G)), days=int(len(per_day)), mean_bp=float(mean), se_bp=float(draws.std(ddof=1)),
                upper95_bp=float(np.quantile(draws, 0.95)), median_abs_bp=float(G["slip_bp"].abs().median()))
     return out
+
+
+# Reg T: positions held overnight may total at most 2x equity (Alpaca enforces it; its "multiplier" of 4 is intraday)
+GROSS_ALERT = 1.95
+
+
+def account_target(lots, nav, hedge, halted):
+    """The account's target weights for a session: each lot's notional over the model NAV, plus the SPY hedge.
+    A risk halt (fund_state/live/HALT, written by execute.py reconcile) makes the target flat until it is removed
+    by hand; before 2026-11-06 lifecycle.trade() did not read the file."""
+    if halted:
+        return {}
+    target = {L["ticker"]: L["n"] / nav for L in lots}
+    if abs(hedge) > 1e-9:
+        target["SPY"] = hedge / nav
+    return target
+
+
+def margin_check(acct, target):
+    """Pre-trade account check, logged with the decision. Returns the projected gross (sum of |weights|), the
+    account's margin fields and the problems: gross above GROSS_ALERT, a margin account below 2x when the book is
+    levered, or shorts in the target with shorting disabled. It changes no order."""
+    gross = float(sum(abs(w) for w in target.values()))
+    mult = float(acct.get("multiplier") or 1)
+    shorting = bool(acct.get("shorting_enabled"))
+    out = {"gross": round(gross, 4), "multiplier": mult, "shorting_enabled": shorting,
+           "regt_buying_power": float(acct.get("regt_buying_power") or 0), "problems": []}
+    if gross > GROSS_ALERT:
+        out["problems"].append(f"margin: projected gross {gross:.2f}x equity is above {GROSS_ALERT}x (Reg T overnight 2x)")
+    if gross > 1 and mult < 2:
+        out["problems"].append(f"margin: the book is levered ({gross:.2f}x) but the account multiplier is {mult:g}")
+    if any(w < 0 for w in target.values()) and not shorting:
+        out["problems"].append("margin: the target has shorts but shorting is disabled on the account")
+    return out
