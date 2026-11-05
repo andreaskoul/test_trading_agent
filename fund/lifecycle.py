@@ -1567,10 +1567,14 @@ def trade(plan_only):
     except Exception as exc:                              # a logging failure must never stop the trade
         entry_check = {"error": repr(exc)}
     nav = lv["nav"]
-    target = {L["ticker"]: L["n"] / nav for L in lv["lots"]}
-    if abs(lv["hedge"]) > 1e-9:
-        target["SPY"] = lv["hedge"] / nav
+    import ops_stats
+    halt_p = os.path.join(STATE, MODE, "HALT")
+    halt = open(halt_p).read().strip() if os.path.exists(halt_p) else None
+    if halt and not plan_only:
+        print(f"lifecycle trade: risk HALT active ({halt}); the account goes flat until it is resumed by hand", flush=True)
+    target = ops_stats.account_target(lv["lots"], nav, lv["hedge"], bool(halt) and not plan_only)
     acct = broker.account()
+    margin = ops_stats.margin_check(acct, target)
     equity, cur = float(acct["equity"]), broker.positions()
     orders = []
     for sym in sorted(set(target) | set(cur)):
@@ -1596,7 +1600,8 @@ def trade(plan_only):
            "lots_after": [{**{k: v for k, v in L.items() if k != "n"}, "w": L["n"] / nav} for L in lv["lots"]],
            "prices": {t: px.get(t) for t in target}, "equity": equity, "current_qty": cur, "target_weights": target,
            "orders": orders, "problems": [], "status": "planned" if plan_only else "sending", "reviews": lv.get("reviews", []),
-           "prices_meta": {"news": meta_news, "decision": meta_dec}, "entry_check": entry_check, "a2": lv.get("a2")}
+           "prices_meta": {"news": meta_news, "decision": meta_dec}, "entry_check": entry_check, "a2": lv.get("a2"),
+           "halt": halt, "margin": margin}
     json.dump(rec, open(log_p, "w"), indent=1, default=str)
     print(f"lifecycle {day.date()}: {len(lv['lots'])} lots, actions "
           f"{[(e['ticker'], e['action']) for e in lv['actions']]}; {len(orders)} orders", flush=True)
@@ -1611,7 +1616,7 @@ def trade(plan_only):
             broker.api("DELETE", f"/v2/orders/{x['id']}")
     broker.send(orders, close_at, clock)
     early_th.join(timeout=600)
-    rec.update(orders=orders, problems=broker.problems_of(orders), status="submitted",
+    rec.update(orders=orders, problems=margin["problems"] + broker.problems_of(orders), status="submitted",
                submitted_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
                control_early=early.get("status", "still running at the record"))
     json.dump(rec, open(log_p, "w"), indent=1, default=str)
