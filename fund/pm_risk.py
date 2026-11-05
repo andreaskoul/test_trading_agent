@@ -94,36 +94,7 @@ def risk(w):
 
 
 if os.environ.get("FUND_SHADOW") == "1":
-    # Shadow analyst books C2 / C3 (Amendment 4): the champion's sizing and risk rules on the shadow
-    # scores. Written to shadow_book.json after the champion's book is committed; never traded.
-    sh = load(asof, "shadow.json")
-    out_b, out_r = {}, {}
-    for k in ("c2_selfconsistency", "c3_textonly"):
-        sc = {t: v["score"] for t, v in sh[k].items() if v}
-        cf = {t: v["confidence"] for t, v in sh[k].items() if v}
-        out_b[k], out_r[k] = risk(conviction_book(sc, cf))
-        print(k, out_b[k], out_r[k]["log"])
-    # Amendment 6: C8 informed analysts (champion sizing on C8's views) and C9 (C8's views, ordered by
-    # the ranker). A degraded C8 week has no C8/C9 book.
-    if os.path.exists(os.path.join(week_dir(asof), "shadow_info.json")):
-        si = load(asof, "shadow_info.json")
-        c8 = {t: m["memo"] for t, m in si["c8"].items() if m["status"] == "ok"}
-        if si["status"] == "ok" and c8:
-            sc = {t: m["score"] for t, m in c8.items()}
-            cf = {t: float(m["confidence"]) for t, m in c8.items()}
-            out_b["c8_informed"], out_r["c8_informed"] = risk(conviction_book(sc, cf))
-            rank = si["c9"].get("rank")
-            if rank:
-                w = pd.Series({t: sc[t] * cf[t] * UNIT for t in cov if sc.get(t)}, dtype=float)
-                w = w[w != 0]
-                L = w[w > 0].loc[sorted(w[w > 0].index, key=lambda t: rank[t])].head(N)
-                Sh = w[w < 0].loc[sorted(w[w < 0].index, key=lambda t: -rank[t])].head(N)
-                out_b["c9_ranker"], out_r["c9_ranker"] = risk(pd.concat([L, Sh]))
-            for k in ("c8_informed", "c9_ranker"):
-                if k in out_b:
-                    print(k, out_b[k], out_r[k]["log"])
-    save(asof, "shadow_book.json", {"asof": str(asof.date()), "books": out_b, "risk": out_r})
-    raise SystemExit(0)
+    raise SystemExit("pm_risk: the shadow books C2-C5, C8 and C9 were retired with Protocol 9 (records stay on fund-data)")
 
 if not deadline_ok(asof):
     save(asof, "book.json", {"asof": str(asof.date()), "status": "missed_deadline", "books": {}})
@@ -148,44 +119,13 @@ else:
     books["analyst"], reports["analyst"] = risk(conviction_book(analyst))
 r = S["ridge_bp"].sort_values()
 books["quant"], reports["quant"] = risk(pd.concat([pd.Series(0.1, index=r.index[-N:]), pd.Series(-0.1, index=r.index[:N])]))
-core = [t for t in idea["core"] if t in S.index]
-key = lambda t: analyst.get(t, 0) * max(conf.get(t, 0.0), 1e-3)
-cL = sorted([t for t in core if analyst.get(t, 0) > 0], key=key, reverse=True)[:CORE_N]
-cS = sorted([t for t in core if analyst.get(t, 0) < 0], key=key)[:CORE_N]
-books["core20"] = {**{t: 1 / CORE_N for t in cL}, **{t: -1 / CORE_N for t in cS}}
+# core20 retired with Protocol 9 (an arbitrary list of 20 large caps; records stay on fund-data)
 rng = np.random.default_rng(int(str(asof.date()).replace("-", "")))
 perm = list(rng.permutation(sorted(cov)))
 books["random"], reports["random"] = risk(pd.concat([pd.Series(0.1, index=perm[:N]), pd.Series(-0.1, index=perm[N:2 * N])]))
 
-# ---- shadow challenger books (Amendment 4), never traded; same risk rules as the champion
-# C4: Grinold-style sizing, score x confidence / volatility, scaled to the champion's stock gross,
-# with a band: a name held last week whose score is now 0 or uncovered keeps its weight one more week.
-vol = (S["vol60_ann_pct"] / 100).clip(lower=0.10).fillna(0.30)
-raw = pd.Series({t: fund_score.get(t, 0) * conf.get(t, 0.0) / vol[t] for t in cov}, dtype=float)
-raw = raw[raw != 0]
-raw = pd.concat([raw[raw > 0].nlargest(N), raw[raw < 0].nsmallest(N)])
-fund_gross = sum(abs(v) for k, v in books.get("fund", {}).items() if k != "SPY")
-c4 = (raw / raw.abs().sum() * fund_gross).clip(-0.10, 0.10) if len(raw) and fund_gross else raw * 0
-age = {}
-for t, w0 in prev["books"].get("c4_volscaled", {}).items():
-    if t != "SPY" and t not in c4.index and fund_score.get(t, 0) == 0 and prev.get("meta", {}).get("c4_age", {}).get(t, 0) < 1:
-        c4[t] = w0; age[t] = prev.get("meta", {}).get("c4_age", {}).get(t, 0) + 1
-books["c4_volscaled"], reports["c4_volscaled"] = risk(c4.astype(float))
-# C5: news-conditioned reversal. Covered names with a zero score and no event active in the last
-# 7 days get a short-term reversal position (rank of last week's return, at most 3% of NAV each);
-# the champion's news views are kept everywhere else.
-def active_event(t):
-    p_ = os.path.join(week_dir(asof), "research", f"{t}.json")
-    if not os.path.exists(p_):
-        return False
-    lo_ = (asof - pd.Timedelta(days=6)).normalize()
-    return any(pd.Timestamp(e["end"]) >= lo_ for e in json.load(open(p_)).get("events", []))
-quiet = [t for t in cov if fund_score.get(t, 0) == 0 and not active_event(t)]
-c5 = conviction_book(fund_score)
-if len(quiet) >= 4:
-    rk = S.loc[quiet, "ret_1w_pct"].rank()
-    c5 = pd.concat([c5, -(rk - rk.mean()) / (len(quiet) / 2) * 0.03])
-books["c5_reversal"], reports["c5_reversal"] = risk(c5.astype(float))
+# ---- shadow challenger books C4 and C5 (Amendment 4) were retired with Protocol 9; records stay on fund-data.
+age, quiet = {}, []
 save(asof, "book.json", {"asof": str(asof.date()), "status": status, "books": books, "risk": reports,
                          "memo_failure_share": failed, "meta": {"c4_age": age, "quiet_names": quiet},
                          "scores": {"fund": fund_score, "analyst": analyst, "confidence": conf}})

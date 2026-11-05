@@ -66,17 +66,10 @@ Thu ─── 10 execution (last minute before close)  Fri/Mon/Tue/Wed ─ 12 da
 | 4 Analysts | `analysts.py` | yes, one per name | `analysts.json`: news-driven thesis, catalysts, risks, score −2..+2, confidence |
 | 5 Red team | `redteam.py` | yes, per view | `redteam.json`: uphold, or weaken with a named flaw (factual, stale, recycled, contra, priced) |
 | 6 PM + risk | `pm_risk.py` | no | `book.json`: weights = score × confidence / 20 of NAV (≤ 10 a side, ≤ 10% a name), sector net ≤ 30%, dollar net ≤ 10% of gross, SPY hedge to zero beta; flat with no views; benchmark and challenger books |
-| 7 IC memo | `ic_memo.py` | yes | `ic_memo.md`: the week's written record |
-| 8 Macro FX | `fx_desk.py` | yes | `fx.json`: 17-currency book (scored, not traded) |
 | 9 Performance | `score.py` | no | `performance/`: weekly returns per book (net of 5 bp/side, in excess of cash), attribution, monitors, and the go-live gate `gate.md` |
 | 10 Execution | `execute.py`, `broker.py` | no | market orders in the last minute before the close (`broker.send`; Alpaca paper has no closing auction); reconcile: `execution/fills.csv` (slippage vs the official close, plus the Alpaca close beside yfinance's), `nav.csv`, `activities.csv`; risk halts |
-| 11 Shadow | `shadow.py` | yes | `shadow.json`, `shadow_book.json`: challenger analysts and the weekly model canary; never traded |
-| 12 Daily review | `review.py` | yes | `reviews/<day>.json`: exit, reduce or increase held names on confirmed material new news |
-| 13 Macro brief | `macro_desk.py` | yes, 1 call | `macro_brief.json`: holding-week calendar, regime, themes, FX view from the context archive (Amendment 6, shadow) |
-| 14 Neighbourhood | `neighbours.py` | no | `neighbours.json`: top co-mentioned peers, their and the sub-industry's headlines, own 8-Ks (Amendment 6, shadow) |
-| 15 C8 / C9 | `shadow_info.py` | yes, one per name + 1 | `shadow_info.json`: informed analysts and the ranker; books in `shadow_book.json` (Amendment 6) |
+| 11 Shadow | `shadow.py` | yes | `canary/`: the weekly model canary (C2 and C3 retired with Protocol 9); never traded |
 | 16 Lifecycle C10 | `lifecycle.py` | yes, one per name + daily news checks | `lifecycle.json` per week; `lifecycle/state.json`: per-position horizon, stop/target, news exits, daily NAV (Amendment 7, shadow) |
-| 17 Review context | `review_context.py` | no | `reviews/context/<day>.json`: what a macro-aware review would have seen (Amendment 6, logged only) |
 | Decision ledger | `attribution.py` | no | `performance/attribution.json`, `.md`: the residual return after every lifecycle decision, the shadow control's, and the cohort names not entered (reporting only) |
 | News audit | `news_audit.py` | no | `lifecycle/news_audit/<day>.json`: articles published before a live check's cutoff but served after it (measurement only) |
 | Ledger | `ledger.py` | no | `ledger/fund_positions.xlsx` and `ledger/dashboard.json`: actual Alpaca trades only |
@@ -85,6 +78,11 @@ Thu ─── 10 execution (last minute before close)  Fri/Mon/Tue/Wed ─ 12 da
 The model is `deepseek/deepseek-v4.1-flash` via OpenRouter, temperature 0, with the serving
 provider left to OpenRouter's routing; the provider is logged for every call and the canary
 tracks whether behaviour drifts.
+
+**Retired with Protocol 9 (2026-11-16):** the IC memo, macro FX, daily review (pre-Protocol 7), macro brief,
+neighbourhood, C8/C9, review context, and the shadow books C2–C5, C8, C9 and core20. Their records stay on `fund-data`
+and in git history; the shadow page shows their final values. The technicals research moved to `research/technicals/`.
+From Protocol 9 the account holds an SPY trend core under the lifecycle book (`fund/core.py`; PROTOCOL_fund.md).
 
 ## Risk controls
 

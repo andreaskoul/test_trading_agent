@@ -1,4 +1,7 @@
-"""Shadow analysts and the model canary (PROTOCOL_fund.md, Amendment 4). Never traded.
+"""The model canary (PROTOCOL_fund.md, Amendment 4). Never traded.
+
+C2 and C3 (below) were retired with Protocol 9 (2026-11-16, redundant with the other shadow books): their
+records stay on fund-data and their functions stay for the record, but they are no longer called.
 
 Runs after the champion's decisions are committed, so it can never delay or change them.
 * C2 self-consistency: the champion analyst prompt, 5 samples at temperature 0.7; score = median,
@@ -78,10 +81,7 @@ def c3(t):
 
 
 names = sorted(prompts)
-with ThreadPoolExecutor(6) as ex:
-    r2 = dict(ex.map(c2, names))
-    r3 = dict(ex.map(c3, names))
-print(f"shadow: C2 {sum(v is not None for v in r2.values())}/{len(names)}, C3 {sum(v is not None for v in r3.values())}/{len(names)}")
+r2, r3 = {}, {}                                       # C2 and C3 retired with Protocol 9: no LLM calls
 
 # ---- canary
 cdir = os.path.join(STATE, MODE, "canary")

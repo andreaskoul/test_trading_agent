@@ -3,7 +3,7 @@
 GitHub Actions + cron-job.org. Standard library only.
 
     runner.py tick                      launchd calls this every minute; starts the jobs that are due
-    runner.py run <job> [options]       run one job now (archive | weekly | trade | review | reconcile | execute)
+    runner.py run <job> [options]       run one job now (archive | weekly | trade | reconcile | execute | lifecycle)
     runner.py enable | disable          switch the schedule on or off (manual `run` always works)
     runner.py status                    schedule, last start of each job, secrets present
 
@@ -43,8 +43,6 @@ P7_DAY, P7_ASOF = os.environ.get("FUND_P7_START") or "2026-10-15", "2026-10-14" 
 SCHEDULE = {
     "archive":   {"days": "0123456", "at": "21:20", "late": 180},
     "weekly":    {"days": "2",       "at": "22:15", "late": 1140},   # still decidable before Thu 19:00
-    "trade":     {"days": "34",      "at": "16:15", "late": 180},
-    "review":    {"days": "0124",    "at": "16:30", "late": 180},
     "reconcile": {"days": "12345",   "at": "01:10", "late": 720},
     "report":    {"days": "0123456", "at": "05:50", "late": 600},   # iMessage: after reconcile, archive and the weekly run
     # Protocol 7 (from 2026-10-15): the lifecycle book decides live and trades the account every session;
@@ -66,15 +64,12 @@ SCHEDULE = {
     "spx":       {"days": "4",       "at": "03:45", "late": 600},
     # the running week of those books, marked after each US close (display only: page.json; records never change)
     "spxmark":   {"days": "01234",   "at": "21:45", "late": 300},
-    "filltest-buy":  {"dates": ["2026-10-06"], "at": "16:15", "late": 180, "args": ["buy", "SPY", "1"]},
-    "filltest-sell": {"dates": ["2026-10-07"], "at": "16:15", "late": 180, "args": ["sell", "SPY", "1"]},
 }
 # weekday(): Mon=0 ... Sun=6
 NEEDS = {
     "archive": ["FINNHUB_API_KEY", "HF_TOKEN"],
     "weekly": ["OPENROUTER_API_KEY", "FINNHUB_API_KEY", "HF_TOKEN", "ALPACA_API_KEY", "ALPACA_SECRET_KEY", "SEC_USER_AGENT"],
-    "trade": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
-    "review": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY"],
+    "trade": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],                     # manual only since 2026-11 (no-op under P7)
     "reconcile": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY"],   # + 7B shadow control
     "report": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "IMESSAGE_TO"],
     "prices": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
@@ -83,14 +78,12 @@ NEEDS = {
     "qshadow": ["OPENROUTER_API_KEY", "HF_TOKEN"],
     "spx": [],
     "spxmark": [],
-    "filltest-buy": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
-    "filltest-sell": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],
 }
-GROUP = {"archive": "archive", "weekly": "weekly", "execute": "execute", "review": "execute", "filltest": "filltest",
+GROUP = {"archive": "archive", "weekly": "weekly", "execute": "execute", "filltest": "filltest",
          "lifecycle": "execute", "prices": "prices", "r5": "r5", "qshadow": "r5", "spx": "r5", "spxmark": "r5"}   # research-data pushes in turn
 # minutes, as the workflows; trade and review wait for the last minute before the close
-TIMEOUT = {"archive": 350, "weekly": 340, "execute": 330, "review": 330, "filltest": 330, "lifecycle": 330, "prices": 20, "r5": 240, "spx": 240, "spxmark": 60}
-PAGES_AFTER = {"weekly", "execute", "review", "filltest", "lifecycle"}         # the prices job deploys only when it refreshed                               # fund_pages.yml's workflow_run list
+TIMEOUT = {"archive": 350, "weekly": 340, "execute": 330, "filltest": 330, "lifecycle": 330, "prices": 20, "r5": 240, "spx": 240, "spxmark": 60}
+PAGES_AFTER = {"weekly", "execute", "filltest", "lifecycle"}         # the prices job deploys only when it refreshed                               # fund_pages.yml's workflow_run list
 
 
 def now_utc():
@@ -316,27 +309,21 @@ raise SystemExit(0 if deadline_ok(a) else f'live run for {a.date()} is past its 
     j.step("Desk 4 · analysts", "python fund/analysts.py")
     j.step("Desk 5 · red team", "python fund/redteam.py")
     j.step("Desk 6 · PM + risk", "python fund/pm_risk.py")
-    j.step("Desk 8 · macro FX", "python fund/fx_desk.py")
     if not dry:
         j.step("Commit decisions (before the Thursday close)", 'bash fund/commit_state.sh "fund decisions"')
     # shadow stage (never traded): the champion's files must leave it byte-identical
     has_book = 'w=$(cd fund && python -c "from common import asof_from_env, week_dir; print(week_dir(asof_from_env()))")\n' \
                '[ -f "$w/book.json" ] || exit 0\n'
-    champ = "screen ideation analysts redteam book fx"
+    champ = "screen ideation analysts redteam book"
     j.step("Champion files: hash before the shadow stage",
            has_book + f'(cd "$w" && for f in {champ}; do [ -f $f.json ] && shasum -a 256 $f.json; done) > "$RUNNER_TMP/champion.sha"',
            when="always", allow_fail=True)
-    for cmd, title in (("python fund/shadow.py", "Shadow analysts C2, C3 and the model canary"),
-                       ("python fund/macro_desk.py", "Macro brief (Amendment 6)"),
-                       ("python fund/neighbours.py", "Neighbourhood (Amendment 6)"),
-                       ("python fund/shadow_info.py", "C8 informed analysts and C9 ranker (Amendment 6)"),
-                       ("python fund/lifecycle.py desk", "Lifecycle desk: events, horizons, kill conditions (Amendment 7)"),
-                       ("FUND_SHADOW=1 python fund/pm_risk.py", "Shadow books")):
+    for cmd, title in (("python fund/shadow.py", "Model canary"),
+                       ("python fund/lifecycle.py desk", "Lifecycle desk: events, horizons, kill conditions (Amendment 7)")):
         j.step(title, has_book + cmd, when="always", allow_fail=True)
     j.step("Champion files: unchanged by the shadow stage",
            has_book + '[ -s "$RUNNER_TMP/champion.sha" ] || exit 0\n(cd "$w" && shasum -a 256 -c "$RUNNER_TMP/champion.sha")',
            when="always")
-    j.step("Desk 7 · IC memo", "python fund/ic_memo.py", when="always")
     j.step("Desk 9 · performance", "python fund/score.py", when="always")
     j.step("Position ledger (Excel)", "python fund/ledger.py", when="always", allow_fail=True)
     if not dry:
@@ -377,18 +364,6 @@ def job_execute(j, a):
         j.step("Commit execution records", COMMIT_EXEC.format(copy=COPY_EXEC, msg=f"execution {mode}"), when="always")
     issue(j, f"Fund execution: {mode} problem",
           f'echo "Execution {mode} needs attention."; [ -f fund_state/live/execution/problems.txt ] && cat fund_state/live/execution/problems.txt || true')
-
-
-def job_review(j, a):
-    mode = a.mode
-    j.step("Restore fund state", RESTORE.format(paths="fund_state"))
-    j.step(f"Review ({mode})", f"python fund/review.py {mode}")
-    if mode == "trade":
-        j.step("Review context (Amendment 6, logged only)", "python fund/review_context.py", when="always", allow_fail=True)
-    if mode == "trade":
-        j.step("Position ledger (Excel)", "python fund/ledger.py", when="always", allow_fail=True)
-        j.step("Commit review records", COMMIT_EXEC.format(copy="", msg="daily review"), when="always")
-    issue(j, "Fund: daily review failed", "echo 'Local run failed; see the log on the Mac.'")
 
 
 def job_lifecycle(j, a):
@@ -531,8 +506,6 @@ def run(args):
     name = args.job
     if name in ("trade", "reconcile"):              # scheduled names for the execution modes
         args.mode, name = name, "execute"
-    elif name == "review" and not args.mode:
-        args.mode = "trade"
     elif name == "execute" and not args.mode:
         args.mode = "plan"
     elif name == "lifecycle" and not args.mode:
@@ -566,7 +539,7 @@ def run(args):
     started = time.time()
     awake = subprocess.Popen(["caffeinate", "-i", "-w", str(os.getpid())])    # no idle sleep while the job runs
     drift(j)
-    res = {"archive": job_archive, "weekly": job_weekly, "execute": job_execute, "review": job_review,
+    res = {"archive": job_archive, "weekly": job_weekly, "execute": job_execute,
            "filltest": job_filltest, "lifecycle": job_lifecycle, "prices": job_prices, "r5": job_r5,
      "qshadow": job_qshadow, "spx": job_spx, "spxmark": job_spxmark}[name](j, args)
     if name in PAGES_AFTER and res != "skip" and not args.no_pages:
@@ -590,11 +563,10 @@ def run(args):
 # one not listed here means the workflow changed and this runner needs the same change.
 KNOWN = {"archive": {"archive", "context_archive"},
          "weekly": {"common", "screen", "ideate", "emb_store", "research", "commit_state", "analysts", "redteam", "pm_risk",
-                    "fx_desk", "shadow", "macro_desk", "neighbours", "shadow_info", "lifecycle", "ic_memo", "score", "ledger"},
+                    "shadow", "lifecycle", "score", "ledger"},
          "execute": {"execute", "ledger", "broker", "lifecycle", "news_audit", "attribution"},
-         "review": {"review", "ledger", "broker", "review_context"},
          "lifecycle": {"lifecycle", "ledger", "broker"}}
-WORKFLOW = {"archive": "fund_archive.yml", "weekly": "fund_weekly.yml", "execute": "fund_execute.yml", "review": "fund_review.yml",
+WORKFLOW = {"archive": "fund_archive.yml", "weekly": "fund_weekly.yml", "execute": "fund_execute.yml",
             "lifecycle": "fund_lifecycle.yml"}
 
 
@@ -842,9 +814,9 @@ def main():
     sub = p.add_subparsers(dest="cmd", required=True)
     t = sub.add_parser("tick"); t.add_argument("--init", action="store_true"); t.set_defaults(f=tick)
     r = sub.add_parser("run")
-    r.add_argument("job", choices=["archive", "weekly", "trade", "review", "reconcile", "execute", "filltest", "lifecycle", "prices", "r5", "qshadow", "spx", "spxmark"])
+    r.add_argument("job", choices=["archive", "weekly", "trade", "reconcile", "execute", "filltest", "lifecycle", "prices", "r5", "qshadow", "spx", "spxmark"])
     r.add_argument("--test", nargs=3, metavar=("SIDE", "SYMBOL", "QTY"), help="filltest: e.g. buy SPY 1")
-    r.add_argument("--mode", choices=["plan", "trade", "reconcile"], help="execute: plan|trade|reconcile; review: plan|trade")
+    r.add_argument("--mode", choices=["plan", "trade", "reconcile"], help="execute: plan|trade|reconcile")
     r.add_argument("--asof", help="as-of Wednesday YYYY-MM-DD (weekly, execute)")
     r.add_argument("--dry-run", action="store_true", help="weekly: real calls, no deadline, nothing committed")
     r.add_argument("--resume", action="store_true", help="execute: remove the HALT file after a risk stop")

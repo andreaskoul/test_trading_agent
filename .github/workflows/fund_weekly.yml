@@ -135,8 +135,6 @@ jobs:
         run: python fund/redteam.py
       - name: Desk 6 · PM + risk
         run: python fund/pm_risk.py
-      - name: Desk 8 · macro FX
-        run: python fund/fx_desk.py
 
       - name: Commit decisions (before the Thursday close)
         if: ${{ !inputs.dry_run }}
@@ -148,24 +146,12 @@ jobs:
         if: ${{ !cancelled() && hashFiles('fund_state/*/*/book.json') != '' }}
         run: |
           w=$(cd fund && python -c "from common import asof_from_env, week_dir; print(week_dir(asof_from_env()))")
-          (cd "$w" && for f in screen ideation analysts redteam book fx; do [ -f $f.json ] && shasum -a 256 $f.json; done) > /tmp/champion.sha
+          (cd "$w" && for f in screen ideation analysts redteam book; do [ -f $f.json ] && shasum -a 256 $f.json; done) > /tmp/champion.sha
           echo "dir=$w" >> "$GITHUB_OUTPUT"
-      - name: Shadow analysts (C2, C3) and model canary
+      - name: Model canary
         if: ${{ !cancelled() && steps.champ.outcome == 'success' }}
         continue-on-error: true
         run: python fund/shadow.py
-      - name: Macro brief (Amendment 6)
-        if: ${{ !cancelled() && steps.champ.outcome == 'success' }}
-        continue-on-error: true
-        run: python fund/macro_desk.py
-      - name: Neighbourhood (Amendment 6)
-        if: ${{ !cancelled() && steps.champ.outcome == 'success' }}
-        continue-on-error: true
-        run: python fund/neighbours.py
-      - name: C8 informed analysts and C9 ranker (Amendment 6)
-        if: ${{ !cancelled() && steps.champ.outcome == 'success' }}
-        continue-on-error: true
-        run: python fund/shadow_info.py
       - name: Lifecycle desk (Amendments 7, 8)
         if: ${{ !cancelled() && steps.champ.outcome == 'success' }}
         continue-on-error: true
@@ -174,19 +160,10 @@ jobs:
           ALPACA_SECRET_KEY: ${{ secrets.ALPACA_SECRET_KEY }}
           SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
         run: python fund/lifecycle.py desk
-      - name: Shadow books
-        if: ${{ !cancelled() && steps.champ.outcome == 'success' }}
-        continue-on-error: true
-        env:
-          FUND_SHADOW: '1'
-        run: python fund/pm_risk.py
       - name: Champion files unchanged by the shadow stage
         if: ${{ !cancelled() && steps.champ.outcome == 'success' }}
         run: cd "${{ steps.champ.outputs.dir }}" && shasum -a 256 -c /tmp/champion.sha
 
-      - name: Desk 7 · IC memo
-        if: always()
-        run: python fund/ic_memo.py
       - name: Desk 9 · performance
         if: always()
         run: python fund/score.py

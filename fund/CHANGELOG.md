@@ -4,6 +4,15 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-11-05: legacy removal (owner: "dead code + redundant books", with Protocol 9).
+  * Unscheduled: the `trade` job (`execute.py trade`, a no-op since Protocol 7; kept as a manual fallback) and the past `filltest-*` dates. Removed: the `review` job, `review.py` and `fund_review.yml` (a no-op since Protocol 7).
+  * Retired desks, deleted: `ic_memo.py`, `fx_desk.py`, `macro_desk.py`, `neighbours.py`, `shadow_info.py` (C8, C9) and `review_context.py`. `shadow.py` keeps only the model canary (C2 and C3 make no LLM calls). `pm_risk.py` no longer builds core20, C4 or C5, and its shadow pass exits.
+  * Moved to `research/technicals/`: `levels.py`, `tech_policy.py`, `backtest_levels.py`, `backtest_intraday.py` and `test_levels.py`. CLAUDE.md rule 12 now lists `test_guards`, `test_core` and `test_halt_margin`.
+  * Kept: screen, ideation, research, analysts, red team, PM + risk (fund, analyst, quant, random), the lifecycle stack, reconcile, score, ledger, attribution, news audit, the archives, the canary, R5, qshadow and the S&P forward books, plus the 7B control.
+  * Retired books keep their records. The shadow page holds their final values ("no book" weeks), and the challenger boundaries stay at m = 11.
+  * The runner must be reinstalled after merge (`bash fund/local/install.sh`): `runner.py` changed.
+  * Could this change a decision? No. A replay of `pm_risk` for as-of 2026-11-04 gives a fund book byte-identical to the recorded one (and the same analyst, quant and random books). `lifecycle.py` reads none of the removed desks' outputs.
+
 - 2026-11-05: Protocol 9 on the monitor and in the gate report (display and reporting only).
   * The trade monitor gains a section "Against the S&P": the core state (weight, SPY's distance from its 200-day average), the account and SPY since 1 Oct and since Protocol 9's start (% a year, with the cumulative beside it), the risk-matched SPY at the span's mean core weight, an approximate core/overlay split, and margin use against the 2x overnight limit. Built in `ledger.py` (`dashboard.json` -> `p9`) from the frozen records: broker NAV, lifecycle SPY returns, `lifecycle/core/state.json`.
   * `score.py` adds a Protocol 9 block to `gate.md` from 2026-11-16: account vs SPY vs risk-matched SPY, and the fidelity check (|account - model composite| <= 30 bp a month). Functions in `fund/core.py`, tested on the real NAV and SPY returns (`test_core.py`).
