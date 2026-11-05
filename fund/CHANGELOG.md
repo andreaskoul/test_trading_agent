@@ -4,6 +4,11 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-11-05: Protocol 9 on the monitor and in the gate report (display and reporting only).
+  * The trade monitor gains a section "Against the S&P": the core state (weight, SPY's distance from its 200-day average), the account and SPY since 1 Oct and since Protocol 9's start (% a year, with the cumulative beside it), the risk-matched SPY at the span's mean core weight, an approximate core/overlay split, and margin use against the 2x overnight limit. Built in `ledger.py` (`dashboard.json` -> `p9`) from the frozen records: broker NAV, lifecycle SPY returns, `lifecycle/core/state.json`.
+  * `score.py` adds a Protocol 9 block to `gate.md` from 2026-11-16: account vs SPY vs risk-matched SPY, and the fidelity check (|account - model composite| <= 30 bp a month). Functions in `fund/core.py`, tested on the real NAV and SPY returns (`test_core.py`).
+  * Could this change a decision? No: display and reporting only.
+
 - 2026-11-06: the trading path honours the risk halt and checks the account's margin before sending (found 2026-11-05 while planning Protocol 9).
   * Under Protocol 7, `execute.py reconcile` writes `fund_state/live/HALT` after a 10% drawdown or a 5% week, but `lifecycle.trade()` never read it. A halt would not have stopped trading. Now a HALT makes the account's target flat until it is removed by hand (`runner.py run execute --resume`), as Amendment 3 registered. The model book and its NAV are unchanged; plan runs still show the model's intent.
   * New pre-trade check (`ops_stats.margin_check`), logged as `margin` in each live record: projected gross against 1.95x equity (Reg T overnight is 2x), the account multiplier when the book is levered, and shorting enabled when the target has shorts. A failed check opens an issue after the orders are sent and the record is saved; it changes no order.

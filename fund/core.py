@@ -87,3 +87,51 @@ def account_limits(acct, s):
         overlay = False
         problems.append("protocol 9: shorting disabled: no overlay this session")
     return s, overlay, problems
+
+
+# ---- scoring (PROTOCOL_fund.md Protocol 9: the record, the yardsticks and the fidelity gate)
+MARGIN_RATE = 0.065        # Alpaca's debit rate, 6.50% a year (docs read 2026-10-23); per session at 1/252 here
+FIDELITY_BP = 30           # |account - model composite| per calendar month
+
+
+def per_year(r):
+    """Compounded return of daily returns r, in % a year (252 sessions)."""
+    r = pd.Series(r).dropna()
+    return float((1 + r).prod() ** (252 / len(r)) - 1) if len(r) else None
+
+
+def composite(s, r_spy, r_model, overlay_net, lam=LAMBDA, rate=MARGIN_RATE):
+    """The rule on paper, per session: s x SPY + lam x the 7B model's return, less margin interest on the debit
+    (long exposure above equity; the model's net weight overlay_net counts at lam). All Series on the same dates."""
+    debit = np.maximum(s + lam * overlay_net - 1, 0)
+    return s * r_spy + lam * r_model - debit * rate / 252
+
+
+def risk_matched(s, r_spy, rate=MARGIN_RATE):
+    """SPY held at the span's mean core weight throughout, the borrowed part paying the margin rate."""
+    sb = float(pd.Series(s).mean())
+    return sb * r_spy - max(sb - 1, 0) * rate / 252
+
+
+def fidelity(r_account, r_composite):
+    """Per calendar month: the account's compounded return minus the composite's, in bp."""
+    d = pd.concat([r_account.rename("a"), r_composite.rename("c")], axis=1).dropna()
+    g = d.groupby(d.index.to_period("M"))
+    return {str(m): float(((1 + x["a"]).prod() - (1 + x["c"]).prod()) * 1e4) for m, x in g}
+
+
+def yardsticks(nav, r_spy, s=None, start=None):
+    """nav: broker equity by date; r_spy: SPY's daily total return; s: the core weight by date (from P9_START).
+    Returns the account, SPY and (when s is given) the risk-matched SPY over the span from `start`, cumulative and
+    in % a year, on the account's own sessions."""
+    r_a = nav.sort_index().pct_change().dropna()
+    if start is not None:
+        r_a = r_a[r_a.index >= pd.Timestamp(start)]
+    r_s = r_spy.reindex(r_a.index).fillna(0.0)
+    out = {"from": str(r_a.index[0].date()) if len(r_a) else None, "sessions": int(len(r_a)),
+           "account": {"total": float((1 + r_a).prod() - 1), "per_year": per_year(r_a)},
+           "spy": {"total": float((1 + r_s).prod() - 1), "per_year": per_year(r_s)}}
+    if s is not None and len(r_a):
+        rm = risk_matched(s.reindex(r_a.index).ffill().bfill(), r_s)
+        out["risk_matched"] = {"weight": round(float(s.mean()), 3), "total": float((1 + rm).prod() - 1), "per_year": per_year(rm)}
+    return out

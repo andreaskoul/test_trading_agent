@@ -421,6 +421,38 @@ if _rv:
           + ("SWITCHED OFF: 50 reviews without a gain over exiting at the horizon." if len(_rv) >= 50 and _pnl <= 0 else
              f"Switch-off test at 50 reviews ({len(_rv)} so far).")]
     pd.DataFrame(_rv).to_csv(os.path.join(OUT, "horizon_reviews.csv"), index=False)
+# Protocol 9: the account against SPY and the risk-matched SPY, implementation fidelity and margin (no alpha verdict)
+try:
+    import core as _core
+    _cs = os.path.join(base, "lifecycle", "core", "state.json")
+    _S = json.load(open(_cs)) if os.path.exists(_cs) else {}
+    _s = pd.Series({pd.Timestamp(d_): v["sleeve"] for d_, v in _S.items() if pd.Timestamp(d_) >= _core.P9_START}).sort_index()
+    if len(_s) and os.path.exists(nav_p):
+        _N = pd.read_csv(nav_p, parse_dates=["date"]).set_index("date")["equity"].astype(float)
+        _R = pd.read_csv(os.path.join(base, "lifecycle", "returns.csv"), parse_dates=["date"])
+        _rs = _R[_R.ticker == "SPY"].set_index("date")["ret"].sort_index()
+        _m = pd.DataFrame(_st.get("rows", []))
+        _m = _m.assign(date=pd.to_datetime(_m["date"])).set_index("date") if len(_m) else _m
+        _rm = _m["nav"].pct_change() if len(_m) else pd.Series(dtype=float)
+        _net = {}
+        for f_ in glob.glob(os.path.join(base, "lifecycle", "live", "20*.json")):
+            if not f_.endswith(".plan.json"):
+                r_ = json.load(open(f_))
+                _net[pd.Timestamp(r_["day"])] = sum(L["w"] for L in r_.get("lots_after", [])) + (r_.get("hedge_w") or 0)
+        _idx = _s.index.intersection(_rs.index).intersection(_rm.dropna().index)
+        _comp = _core.composite(_s.reindex(_idx), _rs.reindex(_idx), _rm.reindex(_idx),
+                                pd.Series(_net).reindex(_idx).ffill().fillna(0))
+        _fid = _core.fidelity(_N.pct_change().dropna(), _comp)
+        _y = _core.yardsticks(_N, _rs, _s, _core.P9_START)
+        _ok = all(abs(v) <= _core.FIDELITY_BP for v in _fid.values())
+        _pp = lambda x: "—" if x is None or x.get("per_year") is None else f"{x['per_year'] * 100:+.1f}%/yr ({x['total'] * 100:+.2f}%)"
+        g += ["", f"**Protocol 9 (from {_core.P9_START.date()}), {_y['sessions']} sessions.** Fidelity {'OK' if _ok else 'BREACH'} "
+              f"(|account − model composite| ≤ {_core.FIDELITY_BP} bp a month). No alpha verdict on the core (PROTOCOL_fund.md).",
+              "", "| line | return |", "|---|---:|", f"| account | {_pp(_y['account'])} |", f"| SPY buy-and-hold | {_pp(_y['spy'])} |",
+              f"| risk-matched SPY ({_y['risk_matched']['weight']}×) | {_pp(_y['risk_matched'])} |",
+              f"| fidelity by month, bp | {', '.join(f'{k} {v:+.0f}' for k, v in _fid.items()) or '—'} |"]
+except Exception as exc:                              # reporting only: never fails the gate
+    g += ["", f"Protocol 9 block unavailable: {exc!r}"]
 open(os.path.join(OUT, "gate.md"), "w").write("\n".join(g) + "\n")
 if len(Px):
     g += ["", "Challengers (shadow, never traded): excess return minus the fund's, %/wk, running",

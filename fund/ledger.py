@@ -527,6 +527,47 @@ if os.path.exists(_tp):
                                   "official_close": _f(t_.get("close")), "slippage_bp": _f(t_.get("slip_bp")),
                                   "client_order_id": t_["client_order_id"]})
 _nav_all = pd.read_csv(nav_p) if os.path.exists(nav_p) else pd.DataFrame(columns=["date", "equity"])
+
+
+def p9_block():
+    """Protocol 9 on the monitor: the core's state, the account against SPY and the risk-matched SPY (% a year), margin
+    use and an approximate core/overlay split. Display only; read from the frozen records."""
+    import glob
+    import core
+    lc = os.path.join(base, "lifecycle")
+    out = {"start": str(core.P9_START.date()), "lambda": core.LAMBDA, "gross_cap": core.GROSS_CAP}
+    R = pd.read_csv(os.path.join(lc, "returns.csv"), parse_dates=["date"])
+    r_spy = R[R.ticker == "SPY"].set_index("date")["ret"].sort_index()
+    nav = _nav_all.assign(date=pd.to_datetime(_nav_all["date"])).set_index("date")["equity"].astype(float)
+    sp = os.path.join(lc, "core", "state.json")
+    S = json.load(open(sp)) if os.path.exists(sp) else {}
+    if S:
+        k = max(S)
+        st = S[k]
+        out["core"] = {"day": k, "weight": st["sleeve"], "spy": st["spy"], "ma200": st["ma"], "distance": st["spy"] / st["ma"] - 1,
+                       "traded": pd.Timestamp(k) >= core.P9_START}
+    out["since_oct"] = core.yardsticks(nav, r_spy, start="2026-10-01") if len(nav) > 1 else None
+    s = pd.Series({pd.Timestamp(d): v["sleeve"] for d, v in S.items() if pd.Timestamp(d) >= core.P9_START}).sort_index()
+    if len(s) and len(nav[nav.index >= core.P9_START]):
+        y = core.yardsticks(nav, r_spy, s, core.P9_START)
+        r_core = (s.reindex(r_spy.index).dropna() * r_spy).dropna()
+        y["core_part"] = float((1 + r_core[r_core.index >= core.P9_START]).prod() - 1)        # approximate split
+        y["overlay_part"] = y["account"]["total"] - y["core_part"]
+        out["since_p9"] = y
+    lives = sorted(f for f in glob.glob(os.path.join(lc, "live", "20*.json")) if not f.endswith(".plan.json"))
+    if lives:
+        rec = json.load(open(lives[-1]))
+        m = rec.get("margin") or {}
+        g_ = m.get("gross") if m.get("gross") is not None else sum(abs(v) for v in (rec.get("target_weights") or {}).values())
+        out["margin"] = {"day": rec.get("day"), "gross": g_, "limit": 2.0,
+                         "shadow_gross": (rec.get("p9") or {}).get("gross")}
+    return out
+
+
+try:
+    P9 = p9_block()
+except Exception as exc:                              # display only: never fails the ledger
+    P9 = {"error": repr(exc)}
 dash = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"), "mode": MODE,
         # the paper account's latest value from Alpaca, shown even before the first trade
         "balance": {"equity": float(_nav_all["equity"].iloc[-1]), "date": str(_nav_all["date"].iloc[-1])} if len(_nav_all) else None,
@@ -541,6 +582,7 @@ dash = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"), "mo
         "pnl": {**STD["summary"], "at": STD["at"]} if STD else None,
         "open_std": [{k: _f(v) for k, v in o.items()} for o in STD["open"]] if STD else None,
         "lifecycle": LIFE,
+        "p9": P9,
         "realized": [{k: _f(v) for k, v in t.items()} for t in STD["realized_trades"]] if STD else None}
 
 
