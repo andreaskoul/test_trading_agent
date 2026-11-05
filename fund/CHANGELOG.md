@@ -4,6 +4,8 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-11-05: Protocol 9 registered (PROTOCOL_fund.md; owner). From session 2026-11-16 the account holds an SPY trend core (1.3x above the 200-session average, 0.7x below) under the 7B book scaled to 1/3; shadow-logged from 2026-11-09. CLAUDE.md rule 17 now allows one pre-registered test on long history. Could this change a decision? **Yes:** a new protocol. The 7B model, its NAV and its clock are unchanged.
+
 - 2026-11-02: forward S&P 500 books, running week on the shadow page (owner: "I still don't see any of the models' charts"; display only).
   * The chart showed booked weeks only, and the first is booked on 2026-11-06.
   * A new runner job, `spxmark` (Mon–Fri 21:45 UTC, R5 lock), downloads closes and runs `spx_forward.py mark`. It adds the newest record's running week to `page.json`: each book, SPY, the S&P holding alone and the risk-matched S&P, marked at the latest close, before the costs of the next rebalance. The weekly ledger does the same.
