@@ -50,6 +50,14 @@ def test_state_is_frozen_at_first_use():
     assert C.core_state(os.path.join(tempfile.mkdtemp(), "s.json"), SPY.index[150], SPY.index, SPY.to_numpy()) is None
 
 
+def test_plan_run_freezes_nothing():
+    # found 2026-11-05 in the plan-run test: a plan right after a close could freeze a preliminary close
+    d = tempfile.mkdtemp()
+    st = C.core_state(None, DAY, SPY.index, SPY.to_numpy())
+    assert st == state()[0] and not os.listdir(d)
+    assert C.core_state(None, SPY.index[150], SPY.index, SPY.to_numpy()) is None
+
+
 def test_account_target_nets_spy():
     m = REC["target_weights"]
     a = C.account_target(m, 1.3)

@@ -1512,11 +1512,13 @@ def replay():
         raise SystemExit("replay: the engine does not reproduce the weekly book within 1 bp")
 
 
-def p9_account(day, model_target, acct, halted):
+def p9_account(day, model_target, acct, halted, plan_only=False):
     """Protocol 9's account target for `day`: the frozen core state (decided on the previous session's close), the
     account check, then the core plus the model scaled to 1/3 within the 1.9x gross cap. A halt is flat."""
     spy = closes({"SPY"}, day - pd.Timedelta(days=420), day - pd.Timedelta(days=1))["SPY"].dropna()
-    st = core.core_state(os.path.join(CORE, "state.json"), day, spy.index, spy.to_numpy())
+    frozen = os.path.join(CORE, "state.json")                   # a plan run reads a frozen state, never writes one
+    st = core.core_state(None if plan_only and not (os.path.exists(frozen) and str(day.date()) in json.load(open(frozen)))
+                         else frozen, day, spy.index, spy.to_numpy())
     if st is None:
         raise SystemExit(f"protocol 9: no core state for {day.date()} (fewer than {core.TREND_WIN} SPY closes)")
     s, overlay, problems = core.account_limits(acct, st["sleeve"])
@@ -1594,7 +1596,7 @@ def trade(plan_only):
     acct = broker.account()
     p9 = None
     if day >= core.P9_SHADOW:                             # Protocol 9: the SPY core under the model scaled to 1/3
-        p9 = p9_account(day, target, acct, halt and not plan_only)
+        p9 = p9_account(day, target, acct, halt and not plan_only, plan_only)
         if day >= core.P9_START:
             target = p9["account_target"]                 # traded; before P9_START it is logged only (shadow)
         else:

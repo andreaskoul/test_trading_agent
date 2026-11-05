@@ -35,8 +35,10 @@ def trend_state(spy, S, d):
 
 def core_state(path, day, sessions, spy):
     """The core weight for `day`, from the last session before it. sessions: trading days; spy: SPY's adjusted
-    closes on them. The first value computed for a day is written to `path` and returned ever after."""
-    E = json.load(open(path)) if os.path.exists(path) else {}
+    closes on them. The first value computed for a day is written to `path` and returned ever after. With
+    path=None (a plan run) the value is computed and returned but nothing is frozen, so a plan made right after a
+    close can never freeze a preliminary closing price."""
+    E = json.load(open(path)) if path and os.path.exists(path) else {}
     k = str(pd.Timestamp(day).date())
     if k in E:
         return E[k]
@@ -48,6 +50,8 @@ def core_state(path, day, sessions, spy):
     if st is None:
         return None
     E[k] = {**st, "session": str(prev[-1].date())}
+    if path is None:
+        return E[k]
     os.makedirs(os.path.dirname(path), exist_ok=True)
     json.dump(E, open(path, "w"), indent=0, sort_keys=True)
     return E[k]
