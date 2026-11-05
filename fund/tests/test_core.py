@@ -81,6 +81,35 @@ def test_qshadow_uses_the_same_rule():
     assert "from core import SLEEVE_UP, SLEEVE_DOWN, TREND_WIN, trend_state" in src and "def trend_state" not in src
 
 
+NAV = pd.read_csv(os.path.join(HERE, "fixtures", "core", "nav.csv"), parse_dates=["date"]).set_index("date")["equity"]
+RSPY = pd.read_csv(os.path.join(HERE, "fixtures", "core", "spy_returns.csv"), parse_dates=["date"]).set_index("date")["ret"]
+
+
+def test_yardsticks_by_hand():
+    # the broker NAV and SPY's frozen returns since 1 Oct (fund-data, 2026-11-04)
+    y = C.yardsticks(NAV, RSPY, start="2026-10-01")
+    ra = NAV.pct_change().dropna().loc["2026-10-01":]
+    assert y["sessions"] == len(ra) and abs(y["account"]["total"] - (NAV.iloc[-1] / NAV.loc[:"2026-09-30"].iloc[-1] - 1)) < 1e-12
+    rs = RSPY.reindex(ra.index).fillna(0)
+    assert abs(y["spy"]["total"] - ((1 + rs).prod() - 1)) < 1e-12
+    assert abs(y["spy"]["per_year"] - ((1 + rs).prod() ** (252 / len(rs)) - 1)) < 1e-12
+    s = pd.Series(1.3, index=ra.index)                            # a risk-matched line at 1.3x pays margin on 0.3x
+    rm = C.yardsticks(NAV, RSPY, s, "2026-10-01")["risk_matched"]
+    assert abs(rm["total"] - ((1 + 1.3 * rs - 0.3 * C.MARGIN_RATE / 252).prod() - 1)) < 1e-12 and rm["weight"] == 1.3
+
+
+def test_composite_and_fidelity():
+    idx = RSPY.index[-10:]
+    s, rs, rmod = pd.Series(1.3, index=idx), RSPY.loc[idx], pd.Series(0.001, index=idx)
+    net = pd.Series(0.15, index=idx)                              # overlay net weight 0.15 at lambda 1/3 -> debit 0.35
+    c = C.composite(s, rs, rmod, net)
+    assert np.allclose(c, 1.3 * rs + rmod / 3 - 0.35 * C.MARGIN_RATE / 252)
+    f = C.fidelity(c, c)
+    assert f and all(abs(v) < 1e-9 for v in f.values())
+    f2 = C.fidelity(c + 0.0001, c)                                # one bp a session shows as roughly that many bp a month
+    assert all(v > 0 for v in f2.values())
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):

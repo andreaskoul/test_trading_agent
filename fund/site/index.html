@@ -52,6 +52,7 @@
     <div class="muted">Alpaca paper account · actual trades only · updated <span id="upd">…</span> · <a href="ledger/">Position ledger</a> · <a href="report.html">Performance report</a> · <a href="shadow/">Shadow books</a></div>
   </header>
   <div class="kpis" id="kpis"></div>
+  <section id="p9" hidden><h2>Against the S&amp;P (Protocol 9)</h2><div class="kpis" id="p9kpis"></div><div class="muted" id="p9note"></div></section>
   <section><h2>Account value</h2><div id="acctEmpty" class="empty" hidden>No trades yet. The first weekly trade is Thursday's close.</div><canvas id="acct"></canvas></section>
   <section><details class="fold" id="f-open" open><summary><h2>Open positions</h2><span class="cnt"></span></summary><div class="muted" id="lcNote"></div><div class="scroll" id="open"></div></details></section>
   <section><details class="fold" id="f-closed"><summary><h2 id="closedTitle">Realized trades (shares closed)</h2><span class="cnt"></span></summary><div class="scroll" id="closed"></div></details></section>
@@ -88,6 +89,25 @@ fetch("dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => {
              ["Open positions", (S ? d.open_std : open).filter(p => p.role !== "beta hedge").length], ["Unrealized P&L", usd(unreal)],
              ["Realized P&L", usd(realized)], ["Dividends & fees", usd(cash)]];
   document.getElementById("kpis").innerHTML = k.map(([a, b]) => `<div class="kpi"><div class="muted">${a}</div><div class="v">${b}</div></div>`).join("");
+  // Protocol 9: the SPY core, the account against SPY and the risk-matched SPY (% a year), margin use
+  const Q = d.p9;
+  if (Q && !Q.error) {
+    const py = x => x && x.per_year != null ? `${pct(x.per_year)} <span class="muted">/yr (${(x.total * 100).toFixed(2)}%)</span>` : "—";
+    const q = [];
+    if (Q.core) q.push([`Core ${Q.core.traded ? "" : "(shadow) "}<span class="muted">${Q.core.day}</span>`,
+      `${Q.core.weight}× SPY <span class="muted">${(Q.core.distance * 100).toFixed(1)}% ${Q.core.distance >= 0 ? "above" : "below"} 200-day</span>`]);
+    const o = Q.since_oct;
+    if (o) q.push([`Account since ${o.from}`, py(o.account)], [`SPY since ${o.from}`, py(o.spy)]);
+    const n = Q.since_p9;
+    if (n) q.push([`Account since ${Q.start}`, py(n.account)], [`SPY since ${Q.start}`, py(n.spy)],
+                  [`Risk-matched SPY (${n.risk_matched.weight}×)`, py(n.risk_matched)],
+                  ["Core / overlay (approx.)", `${pct(n.core_part)} / ${pct(n.overlay_part)}`]);
+    if (Q.margin && Q.margin.gross != null) q.push([`Margin use <span class="muted">${Q.margin.day}</span>`,
+      `${Q.margin.gross.toFixed(2)}× <span class="muted">of ${Q.margin.limit}× overnight</span>`]);
+    document.getElementById("p9kpis").innerHTML = q.map(([a, b]) => `<div class="kpi"><div class="muted">${a}</div><div class="v">${b}</div></div>`).join("");
+    document.getElementById("p9note").textContent = `From ${Q.start} the account holds SPY at 1.3× when SPY closed above its 200-session average the session before, else 0.7×, with the stock book on top at ${(Q.lambda * 3).toFixed(0)}/3 of the model's size (gross ≤ ${Q.gross_cap}×). Risk-matched SPY = SPY at the span's mean core weight, borrowing at 6.5% a year.`;
+    document.getElementById("p9").hidden = false;
+  }
   // Alpaca's daily history lags a session; the chart ends at the same snapshot as the KPIs
   const C = S ? [...A, { date: S.at, equity: S.equity }] : A;
   if (A.length) {
