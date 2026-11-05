@@ -56,6 +56,7 @@ import pandas as pd
 
 from common import MODE, P7_START, STATE, asof_from_env, llm, load, news_cutoff, require, save, save_prompts
 import amend7b2 as A2
+import core
 from edgar_time import et_from_api
 from entry_check import entry_day_check
 from newsio import finnhub_news, norm
@@ -79,6 +80,7 @@ COST, CAPITAL, PASSES = 5e-4, 100_000.0, 3
 # prices at T-3 min), logged in lifecycle/live/<day>.json and applied as logged when the day is rebuilt.
 NEWS_AT, PRICES_AT = 1200, 180                      # seconds before the close
 LIVE = os.path.join(LC, "live")
+CORE = os.path.join(LC, "core")                       # Protocol 9: frozen core state and the shadow sessions
 
 # ---- Amendment 8 (owner, 2026-10-13): contextual horizon at entry and the horizon-end review
 # Cohorts from as-of A8_ASOF get the contextual horizon; from session A8_REVIEW every lot that reaches its horizon is
@@ -1510,6 +1512,22 @@ def replay():
         raise SystemExit("replay: the engine does not reproduce the weekly book within 1 bp")
 
 
+def p9_account(day, model_target, acct, halted):
+    """Protocol 9's account target for `day`: the frozen core state (decided on the previous session's close), the
+    account check, then the core plus the model scaled to 1/3 within the 1.9x gross cap. A halt is flat."""
+    spy = closes({"SPY"}, day - pd.Timedelta(days=420), day - pd.Timedelta(days=1))["SPY"].dropna()
+    st = core.core_state(os.path.join(CORE, "state.json"), day, spy.index, spy.to_numpy())
+    if st is None:
+        raise SystemExit(f"protocol 9: no core state for {day.date()} (fewer than {core.TREND_WIN} SPY closes)")
+    s, overlay, problems = core.account_limits(acct, st["sleeve"])
+    if halted:
+        acc, k = {}, 0.0
+    else:
+        acc, k = core.gross_guard(model_target if overlay else {}, s)
+    return {"day": str(day.date()), "state": st, "core_w": s, "overlay_k": k, "lambda": core.LAMBDA, "model_target": model_target,
+            "account_target": acc, "gross": core.gross(acc), "problems": problems, "halted": bool(halted)}
+
+
 def trade(plan_only):
     """Protocol 7, every trading day: news checks at T-20 min, prices at T-3 min, the decision logged, then the
     account traded to it in the last minute before the close (fund/broker.py). A plan run decides and logs to
@@ -1574,6 +1592,14 @@ def trade(plan_only):
         print(f"lifecycle trade: risk HALT active ({halt}); the account goes flat until it is resumed by hand", flush=True)
     target = ops_stats.account_target(lv["lots"], nav, lv["hedge"], bool(halt) and not plan_only)
     acct = broker.account()
+    p9 = None
+    if day >= core.P9_SHADOW:                             # Protocol 9: the SPY core under the model scaled to 1/3
+        p9 = p9_account(day, target, acct, halt and not plan_only)
+        if day >= core.P9_START:
+            target = p9["account_target"]                 # traded; before P9_START it is logged only (shadow)
+        else:
+            os.makedirs(os.path.join(CORE, "shadow"), exist_ok=True)
+            json.dump(p9, open(os.path.join(CORE, "shadow", f"{day.date()}{'.plan' if plan_only else ''}.json"), "w"), indent=1)
     margin = ops_stats.margin_check(acct, target)
     equity, cur = float(acct["equity"]), broker.positions()
     orders = []
@@ -1601,7 +1627,7 @@ def trade(plan_only):
            "prices": {t: px.get(t) for t in target}, "equity": equity, "current_qty": cur, "target_weights": target,
            "orders": orders, "problems": [], "status": "planned" if plan_only else "sending", "reviews": lv.get("reviews", []),
            "prices_meta": {"news": meta_news, "decision": meta_dec}, "entry_check": entry_check, "a2": lv.get("a2"),
-           "halt": halt, "margin": margin}
+           "halt": halt, "margin": margin, "p9": p9}
     json.dump(rec, open(log_p, "w"), indent=1, default=str)
     print(f"lifecycle {day.date()}: {len(lv['lots'])} lots, actions "
           f"{[(e['ticker'], e['action']) for e in lv['actions']]}; {len(orders)} orders", flush=True)
@@ -1616,7 +1642,8 @@ def trade(plan_only):
             broker.api("DELETE", f"/v2/orders/{x['id']}")
     broker.send(orders, close_at, clock)
     early_th.join(timeout=600)
-    rec.update(orders=orders, problems=margin["problems"] + broker.problems_of(orders), status="submitted",
+    rec.update(orders=orders, problems=margin["problems"] + ((p9 or {}).get("problems") if day >= core.P9_START else []) +
+               broker.problems_of(orders), status="submitted",
                submitted_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
                control_early=early.get("status", "still running at the record"))
     json.dump(rec, open(log_p, "w"), indent=1, default=str)
