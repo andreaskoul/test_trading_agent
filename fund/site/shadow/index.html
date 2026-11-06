@@ -422,12 +422,12 @@ fetch("../spx.json", { cache: "no-store" }).then(r => r.json()).then(X => {
   {                                                 // its row in "What is tested": the verdict measure is IC
     const m5 = (X.books || []).find(b => b.key === "fw_master_h5"), ic = m5 && m5.ic ? m5.ic[String(m5.h)] : null;
     qset("spx", { n: 5, q: "Can AI forecasting models rank the S&amp;P 500's stocks?", books: "MASTER (5- and 20-day), Chronos-2, and their average, vs a simple price-factor model (paper only)",
-      win: X.first ? `decisions from ${X.first}` : "first decision 2026-10-29", res: !X.records ? "first positions Friday 30 Oct; first realised week Friday 6 Nov" : ic && ic.n ? `MASTER, 5-day: ranking accuracy ${ic.mean.toFixed(4)} over ${ic.n} week${ic.n === 1 ? "" : "s"}` : `${X.records} record${X.records === 1 ? "" : "s"}, no matured IC yet`,
+      win: X.first ? `decisions from ${X.first}` : "first decision 2026-10-29", res: !X.records ? "first positions Friday 30 Oct; each week is booked after its closing Friday" : ic && ic.n ? `MASTER, 5-day: ranking accuracy ${ic.mean.toFixed(4)} over ${ic.n} week${ic.n === 1 ? "" : "s"}` : `${X.records} record${X.records === 1 ? "" : "s"}, no matured IC yet`,
       verdict: "a book is stopped if its ranking accuracy is clearly negative after 26 weeks; judged at 52 weeks" });
   }
   if (!X.books || !X.books.length) {                // before the first record: say when it comes, not a blank section
     document.getElementById("sbody").hidden = true;
-    document.getElementById("snote").innerHTML = "Five weekly paper books on the S&amp;P 500 built from AI forecasting models (never traded). The first decision is Thursday 29 Oct 2026, recorded on Friday 30 Oct at 03:45 UTC, when its positions appear here; its first realised week is booked on Friday 6 Nov.";
+    document.getElementById("snote").innerHTML = "Five weekly paper books on the S&amp;P 500 built from AI forecasting models (never traded). The first decision is Thursday 29 Oct 2026, recorded on Friday 30 Oct at 03:45 UTC, when its positions appear here. A week runs from one Friday close to the next; it is drawn dashed while it runs and booked after its last close.";
     return;
   }
   const P = X.policy || {}, R = X.rules || {}, L = X.latest;

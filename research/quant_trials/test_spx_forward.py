@@ -68,6 +68,23 @@ def test_running_mark_equals_booked_week_before_rebalance_costs():
     assert abs(run["series"]["spy"][k] - Rm_) < 1e-12 and run["series"]["b"][0] == 0.0
 
 
+def test_friday_morning_shows_the_previous_week():
+    """The failure class (2026-11-06): the Friday 03:45 job adds the new Thursday record before its entry close (that
+    Friday) exists, so the page drew no running week, and the previous week, which ends at that close, was neither
+    booked nor drawn. The page must then show the previous record's week, from its own entry close."""
+    d = T.build()
+    t = len(d["S"]) - 1                                   # the newest record decided on the last close
+    z = np.zeros(len(d["names"]))
+    prev, new = _rec(d, t - 5, z, -0.1), _rec(d, t, z, -0.1)
+    assert FW.running(d, new) is None
+    run = FW.current_week(d, [prev, new])
+    assert run is not None and run["asof"] == prev["asof"] and run["from"] == str(d["S"][t - 4].date())
+    assert run["to"] == str(d["S"][-1].date())
+    older = _rec(d, t - 10, z, -0.1)                      # once the newest week has an entry close, it is the one shown
+    assert FW.current_week(d, [older, prev])["asof"] == prev["asof"]
+    assert FW.current_week(d, [new]) is None
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):

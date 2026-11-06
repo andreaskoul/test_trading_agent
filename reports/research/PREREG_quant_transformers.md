@@ -373,3 +373,19 @@ Strategy variants of one signal correlate 0.8–0.9. Each cluster gets one book,
 * **Out of scope:** anything traded with money. That is a new protocol and the owner's decision.
 
 **Owner sign-off (Amendment 4):** signed by the owner in session, 2026-10-27 ("Signed"), before any forward week. The first forward record is Thursday 2026-10-29.
+
+## Operational note to Amendment 4 (2026-11-06): weeks are booked on the evening of their last close
+
+No rule, weight or formula changes.
+* **Before:** only the Friday 03:45 UTC job booked weeks. It runs before that Friday's close, so a week (Friday close →
+  next Friday close) was booked a week after it ended. The page suppressed the dashed running week whenever booking
+  lagged, so the latest week or two were never drawn. On 2026-11-06 the page showed no booked week and no running week.
+* **Now:**
+  * The daily 21:45 UTC job (`spxmark`) runs `spx_forward.py ledger`, which books a week as soon as its last close is
+    in the data (yfinance adjusted closes, 45 minutes after the close). Each row is still frozen at first computation.
+  * Before the newest record's entry close exists (Friday morning), the page draws the previous record's week
+    (`current_week`).
+* **Contract test:** `research/quant_trials/test_spx_forward.py::test_friday_morning_shows_the_previous_week`.
+* **No row has been booked yet**, so nothing recorded changes. Rows are computed with a closing price about 45 minutes
+  old instead of a week old; a later revision of that close would change a row only before its first computation,
+  as before.

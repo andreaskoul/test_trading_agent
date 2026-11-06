@@ -485,7 +485,9 @@ SPX_MARK_COMMIT = QS_COMMIT.replace('git commit -q -m "qshadow research books', 
 def job_spxmark(j, a):
     j.step("Restore research records", R5_RESTORE)
     j.step("S&P 500 prices to the last close", f"mkdir -p {HOME}/cache/spx && {SPX_ENV}{VR} spx_live.py download")
-    j.step("Running week of the forward S&P books, marked at the latest close (page only)", f"{SPX_ENV}{VR} spx_forward.py mark")
+    # the ledger books a week as soon as its closing Friday is in the data (frozen at first computation), then marks
+    # the unbooked week; before 2026-11-06 only the Friday 03:45 job booked, a week late, and the page showed a gap
+    j.step("Ledger: book weeks whose last close is in; mark the running week (page)", f"{SPX_ENV}{VR} spx_forward.py ledger")
     j.step("Commit to research-data", SPX_MARK_COMMIT, when="always")
     j.step("GitHub Pages: rebuild (S&P running week on the shadow page)", f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main",
            allow_fail=True)
