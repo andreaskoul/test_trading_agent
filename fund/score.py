@@ -16,6 +16,7 @@ import pandas as pd
 import yfinance as yf
 
 from common import MODE, P7_START, STATE
+from lifecycle_rules import P7B
 import ops_stats
 
 base = os.path.join(STATE, MODE)
@@ -325,6 +326,13 @@ P7_FIRST = min([a for a in books_ok if pd.Timestamp(a) + pd.Timedelta(days=1) >=
 P6_LAST = max([a for a in books_ok if not P7_FIRST or a < P7_FIRST], default=None)
 if P7_FIRST and (R["asof"] >= P7_FIRST).any() if len(R) else False:
     first = P7_FIRST
+# Protocol 7B restarts the clock again (PROTOCOL_fund.md: "the evaluation clock restarts on 2026-10-28"), as Protocol 7
+# did: the gate reads the fund from the first week held entirely under 7B, the as-of whose execution day is on or after
+# P7B. The Protocol 7 weeks stay in weekly_books.csv.
+P7B_FIRST = min([a for a in books_ok if pd.Timestamp(a) + pd.Timedelta(days=1) >= P7B], default=None)
+P7_LAST = max([a for a in books_ok if P7_FIRST and P7_FIRST <= a and (not P7B_FIRST or a < P7B_FIRST)], default=None)
+if P7B_FIRST and (R["asof"] >= P7B_FIRST).any() if len(R) else False:
+    first = P7B_FIRST
 Pe = R[R.book == "fund"].set_index("asof")["excess"].sort_index() if len(R) else pd.Series(dtype=float, index=pd.Index([], dtype=str))
 Pe = Pe[Pe.index >= first] if first else Pe.iloc[:0]
 n = len(Pe)
@@ -334,7 +342,7 @@ dq = nw_t((Pn["fund"] - Pn["quant"]).dropna()) if {"fund", "quant"} <= set(Pn) e
 xs_t = nw_t(X.b_analyst) if len(X) else np.nan
 weeks = [a for a in books_ok if first and a >= first and pd.Timestamp(a) + pd.Timedelta(days=8, hours=23) <= now]
 on_time = np.mean([books_ok[a] for a in weeks]) if weeks else np.nan
-if P7_FIRST and first == P7_FIRST:                  # Protocol 7 trades every session: read the lifecycle live records
+if P7_FIRST and first and first >= P7_FIRST:        # Protocol 7 (and 7B) trade every session: read the lifecycle live records
     executed, not_executed = ops_stats.executed_share(weeks, os.path.join(base, "lifecycle", "live"),
                                                       LC.index if len(LC) else [])
 else:
@@ -377,11 +385,13 @@ else:
     verdict = f"CONTINUE ({n} weeks scored; next look at {min([L for L in LOOKS if L > n], default='-')} weeks)."
 # pre-registered paired test (Amendment 7): the lifecycle fund against the weekly book it replaced
 d0 = (Px["fund"] - Px["c0_weekly"]).dropna() if {"fund", "c0_weekly"} <= set(Px) else pd.Series(dtype=float)
-d0 = d0[d0.index.astype(str) >= P7_FIRST] if P7_FIRST and len(d0) else d0.iloc[:0]   # empty until c0_weekly has a scored week
+d0 = d0[d0.index.astype(str) >= first] if P7_FIRST and first and first >= P7_FIRST and len(d0) else d0.iloc[:0]   # from the clock; empty until c0_weekly has a scored week
 lag0 = max(int(4 * (max(len(d0), 1) / 100) ** (2 / 9)), 4)        # >= the longest horizon (20 trading days) in weeks
-paired = (f"Protocol 7 vs the weekly book (c0_weekly): {len(d0)} weeks, mean {d0.mean() * 100 if len(d0) else float('nan'):+.3f}%/wk, "
+paired = (f"{'Protocol 7B' if first == P7B_FIRST else 'Protocol 7'} vs the weekly book (c0_weekly): {len(d0)} weeks, mean {d0.mean() * 100 if len(d0) else float('nan'):+.3f}%/wk, "
           f"NW t (lag {lag0}) {nw_t(d0, L=lag0) if len(d0) >= 3 else float('nan'):.2f}")
 g = [f"# Go-live gate ({MODE})", "", f"**{verdict}**", "",
+     (f"Protocol 7B (lifecycle book with the 7B rules) from {first}: the clock restarted; the Protocol 6 record (2026-09-30 "
+      f"to {P6_LAST}) and the Protocol 7 record ({P7_FIRST} to {P7_LAST}) stay in weekly_books.csv. " + paired) if P7B_FIRST and first == P7B_FIRST else
      (f"Protocol 7 (lifecycle book) from {P7_FIRST}: the clock restarted; the Protocol 6 record ({first if first != P7_FIRST else '2026-09-30'} "
       f"to {P6_LAST}) stays in weekly_books.csv. " + paired) if P7_FIRST and first == P7_FIRST else
      "Protocol 6 (weekly book). Protocol 7 starts trading on " + str(P7_START.date()) + ".", "",
