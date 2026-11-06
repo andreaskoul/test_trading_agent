@@ -27,6 +27,10 @@ A7B1 = pd.Timestamp(os.environ.get("FUND_A7B1") or "2026-10-30")
 # records release sessions from as-of P7B2_ASOF. Gated by date so recorded days never change.
 P7B2 = pd.Timestamp(os.environ.get("FUND_P7B2") or "2026-11-05")
 P7B2_ASOF = os.environ.get("FUND_P7B2_ASOF") or "2026-11-04"
+# Addendum to Amendment 2 (owner, 2026-11-06): from the as-of A7B2_FIX_ASOF, B1 looks for the release within one
+# trading session of the first report, not one calendar day (XOM: released Fri 2026-10-30 before the open, first
+# reported Mon 11-02, so B1 found no release). Gated by as-of so recorded cohorts never change.
+A7B2_FIX_ASOF = os.environ.get("FUND_A7B2_FIX_ASOF") or "2026-11-11"
 # Protocol 7B Amendment 3 (owner, 2026-11-02; Family E rule A, read once 2026-11-01: STOP): from session A7B3 a soft view
 # opens, extends, enlarges and flips nothing in the live book; lots already open run out under their own rules. Soft =
 # the desk's event type in SOFT and not labelled hard (the rule's definition). The control keeps soft entries: it is

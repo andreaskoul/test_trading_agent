@@ -37,20 +37,32 @@ def session_of(ts_et, days):
     return next((d for d in days if d > d0 or (d == d0 and mins < 16 * 60)), None)
 
 
-def release_session(event_type, first_reported, accepted, cal, days):
+def near(x, fr, days, sessions=False):
+    """Is a release dated x within one of the first report fr? In calendar days (as registered), or from the as-of
+    A7B2_FIX_ASOF in trading sessions over `days` (addendum to Amendment 2: a Friday release first reported on Monday
+    is one session away, three calendar days)."""
+    x = pd.Timestamp(pd.Timestamp(x).date())
+    if not sessions:
+        return abs((x - fr).days) <= 1
+    ix = pd.DatetimeIndex(days)
+    return abs(int(ix.searchsorted(x)) - int(ix.searchsorted(fr))) <= 1
+
+
+def release_session(event_type, first_reported, accepted, cal, days, sessions=False):
     """The session in which an earnings or guidance release reached the market, or None (Amendment 8's rule stands).
     accepted: 8-K item 2.02 acceptance times of the ticker (US Eastern, naive). cal: (date, hour) from the earnings
-    calendar or None; hour 'bmo' (before the open) or 'amc' (after the close)."""
+    calendar or None; hour 'bmo' (before the open) or 'amc' (after the close). sessions: the window in trading sessions
+    (see near)."""
     if event_type not in B1_TYPES:
         return None
     fr = pd.Timestamp(first_reported)
-    near = sorted(a for a in accepted if fr - pd.Timedelta(days=1) <= pd.Timestamp(pd.Timestamp(a).date()) <= fr + pd.Timedelta(days=1))
-    if near:
-        s0 = session_of(pd.Timestamp(near[0]), days)
-        return {"session": str(s0.date()), "source": "8-K 2.02", "accepted": str(near[0])} if s0 is not None else None
+    nearby = sorted(a for a in accepted if near(a, fr, days, sessions))
+    if nearby:
+        s0 = session_of(pd.Timestamp(nearby[0]), days)
+        return {"session": str(s0.date()), "source": "8-K 2.02", "accepted": str(nearby[0])} if s0 is not None else None
     if cal and cal[1] in ("bmo", "amc"):
         d = pd.Timestamp(cal[0])
-        if abs((d - fr).days) <= 1:
+        if near(d, fr, days, sessions):
             s0 = d if cal[1] == "bmo" and d in days else next((x for x in days if x > d), None)
             return {"session": str(s0.date()), "source": f"calendar {cal[1]}"} if s0 is not None else None
     return None
@@ -63,7 +75,9 @@ def b1_horizon(t, info, side, R, beta, r_today, day, H_base, k):
     constants (P_CAP, H_MIN, H8_MAX, STALE_AT)."""
     i, rel = info.get("inputs") or {}, info.get("release")
     if not rel or not i.get("M") or t not in r_today or "SPY" not in r_today:
-        return H_base, {"b1": "not applicable"}
+        typ = (info.get("out") or {}).get("event_type")
+        return H_base, {"b1": "not applicable",                     # measured (2026-11-06): how often B1 misses a release
+                        **({"no_release": True} if not rel and typ in B1_TYPES else {})}
     s0 = pd.Timestamp(rel["session"])
     past = R[(R.index >= s0) & (R.index < pd.Timestamp(day))]
     car = float((past[t] - beta * past["SPY"]).sum()) if t in past and len(past) else 0.0

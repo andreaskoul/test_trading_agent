@@ -1,6 +1,6 @@
 """Decision ledger: what followed each decision (reporting only; nothing reads it for a decision).
 
-    python fund/attribution.py        # -> performance/attribution.json and attribution.md
+    python fund/attribution.py        # -> lifecycle/attribution.json and attribution.md (saved with the lifecycle records)
 
 Every decision of the lifecycle book (lifecycle/state.json events) and of the shadow control, plus the cohort names
 the book did not enter (counterfactual rows), gets the beta-adjusted ("residual") return of the stock after the
@@ -199,7 +199,19 @@ def cohort_info(base):
     return out
 
 
-def rows_of(events, coh, E, book):
+def entry_checks(base):
+    """{day: entry_check} from the live records (fund/entry_check.py: the move since the signal close and Amendment 8's
+    "priced in" fraction recomputed at the entry decision)."""
+    out = {}
+    for p in sorted(glob.glob(os.path.join(base, "lifecycle", "live", "20*.json"))):
+        try:
+            out[os.path.basename(p)[:-5]] = json.load(open(p)).get("entry_check") or {}
+        except (OSError, ValueError):
+            continue
+    return out
+
+
+def rows_of(events, coh, E, book, ec=None):
     rows = []
     for e in events:
         if e.get("action") in SKIP or "|" not in str(e.get("id")):
@@ -214,6 +226,9 @@ def rows_of(events, coh, E, book):
         r.update({f"y{h}": side * forward(E, e["day"], t, h, c.get("beta", {}).get(t, 1.0)) for h in H})
         if e["action"] == "entry":
             r.update(agree_fields(c, t, side, E))
+            x = ((ec or {}).get(e["day"]) or {}).get(t) or {}
+            r.update(structural=bool((c.get("names", {}).get(t) or {}).get("structural")),       # 7B R2 label (B1 exempt)
+                     p_entry=x.get("p_entry"), priced_in=None if not x else bool(x.get("priced_in_entry")))
         rows.append(r)
     return rows
 
@@ -240,12 +255,12 @@ def not_entered(coh, events, E):
     return rows
 
 
-def stats(D):
+def stats(D, keys=("book", "action", "class")):
     out = []
     if not len(D):
         return out
     D = D.assign(week=pd.to_datetime(D["day"]).dt.strftime("%G-W%V"))
-    for key, g in D.groupby(["book", "action", "class"]):
+    for key, g in D.groupby(list(keys)):
         for h in H:
             y = g[f"y{h}"].dropna() * 1e4
             if not len(y):
@@ -255,7 +270,7 @@ def stats(D):
             G = w.nunique()
             sc = (y - m).groupby(w).sum()
             se = np.sqrt(G / (G - 1) * (sc ** 2).sum()) / len(y) if G >= 5 else np.nan   # no t below 5 weeks
-            out.append({"book": key[0], "action": key[1], "class": key[2], "h": h, "n": int(len(y)), "weeks": int(G),
+            out.append({**dict(zip(keys, key)), "h": h, "n": int(len(y)), "weeks": int(G),
                         "mean_bp": float(m), "median_bp": float(y.median()), "t": float(m / se) if se and se > 0 else None,
                         "hit": float((y > 0).mean())})
     return out
@@ -274,23 +289,37 @@ def rank_ic(coh, E, h):
     return ics
 
 
+def structural_stats(D):
+    """Entries by the desk's structural label x "priced in" at the entry decision (measurement before any rule:
+    7B Amendment 2 exempts structural lots from B1, so a priced-in structural name still enters)."""
+    if not len(D) or "structural" not in D:
+        return []
+    X = D[(D["action"] == "entry") & D["priced_in"].notna()].copy()
+    if not len(X):
+        return []
+    X["structural"], X["priced_in"] = X["structural"].map(bool).map(str), X["priced_in"].map(bool).map(str)
+    return stats(X, keys=("book", "structural", "priced_in"))
+
+
 def build(base):
     LC = os.path.join(base, "lifecycle")
     R = pd.read_csv(os.path.join(LC, "returns.csv"), parse_dates=["date"]).pivot_table(index="date", columns="ticker", values="ret")
     coh = cohort_info(base)
     E = R                                               # residuals are taken per row, with that cohort's hedge beta
     live = json.load(open(os.path.join(LC, "state.json")))
-    rows = rows_of(live.get("events", []), coh, E, "live") + not_entered(coh, live.get("events", []), E)
+    ec = entry_checks(base)
+    rows = rows_of(live.get("events", []), coh, E, "live", ec) + not_entered(coh, live.get("events", []), E)
     segs = segments(live.get("events", []), coh, E, "live")
     cp = os.path.join(LC, "control", "state.json")
     if os.path.exists(cp):
         cev = json.load(open(cp)).get("events", [])
-        rows += rows_of(cev, coh, E, "control")
+        rows += rows_of(cev, coh, E, "control", ec)
         segs += segments(cev, coh, E, "control")
     D = pd.DataFrame(rows)
     ic = {h: rank_ic(coh, E, h) for h in (5, 10)}
     return {"updated": datetime.now(timezone.utc).isoformat(timespec="seconds"), "rows": rows, "stats": stats(D),
             "agreement": agreement(D), "segments": seg_stats(pd.DataFrame(segs)),
+            "structural": structural_stats(D),
             "rank_ic": {str(h): {"by_cohort": v, "mean": float(np.mean(list(v.values()))) if v else None, "cohorts": len(v)}
                         for h, v in ic.items()}}
 
@@ -330,6 +359,16 @@ def markdown(rep):
         L += [f"| {r.book} | {r.seg} | {'all' if pd.isna(r.split) else r.split} | {r.n} | {r.lots} | {r.weeks} | {r.mean_bp:+.1f} | "
               f"{'' if r.t is None or pd.isna(r.t) else f'{r.t:+.2f}'} |" for _, r in G.iterrows()]
         L.append("")
+    T = pd.DataFrame(rep.get("structural", []))
+    if len(T):
+        L += ["## Entries by structural label and 'priced in' at entry", "",
+              "7B Amendment 2 exempts structural lots from B1, so a structural name enters even when its move since the "
+              "news is already the typical full reaction (p >= 1). Measurement only, before any rule change.", "",
+              "| book | structural | priced in | h | n | weeks | mean bp | t | share > 0 |", "|---|---|---|---:|---:|---:|---:|---:|---:|"]
+        L += [f"| {r.book} | {r.structural} | {r.priced_in} | {r.h} | {r.n} | {r.weeks} | {r.mean_bp:+.0f} | "
+              f"{'' if r.t is None or pd.isna(r.t) else f'{r.t:+.2f}'} | {r.hit:.0%} |"
+              for _, r in T[T.h.isin([5, 10])].sort_values(["book", "structural", "priced_in", "h"]).iterrows()]
+        L.append("")
     for h, v in rep["rank_ic"].items():
         m = "n/a" if v["mean"] is None else f"{v['mean']:+.3f}"
         L.append(f"Rank IC of the desk's weights vs the next {h} sessions' residual return: mean {m} over {v['cohorts']} cohorts.")
@@ -347,7 +386,7 @@ def clean(v):                                       # NaN -> null: browsers and 
 def main():
     base = os.path.join(STATE, MODE)
     rep = build(base)
-    out = os.path.join(base, "performance")
+    out = os.path.join(base, "lifecycle")             # both pipelines commit lifecycle/ (performance/ is not copied)
     os.makedirs(out, exist_ok=True)
     json.dump(clean(rep), open(os.path.join(out, "attribution.json"), "w"), indent=0, default=str, allow_nan=False)
     open(os.path.join(out, "attribution.md"), "w").write(markdown(rep))

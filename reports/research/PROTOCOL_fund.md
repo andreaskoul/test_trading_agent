@@ -1240,3 +1240,29 @@ design choices made before any record of this protocol. A change needs a later d
   * the account weights against model × 1/3 plus the core;
   * gross against Alpaca's Reg T buying power.
 * The owner gives go/no-go on 2026-11-14.
+
+## Second addendum to Protocol 7B Amendment 2 (owner, 2026-11-06; from the as-of 2026-11-11 desk): B1 finds releases across weekends
+
+**What happened.** XOM entered on 2026-11-05 (cohort 2026-11-04) as a long on its Q3 results, with H 24 and no B1
+check.
+* Exxon files no earnings 8-K, so B1 falls back on Finnhub's calendar, which had the release on Fri 2026-10-30
+  before the open.
+* The desk dated the first report Mon 2026-11-02.
+* B1 accepts a release within one calendar day of the first report, and Friday to Monday is three calendar days. So no
+  release was found and Amendment 8's horizon stood.
+
+**The rule from the as-of 2026-11-11 desk.** The window is one trading session, not one calendar day, for both the
+8-K and the calendar fallback: |session index of the release date − session index of the first-report date| ≤ 1 over
+the desk's calendar (`fund/amend7b2.near`, switched by `A7B2_FIX_ASOF` in `fund/lifecycle_rules.py`). Everything else
+in B1 is unchanged.
+
+**Recorded cohorts keep the calendar-day window.** Contract test: `fund/tests/test_amend7b2.py::
+test_release_window_in_sessions_from_the_fix_date`, on the real XOM case.
+
+**Measured, not decided.**
+* B1 logs `no_release` for every earnings or guidance view for which it finds no release.
+* The decision ledger tags entries by the desk's structural label and by "priced in" at the entry decision. B1 exempts
+  structural lots: FIS and ORCL entered on 2026-11-05 with p = 1.5.
+* Any rule change for structural lots waits for that evidence.
+
+Under Protocol 9 the 7B book is one third of the account from session 2026-11-16.
