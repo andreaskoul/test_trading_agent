@@ -1,0 +1,41 @@
+oved in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  dividends.sort_index(inplace=True)
+/Users/apollogodofthesun/.fund-runner/venv-research/lib/python3.11/site-packages/yfinance/utils.py:604: Pandas4Warning: The inplace keyword in DataFrame.set_index is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  splits.set_index("date", inplace=True)
+/Users/apollogodofthesun/.fund-runner/venv-research/lib/python3.11/site-packages/yfinance/utils.py:606: Pandas4Warning: The inplace keyword in DataFrame.sort_index is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  splits.sort_index(inplace=True)
+/Users/apollogodofthesun/.fund-runner/venv-research/lib/python3.11/site-packages/yfinance/utils.py:514: Pandas4Warning: The inplace keyword in DataFrame.drop is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  df.drop(
+/Users/apollogodofthesun/.fund-runner/venv-research/lib/python3.11/site-packages/yfinance/utils.py:518: Pandas4Warning: The inplace keyword in DataFrame.rename is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  df.rename(columns={
+$VIAB: possibly delisted; no timezone found
+$WFT: possibly delisted; no timezone found
+$XEC: possibly delisted; no timezone found
+
+18 Failed downloads:
+['XTO']: possibly delisted; no price data found  (1d 2009-01-02 -> 2026-11-06)
+['VIAC', 'WIN', 'XLNX', 'WRK', 'WFM', 'WYE', 'WLTW', 'WBA', 'WPX', 'WYND', 'WCG', 'VAR', 'X', 'XL', 'VIAB', 'WFT', 'XEC']: possibly delisted; no timezone found
+/Users/apollogodofthesun/.fund-runner/venv-research/lib/python3.11/site-packages/yfinance/multi.py:220: Pandas4Warning: The inplace keyword in DataFrame.rename is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  data.rename(columns=ctx.isins, inplace=True)
+/Users/apollogodofthesun/.fund-runner/venv-research/lib/python3.11/site-packages/yfinance/multi.py:224: Pandas4Warning: The inplace keyword in DataFrame.sort_index is deprecated and will be removed in a future version (PDEP-8).
+See https://pandas.pydata.org/docs/dev/whatsnew/v3.1.0.html#deprecation-inplace for more details.
+  data.sort_index(level=0, axis=1, inplace=True)
+prices to 2026-11-05: 653 names; current members without recent prices: 2 ['PSKY', 'WBD']
+[2026-11-05 21:46:33Z] ── Running week of the forward S&P books, marked at the latest close (page only)
+/Users/apollogodofthesun/.fund-runner/work/spxmark-20261105-214517/research/quant_trials/sp500_test.py:78: RuntimeWarning: Mean of empty slice
+  Z = (Z - np.nanmean(Z, 1, keepdims=True)) / np.nanstd(Z, 1, keepdims=True)
+/Users/apollogodofthesun/.fund-runner/venv-research/lib/python3.11/site-packages/numpy/lib/_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/Users/apollogodofthesun/.fund-runner/work/spxmark-20261105-214517/research/quant_trials/sp500_test.py:98: RuntimeWarning: Mean of empty slice
+  return y - np.nanmean(y, 1, keepdims=True)
+running week: 2026-10-30 -> 2026-11-05: spy -3.01%, sleeve -3.94%, risk_matched -3.94%, fw_master_h5 -4.08%, fw_master_h20 -5.88%, fw_c2ft_h20 -8.34%, fw_ensemble -8.22%, fw_ridge_h20 -4.84%
+[2026-11-05 21:46:35Z] ── Commit to research-data
+[2026-11-05 21:46:38Z] ── GitHub Pages: rebuild (S&P running week on the shadow page)
+https://github.com/andreaskoul/test_trading_agent/actions/runs/42115692399
+[2026-11-05 21:46:41Z] spxmark: ok in 1.4 min

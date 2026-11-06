@@ -1,0 +1,86 @@
+timeIndex.day_of_week instead.
+  th = v[v.weekday == 3]
+/Users/apollogodofthesun/.fund-runner/work/spx-20261106-034551/research/quant_trials/sp500_test.py:78: RuntimeWarning: Mean of empty slice
+  Z = (Z - np.nanmean(Z, 1, keepdims=True)) / np.nanstd(Z, 1, keepdims=True)
+/Users/apollogodofthesun/.fund-runner/venv-research/lib/python3.11/site-packages/numpy/lib/_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/Users/apollogodofthesun/.fund-runner/work/spx-20261106-034551/research/quant_trials/sp500_test.py:98: RuntimeWarning: Mean of empty slice
+  return y - np.nanmean(y, 1, keepdims=True)
+W1106 05:47:02.438000 55520 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+/Users/apollogodofthesun/.fund-runner/work/spx-20261106-034551/research/quant_trials/spx_forward.py:89: RuntimeWarning: Mean of empty slice
+  sc[m] = np.nanmean(runs, 0)
+Loading weights:   0%|          | 0/170 [00:00<?, ?it/s]Loading weights: 100%|██████████| 170/170 [00:00<00:00, 52436.51it/s]
+written /Users/apollogodofthesun/.fund-runner/work/spx-20261106-034551/research/quant_trials/../../fund_state/live/research/spx/spx_2026-11-05.json
+{
+ "asof": "2026-11-05",
+ "expected": 500,
+ "coverage": {
+  "master_h5": 497,
+  "master_h20": 497,
+  "c2ft_h20": 500,
+  "ridge_h5": 498,
+  "ridge_h10": 498,
+  "ridge_h20": 498,
+  "ensemble": 497
+ },
+ "excluded": [
+  "KVUE",
+  "PSKY",
+  "WBD"
+ ],
+ "sleeve": {
+  "spy": 733.0,
+  "ma200": 727.3875772094726,
+  "s": 1.3
+ },
+ "dtb3": 0.0403,
+ "books": {
+  "fw_master_h5": {
+   "long": 61,
+   "short": 59,
+   "w_spy": -0.283,
+   "scale": 1.0
+  },
+  "fw_master_h20": {
+   "long": 62,
+   "short": 56,
+   "w_spy": -0.259,
+   "scale": 1.0
+  },
+  "fw_c2ft_h20": {
+   "long": 179,
+   "short": 179,
+   "w_spy": -0.065,
+   "scale": 1.0
+  },
+  "fw_ensemble": {
+   "long": 63,
+   "short": 53,
+   "w_spy": -0.26,
+   "scale": 1.0
+  },
+  "fw_ridge_h20": {
+   "long": 200,
+   "short": 214,
+   "w_spy": -0.229,
+   "scale": 1.0
+  }
+ }
+}
+[2026-11-06 03:47:25Z] ── Ledger: realised weeks and ICs, frozen at first computation
+/Users/apollogodofthesun/.fund-runner/work/spx-20261106-034551/research/quant_trials/sp500_test.py:78: RuntimeWarning: Mean of empty slice
+  Z = (Z - np.nanmean(Z, 1, keepdims=True)) / np.nanstd(Z, 1, keepdims=True)
+/Users/apollogodofthesun/.fund-runner/venv-research/lib/python3.11/site-packages/numpy/lib/_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/Users/apollogodofthesun/.fund-runner/work/spx-20261106-034551/research/quant_trials/sp500_test.py:98: RuntimeWarning: Mean of empty slice
+  return y - np.nanmean(y, 1, keepdims=True)
+         book  weeks cum_pct pct_per_yr vs_spy_pct_yr vs_risk_matched_pct_yr  ic_weeks   ic ic_t                                                status
+ fw_master_h5      0    None       None          None                   None         0 None None running (0 of 26 IC weeks before the stop-rule check)
+fw_master_h20      0    None       None          None                   None         0 None None running (0 of 26 IC weeks before the stop-rule check)
+  fw_c2ft_h20      0    None       None          None                   None         0 None None running (0 of 26 IC weeks before the stop-rule check)
+  fw_ensemble      0    None       None          None                   None         0 None None running (0 of 26 IC weeks before the stop-rule check)
+ fw_ridge_h20      0    None       None          None                   None         0 None None running (0 of 26 IC weeks before the stop-rule check)
+[2026-11-06 03:47:27Z] ── Commit to research-data
+[2026-11-06 03:47:30Z] ── GitHub Pages: rebuild (S&P forward books on the shadow page)
+https://github.com/andreaskoul/test_trading_agent/actions/runs/42158651780
+[2026-11-06 03:47:32Z] spx: ok in 1.7 min

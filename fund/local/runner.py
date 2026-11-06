@@ -152,7 +152,10 @@ def heartbeat(now):
             os.makedirs(d, exist_ok=True)
             git("init", "-q"); git("remote", "add", "origin", REPO); git("checkout", "-q", "--orphan", "heartbeat")
         json.dump({"at": now.isoformat(timespec="seconds"), "host": os.uname().nodename,
-                   "enabled": os.path.exists(ENABLED)},
+                   "enabled": os.path.exists(ENABLED),
+                   # for the website's operations panel: is the installed runner main's, and how did each job end?
+                   "runner_sha256": hashlib.sha256(open(os.path.abspath(__file__), "rb").read()).hexdigest(),
+                   "jobs": job_status(now)},
                   open(os.path.join(d, "heartbeat.json"), "w"), indent=1)
         git("add", "heartbeat.json")
         has = git("rev-parse", "-q", "--verify", "HEAD").returncode == 0
@@ -163,6 +166,42 @@ def heartbeat(now):
             log(f"heartbeat push failed: {r.stderr.strip()[:200]}")
     except Exception as exc:
         log(f"heartbeat failed: {exc!r}")
+
+
+def log_status(job, path, now):
+    """What a job's log says: ok, nothing to do, failed, running, or no result (no end line within its time budget)."""
+    with open(path, "rb") as f:                         # the verdict lines are at the end; logs reach ~1 MB
+        f.seek(max(0, os.path.getsize(path) - 262144))
+        text = f.read().decode(errors="replace")
+    name = "execute" if job in ("trade", "reconcile") else "filltest" if job.startswith("filltest") else job
+    if f"{name}: FAILED" in text:
+        return "failed"
+    if f"{name}: ok" in text or (job == "report" and "report sent" in text):
+        quiet = any(x in text for x in ("no execution today", "not a review day", "nothing to do", "already done", "already executed"))
+        return "nothing to do" if quiet else "ok"
+    budget = TIMEOUT.get(GROUP.get(name, name), 360) + 15
+    age = (now - dt.datetime.fromtimestamp(os.path.getmtime(path), dt.timezone.utc)).total_seconds() / 60
+    return "running" if age < budget else "no result"
+
+
+def job_status(now):
+    """Each scheduled job: its schedule, latest slot, latest log and what that log says (heartbeat.json, display only)."""
+    names = os.listdir(LOGS) if os.path.isdir(LOGS) else []
+    out = {}
+    for job, sc in SCHEDULE.items():
+        slot = last_slot(job, now)
+        e = {"days": sc.get("days"), "at": sc["at"], "late_min": sc["late"], "slot": slot.isoformat(timespec="minutes") if slot else None,
+             **({"every": sc["every"], "until": sc["until"]} if "every" in sc else {})}
+        logs = sorted(f for f in names if re.fullmatch(rf"{re.escape(job)}-\d{{8}}-\d{{4}}\.log", f))
+        if logs:
+            started = dt.datetime.strptime(logs[-1][len(job) + 1:-4], "%Y%m%d-%H%M").replace(tzinfo=dt.timezone.utc)
+            e["started"] = started.isoformat(timespec="minutes")
+            try:
+                e["status"] = log_status(job, os.path.join(LOGS, logs[-1]), now)
+            except OSError:
+                e["status"] = "unreadable"
+        out[job] = e
+    return out
 
 
 # ------------------------------------------------------------------ tick (launchd, every minute)

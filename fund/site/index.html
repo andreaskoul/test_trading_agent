@@ -19,6 +19,7 @@
     <div class="muted">A research project: every model here is tested live against a rule written down before its results · updated <span id="upd">…</span></div></div>
     <nav class="site"><a class="on" href="./">Models under assessment</a><a href="account/">Paper account</a><a href="ledger/">Position ledger</a><a href="report.html">Performance report</a></nav>
   </header>
+  <details class="ops" id="ops"><summary><b>Operations</b> · checking the runner and its jobs…</summary></details>
   <p class="lead">Four things are being tested. The live fund trades a paper account at Alpaca; everything else is paper only and never sent to the broker. Each test compares a model only with what it must beat, over the same dates, and says when and by what rule it will be decided. Live results are weeks old, so differences are still mostly noise: <b>no verdict before mid-April 2027</b>. Returns are cumulative over the dates shown; % per year appears from 26 weeks. Backtests are labelled and never mixed with live weeks. Models retired on 5 Nov 2026 are listed at the bottom.</p>
 
   <section><h2>Where each test stands</h2>
@@ -424,6 +425,7 @@ fetch("research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
 }).catch(() => {});
 
 folds();
+opsPanel("ops");
 </script>
 </body>
 </html>
