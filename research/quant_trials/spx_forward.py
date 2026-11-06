@@ -159,6 +159,16 @@ def running(d, last, sbar=None):
     return out
 
 
+def current_week(d, recs, sbar=None):
+    """The provisional week on the page: the newest record's, or, before its entry close (Friday) is in the data,
+    the previous record's week, which runs until that close and is booked once it is in. Display only."""
+    for r in reversed(recs[-2:]):
+        run = running(d, r, sbar)
+        if run is not None:
+            return run
+    return None
+
+
 def attach_running(pg, run):
     """Put the running week on the page: `run` itself, and `run["lines"]`, the cumulative lines continued from the last
     booked value, (1 + booked) * (1 + running) - 1, on the dates after the last booked end. Display only."""
@@ -186,7 +196,7 @@ def mark(path=None):
         print("no record or page yet: nothing to mark")
         return None
     pg = json.load(open(pp))
-    attach_running(pg, running(L.build(), recs[-1], (pg.get("bench") or {}).get("sbar")))
+    attach_running(pg, current_week(L.build(), recs, (pg.get("bench") or {}).get("sbar")))
     pg["running_marked"] = pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds")
     json.dump(pg, open(pp, "w"), indent=1, allow_nan=False)
     r = pg["running"]
@@ -336,7 +346,7 @@ def ledger(path=None):
                                       "computed_with_data_to": stamp})
     json.dump(led, open(lpath, "w"), indent=1)
     pg = page(recs, led, stamp)
-    attach_running(pg, running(d, recs[-1], (pg.get("bench") or {}).get("sbar")) if recs else None)   # newest week, to date
+    attach_running(pg, current_week(d, recs, (pg.get("bench") or {}).get("sbar")) if recs else None)  # unbooked week, to date
     pg["running_marked"] = pg["generated"]
     json.dump(pg, open(os.path.join(path, "page.json"), "w"), indent=1, allow_nan=False)
     out = pd.DataFrame([{"book": b["key"], "weeks": b["weeks"], "cum_pct": _pc(b["cum"]), "pct_per_yr": _pc(b["ann"]),
