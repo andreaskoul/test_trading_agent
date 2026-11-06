@@ -4,33 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Position Ledger</title>
+<link rel="stylesheet" href="../site.css">
 <style>
-  :root { --bg:#f7f7f5; --card:#fff; --ink:#1d1d1f; --muted:#6b6b70; --line:#e4e4e0; --pos:#1a7f4b; --neg:#c0392b; --accent:#2c5aa0; }
-  @media (prefers-color-scheme: dark) { :root { --bg:#121214; --card:#1c1c1f; --ink:#ececec; --muted:#9a9aa0; --line:#2c2c30; --pos:#4cc38a; --neg:#ff6b5e; --accent:#7aa7ff; } }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
-  main { max-width:1300px; margin:0 auto; padding:24px 16px 48px; }
-  header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-bottom:16px; }
-  h1 { font-size:20px; margin:0; }
-  .muted { color:var(--muted); font-size:12px; }
-  a { color:var(--accent); }
-  .btn { display:inline-block; padding:7px 14px; border-radius:8px; background:var(--accent); color:#fff; text-decoration:none; font-weight:600; font-size:13px; }
+  main { max-width:1300px; }
   .tabs { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
   .tab { padding:6px 12px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--ink); cursor:pointer; font:inherit; }
   .tab[aria-selected="true"] { border-color:var(--accent); color:var(--accent); font-weight:600; }
-  .bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:10px; }
   input[type=search] { padding:6px 10px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--ink); font:inherit; min-width:220px; }
-  section { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; }
+  section { margin-bottom:0; }
   .scroll { overflow:auto; max-height:72vh; }
-  table { border-collapse:collapse; width:100%; font-size:13px; }
-  th, td { padding:6px 8px; border-bottom:1px solid var(--line); text-align:left; white-space:nowrap; }
-  th { color:var(--muted); font-weight:600; position:sticky; top:0; background:var(--card); cursor:pointer; user-select:none; }
+  th { position:sticky; top:0; cursor:pointer; user-select:none; }
   th[data-dir="asc"]::after { content:" ▲"; } th[data-dir="desc"]::after { content:" ▼"; }
-  td.n { text-align:right; font-variant-numeric:tabular-nums; }
-  td.thesis { white-space:normal; min-width:320px; max-width:560px; color:var(--muted); }
-  .pos { color:var(--pos); } .neg { color:var(--neg); }
-  .empty { color:var(--muted); padding:8px 0; }
-  .kpi { margin-bottom:12px; font-size:15px; } .kpi:empty { display:none; }
+  td.thesis { max-width:560px; }
+  .kpi { margin-bottom:12px; font-size:15px; background:none; border:0; padding:0; } .kpi:empty { display:none; }
 </style>
 </head>
 <body>
@@ -38,9 +24,9 @@
   <header>
     <div>
       <h1>Position ledger</h1>
-      <div class="muted"><a href="../">← Trade monitor</a> · actual Alpaca paper trades only · updated <span id="upd">…</span></div>
+      <div class="muted">Actual Alpaca paper trades only · updated <span id="upd">…</span> · <a href="../fund_positions.xlsx" download>Download Excel</a></div>
     </div>
-    <a class="btn" href="../fund_positions.xlsx" download>Download Excel</a>
+    <nav class="site"><a href="../">Models under assessment</a><a href="../account/">Paper account</a><a class="on" href="./">Position ledger</a><a href="../report.html">Performance report</a></nav>
   </header>
   <div class="kpi" id="inv"></div>
   <div class="tabs" role="tablist">
@@ -51,7 +37,7 @@
   </div>
   <div class="bar"><input type="search" id="q" placeholder="Filter (ticker, side, status…)"><span class="muted" id="count"></span></div>
   <section><div class="scroll" id="box"></div></section>
-  <p class="muted">Returns are price returns before costs, signed for shorts. P&amp;L = signed shares × (exit or current − entry), using actual fills at trade boundaries. One row per lot: a name held for a week, split where a daily review changed the shares. SPY rows are the market hedge. Invested = gross capital in positions at the day's close (long + short, shares × entry price); daily return = the day's change in account value ÷ the previous close's invested amount; return on invested = account P&amp;L since the first trade ÷ that day's invested amount.</p>
+  <p class="muted">Returns are price returns before costs, signed for shorts. P&amp;L = signed shares × (exit or current − entry), using actual fills at trade boundaries. One row per lot: a name held for a week, split where a daily review changed the shares. SPY rows are the market hedge and, from 16 Nov 2026, the S&amp;P 500 core. Invested = gross capital in positions at the day's close (long + short, shares × entry price); daily return = the day's change in account value ÷ the previous close's invested amount; return on invested = account P&amp;L since the first trade ÷ that day's invested amount.</p>
 </main>
 <script>
 const fmt = (v, d = 2) => v == null ? "" : Number(v).toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });

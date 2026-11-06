@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper account (Alpaca)</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="../site.css">
+<script src="../site.js"></script>
+</head>
+<body>
+<main>
+  <header>
+    <div><h1>Paper account (Alpaca)</h1>
+    <div class="muted">The broker's own record: actual paper trades only · updated <span id="upd">…</span></div></div>
+    <nav class="site"><a href="../">Models under assessment</a><a class="on" href="./">Paper account</a><a href="../ledger/">Position ledger</a><a href="../report.html">Performance report</a></nav>
+  </header>
+  <div class="kpis" id="kpis"></div>
+  <section id="p9" hidden><h2>The account against the S&amp;P 500</h2><div class="kpis" id="p9kpis"></div><div class="muted" id="p9note"></div></section>
+  <section><h2>Account value</h2><div id="acctEmpty" class="empty" hidden>No account history yet.</div><canvas id="acct"></canvas></section>
+  <section><details class="fold" id="f-open" open><summary><h2>Open positions</h2><span class="cnt"></span></summary><div class="muted" id="lcNote"></div><div class="scroll" id="open"></div></details></section>
+  <section><details class="fold" id="f-closed"><summary><h2 id="closedTitle">Realized trades (shares closed)</h2><span class="cnt"></span></summary><div class="scroll" id="closed"></div></details></section>
+  <section><details class="fold" id="f-orders"><summary><h2>Filled orders</h2><span class="cnt"></span></summary><div class="scroll" id="orders"></div></details></section>
+  <section><details class="fold" id="f-cash"><summary><h2>Cash activity (dividends, fees, interest)</h2><span class="cnt"></span></summary><div class="scroll" id="cash"></div></details></section>
+  <p class="muted">Standard broker accounting from Alpaca's own records: cost basis is FIFO over every fill (Alpaca's method). Realized P&amp;L comes only from shares actually sold or bought back; unrealized P&amp;L is open shares × (mark − average cost), at Alpaca's marks from the same moment as the account value. Account P&amp;L = realized + unrealized + dividends, fees &amp; interest. Returns are price returns, signed for shorts. SPY rows are the market hedge and, from 16 Nov 2026, the S&amp;P 500 core. Invested = |shares| × entry price; an order's amount = filled shares × fill price. The Excel ledger also keeps a week-by-week lot view, which is not realized P&amp;L.</p>
+</main>
+<script>
+const T = (el, cols, rows) => table(el, cols, rows, null, "None yet.");
+fetch("../dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => {
+  document.getElementById("upd").textContent = d.updated.replace("T", " ").replace("+00:00", " UTC") + (d.pnl ? ` · prices: Alpaca marks ${d.pnl.at}` : d.marks ? ` · prices: ${d.marks}` : "");
+  const P = d.positions, A = d.account;
+  const open = P.filter(p => p.status === "Open"), closed = P.filter(p => p.status !== "Open");
+  // standard P&L (FIFO over Alpaca fills); the lot sums are only a fallback when Alpaca was unreachable at build time
+  const S = d.pnl;
+  const realized = S ? S.realized : closed.reduce((s, p) => s + (p.pnl || 0), 0), unreal = S ? S.unrealized : open.reduce((s, p) => s + (p.pnl || 0), 0);
+  const cash = S ? S.cash : d.cash.reduce((s, c) => s + (c.amount || 0), 0);
+  const eq = S ? S.equity : d.live ? d.live.equity : A.length ? A[A.length - 1].equity : (d.balance ? d.balance.equity : null);
+  // return on invested: account P&L since the first trade over the gross capital in positions (long + short at entry)
+  const inv = A.length ? A[A.length - 1].invested : null, roi = inv ? (S ? S.account_pnl : eq - A[0].equity) / inv : null;
+  const k = [[`Account value${S ? ` <span class="muted">(${S.at})</span>` : d.live ? ` <span class="muted">(live ${d.live.at.slice(11)})</span>` : d.balance ? ` <span class="muted">(${d.balance.date})</span>` : ""}`, eq == null ? "—" : "$" + fmt(eq, 0)],
+             ...(S ? [["Account P&L", usd(S.account_pnl)]] : []),
+             ["Total invested", inv == null ? "—" : "$" + fmt(inv, 0)], ["Return on invested", roi == null ? "—" : pct(roi)],
+             ["Open positions", (S ? d.open_std : open).filter(p => p.role !== "beta hedge").length], ["Unrealized P&L", usd(unreal)],
+             ["Realized P&L", usd(realized)], ["Dividends & fees", usd(cash)]];
+  document.getElementById("kpis").innerHTML = k.map(([a, b]) => `<div class="kpi"><div class="muted">${a}</div><div class="v">${b}</div></div>`).join("");
+  // the S&P core (Protocol 9), the account against SPY and the risk-matched SPY (% a year), margin use
+  const Q = d.p9;
+  if (Q && !Q.error) {
+    const py = x => x && x.per_year != null ? `${pct(x.per_year)} <span class="muted">/yr (${(x.total * 100).toFixed(2)}%)</span>` : "—";
+    const q = [];
+    if (Q.core) q.push([`Core ${Q.core.traded ? "" : "(shadow) "}<span class="muted">${Q.core.day}</span>`,
+      `${Q.core.weight}× SPY <span class="muted">${(Q.core.distance * 100).toFixed(1)}% ${Q.core.distance >= 0 ? "above" : "below"} 200-day</span>`]);
+    const o = Q.since_oct;
+    if (o) q.push([`Account since ${o.from}`, py(o.account)], [`SPY since ${o.from}`, py(o.spy)]);
+    const n = Q.since_p9;
+    if (n) q.push([`Account since ${Q.start}`, py(n.account)], [`SPY since ${Q.start}`, py(n.spy)],
+                  [`Risk-matched SPY (${n.risk_matched.weight}×)`, py(n.risk_matched)],
+                  ["Core / overlay (approx.)", `${pct(n.core_part)} / ${pct(n.overlay_part)}`]);
+    if (Q.margin && Q.margin.gross != null) q.push([`Margin use <span class="muted">${Q.margin.day}</span>`,
+      `${Q.margin.gross.toFixed(2)}× <span class="muted">of ${Q.margin.limit}× overnight</span>`]);
+    document.getElementById("p9kpis").innerHTML = q.map(([a, b]) => `<div class="kpi"><div class="muted">${a}</div><div class="v">${b}</div></div>`).join("");
+    document.getElementById("p9note").textContent = `From ${Q.start} the account holds SPY at 1.3× when SPY closed above its 200-session average the session before, else 0.7×, with the stock book on top at ${(Q.lambda * 3).toFixed(0)}/3 of the model's size (gross ≤ ${Q.gross_cap}×). Risk-matched SPY = SPY at the span's mean core weight, borrowing at 6.5% a year.`;
+    document.getElementById("p9").hidden = false;
+  }
+  // Alpaca's daily history lags a session; the chart ends at the same snapshot as the KPIs
+  const C = S ? [...A, { date: S.at, equity: S.equity }] : A;
+  if (A.length) {
+    new Chart(document.getElementById("acct"), { type: "line", data: { labels: C.map(a => a.date),
+      datasets: [{ data: C.map(a => a.equity), borderColor: getComputedStyle(document.documentElement).getPropertyValue("--accent"), pointRadius: 0, tension: 0.15 }] },
+      options: { plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => "$" + fmt(v, 0) } } } } });
+  } else { document.getElementById("acctEmpty").hidden = false; document.getElementById("acct").hidden = true; }
+  const posCols = [["Week", p => p.week], ["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Name", p => esc(p.name)], ["Side", p => p.side],
+    ["Entry", p => p.entry_day], ["Shares", p => fmt(p.shares, 0), "n"], ["Entry $", p => fmt(p.entry_price), "n"],
+    ["Invested $", p => p.shares == null || p.entry_price == null ? "" : "$" + fmt(Math.abs(p.shares * p.entry_price), 0), "n"]];
+  // lifecycle clock (display only): horizon, sessions held and left, expected exit session, 7B structural checkpoint
+  const LC = (d.lifecycle && d.lifecycle.lots) || {};
+  const lc = p => LC[p.ticker];
+  const lcCols = [
+    ["Horizon", p => { const x = lc(p); if (!x) return "";
+      const ext = x.ext ? ` (extended ${x.ext}, from ${x.H0})` : "";
+      return `${x.days} / ${x.H} sessions${ext}`; }, "n"],
+    ["Left", p => { const x = lc(p); return !x ? "" : (x.at_horizon ? "review today" : String(x.left)); }, "n"],
+    ["Expected exit", p => { const x = lc(p); if (!x) return "";
+      return x.at_horizon ? "at horizon: review" : (x.exit_day ? x.exit_day + " (review)" : ""); }],
+    ["Thesis type", p => { const x = lc(p); if (!x) return "";
+      if (!x.classified) return "— (entered before 28 Oct)";
+      return x.structural ? `long-term${x.checkpoint_day ? ", check " + x.checkpoint_day : ""}` : "one-off event"; }]];
+  if (d.lifecycle) document.getElementById("lcNote").textContent =
+    `Holding clock as of the ${d.lifecycle.as_of} close. A position exits at the end of its planned holding period unless ` +
+    `the end-of-period review extends it; long-term theses are checked every 20 trading days and exit if they are clearly not working.`;
+  if (S) {
+    T("open", [["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Name", p => esc(p.name)], ["Side", p => p.side], ["Since", p => p.since],
+      ...lcCols,
+      ["Shares", p => fmt(p.shares, 0), "n"], ["Avg cost $", p => fmt(p.avg_cost), "n"], ["Mark $", p => fmt(p.current_price), "n"],
+      ["Market value $", p => usd(p.market_value), "n"], ["Return", p => pct(p.return), "n"], ["Unrealized P&L", p => usd(p.unrealized), "n"],
+      ["Red team", p => clamp(esc(p.redteam)), "thesis"], ["Thesis", p => clamp(esc(p.thesis)), "thesis"]], d.open_std);
+    T("closed", [["Day", t => t.day], ["Ticker", t => `<b>${esc(t.ticker)}</b>`], ["Name", t => esc(t.name)], ["Closed", t => t.side],
+      ["Shares", t => fmt(Math.abs(t.shares), 0), "n"], ["Cost $ (FIFO)", t => fmt(t.entry_price), "n"], ["Close $", t => fmt(t.exit_price), "n"],
+      ["Return", t => pct(t.return), "n"], ["Realized P&L", t => usd(t.pnl), "n"]], d.realized.slice().reverse());
+  } else {
+  document.getElementById("closedTitle").textContent = "Closed positions (lot view: Alpaca was unreachable at build time)";
+  T("open", [...posCols, ...lcCols, ["Current $", p => fmt(p.current_price), "n"], ["Return", p => pct(p.return), "n"], ["P&L", p => usd(p.pnl), "n"],
+    ["Red team", p => clamp(esc(p.redteam)), "thesis"], ["Thesis", p => clamp(esc(p.thesis)), "thesis"]], open);
+  T("closed", [...posCols, ["Exit", p => p.exit_day], ["Exit $", p => fmt(p.exit_price), "n"], ["Return", p => pct(p.return), "n"],
+    ["P&L", p => usd(p.pnl), "n"], ["Status", p => esc(p.status)]], closed.slice().reverse());
+  }
+  T("orders", [["Day", o => o.exec_day], ["Ticker", o => `<b>${esc(o.ticker)}</b>`], ["Leg", o => esc(o.leg)], ["Side", o => o.side],
+    ["Filled", o => fmt(o.qty, 0) + (o.ordered_qty && o.ordered_qty > o.qty ? ` of ${fmt(o.ordered_qty, 0)}` : ""), "n"], ["Type", o => esc(o.order_type)], ["Status", o => esc(o.status)], ["Fill $", o => fmt(o.fill_price), "n"],
+    ["Amount $", o => o.qty == null || o.fill_price == null ? "" : "$" + fmt(Math.abs(o.qty * o.fill_price), 0), "n"], ["Close $", o => fmt(o.official_close), "n"], ["Slippage (bp)", o => fmt(o.slippage_bp, 1), "n"]], d.orders.slice().reverse());
+  T("cash", [["Date", c => c.date], ["Type", c => esc(c.type)], ["Ticker", c => esc(c.ticker)], ["Amount", c => usd(c.amount), "n"]], d.cash.slice().reverse());
+}).catch(e => { document.getElementById("kpis").innerHTML = `<div class="empty">Could not load dashboard data (${esc(e.message)}).</div>`; });
+
+folds();
+</script>
+</body>
+</html>
