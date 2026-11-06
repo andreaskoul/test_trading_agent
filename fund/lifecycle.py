@@ -54,7 +54,7 @@ from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 
-from common import MODE, P7_START, STATE, asof_from_env, llm, load, news_cutoff, require, save, save_prompts
+from common import MODE, P7_START, STATE, asof_from_env, fred_series, llm, load, news_cutoff, require, save, save_prompts
 import amend7b2 as A2
 import core
 from edgar_time import et_from_api
@@ -619,10 +619,7 @@ def entry_vol(asof, t, day, beta, upto=None):
 
 def rf_daily():
     try:
-        with urllib.request.urlopen("https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTB3", timeout=60) as r:
-            s = pd.read_csv(io.BytesIO(r.read()), na_values=".")
-        s.columns = ["date", "v"]
-        s = s.assign(date=pd.to_datetime(s.date)).set_index("date")["v"].dropna() / 100
+        s = fred_series("DTB3", tries=1)             # content-checked; one attempt: this is the live decision path, and the frozen rf.csv covers a failure
         p = os.path.join(LC, "rf.csv")
         old = pd.read_csv(p, parse_dates=["date"]).set_index("date")["v"] if os.path.exists(p) else pd.Series(dtype=float)
         s = pd.concat([old, s[~s.index.isin(old.index)]]).sort_index()        # frozen once seen

@@ -16,6 +16,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 import urllib.request
 
 import numpy as np
@@ -57,8 +58,19 @@ def chronos_dir(tag):
 
 def dtb3_at(day):
     """DTB3 on the last date before `day`, from FRED at first use (frozen in the record thereafter)."""
-    with urllib.request.urlopen("https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTB3", timeout=60) as r:
-        s = pd.read_csv(io.BytesIO(r.read()), na_values=".")
+    for k in range(3):                              # a bad FRED response is retried (as fund/common.py: fred_series)
+        try:
+            with urllib.request.urlopen("https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTB3", timeout=60) as r:
+                raw = r.read()
+            if not raw.decode("utf-8", "replace").split("\n", 1)[0].strip().upper().endswith("DTB3"):
+                raise ValueError(f"not a DTB3 CSV: {raw[:80]!r}")
+            s = pd.read_csv(io.BytesIO(raw), na_values=".")
+            break
+        except Exception as e:                      # noqa: BLE001
+            if k == 2:
+                raise RuntimeError(f"FRED DTB3 unavailable after 3 attempts: {e}")
+            print(f"FRED DTB3: attempt {k + 1} failed ({e}); retrying")
+            time.sleep(10 * (k + 1))
     s.columns = ["date", "v"]
     s = s.dropna().assign(date=lambda x: pd.to_datetime(x.date)).set_index("date")["v"] / 100
     s = s[s.index < day]

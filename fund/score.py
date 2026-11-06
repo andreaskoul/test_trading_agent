@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 import yfinance as yf
 
-from common import MODE, P7_START, STATE
+from common import MODE, P7_START, STATE, fred_series
 from lifecycle_rules import P7B
 import ops_stats
 
@@ -34,10 +34,7 @@ FX_COST = {**{c: 1e-4 for c in "EUR JPY GBP CHF AUD NZD CAD SEK NOK".split()},
 
 
 def fred(fid):
-    with urllib.request.urlopen(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={fid}", timeout=60) as r:
-        s = pd.read_csv(io.BytesIO(r.read()), na_values=".")
-    s.columns = ["date", "v"]
-    return s.assign(date=pd.to_datetime(s.date)).set_index("date")["v"].dropna() / 100
+    return fred_series(fid)                         # retried and content-checked (common.py)
 
 
 def at(frame, day):
