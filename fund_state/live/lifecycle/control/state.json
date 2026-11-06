@@ -339,68 +339,48 @@
 "hedge": -0.2878641363133366,
 "net_beta": -0.028586395149010953,
 "traded": true
+},
+{
+"date": "2026-11-05",
+"nav": 95424.33934410528,
+"pnl_lots": -1747.756102031562,
+"pnl_hedge": 1218.0813746698664,
+"cash_income": 12.287119275291976,
+"cost": 27.35453714258184,
+"r_gross": -0.0055192226406851905,
+"r_cost": 0.00028503489580258145,
+"r_cash": 0.0001280320607909281,
+"n_long": 10,
+"n_short": 10,
+"stock_gross": 0.9186910803119954,
+"hedge": -0.19974858602526774,
+"net_beta": -6.346647137723621e-05,
+"traded": true
 }
 ],
 "lots": [
 {
-"id": "2026-10-21|CSX",
-"ticker": "CSX",
-"side": 1,
-"w0": 0.06087,
-"beta": 0.6402889768,
-"sigma_e": 0.012403712798847924,
-"H": 14,
-"W": 0.04641044361723182,
-"kill_conditions": [
-"CSX issues weak Q4 or FY guidance",
-"CSX reports operating margin contraction or volume decline",
-"Peer railroads UNP/NSC report disappointing earnings and negative sector outlook"
-],
-"first_reported": "2026-10-21",
-"score": 2,
-"cohort": "2026-10-21",
-"entry_day": "2026-10-22",
-"entry_close_ts": 1792698000,
-"n": 4566.821037062779,
-"R": 0.005629634410534176,
-"days": 9,
-"e": [
--0.01368707,
-0.00568863,
-0.0151209,
--0.00775268,
-0.00744764,
-0.00656609,
--0.00404968,
--0.01935061,
-0.0156464
-],
-"news_until": 1793824800,
-"increased": true,
-"reduced": true
-},
-{
 "id": "2026-10-21|SMCI",
 "ticker": "SMCI",
 "side": 1,
-"w0": 0.05994,
+"w0": 0.07558403874569275,
 "beta": 2.0551470887,
 "sigma_e": 0.04617076198201026,
-"H": 13,
+"H": 28,
 "W": 0.16647104975338137,
 "kill_conditions": [
-"Company cuts or withdraws its raised FY27 revenue outlook",
-"Backlog falls below $60B or major orders are cancelled",
-"Gross margin guidance is reduced or new CFO departs"
+"Company cuts FY 2027 revenue or EPS guidance",
+"Major customer cuts or delays AI server orders, worsening 44% concentration",
+"Gross margin declines further and management lowers margin outlook"
 ],
-"first_reported": "2026-10-20",
+"first_reported": "2026-11-03",
 "score": 2,
 "cohort": "2026-10-21",
 "entry_day": "2026-10-22",
 "entry_close_ts": 1792698000,
-"n": 7886.000223353116,
-"R": -0.12872841301061594,
-"days": 9,
+"n": 7214.6245286622425,
+"R": -0.12324850260781246,
+"days": 10,
 "e": [
 -0.01239808,
 -0.02219249,
@@ -410,45 +390,11 @@
 -0.00655002,
 -0.06633159,
 0.02506071,
--0.09097049
+-0.09097049,
+0.00547991
 ],
-"news_until": 1793824800,
+"news_until": 1793911200,
 "increased": true
-},
-{
-"id": "2026-10-21|HAS",
-"ticker": "HAS",
-"side": 1,
-"w0": 0.02536,
-"beta": 0.8311884956,
-"sigma_e": 0.025196195918633518,
-"H": 13,
-"W": 0.09084617633126964,
-"kill_conditions": [
-"Hasbro cuts or withdraws its raised FY2026 sales guidance",
-"Magic: The Gathering quarterly revenue falls below $600M or declines year-over-year",
-"Hasbro reduces, suspends, or abandons its doubled buyback target"
-],
-"first_reported": "2026-10-20",
-"score": 1,
-"cohort": "2026-10-21",
-"entry_day": "2026-10-22",
-"entry_close_ts": 1792698000,
-"n": 2558.0549474612853,
-"R": 0.03356563396623991,
-"days": 9,
-"e": [
-0.00613247,
--0.00147825,
--0.00152226,
-9.598e-05,
-0.01067406,
-0.01072177,
--0.00214831,
--0.00578164,
-0.01687182
-],
-"news_until": 1793824800
 },
 {
 "id": "2026-10-21|ROL",
@@ -469,9 +415,9 @@
 "cohort": "2026-10-21",
 "entry_day": "2026-10-22",
 "entry_close_ts": 1792698000,
-"n": -10864.614176466457,
-"R": -0.08444636666110612,
-"days": 9,
+"n": -10972.184613857211,
+"R": -0.1125677626077637,
+"days": 10,
 "e": [
 0.01171883,
 0.01069045,
@@ -481,47 +427,11 @@
 -0.00646151,
 -0.0415063,
 -0.03539988,
--0.0207513
+-0.0207513,
+-0.0281214
 ],
-"news_until": 1793824800,
+"news_until": 1793911200,
 "increased": true
-},
-{
-"id": "2026-10-21|NFLX",
-"ticker": "NFLX",
-"side": -1,
-"w0": -0.029,
-"beta": 0.5883033849,
-"sigma_e": 0.022376301218358693,
-"H": 14,
-"W": 0.08372445274235055,
-"kill_conditions": [
-"Netflix raises its full-year revenue or ad-revenue guidance",
-"Netflix reports accelerating subscriber growth or strong Q4 guidance",
-"Netflix announces a major content hit or partnership that boosts growth outlook"
-],
-"first_reported": "2026-10-21",
-"score": -1,
-"cohort": "2026-10-21",
-"entry_day": "2026-10-22",
-"entry_close_ts": 1792698000,
-"n": -2210.184831240751,
-"R": 0.010201636776303147,
-"days": 9,
-"e": [
-0.01482451,
-0.03379297,
-0.02489376,
-0.01050286,
--0.00321505,
--0.01091352,
--0.0070062,
--0.01556437,
--0.03711333
-],
-"news_until": 1793824800,
-"increased": true,
-"reduced": true
 },
 {
 "id": "2026-10-28|EQIX",
@@ -544,16 +454,17 @@
 "entry_close_ts": 1793304000,
 "driving_event": "Q3 2026 FFO beat, EPS beat, record bookings, raised 2026 guidance",
 "news_session": "2026-10-28",
-"n": 10184.804822419641,
-"R": 0.020458653322883328,
-"days": 4,
+"n": 9636.5728634559,
+"R": 0.0016050853715026715,
+"days": 5,
 "e": [
 -0.00809431,
 -0.0159399,
 0.01846847,
-0.02602439
+0.02602439,
+-0.01885357
 ],
-"news_until": 1793824800,
+"news_until": 1793911200,
 "increased": true
 },
 {
@@ -577,16 +488,17 @@
 "entry_close_ts": 1793304000,
 "driving_event": "Microsoft Q1 FY27 earnings beat with Azure growth accelerating",
 "news_session": "2026-10-28",
-"n": 9551.690944494389,
-"R": 0.05317279625138441,
-"days": 4,
+"n": 9210.215415406401,
+"R": 0.05945743681170429,
+"days": 5,
 "e": [
 0.00137778,
 -0.02377154,
 0.02449846,
-0.0510681
+0.0510681,
+0.00628464
 ],
-"news_until": 1793824800,
+"news_until": 1793911200,
 "increased": true
 },
 {
@@ -610,49 +522,17 @@
 "entry_close_ts": 1793304000,
 "driving_event": "Q3 2026 earnings beat, revenue +10.6%, FY profit guidance floor raised",
 "news_session": "2026-10-28",
-"n": 6017.792349012773,
-"R": 0.02145615074765561,
-"days": 4,
+"n": 5768.765572957187,
+"R": 0.006981784003008633,
+"days": 5,
 "e": [
 0.02672155,
 -0.01525358,
 -0.00214694,
-0.01213511
+0.01213511,
+-0.01447437
 ],
-"news_until": 1793824800
-},
-{
-"id": "2026-10-28|NVDA",
-"ticker": "NVDA",
-"side": 1,
-"w0": 0.025,
-"beta": 1.5772061851,
-"sigma_e": 0.01656536945904255,
-"H": 21,
-"W": 0.07591205946097215,
-"kill_conditions": [
-"Nvidia cuts or withdraws its growth guidance",
-"Nvidia cancels or writes down the $3B Meta investment",
-"A major customer shifts orders materially to rival AI chips"
-],
-"first_reported": "2026-10-28",
-"score": 1,
-"cohort": "2026-10-28",
-"entry_day": "2026-10-29",
-"entry_close_ts": 1793304000,
-"driving_event": "Nvidia's $3B Meta investment and Vera Rubin $40B/gigawatt revenue guide",
-"news_session": "2026-10-28",
-"n": 1152.140161349158,
-"R": -0.05890108672176442,
-"days": 4,
-"e": [
--0.01425428,
--0.00505248,
-0.01819558,
--0.05778991
-],
-"news_until": 1793824800,
-"reduced": true
+"news_until": 1793911200
 },
 {
 "id": "2026-10-28|GOOGL",
@@ -675,16 +555,17 @@
 "entry_close_ts": 1793304000,
 "driving_event": "Alphabet Q3 revenue miss with slowing Search growth overshadowing strong cloud; shares fell ~7% after hours.",
 "news_session": "2026-10-28",
-"n": -6210.682476592375,
-"R": -0.0219713773826967,
-"days": 4,
+"n": -6073.971368188515,
+"R": -0.0515473311249737,
+"days": 5,
 "e": [
 -0.00672032,
 -0.0025671,
 -0.00022748,
--0.01245648
+-0.01245648,
+-0.02957595
 ],
-"news_until": 1793824800
+"news_until": 1793911200
 },
 {
 "id": "2026-10-28|VLO",
@@ -706,49 +587,17 @@
 "entry_close_ts": 1793304000,
 "driving_event": "US Energy Secretary opens door to more Russian diesel imports, shrinking refining margins and pressuring refiners.",
 "news_session": "2026-10-28",
-"n": -2570.7065907882557,
-"R": 0.0466652709069263,
-"days": 4,
+"n": -2471.421897089175,
+"R": 0.07123027775244418,
+"days": 5,
 "e": [
 -0.04489068,
 0.0440116,
 -0.01527339,
-0.06281774
+0.06281774,
+0.02456501
 ],
-"news_until": 1793824800
-},
-{
-"id": "2026-10-28|CRL",
-"ticker": "CRL",
-"side": -1,
-"w0": -0.025,
-"beta": 1.097608772,
-"sigma_e": 0.026985477198847436,
-"H": 5,
-"W": 0.06034136142189348,
-"kill_conditions": [
-"CRL reports revenue growth or positive Earnings ESP",
-"Major unexpected positive business development announced"
-],
-"first_reported": "2026-10-09",
-"score": -1,
-"cohort": "2026-10-28",
-"entry_day": "2026-10-29",
-"entry_close_ts": 1793304000,
-"driving_event": "Risk of Q3 earnings miss (4.8% revenue decline, negative ESP) despite recent stock rally",
-"news_session": "2026-10-09",
-"n": -3598.978718086679,
-"R": 0.13246242096844443,
-"days": 4,
-"e": [
-0.02491697,
-0.0528097,
--0.03609133,
-0.09082709
-],
-"news_until": 1793824800,
-"reduced": true,
-"increased": true
+"news_until": 1793911200
 },
 {
 "id": "2026-10-28|HCA",
@@ -771,16 +620,317 @@
 "entry_close_ts": 1793304000,
 "driving_event": "HCA Q3 2026 earnings beat with $400M uninsured hit and flat 2027 outlook",
 "news_session": "2026-10-27",
-"n": -2627.8664222458888,
-"R": -0.07257883557718847,
-"days": 4,
+"n": -2611.297536638621,
+"R": -0.08678972591182857,
+"days": 5,
 "e": [
 0.00197907,
 0.00930985,
 0.011804,
--0.09567175
+-0.09567175,
+-0.01421089
 ],
-"news_until": 1793824800
+"news_until": 1793911200
+},
+{
+"id": "2026-11-04|EL",
+"ticker": "EL",
+"side": 1,
+"w0": 0.03241039380101037,
+"beta": 1.1208375789,
+"sigma_e": 0.02558839679474809,
+"H": 10,
+"W": 0.08091761554355605,
+"kill_conditions": [
+"Estee Lauder cuts FY2027 guidance",
+"Estee Lauder reports negative organic sales growth",
+"Estee Lauder abandons or lowers FY2030 margin targets"
+],
+"first_reported": "2026-11-02",
+"score": 1,
+"cohort": "2026-11-04",
+"entry_day": "2026-11-05",
+"entry_close_ts": 1793912400,
+"driving_event": "Q1 earnings beat with FY27 guidance raise and FY30 ambition at Capital Markets event",
+"news_session": "2026-11-02",
+"n": 3094.5137450831467,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-04|AMD",
+"ticker": "AMD",
+"side": 1,
+"w0": 0.03091452947173297,
+"beta": 1.9574529482,
+"sigma_e": 0.03461766546030086,
+"H": 19,
+"W": 0.15089490540274988,
+"kill_conditions": [
+"AMD cuts or withdraws its Q4 revenue guidance",
+"A major AI customer cancels or delays chip orders from AMD",
+"AMD data center revenue misses expectations or declines sequentially"
+],
+"first_reported": "2026-11-04",
+"score": 1,
+"cohort": "2026-11-04",
+"entry_day": "2026-11-05",
+"entry_close_ts": 1793912400,
+"driving_event": "AMD Q3 2026 earnings beat with data center sales nearly doubling and Q4 revenue guidance above consensus",
+"news_session": "2026-11-04",
+"n": 2951.6900337716174,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-04|XOM",
+"ticker": "XOM",
+"side": 1,
+"w0": 0.029917286585548035,
+"beta": -0.0198556456,
+"sigma_e": 0.018475729025817077,
+"H": 24,
+"W": 0.09051221747836073,
+"kill_conditions": [
+"Exxon cuts dividend or halts share buybacks",
+"Exxon issues weak Q4 guidance or warns refining margins are falling",
+"US enacts windfall tax on oil company profits"
+],
+"first_reported": "2026-11-02",
+"score": 1,
+"cohort": "2026-11-04",
+"entry_day": "2026-11-05",
+"entry_close_ts": 1793912400,
+"driving_event": "Q3 earnings beat on record refining margins and dividend hike",
+"news_session": "2026-11-02",
+"n": 2856.4742262305977,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-04|FOXA",
+"ticker": "FOXA",
+"side": 1,
+"w0": 0.0289200436993631,
+"beta": 0.5303774627,
+"sigma_e": 0.0236407797659323,
+"H": 3,
+"W": 0.040947031685141015,
+"kill_conditions": [
+"DOJ sues to block the Roku deal or Fox terminates the $22B acquisition",
+"Fox cuts full-year guidance or reports a decline in advertising revenue",
+"Fox says it will not resume share repurchases this quarter"
+],
+"first_reported": "2026-11-02",
+"score": 1,
+"cohort": "2026-11-04",
+"entry_day": "2026-11-05",
+"entry_close_ts": 1793912400,
+"driving_event": "Fox FQ1 FY2027 record beat on World Cup and political ad surge plus Tubi",
+"news_session": "2026-11-02",
+"n": 2761.258418689577,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-04|TT",
+"ticker": "TT",
+"side": 1,
+"w0": 0.027424179370085698,
+"beta": 1.1321587367,
+"sigma_e": 0.0172675137149651,
+"H": 15,
+"W": 0.066876793048468,
+"kill_conditions": [
+"Trane cuts FY2026 revenue guidance or issues FY2027 outlook below consensus",
+"Q4 organic bookings decline or backlog falls below prior-year level",
+"Company reports margin compression that offsets revenue growth, prompting analyst downgrades"
+],
+"first_reported": "2026-10-29",
+"score": 1,
+"cohort": "2026-11-04",
+"entry_day": "2026-11-05",
+"entry_close_ts": 1793912400,
+"driving_event": "Trane Q3 2026 earnings beat on EPS and revenue, raised FY revenue guidance, record backlog",
+"news_session": "2026-10-29",
+"n": 2618.4347073780477,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-04|AME",
+"ticker": "AME",
+"side": 1,
+"w0": 0.022437964939161024,
+"beta": 1.014377858,
+"sigma_e": 0.01715231169460445,
+"H": 18,
+"W": 0.07277109547368077,
+"kill_conditions": [
+"AMETEK cuts or withdraws its raised FY26 guidance",
+"Q4 orders or backlog decline, ending the record backlog narrative",
+"Additional analyst downgrades cite growth quality or valuation, extending the selloff"
+],
+"first_reported": "2026-11-03",
+"score": 1,
+"cohort": "2026-11-04",
+"entry_day": "2026-11-05",
+"entry_close_ts": 1793912400,
+"driving_event": "AMETEK Q3 2026 beat with record backlog, raised FY26 guidance, shares fell 8.7%",
+"news_session": "2026-11-03",
+"n": 2142.3556696729474,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-04|ZBRA",
+"ticker": "ZBRA",
+"side": -1,
+"w0": -0.031,
+"beta": 1.3441957529,
+"sigma_e": 0.026577042479885266,
+"H": 3,
+"W": 0.04603278789007763,
+"kill_conditions": [
+"Zebra raises FY2027 margin or EPS guidance, easing memory-cost concerns",
+"Zebra reports gross margin expansion despite rising memory prices",
+"Zebra announces price increases or cost offsets that fully neutralize memory inflation"
+],
+"first_reported": "2026-11-03",
+"score": -1,
+"cohort": "2026-11-04",
+"entry_day": "2026-11-05",
+"entry_close_ts": 1793912400,
+"driving_event": "Zebra Q3 2026 earnings beat overshadowed by 2027 memory-cost margin warning and soft Q4 EPS guide",
+"news_session": "2026-11-03",
+"n": -2959.850678969134,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-04|ORCL",
+"ticker": "ORCL",
+"side": -1,
+"w0": -0.031,
+"beta": 1.60431049,
+"sigma_e": 0.037097818230356024,
+"H": 3,
+"W": 0.06425530602493157,
+"kill_conditions": [
+"Oracle reinstates or replaces the $7B Tencent chip deal",
+"US regulatory pressure eases and the Tencent deal is approved",
+"Oracle secures alternative financing without dilution or high-cost debt"
+],
+"first_reported": "2026-11-04",
+"score": -1,
+"cohort": "2026-11-04",
+"entry_day": "2026-11-05",
+"entry_close_ts": 1793912400,
+"driving_event": "Oracle cancels $7B Tencent AI chip deal under US pressure, removing revenue amid $20B financing overhang",
+"news_session": "2026-11-04",
+"n": -2959.850678969134,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-04|FIS",
+"ticker": "FIS",
+"side": -1,
+"w0": -0.031,
+"beta": 0.5104780509,
+"sigma_e": 0.05048146623249938,
+"H": 3,
+"W": 0.08743646435526155,
+"kill_conditions": [
+"FIS raises FY2026 EPS and sales guidance or issues FY2027 outlook above current expectations",
+"CFO Kehoe remains in role or FIS appoints a permanent CFO without disruption",
+"FIS reports 2027 revenue softness smaller than feared, with nonrecurring decline offset by banking growth"
+],
+"first_reported": "2026-11-04",
+"score": -1,
+"cohort": "2026-11-04",
+"entry_day": "2026-11-05",
+"entry_close_ts": 1793912400,
+"driving_event": "FIS cut FY26 EPS and sales guidance after Q3 beat, with CFO exit compounding the selloff.",
+"news_session": "2026-11-04",
+"n": -2959.850678969134,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-04|IDXX",
+"ticker": "IDXX",
+"side": -1,
+"w0": -0.03,
+"beta": 0.8925288459,
+"sigma_e": 0.042489635269216,
+"H": 13,
+"W": 0.15319855863892146,
+"kill_conditions": [
+"IDEXX raises FY2026 EPS and sales guidance again on sustained demand",
+"Q4 results show accelerating clinic traffic and margin expansion",
+"Management guides FY2027 above consensus, signaling durable growth beyond Q3"
+],
+"first_reported": "2026-11-02",
+"score": -1,
+"cohort": "2026-11-04",
+"entry_day": "2026-11-05",
+"entry_close_ts": 1793912400,
+"driving_event": "Q3 EPS/sales beat and FY26 guidance raise drove a 20% one-day stock surge",
+"news_session": "2026-11-02",
+"n": -2864.3716248088394,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-04|LLY",
+"ticker": "LLY",
+"side": -1,
+"w0": -0.03,
+"beta": 0.5619746737,
+"sigma_e": 0.021852654491741896,
+"H": 23,
+"W": 0.10480164927955707,
+"kill_conditions": [
+"Novo Nordisk cuts 2026 outlook or Wegovy pill sales miss estimates",
+"Eli Lilly's oral obesity pill beats Novo's Wegovy pill in head-to-head trial",
+"Eli Lilly raises 2026 guidance above $92 billion"
+],
+"first_reported": "2026-11-04",
+"score": -1,
+"cohort": "2026-11-04",
+"entry_day": "2026-11-05",
+"entry_close_ts": 1793912400,
+"driving_event": "Novo's Q3 Wegovy pill blowout and raised 2026 outlook",
+"news_session": "2026-11-04",
+"n": -2864.3716248088394,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-04|META",
+"ticker": "META",
+"side": -1,
+"w0": -0.028,
+"beta": 1.2945773058,
+"sigma_e": 0.02535164631638979,
+"H": 7,
+"W": 0.0670741514792341,
+"kill_conditions": [
+"S&P revises Meta's credit outlook back to stable or upgrades its rating",
+"Meta cuts, suspends or scales back its AI capital-expenditure plans",
+"Meta reports positive free cash flow, easing dilution and credit concerns"
+],
+"first_reported": "2026-11-04",
+"score": -1,
+"cohort": "2026-11-04",
+"entry_day": "2026-11-05",
+"entry_close_ts": 1793912400,
+"driving_event": "Meta's $15bn bond sale and S&P's negative credit outlook amid AI-capex debt concerns",
+"news_session": "2026-11-04",
+"n": -2673.41351648825,
+"R": 0.0,
+"days": 0
 }
 ],
 "events": [
@@ -2361,6 +2511,201 @@
 "R": 0.132462,
 "W": 0.060341,
 "days_held": 4
+},
+{
+"day": "2026-11-05",
+"id": "2026-10-21|CSX",
+"ticker": "CSX",
+"action": "capacity",
+"from": 4459.78,
+"to": 0.0,
+"R": 0.010422,
+"W": 0.04641,
+"days_held": 10
+},
+{
+"day": "2026-11-05",
+"id": "2026-10-21|HAS",
+"ticker": "HAS",
+"action": "capacity",
+"from": 2515.13,
+"to": 0.0,
+"R": 0.053435,
+"W": 0.090846,
+"days_held": 10
+},
+{
+"day": "2026-11-05",
+"id": "2026-10-21|NFLX",
+"ticker": "NFLX",
+"action": "capacity",
+"from": -2182.55,
+"to": 0.0,
+"R": -0.003236,
+"W": 0.083724,
+"days_held": 10
+},
+{
+"day": "2026-11-05",
+"id": "2026-10-28|NVDA",
+"ticker": "NVDA",
+"action": "capacity",
+"from": 1045.46,
+"to": 0.0,
+"R": -0.081949,
+"W": 0.075912,
+"days_held": 5
+},
+{
+"day": "2026-11-05",
+"id": "2026-10-28|CRL",
+"ticker": "CRL",
+"action": "news_exit",
+"from": -3452.61,
+"to": 0.0,
+"R": 0.124736,
+"W": 0.060341,
+"days_held": 5
+},
+{
+"day": "2026-11-05",
+"id": "2026-11-04|EL",
+"ticker": "EL",
+"action": "entry",
+"from": 0.0,
+"to": 3094.51,
+"R": 0.0,
+"W": 0.080918,
+"days_held": 0
+},
+{
+"day": "2026-11-05",
+"id": "2026-11-04|AMD",
+"ticker": "AMD",
+"action": "entry",
+"from": 0.0,
+"to": 2951.69,
+"R": 0.0,
+"W": 0.150895,
+"days_held": 0
+},
+{
+"day": "2026-11-05",
+"id": "2026-11-04|XOM",
+"ticker": "XOM",
+"action": "entry",
+"from": 0.0,
+"to": 2856.47,
+"R": 0.0,
+"W": 0.090512,
+"days_held": 0
+},
+{
+"day": "2026-11-05",
+"id": "2026-11-04|FOXA",
+"ticker": "FOXA",
+"action": "entry",
+"from": 0.0,
+"to": 2761.26,
+"R": 0.0,
+"W": 0.040947,
+"days_held": 0
+},
+{
+"day": "2026-11-05",
+"id": "2026-11-04|TT",
+"ticker": "TT",
+"action": "entry",
+"from": 0.0,
+"to": 2618.43,
+"R": 0.0,
+"W": 0.066877,
+"days_held": 0
+},
+{
+"day": "2026-11-05",
+"id": "2026-11-04|AME",
+"ticker": "AME",
+"action": "entry",
+"from": 0.0,
+"to": 2142.36,
+"R": 0.0,
+"W": 0.072771,
+"days_held": 0
+},
+{
+"day": "2026-11-05",
+"id": "2026-11-04|ZBRA",
+"ticker": "ZBRA",
+"action": "entry",
+"from": 0.0,
+"to": -2959.85,
+"R": 0.0,
+"W": 0.046033,
+"days_held": 0
+},
+{
+"day": "2026-11-05",
+"id": "2026-11-04|ORCL",
+"ticker": "ORCL",
+"action": "entry",
+"from": 0.0,
+"to": -2959.85,
+"R": 0.0,
+"W": 0.064255,
+"days_held": 0
+},
+{
+"day": "2026-11-05",
+"id": "2026-11-04|FIS",
+"ticker": "FIS",
+"action": "entry",
+"from": 0.0,
+"to": -2959.85,
+"R": 0.0,
+"W": 0.087436,
+"days_held": 0
+},
+{
+"day": "2026-11-05",
+"id": "2026-11-04|IDXX",
+"ticker": "IDXX",
+"action": "entry",
+"from": 0.0,
+"to": -2864.37,
+"R": 0.0,
+"W": 0.153199,
+"days_held": 0
+},
+{
+"day": "2026-11-05",
+"id": "2026-11-04|LLY",
+"ticker": "LLY",
+"action": "entry",
+"from": 0.0,
+"to": -2864.37,
+"R": 0.0,
+"W": 0.104802,
+"days_held": 0
+},
+{
+"day": "2026-11-05",
+"id": "2026-11-04|META",
+"ticker": "META",
+"action": "entry",
+"from": 0.0,
+"to": -2673.41,
+"R": 0.0,
+"W": 0.067074,
+"days_held": 0
+},
+{
+"day": "2026-11-05",
+"id": "SPY",
+"ticker": "SPY",
+"action": "hedge",
+"from": -26407.98,
+"to": -19060.88
 }
 ],
 "cohorts": [
@@ -2867,5 +3212,5 @@
 ],
 "variant": "control",
 "p7b": "2026-10-28",
-"updated": "2026-11-05T01:12:48+00:00"
+"updated": "2026-11-06T01:11:47+00:00"
 }
