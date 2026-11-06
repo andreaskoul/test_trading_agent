@@ -1,0 +1,3343 @@
+{
+ "records": {
+  "BEN": {
+   "ticker": "BEN",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Asset Management & Custody Banks",
+   "last_release": "2026-07-31 12:36:53+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/38777/000003877726000215/exhibit991q3fy26.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Long-term net flows",
+      "last_report": "Q3 long-term net inflows $18.4B, positive across every asset class and geography; FYTD $63.3B, versus $16.9B prior quarter and -$9.3B year-ago.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Alternative/private markets fundraising",
+      "last_report": "Alternative AUM record $294.2B; $11.8B fundraising incl. $10.3B private markets; FYTD private markets $33.0B exceeded fiscal-year target.",
+      "guidance": "FY private markets fundraising target exceeded with one quarter still to go; no numeric Q4 target."
+     },
+     {
+      "id": "D3",
+      "name": "Adjusted operating margin",
+      "last_report": "Adjusted operating margin 28.0% vs 27.1% prior quarter and 23.7% year-ago; adjusted operating income $508.9M, up 7% q/q.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Average AUM and market change",
+      "last_report": "Ending AUM record $1,791.6B, up 7% q/q; average AUM $1,750.0B; $98.0B net market change/distributions and other.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Institutional won-but-unfunded pipeline",
+      "last_report": "Record $28.6B institutional won-but-unfunded pipeline; international AUM record ~$525B; ETF, SMA and Canvas demand strong.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Next quarter reports long-term net outflows or sharply lower inflows than $18.4B.",
+     "Alternative AUM declines or private markets fundraising slows sharply.",
+     "Adjusted operating margin falls below 28% or G&A/impairment charges spike."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 17,
+    "found": 17,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {
+    "CG": "only 2 of 5 earnings-release markers"
+   },
+   "news_raw": 177,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Preliminary October AUM $1.81T, above prior quarter-end $1,791.6B",
+        "date": "2026-11-04",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Benefit Street Partners closes $1.1B CRE CLO, adding private credit fundraising",
+        "date": "2026-11-02",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Franklin Templeton/BSP expand asset-backed finance via Encina Lender Finance transaction",
+        "date": "2026-10-14",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Franklin Templeton files/launches two Nasdaq ETFs with built-in Bitcoin exposure",
+        "date": "2026-10-27",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Expansion of Asset-Backed Finance Capabilities with Benefit Street Partners",
+        "date": "2026-10-14",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Launch of new ETFs mixing US equities and Bitcoin exposure",
+        "date": "2026-10-27",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Blockchain investing test with Uber and HSBC",
+        "date": "2026-10-30",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Preliminary month-end AUM reported at $1.81 trillion",
+        "date": "2026-11-04",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.95
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "_Cut('answer cut at max_tokens 24000')",
+     "provider": null,
+     "log": {
+      "attempts": [
+       {
+        "kind": "transport",
+        "error": "_Cut('answer cut at max_tokens 24000')"
+       }
+      ],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "HLNE",
+    "APO",
+    "CRBG",
+    "FHI"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HLNE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No flow, fundraising, or margin data; only AUM and dividend, no read for BEN."
+       },
+       {
+        "peer": "APO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Apollo record inflows and pipelines signal strong alternative demand, supportive for BEN private markets fundraising."
+       },
+       {
+        "peer": "CRBG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Insurance and retirement results not relevant to BEN asset management flows or margins."
+       },
+       {
+        "peer": "FHI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "FHI positive equity sales and record equity/alternative assets signal healthy long-term demand for BEN flows."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HLNE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release is mostly boilerplate with no flow or fundraising data; says nothing about BEN's drivers."
+       },
+       {
+        "peer": "APO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Record $270B LTM inflows and record pipelines signal strong alternative demand, supporting BEN's private markets fundraising and pipeline."
+       },
+       {
+        "peer": "CRBG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Insurance/retirement results and Equitable merger are not relevant to BEN's asset management drivers."
+       },
+       {
+        "peer": "FHI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record equity assets, positive net equity sales and record alternative assets signal healthy long-term demand for BEN's flows."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FHI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Peer reports record alt/private markets assets and demand, supportive for BEN's alternative fundraising."
+       },
+       {
+        "peer": "CRBG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Insurance/retirement results not relevant to BEN's asset management drivers."
+       },
+       {
+        "peer": "APO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "Apollo's record alt inflows and pipelines signal strong private markets demand, supportive for BEN fundraising."
+       },
+       {
+        "peer": "HLNE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release lacks flow/fundraising data; no clear read-through to BEN's drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 4.36033255612459,
+   "score_peer": 2.3094010767585034,
+   "score_combined": 5.515033094503841,
+   "overall_votes": [
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 0.7796,
+   "revenue_estimate": 1879380730,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-06",
+   "cutoff": "2026-11-05 22:00:00+00:00",
+   "decided_at": "2026-11-06T02:34:38.887832+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "4874301fd8f2a56e7464155ba5455ca006eeff9e",
+   "sha256": "4089183557e5b8ef850c86b36909899ce96450ce0ba1f663a4a754a212bccd79"
+  },
+  "CHTR": {
+   "ticker": "CHTR",
+   "index": "SP500",
+   "sector": "Communication Services",
+   "sub_industry": "Cable & Satellite",
+   "last_release": "2026-07-24 11:00:48+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1091667/000109166726000051/chtrex991earningsrelease63.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Internet customer net additions",
+      "last_report": "Q2 Internet customers fell 172k vs 116k decline prior year; Internet revenue -3.2% to $5.8B.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Mobile line growth and revenue",
+      "last_report": "Q2 mobile lines +406k vs +491k prior year; total 12.5M; mobile service revenue +18.9% to $1.1B.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Video revenue and customer losses",
+      "last_report": "Q2 video customers -21k vs -80k prior year; video revenue -9.7% to $3.1B on streaming app costs and mix.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Residential ARPU and pricing mix",
+      "last_report": "Q2 monthly residential revenue per customer $117.52, -1.8% Y/Y; excluding streaming app costs, -0.1%.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Adjusted EBITDA margin and costs",
+      "last_report": "Q2 Adjusted EBITDA $5.449B, -4.3% Y/Y; margin 40.3% vs 41.4%; transition expenses pressured.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Q3 Internet customer losses exceed 172,000 or Internet revenue falls more than 3.2%.",
+     "Q3 mobile line net additions fall below 406,000 or mobile service revenue growth slows below 18.9%.",
+     "Q3 Adjusted EBITDA declines more than 4.3% or margin falls below 40.3%."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 19,
+    "found": 18,
+    "share": 0.9473684210526315,
+    "missing": [
+     "5.449"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 282,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Adam Ray steps down as Chief Commercial Officer",
+        "date": "2026-10-15",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Adeia renews multi-year IP license with Charter",
+        "date": "2026-10-16",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AT&T reports Q3 fiber ARPU fell 4% on discounts",
+        "date": "2026-10-21",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Starlink average bill undercuts Spectrum by about $1",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cox acquisition/expansion mentioned as Q3 benefit",
+        "date": "2026-10-24",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Spectrum Business launches Managed Cisco Secure Networking",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Spectrum offers free Gig Speed Lift for GTA VI",
+        "date": "2026-11-04",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Chief Commercial Officer Adam Ray steps down",
+        "date": "2026-10-15",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Starlink average bill undercuts Spectrum by about $1",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Spectrum faces new customer problem after Cox acquisition",
+        "date": "2026-10-24",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "AT&T fiber ARPU fell 4% on intro pricing and discounts",
+        "date": "2026-10-21",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Spectrum Business launches Managed Cisco Secure Networking offering",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Spectrum offers free Gig Speed Lift for GTA VI download",
+        "date": "2026-11-04",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Adeia renews multi-year IP agreement with Charter",
+        "date": "2026-10-16",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "CCO Adam Ray steps down",
+        "date": "2026-10-15",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Adeia renews multi-year IP agreement with Charter",
+        "date": "2026-10-16",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Starlink average bill undercuts Spectrum by about $1",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Spectrum faces new customer problem after Cox acquisition",
+        "date": "2026-10-24",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Spectrum Internet Gig free speed lift for GTA VI",
+        "date": "2026-11-04",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Spectrum Business launches Managed Cisco Secure Networking",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "CMCSA"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CMCSA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Comcast's 368k wireless net adds and premium-plan adoption signal continued healthy cable mobile growth for Charter."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CMCSA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Comcast wireless net adds 368k and premium plan adoption signal healthy cable mobile demand, supporting Charter mobile growth/revenue."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Reka",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CMCSA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Comcast wireless net adds 368k and premium-plan adoption signal healthy cable mobile demand, supportive for Charter mobile growth/revenue."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -0.7559289460184544,
+   "score_peer": 1.414213562373095,
+   "score_combined": -0.04882216483190693,
+   "overall_votes": [
+    "inline",
+    "below",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "bmo",
+   "eps_estimate": 9.2378,
+   "revenue_estimate": 15082059996,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-06",
+   "cutoff": "2026-11-05 22:00:00+00:00",
+   "decided_at": "2026-11-06T02:33:27.954871+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "4874301fd8f2a56e7464155ba5455ca006eeff9e",
+   "sha256": "807282e9bb14cc2f4624c4ab7f9bd3c008961790e741dea895ea09cd250388cb"
+  },
+  "ELAN": {
+   "ticker": "ELAN",
+   "index": "SP400",
+   "sector": "Health Care",
+   "sub_industry": "Pharmaceuticals",
+   "last_release": "2026-08-05 10:27:37+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1739104/000173910426000040/elanco-20260630exhibit991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Pet Health growth",
+      "last_report": "Q2 Pet Health revenue +12% reported, +11% organic CC; volume +9%, price +2%; Zenrelia largest contributor, Credelio Quattro share gains.",
+      "guidance": "No segment guidance; Q3 total revenue $1.195-$1.220B, 5-7% organic CC."
+     },
+     {
+      "id": "D2",
+      "name": "Farm Animal and ruminants",
+      "last_report": "Q2 Farm Animal +9% reported, +5% organic CC; ruminants fastest species +12% organic CC, +17% including AHV/FX; volume +3%, price +2%.",
+      "guidance": "No segment guidance; Q3 total revenue $1.195-$1.220B, 5-7% organic CC."
+     },
+     {
+      "id": "D3",
+      "name": "Innovation portfolio revenue",
+      "last_report": "Zenrelia blockbuster July YTD; Credelio Quattro penetrated >50% U.S. clinics; Befrena demand 2x expectations, ramping supply.",
+      "guidance": "FY innovation revenue target raised to $1.25B."
+     },
+     {
+      "id": "D4",
+      "name": "Gross margin and price/mix",
+      "last_report": "Q2 gross margin 58.3%, adjusted 58.1%, +80 bps, ahead expectations; favorable U.S. Pet Health mix and pricing offset inflation.",
+      "guidance": "FY adjusted gross margin 55.2%-55.6%, +50 bps vs 2025."
+     },
+     {
+      "id": "D5",
+      "name": "Operating expenses and launch investment",
+      "last_report": "Q2 operating expenses +10%; MS&A +12% to $449M on launches/comp; R&D flat at $92M.",
+      "guidance": "Q3 operating expenses up ~10% YoY constant currency with innovation support."
+     }
+    ],
+    "guidance": "Q3 revenue $1.195-$1.220B, adjusted EBITDA $200-$215M, adjusted EPS $0.19-$0.22; FY revenue $5.09-$5.14B, adjusted EBITDA $1.01-$1.035B, adjusted EPS $1.10-$1.16; FY organic CC growth 6%-7%.",
+    "kill_conditions": [
+     "Q3 organic revenue growth below 5% or full-year guidance cut.",
+     "Pet Health growth falls to low single digits or Zenrelia/Credelio Quattro share losses.",
+     "Adjusted gross margin contracts or FY margin falls below 55.2%."
+    ]
+   },
+   "card_provider": "Together",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 25,
+    "found": 23,
+    "share": 0.92,
+    "missing": [
+     "1.195",
+     "1.220"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 79,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "FDA grants Emergency Use Authorization for CLiK Extra wound spray for screwworm in livestock",
+        "date": "2026-08-07",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Completes 25,000-square-foot Elwood, Kansas mAb manufacturing expansion on time",
+        "date": "2026-08-26",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Zenrelia reaches more than 2 million dogs amid extended allergy season",
+        "date": "2026-10-14",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "FDA Emergency Use Authorization for CLiK Extra wound spray for screwworm",
+        "date": "2026-08-07",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Zenrelia reaches more than 2 million dogs",
+        "date": "2026-10-14",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "FDA Emergency Use Authorization for CLiK Extra wound spray in livestock",
+        "date": "2026-08-07",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Completed 25,000 sq ft Elwood, Kansas mAb manufacturing expansion",
+        "date": "2026-08-26",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Zenrelia reached more than 2 million dogs amid extended allergy season",
+        "date": "2026-10-14",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "VTRS",
+    "ZTS",
+    "CORT",
+    "PFE",
+    "JAZZ"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VTRS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Human pharma; no read on Elanco animal health drivers."
+       },
+       {
+        "peer": "ZTS",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Zoetis U.S. companion animal -8% on price sensitivity/generic competition signals weaker pet health demand for Elanco."
+       },
+       {
+        "peer": "CORT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Human endocrinology/oncology; no read on Elanco animal health."
+       },
+       {
+        "peer": "PFE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Human pharma; no animal health exposure after Zoetis spin-off."
+       },
+       {
+        "peer": "JAZZ",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Human pharma; no read on Elanco animal health drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VTRS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Not an animal health peer; no read-through to Elanco."
+       },
+       {
+        "peer": "ZTS",
+        "channel": "competitive",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Zoetis cites dermatology competitive pressure, implying Elanco Zenrelia share gains continue, supporting innovation revenue."
+       },
+       {
+        "peer": "CORT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Not an animal health peer; no read-through to Elanco."
+       },
+       {
+        "peer": "PFE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Not an animal health peer; no read-through to Elanco."
+       },
+       {
+        "peer": "JAZZ",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Not an animal health peer; no read-through to Elanco."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "JAZZ",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Human pharma; no animal health read-through."
+       },
+       {
+        "peer": "PFE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Human pharma; no animal health read-through."
+       },
+       {
+        "peer": "CORT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Human pharma; no animal health read-through."
+       },
+       {
+        "peer": "ZTS",
+        "channel": "competitive",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Zoetis U.S. companion animal -8% on dermatology competitive pressure suggests Elanco share gains, supporting Pet Health."
+       },
+       {
+        "peer": "VTRS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No animal health exposure; no read-through."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.25,
+   "score_peer": 1.414213562373095,
+   "score_combined": 2.9571067811865475,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.2071,
+   "revenue_estimate": 1232125411,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-06",
+   "cutoff": "2026-11-05 22:00:00+00:00",
+   "decided_at": "2026-11-06T02:33:54.848247+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "4874301fd8f2a56e7464155ba5455ca006eeff9e",
+   "sha256": "d8c73430dfbfa279a5a38c80f0954807104d82d03228883aff077505bfe53062"
+  },
+  "ESNT": {
+   "ticker": "ESNT",
+   "index": "SP400",
+   "sector": "Financials",
+   "sub_industry": "Commercial & Residential Mortgage Finance",
+   "last_release": "2026-08-07 10:51:27+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1448893/000144889326000022/a63026financialsupplement.htm",
+   "release_doc": "type EX-99.1",
+   "status": "card_ungrounded",
+   "error": "card numbers not in the release: {'numbers': 21, 'found': 11, 'share': 0.5238095238095238, 'missing': ['17.1', '19.4', '28.7', '48.3', '49.0', '61.6', '62.8', '72.9', '75.3', '97.2']}",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "New insurance written growth",
+      "last_report": "Q2 NIW $14.1B vs $11.1B in Q1 and $12.5B in Q2 2025; insurance in force $249.7B.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Loss provision and credit",
+      "last_report": "Q2 provision for losses and LAE $49.0M vs $17.1M in Q2 2025; H1 $97.2M vs $48.3M.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Reinsurance segment profitability",
+      "last_report": "H1 reinsurance net premiums written $248.8M vs $30.6M; net premiums earned $72.9M; provision for losses $28.7M.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Investment income and other assets",
+      "last_report": "Q2 net investment income $61.6M; H1 $120.9M vs $117.5M; Q2 income from other invested assets $19.4M.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Expense and capital return",
+      "last_report": "Q2 other underwriting and operating expenses $75.3M vs $62.8M; YTD repurchased 5.8M shares for $348M; dividend $0.35.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Next quarter reports higher provision for losses or rising mortgage delinquencies/defaults.",
+     "New insurance written falls below $14.1B or insurance in force declines sequentially.",
+     "Reinsurance segment posts larger losses or underwriting loss; investment income drops."
+    ]
+   },
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 21,
+    "found": 11,
+    "share": 0.5238095238095238,
+    "missing": [
+     "17.1",
+     "19.4",
+     "28.7",
+     "48.3",
+     "49.0",
+     "61.6",
+     "62.8",
+     "72.9",
+     "75.3",
+     "97.2"
+    ]
+   },
+   "hour": "bmo",
+   "eps_estimate": 1.906,
+   "revenue_estimate": 351051564,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-06",
+   "cutoff": "2026-11-05 22:00:00+00:00",
+   "decided_at": "2026-11-06T02:31:13.860034+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "4874301fd8f2a56e7464155ba5455ca006eeff9e",
+   "sha256": "99917b158de295089b5e0f26b00e6befb280f8aed99b6236f4568d02a71babd5"
+  },
+  "FLR": {
+   "ticker": "FLR",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Construction & Engineering",
+   "last_release": "2026-08-07 11:01:12+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1124198/000112419826000074/ex991q22026.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Urban Solutions margin and Gordie Howe costs",
+      "last_report": "Q2 segment profit $38M on $2.9B revenue; $44M cost growth on Gordie Howe from FX, subcontractor bankruptcy, client changes; new awards $3.2B; backlog $19.4B.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Energy Solutions margin normalization",
+      "last_report": "Q2 segment profit $88M on $709M revenue, aided by favorable closeouts including former Mexico JV; revenue fell y/y; new awards $704M; backlog $3.5B.",
+      "guidance": "2026 adjusted EBITDA cut to $500–$525M, removing 2H Mexico JV contribution."
+     },
+     {
+      "id": "D3",
+      "name": "Mission Solutions award-fee and Centrus ramp",
+      "last_report": "Q2 segment profit $44M on $716M revenue; improved DOE award fees; new awards $2.2B including Centrus nuclear enrichment EPC; backlog $3.99B.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "New awards and backlog conversion",
+      "last_report": "Q2 new awards $6.1B, 89% reimbursable; ending backlog $26.9B, 85% reimbursable; legacy project backlog reduced to $119M.",
+      "guidance": "No revenue guidance; 2026 adjusted EBITDA $500–$525M."
+     },
+     {
+      "id": "D5",
+      "name": "Cash flow and buyback execution",
+      "last_report": "Q2 operating cash flow -$317M, including $357M NuScale tax payment; cash $3.0B; returned $300M via repurchases.",
+      "guidance": "Still targeting $1.4B of 2026 share repurchases."
+     }
+    ],
+    "guidance": "2026 adjusted EBITDA narrowed to $500–$525M from $525–$560M, reflecting removal of 2H Mexico JV contribution; no GAAP EPS/net earnings guidance. Still targeting $1.4B of 2026 share repurchases.",
+    "kill_conditions": [
+     "Urban Solutions reports another material cost charge on Gordie Howe or legacy projects.",
+     "Energy Solutions margin falls sharply as Mexico JV/closeout benefits do not repeat.",
+     "2026 adjusted EBITDA guidance is cut below $500M or new awards/backlog decline materially."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 25,
+    "found": 24,
+    "share": 0.96,
+    "missing": [
+     "3.99"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 104,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Fluor/JGC win $7.5B LNG Canada phase 2 expansion contracts",
+        "date": "2026-09-30",
+        "driver": "D2",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fluor Marine Propulsion wins $2.4B Navy nuclear contract modification",
+        "date": "2026-11-02",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fluor receives full notice to proceed for Sierra Gorda copper expansion",
+        "date": "2026-11-04",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fluor signs EPC contract with TeraWulf for Kentucky data center campus",
+        "date": "2026-11-04",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fluor selected for X-energy SMR project in Washington State",
+        "date": "2026-11-05",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fluor signs MOU with Inelectra for Venezuela energy projects",
+        "date": "2026-11-05",
+        "driver": "D2",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Fluor JV celebrates opening of $677M Oak Hill Parkway in Austin",
+        "date": "2026-09-25",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "LNG Canada phase 2 expansion award $7.5B",
+        "date": "2026-09-30",
+        "driver": "D4",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Navy nuclear contract modification $2.4B",
+        "date": "2026-11-02",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Sierra Gorda copper mine full notice to proceed",
+        "date": "2026-11-04",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TeraWulf data center EPC contract signed",
+        "date": "2026-11-04",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected for X-energy SMR project in Washington",
+        "date": "2026-11-05",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Oak Hill Parkway JV project opening in Austin",
+        "date": "2026-09-25",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fluor/JGC win $7.5B LNG Canada phase 2 contracts",
+        "date": "2026-09-30",
+        "driver": "D4",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "MTZ",
+    "EME",
+    "APG",
+    "PWR",
+    "STRL"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Power delivery and pipeline backlog strength signal solid Energy Solutions demand, though pipeline delays flag execution risk."
+       },
+       {
+        "peer": "EME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record RPO growth and raised guidance signal strong non-residential construction demand for new awards."
+       },
+       {
+        "peer": "APG",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Rising material, fuel and other expenses pressure construction margins, echoing Urban cost headwinds."
+       },
+       {
+        "peer": "PWR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "Record power/utility backlog and raised guidance signal strong Energy Solutions demand and pricing."
+       },
+       {
+        "peer": "STRL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record E-Infrastructure backlog and raised guidance signal strong infrastructure demand for new awards."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record power and pipeline backlog signal strong infrastructure demand and awards for Fluor, though pipeline delays flag margin risk."
+       },
+       {
+        "peer": "EME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record RPO and data-center/network demand support Fluor new awards; strong margins imply favorable pricing."
+       },
+       {
+        "peer": "APG",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Rising material, fuel and other costs pressure project margins, a shared headwind for Fluor Urban/Energy execution."
+       },
+       {
+        "peer": "PWR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "Record backlog and broad utility/power/tech demand strongly support Fluor new awards and backlog conversion."
+       },
+       {
+        "peer": "STRL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record E-Infrastructure backlog and data-center site demand support Fluor Urban awards and backlog."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "STRL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record infrastructure backlog and raised guidance signal strong demand for FLR's Urban/Energy awards and backlog conversion."
+       },
+       {
+        "peer": "PWR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record backlog and broad utility/power demand support FLR Energy Solutions awards and backlog conversion."
+       },
+       {
+        "peer": "APG",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Rising material, fuel and other expenses signal continued cost pressure on FLR's Urban project margins, including Gordie Howe."
+       },
+       {
+        "peer": "EME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record RPO growth in mission-critical/electrical infrastructure signals strong demand for FLR Urban Solutions awards and backlog."
+       },
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record power/pipeline backlog and strong demand support FLR Energy Solutions awards and backlog conversion."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 6.363961030678928,
+   "score_peer": 3.2659863237109046,
+   "score_combined": 7.99695419253438,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.811,
+   "revenue_estimate": 4205830718,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-06",
+   "cutoff": "2026-11-05 22:00:00+00:00",
+   "decided_at": "2026-11-06T02:34:22.419826+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "4874301fd8f2a56e7464155ba5455ca006eeff9e",
+   "sha256": "7328fca32f646470c2428dfe2fad8474b99f88ac23fb49bfa235d74e9528d67f"
+  },
+  "HUM": {
+   "ticker": "HUM",
+   "index": "SP500",
+   "sector": "Health Care",
+   "sub_industry": "Managed Health Care",
+   "last_release": "2026-07-29 10:19:53+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/49071/000004907126000045/hum-2026q2xex99x1briefxjul.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Insurance benefit ratio",
+      "last_report": "2Q26 GAAP benefit ratio 91.2%, in line with guidance of slightly above 91%; YTD results support full-year outlook.",
+      "guidance": "FY 2026 Insurance segment benefit ratio 92.75%, plus or minus 25 basis points."
+     },
+     {
+      "id": "D2",
+      "name": "Individual MA membership growth",
+      "last_report": "Affirms FY 2026 individual Medicare Advantage membership growth of approximately 25% over 2025, driven by new sales and improved retention.",
+      "guidance": "FY 2026 individual MA membership growth approximately 25% over 2025."
+     },
+     {
+      "id": "D3",
+      "name": "Adjusted EPS and Star Ratings",
+      "last_report": "2Q26 Adjusted EPS $7.61; YTD 2026 $17.91. FY 2026 Adjusted EPS guidance anticipates year-over-year decline from Star Ratings headwind for Bonus Year 2026, net of mitigation.",
+      "guidance": "FY 2026 Adjusted EPS at least $9.00; GAAP EPS at least $6.52."
+     },
+     {
+      "id": "D4",
+      "name": "CenterWell Senior Primary Care growth",
+      "last_report": "YTD growth of 130,900 patients, or 27%, in CenterWell Senior Primary Care; continued strategic expansion of CenterWell footprint.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Operating cost ratio",
+      "last_report": "2Q26 adjusted operating cost ratio 9.7% vs 10.9% prior year; YTD 9.8% vs 10.7%, aided by value creation initiatives.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Affirms FY 2026 Adjusted EPS at least $9.00; revises GAAP EPS to at least $6.52 from $8.36. Affirms FY 2026 Insurance benefit ratio 92.75% +/-25 bps and individual MA membership growth ~25%.",
+    "kill_conditions": [
+     "Insurance benefit ratio exceeds 92.75% plus 25 bps or trends above 91% in Q3.",
+     "FY 2026 Adjusted EPS guidance cut below at least $9.00.",
+     "Individual MA membership growth falls short of approximately 25% or retention weakens."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 15,
+    "found": 15,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 382,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Humana forms joint venture with BlackRock HPS for CenterWell senior primary care clinics",
+        "date": "2026-10-21",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Labor Department regulation requires pharmacy benefit managers to disclose payment details to employers",
+        "date": "2026-10-28",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Insurers shrink Medicare Advantage footprints for 2027; 1M Americans face plan cancellations",
+        "date": "2026-10-29",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Humana board declares quarterly cash dividend of $0.885 per share",
+        "date": "2026-10-29",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Humana and athenahealth expand electronic prior authorization across 180K+ physicians",
+        "date": "2026-11-03",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Humana aces key Medicare Star Ratings for 2027",
+        "date": "2026-11-05",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Formed JV with BlackRock's HPS for CenterWell clinics",
+        "date": "2026-10-21",
+        "driver": "D4",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Expanded electronic prior authorization with athenahealth network",
+        "date": "2026-11-03",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Aced key Medicare Star Ratings",
+        "date": "2026-11-05",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Humana forms JV with BlackRock's HPS to operate CenterWell senior primary care clinics",
+        "date": "2026-10-21",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Humana and athenahealth expand electronic prior authorization nationwide, reducing administrative burden",
+        "date": "2026-11-03",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Humana aced key Medicare ratings, positive for future Star Ratings",
+        "date": "2026-11-05",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "CNC",
+    "MOH",
+    "ELV",
+    "UNH"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CNC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "other",
+        "why": "CNC's strong HBR and raised EPS guidance indicate positive industry momentum and cost management success."
+       },
+       {
+        "peer": "MOH",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "other",
+        "why": "MOH noted a plateauing medical cost trend, which supports HUM's ability to meet its HBR guidance."
+       },
+       {
+        "peer": "ELV",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "other",
+        "why": "ELV raised guidance significantly and showed strong cost control (90.6% BEX), suggesting superior execution compared to HUM."
+       },
+       {
+        "peer": "UNH",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "other",
+        "why": "UNH raised guidance and reported a very low MCR (88.4%), indicating superior operational efficiency and financial strength."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CNC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Medicare HBR better than expected and FY HBR improved, signaling favorable MA cost trend for Humana's benefit ratio."
+       },
+       {
+        "peer": "MOH",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D1",
+        "why": "Medicare MCR in line and medical cost trend plateauing at elevated levels; no incremental change to Humana's benefit-ratio outlook."
+       },
+       {
+        "peer": "ELV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "MA benefit ratio improved 70 bps on better Medicare Advantage performance, a positive shared cost-trend read for Humana's benefit ratio."
+       },
+       {
+        "peer": "UNH",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Favorable MCR and medical cost management plus reserve development suggest benign MA cost trend, positive for Humana's benefit ratio."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "UNH",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "MCR improved and FY guidance raised, signaling favorable industry medical cost trend for HUM's benefit ratio."
+       },
+       {
+        "peer": "ELV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Medicare Advantage benefit ratio improved 70bp, positive read-through for HUM's insurance benefit ratio."
+       },
+       {
+        "peer": "MOH",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D1",
+        "why": "Medicare MCR stable but medical trend still elevated; reaffirms guidance, no clear read-through for HUM."
+       },
+       {
+        "peer": "CNC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Medicare HBR beat expectations and guidance raised, positive signal for HUM's Medicare benefit ratio."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 3.0,
+   "score_peer": 2.6832815729997477,
+   "score_combined": 4.341640786499874,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": -1.0127,
+   "revenue_estimate": 41298861559,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-06",
+   "cutoff": "2026-11-05 22:00:00+00:00",
+   "decided_at": "2026-11-06T02:33:52.151609+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "4874301fd8f2a56e7464155ba5455ca006eeff9e",
+   "sha256": "ef45e784361b8cdbb62674cc45a0f9d8b6241cfe41f326991b1640117e560811"
+  },
+  "MRNA": {
+   "ticker": "MRNA",
+   "index": "SP500",
+   "sector": "Health Care",
+   "sub_industry": "Biotechnology",
+   "last_release": "2026-07-31 11:03:47+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1682852/000168285226000147/exhibit9912026q2pressrelea.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Total revenue and product sales",
+      "last_report": "Q2 total revenue $145M vs $142M; net product sales $94M; expects ~55% of H2 2026 revenue in Q3.",
+      "guidance": "Up to 10% 2026 revenue growth; ~55% of H2 revenue in Q3; ~50/50 U.S./international split."
+     },
+     {
+      "id": "D2",
+      "name": "mFLUSIVA approval and launch",
+      "last_report": "VRBPAC unanimous recommendation; FDA PDUFA Aug 5, 2026; potential fifth approved product.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "mRESVIA and mNEXSPIKE ramp",
+      "last_report": "EU joint procurement up to 24M mRESVIA doses; approvals in Australia, Mexico, Japan, Taiwan for mRESVIA/mNEXSPIKE.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Cost of sales and operating expenses",
+      "last_report": "Q2 cost of sales $93M; R&D $651M; SG&A $216M; 2026 cost of sales ~$1.7B incl $0.9B litigation.",
+      "guidance": "2026 cost of sales ~$1.7B; R&D ~$2.9B; SG&A ~$1.0B; opex outlook improved ~$0.2B."
+     },
+     {
+      "id": "D5",
+      "name": "Cash balance and burn",
+      "last_report": "Cash $6.9B at June 30 vs $7.5B at March 31; $950M litigation settlement paid in July.",
+      "guidance": "Year-end 2026 cash $4.7-5.2B, improved ~$0.2B; excludes $0.9B credit facility."
+     }
+    ],
+    "guidance": "2026 revenue up to 10% growth; ~55% of H2 revenue in Q3; cost of sales ~$1.7B; R&D ~$2.9B; SG&A ~$1.0B; year-end cash $4.7-5.2B; capex $0.2-0.3B.",
+    "kill_conditions": [
+     "mFLUSIVA FDA approval delayed or CRL after Aug 5 PDUFA.",
+     "Q3 revenue misses ~55% H2 split or 2026 growth guidance cut below up to 10%.",
+     "Norovirus additional cohort fails or intismeran melanoma data negative."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 20,
+    "found": 20,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 762,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "WHO recommends MRNA-1469 for inclusion in the Tumaini ebolavirus trial.",
+        "date": "2026-11-04",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Phase 1/2 data for mRNA-2808 shows positive responses in multiple myeloma patients.",
+        "date": "2026-11-04",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.9
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Merck and Moderna report Phase 3 melanoma vaccine data from INTerpath-001 trial",
+        "date": "2026-10-31",
+        "driver": "other",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Moderna reports mRNA-2808 Phase 1/2 data: four responses in 11 myeloma patients",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "WHO TAG recommends Moderna's mRNA-1469 for inclusion in Ebola trial",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Democrats sweep midterm elections, potentially reshaping healthcare policy",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Reka",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Merck/Moderna Phase 3 melanoma vaccine data reported; positive results",
+        "date": "2026-10-31",
+        "driver": "other",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "mRNA-2808 Phase 1/2 myeloma data: four responses in 11 patients; ASH oral presentation",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "WHO TAG recommends mRNA-1469 Ebola vaccine for efficacy trial; Phase 2/3 advance",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "HALO",
+    "CYTK",
+    "UTHR",
+    "AMGN",
+    "NBIX"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HALO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Halozyme royalties and ENHANZE partnerships unrelated to Moderna's vaccine demand, pricing, or costs."
+       },
+       {
+        "peer": "CYTK",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Cytokinetics cardiology launch says nothing about Moderna's vaccine business or drivers."
+       },
+       {
+        "peer": "UTHR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "United Therapeutics pulmonary franchise unrelated to Moderna's vaccine demand, pricing, or costs."
+       },
+       {
+        "peer": "AMGN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Amgen's broad portfolio growth is product-specific, not a shared vaccine-industry signal for Moderna."
+       },
+       {
+        "peer": "NBIX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Neurocrine neuroscience sales reveal nothing about Moderna's vaccine demand, pricing, or costs."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HALO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No vaccine or respiratory overlap; no read-through to Moderna drivers."
+       },
+       {
+        "peer": "CYTK",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Cardiology launch unrelated to Moderna's vaccine portfolio and guidance."
+       },
+       {
+        "peer": "UTHR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Pulmonary hypertension results do not inform Moderna's vaccine demand or costs."
+       },
+       {
+        "peer": "AMGN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Broad biopharma results lack vaccine-specific read-through to Moderna."
+       },
+       {
+        "peer": "NBIX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Neuroscience growth has no relevance to Moderna's vaccine drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NBIX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Neuropsychiatry portfolio growth; no overlap with Moderna's vaccine demand, pricing, or cost structure."
+       },
+       {
+        "peer": "AMGN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Broad biopharma results; no vaccine or respiratory franchise read-through to Moderna's drivers."
+       },
+       {
+        "peer": "UTHR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Pulmonary hypertension sales; cited competitive pressure is product-specific, not vaccine-relevant."
+       },
+       {
+        "peer": "CYTK",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Cardiology launch momentum; unrelated to Moderna's vaccine demand, pricing, or expenses."
+       },
+       {
+        "peer": "HALO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Royalty/delivery platform and patent win; no read-through to Moderna's vaccine business."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 3.464101615137755,
+   "score_peer": 0.0,
+   "score_combined": 3.464101615137755,
+   "overall_votes": [
+    "above",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": -1.2755,
+   "revenue_estimate": 902751816,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-06",
+   "cutoff": "2026-11-05 22:00:00+00:00",
+   "decided_at": "2026-11-06T02:32:55.069649+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "4874301fd8f2a56e7464155ba5455ca006eeff9e",
+   "sha256": "e1e61e6824c28928dba40e9739b624d68b531ca55b9a9117861b27a8fc9e1e6c"
+  },
+  "PPL": {
+   "ticker": "PPL",
+   "index": "SP500",
+   "sector": "Utilities",
+   "sub_industry": "Electric Utilities",
+   "last_release": "2026-08-07 11:50:25+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/922224/000092222426000042/ppl-6302026exhibit991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Second-half rate recovery",
+      "last_report": "Reaffirmed 2026 EPS $1.90-$1.98; expects stronger H2 on improved rate recovery and capital tracking mechanisms.",
+      "guidance": "2026 ongoing EPS $1.90-$1.98; 6-8% annual EPS growth through at least 2029, near top end."
+     },
+     {
+      "id": "D2",
+      "name": "Kentucky Regulated segment",
+      "last_report": "Q2 ongoing flat; higher retail rates offset by higher operating costs, depreciation, interest; YTD ongoing +$0.03.",
+      "guidance": "CPCN filing by end 2026 for additional generation; $3.5-$4.0B incremental investment 2027-2032."
+     },
+     {
+      "id": "D3",
+      "name": "Pennsylvania Regulated segment",
+      "last_report": "Q2 ongoing -$0.01; higher depreciation and interest offset by higher transmission revenue from capital investments.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Rhode Island Regulated segment",
+      "last_report": "Q2 ongoing +$0.02; lower operating costs and higher rider revenue offset higher depreciation.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Interest expense and cost management",
+      "last_report": "Higher interest expense across segments and corporate; CEO cites disciplined cost management and timely recovery.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Reaffirmed 2026 ongoing EPS $1.90-$1.98, midpoint $1.94. Expects stronger H2 2026 and 6-8% annual EPS growth through at least 2029, near top end.",
+    "kill_conditions": [
+     "PPL lowers 2026 ongoing EPS guidance below $1.90 or midpoint $1.94.",
+     "Kentucky or Pennsylvania rate recovery or capital tracking delayed or denied.",
+     "PPL Q3 ongoing EPS misses as interest expense and operating costs rise."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 5,
+    "found": 5,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 124,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "PPL confirms $23B investment plan and 10.3% rate-base growth through 2029",
+        "date": "2026-09-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PPL expands generation capacity to meet rising electricity demand",
+        "date": "2026-10-07",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Pinnacle West Capital announces $7.95B investment plan",
+        "date": "2026-10-09",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PNW Q3 outlook identifies higher financing costs as a risk",
+        "date": "2026-10-29",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PNW beats Q3 estimates on strong sales growth",
+        "date": "2026-11-03",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PPL potentially undervalued due to rate hike and data center demand tied to $275M Pennsy",
+        "date": "2026-11-04",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Exelon Q3 beat on higher utility rates and infrastructure investments",
+        "date": "2026-10-30",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "FirstEnergy Q3 beat on demand growth and data center pipeline",
+        "date": "2026-10-28",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Alliant Energy Q3 beat on higher utility revenues and data center growth",
+        "date": "2026-10-30",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Essential Utilities Q3 beat on rate recovery and gas growth",
+        "date": "2026-11-04",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Atmos Energy Q4 beat on rate gains and operating strength",
+        "date": "2026-11-05",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Evergy Q3 earnings and revenues surpass estimates",
+        "date": "2026-11-05",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Eversource Q3 miss on higher interest costs and weaker segments",
+        "date": "2026-11-05",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ONE Gas Q3 beat on new rates and customer growth",
+        "date": "2026-11-03",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Pinnacle West Q3 beat on strong sales growth",
+        "date": "2026-11-03",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "MDU Q3 miss on higher costs despite revenue growth",
+        "date": "2026-11-05",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Southwest Gas Q3 beat on lower interest costs",
+        "date": "2026-11-04",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "NextEra Q3 beat on rising electricity demand and renewables",
+        "date": "2026-10-21",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "SO",
+    "EVRG",
+    "DUK",
+    "ES",
+    "PEG"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "other",
+        "why": "Warmer weather and demand growth support utility sector, but not directly tied to PPL's listed drivers."
+       },
+       {
+        "peer": "EVRG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Raised guidance on weather, regulated investment recovery, demand growth; supports PPL's H2 rate recovery and load."
+       },
+       {
+        "peer": "DUK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Kentucky/utility recovery and favorable weather offset higher interest/depreciation; positive for PPL Kentucky rate recovery."
+       },
+       {
+        "peer": "ES",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "FERC ROE cut for New England transmission owners pressures Rhode Island transmission/rider revenue; negative for PPL RI."
+       },
+       {
+        "peer": "PEG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release excerpt only forward-looking statements; no Q3 results or drivers relevant to PPL."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Southeast-specific growth and weather; no clear read-through to PPL's Kentucky, PA, or RI segments."
+       },
+       {
+        "peer": "EVRG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Raised guidance on regulated investment recovery and demand supports PPL's H2 rate-recovery thesis."
+       },
+       {
+        "peer": "DUK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Infrastructure investment recovery and favorable weather support sector rate-recovery trend for PPL."
+       },
+       {
+        "peer": "ES",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D4",
+        "why": "FERC cut New England transmission ROE, negative regulatory read-through for PPL's Rhode Island segment."
+       },
+       {
+        "peer": "PEG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release contains only boilerplate forward-looking statements; no earnings data to read through."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PEG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No financial results or guidance; only boilerplate risk factors."
+       },
+       {
+        "peer": "ES",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Constructive regulatory outcome and raised guidance support rate recovery; FERC ROE cut is New England-specific."
+       },
+       {
+        "peer": "DUK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Peer's infrastructure investment recovery and top-end guidance support PPL's H2 rate-recovery thesis, despite shared interest/depreciation headwinds."
+       },
+       {
+        "peer": "EVRG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Raised guidance on regulated investment recovery and demand growth supports PPL's rate-recovery outlook; large-load trend is positive but region-specific."
+       },
+       {
+        "peer": "SO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Strong customer and large-load growth suggest favorable demand trends, potentially supporting PPL's Kentucky generation investment."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.834733547569204,
+   "score_peer": 1.5,
+   "score_combined": 3.584733547569204,
+   "overall_votes": [
+    "inline",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 0.5368,
+   "revenue_estimate": 2444801788,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-06",
+   "cutoff": "2026-11-05 22:00:00+00:00",
+   "decided_at": "2026-11-06T02:34:42.952153+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "4874301fd8f2a56e7464155ba5455ca006eeff9e",
+   "sha256": "35fce85a54b556e8bb691ed30851d450fc85cc5891697b01a48f78132e704d34"
+  },
+  "STWD": {
+   "ticker": "STWD",
+   "index": "SP400",
+   "sector": "Financials",
+   "sub_industry": "Mortgage REITs",
+   "last_release": "2026-08-06 10:56:09+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1465128/000146512826000028/stwd_pressrelease-q22026.htm",
+   "release_doc": "type EX-99.1",
+   "status": "card_ungrounded",
+   "error": "card numbers not in the release: {'numbers': 11, 'found': 5, 'share': 0.45454545454545453, 'missing': ['185.7', '29.8', '30.2', '327.2', '34.2', '63.8']}",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Commercial lending segment earnings",
+      "last_report": "Commercial and Residential Lending DE $185.7M; interest income $327.2M; credit loss provision $29.8M.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Capital deployment and ROE",
+      "last_report": "Invested $2.5B in Q2 and $6.7B through July at double-digit ROE.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Underperforming asset resolutions",
+      "last_report": "Credit loss provision $30.2M; expects to resolve nearly $900M underperforming assets by year-end.",
+      "guidance": "~$900M underperforming asset resolution by year-end or shortly thereafter."
+     },
+     {
+      "id": "D4",
+      "name": "Corporate debt cost and maturity",
+      "last_report": "$2.1B corporate debt transactions; weighted average maturity 3.7 years; lowers cost of funds.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Property segment fundamentals",
+      "last_report": "Property DE $34.2M; rental income $63.8M; improving real estate fundamentals and lower construction.",
+      "guidance": null
+     }
+    ],
+    "guidance": "No formal EPS/DE guidance. Expects to resolve ~$900M underperforming assets by year-end or shortly thereafter; $6.7B invested through July at double-digit ROE.",
+    "kill_conditions": [
+     "Q3 distributable earnings per share falls below $0.40 or dividend coverage weakens.",
+     "Q3 credit loss provision exceeds $30M or underperforming asset resolutions slip past year-end.",
+     "Q3 investment volume drops sharply or corporate debt costs rise."
+    ]
+   },
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 11,
+    "found": 5,
+    "share": 0.45454545454545453,
+    "missing": [
+     "185.7",
+     "29.8",
+     "30.2",
+     "327.2",
+     "34.2",
+     "63.8"
+    ]
+   },
+   "hour": "bmo",
+   "eps_estimate": 0.357,
+   "revenue_estimate": 542810003,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-06",
+   "cutoff": "2026-11-05 22:00:00+00:00",
+   "decided_at": "2026-11-06T02:31:31.665193+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "4874301fd8f2a56e7464155ba5455ca006eeff9e",
+   "sha256": "ee00d303b8fc4da1daa78d3174a7843a5eaa7cd016c7697243c9894ee9fb000e"
+  },
+  "VST": {
+   "ticker": "VST",
+   "index": "SP500",
+   "sector": "Utilities",
+   "sub_industry": "Electric Utilities",
+   "last_release": "2026-08-07 11:00:25+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1692819/000169281926000017/vistra-20260630xearningsre.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Ongoing Operations Adjusted EBITDA",
+      "last_report": "Q2 $1,767M, up over 30% YoY; first half $3,261M; reaffirmed 2026 guidance ranges.",
+      "guidance": "2026 Adjusted EBITDA $6.8–$7.6B; FCFbG $3.925–$4.725B; 2027 midpoint opportunity $7.4–$7.8B, excluding Cogentrix/Meta."
+     },
+     {
+      "id": "D2",
+      "name": "Texas segment Adjusted EBITDA",
+      "last_report": "Q2 $311M vs $142M; first half $897M vs $632M.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "East segment Adjusted EBITDA",
+      "last_report": "Q2 $642M vs $418M; first half $1,443M vs $932M.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Retail segment Adjusted EBITDA",
+      "last_report": "Q2 $773M vs $756M; first half $841M vs $940M, down year over year.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Fleet availability and weather",
+      "last_report": "Commercial availability 97%+ during Texas/PJM extreme heat; spring maintenance positioned fleet for summer.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Reaffirmed 2026 Ongoing Operations Adjusted EBITDA $6.8–$7.6B and Ongoing Operations Adjusted FCFbG $3.925–$4.725B; excludes Cogentrix and Meta PPAs. 2027 midpoint opportunity $7.4–$7.8B (not guidance).",
+    "kill_conditions": [
+     "Vistra lowers or withdraws 2026 Ongoing Operations Adjusted EBITDA guidance.",
+     "Texas or East segment Q3 Adjusted EBITDA declines versus year-ago quarter.",
+     "Major unplanned outage cuts fleet commercial availability below 90% in summer."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 22,
+    "found": 22,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 389,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Vistra completes Cogentrix acquisition, adding 5.5 GW natural gas generation",
+        "date": "2026-10-30",
+        "driver": "D1",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Talen guides 2027 EBITDA up 26% on strong PJM fundamentals",
+        "date": "2026-11-03",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Democrats win midterms; Texas governor-elect vows data center pause",
+        "date": "2026-11-04",
+        "driver": "D2",
+        "direction": -1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Vistra completes Cogentrix acquisition, adding 5.5 GW natural gas generation",
+        "date": "2026-10-30",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Texas elects governor Hinojosa who vows data center pause and regulation",
+        "date": "2026-11-04",
+        "driver": "D2",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Talen guides 2027 EBITDA up 26% on strong PJM fundamentals",
+        "date": "2026-11-03",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "VST completed acquisition of Cogentrix Energy, adding 5.5GW of natural gas generation capacity.",
+        "date": "2026-10-30",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "New Texas governor advocated for an immediate pause on new data-center construction.",
+        "date": "2026-11-05",
+        "driver": "D2",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Democratic sweep in Congress raised fears of slowing AI data center spending.",
+        "date": "2026-11-05",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "VST board declared a quarterly dividend of $0.231 per share.",
+        "date": "2026-10-29",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "SO",
+    "EVRG",
+    "DUK",
+    "ES",
+    "PEG"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Warmer weather and large C&I demand growth signal strong industry power demand, supporting VST's generation and retail."
+       },
+       {
+        "peer": "EVRG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Raised guidance on warmer weather and data center demand; positive read-through for VST's growth pipeline and power demand."
+       },
+       {
+        "peer": "DUK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Favorable weather and customer growth in overlapping PJM/Midwest regions support VST's East segment results."
+       },
+       {
+        "peer": "ES",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Q3 decline driven by company-specific charges and FERC ROE; no clear read-through to VST's competitive generation."
+       },
+       {
+        "peer": "PEG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release excerpt only contains forward-looking statements; no actual results or industry conditions to infer."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Warmer weather, large C&I demand, and higher Southern Power earnings signal strong power demand for VST."
+       },
+       {
+        "peer": "EVRG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Data center and large-load demand growth supports VST's East/PJM generation and retail."
+       },
+       {
+        "peer": "DUK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Favorable weather and growing jurisdictions support power demand, modest positive for VST."
+       },
+       {
+        "peer": "ES",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "New England transmission ROE and offshore wind charges are company-specific, not relevant to VST."
+       },
+       {
+        "peer": "PEG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release excerpt lacks financial results; no read-through to VST's drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PEG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release excerpt only forward-looking statements; no Q3 results or drivers to infer for VST."
+       },
+       {
+        "peer": "ES",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Utility-specific charges and FERC ROE cut; no read-through to VST's merchant/retail drivers."
+       },
+       {
+        "peer": "DUK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Favorable weather and strong demand support power consumption; positive read-through for VST fleet/weather."
+       },
+       {
+        "peer": "EVRG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Warmer weather, record peak demand, and large-load growth signal strong power demand for VST."
+       },
+       {
+        "peer": "SO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Warmer weather, customer growth, and higher wholesale earnings point to stronger power demand and pricing."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 3.0,
+   "score_combined": 1.5,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "below"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 2.991,
+   "revenue_estimate": 6084287722,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-06",
+   "cutoff": "2026-11-05 22:00:00+00:00",
+   "decided_at": "2026-11-06T02:36:08.830311+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "4874301fd8f2a56e7464155ba5455ca006eeff9e",
+   "sha256": "d4e4f3aedda6052eb1b4b912872711bd473baac3ddb392d3815cd85e53bed561"
+  }
+ },
+ "report_date": "2026-11-06",
+ "cutoff": "2026-11-05 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "e0f48ab0c57e60d3fe6d97b91ac5cb16016c8b045989d37aa756962899d7db88",
+ "runs": [
+  {
+   "at": "2026-11-06T02:36:08.889397+00:00",
+   "version": "r5-v2",
+   "code": "4874301fd8f2a56e7464155ba5455ca006eeff9e",
+   "quality": {
+    "counts": {
+     "ok": 8,
+     "card_ungrounded": 2
+    },
+    "attempted": 10,
+    "bad": 2,
+    "bad_share": 0.2,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
