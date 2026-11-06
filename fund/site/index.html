@@ -230,7 +230,8 @@ fetch("shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
 // the scorer's weekly report (fund-data performance/gate.md), shown as written
 fetch("gate.md", { cache: "no-store" }).then(r => r.ok ? r.text() : "").then(t => {
   if (!t.trim().startsWith("#")) { document.getElementById("gate").innerHTML = '<div class="empty">The scorer\'s report is not published yet.</div>'; return; }
-  document.getElementById("gateNote").textContent = "The scorer counts weeks from 14 Oct, when the live fund started; the registered rules restarted the evaluation clock on 28 Oct, which the dates above use.";
+  if (!/Protocol 7B/.test(t))                     // a scorer from before its clock followed 7B (PR #151) counts from 14 Oct
+    document.getElementById("gateNote").textContent = "This report counts weeks from 14 Oct, when the live fund started; the registered rules restarted the evaluation clock on 28 Oct, which the dates above use.";
   document.getElementById("gate").innerHTML = mdLite(t);
 }).catch(() => {});
 
