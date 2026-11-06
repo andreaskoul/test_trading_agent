@@ -38,6 +38,24 @@ def test_release_session_from_8k_calendar_and_type():
     assert A2.release_session("earnings", "2026-10-28", [pd.Timestamp("2026-09-01 16:05")], None, DAYS) is None
 
 
+def test_release_window_in_sessions_from_the_fix_date():
+    # Addendum to Amendment 2: XOM released Q3 on Fri 2026-10-30 before the open (Finnhub calendar: 2026-10-30 'bmo'; no
+    # earnings 8-K), and the desk dated the first report Mon 11-02. Three calendar days: B1 found nothing and XOM
+    # entered without the priced-in check. One session: the release is found.
+    xom = ("2026-10-30", "bmo")
+    assert A2.release_session("earnings", "2026-11-02", [], xom, DAYS) is None                        # as registered
+    r = A2.release_session("earnings", "2026-11-02", [], xom, DAYS, sessions=True)
+    assert r == {"session": "2026-10-30", "source": "calendar bmo"}
+    fri_amc = [pd.Timestamp("2026-10-30 16:30")]                    # an 8-K after Friday's close: Monday's session
+    assert A2.release_session("earnings", "2026-11-02", fri_amc, None, DAYS) is None
+    assert A2.release_session("earnings", "2026-11-02", fri_amc, None, DAYS, sessions=True)["session"] == "2026-11-02"
+    assert A2.release_session("earnings", "2026-11-02", [], ("2026-10-27", "bmo"), DAYS, sessions=True) is None  # 4 sessions
+    amc = [pd.Timestamp("2026-10-28 16:05")]                       # the registered cases are unchanged by the switch
+    assert A2.release_session("earnings", "2026-10-28", amc, None, DAYS, sessions=True)["session"] == "2026-10-29"
+    import lifecycle_rules as LR
+    assert LR.A7B2_FIX_ASOF >= "2026-11-11"                        # recorded cohorts (as-of 11-04 and before) keep the old window
+
+
 def _info(t, session):
     return {"inputs": C["names"][t]["inputs"], "release": {"session": session, "source": "8-K 2.02"}}
 
@@ -64,7 +82,10 @@ def test_b1_soft_priced_in_is_not_entered_and_no_release_changes_nothing():
     H, log = A2.b1_horizon("GOOGL", soft, -1, past, C["beta"]["GOOGL"], today, D, 24, K)
     assert H is None and "not entered" in log["b1"]
     H, log = A2.b1_horizon("GOOGL", {"inputs": C["names"]["GOOGL"]["inputs"], "release": None}, -1, past, 1.0, today, D, 24, K)
-    assert H == 24 and log["b1"] == "not applicable"
+    assert H == 24 and log["b1"] == "not applicable" and "no_release" not in log
+    xom = {"inputs": C["names"]["GOOGL"]["inputs"], "release": None, "out": {"event_type": "earnings"}}
+    H, log = A2.b1_horizon("GOOGL", xom, -1, past, 1.0, today, D, 24, K)  # an earnings view with no release: logged
+    assert H == 24 and log == {"b1": "not applicable", "no_release": True}
 
 
 def test_b2_lookback_only_from_the_amendment_date():

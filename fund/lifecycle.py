@@ -98,7 +98,7 @@ Z_HI, ID_HI, TO_LO, EXT_MAX, EXT_TOTAL, SAMPLES, REVERT_N = 1.5, 0.1, 1.0, 2, 40
 LABELS = ("CONFIRMING", "CONTRADICTING", "STALE", "NONE")
 
 # ---- Protocol 7B (owner, 2026-10-27): R1-R3 and their constants live in fund/lifecycle_rules.py (contract-tested)
-from lifecycle_rules import (P7B, P7B_ASOF, A7B1, P7B2, P7B2_ASOF, A7B3, soft_view, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
+from lifecycle_rules import (P7B, P7B_ASOF, A7B1, P7B2, P7B2_ASOF, A7B2_FIX_ASOF, A7B3, soft_view, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
                              may_increase, checkpoint_exit, slots, structural_h, structural_mean)
 DESK_SAMPLES, DESK_DRAWS = 5, 8
 
@@ -255,7 +255,8 @@ Return JSON only: {""").replace('"catalyst": "earnings"|"other"|null}', '"cataly
                     rec["H"] = int(min(max(round(h7), H_MIN), STRUCT_MAX))
                     rec["why"] += f"; {h_why}; 7B mean over samples {hs7} = {h7:.1f}"
             if a2:
-                rec["release"] = A2.release_session(out["event_type"], out["first_reported"], acc_all.get(t, []), cur_e.get(t), days)
+                rec["release"] = A2.release_session(out["event_type"], out["first_reported"], acc_all.get(t, []), cur_e.get(t), days,
+                                                    sessions=str(asof.date()) >= A7B2_FIX_ASOF)
         elif st == "ok":
             fr = pd.Timestamp(out["first_reported"])
             age = sum(1 for d in days if fr < d <= t0)
@@ -1419,6 +1420,8 @@ def daily():
     ck = checks(st)
     if [r["nav"] for r in again["rows"]] != [r["nav"] for r in st["rows"]]:
         ck["fails"].append("rebuild from the logged inputs does not reproduce the NAV")
+        import ops_stats
+        ck["rebuild_diff"] = ops_stats.rebuild_diff(st, again)       # where the two runs part (diagnosis, #140)
     sp = os.path.join(LC, "state.json")
     if os.path.exists(sp):                              # no retroactive change to days already recorded
         old = {r["date"]: r["nav"] for r in json.load(open(sp))["rows"]}
@@ -1450,6 +1453,8 @@ def control():
     ck = checks(st)
     if [r["nav"] for r in again["rows"]] != [r["nav"] for r in st["rows"]]:
         ck["fails"].append("control: a rebuild from the logged inputs does not reproduce the NAV")
+        import ops_stats
+        ck["rebuild_diff"] = ops_stats.rebuild_diff(st, again)
     sp = os.path.join(cd, "state.json")
     if os.path.exists(sp):
         old = {r["date"]: r["nav"] for r in json.load(open(sp))["rows"]}
@@ -1628,7 +1633,7 @@ def trade(plan_only):
            "lots_after": [{**{k: v for k, v in L.items() if k != "n"}, "w": L["n"] / nav} for L in lv["lots"]],
            "prices": {t: px.get(t) for t in target}, "equity": equity, "current_qty": cur, "target_weights": target,
            "orders": orders, "problems": [], "status": "planned" if plan_only else "sending", "reviews": lv.get("reviews", []),
-           "prices_meta": {"news": meta_news, "decision": meta_dec}, "entry_check": entry_check, "a2": lv.get("a2"),
+           "prices_meta": {"news": meta_news, "decision": meta_dec}, "entry_check": entry_check, "a2": lv.get("a2"), "a3": lv.get("a3"),
            "halt": halt, "margin": margin, "p9": p9}
     json.dump(rec, open(log_p, "w"), indent=1, default=str)
     print(f"lifecycle {day.date()}: {len(lv['lots'])} lots, actions "

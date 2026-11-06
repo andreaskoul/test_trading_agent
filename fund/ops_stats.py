@@ -91,3 +91,17 @@ def margin_check(acct, target):
     if any(w < 0 for w in target.values()) and not shorting:
         out["problems"].append("margin: the target has shorts but shorting is disabled on the account")
     return out
+
+
+def rebuild_diff(first, second):
+    """Where two rebuilds of a book disagree (the determinism check in lifecycle.daily/control). first, second: run()
+    outputs ({"rows": [{"date", "nav"}], "events": [...]}). Returns the first date whose NAV differs (with both values),
+    the dates only one run has, and up to 10 events in one run but not the other. Diagnosis only: it changes nothing."""
+    a, b = {r["date"]: r["nav"] for r in first["rows"]}, {r["date"]: r["nav"] for r in second["rows"]}
+    both = sorted(set(a) & set(b))
+    d0 = next((d for d in both if a[d] != b[d]), None)
+    key = lambda e: json.dumps(e, sort_keys=True, default=str)
+    ea, eb = {key(e) for e in first.get("events", [])}, {key(e) for e in second.get("events", [])}
+    return {"first_nav_diff": None if d0 is None else {"date": d0, "first": a[d0], "second": b[d0], "diff": b[d0] - a[d0]},
+            "dates_only_first": sorted(set(a) - set(b)), "dates_only_second": sorted(set(b) - set(a)),
+            "events_only_first": sorted(ea - eb)[:10], "events_only_second": sorted(eb - ea)[:10]}

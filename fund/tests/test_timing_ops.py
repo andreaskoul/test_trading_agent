@@ -134,6 +134,51 @@ def test_ledger_segments_add_up_by_hand():
     assert abs(pre["y"] - res[(res.index > pd.Timestamp("2026-10-07")) & (res.index <= pd.Timestamp("2026-10-08"))].sum()) < 1e-12
 
 
+def test_live_record_carries_the_a3_log():
+    # The failure class (2026-11-05): run() built 7B A3's log of stopped soft views, but the live record writer copied
+    # only a2, so lifecycle/live/<day>.json never showed what A3 stopped.
+    src = open(os.path.join(os.path.dirname(HERE), "lifecycle.py")).read()
+    assert '"a2": lv.get("a2"), "a3": lv.get("a3")' in src
+
+
+def test_rebuild_diff_names_the_first_day_that_differs():
+    # #140 (2026-11-05): the determinism check failed with no clue where. On a real NAV series (the account's, from
+    # fund/tests/fixtures/core) and the real lifecycle events, a one-cent change on one day must be reported with both
+    # values and that day.
+    st = json.load(open(os.path.join(FX, "base", "lifecycle", "state.json")))
+    nav = pd.read_csv(os.path.join(HERE, "fixtures", "core", "nav.csv"))
+    a = {"rows": [{"date": d, "nav": float(v)} for d, v in zip(nav["date"], nav["equity"])], "events": st["events"]}
+    rows = [dict(r) for r in a["rows"]]
+    rows[5]["nav"] += 0.01
+    d = O.rebuild_diff(a, {"rows": rows, "events": st["events"][:-1]})
+    assert d["first_nav_diff"]["date"] == rows[5]["date"] and abs(d["first_nav_diff"]["diff"] - 0.01) < 1e-9
+    assert len(d["events_only_first"]) == 1 and d["events_only_second"] == [] and d["dates_only_first"] == []
+    assert O.rebuild_diff(a, a)["first_nav_diff"] is None
+
+
+def test_ledger_tags_structural_and_priced_in_entries():
+    # 7B A2 exempts structural lots from B1 (2026-11-05: FIS and ORCL entered with p_entry 1.5). Entry rows carry the
+    # label and the entry decision's priced-in fraction, read from the live records' entry_check.
+    base = os.path.join(FX, "base")
+    ev = json.load(open(os.path.join(base, "lifecycle", "state.json")))["events"]
+    coh = A.cohort_info(base)
+    R = pd.read_csv(os.path.join(base, "lifecycle", "returns.csv"), parse_dates=["date"]).pivot_table(
+        index="date", columns="ticker", values="ret")
+    ec = {"2026-10-08": {"MRVL": {"p_entry": 1.5, "priced_in_entry": True}}}
+    rows = A.rows_of(ev, coh, R, "live", ec)
+    m = next(r for r in rows if r["ticker"] == "MRVL" and r["action"] == "entry" and r["day"] == "2026-10-08")
+    assert m["p_entry"] == 1.5 and m["priced_in"] is True and m["structural"] is False
+    other = next(r for r in rows if r["action"] == "entry" and r["day"] != "2026-10-08")
+    assert other["priced_in"] is None                                # no entry_check logged for that day
+    tmp = tempfile.mkdtemp()
+    try:
+        os.makedirs(os.path.join(tmp, "lifecycle", "live"))
+        json.dump({"entry_check": ec["2026-10-08"]}, open(os.path.join(tmp, "lifecycle", "live", "2026-10-08.json"), "w"))
+        assert A.entry_checks(tmp) == ec
+    finally:
+        shutil.rmtree(tmp)
+
+
 def test_entry_day_check_sees_the_move_after_the_signal_close():
     # The failure class: GOOGL's earnings came after the 2026-10-28 close; the desk's p was 0 and H 24, while the
     # stock had moved ~12% against SPY by the entry decision. The log must show the entry-day move and p >= 1.

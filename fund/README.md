@@ -70,7 +70,7 @@ Thu ─── 10 execution (last minute before close)  Fri/Mon/Tue/Wed ─ 12 da
 | 10 Execution | `execute.py`, `broker.py` | no | market orders in the last minute before the close (`broker.send`; Alpaca paper has no closing auction); reconcile: `execution/fills.csv` (slippage vs the official close, plus the Alpaca close beside yfinance's), `nav.csv`, `activities.csv`; risk halts |
 | 11 Shadow | `shadow.py` | yes | `canary/`: the weekly model canary (C2 and C3 retired with Protocol 9); never traded |
 | 16 Lifecycle C10 | `lifecycle.py` | yes, one per name + daily news checks | `lifecycle.json` per week; `lifecycle/state.json`: per-position horizon, stop/target, news exits, daily NAV (Amendment 7, shadow) |
-| Decision ledger | `attribution.py` | no | `performance/attribution.json`, `.md`: the residual return after every lifecycle decision, the shadow control's, and the cohort names not entered (reporting only) |
+| Decision ledger | `attribution.py` | no | `lifecycle/attribution.json`, `.md`: the residual return after every lifecycle decision, the shadow control's, and the cohort names not entered; agreement with the news-day move, holding-period segments, structural x priced-in entries (reporting only) |
 | News audit | `news_audit.py` | no | `lifecycle/news_audit/<day>.json`: articles published before a live check's cutoff but served after it (measurement only) |
 | Ledger | `ledger.py` | no | `ledger/fund_positions.xlsx` and `ledger/dashboard.json`: actual Alpaca trades only |
 | Standard P&L | `pnl.py` | no | used by the ledger: FIFO realized/unrealized P&L from Alpaca's fills, reconciled to the account value |

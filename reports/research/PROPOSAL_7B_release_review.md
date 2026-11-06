@@ -89,3 +89,25 @@ Returns after each verdict are reported, descriptive only.
 * It does not put prices in prompts.
 * It does not change entries. The exposure flag only records.
 * Whether to avoid entering ahead of known reports is a separate question. The flag supplies the evidence for it.
+
+## Outcome of the AAPL case (added 2026-11-06): the headline check got it right
+
+* **On 3 Nov,** the first check after the release, all three news passes rated kill condition 1 *partial*. They cited
+  the facts that contradicted the thesis:
+  * "upbeat sales forecast";
+  * EPS and revenue above estimates;
+  * a record iPhone quarter.
+
+  All three also flagged the 45–46% holiday gross-margin guidance as hard news in the short's favour.
+* **The end-of-horizon review** labelled the news CONTRADICTING. The short was bought back at $332.01, +3.8% net of
+  SPY. AAPL rose +5.3% the next day.
+* **The thesis** ("Loop Capital downgrade, caution on iPhone demand") was wrong. The trade earned on margins, a reason
+  outside it.
+
+**What this changes in the proposal.** For a heavily covered company, the headline check read the release correctly,
+so the case for Phase 2 is narrower than first argued. The release review's value is likely to be greatest:
+* for thinly covered names, where a 25- to 60-article window may hold no coverage of the results;
+* where a kill condition turns on an exact number, such as a guidance range against consensus.
+
+Phase 1 should therefore record each release event's article count, so its disagreements can be read by coverage. The
+decision rule is unchanged.
