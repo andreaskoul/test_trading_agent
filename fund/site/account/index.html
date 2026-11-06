@@ -15,6 +15,7 @@
     <div class="muted">The broker's own record: actual paper trades only · updated <span id="upd">…</span></div></div>
     <nav class="site"><a href="../">Models under assessment</a><a class="on" href="./">Paper account</a><a href="../ledger/">Position ledger</a><a href="../report.html">Performance report</a></nav>
   </header>
+  <details class="ops" id="ops"><summary><b>Operations</b> · checking the runner and its jobs…</summary></details>
   <div class="kpis" id="kpis"></div>
   <section id="p9" hidden><h2>The account against the S&amp;P 500</h2><div class="kpis" id="p9kpis"></div><div class="muted" id="p9note"></div></section>
   <section><h2>Account value</h2><div id="acctEmpty" class="empty" hidden>No account history yet.</div><canvas id="acct"></canvas></section>
@@ -111,6 +112,7 @@ fetch("../dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => 
 }).catch(e => { document.getElementById("kpis").innerHTML = `<div class="empty">Could not load dashboard data (${esc(e.message)}).</div>`; });
 
 folds();
+opsPanel("ops");
 </script>
 </body>
 </html>

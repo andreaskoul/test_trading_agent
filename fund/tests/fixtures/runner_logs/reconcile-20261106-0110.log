@@ -1,0 +1,35 @@
+[2026-11-06 01:10:32Z] execute reconcile: waiting for the 'execute' lock
+[2026-11-06 01:10:32Z] execute reconcile: cloning main into /Users/apollogodofthesun/.fund-runner/work/execute-20261106-011032
+[2026-11-06 01:10:34Z] code: main @ 4874301
+[2026-11-06 01:10:34Z] ── Restore fund state
+[2026-11-06 01:11:10Z] ── Execute (reconcile)
+reconciled lifecycle 2026-11-05: {'at': '2026-11-06T01:11:22', 'equity': 95305.0, 'n_orders': 15, 'n_filled': 15, 'n_not_filled': 0, 'median_abs_slip_bp_close': 11.821807464156286, 'tracking_gross': 0.01847947573227366}
+broker NAV 95,718, drawdown from peak 4.6%, last 5 sessions -3.4%
+reconcile: ['lifecycle 2026-11-04 2026-11-05']
+[2026-11-06 01:11:23Z] ── C10 lifecycle book: news checks and rebuild (Amendment 7)
+lifecycle C10: 21 days, NAV 95,200.75, 20 open lots, 152 events; checks: PASS
+[2026-11-06 01:11:30Z] ── C10 degenerate replay vs the weekly book (mechanical gate)
+replay 2026-09-30 through 2026-10-08: engine -1.1154%, direct -1.1154% (+0.0000 bp), weekly book -1.1154% (-0.0007 bp)
+replay 2026-10-07 through 2026-10-15: engine -2.1350%, direct -2.1350% (+0.0000 bp), weekly book -2.1350% (-0.0015 bp)
+replay 2026-10-14 through 2026-10-22: engine +0.1954%, direct +0.1954% (-0.0000 bp)
+replay 2026-10-21 through 2026-10-29: engine -0.4996%, direct -0.4996% (-0.0000 bp)
+replay 2026-10-28 through 2026-11-05: engine -2.1933%, direct -2.1933% (+0.0000 bp)
+[2026-11-06 01:11:37Z] ── Protocol 7B shadow control (P7 + A8/A9)
+lifecycle control: 21 days (7 decided by the control), NAV 95,424.34, 20 open lots; checks: PASS
+[2026-11-06 01:11:47Z] ── News audit: articles served after the live check (measurement only)
+news audit 2026-11-02: 200 articles checked live; never checked: 57 served after the check, 518 cut by the article cap
+news audit 2026-11-03: 174 articles checked live; never checked: 48 served after the check, 363 cut by the article cap
+news audit 2026-11-04: 163 articles checked live; never checked: 47 served after the check, 233 cut by the article cap
+news audit: 19 days, 3826 checked live; never checked: 1171 served late, 5155 cut by the cap; late-serving lag lower bound quantiles (min) {0.5: 153.0, 0.9: 517.4, 0.95: 700.0}
+[2026-11-06 01:13:02Z] ── Decision ledger: what followed each decision (reporting only)
+decision ledger: 329 rows, 133 cells
+[2026-11-06 01:13:02Z] ── Position ledger (Excel)
+standard P&L: FIFO cost differs from Alpaca's average entry for ['SPY']
+standard P&L: equity 95,304.49, deposits 100,000.00, account_pnl -4,695.51, realized -2,251.95, unrealized -2,439.01, cash -4.55, unexplained -0.00
+ledger: 112 position rows, 199 orders, 26 account days -> /Users/apollogodofthesun/.fund-runner/work/execute-20261106-011032/fund_state/live/ledger/fund_positions.xlsx
+dashboard data: 112 positions, 199 orders -> /Users/apollogodofthesun/.fund-runner/work/execute-20261106-011032/fund_state/live/ledger/dashboard.json
+shadow monitor: 12 books, c0_weekly -5.37%, analyst -5.88%, quant -1.06%, core20 -0.29%, random -6.31%, c2_selfconsistency -8.71%, c3_textonly -4.57%, c4_volscaled -4.28%, c5_reversal -6.02%, c8_informed -4.22%, c9_ranker -4.24%, sp500_hold +0.32%
+[2026-11-06 01:13:19Z] ── Commit execution records
+[2026-11-06 01:13:24Z] ── GitHub Pages: rebuild the dashboard (fund_pages.yml)
+https://github.com/andreaskoul/test_trading_agent/actions/runs/42142362090
+[2026-11-06 01:13:26Z] execute: ok in 2.9 min

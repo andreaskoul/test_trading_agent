@@ -19,6 +19,7 @@
     <div class="muted">A research project: every model here is tested live against a rule written down before its results · updated <span id="upd">…</span></div></div>
     <nav class="site"><a class="on" href="./">Models under assessment</a><a href="account/">Paper account</a><a href="ledger/">Position ledger</a><a href="report.html">Performance report</a></nav>
   </header>
+  <details class="ops" id="ops"><summary><b>Operations</b> · checking the runner and its jobs…</summary></details>
   <p class="lead">Four things are being tested. The live fund trades a paper account at Alpaca; everything else is paper only and never sent to the broker. Each test compares a model only with what it must beat, over the same dates, and says when and by what rule it will be decided. Live results are weeks old, so differences are still mostly noise: <b>no verdict before mid-April 2027</b>. Returns are cumulative over the dates shown; % per year appears from 26 weeks. Backtests are labelled and never mixed with live weeks. Models retired on 5 Nov 2026 are listed at the bottom.</p>
 
   <section><h2>Where each test stands</h2>
@@ -229,7 +230,8 @@ fetch("shadow.json", { cache: "no-store" }).then(r => r.json()).then(d => {
 // the scorer's weekly report (fund-data performance/gate.md), shown as written
 fetch("gate.md", { cache: "no-store" }).then(r => r.ok ? r.text() : "").then(t => {
   if (!t.trim().startsWith("#")) { document.getElementById("gate").innerHTML = '<div class="empty">The scorer\'s report is not published yet.</div>'; return; }
-  document.getElementById("gateNote").textContent = "The scorer counts weeks from 14 Oct, when the live fund started; the registered rules restarted the evaluation clock on 28 Oct, which the dates above use.";
+  if (!/Protocol 7B/.test(t))                     // a scorer from before its clock followed 7B (PR #151) counts from 14 Oct
+    document.getElementById("gateNote").textContent = "This report counts weeks from 14 Oct, when the live fund started; the registered rules restarted the evaluation clock on 28 Oct, which the dates above use.";
   document.getElementById("gate").innerHTML = mdLite(t);
 }).catch(() => {});
 
@@ -424,6 +426,7 @@ fetch("research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
 }).catch(() => {});
 
 folds();
+opsPanel("ops");
 </script>
 </body>
 </html>
