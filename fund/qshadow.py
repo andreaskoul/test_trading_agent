@@ -35,7 +35,7 @@ import urllib.request
 import numpy as np
 import pandas as pd
 
-from common import MODE, ROOT, STATE
+from common import MODE, ROOT, STATE, fred_series
 
 NAMES = ("AAPL", "AMD", "AMZN", "AXP", "C", "CMCSA", "COF", "COP", "CRM", "CVX", "DIS", "EBAY", "GE", "GME", "GOOG",
          "HAL", "JPM", "KO", "META", "MS", "MSFT", "MU", "NVDA", "OXY", "PNC", "QCOM", "SLB", "TSLA", "UNH", "USB",
@@ -537,15 +537,13 @@ def ingest(lo, hi, S, threads=32):
 
 # ------------------------------------------------------------------------------------------------- exposure
 def dtb3():
-    """FRED DTB3 (3-month T-bill, percent -> fraction); an empty series if FRED is unreachable."""
+    """FRED DTB3 (3-month T-bill, percent -> fraction); an empty dated series if FRED stays unreachable, so the week's
+    rate waits for a later run (2026-10-22: the empty fallback had an integer index and the date filter crashed)."""
     try:
-        with urllib.request.urlopen("https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTB3", timeout=60) as r:
-            s = pd.read_csv(r, na_values=".")
+        return fred_series("DTB3")
     except Exception as e:                                                   # noqa: BLE001
         print(f"DTB3 unavailable: {e}")
-        return pd.Series(dtype=float)
-    s.columns = ["date", "v"]
-    return s.assign(date=pd.to_datetime(s.date)).set_index("date")["v"].dropna() / 100
+        return pd.Series(dtype=float, index=pd.DatetimeIndex([]))
 
 
 def exposure(p, recs):

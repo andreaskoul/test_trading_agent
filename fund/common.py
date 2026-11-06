@@ -38,6 +38,34 @@ PRICE_FACTS = ["GICS Sector", "GICS Sub-Industry", "beta60", "vol60_ann_pct", "r
                "ret_12_1_pct", "pct_below_52w_high", "news_7d", "attention_shock", "earnings_in_holding_week"]
 
 
+def fred_series(fid: str, tries: int = 3, wait: float = 10.0) -> pd.Series:
+    """A FRED series (fredgraph.csv) as fractions by date, checked before use (CLAUDE.md 2): the header must name the
+    series and there must be dated rows. A response that fails the check, or a network error, is retried after
+    `wait`, 2 x `wait`, ... seconds; after `tries` the last error is raised. (2026-10-21/22: one bad FRED response failed
+    the weekly scoring step and crashed the research books' run.)"""
+    import io
+    last = None
+    for k in range(tries):
+        try:
+            with urllib.request.urlopen(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={fid}", timeout=60) as r:
+                raw = r.read()
+            head = raw[:200].decode("utf-8", "replace").splitlines()[0].strip() if raw else ""
+            if head.split(",")[-1].strip().upper() != fid.upper():
+                raise ValueError(f"FRED {fid}: not a CSV for the series (first line {head[:80]!r})")
+            s = pd.read_csv(io.BytesIO(raw), na_values=".")
+            s.columns = ["date", "v"]
+            s = s.assign(date=pd.to_datetime(s.date)).set_index("date")["v"].dropna() / 100
+            if len(s) < 10:
+                raise ValueError(f"FRED {fid}: {len(s)} dated rows")
+            return s
+        except Exception as e:                                                  # noqa: BLE001
+            last = e
+            if k + 1 < tries:
+                print(f"FRED {fid}: attempt {k + 1} failed ({e}); retrying")
+                time.sleep(wait * (k + 1))
+    raise RuntimeError(f"FRED {fid} unavailable after {tries} attempts: {last}")
+
+
 def news_cutoff(asof) -> pd.Timestamp:
     """Amendment 4: a fixed cutoff (Wednesday 22:00 UTC) instead of the run's wall clock, so a run can be replayed."""
     return pd.Timestamp(asof) + pd.Timedelta(hours=22)
