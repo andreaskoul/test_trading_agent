@@ -4,6 +4,7 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-11-06: Protocol 9 plan runs no longer freeze the core state (found in the end-to-end plan test of 2026-11-05). A plan run (`lifecycle.py trade --plan`) computed and **wrote** the day's core state. A plan made just after a close could therefore have frozen a preliminary closing price for good (CLAUDE.md 4), with SPY 0.8% from the 200-day flip point. Now only a real session freezes the state; a plan reads a frozen state if one exists, and otherwise computes without writing. Contract test `test_core.py::test_plan_run_freezes_nothing`. Could this change a decision? No: no state has been frozen yet, and the first real Protocol 9 session is 2026-11-09 (shadow).
 - 2026-11-05: legacy removal (owner: "dead code + redundant books", with Protocol 9).
   * Unscheduled: the `trade` job (`execute.py trade`, a no-op since Protocol 7; kept as a manual fallback) and the past `filltest-*` dates. Removed: the `review` job, `review.py` and `fund_review.yml` (a no-op since Protocol 7).
   * Retired desks, deleted: `ic_memo.py`, `fx_desk.py`, `macro_desk.py`, `neighbours.py`, `shadow_info.py` (C8, C9) and `review_context.py`. `shadow.py` keeps only the model canary (C2 and C3 make no LLM calls). `pm_risk.py` no longer builds core20, C4 or C5, and its shadow pass exits.
