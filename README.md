@@ -19,7 +19,7 @@ it may ever trade real money.
 ## Layout
 
 ```
-fund/                  desks, execution, review, ledger, dashboard page (fund/site/)
+fund/                  desks, execution, ledger, website (fund/site/: models under assessment, paper account, ledger)
 .github/workflows/     fund_weekly · fund_execute · fund_review · fund_archive · fund_pages · fund_llm_check
 artefacts/llm/         frozen ridge specs (benchmark and FX desk)
 data/raw/stocks/       S&P 500 membership fallback files

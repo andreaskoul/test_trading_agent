@@ -1,7 +1,8 @@
 name: Fund · dashboard (GitHub Pages)
 
-# Publishes fund/site/index.html with the ledger's dashboard.json and the Excel file from the
-# `fund-data` branch. Runs after every workflow that can change the trade record, and on demand.
+# Publishes fund/site/ (the assessment page, the paper account and the ledger) with the ledger's dashboard.json,
+# the shadow and research data, the gate report and the Excel file from the `fund-data` and `research-data`
+# branches. Runs after every workflow that can change the trade record, and on demand.
 
 on:
   workflow_run:
@@ -32,13 +33,13 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p _site
-          cp fund/site/index.html _site/
-          mkdir -p _site/ledger && cp fund/site/ledger/index.html _site/ledger/
-          mkdir -p _site/shadow && cp fund/site/shadow/index.html _site/shadow/
+          cp -R fund/site/. _site/          # pages (assessment, account/, ledger/, shadow/ redirect) + site.css/site.js
           git fetch -q origin +refs/heads/fund-data:refs/remotes/origin/fund-data || true
           for f in dashboard.json shadow.json fund_positions.xlsx; do
             git show "origin/fund-data:fund_state/live/ledger/$f" > "_site/$f" 2>/dev/null || rm -f "_site/$f"
           done
+          # the scorer's weekly gate report, shown word for word on the assessment page
+          git show "origin/fund-data:fund_state/live/performance/gate.md" > _site/gate.md 2>/dev/null || rm -f _site/gate.md
           git fetch -q origin +refs/heads/research-data:refs/remotes/origin/research-data || true
           git show "origin/research-data:fund_state/live/research/qshadow/ledger.json" > _site/research.json 2>/dev/null \
             || echo '{"books":{}}' > _site/research.json
