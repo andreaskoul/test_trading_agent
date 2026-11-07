@@ -1,6 +1,6 @@
 # Risk measurement and peer-field signals: what held up
 
-*2026-11-07. Pre-registration and amendments 1–4: `research/riskfield/PREREG.md` (each committed before the
+*2026-11-07. Pre-registration and amendments 1–8: `research/riskfield/PREREG.md` (each committed before the
 statistics it governs). Results: `DEV_RESULT.md`, `OOS_RESULT.md` (one read), `DEV2_RESULT.md`, `POSTHOC.md`.
 Nothing here trades. No 2026 data was read.*
 
@@ -25,6 +25,33 @@ outcomes, and it beats the fund's beta by a wide margin. It also makes hedged bo
   −0.32 to +0.33. That is enough to move a book's SPY hedge noticeably.
 * **What it is not:** it is not an alpha. P1 lowers the hedged books' noise by about 2–3% in standard deviation;
   it does not raise expected return.
+
+## News-shock contagion (rounds 3–5, the McKean–Vlasov idea as the owner meant it)
+
+**The question:** does a news shock at one firm spread to firms like it?
+* **Neighbours:** 10-K business-text similarity, or co-movement.
+* **Shocks:** each firm's residual return on its news days: earnings (P8 events, 8-K Item 2.02) and unscheduled 8-Ks
+  (typed item codes from SEC bulk submissions, 2010–2025).
+
+| Speed | Test | Result |
+|---|---|---|
+| Next week | C1–C3 (returns), C4 (volatility) | nothing (development t −0.94 to −0.51) |
+| Next day | D1–D3 | nothing (+0.2 bp per sd, t ≤ 0.68) |
+| Same day (descriptive) | neighbours' earnings shocks vs a non-reporter's residual | **9.8 bp per sd, t 24.9**: the contagion is real |
+| **Within the day** (10:00 → close, after a neighbour's out-of-hours earnings) | **I1, text neighbours** | **passes OOS: 2.68 bp per sd, t 2.66, Holm p 0.004**; development 2.15 bp, t 1.69 |
+| | I2, co-movement neighbours | failed development (−0.3 bp); OOS +2.4 bp, t 2.15 (reported only) |
+
+**Reading:** contagion of news shocks through business-similarity space is real, but the market prices it fast.
+* **Within the session:** most of it is in the price by 10:00. What remains drifts in over the rest of the day,
+  and only with text neighbours, not co-movement neighbours: an embedding effect, not a correlation effect.
+* **Size:** the top-minus-bottom-decile spread is about 8 bp per earnings-season day. That is below a 10 bp intraday
+  round trip at the fund's 5 bp-per-side cost assumption, so as a stand-alone intraday book it does not pay.
+* **Its use is order timing.** On earnings-season days, a planned buy of a stock whose text neighbours just gapped
+  up is better sent early (at the open, not at T−60 s), and a planned sell later. The fund's orders currently go at
+  the close, so this needs an order-timing protocol.
+* **By year (descriptive):** positive in 5 of the 6 OOS years (2023 negative).
+* **Days that also fail:** unscheduled 8-K days carry little news. Their average move is only 12% above days without
+  news.
 
 ## Everything else that was tested
 
@@ -69,6 +96,13 @@ outcomes, and it beats the fund's beta by a wide margin. It also makes hedged bo
   P1 and P2 were run once on development data before the read (Amendment 3).
 * **2020–2025 has been read before:** earlier studies read these years for other signals. Round 2's development
   failed, so its OOS read was not spent.
+
+## Forward beta records (set up; Amendments 5 and 5a)
+
+From Thursday 2026-11-12, the Friday S&P job records both betas for every member (`forward.py`). The bars are
+30-minute SIP bars from Alpaca, cached across weeks and split-adjusted. The job scores both betas 21 sessions later
+against the realised beta, with the AI ensemble book's leftover beta under each hedge. Section 6 of the assessment
+page shows them. No verdict before 26 scored weeks.
 
 ## Operational meaning (owner's decision)
 
