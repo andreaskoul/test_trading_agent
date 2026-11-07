@@ -188,3 +188,34 @@ four at α = 0.05, one-sided in the predicted direction. H8 and H12 test the sam
 books; counting them separately makes the correction stricter, not looser. The OOS windows are 2020–2025 for the
 stock hypotheses and 2000–2025 for H16. The read is `python research/regime/search.py oos`: it refuses to run
 unless FROZEN.json is committed and unchanged, writes `research/regime/OOS_RESULT.md`, and locks itself.
+
+---
+
+## Amendment 5 (2026-11-07, after the OOS read of Amendment 4; before any international data is downloaded)
+
+**The OOS read** (`OOS_RESULT.md`, frozen commit 431c15a): every finalist moved in its predicted direction, but **none
+passed Holm**, so by the registered rule **nothing is worth taking forward**. t in the predicted direction and Holm p:
+H8 1.18 / 0.119; H12 1.85 / 0.096; H14 2.03 / 0.085; H16 1.72 / 0.096. H16 is economically large (2000–2025: UMD
+switched off in panic states earned +6.9% a year net against +2.5%, Sharpe 0.55 against 0.23; 2009: −9% against
+−50%). H14's OOS edge comes mostly from 2020. The 2020–2025 sample is now spent for these hypotheses.
+
+**Round 5: an independent replication sample.** The Ken French developed-market factors (daily, from 1990) for
+**Europe, Japan and Asia Pacific ex Japan** have never been read in this project. Two hypotheses, with the
+specifications frozen from the US (no development step; nothing is chosen on these data):
+
+* **H16-INT**: in each region, the regional momentum factor (WML) held weekly, switched off in panic: the regional
+  market's 252-session return < 0 and its 21-session realised volatility above its trailing 156-week median.
+  b = slope of WML's weekly return on the panic indicator; predicted b < 0.
+* **H14-INT**: in each region, the five regional factors (SMB, HML, RMW, CMA, WML); each held only in proportion to
+  (1 − percentile of its own trailing 26-week return, decisions k−27..k−2), as frozen for H14; predicted b < 0.
+
+**Primary:** for each hypothesis, b pooled across the three regions (H14: and the five factors), with a
+Driscoll–Kraay t (week-clustered, NW 4 lags); one-sided; Holm across the two at α = 0.05. Sample: every weekly
+decision from the first with 156 weeks of detector history to 2025-12-31 (2026 is not read).
+
+**Worth taking forward** (as before): Holm-significant, the conditioned book's net Sharpe above the unconditioned,
+and its net mean positive, all on the pooled equal-weight book across regions. Costs as in Amendment 3 (H16) and
+5 bp per side on factor weights (H14). Each region is also reported alone, descriptively.
+
+**If H16-INT passes**, the proposal to the owner is a forward paper book (never traded) that applies the panic switch
+to a momentum book in the fund's universe, with its own pre-registration. Nothing changes in any running book.
