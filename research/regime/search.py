@@ -308,8 +308,101 @@ def dev():
     json.dump(choice, open(os.path.join(OUT, "dev_choice.json"), "w"), indent=1)
 
 
+def oos():
+    """The single OOS read of the frozen finalists (PREREG Amendment 4)."""
+    from scipy.stats import norm
+    here = os.path.dirname(os.path.abspath(__file__))
+    lock = os.path.join(here, "OOS_READ.lock")
+    if os.path.exists(lock):
+        raise SystemExit("OOS already read: " + open(lock).read())
+    st = subprocess.run(["git", "status", "--porcelain", FROZEN], capture_output=True, text=True, cwd=here).stdout.strip()
+    sha = subprocess.run(["git", "log", "-1", "--format=%H", "--", FROZEN], capture_output=True, text=True, cwd=here).stdout.strip()
+    if st or not sha:
+        raise SystemExit("FROZEN.json is not committed and unchanged")
+    Fz = json.load(open(FROZEN))
+    D = add_derived(pd.read_parquet(os.path.join(OUT, "weekly.parquet")))
+    W, H = books()
+    res, years = {}, {}
+    o0, o1 = OOS0, OOS1
+
+    def record(h, y, x, cond, unc, dates, mask, sign):
+        b, t, n = nw_t(y[mask], x[mask])
+        sc, su = summary(cond, mask), summary(unc, mask)
+        res[h] = {"b": b, "t": t, "t_dir": sign * t, "p_one_sided": float(norm.sf(sign * t)), "n": n,
+                  "cond": sc, "unc": su}
+        yr = pd.DatetimeIndex(dates[mask]).year
+        years[h] = pd.DataFrame({"year": yr, "cond": cond["net"][mask], "unc": unc["net"][mask]}).groupby("year").agg(
+            cond_net_pct=("cond", lambda r: (np.prod(1 + r) - 1) * 100), unc_net_pct=("unc", lambda r: (np.prod(1 + r) - 1) * 100),
+            weeks=("cond", "size")).round(2)
+
+    dates = D["date"].to_numpy()
+    om = ((D["date"] >= o0) & (D["date"] <= o1)).to_numpy()
+    for h, A_, B_ in (("H8", "NREV", "REV"), ("H12", "NREVB", "REVB")):
+        x = detector(D, "season", 156, "events")
+        y = (D[f"{A_}_gross"] - D[f"{B_}_gross"]).to_numpy()
+        c = conditioned(D, W, H, f"{A_}-{B_}", +1, x, "linear")
+        record(h, y, x, c["cond"], c["unc"], dates, om & np.isfinite(x), +1)
+    b, t, n, c_, u_, ok = fmom(D, W, H, 26, "linear", -1)
+    # the pooled b over the OOS weeks only: recompute on the OOS rows
+    ys, xs = [], []
+    for f in FACTORS:
+        yv = D[f"{f}_gross"].to_numpy()
+        ys.append(yv); xs.append(pct_hist(lagged_trailing(yv, 26), 156))
+    Y, X = np.column_stack(ys), np.column_stack(xs)
+    mk = om & np.isfinite(X).all(1)
+    yv, xv = Y[mk].ravel(), X[mk].ravel()
+    xc = xv - xv.mean(); bb = (xc * (yv - yv.mean())).sum() / (xc ** 2).sum()
+    u = (yv - yv.mean()) - bb * xc
+    scw = (xc * u).reshape(-1, len(FACTORS)).sum(1)
+    S_ = (scw ** 2).sum() + sum(2 * (1 - l / 5) * (scw[l:] * scw[:-l]).sum() for l in range(1, 5))
+    tt = bb / (np.sqrt(S_) / (xc ** 2).sum())
+    record("H14", np.zeros(len(D)), np.zeros(len(D)), c_, u_, dates, mk, -1)
+    res["H14"].update({"b": float(bb), "t": float(tt), "t_dir": float(-tt), "p_one_sided": float(norm.sf(-tt)), "n": int(mk.sum())})
+    U = pd.read_parquet(os.path.join(OUT, "umd_weekly.parquet"))
+    x, lin, bin_ = umd_detector(U, "mvol21", "panic")
+    c_, u_ = umd_books(U, bin_)
+    um = ((U["date"] >= pd.Timestamp("2000-01-01")) & (U["date"] <= o1)).to_numpy() & np.isfinite(x)
+    record("H16", U["UMD_gross"].to_numpy(), x, c_, u_, U["date"].to_numpy(), um, -1)
+    # Holm, one-sided
+    fam = Fz["holm_family"]
+    ps = sorted((res[h]["p_one_sided"], h) for h in fam)
+    run = 0.0
+    for i, (p_, h) in enumerate(ps):
+        run = max(run, min(1.0, (len(fam) - i) * p_))
+        res[h]["p_holm"] = run
+    for h in fam:
+        r = res[h]
+        r["holm_pass"] = r["p_holm"] < Fz["alpha"]
+        r["worth_forward"] = bool(r["holm_pass"] and r["cond"]["sharpe"] > r["unc"]["sharpe"] and r["cond"]["net_mean_bp"] > 0)
+    # descriptive (Amendment 3): H16's frozen rule on the S&P 500 MOM book, 2020-2025, using the UMD-panel state
+    pan = pd.Series(np.where(np.isfinite(x), x, 0.0), index=U["date"]).reindex(D["date"], method="ffill").fillna(0).to_numpy()
+    s_ = 1 - pan
+    mom_c = _net(s_ * D["MOM_gross"].to_numpy(), s_[:, None] * W["MOM"], s_ * H["MOM"], s_)
+    mom_u = _net(D["MOM_gross"].to_numpy(), W["MOM"], H["MOM"], np.ones(len(D)))
+    desc = {"cond": summary(mom_c, om), "unc": summary(mom_u, om), "panic_weeks": int(pan[om].sum())}
+    out = {"frozen_commit": sha, "read_at": pd.Timestamp.now(tz="UTC").isoformat(timespec="seconds"), "results": res,
+           "years": {h: years[h].reset_index().to_dict("records") for h in years}, "h16_rule_on_sp500_mom": desc}
+    json.dump(out, open(os.path.join(here, "OOS_RESULT.json"), "w"), indent=1, default=float)
+    open(lock, "w").write(f"read {out['read_at']} from FROZEN.json at {sha}\n")
+    L = ["# Regime-edge research: the single OOS read", "", f"Frozen specification: commit {sha[:10]}; read {out['read_at']}.", "",
+         "| | OOS window | weeks | b | t (predicted direction) | p one-sided | p Holm | cond. net %/yr | uncond. net %/yr | cond. Sharpe | uncond. Sharpe | worth forward |",
+         "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|"]
+    for h in fam:
+        r = res[h]; w_ = "2000–2025" if h == "H16" else "2020–2025"
+        L.append(f"| {h} | {w_} | {r['n']} | {r['b']:.5f} | {r['t_dir']:.2f} | {r['p_one_sided']:.4f} | {r['p_holm']:.4f} | "
+                 f"{r['cond']['net_pct_yr']:.2f} | {r['unc']['net_pct_yr']:.2f} | {r['cond']['sharpe']:.2f} | {r['unc']['sharpe']:.2f} | {'**yes**' if r['worth_forward'] else 'no'} |")
+    L += ["", "By year (net % in the year):", ""]
+    for h in fam:
+        L += [f"**{h}**", "", years[h].to_markdown(), ""]
+    L += [f"H16's rule on the S&P 500 MOM book, 2020–2025 (descriptive): conditioned net {desc['cond']['net_pct_yr']:.2f}%/yr, "
+          f"Sharpe {desc['cond']['sharpe']:.2f}; unconditioned {desc['unc']['net_pct_yr']:.2f}%/yr, Sharpe {desc['unc']['sharpe']:.2f}; "
+          f"panic weeks {desc['panic_weeks']}."]
+    open(os.path.join(here, "OOS_RESULT.md"), "w").write("\n".join(L) + "\n")
+    print("\n".join(L))
+
+
 if __name__ == "__main__":
     if sys.argv[1:] == ["dev"]:
         dev()
     elif sys.argv[1:] == ["oos"]:
-        raise SystemExit("the OOS read is implemented after FROZEN.json is committed")
+        oos()
