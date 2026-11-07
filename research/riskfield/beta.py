@@ -34,7 +34,7 @@ def build(D):
     lo, hi = np.minimum(-2 * rm, 4 * rm)[:, None], np.maximum(-2 * rm, 4 * rm)[:, None]
     w = pd.DataFrame(np.clip(r, lo, hi))
     m = pd.Series(rm)
-    ols = (w.rolling(252, min_periods=200).cov(m).div(m.rolling(252, min_periods=200).var(), axis=0)).values
+    ols = (w.rolling(252, min_periods=200).cov(m).div(m.rolling(252, min_periods=200).var(), axis=0)).to_numpy(copy=True)
     ols[~thu] = np.nan
     return {"thu": thu, "tgt": tgt, "b21": b21, "b63": b63, "ols": ols, "B0": 2 / 3 * ols + 1 / 3}
 
