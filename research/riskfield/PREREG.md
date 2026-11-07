@@ -247,3 +247,56 @@ decile and keeps a name while it stays in its top or bottom 30% (`research/regim
 * A4B: decisions 2016-02-01 .. 2019-12-31, a short window that is disclosed.
 
 **Gates and verdicts** are as §9 (A4B: net banded mean > 0).
+
+### Amendment 5 (2026-11-07): forward beta records (never traded)
+
+**From Thursday 2026-11-12,** `forward.py weekly` runs after the forward S&P books in the Friday job. It records,
+for every point-in-time S&P 500 member:
+* **B0:** the fund's beta, the one the S&P books hedge with;
+* **B1:** coefficients frozen in `FROZEN_B1.json`, fitted on 2016–2025 decisions;
+* B1's inputs.
+
+**Data source:** 30-minute bars from Alpaca (SIP feed, adjustment "all", regular session), the source of the
+research data.
+
+**Ledger:** 21 sessions later, `forward.py ledger` scores both betas against the realised beta from 30-minute
+returns, together with the AI ensemble book's residual beta under each hedge. Rows are frozen at first computation.
+
+**Quality gate:** below 90% intraday coverage of members, the job fails loudly, after saving.
+
+**No verdict before 26 scored weeks.** The record exists to confirm live what the OOS read showed: B1's mean
+squared error below B0's. Using B1 in any book is the owner's decision under a new protocol.
+
+### Amendment 6 (2026-11-07, before any statistic of round 3): contagion of news-derived shocks (McKean–Vlasov)
+
+**The owner's intent:** the mean-field idea is about how news shocks spread through neighbours, not about any move
+spreading. A1 used neighbours' moves on every day and failed. Round 3 uses only their moves on **news days**.
+
+**News days** (`shocks.py`, typed fields only):
+* earnings: P8 `events.parquet` t0, or an 8-K with Item 2.02;
+* unscheduled: any other 8-K (not 8-K/A) with an item outside {9.01, 2.02, 5.07}.
+
+The reaction session is the acceptance date, or the next session if acceptance is at or after 16:00 ET.
+
+**Shock of name j at session τ:** the residual return e_{j,τ} on a news day of j, and 0 otherwise.
+
+| Test | Signal at Thursday t (predicted sign) | Idea |
+|---|---|---|
+| C1 | text field of Σ_{τ=t−4..t} shock_j,τ (all news) (+) | neighbours' news diffuses slowly into i (Cohen & Frazzini 2008; Hoberg & Phillips 2018) |
+| C2 | as C1 with the co-movement kernel (+) | the same through co-movement |
+| C3 | as C1, unscheduled news only (+) | contagion of unscheduled shocks |
+| C4 | MS + text field of Σ_{τ=t−4..t} \|shock_j,τ\| (all news), for volatility (QLIKE, h = 5 primary) | volatility contagion of neighbours' news |
+
+**Books and statistic:**
+* C1–C3: banded decile books from the start (Amendment 2's band). Statistic: the signal slope with the DK t, as §6.
+  Verdict: banded net mean > 0.
+* C4: as §4. Its kernel and fields are those of the bar universe; shocks are the bar names' residuals against SPY,
+  with the beta of t−1 from the daily OLS of §5.
+
+**Development:**
+* C1–C3: decisions 2011-06 .. 2019-12;
+* C4: as §9.
+
+The gates are as §9. **OOS:** 2020–2025, one read (`OOS3_READ.lock`), Holm across round 3's finalists.
+
+**Disclosure:** 2020–2025 has been read by rounds 1 and 2 for other signals.
