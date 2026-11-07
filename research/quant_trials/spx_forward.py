@@ -199,6 +199,28 @@ def attach_running(pg, run):
         run["lines"]["series"][k] = [float((1 + base) * (1 + x) - 1) for x in v[k0:]]
 
 
+def daily_lines(d, recs, pg):
+    """Display only: the booked lines at every close, not only at each week's end. The booked weekly points stay exactly
+    the ledger's (frozen, net of costs); the closes inside a booked week are marked with running()'s arithmetic on the
+    current prices, before that week's rebalance costs (charged at its last close), chained from the week's start."""
+    L_ = pg.get("lines") or {}
+    if not L_.get("dates"):
+        return
+    by = {r["asof"]: r for r in recs}
+    dates, ser = [L_["dates"][0]], {k: [v[0]] for k, v in L_["series"].items()}
+    for i, w in enumerate(pg["weeks"]):
+        run = running(d, by[w["asof"]], pg["bench"].get("sbar"))
+        assert run["dates"][0] == w["start"] == dates[-1], f'{w["asof"]}: week start {w["start"]} not on the line'
+        for k in range(1, run["dates"].index(w["end"])):               # the closes strictly inside the week
+            dates.append(run["dates"][k])
+            for key in ser:
+                ser[key].append(float((1 + L_["series"][key][i]) * (1 + run["series"][key][k]) - 1))
+        dates.append(w["end"])
+        for key in ser:
+            ser[key].append(L_["series"][key][i + 1])
+    pg["lines"] = {"dates": dates, "series": ser}
+
+
 def mark(path=None):
     """Daily: add the running week to page.json (display only; records and the ledger are never touched)."""
     path = path or REC
@@ -358,6 +380,7 @@ def ledger(path=None):
                                       "computed_with_data_to": stamp})
     json.dump(led, open(lpath, "w"), indent=1)
     pg = page(recs, led, stamp)
+    daily_lines(d, recs, pg)                                           # display only: every close of the booked weeks
     attach_running(pg, current_week(d, recs, (pg.get("bench") or {}).get("sbar")) if recs else None)  # unbooked week, to date
     pg["running_marked"] = pg["generated"]
     json.dump(pg, open(os.path.join(path, "page.json"), "w"), indent=1, allow_nan=False)

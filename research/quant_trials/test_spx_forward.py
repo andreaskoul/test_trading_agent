@@ -85,6 +85,51 @@ def test_friday_morning_shows_the_previous_week():
     assert FW.current_week(d, [new]) is None
 
 
+def test_daily_lines_keep_booked_weeks_and_mark_closes_inside():
+    """The chart's booked lines at every close: each week's end stays exactly the booked (ledger) value, and a close
+    inside a week is the week's start value chained with the running mark of that week's record at that close."""
+    d = T.build()
+    per = ST.periods(d, [2022])[:4]
+    rng = np.random.default_rng(2)
+    n = len(d["names"])
+    recs = []
+    for t, *_ in per:
+        r = _rec(d, t, np.zeros(n), 0.0, s=float(rng.choice([1.3, 0.7])))
+        r["books"] = {bk: {"weights": {d["names"][i]: float(x) for i, x in enumerate(
+            np.where(rng.random(n) < 0.05, rng.normal(0, 0.02, n), 0.0) * d["elig"][t]) if x},
+            "w_spy": -0.1, "scale": 1.0} for bk in FW.BOOKS}
+        r.update(models="x", dtb3_date=r["asof"], expected_names=n, coverage={}, excluded_members=[])
+        recs.append(r)
+    pl = []
+    for a, b in zip(recs[:-1], recs[1:]):
+        s = a["sleeve"]["s"]
+        for bk in FW.BOOKS:
+            book, Rm, days, net, dw = FW.book_return(d, a, b, bk)
+            mrate = (a["dtb3"] + ST.MARGIN_SPREAD) * days / 360
+            t, t2 = (int(np.searchsorted(d["S"], pd.Timestamp(r["asof"]))) for r in (a, b))
+            pl.append({"bk": bk, "asof": a["asof"], "to": b["asof"], "start": str(d["S"][t + 1].date()),
+                       "end": str(d["S"][t2 + 1].date()), "book": book, "spy": Rm, "s": s, "s_next": b["sleeve"]["s"],
+                       "total": s * Rm - ST.COST * abs(b["sleeve"]["s"] - s) + book - max(s + net - 1, 0) * mrate,
+                       "net": net, "turnover": dw, "mrate": mrate, "days": days})
+    pg = FW.page(recs, {"pl": pl, "ic": []}, "x")
+    weekly = {k: list(v) for k, v in pg["lines"]["series"].items()}
+    wdates = list(pg["lines"]["dates"])
+    FW.daily_lines(d, recs, pg)
+    L_ = pg["lines"]
+    t0, t3 = (int(np.searchsorted(d["S"], pd.Timestamp(recs[i]["asof"]))) for i in (0, -1))
+    assert L_["dates"] == [str(x.date()) for x in d["S"][t0 + 1: t3 + 2]]          # every close, once
+    for k, v in L_["series"].items():
+        assert len(v) == len(L_["dates"])
+        assert [v[L_["dates"].index(x)] for x in wdates] == weekly[k]                  # booked points unchanged
+    for i, w in enumerate(pg["weeks"]):                                                # a close inside each week
+        run = FW.running(d, recs[i], pg["bench"]["sbar"])
+        x = run["dates"][2]
+        assert x < w["end"]
+        for k in ("spy", "sleeve", "risk_matched", "fw_master_h5"):
+            want = (1 + weekly[k][i]) * (1 + run["series"][k][2]) - 1
+            assert abs(L_["series"][k][L_["dates"].index(x)] - want) < 1e-12
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):
