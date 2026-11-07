@@ -300,3 +300,45 @@ The reaction session is the acceptance date, or the next session if acceptance i
 The gates are as §9. **OOS:** 2020–2025, one read (`OOS3_READ.lock`), Holm across round 3's finalists.
 
 **Disclosure:** 2020–2025 has been read by rounds 1 and 2 for other signals.
+
+### Amendment 5a (2026-11-07, before the first forward record): bars adjustment in the forward records
+
+Alpaca returns about 370 bars a page, so the full 63-session window for 500 names takes about 2,800 requests. The
+forward records therefore **cache bars across weeks**.
+
+**Adjustment:** the cached bars are **split-adjusted only**. Dividend adjustment re-prices history at every
+ex-date, and that would break a cache. A name whose overlap closes changed (a split) is fetched afresh over the
+whole window.
+
+**Effect of the change:** the research bars were adjusted for dividends too. The difference is the dividend drop on
+about four overnight returns a year. That drop is negligible for a beta.
+
+### Amendment 7 (2026-11-07, after round 3's development and before any statistic of round 4): fast contagion (order timing)
+
+**Round 3** (`DEV3_RESULT.md`): no finalists. Neighbours' news-day shocks did not predict the next week's residual
+returns or volatility (C1–C4, DK t −0.94 to −0.51). Information transfer between peers is fast in the literature:
+peers react within a day. Round 4 therefore tests the next day.
+
+| Test | Signal at session t (predicted sign) | Target |
+|---|---|---|
+| D1 | text field of shock_j,t (news day of j at t: its residual return e_{j,t}; all news) (+) | e_{i,t+1} |
+| D2 | as D1 with the co-movement kernel (+) | e_{i,t+1} |
+| D3 | as D1, earnings days only (+) | e_{i,t+1} |
+
+**Data and universe:** the news days, kernels and residuals of round 3, on every session (not only Thursdays),
+for point-in-time members with a close at t+1. D1 and D3 also need a text vector.
+
+**Statistic:** the pooled slope of e_{i,t+1} on the session's cross-sectional z-score of the signal, with session
+fixed effects and a Driscoll–Kraay t (5 lags).
+
+**Reading:** this is an **order-timing** signal (the fund sends orders at T−60 s), not a stand-alone book.
+
+**Reported (not tested):**
+* the slope in bp per standard deviation;
+* the same slope for e_{i,t+2} (one day skipped);
+* the gross and net (5 bp) daily decile book.
+
+**Splits:**
+* development: sessions 2011-06-01 .. 2019-12-31; gate t ≥ 1.5;
+* OOS: sessions 2020-01-02 .. 2025-12-30, one read (`OOS4_READ.lock`);
+* Holm across round 4's finalists; pass = Holm p < 0.05 with a positive slope.
