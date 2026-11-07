@@ -146,4 +146,37 @@ On the bars universe, using the 12-1 momentum decile book and the 1-week reversa
 
 ## Amendments
 
-(none yet)
+### Amendment 1 (2026-11-07, before any statistic): implementation details
+
+1. **Kernels** are rebuilt at each month's first session τ from information to τ−1:
+   * text: each name's latest 10-K Item 1 filed ≤ τ−1 and within 550 days;
+   * co-movement, risk and beta tests: residuals from an in-window OLS on SPY over sessions τ−252..τ−1;
+   * co-movement, alpha tests: the panel's residuals e over the same sessions, among names eligible at τ−1.
+
+   Co-movement needs ≥ 200 finite sessions. This is stricter than per-session rebuilding: nothing after τ−1 is used.
+2. **Validity:**
+   * w needs ≥ 4 of its 5 sessions and m ≥ 17 of its 22;
+   * a target needs ≥ ⌈0.8h⌉ valid sessions;
+   * half-day sessions fail the 13-bar rule for nearly every name.
+3. **Fields:** a field is missing when less than half its kernel weight has data at t. The row then leaves that
+   comparison.
+4. **Daily returns** of the bar names (B0, the OLS input of B1, co-movement, EWMA) are the sum of the day's 14 log
+   returns, which is the close-to-close return.
+5. **R4** uses the regressor d × q. Centring q on the fit-sample mean only shifts d's coefficient, so the forecasts
+   are identical.
+6. **Fits** need ≥ 200 sessions of ended targets. An origin is scored only when its whole target window lies inside
+   the period:
+   * development: origins from 2017-01-03, with targets ending ≤ 2019-12-31;
+   * OOS: origins from 2020-01-02, with targets ending ≤ 2025-12-31.
+7. **Text neighbours:**
+   * universe: names of the bar universe (risk, beta) or of the point-in-time close panel (alpha) that have a vector;
+   * the ticker → CIK map is P8's `ciks.json`;
+   * the 10-K vocabulary is fitted on Item 1 sections of ≥ 2,000 characters.
+8. **Alpha rows:**
+   * a name needs eligibility at t, a close at t+1, and ≥ 18 finite residuals in t−20..t;
+   * A1 and A2 also need a text vector;
+   * the first week's turnover is 1.
+9. **News:**
+   * "5-session EW mean" = EWMA with span 5 (α = 1/3);
+   * news features exist from each name's first news session;
+   * placebo shuffle seed 7.
