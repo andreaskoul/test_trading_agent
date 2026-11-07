@@ -1,6 +1,6 @@
 # Risk-field research: development results
 
-Run 2026-11-07T11:10:17+00:00. Development periods only. Gain = benchmark loss minus candidate loss (positive = better).
+Run 2026-11-07T11:11:34+00:00. Development periods only. Gain = benchmark loss minus candidate loss (positive = better).
 
 | Test | h=5 gain | h=5 t | h=22 gain | h=22 t | names/day | finalist |
 |---|---:|---:|---:|---:|---:|---|
@@ -21,6 +21,8 @@ Run 2026-11-07T11:10:17+00:00. Development periods only. Gain = benchmark loss m
 | A1 | -0.00022 | -0.93 | -6.3 | -3.41 | -0.54 | 308 | no |
 | A2 | 0.00046 | 2.46 | -3.1 | -1.68 | -0.36 | 308 | no |
 | A3 | 0.00054 | 3.33 | -1.8 | -0.97 | -0.26 | 374 | no |
+| A2B | 0.00046 | 2.46 | -1.1 | -0.67 | -0.15 | 308 | no |
+| A3B | 0.00054 | 3.33 | 1.1 | 0.53 | 0.18 | 374 | yes |
 
 Reported (not tested):
 
@@ -31,4 +33,4 @@ Reported (not tested):
 * M0_vs_EWMA_h22: gain 0.11074, t 4.56
 * N1placebo_vs_NB_h22: gain 0.00049, t 1.19
 
-**Finalists:** R2, H-B1
+**Finalists:** R2, H-B1, A3B

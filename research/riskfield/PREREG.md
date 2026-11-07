@@ -201,3 +201,18 @@ decile and keeps a name while it stays in its top or bottom 30% (`research/regim
 * These variants were chosen after the A2 and A3 development books were seen.
 * They join the Holm family if they pass the gate.
 * A2 and A3 themselves stay failed.
+
+### Amendment 3 (2026-11-07, after the development results, before the OOS read)
+
+1. **Development finalists** (`DEV_RESULT.md`): **R2, H-B1, A3B**.
+   * A2B: −0.67% a year net, fails.
+   * The development run was repeated after Amendment 2 to add A2B and A3B; every earlier number reproduced exactly.
+2. **P2 statistic:** the Jobson–Korkie–Memmel test on the equal-weight average of the two books' weekly net returns
+   (inverse-volatility weights against equal weights). **P1:** the mean over the two books of the squared-return
+   difference, as §8.
+3. **Disclosed, development data only:** to check the code path before the one-shot read, P1 and P2 were run once
+   on the development weeks with R2 and B1.
+   * P1: weekly sd fell from 1.117% to 1.100% (MOM) and from 0.821% to 0.799% (REV), t 2.15.
+   * P2: Sharpe −0.07 against +0.02, t −1.39.
+
+   Nothing was changed after seeing these.
