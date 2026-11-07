@@ -173,6 +173,35 @@ def fmom(D, W, H, w, form, sign=+1):
     return float(b), float(t), int(ok.sum()), cond, unc, ok
 
 
+def umd_variants():
+    return {"H16": {"L21": ("mvol21", "panic"), "L63": ("mvol63", "panic")},
+            "H17": {"w126": ("umdvol126", "vol"), "w252": ("umdvol252", "vol")}}
+
+
+def umd_detector(U, col, kind):
+    """(regression detector, linear scale, binary scale) at each decision; past data only."""
+    p = pct_hist(U[col].to_numpy(float), 156)
+    ok = np.isfinite(p)
+    if kind == "panic":
+        bear = U["bear"].to_numpy() > 0
+        x = np.where(ok, (bear & (p > 0.5)).astype(float), np.nan)
+        lin = np.where(ok, np.where(bear, 1 - p, 1.0), 1.0)
+        bin_ = np.where(ok, 1 - x, 1.0)
+    else:
+        x = p
+        lin = np.where(ok, 1 - p, 1.0)
+        bin_ = np.where(ok, (p <= 0.5).astype(float), 1.0)
+    return x, lin, bin_
+
+
+def umd_books(U, s_):
+    g = U["UMD_gross"].to_numpy()
+    to_c = 2 * np.abs(np.diff(np.r_[0.0, s_]))                         # legs 100% + 100%: scale changes trade 2|ds|
+    to_u = 2 * np.abs(np.diff(np.r_[0.0, np.ones(len(U))]))
+    return ({"gross": s_ * g, "net": s_ * g - COST * to_c, "to": to_c, "active": s_},
+            {"gross": g, "net": g - COST * to_u, "to": to_u, "active": np.ones(len(U))})
+
+
 def _pick(rows, choice, h):
     R = pd.DataFrame([r for r in rows if r["H"] == h])
     top_v = R.loc[R["t_dir"].idxmax(), "variant"]
@@ -256,6 +285,19 @@ def dev():
             rows.append({"H": "H15", "variant": f"L{L}", "form": form, "b": b, "t": t, "n": n, "t_dir": -t,
                          **{f"c_{k}": v for k, v in sc.items()}, **{f"u_{k}": v for k, v in su.items()}})
     _pick(rows, choice, "H15")
+    U = pd.read_parquet(os.path.join(OUT, "umd_weekly.parquet"))       # H16, H17: UMD, development 1927-1999
+    U = U[U["date"] <= pd.Timestamp("1999-12-31")].reset_index(drop=True)
+    for h, var in umd_variants().items():
+        for vn, (col, kind) in var.items():
+            x, sc_lin, sc_bin = umd_detector(U, col, kind)
+            b, t, n = nw_t(U["UMD_gross"].to_numpy(), x)
+            m = np.isfinite(x)
+            for form, s_ in (("binary", sc_bin), ("linear", sc_lin)):
+                c_, u_ = umd_books(U, s_)
+                sc, su = summary(c_, m), summary(u_, m)
+                rows.append({"H": h, "variant": vn, "form": form, "b": b, "t": t, "n": n, "t_dir": -t,
+                             **{f"c_{k}": v for k, v in sc.items()}, **{f"u_{k}": v for k, v in su.items()}})
+        _pick(rows, choice, h)
     T = pd.DataFrame(rows)
     pd.set_option("display.width", 250)
     cols = ["H", "variant", "form", "n", "b", "t_dir", "c_net_pct_yr", "u_net_pct_yr", "c_sharpe", "u_sharpe",

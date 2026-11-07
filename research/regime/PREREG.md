@@ -175,3 +175,16 @@ in the predicted bad state) and linear (H16: scale 1 − PANIC is the binary for
 
 **Taking a passing long-history result to the fund's universe.** If H16 or H17 passes, its frozen rule is also
 reported, descriptively, on the S&P 500 MOM book in 2020–2025; that is not a separate test.
+
+---
+
+## Amendment 4 (2026-11-07): finalists frozen; the single OOS read follows this commit
+
+**Round 4 result (development only).** H16 1.68 (finalist: L = 21, binary; net Sharpe 0.89 against 0.63 for
+UMD, 1927–1999), H17 1.20 (not a finalist).
+
+**Finalists and frozen specifications** (`research/regime/FROZEN.json`): H8, H12, H14, H16. Holm runs across these
+four at α = 0.05, one-sided in the predicted direction. H8 and H12 test the same mechanism on unbanded and banded
+books; counting them separately makes the correction stricter, not looser. The OOS windows are 2020–2025 for the
+stock hypotheses and 2000–2025 for H16. The read is `python research/regime/search.py oos`: it refuses to run
+unless FROZEN.json is committed and unchanged, writes `research/regime/OOS_RESULT.md`, and locks itself.

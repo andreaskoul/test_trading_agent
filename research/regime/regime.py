@@ -507,3 +507,58 @@ if __name__ == "__main__" and sys.argv[1:] == ["build3"]:
     kd = K[K["date"] <= pd.Timestamp("1999-12-31")]
     print("KF weeks", len(K), "dev", len(kd), K["date"].min().date(), K["date"].max().date())
     print(kd.describe().T.round(4).to_string())
+
+
+# ------------------------------------------------------------------------------------------- round 4 (Amendment 3)
+KF_URL = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
+
+
+def kf_daily(fname):
+    """A Ken French daily CSV (zip) as fractions by date, first table only, up to 2025-12-31; raw zip cached."""
+    import urllib.request, zipfile
+    p = os.path.join(OUT, fname)
+    if not os.path.exists(p):
+        urllib.request.urlretrieve(KF_URL + fname, p)
+    raw = zipfile.ZipFile(p).read(zipfile.ZipFile(p).namelist()[0]).decode("latin-1").splitlines()
+    start = next(i for i, l in enumerate(raw) if l.count(",") >= 1 and not l.split(",")[0].strip().isdigit()
+                 and any(c.isalpha() for c in l.split(",")[1]) and i + 1 < len(raw) and raw[i + 1].split(",")[0].strip().isdigit())
+    hdr = [x.strip() for x in raw[start].split(",")][1:]
+    rows = []
+    for l in raw[start + 1:]:
+        parts = [x.strip() for x in l.split(",")]
+        if not (parts[0].isdigit() and len(parts[0]) == 8):
+            break
+        rows.append(parts)
+    df = pd.DataFrame([r[1:] for r in rows], index=pd.to_datetime([r[0] for r in rows]), columns=hdr).astype(float)
+    df = df.where(df > -99) / 100
+    return df[df.index <= END]
+
+
+def build_umd():
+    U = kf_daily("F-F_Momentum_Factor_daily_CSV.zip").iloc[:, 0].rename("UMD")
+    F = kf_daily("F-F_Research_Data_Factors_daily_CSV.zip")
+    X = pd.concat([U, F["Mkt-RF"] + F["RF"]], axis=1, join="inner").rename(columns={0: "MKT"}).dropna()
+    X.columns = ["UMD", "MKT"]
+    S = X.index
+    lu, lm = np.log1p(X["UMD"].to_numpy()), np.log1p(X["MKT"].to_numpy())
+    cu, cm = np.r_[0, np.cumsum(lu)], np.r_[0, np.cumsum(lm)]
+    rows = []
+    for t in range(260, len(S) - 6):
+        if S[t].weekday() != 3:
+            continue
+        row = {"date": S[t], "UMD_gross": float(np.exp(cu[t + 7] - cu[t + 1]) - 1), "bear": float(cm[t + 1] - cm[t - 251] < 0)}
+        for L in (21, 63):
+            row[f"mvol{L}"] = float(np.std(lm[t - L + 1:t + 1]))
+        for L in (126, 252):
+            row[f"umdvol{L}"] = float(np.std(lu[t - L + 1:t + 1]))
+        rows.append(row)
+    D = pd.DataFrame(rows)
+    D.to_parquet(os.path.join(OUT, "umd_weekly.parquet"))
+    return D
+
+
+if __name__ == "__main__" and sys.argv[1:] == ["build4"]:
+    D = build_umd()
+    d = D[D["date"] <= pd.Timestamp("1999-12-31")]
+    print("UMD weeks", len(D), D["date"].min().date(), D["date"].max().date(), "dev", len(d))
+    print(d.describe().T.round(4).to_string())
