@@ -216,3 +216,34 @@ decile and keeps a name while it stays in its top or bottom 30% (`research/regim
    * P2: Sharpe −0.07 against +0.02, t −1.39.
 
    Nothing was changed after seeing these.
+
+### Amendment 4 (2026-11-07, after the round-1 OOS read; before any statistic of round 2): round 2
+
+**Round 1** (`OOS_RESULT.md`):
+* passes: H-B1 and P1;
+* fails: R2, A3B and P2.
+
+**Round 2** adds three ideas. Each uses the intraday data, and each is read **once** on 2020–2025 with its own lock
+(`OOS2_READ.lock`), Holm across round 2's finalists.
+
+**Disclosure:** 2020–2025 has now been read by round 1. Round 2's signals were not part of it.
+
+| Test | Candidate | Benchmark | Statistic and predicted sign |
+|---|---|---|---|
+| R6 | MS + signed jump share j_t = (RS⁺_t − RS⁻_t)/RV_t and its 5-session mean | MS | QLIKE as §4 (Patton & Sheppard 2015) |
+| H-B3 | B1 + (downside semibeta − beta), both over t−62..t | B1 | squared error as §5 |
+| A4B | banded decile book on −RSkew | — | signal slope DK t as §6, predicted + |
+
+**Definitions:**
+* RS⁺ and RS⁻ are the sums of squared positive and negative returns among the day's 14 returns.
+* Downside semibeta = Σ r_i r_m 1{r_m < 0} / Σ r_m² 1{r_m < 0}, over the same 14 returns a day.
+* RSkew = √65 Σ r³ / (Σ r²)^{3/2} over the 65 intraday returns of sessions t−4..t (overnight excluded; Amaya,
+  Christoffersen, Jacobs & Vasquez 2015). Low skewness is predicted to outperform.
+* A4B's universe is the point-in-time members that are also in the bar universe. That universe holds current
+  constituents only; the survivorship is disclosed. Its band is as A2B.
+
+**Development periods:**
+* risk and beta: as §9;
+* A4B: decisions 2016-02-01 .. 2019-12-31, a short window that is disclosed.
+
+**Gates and verdicts** are as §9 (A4B: net banded mean > 0).
