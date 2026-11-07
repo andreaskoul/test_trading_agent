@@ -47,6 +47,8 @@ jobs:
             || echo '{"books":[],"weeks":[],"records":0}' > _site/spx.json
           git show "origin/research-data:fund_state/live/research/regime/page.json" > _site/regime.json 2>/dev/null \
             || echo '{"records":0,"books":{},"states":[]}' > _site/regime.json
+          git show "origin/research-data:fund_state/live/research/beta/page.json" > _site/beta.json 2>/dev/null \
+            || echo '{"records":0,"scored":0,"rows":[],"evidence":{"oos_mse_B0":0.1454,"oos_mse_B1":0.0971,"oos_t":7.56}}' > _site/beta.json
           [ -f _site/dashboard.json ] || echo '{"updated":"no trades yet","positions":[],"orders":[],"account":[],"cash":[]}' > _site/dashboard.json
           [ -f _site/shadow.json ] || echo '{"updated":"not built yet","marks":"","start":100000,"books":[],"lifecycle":null,"account":null}' > _site/shadow.json
           # performance report (QuantStats) from the broker's equity curve; never blocks the deploy

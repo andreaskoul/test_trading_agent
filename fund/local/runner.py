@@ -76,7 +76,7 @@ NEEDS = {
     "lifecycle": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY", "HF_TOKEN"],
     "r5": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY", "OPENROUTER_API_KEY", "FINNHUB_API_KEY", "SEC_USER_AGENT"],
     "qshadow": ["OPENROUTER_API_KEY", "HF_TOKEN"],
-    "spx": [],
+    "spx": ["ALPACA_API_KEY", "ALPACA_SECRET_KEY"],                      # 30-minute bars for the beta records
     "spxmark": [],
 }
 GROUP = {"archive": "archive", "weekly": "weekly", "execute": "execute", "filltest": "filltest",
@@ -504,6 +504,7 @@ VR = os.path.join(HOME, "venv-research", "bin", "python")
 SPX_ENV = (f'cd research/quant_trials && SPX_CACHE="{HOME}/cache/spx" SPX_MODELS="{HOME}/cache/spx_models" '
            'SPX_REC="$PWD/../../fund_state/live/research/spx" PYTHONPATH=. ')
 REGIME_ENV = 'REGIME_REC="$PWD/../../fund_state/live/research/regime" '
+BETA_ENV = 'BETA_REC="$PWD/../../fund_state/live/research/beta" '
 SPX_COMMIT = QS_COMMIT.replace('git commit -q -m "qshadow research books', 'git commit -q -m "spx forward books')
 
 
@@ -518,6 +519,11 @@ def job_spx(j, a):
     j.step("Momentum panic-switch books (research; never traded)",
            f"{SPX_ENV}{REGIME_ENV}{VR} ../regime/forward.py weekly" + (f" --asof {a.date}" if a.date else ""))
     j.step("Ledger: panic-switch books", f"{SPX_ENV}{REGIME_ENV}{VR} ../regime/forward.py ledger")
+    # forward beta records (research/riskfield/PREREG.md Amendment 5; never traded): after the S&P books, whose record
+    # of the same Thursday they read; run even if an earlier research step failed (independent records)
+    j.step("Beta records: fund's vs intraday beta (research; never traded)",
+           f"{SPX_ENV}{BETA_ENV}{VR} ../riskfield/forward.py weekly" + (f" --asof {a.date}" if a.date else ""), when="always")
+    j.step("Ledger: beta records scored after 21 sessions", f"{SPX_ENV}{BETA_ENV}{VR} ../riskfield/forward.py ledger", when="always")
     j.step("Commit to research-data", SPX_COMMIT, when="always")
     j.step("GitHub Pages: rebuild (S&P forward books on the shadow page)", f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main",
            allow_fail=True)
