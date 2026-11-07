@@ -531,3 +531,36 @@ and Appendix). Here the factor is the **mean field of the 10-K text neighbours**
 
 **Replication, if anything passes:** the S&P 400 current list (P8 closes, 2016–2025; survivorship disclosed), one
 read (`REP8_READ.lock`).
+
+### Amendment 12 (2026-11-07, after round 8's development at 5 bp and before any OOS read of round 8): the measured cost level
+
+**Round 8 at 5 bp a side** (`DEV8_RESULT.md`): no finalists. S1 nets −0.72 bp a day per position, with about
+2,840 trades a year held about 11 days. The costs come to about 1.8 bp a day per position, so the strategy is
+positive before costs.
+
+The neighbour-reversion signals have repeatedly been positive gross and negative net at 5 bp a side (A2, A3, A3B,
+S1–S3). The fund's **measured** costs are 0.8 bp slippage and 0.08 bp fees per side (118 Alpaca paper fills,
+1–22 October 2026; `fund/CHANGELOG.md`, 2026-10-23). Easy-to-borrow shorts cost nothing.
+
+**Pre-registered cost level: 2 bp a side,** about twice the measured cost, to allow for live slippage. The level
+comes from the fund's fills, not from these results.
+
+**Disclosed:** the development results at 5 bp are known, so a development gate at 2 bp is predictable and is
+not evidence. **The only test is the one OOS read.**
+
+| Test | Strategy, at 2 bp a side on every traded notional (stock and basket legs) |
+|---|---|
+| S1c | S1 (text basket, trade at close t+1) |
+| S2c | S2 (text basket, trade at close t) |
+| S3c | S3 (co-movement basket, close t+1) |
+| A3c | A3 (weekly co-movement gap, decile book, §6; never read OOS) |
+
+**OOS:** 2020–2025 (`OOS8_READ.lock`), one read, Holm across the four. Pass = Holm p < 0.05 with a positive net
+mean. Reported: the gross mean, the net at 5 bp, and returns by year.
+
+**Replication, for a pass:**
+* **S-tests:** the S&P 400 current list (P8 daily closes 2016–2025; survivorship disclosed); kernels and the same
+  rules at 2 bp; one read (`REP8_READ.lock`).
+* **A3c:** that replication is not possible (the bar universe is S&P 500 only); it is reported as such.
+
+**Before any money:** a pass is a paper candidate, recorded forward like the beta records.
