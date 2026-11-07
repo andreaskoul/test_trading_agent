@@ -7,7 +7,7 @@ later, the realised beta from 30-minute returns, frozen at first computation.
     cd research/quant_trials && PYTHONPATH=. python ../riskfield/forward.py ledger [--dry]
 
 Runs after the forward S&P books in the Friday job and reuses their price panel (spx_live.build) and calendar.
-Bars: Alpaca market data, SIP feed, adjustment "all", regular session (the research data's source and definition).
+Bars: Alpaca market data, SIP feed, split-adjusted, regular session (the research data's source; see Amendment 5a).
 Needs ALPACA_API_KEY / ALPACA_SECRET_KEY in the environment (the runner provides them; never printed).
 """
 import argparse
@@ -15,6 +15,7 @@ import json
 import os
 import subprocess
 import sys
+import threading
 import time
 import urllib.parse
 import urllib.request
@@ -26,6 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 FROZEN = os.path.join(HERE, "FROZEN_B1.json")
 REC = os.environ.get("BETA_REC", os.path.expanduser("~/.fund-runner/research/beta"))
 CACHE = os.environ.get("SPX_CACHE", os.path.expanduser("~/.fund-runner/cache/spx"))
+BARS = os.path.join(CACHE, "bars30_regular.parquet")
 DRY = os.path.join(CACHE, "beta_forward_dry")
 MIN_COVERAGE = 0.90                       # share of members with a 63-session intraday beta, else a problem
 
@@ -109,52 +111,101 @@ def freeze():
 
 
 # --------------------------------------------------------------------------------------------------------- bars
+_LAST = [0.0]
+_LOCK = threading.Lock()
+GAP = 0.33                                 # seconds between requests: about 180 a minute (the plan allows 200)
+
+
 def _get(url):
     req = urllib.request.Request(url, headers={"APCA-API-KEY-ID": os.environ["ALPACA_API_KEY"],
                                                "APCA-API-SECRET-KEY": os.environ["ALPACA_SECRET_KEY"]})
-    for attempt in range(4):
+    for attempt in range(6):
+        with _LOCK:
+            wait = _LAST[0] + GAP - time.time()
+            if wait > 0:
+                time.sleep(wait)
+            _LAST[0] = time.time()
         try:
             with urllib.request.urlopen(req, timeout=60) as r:
                 return json.load(r)
         except Exception as e:                                       # noqa: BLE001 (transport: retried, then raised)
-            if attempt == 3:
-                raise RuntimeError(f"Alpaca bars request failed 4 times: {type(e).__name__}") from None
-            time.sleep(5 * 2 ** attempt)
+            if attempt == 5:
+                raise RuntimeError(f"Alpaca bars request failed 6 times: {type(e).__name__} {getattr(e, 'code', '')}") from None
+            time.sleep(5 * 2 ** min(attempt, 3))
+
+
+def _chain(symbols, start, end):
+    """One symbol group, all pages (Alpaca returns about 370 bars a page whatever the limit)."""
+    q = {"symbols": ",".join(symbols), "timeframe": "30Min", "feed": "sip", "adjustment": "split",
+         "start": f"{start}T08:00:00Z", "end": f"{(pd.Timestamp(end) + pd.Timedelta(days=1)).date()}T04:00:00Z",
+         "limit": 10000}
+    rows, tok = [], None
+    while True:
+        d = _get("https://data.alpaca.markets/v2/stocks/bars?" + urllib.parse.urlencode({**q, **({"page_token": tok} if tok else {})}))
+        for s_, bs in (d.get("bars") or {}).items():
+            rows += [(s_, b["t"], b["o"], b["c"]) for b in bs]
+        tok = d.get("next_page_token")
+        if not tok:
+            return rows
 
 
 def fetch(symbols, start, end):
-    """30-minute SIP bars, split- and dividend-adjusted, sessions start..end (dates) -> regular-session rows."""
-    rows = []
-    for i in range(0, len(symbols), 100):
-        q = {"symbols": ",".join(symbols[i:i + 100]), "timeframe": "30Min", "feed": "sip", "adjustment": "all",
-             "start": f"{start}T08:00:00Z", "end": f"{(pd.Timestamp(end) + pd.Timedelta(days=1)).date()}T04:00:00Z",
-             "limit": 10000}
-        tok = None
-        while True:
-            d = _get("https://data.alpaca.markets/v2/stocks/bars?" + urllib.parse.urlencode({**q, **({"page_token": tok} if tok else {})}))
-            for s, bs in (d.get("bars") or {}).items():
-                rows += [(s, b["t"], b["o"], b["c"]) for b in bs]
-            tok = d.get("next_page_token")
-            if not tok:
-                break
+    """30-minute SIP bars, split-adjusted, sessions start..end (dates) -> regular-session rows; 10-symbol groups
+    in 4 threads under one rate limit."""
+    from concurrent.futures import ThreadPoolExecutor
+    groups = [symbols[i:i + 10] for i in range(0, len(symbols), 10)]
+    with ThreadPoolExecutor(4) as ex:
+        rows = [r for part in ex.map(lambda g: _chain(g, start, end), groups) for r in part]
     b = pd.DataFrame(rows, columns=["ticker", "t", "open", "close"])
     if b.empty:
-        return pd.DataFrame(columns=["date", "ticker", "k", "open", "close"])
+        return pd.DataFrame({"date": pd.Series(dtype="datetime64[ns]"), "ticker": pd.Series(dtype=str),
+                             "k": pd.Series(dtype=int), "open": pd.Series(dtype=float), "close": pd.Series(dtype=float)})
     et = pd.to_datetime(b.pop("t"), utc=True).dt.tz_convert("America/New_York")
     mins = et.dt.hour * 60 + et.dt.minute - 570
-    keep = (mins >= 0) & (mins <= 360) & (mins % 30 == 0)
+    keep = ((mins >= 0) & (mins <= 360) & (mins % 30 == 0)).to_numpy()
     b = b[keep].copy()
     b["k"] = (mins[keep] // 30).astype(int).to_numpy()
     b["date"] = et[keep].dt.tz_localize(None).dt.normalize().to_numpy()
-    return b[["date", "ticker", "k", "open", "close"]]
+    return b[["date", "ticker", "k", "open", "close"]].reset_index(drop=True)
 
 
-def bars_for(symbols, sessions):
-    """Regular-session bars for symbols x sessions, fetched fresh in one window (no cache across runs: a later split or
-    dividend re-adjusts history, and mixing fetches would break overnight returns)."""
+def bars_for(symbols, sessions, all_sessions):
+    """Regular-session bars for symbols x sessions from the cache (BARS), fetching what is missing.
+
+    * New sessions are fetched with one overlap session already in the cache.
+    * A symbol whose overlap closes differ (a split re-adjusted its history) loses its cached bars and is fetched
+      afresh over the whole window, so no window mixes two adjustments.
+    * The cache keeps 300 calendar days."""
     sessions = pd.DatetimeIndex(sessions)
-    b = fetch(symbols, sessions[0].date(), sessions[-1].date())
-    return b[b.date.isin(sessions)]
+    cols = ["date", "ticker", "k", "open", "close"]
+    have = pd.read_parquet(BARS) if os.path.exists(BARS) else pd.DataFrame(columns=cols)
+    have["date"] = pd.to_datetime(have.date)
+    cached = have.groupby("ticker").date.agg(lambda x: set(x)).to_dict() if len(have) else {}
+    plan = {}
+    for s_ in symbols:
+        c = cached.get(s_, set())
+        miss = [d for d in sessions if d not in c]
+        if not miss:
+            continue
+        prior = [d for d in all_sessions if d < miss[0] and d in c]
+        start = prior[-1] if prior and all(d in c for d in sessions if d < miss[0]) else sessions[0]
+        plan.setdefault(start, []).append(s_)
+    new = [fetch(g, st.date(), sessions[-1].date()) for st, g in sorted(plan.items())]
+    if new:
+        new = pd.concat(new)
+        new["date"] = pd.to_datetime(new.date)
+        m = new.merge(have, on=["date", "ticker", "k"], suffixes=("", "_old"))
+        moved = sorted(set(m.loc[(m.close / m.close_old - 1).abs() > 1e-6, "ticker"]))
+        if moved:                                   # re-adjusted history: refetch these names over the whole window
+            print(f"re-adjusted since cached (split): {', '.join(moved)}: refetched")
+            have = have[~have.ticker.isin(moved)]
+            new = pd.concat([new[~new.ticker.isin(moved)], fetch(moved, sessions[0].date(), sessions[-1].date())])
+            new["date"] = pd.to_datetime(new.date)
+        have = pd.concat([have, new]).drop_duplicates(["date", "ticker", "k"], keep="last")
+        have = have[have.date >= sessions[-1] - pd.Timedelta(days=300)]
+        os.makedirs(CACHE, exist_ok=True)
+        have[cols].reset_index(drop=True).to_parquet(BARS)
+    return have[have.ticker.isin(symbols) & have.date.isin(sessions)]
 
 
 # ------------------------------------------------------------------------------------------------------- weekly
@@ -182,7 +233,7 @@ def weekly(asof=None, dry=False):
     mem = [n for n, e in zip(names, d["elig"][t]) if e]
     syms = mem + ["SPY"]
     ses = S[t - 62:t + 1]
-    R = day_returns(bars_for(syms, ses), ses, syms)
+    R = day_returns(bars_for(syms, ses, S), ses, syms)
     mi = len(syms) - 1
     h21, h63 = hf_beta(R[-21:], mi, 17)[:-1], hf_beta(R, mi, 50)[:-1]
     ix = [names.index(n) for n in mem]
@@ -240,7 +291,7 @@ def ledger(dry=False):
         mem = list(rec["betas"])
         syms = mem + ["SPY"]
         ses = S[t + 1:t + 22]
-        R = day_returns(bars_for(syms, ses), ses, syms)
+        R = day_returns(bars_for(syms, ses, S), ses, syms)
         real = hf_beta(R, len(syms) - 1, 17)[:-1]
         b0 = np.array([rec["betas"][n]["B0"] if rec["betas"][n]["B0"] is not None else np.nan for n in mem], float)
         b1v = np.array([rec["betas"][n]["B1"] if rec["betas"][n]["B1"] is not None else np.nan for n in mem], float)
