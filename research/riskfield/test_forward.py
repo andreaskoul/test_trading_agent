@@ -116,6 +116,24 @@ def test_split_in_cache_forces_a_refetch(tmp=None):
         assert np.isfinite(R[1:]).all() and np.nanmax(np.abs(R)) < 0.1         # no split jump inside the window
 
 
+def test_first_fetch_into_an_empty_cache_keeps_numeric_prices():
+    """2026-11-07 dry run: concatenating onto an empty cache made prices objects and np.log failed."""
+    import tempfile
+    rng = np.random.default_rng(5)
+    days = pd.bdate_range("2026-09-01", periods=4)
+    full = _bars(days, ["AAA", "SPY"], rng)
+    with tempfile.TemporaryDirectory() as d:
+        FWD.BARS = os.path.join(d, "bars.parquet")
+        real, FWD.fetch = FWD.fetch, lambda symbols, start, end: full[full.ticker.isin(symbols)].reset_index(drop=True)
+        try:
+            got = FWD.bars_for(["AAA", "SPY"], days, days)
+        finally:
+            FWD.fetch = real
+        R = FWD.day_returns(got, days, ["AAA", "SPY"])
+        assert np.isfinite(R[1:]).all()
+        assert pd.read_parquet(FWD.BARS).close.dtype == float
+
+
 if __name__ == "__main__":
     for k, f in list(globals().items()):
         if k.startswith("test_"):

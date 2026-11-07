@@ -169,6 +169,11 @@ def fetch(symbols, start, end):
     return b[["date", "ticker", "k", "open", "close"]].reset_index(drop=True)
 
 
+def _typed(b):
+    """Column types of the bar table (an empty cache would otherwise turn prices into objects on concat)."""
+    return b.astype({"ticker": str, "k": int, "open": float, "close": float}).assign(date=pd.to_datetime(b.date))
+
+
 def bars_for(symbols, sessions, all_sessions):
     """Regular-session bars for symbols x sessions from the cache (BARS), fetching what is missing.
 
@@ -178,8 +183,7 @@ def bars_for(symbols, sessions, all_sessions):
     * The cache keeps 300 calendar days."""
     sessions = pd.DatetimeIndex(sessions)
     cols = ["date", "ticker", "k", "open", "close"]
-    have = pd.read_parquet(BARS) if os.path.exists(BARS) else pd.DataFrame(columns=cols)
-    have["date"] = pd.to_datetime(have.date)
+    have = _typed(pd.read_parquet(BARS) if os.path.exists(BARS) else pd.DataFrame(columns=cols))
     cached = have.groupby("ticker").date.agg(lambda x: set(x)).to_dict() if len(have) else {}
     plan = {}
     for s_ in symbols:
@@ -201,7 +205,7 @@ def bars_for(symbols, sessions, all_sessions):
             have = have[~have.ticker.isin(moved)]
             new = pd.concat([new[~new.ticker.isin(moved)], fetch(moved, sessions[0].date(), sessions[-1].date())])
             new["date"] = pd.to_datetime(new.date)
-        have = pd.concat([have, new]).drop_duplicates(["date", "ticker", "k"], keep="last")
+        have = _typed(pd.concat([have, new])).drop_duplicates(["date", "ticker", "k"], keep="last")
         have = have[have.date >= sessions[-1] - pd.Timedelta(days=300)]
         os.makedirs(CACHE, exist_ok=True)
         have[cols].reset_index(drop=True).to_parquet(BARS)
