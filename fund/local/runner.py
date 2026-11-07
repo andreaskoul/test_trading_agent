@@ -503,6 +503,7 @@ def job_qshadow(j, a):
 VR = os.path.join(HOME, "venv-research", "bin", "python")
 SPX_ENV = (f'cd research/quant_trials && SPX_CACHE="{HOME}/cache/spx" SPX_MODELS="{HOME}/cache/spx_models" '
            'SPX_REC="$PWD/../../fund_state/live/research/spx" PYTHONPATH=. ')
+REGIME_ENV = 'REGIME_REC="$PWD/../../fund_state/live/research/regime" '
 SPX_COMMIT = QS_COMMIT.replace('git commit -q -m "qshadow research books', 'git commit -q -m "spx forward books')
 
 
@@ -512,6 +513,11 @@ def job_spx(j, a):
     j.step("Forward S&P 500 books (Amendment 4; never traded)",
            f"{SPX_ENV}{VR} spx_forward.py weekly" + (f" --asof {a.date}" if a.date else ""))
     j.step("Ledger: realised weeks and ICs, frozen at first computation", f"{SPX_ENV}{VR} spx_forward.py ledger")
+    # momentum panic-switch paper books (research/regime/PREREG.md Amendment 6; never traded): after the S&P books,
+    # whose record of the same Thursday they read
+    j.step("Momentum panic-switch books (research; never traded)",
+           f"{SPX_ENV}{REGIME_ENV}{VR} ../regime/forward.py weekly" + (f" --asof {a.date}" if a.date else ""))
+    j.step("Ledger: panic-switch books", f"{SPX_ENV}{REGIME_ENV}{VR} ../regime/forward.py ledger")
     j.step("Commit to research-data", SPX_COMMIT, when="always")
     j.step("GitHub Pages: rebuild (S&P forward books on the shadow page)", f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main",
            allow_fail=True)

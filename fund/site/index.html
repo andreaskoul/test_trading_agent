@@ -20,7 +20,7 @@
     <nav class="site"><a class="on" href="./">Models under assessment</a><a href="account/">Paper account</a><a href="ledger/">Position ledger</a><a href="report.html">Performance report</a></nav>
   </header>
   <details class="ops" id="ops"><summary><b>Operations</b> · checking the runner and its jobs…</summary></details>
-  <p class="lead">Four things are being tested. The live fund trades a paper account at Alpaca; everything else is paper only and never sent to the broker. Each test compares a model only with what it must beat, over the same dates, and says when and by what rule it will be decided. Live results are weeks old, so differences are still mostly noise: <b>no verdict before mid-April 2027</b>. Returns are cumulative over the dates shown; % per year appears from 26 weeks. Backtests are labelled and never mixed with live weeks. Models retired on 5 Nov 2026 are listed at the bottom.</p>
+  <p class="lead">Five things are being tested. The live fund trades a paper account at Alpaca; everything else is paper only and never sent to the broker. Each test compares a model only with what it must beat, over the same dates, and says when and by what rule it will be decided. Live results are weeks old, so differences are still mostly noise: <b>no verdict before mid-April 2027</b>. Returns are cumulative over the dates shown; % per year appears from 26 weeks. Backtests are labelled and never mixed with live weeks. Models retired on 5 Nov 2026 are listed at the bottom.</p>
 
   <section><h2>Where each test stands</h2>
     <div class="muted" style="margin-bottom:6px">One row per question. The bar runs from the start of the live test to its final decision, filled to today; each tick is a registered check. Click a row for its section.</div>
@@ -72,6 +72,15 @@
     <details class="fold" id="f-s4pos"><summary><h3>This week's positions</h3><span class="cnt"></span></summary><div class="scroll" id="s4pos"></div></details>
   </section>
 
+  <section id="s5" hidden>
+    <h2>5 · When does momentum crash? A market-regime switch (research, paper only)</h2>
+    <dl class="about" id="s5about"></dl>
+    <div class="kpis" id="s5kpis"></div>
+    <h3>The evidence, read once on samples the switch was not designed on</h3><div class="scroll" id="s5ev"></div>
+    <h3>Forward paper books (from 12 Nov 2026)</h3><div class="scroll" id="s5tab"></div>
+    <details class="fold" id="f-s5states"><summary><h3>The regime each week, and the AI models' momentum exposure</h3><span class="cnt"></span></summary><div class="scroll" id="s5states"></div></details>
+  </section>
+
   <section><details class="fold" id="f-retired"><summary><h2>Retired, and no longer shown</h2></summary>
     <div class="muted" style="line-height:1.6">Retired on 5 Nov 2026 with the S&amp;P core, because no remaining question uses them: the six weekly-fund experiments (five-answer vote; news only, company hidden; sized by inverse volatility; plus short-term reversal; plus macro and peer news; one model ranking all stocks) and the fixed 20-stock list. The weekly fund without its second-opinion review is still recorded but answers no current question. Their records stay in the data branch (<code>fund-data</code>, <code>shadow.json</code>); nothing was deleted. Four of the six 31-name research books are recorded but not judged: only the two chosen on 17 Oct are.</div>
   </details></section>
@@ -117,7 +126,7 @@ const dayBefore = (pts, day) => { let d0 = null; for (const p of ptsSorted(pts))
 const diffTxt = (a, b, an, bn) => a == null || b == null ? "not enough data yet" : `${an} ${pct(a)} vs ${bn} ${pct(b)}: <b>${pct(a - b)}</b>`;
 
 // ---- "Where each test stands": one row per question, filled in as each data file arrives --------------------------
-const QROWS = {}, QORDER = ["fund", "fixes", "weekly", "account", "spx", "news31"];
+const QROWS = {}, QORDER = ["fund", "fixes", "weekly", "account", "spx", "news31", "regime"];
 function qset(k, row) {
   QROWS[k] = row;
   table("board", [["Question", r => `<b>${r.q}</b><div class="muted">${r.books}</div>`, "wrap q"],
@@ -423,6 +432,42 @@ fetch("research.json", { cache: "no-store" }).then(r => r.json()).then(R => {
   const Lt = R.latest;
   if (Lt) table("s4pos", [["Book", r => `<b>${esc(rlabel(r.book))}</b>`], ["Decided", r => Lt.asof + " (" + (KIND[Lt.kind] || Lt.kind) + ")"], ["Ticker", r => esc(r.t)], ["Weight", r => wt(r.w), "n"]],
     PRIM.flatMap(b => Object.entries(Lt.books[b] || {}).sort((x, y) => y[1] - x[1]).map(([t, w]) => ({ book: b, t, w }))));
+}).catch(() => {});
+
+// ---- 5 · momentum panic switch (research/regime; PREREG.md Amendments 5-6): computed in forward.py; formatted here --
+fetch("regime.json", { cache: "no-store" }).then(r => r.json()).then(G => {
+  document.getElementById("s5").hidden = false;
+  const E = G.evidence || {}, us = E.us_2000_2025 || {}, it = E.intl_1992_2025 || {}, Lt = G.latest, B = G.books || {};
+  const n2 = v => v == null ? "" : Number(v).toFixed(2);
+  about("s5about", [
+    ["What is tested", "Whether a market regime that can be seen in advance predicts when stock momentum (buying the past year's winners and selling the losers) crashes. Out of 17 regime ideas tested on sectors, correlations, earnings news, news embeddings and factor timing, this is the one that held up on data it was not designed on."],
+    ["How it works", "<b>Panic state</b>: the S&amp;P 500 is below where it was a year ago (252 sessions) <b>and</b> its volatility over the last month is above its median of the last three years. In panic, momentum is switched off; otherwise it is held. The same rule, unchanged, was checked on the US 2000–2025 and on Europe, Japan and Asia Pacific 1992–2025."],
+    ["How it is judged", "It is a risk regime, not a return source: it matters only in panic weeks, which are rare (about one week in six since 2000), so the forward books report the loss avoided in each panic episode; no return verdict. The S&amp;P AI books in section 3 are largely momentum bets (see their exposure below), so the switch is also measured on a copy of their average book. Nothing traded or registered changes."]]);
+  if (Lt) {
+    const st = Lt.state;
+    document.getElementById("s5kpis").innerHTML = [
+      [`Regime at the ${Lt.asof} close`, st.panic ? '<span class="neg">PANIC: momentum off</span>' : '<span class="pos">normal: momentum on</span>'],
+      ["S&amp;P 500 over the last year", pct(st.ret252)],
+      ["Its 1-month volatility", `${(st.vol21_ann * 100).toFixed(1)}% <span class="muted">a year; ${st.vol_pct == null ? "" : "higher than " + Math.round(st.vol_pct * 100) + "% of the last 3 years' weeks"}</span>`],
+      ["AI average book's momentum exposure", Lt.mom_loadings && Lt.mom_loadings.ensemble != null ? n2(Lt.mom_loadings.ensemble) + ' <span class="muted">rank correlation</span>' : "—"]]
+      .map(([a, b]) => `<div class="kpi"><div class="muted">${a}</div><div class="v">${b}</div></div>`).join("");
+  }
+  table("s5ev", [["Sample", r => `<b>${r.k}</b>`], ["t-stat (predicted direction)", r => n2(r.t), "n"], ["p-value, this test alone", r => r.p == null ? "" : r.p.toFixed(4), "n"], ["p-value, allowing for the others tested with it", r => r.ph == null ? "" : r.ph.toFixed(4), "n"],
+    ["Momentum with the switch: net % per year", r => pct(r.c / 100), "n"], ["Momentum always on", r => pct(r.u / 100), "n"], ["Sharpe ratio, switch / always on", r => `${n2(r.cs)} / ${n2(r.us)}`, "n"],
+    ["Worst fall, switch / always on", r => r.cd == null ? "" : `${r.cd.toFixed(0)}% / ${r.ud.toFixed(0)}%`, "n"]],
+    [{ k: "US 2000–2025 (out of sample, with 3 other ideas)", t: us.t_dir, p: us.p_one_sided, ph: us.p_holm, c: us.cond_net_pct_yr, u: us.unc_net_pct_yr, cs: us.cond_sharpe, us: us.unc_sharpe },
+     { k: "Europe, Japan, Asia Pacific 1992–2025 (independent replication, with 1 other idea)", t: it.t_dir, p: it.p_one_sided, ph: it.p_holm, c: it.cond_net_pct_yr, u: it.unc_net_pct_yr, cs: it.cond_sharpe, us: it.unc_sharpe, cd: it.cond_max_dd_pct, ud: it.unc_max_dd_pct }]
+      .filter(r => r.t != null));
+  const LAB = { mom: "S&P 500 momentum, always on", mom_panic: "S&P 500 momentum, switched off in panic", ens: "AI average book (copy of section 3's)", ens_panic: "AI average book, switched off in panic" };
+  table("s5tab", [["Book", k => `<b>${LAB[k]}</b>`], ["Weeks booked", k => B[k].weeks, "n"], ["Cumulative", k => pct(B[k].cum), "n"], ["% per year", k => pct(B[k].ann), "n"],
+    ["Panic weeks", k => (B[k].weekly || []).filter(w => w.panic).length, "n"]], Object.keys(LAB).filter(k => B[k]), null, "The first forward record is Thursday 12 Nov 2026 (written Friday 03:45 UTC); weeks are booked after their last close.");
+  table("s5states", [["Decided", s => s.asof], ["Regime", s => s.panic ? '<span class="neg">panic</span>' : "normal"], ["S&amp;P 1-year return", s => pct(s.ret252), "n"],
+    ["1-month volatility percentile", s => s.vol_pct == null ? "" : Math.round(s.vol_pct * 100) + "%", "n"]], (G.states || []).slice().reverse());
+  const nb = B.mom ? B.mom.weeks : 0;
+  qset("regime", { sec: "s5", q: "Does a panic regime predict momentum crashes? (research)", books: "Momentum and the AI average book, switched off in panic vs always on (paper)",
+    bar: "", ev: `${G.records || 0} forward record${G.records === 1 ? "" : "s"}; ${nb} week${nb === 1 ? "" : "s"} booked`,
+    res: it.t_dir != null ? `replicated before going forward: Europe, Japan, Asia Pacific p ${it.p_holm.toFixed(4)} (allowing for 2 ideas); Sharpe ${n2(it.cond_sharpe)} vs ${n2(it.unc_sharpe)}` : "",
+    rule: "A risk regime: reported as the loss avoided in each panic episode; no return verdict. Using it in any traded or registered book needs its own protocol." });
 }).catch(() => {});
 
 folds();

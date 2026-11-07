@@ -1,0 +1,16 @@
+{
+ "frozen": "2026-11-07, before any OOS statistic",
+ "holm_family": ["H8", "H12", "H14", "H16"],
+ "alpha": 0.05,
+ "nw_lags": 4,
+ "H8":  {"y": "NREV_gross - REV_gross", "detector": "season", "events_from": "2012-03-01", "hist_weeks": 156, "form": "linear",
+         "conditioned": "p*NREV + (1-p)*REV", "unconditioned": "0.5*NREV + 0.5*REV", "sign": 1, "oos": ["2020-01-01", "2025-12-31"]},
+ "H12": {"y": "NREVB_gross - REVB_gross", "detector": "season", "events_from": "2012-03-01", "hist_weeks": 156, "form": "linear",
+         "conditioned": "p*NREVB + (1-p)*REVB", "unconditioned": "0.5*NREVB + 0.5*REVB", "sign": 1, "oos": ["2020-01-01", "2025-12-31"]},
+ "H14": {"y": "pooled MOM, REV, SREV, LOWVOL, HIGH52 weekly gross", "detector": "own trailing return, decisions k-27..k-2, percentile vs 156 weeks",
+         "window_weeks": 26, "form": "linear", "conditioned": "sum_f (1 - pct_f)/5 * book_f", "unconditioned": "sum_f book_f / 5", "sign": -1,
+         "oos": ["2020-01-01", "2025-12-31"]},
+ "H16": {"y": "UMD weekly (close t+1 -> t+6)", "detector": "bear (Mkt 252-session return < 0) and pct(Mkt vol, 21 sessions, vs 156 weeks) > 0.5",
+         "form": "binary", "conditioned": "UMD off in panic", "unconditioned": "UMD", "sign": -1, "oos": ["2000-01-01", "2025-12-31"]},
+ "worth_forward": "Holm-significant primary AND conditioned OOS net Sharpe > unconditioned AND conditioned OOS net mean > 0"
+}
