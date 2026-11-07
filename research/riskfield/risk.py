@@ -51,6 +51,10 @@ class Data:
         self.w = np.log(roll_mean(rv, 5, 4))
         self.m = np.log(roll_mean(rv, 22, 17))
         self.q = np.sqrt(rq) / rv
+        Rd = H["R"].astype(float)
+        rp = np.where(np.isfinite(Rd).all(1), (np.where(Rd > 0, Rd, 0) ** 2).sum(1), np.nan)
+        self.j = (2 * rp - rv) / rv                                       # (RS+ - RS-) / RV, Amendment 4
+        self.j_w = roll_mean(self.j, 5, 4)
         self.rvbar = {h: fwd_mean(rv, h, int(np.ceil(0.8 * h))) for h in HS}
         self.y = {h: np.log(self.rvbar[h]) for h in HS}
         T, N = rv.shape
@@ -160,6 +164,8 @@ class Data:
         if model == "MS_co":
             return base + sec + [self.cached("fco_w", lambda: self.field("co", self.w)),
                                  self.cached("fco_m", lambda: self.field("co", self.m))]
+        if model == "MS_sj":
+            return base + sec + [self.j, self.j_w]
         if model == "MS_q":
             return base + sec + [self.d * self.q]
         if model in ("NB", "N1", "N1_placebo"):
@@ -290,3 +296,4 @@ def compare(D, cand, bench, h, period, cand_hl=None):
 
 RTESTS = {"R1": ("MS_text", "MS", None), "R2": ("MS_co", "MS", None), "R3": ("MS_ew", "MS", 252),
           "R4": ("MS_q", "MS", None), "R5": ("MS_reg", "MS", None), "N1": ("N1", "NB", None)}
+RTESTS2 = {"R6": ("MS_sj", "MS", None)}

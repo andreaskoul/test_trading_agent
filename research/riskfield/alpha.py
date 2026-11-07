@@ -44,7 +44,16 @@ def fld(W, x):
     return np.where((den >= 0.5 * rowm) & (rowm > 0), num / np.maximum(den, 1e-12), np.nan)
 
 
-def build(period_end):
+def rskew(H, t_hf):
+    """Amendment 4: realised skewness over the 65 intraday returns of HF sessions t-4..t (NaN if any missing)."""
+    r = H.R[t_hf - 4:t_hf + 1, 1:, :].reshape(-1, H.N)
+    ok = np.isfinite(r).all(0)
+    r = np.where(ok, r, 0.0)
+    s2 = (r ** 2).sum(0)
+    return np.where(ok & (s2 > 0), np.sqrt(r.shape[0]) * (r ** 3).sum(0) / np.where(s2 > 0, s2, 1) ** 1.5, np.nan)
+
+
+def build(period_end, H=None):
     """Weekly rows to decisions <= period_end: signals A1..A3, next-week residual return, book returns."""
     P = RG.panel()
     S, names = P["S"], P["names"]
@@ -54,7 +63,8 @@ def build(period_end):
     dec = [t for t in range(260, n - 6) if S[t].weekday() == 3 and S[t] <= period_end]
     month = None
     rows, books = [], {k: [] for k in ("A1", "A2", "A3")}
-    zrows = {"A2": [], "A3": []}
+    zrows = {"A2": [], "A3": [], "A4": []}
+    hix = pd.Index(H.names).get_indexer(names) if H is not None else None
     betas = []
     for t in dec:
         if (S[t].year, S[t].month) != month:                      # kernels from information to the previous session
@@ -70,6 +80,14 @@ def build(period_end):
         sig = {"A1": np.where(el & has, fld(Wt, m21), np.nan),
                "A2": np.where(el & has, fld(Wt, m5) - m5, np.nan),
                "A3": np.where(el, fld(Wc, m5) - m5, np.nan)}
+        if H is not None:
+            th = H.S.get_indexer([S[t]])[0]
+            a4 = np.full(len(names), np.nan)
+            if th >= 4:
+                sk = rskew(H, th)
+                a4[hix >= 0] = -sk[hix[hix >= 0]]
+            sig["A4"] = np.where(el, a4, np.nan)
+            books.setdefault("A4", [])
         y = np.where(el, cr[t + 7] - cr[t + 2], np.nan)          # sum of e over t+2..t+6
         R, Rm = RG.hold_ret(P, t)
         row = {"t": t, "date": S[t]}
@@ -93,7 +111,7 @@ def build(period_end):
             to.append(np.nan if prev is None else float(np.abs(w - prev[0]).sum() + abs(wspy - prev[1])))
             prev = (w, wspy)
         D[f"{k}_net"] = D[f"{k}_gross"] - RG.COST * pd.Series(to).fillna(1.0).to_numpy()
-    for k in ("A2", "A3"):                                            # Amendment 2: banded books
+    for k in [x for x in ("A2", "A3", "A4") if zrows[x]]:              # Amendments 2 and 4: banded books
         bk = RG.banded(zrows[k], betas)
         g = [float(np.nansum(w * r.R) + h * r.Rm) for (w, h), (_, r) in zip(bk, D.iterrows())]
         to = [1.0] + [float(np.abs(a[0] - b[0]).sum() + abs(a[1] - b[1])) for a, b in zip(bk[1:], bk[:-1])]
