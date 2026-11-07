@@ -149,3 +149,29 @@ H15 has its own split: **development 1927–1999, OOS 2000–2025**, read once w
 costs: 5 bp per side on industry weights (tradeable through sector baskets or ETFs; no hedge, the book is dollar
 neutral). H13's forms: binary (r5 if novelty above the cross-sectional median, else −r5) and linear (as in the
 table); its variants are the 13- and 26-week trailing centroids.
+
+---
+
+## Amendment 3 (2026-11-07, before any round-4 statistic; the OOS samples are still unread)
+
+**Round 3 result (development only).** H12 2.0 (finalist: 3-year history, linear; conditioned net +0.58% a year,
+Sharpe 0.14, against the unconditioned 0.08), H13 −0.47 (novel-vs-stale news: wrong sign), H14 1.84 (finalist:
+26 weeks, linear; net +0.65% a year, Sharpe 0.31, against −0.09), H15 −0.79 (industry momentum by cross-industry
+correlation, 1927–1999: wrong sign). **Finalists so far: H8, H12, H14.**
+
+**Round 4: momentum-crash regimes where crashes exist.** H3 and H11 had too few crash episodes in 2010–2019 to be
+judged. Two long-history tests on the Ken French daily momentum factor (UMD, 1926–2025), with H15's split
+(development 1927–1999, OOS 2000–2025, read once with the other finalists):
+
+| | Book | Detector | Mechanism | Predicted |
+|---|---|---|---|---|
+| H16 | UMD held weekly (close t+1 → close t+6) | **PANIC**: market (Mkt) 252-session return < 0 and its realised volatility over L ∈ {21, 63} above its trailing 3-year median | momentum crashes in rebounds after bear markets (Daniel & Moskowitz 2016) | b < 0 |
+| H17 | UMD held weekly | **UMDVOL**: UMD's realised volatility over the last 126 or 252 sessions | crashes cluster when momentum is volatile (Barroso & Santa-Clara 2015) | b < 0 |
+
+Costs: 5 bp per side on the change in scale of a book with 100% long and 100% short legs (2 × |Δs|); UMD's own
+rebalancing is the same for the conditioned and unconditioned books and is not charged to either. Forms: binary (off
+in the predicted bad state) and linear (H16: scale 1 − PANIC is the binary form, so its linear form scales by
+(1 − percentile of volatility) inside bear markets and 1 outside; H17: 1 − percentile).
+
+**Taking a passing long-history result to the fund's universe.** If H16 or H17 passes, its frozen rule is also
+reported, descriptively, on the S&P 500 MOM book in 2020–2025; that is not a separate test.

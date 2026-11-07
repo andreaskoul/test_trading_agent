@@ -336,3 +336,174 @@ if __name__ == "__main__" and sys.argv[1:] == ["build2"]:
     D.to_parquet(os.path.join(OUT, "weekly.parquet"))
     dev_ = D[D["date"] <= pd.Timestamp("2019-12-31")]                 # sanity on development rows only
     print(dev_[[c for c in D.columns if c.endswith("_gross") or c in ("crowd", "season")]].describe().T.round(4).to_string())
+
+
+# ------------------------------------------------------------------------------------------- round 3 (Amendment 2)
+def banded(scores, beta_rows, inner=0.1, outer=0.3):
+    """Path-dependent band book per decision: enter at the top/bottom `inner` quantile, keep while inside `outer`."""
+    out, L, Sh = [], set(), set()
+    for sc, beta in zip(scores, beta_rows):
+        m = np.isfinite(sc)
+        w = np.zeros(sc.shape)
+        if m.sum() < 50:
+            out.append((w, 0.0)); L, Sh = set(), set(); continue
+        qi = np.nanquantile(sc[m], [inner, 1 - inner]); qo = np.nanquantile(sc[m], [outer, 1 - outer])
+        L = {j for j in np.where(m & (sc >= qi[1]))[0]} | {j for j in L if m[j] and sc[j] >= qo[1]}
+        Sh = {j for j in np.where(m & (sc <= qi[0]))[0]} | {j for j in Sh if m[j] and sc[j] <= qo[0]}
+        if L and Sh:
+            w[list(L)], w[list(Sh)] = 0.5 / len(L), -0.5 / len(Sh)
+        out.append((w, -float(np.nansum(w * np.nan_to_num(beta, nan=1.0)))))
+    return out
+
+
+def novelty_panel(S, dec, names):
+    """H13: per decision and firm (31 names): formation-week news centroid's novelty against the trailing 13- and
+    26-week centroids of the same firm (weeks with news only)."""
+    out = {13: np.full((len(dec), len(names)), np.nan), 26: np.full((len(dec), len(names)), np.nan)}
+    col = {t: j for j, t in enumerate(names)}
+    for f in sorted(glob.glob(os.path.join(TEXT, "*_dedup.npz"))):
+        tk = os.path.basename(f).split("_")[0]
+        if tk not in col:
+            continue
+        z = np.load(f)
+        s = pd.DatetimeIndex(z["session"].astype("datetime64[ns]"))
+        C = np.full((len(dec), z["sum"].shape[1]), np.nan, dtype=np.float32)
+        for k, t in enumerate(dec):
+            lo = S[dec[k - 1]] if k else S[t] - pd.Timedelta(days=7)
+            m = (s > lo) & (s <= S[t])
+            if z["n"][m].sum() > 0:
+                C[k] = z["sum"][m].sum(0) / z["n"][m].sum()
+        for w in (13, 26):
+            for k in range(w, len(dec)):
+                if not np.all(np.isfinite(C[k])):
+                    continue
+                past = C[k - w:k]
+                past = past[np.all(np.isfinite(past), 1)]
+                if len(past) < w // 2:
+                    continue
+                c, p = C[k], past.mean(0)
+                out[w][k, col[tk]] = 1 - float(c @ p / (np.linalg.norm(c) * np.linalg.norm(p)))
+    return out
+
+
+def build3(D):
+    P = panel()
+    S, names = P["S"], P["names"]
+    col = {t: j for j, t in enumerate(names)}
+    dec = D["t"].to_numpy()
+    ev = pd.read_parquet(EVENTS)
+    ev = ev[(ev.universe == "sp500") & ev.ticker.isin(col) & (ev.t0 <= END)]
+    ev = ev.assign(ti=S.get_indexer(pd.DatetimeIndex(ev.t0)))
+    cr = np.vstack([np.zeros((1, P["e"].shape[1])), np.nancumsum(np.nan_to_num(P["e"]), 0)])
+    rev_s, nrev_s, betas, r5res, el_rows = [], [], [], [], []
+    for t in dec:
+        el = P["elig"][t] & np.isfinite(P["close"][t + 1])
+        rev = -(cr[t + 1] - cr[t - 4])
+        flip = np.zeros(len(names), bool)
+        flip[[col[x] for x in ev[(ev.ti > t - 5) & (ev.ti <= t)].ticker]] = True
+        rev_s.append(zs(np.where(el, rev, np.nan)))
+        nrev_s.append(zs(np.where(el, np.where(flip, -rev, rev), np.nan)))
+        betas.append(P["beta"][t]); r5res.append(-rev); el_rows.append(el)
+    rows = []
+    books = {"REVB": banded(rev_s, betas), "NREVB": banded(nrev_s, betas)}
+    # H13: novelty books on the 31 names with news in the formation week
+    nov = novelty_panel(S, dec, names)
+    fm = {13: [], 26: []}
+    for w in (13, 26):
+        books[f"NOV{w}"], books[f"NOVB{w}"], books[f"NOVREV{w}"] = [], [], []
+    for k, t in enumerate(dec):
+        R, Rm = hold_ret(P, t)
+        yres = R - P["beta"][t] * Rm
+        row = {}
+        for w in (13, 26):
+            nv = nov[w][k]
+            m = np.isfinite(nv) & el_rows[k] & np.isfinite(r5res[k]) & np.isfinite(yres)
+            wN, wB, wR, wspyN, wspyB, wspyR, b2 = np.zeros(len(names)), np.zeros(len(names)), np.zeros(len(names)), 0.0, 0.0, 0.0, np.nan
+            if m.sum() >= 8:
+                x1 = r5res[k][m]; x1 = (x1 - x1.mean()) / (x1.std() or 1)
+                rk = (pd.Series(nv[m]).rank().to_numpy() - 0.5) / m.sum()
+                X = np.column_stack([np.ones(m.sum()), x1, x1 * (rk - 0.5)])
+                b2 = float(np.linalg.lstsq(X, yres[m], rcond=None)[0][2])
+                idx = np.where(m)[0]
+                for score, wv in ((x1 * (2 * rk - 1), wN), (x1 * np.sign(rk - 0.5), wB), (-x1, wR)):
+                    o = np.argsort(score); n3 = max(1, m.sum() // 3)
+                    wv[idx[o[-n3:]]] = 0.5 / n3; wv[idx[o[:n3]]] = -0.5 / n3
+                bt = np.nan_to_num(P["beta"][t], nan=1.0)
+                wspyN, wspyB, wspyR = -float((wN * bt).sum()), -float((wB * bt).sum()), -float((wR * bt).sum())
+            books[f"NOV{w}"].append((wN, wspyN)); books[f"NOVB{w}"].append((wB, wspyB)); books[f"NOVREV{w}"].append((wR, wspyR))
+            row[f"nov_b2_{w}"], row[f"nov_n_{w}"] = b2, int(m.sum())
+        for kname in books:
+            wv, ws = books[kname][k]
+            row[f"{kname}_gross"] = float(np.nansum(wv * R) + ws * Rm)
+        rows.append(row)
+    for kname in books:
+        np.save(os.path.join(OUT, f"book_{kname}.npy"), np.array([w for w, _ in books[kname]], dtype=np.float32))
+        np.save(os.path.join(OUT, f"hedge_{kname}.npy"), np.array([s for _, s in books[kname]]))
+    D3 = pd.DataFrame(rows, index=D.index)
+    return pd.concat([D.drop(columns=[c for c in D3.columns if c in D.columns]), D3], axis=1)
+
+
+KF49 = "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/49_Industry_Portfolios_daily_CSV.zip"
+
+
+def kf_industries():
+    """Ken French 49 industries, value-weighted daily returns (fractions), 1926-07 .. 2025-12-31; cached raw zip."""
+    import io, urllib.request, zipfile
+    p = os.path.join(OUT, "49_Industry_Portfolios_daily_CSV.zip")
+    if not os.path.exists(p):
+        urllib.request.urlretrieve(KF49, p)
+    raw = zipfile.ZipFile(p).read(zipfile.ZipFile(p).namelist()[0]).decode("latin-1").splitlines()
+    start = next(i for i, l in enumerate(raw) if l.strip().startswith(",") or l.lower().startswith(" ,agric") or "Agric" in l)
+    rows = []
+    for l in raw[start + 1:]:
+        parts = [x.strip() for x in l.split(",")]
+        if not parts[0].isdigit() or len(parts[0]) != 8:
+            break                                                    # the first (value-weighted) table ends here
+        rows.append(parts)
+    hdr = [x.strip() for x in raw[start].split(",")][1:]
+    df = pd.DataFrame([r[1:] for r in rows], index=pd.to_datetime([r[0] for r in rows]), columns=hdr).astype(float)
+    df = df.where(df > -99) / 100
+    return df[df.index <= END]
+
+
+def build_kf():
+    R = kf_industries()
+    S = R.index
+    X = R.to_numpy()
+    lr = np.log1p(X)
+    cum = np.vstack([np.zeros((1, X.shape[1])), np.nancumsum(np.nan_to_num(lr), 0)])
+    resid = X - np.nanmean(X, 1, keepdims=True)
+    dec = [t for t in range(260, len(S) - 6) if S[t].weekday() == 3]
+    rows, W = [], []
+    for t in dec:
+        m12 = cum[t - 20] - cum[t - 251]                              # 12-1 month log return
+        ok = np.isfinite(X[t - 251:t + 7]).all(0)
+        w = np.zeros(X.shape[1])
+        if ok.sum() >= 30:
+            o = np.argsort(np.where(ok, m12, np.nan))
+            o = [j for j in o if ok[j]]
+            w[o[-7:]], w[o[:7]] = 0.5 / 7, -0.5 / 7
+        Rh = np.exp(cum[t + 7] - cum[t + 1]) - 1                      # close t+1 -> close t+6
+        row = {"date": S[t], "IMOM_gross": float(np.nansum(w * Rh))}
+        for L in (21, 63):
+            E = resid[t - L + 1:t + 1][:, ok]
+            C = np.corrcoef(E.T)
+            n = C.shape[0]
+            row[f"iacorr{L}"] = float((C.sum() - n) / (n * (n - 1)))
+        rows.append(row); W.append(w)
+    D = pd.DataFrame(rows)
+    np.save(os.path.join(OUT, "book_IMOM.npy"), np.array(W, dtype=np.float32))
+    D.to_parquet(os.path.join(OUT, "kf_weekly.parquet"))
+    return D
+
+
+if __name__ == "__main__" and sys.argv[1:] == ["build3"]:
+    D = pd.read_parquet(os.path.join(OUT, "weekly.parquet"))
+    D = build3(D)
+    D.to_parquet(os.path.join(OUT, "weekly.parquet"))
+    dev_ = D[D["date"] <= pd.Timestamp("2019-12-31")]
+    print(dev_[[c for c in D.columns if c.startswith(("REVB", "NREVB", "NOV")) or c.startswith("nov_n")]].describe().T.round(4).to_string())
+    K = build_kf()
+    kd = K[K["date"] <= pd.Timestamp("1999-12-31")]
+    print("KF weeks", len(K), "dev", len(kd), K["date"].min().date(), K["date"].max().date())
+    print(kd.describe().T.round(4).to_string())
