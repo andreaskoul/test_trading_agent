@@ -104,7 +104,7 @@ def run(period):
         den = Wr @ has.astype(float)
         F = np.where(den > 0, (Wr @ np.nan_to_num(v)) / np.where(den > 0, den, 1), np.nan)
         D20 = cr[t + HOLD + 2, E.j] - cr[t + 2, E.j]
-        blocks1.append((w, D20, zf(comp)))
+        blocks1.append((np.full(len(D20), w), D20, zf(comp)))
         X = np.column_stack([zf(comp), np.where(np.isfinite(F), (F - np.nanmean(F)) / np.nanstd(F), np.nan)])
         blocks2.append((w, D20, X))
         # cohorts: E1 on z(comp); E2 on z(comp) + z(F) (names without F use z(comp) alone)

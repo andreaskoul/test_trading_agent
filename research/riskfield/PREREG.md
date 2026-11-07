@@ -432,3 +432,52 @@ therefore **2022-01-01 .. 2025-12-31**. Development is 2012–2021, which P8 has
 
 **Replication, if anything passes:** the S&P 400 (P8 events and closes, current list, survivorship disclosed),
 2022–2025, one read (`REP6_READ.lock`).
+
+### Amendment 10 (2026-11-07, after round 6's development and before any statistic that uses insider data): insider trading and its field
+
+**Round 6** (`DEV6_RESULT.md`, development 2012–2021): no finalists.
+* E1, earnings drift at the Thursday cadence: 13 bp per sd, t 1.22; book +0.16% a year.
+* E2, the field: −1.1 bp, t −0.07.
+* E4, announcement premium: −1 bp.
+
+So the OOS6 read is not spent. In large caps, price and earnings information is priced within days.
+
+**Round 7 uses information the market is known to price slowly:** insiders' open-market trades, from the SEC
+Insider Transactions Data Sets 2010–2025 (`insider.py`).
+* Typed fields only: TRANS_CODE P (purchase) or S (sale), from Forms 4 and 5. Amendments are dropped.
+* The signal date is FILING_DATE; a filing counts at decision t if FILING_DATE ≤ the session before t.
+* Issuer CIK → ticker via P8's `ciks.json`. A ticker without a CIK has no insider data, and its signals are 0.
+
+**Signals at Thursday t,** over filings in the last 63 sessions:
+
+| Test | Signal (predicted sign +) | Idea |
+|---|---|---|
+| N1 | (insiders with purchases − insiders with sales) / (insiders with purchases + insiders with sales); 0 if none | net purchase ratio (Lakonishok & Lee 2001) |
+| N2 | opportunistic insiders with purchases − opportunistic insiders with sales | opportunistic trades (Cohen, Malloy & Pomorski 2012) |
+| N3 | text field of N1 (§3 kernel; neighbours without trades count as 0) | McKean–Vlasov: peer insiders' information about the industry |
+
+**Opportunistic insiders (N2):** an insider is classified at the start of each calendar year y. The insider needs
+at least one P or S trade in each of y−3, y−2 and y−1.
+* **Routine:** traded in the same calendar month in all three years.
+* **Opportunistic:** every other classified insider.
+* **Unclassified insiders** are not counted, as in Cohen, Malloy & Pomorski.
+
+**Target and statistic:** as round 6. D20 = Σ e over t+2..t+21. The pooled slope on the week's cross-sectional
+z-score of the signal, with week fixed effects and a DK t (5 lags).
+* Reported: the same slope for D60 (t+2..t+61).
+
+**Rows:** point-in-time S&P 500 members at t with closes at t and t+1. N3 also needs a text vector.
+
+**Book:**
+* N1, N2: long names with a positive signal, short names with a negative signal, equal weight, 50% a side;
+* N3: top and bottom deciles;
+* all books are beta-hedged with SPY, held 20 sessions in four overlapping cohorts, at 5 bp a side.
+
+**Splits:**
+* development: decisions 2013-01 .. 2019-12 (N2 needs three years of history);
+* OOS: 2020-01 .. 2025-12, one read (`OOS7_READ.lock`); 2020–2025 has been read by rounds 1–5 for other signals.
+
+**Gates:** t ≥ 1.5 and a positive net book mean. **Verdict:** Holm p < 0.05 with a positive net book.
+
+**Replication, if anything passes:** the S&P 400 current list 2020–2025 (P8 closes; survivorship disclosed), one
+read (`REP7_READ.lock`).
