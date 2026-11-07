@@ -481,3 +481,53 @@ z-score of the signal, with week fixed effects and a DK t (5 lags).
 
 **Replication, if anything passes:** the S&P 400 current list 2020–2025 (P8 closes; survivorship disclosed), one
 read (`REP7_READ.lock`).
+
+### Amendment 11 (2026-11-07, after round 7's development and before any statistic of round 8): mean-field statistical arbitrage
+
+**Round 7** (`DEV7_RESULT.md`, development 2013–2019): no finalists. Insider net purchases, opportunistic insiders
+and their text field: |t| ≤ 0.84 at 20 sessions; every book lost money. In S&P 500 names, insider purchases
+are rare: about 25 net-buying names a week.
+
+**The force that keeps appearing** is the pull of a stock toward its neighbours. A3's weekly gap convergence had a
+gross slope of t 3.33 in development, but its book traded every name every week. **Round 8** models the residual
+against the neighbour basket as a locally stationary OU process. It trades only far excursions of fast-reverting
+residuals: the statistical arbitrage of Avellaneda & Lee (2010), with their parameters unchanged (paper §§4–5
+and Appendix). Here the factor is the **mean field of the 10-K text neighbours** instead of a sector ETF.
+
+**The rules, decided daily at close t, for point-in-time S&P 500 members:**
+1. **Basket return** r_B,i: the §3 text-kernel weighted mean of the neighbours' daily returns. The kernel is built
+   at the month's first session; weights are renormalised over neighbours with a return that day.
+2. **Regression:** over sessions t−59..t, regress r_i = β0 + β·r_B,i + ε. Then X_k = Σ_{j ≤ k} ε_j.
+3. **OU fit:** the AR(1) X_{n+1} = a + b·X_n + ζ gives κ = −252·ln b, m = a/(1−b), σ_eq = √(Var ζ/(1−b²)).
+4. **Filter:** only names with **κ > 252/30** (b < 0.9672) and 0 < b may open a position. This is the local
+   stationarity regime: fast mean reversion.
+5. **s-score:** s = −(m − ⟨m⟩)/σ_eq, where ⟨m⟩ is the mean of m over the names that pass the filter that day.
+6. **Signals:**
+   * open long if s < −1.25 and open short if s > +1.25;
+   * close a short when s < +0.75 and close a long when s > −0.50.
+7. **Position:** $1 of the stock against β (fixed at entry) dollars of the basket.
+8. **Costs:** 5 bp a side on the stock and on the basket notional, at entry and at exit.
+9. **Book:** the daily return is the mean over open positions of the position's net P&L, on committed capital.
+
+| Test | Basket | Execution |
+|---|---|---|
+| S1 | text neighbours | signal at close t, trade at close t+1 (the research books' convention) |
+| S2 | text neighbours | trade at close t. The fund sends orders at T−60 s, using prices a minute before the close; this approximates that |
+| S3 | co-movement neighbours (§3, residual correlation) | close t+1 |
+
+**Statistic:** the mean daily net book return, with a Newey–West t (10 lags) (+).
+
+**Reported:**
+* net % a year;
+* Sharpe;
+* trades a year;
+* the average holding period;
+* positions open on an average day.
+
+**Splits:**
+* development: sessions 2011-06-01 .. 2019-12-31; gate t ≥ 1.5 with a positive net mean;
+* OOS: 2020-01-02 .. 2025-12-30, one read (`OOS8_READ.lock`); Holm across round 8's finalists;
+* pass = Holm p < 0.05 with a positive net mean.
+
+**Replication, if anything passes:** the S&P 400 current list (P8 closes, 2016–2025; survivorship disclosed), one
+read (`REP8_READ.lock`).
