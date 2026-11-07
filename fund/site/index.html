@@ -20,7 +20,7 @@
     <nav class="site"><a class="on" href="./">Models under assessment</a><a href="account/">Paper account</a><a href="ledger/">Position ledger</a><a href="report.html">Performance report</a></nav>
   </header>
   <details class="ops" id="ops"><summary><b>Operations</b> · checking the runner and its jobs…</summary></details>
-  <p class="lead">Five things are being tested. The live fund trades a paper account at Alpaca; everything else is paper only and never sent to the broker. Each test compares a model only with what it must beat, over the same dates, and says when and by what rule it will be decided. Live results are weeks old, so differences are still mostly noise: <b>no verdict before mid-April 2027</b>. Returns are cumulative over the dates shown; % per year appears from 26 weeks. Backtests are labelled and never mixed with live weeks. Models retired on 5 Nov 2026 are listed at the bottom.</p>
+  <p class="lead">Six things are being tested. The live fund trades a paper account at Alpaca; everything else is paper only and never sent to the broker. Each test compares a model only with what it must beat, over the same dates, and says when and by what rule it will be decided. Live results are weeks old, so differences are still mostly noise: <b>no verdict before mid-April 2027</b>. Returns are cumulative over the dates shown; % per year appears from 26 weeks. Backtests are labelled and never mixed with live weeks. Models retired on 5 Nov 2026 are listed at the bottom.</p>
 
   <section><h2>Where each test stands</h2>
     <div class="muted" style="margin-bottom:6px">One row per question. The bar runs from the start of the live test to its final decision, filled to today; each tick is a registered check. Click a row for its section.</div>
@@ -81,6 +81,13 @@
     <details class="fold" id="f-s5states"><summary><h3>The regime each week, and the AI models' momentum exposure</h3><span class="cnt"></span></summary><div class="scroll" id="s5states"></div></details>
   </section>
 
+  <section id="s6" hidden>
+    <h2>6 · A better beta: hedging the books with intraday data (research, paper only)</h2>
+    <dl class="about" id="s6about"></dl>
+    <div class="kpis" id="s6kpis"></div>
+    <h3>Forward record: each week's betas, scored 21 sessions later (from 12 Nov 2026)</h3><div class="scroll" id="s6tab"></div>
+  </section>
+
   <section><details class="fold" id="f-retired"><summary><h2>Retired, and no longer shown</h2></summary>
     <div class="muted" style="line-height:1.6">Retired on 5 Nov 2026 with the S&amp;P core, because no remaining question uses them: the six weekly-fund experiments (five-answer vote; news only, company hidden; sized by inverse volatility; plus short-term reversal; plus macro and peer news; one model ranking all stocks) and the fixed 20-stock list. The weekly fund without its second-opinion review is still recorded but answers no current question. Their records stay in the data branch (<code>fund-data</code>, <code>shadow.json</code>); nothing was deleted. Four of the six 31-name research books are recorded but not judged: only the two chosen on 17 Oct are.</div>
   </details></section>
@@ -126,7 +133,7 @@ const dayBefore = (pts, day) => { let d0 = null; for (const p of ptsSorted(pts))
 const diffTxt = (a, b, an, bn) => a == null || b == null ? "not enough data yet" : `${an} ${pct(a)} vs ${bn} ${pct(b)}: <b>${pct(a - b)}</b>`;
 
 // ---- "Where each test stands": one row per question, filled in as each data file arrives --------------------------
-const QROWS = {}, QORDER = ["fund", "fixes", "weekly", "account", "spx", "news31", "regime"];
+const QROWS = {}, QORDER = ["fund", "fixes", "weekly", "account", "spx", "news31", "regime", "beta"];
 function qset(k, row) {
   QROWS[k] = row;
   table("board", [["Question", r => `<b>${r.q}</b><div class="muted">${r.books}</div>`, "wrap q"],
@@ -468,6 +475,32 @@ fetch("regime.json", { cache: "no-store" }).then(r => r.json()).then(G => {
     bar: "", ev: `${G.records || 0} forward record${G.records === 1 ? "" : "s"}; ${nb} week${nb === 1 ? "" : "s"} booked`,
     res: it.t_dir != null ? `replicated before going forward: Europe, Japan, Asia Pacific p ${it.p_holm.toFixed(4)} (allowing for 2 ideas); Sharpe ${n2(it.cond_sharpe)} vs ${n2(it.unc_sharpe)}` : "",
     rule: "A risk regime: reported as the loss avoided in each panic episode; no return verdict. Using it in any traded or registered book needs its own protocol." });
+}).catch(() => {});
+
+// ---- 6 · forward beta records (research/riskfield; PREREG.md Amendment 5): computed in forward.py; formatted here --
+fetch("beta.json", { cache: "no-store" }).then(r => r.json()).then(G => {
+  document.getElementById("s6").hidden = false;
+  const E = G.evidence || {}, Lt = G.latest, rows = G.rows || [];
+  const n3 = v => v == null ? "—" : Number(v).toFixed(3);
+  about("s6about", [
+    ["What is tested", "Whether a stock's beta (how much it moves with the S&amp;P 500, the number that sets each book's SPY hedge) is forecast better from 30-minute prices than by the fund's current rule. Of 24 risk and return ideas tested (peer effects through 10-K text and co-movement, news shocks spreading between similar firms, local stationarity, regime switching, jumps, skewness), this risk measure held up most strongly out of sample. One return effect also held up: when a firm's 10-K neighbours report earnings before the open, it keeps drifting their way from 10:00 to the close. It is about 8 bp, too small to trade on its own, and is reported in research/riskfield/REPORT.md."],
+    ["How it works", "<b>Fund's beta</b>: 2/3 of the past year's daily beta + 1/3. <b>Intraday beta</b>: 0.33 × the beta from the last 21 sessions' 30-minute returns + 0.27 × the same over 63 sessions + 0.39 × the daily beta, weights fixed from 2016–2025. Each Thursday both are recorded for every S&amp;P 500 member; 21 sessions later they are scored against the beta that actually happened."],
+    ["How it is judged", `Out of sample (2020–2025, read once) the intraday beta's error was ${E.oos_mse_B0 ? Math.round((1 - E.oos_mse_B1 / E.oos_mse_B0) * 100) : "—"}% lower (t ${E.oos_t || "—"}), better in every year, and hedging with it made weekly books steadier. The forward record checks this live; no verdict before 26 scored weeks. Using it in any book needs a protocol.`]]);
+  const tot = rows.length ? rows.reduce((a, r) => [a[0] + r.mse_B0, a[1] + r.mse_B1], [0, 0]) : null;
+  document.getElementById("s6kpis").innerHTML = [
+    ["Weeks recorded / scored", `${G.records || 0} / ${G.scored || 0}`],
+    ["Forecast error, fund's beta → intraday beta", tot ? `${n3(tot[0] / rows.length)} → ${n3(tot[1] / rows.length)} <span class="muted">mean squared error</span>` : '<span class="muted">first score after 21 sessions</span>'],
+    ["Latest record", Lt ? `${Lt.asof}: ${Lt.members} members, intraday data for ${Math.round(Lt.coverage_hf63 * 100)}%` : "—"],
+    ["AI average book's beta, fund / intraday", Lt && Lt.ens ? `${n3(Lt.ens.book_beta_B0)} / ${n3(Lt.ens.book_beta_B1)} <span class="muted">before its SPY hedge (${n3(Lt.ens.w_spy)})</span>` : "—"]]
+    .map(([a, b]) => `<div class="kpi"><div class="muted">${a}</div><div class="v">${b}</div></div>`).join("");
+  table("s6tab", [["Decided", r => r.asof], ["Scored over", r => `${r.from} → ${r.to}`], ["Names", r => r.names, "n"],
+    ["Error, fund's beta", r => n3(r.mse_B0), "n"], ["Error, intraday beta", r => n3(r.mse_B1), "n"],
+    ["AI book's leftover beta, fund / intraday hedge", r => r.ens_residual_B0 == null ? "" : `${n3(r.ens_residual_B0)} / ${n3(r.ens_residual_B1)}`, "n"]],
+    rows.slice().reverse(), null, "The first record is Thursday 12 Nov 2026; it is scored once 21 more sessions have closed (mid-December).");
+  qset("beta", { sec: "s6", q: "Does intraday data give a better hedge ratio? (research)", books: "Fund's beta vs intraday-calibrated beta, every S&amp;P 500 member",
+    bar: "", ev: `${G.records || 0} weekly record${G.records === 1 ? "" : "s"}; ${G.scored || 0} scored`,
+    res: E.oos_mse_B0 ? `out of sample 2020–2025: error ${Math.round((1 - E.oos_mse_B1 / E.oos_mse_B0) * 100)}% lower, t ${E.oos_t}` : "",
+    rule: "Risk measurement, not a return source: confirmed live if its error stays below the fund's beta's; no verdict before 26 scored weeks." });
 }).catch(() => {});
 
 folds();
