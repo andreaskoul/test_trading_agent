@@ -322,8 +322,8 @@ fetch("spx.json", { cache: "no-store" }).then(r => r.json()).then(X => {
     (L ? ` Last decision ${L.asof}: SPY ${num(L.sleeve.spy, 2)} was ${L.sleeve.spy > L.sleeve.ma200 ? "above" : "below"} its 200-day average (${num(L.sleeve.ma200, 2)}), so the S&amp;P holding is <b>${L.sleeve.s}×</b>; 3-month T-bill rate ${(L.dtb3 * 100).toFixed(2)}% (${L.dtb3_date}); ${L.expected_names} stocks eligible` +
       (L.excluded && L.excluded.length ? `; without 60 days of prices (excluded): ${L.excluded.map(esc).join(", ")}` : "") + "." : "") +
     ` Updated ${esc((X.generated || "").replace("T", " ").slice(0, 16))} UTC.`;
-  // booked weeks solid, the running week dashed (provisional: marked at the latest close, booked after its last close);
-  // both computed in spx_forward.py (page and attach_running)
+  // booked weeks solid (every close: daily_lines), the running week dashed (provisional: marked at the latest close,
+  // booked after its last close); both computed in spx_forward.py (page, daily_lines and attach_running)
   const box = document.getElementById("s3box"), RL = X.running && X.running.lines ? X.running.lines : null;
   // RL continues the booked lines from their last value, on the dates after the last booked end (attach_running)
   const bookedDates = n ? X.lines.dates : [], dates = [...bookedDates, ...(RL ? RL.dates : [])], nb = bookedDates.length;
@@ -337,7 +337,7 @@ fetch("spx.json", { cache: "no-store" }).then(r => r.json()).then(X => {
     const o = lineOpts(2);
     o.plugins.tooltip.callbacks.label = c => `${c.dataset.label}: ${(c.parsed.y * 100).toFixed(2)}%` + (c.dataIndex >= nb && RL ? " (provisional)" : "");
     new Chart(document.getElementById("s3chart"), { type: "line", data: { labels: dates, datasets: sets }, options: o });
-    if (RL) box.insertAdjacentHTML("beforebegin", `<div class="muted" style="margin:6px 0">Solid: booked weeks. <b>Dashed: the running week</b> (decided ${X.running.asof}, held from the ${X.running.from} close), marked at the ${X.running.to} close; provisional and before the costs of the next rebalance, until it is booked.</div>`);
+    if (RL) box.insertAdjacentHTML("beforebegin", `<div class="muted" style="margin:6px 0">Solid: booked weeks, marked at every close; each week's rebalancing costs are charged at its last close. <b>Dashed: the running week</b> (decided ${X.running.asof}, held from the ${X.running.from} close), marked at the ${X.running.to} close; provisional and before the costs of the next rebalance, until it is booked.</div>`);
   } else box.style.display = "none";
   const icOf = (b, h) => (b.ic || {})[String(h)] || {};
   const yard = n || X.running ? [["S&P 500 buy & hold", n ? X.bench.spy : {}, "spy"], [n ? `Risk-matched S&P (${num(X.bench.sbar, 2)}×)` : "Risk-matched S&P", n ? X.bench.risk_matched : {}, "risk_matched"],
