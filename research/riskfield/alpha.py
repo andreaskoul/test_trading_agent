@@ -54,6 +54,8 @@ def build(period_end):
     dec = [t for t in range(260, n - 6) if S[t].weekday() == 3 and S[t] <= period_end]
     month = None
     rows, books = [], {k: [] for k in ("A1", "A2", "A3")}
+    zrows = {"A2": [], "A3": []}
+    betas = []
     for t in dec:
         if (S[t].year, S[t].month) != month:                      # kernels from information to the previous session
             month = (S[t].year, S[t].month)
@@ -78,6 +80,10 @@ def build(period_end):
             row[f"{k}_n"] = int(np.isfinite(z).sum())
             books[k].append((w, wspy))
             row[f"{k}_z"] = z
+            if k in zrows:
+                zrows[k].append(z)
+        betas.append(P["beta"][t])
+        row["R"], row["Rm"] = R, Rm
         row["y"] = y
         rows.append(row)
     D = pd.DataFrame(rows)
@@ -87,6 +93,15 @@ def build(period_end):
             to.append(np.nan if prev is None else float(np.abs(w - prev[0]).sum() + abs(wspy - prev[1])))
             prev = (w, wspy)
         D[f"{k}_net"] = D[f"{k}_gross"] - RG.COST * pd.Series(to).fillna(1.0).to_numpy()
+    for k in ("A2", "A3"):                                            # Amendment 2: banded books
+        bk = RG.banded(zrows[k], betas)
+        g = [float(np.nansum(w * r.R) + h * r.Rm) for (w, h), (_, r) in zip(bk, D.iterrows())]
+        to = [1.0] + [float(np.abs(a[0] - b[0]).sum() + abs(a[1] - b[1])) for a, b in zip(bk[1:], bk[:-1])]
+        D[f"{k}B_gross"] = g
+        D[f"{k}B_net"] = np.array(g) - RG.COST * np.array(to)
+        D[f"{k}B_to"] = to
+        D[f"{k}B_z"] = D[f"{k}_z"]
+        D[f"{k}B_n"] = D[f"{k}_n"]
     return D
 
 

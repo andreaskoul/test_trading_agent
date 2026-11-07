@@ -180,3 +180,24 @@ On the bars universe, using the 12-1 momentum decile book and the 1-week reversa
    * "5-session EW mean" = EWMA with span 5 (α = 1/3);
    * news features exist from each name's first news session;
    * placebo shuffle seed 7.
+
+### Amendment 2 (2026-11-07, after the development results of §§4–7 and before any statistic of A2B or A3B, and before any OOS read)
+
+**Development results:**
+* Finalists: R2 and H-B1.
+* A2 and A3 had the predicted slope (DK t 2.46 and 3.33), but their weekly decile books lost money net of costs. The
+  books turn over most of their names each week.
+
+**Two cost-aware variants are added**, with the same signals as A2 and A3. Each book enters at the top or bottom
+decile and keeps a name while it stays in its top or bottom 30% (`research/regime/regime.py: banded`, as regime H12).
+* **A2B:** banded book on the A2 signal.
+* **A3B:** banded book on the A3 signal.
+
+**Statistic:** the signal slope with the DK t, as for A2 and A3 (it is unchanged by banding).
+
+**Gate and verdict:** as in §9, on the banded book's net mean.
+
+**Disclosures:**
+* These variants were chosen after the A2 and A3 development books were seen.
+* They join the Holm family if they pass the gate.
+* A2 and A3 themselves stay failed.

@@ -55,7 +55,7 @@ def main():
         out["beta"][test] = B.compare(D, Bt, test, K.DEV)
         print(test, out["beta"][test])
     AD = A.build(A.DEV[1])
-    for k in ("A1", "A2", "A3"):
+    for k in ("A1", "A2", "A3", "A2B", "A3B"):
         out["alpha"][k] = A.stats(AD, k, A.DEV)
         print(k, out["alpha"][k])
     fin = []
