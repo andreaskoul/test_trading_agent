@@ -1,6 +1,6 @@
 # Risk measurement and peer-field signals: what held up
 
-*2026-11-07. Pre-registration and amendments 1–8: `research/riskfield/PREREG.md` (each committed before the
+*2026-11-07. Pre-registration and amendments 1–13: `research/riskfield/PREREG.md` (each committed before the
 statistics it governs). Results: `DEV_RESULT.md`, `OOS_RESULT.md` (one read), `DEV2_RESULT.md`, `POSTHOC.md`.
 Nothing here trades. No 2026 data was read.*
 
@@ -96,6 +96,41 @@ outcomes, and it beats the fund's beta by a wide margin. It also makes hedged bo
   P1 and P2 were run once on development data before the read (Amendment 3).
 * **2020–2025 has been read before:** earlier studies read these years for other signals. Round 2's development
   failed, so its OOS read was not spent.
+
+## The search for something tradeable (rounds 6–9, Amendments 9–13)
+
+**Owner:** "don't stop the research until you find something tradeable". Tradeable means at the fund's speed:
+weekly or daily decisions with entry at the close, at the fund's costs.
+
+| Round | Data | Idea | Development (OOS) | Verdict |
+|---|---|---|---|---|
+| 6 | P8 earnings events (SUE, CAR) | 20-session earnings-drift book on Thursdays | 13 bp per sd, t 1.22; book +0.2% a year | no |
+| 6 | the same + 10-K text neighbours | peers' surprises this season as a fundamental field | −1.1 bp, t −0.07 | no |
+| 6 | the same | earnings-announcement premium | −1 bp | no |
+| 7 | **SEC Insider Transactions Data Sets** 2010–2025 (1.94M open-market trades, new) | net purchase ratio; opportunistic insiders (Cohen, Malloy & Pomorski); text-neighbour insider field | \|t\| ≤ 0.84, books lose | no: about 25 net-buying names a week in the S&P 500 |
+| 8 | daily closes, text and co-movement baskets | Avellaneda–Lee OU stat-arb against the neighbour mean field (their parameters) | at 5 bp: −1.1 to −1.8% a year; gross +1.1 to +1.5 bp a day per position | no |
+| 8 at measured costs (Amendment 12) | the same, 2 bp a side (the fund's measured paper cost is 0.9 bp) | the same, and the weekly co-movement gap book | **OOS 2020–25: +1.0 to +1.9% a year, Sharpe 0.24–0.46, t ≤ 0.96** | no: positive, not significant; 2020 +14%, 2022 −6% |
+| 9 | the same + the 8-K/earnings calendar | trade only liquidity excursions: no entry after the name's own news (S4) or its neighbours' earnings (S5) | S4 net 0.55 vs 0.45 bp a day for S3, t 1.17 | no (below the 1.5 gate) |
+
+**What the dynamics look like:**
+* **Information is priced in hours.** For large caps this holds for the name's own earnings, its neighbours' news
+  and insiders' trades alike.
+* **The only persistent force is liquidity reversion toward the peer mean.** It is about 1–1.5 bp a day per position
+  before costs and robust in sign. At measured costs it is +1–2% a year with a Sharpe below 0.5. Filtering out news
+  moves helps, as the logic says, but not enough to be significant.
+* **Survivorship:** the reversion results carry the close panel's survivorship (Amendment 13), which flatters them.
+
+**Data defect found:**
+* the yfinance close panel behind `research/regime` and this study covers 68.6% of S&P 500 member-days in 2012,
+  87.2% in 2020 and 97.1% in 2025;
+* P8's Alpaca closes cover 98–100% from 2016;
+* future cross-sectional work should use the Alpaca panel.
+
+**Already tradeable from this programme and the regime study:**
+* **the momentum panic switch:** passed in the US and an international replication; forward books from 2026-11-12;
+* **the intraday-calibrated beta:** passed; forward records from 2026-11-12. It improves every hedge but adds no
+  return;
+* **the intraday news contagion (I1):** passed; about 8 bp, an order-timing use only.
 
 ## Forward beta records (set up; Amendments 5 and 5a)
 
