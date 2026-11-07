@@ -164,6 +164,8 @@ class Data:
         if model == "MS_co":
             return base + sec + [self.cached("fco_w", lambda: self.field("co", self.w)),
                                  self.cached("fco_m", lambda: self.field("co", self.m))]
+        if model == "MS_c4":
+            return base + sec + [self.cached("fc4", self.c4_field)]
         if model == "MS_sj":
             return base + sec + [self.j, self.j_w]
         if model == "MS_q":
@@ -206,6 +208,30 @@ class Data:
                      ("u_pl", upl), ("u_pl_ew", ew(upl))):
             out[k][:, ix] = np.where(live, v, np.nan)
         return out
+
+    def c4_field(self):
+        """Amendment 6, C4: text field of the 5-session sum of |residual| on the neighbours' news days."""
+        z = np.load(os.path.join(P.CACHE, "news_days.npz"))
+        ti = pd.DatetimeIndex(z["S"]).get_indexer(self.S)
+        ni = pd.Index(list(z["names"])).get_indexer(self.names)
+        nd = np.zeros((self.T, self.N), bool)
+        okn = ni >= 0
+        sub = (z["earn"] | z["uns"])[ti][:, ni[okn]]
+        nd[:, okn] = np.where((ti >= 0)[:, None], sub, False)
+        r = np.expm1(self.r)
+        rm = r[:, self.si]
+        lo, hi = np.minimum(-2 * rm, 4 * rm)[:, None], np.maximum(-2 * rm, 4 * rm)[:, None]
+        w = pd.DataFrame(np.clip(r, lo, hi))
+        m = pd.Series(rm)
+        b = (w.rolling(252, min_periods=200).cov(m).div(m.rolling(252, min_periods=200).var(), axis=0)).to_numpy(copy=True)
+        e = r - np.vstack([np.full((1, self.N), np.nan), b[:-1]]) * rm[:, None]
+        sh = np.where(nd, np.abs(np.nan_to_num(e)), 0.0)
+        sh = np.where(np.isfinite(self.d) | nd, sh, np.nan)
+        c = np.vstack([np.zeros((1, self.N)), np.cumsum(np.nan_to_num(sh), 0)])
+        s5 = np.full((self.T, self.N), np.nan)
+        s5[4:] = c[5:] - c[:-5]
+        s5[:, ~self.stock] = np.nan
+        return self.field("text", s5)
 
     def state(self):
         """1 when SPY's m is above the 80th percentile of its values over sessions t-755..t-1 (252+ history)."""
@@ -297,3 +323,4 @@ def compare(D, cand, bench, h, period, cand_hl=None):
 RTESTS = {"R1": ("MS_text", "MS", None), "R2": ("MS_co", "MS", None), "R3": ("MS_ew", "MS", 252),
           "R4": ("MS_q", "MS", None), "R5": ("MS_reg", "MS", None), "N1": ("N1", "NB", None)}
 RTESTS2 = {"R6": ("MS_sj", "MS", None)}
+RTESTS3 = {"C4": ("MS_c4", "MS", None)}

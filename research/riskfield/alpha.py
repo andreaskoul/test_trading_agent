@@ -53,7 +53,7 @@ def rskew(H, t_hf):
     return np.where(ok & (s2 > 0), np.sqrt(r.shape[0]) * (r ** 3).sum(0) / np.where(s2 > 0, s2, 1) ** 1.5, np.nan)
 
 
-def build(period_end, H=None):
+def build(period_end, H=None, contagion=False):
     """Weekly rows to decisions <= period_end: signals A1..A3, next-week residual return, book returns."""
     P = RG.panel()
     S, names = P["S"], P["names"]
@@ -63,7 +63,13 @@ def build(period_end, H=None):
     dec = [t for t in range(260, n - 6) if S[t].weekday() == 3 and S[t] <= period_end]
     month = None
     rows, books = [], {k: [] for k in ("A1", "A2", "A3")}
-    zrows = {"A2": [], "A3": [], "A4": []}
+    zrows = {"A2": [], "A3": [], "A4": [], "C1": [], "C2": [], "C3": []}
+    if contagion:                                                    # Amendment 6: news-day shocks
+        z = np.load(os.path.join(PN.CACHE, "news_days.npz"))
+        assert list(z["names"]) == list(names) and len(z["S"]) == n, "news calendar does not match the panel"
+        e0 = np.nan_to_num(P["e"])
+        cs_all = np.vstack([np.zeros((1, e0.shape[1])), np.cumsum(np.where(z["earn"] | z["uns"], e0, 0.0), 0)])
+        cs_uns = np.vstack([np.zeros((1, e0.shape[1])), np.cumsum(np.where(z["uns"], e0, 0.0), 0)])
     hix = pd.Index(H.names).get_indexer(names) if H is not None else None
     betas = []
     for t in dec:
@@ -80,6 +86,12 @@ def build(period_end, H=None):
         sig = {"A1": np.where(el & has, fld(Wt, m21), np.nan),
                "A2": np.where(el & has, fld(Wt, m5) - m5, np.nan),
                "A3": np.where(el, fld(Wc, m5) - m5, np.nan)}
+        if contagion:
+            sa, su = cs_all[t + 1] - cs_all[t - 4], cs_uns[t + 1] - cs_uns[t - 4]
+            sa_el, su_el = np.where(P["elig"][t], sa, np.nan), np.where(P["elig"][t], su, np.nan)
+            sig["C1"] = np.where(el & has, fld(Wt, np.where(has, sa_el, np.nan)), np.nan)
+            sig["C2"] = np.where(el, fld(Wc, sa_el), np.nan)
+            sig["C3"] = np.where(el & has, fld(Wt, np.where(has, su_el, np.nan)), np.nan)
         if H is not None:
             th = H.S.get_indexer([S[t]])[0]
             a4 = np.full(len(names), np.nan)
@@ -88,6 +100,9 @@ def build(period_end, H=None):
                 a4[hix >= 0] = -sk[hix[hix >= 0]]
             sig["A4"] = np.where(el, a4, np.nan)
             books.setdefault("A4", [])
+        for k in ("C1", "C2", "C3"):
+            if k in sig:
+                books.setdefault(k, [])
         y = np.where(el, cr[t + 7] - cr[t + 2], np.nan)          # sum of e over t+2..t+6
         R, Rm = RG.hold_ret(P, t)
         row = {"t": t, "date": S[t]}
@@ -111,7 +126,7 @@ def build(period_end, H=None):
             to.append(np.nan if prev is None else float(np.abs(w - prev[0]).sum() + abs(wspy - prev[1])))
             prev = (w, wspy)
         D[f"{k}_net"] = D[f"{k}_gross"] - RG.COST * pd.Series(to).fillna(1.0).to_numpy()
-    for k in [x for x in ("A2", "A3", "A4") if zrows[x]]:              # Amendments 2 and 4: banded books
+    for k in [x for x in ("A2", "A3", "A4", "C1", "C2", "C3") if zrows[x]]:   # Amendments 2, 4, 6: banded books
         bk = RG.banded(zrows[k], betas)
         g = [float(np.nansum(w * r.R) + h * r.Rm) for (w, h), (_, r) in zip(bk, D.iterrows())]
         to = [1.0] + [float(np.abs(a[0] - b[0]).sum() + abs(a[1] - b[1])) for a, b in zip(bk[1:], bk[:-1])]
