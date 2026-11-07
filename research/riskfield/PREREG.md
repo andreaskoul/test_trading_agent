@@ -380,3 +380,55 @@ fixed effects and a DK t (5 lags).
 * development: sessions 2016-02-01 .. 2019-12-31; gate t ≥ 1.5 and a positive slope;
 * OOS: 2020-01-02 .. 2025-12-31, one read (`OOS5_READ.lock`);
 * Holm across the finalists; pass = Holm p < 0.05 with a positive slope.
+
+### Amendment 9 (2026-11-07, after round 5's OOS read and before any statistic of round 6): a tradeable earnings-drift book with a fundamental field
+
+**Owner (2026-11-07):** "don't stop the research until you find something tradeable … investigate with other
+available data". Tradeable means at the fund's speed: decisions on Thursdays, entry at the close of t+1, 5 bp a
+side.
+
+**Prior evidence:** P8's descriptive decay curves (`reports/research/p8/decay_earnings.md`, fit sample 2012–2021)
+put earnings information in the S&P 500 at about 20 sessions. The SUE top-minus-bottom quintile earns +57 bp
+over t0+2..t0+21; then it fades. **2022–2025 has never been read for earnings drift.** This round's OOS is
+therefore **2022-01-01 .. 2025-12-31**. Development is 2012–2021, which P8 has already seen descriptively
+(disclosed).
+
+**Events:** P8 `events.parquet` (S&P 500 point in time). Each event carries:
+* SUE: seasonal random walk, winsorised at ±10;
+* CAR = Σ e over t0−1..t0+1.
+
+**Decision t (Thursday):**
+* **Events:** those with t0+1 ≤ t and t0 ≥ t−5. The whole reaction is known at the close of t.
+* **Composite:** z(SUE) + z(CAR), z-scored across the week's events.
+* **Field F:** the cosine-weighted mean SUE of the name's text neighbours (§3 kernel, built at the month's first
+  session) whose reaction session t0_j lies in [t−62, t]. Weights are renormalised over neighbours with an event;
+  F is missing when there is none.
+* **Target D20:** Σ e over sessions t+2..t+21, the 20 sessions after entry at close t+1.
+
+| Test | Statistic (predicted sign) | Idea |
+|---|---|---|
+| E1 | pooled slope of D20 on the week's z(composite), week fixed effects, DK t (5 lags) (+) | earnings drift (Bernard & Thomas 1989; Chan, Jegadeesh & Lakonishok 1996) |
+| E2 | in the pooled regression of D20 on [z(composite), z(F)], the coefficient on z(F), DK t (+) | McKean–Vlasov fundamental field: peers' surprises this season carry information about the name that the market prices slowly |
+| E4 | mean residual return of the reaction session, e_{i,t0} (+) | the earnings-announcement premium (Frazzini & Lamont 2007; Savor & Wilson 2016). Trade: buy at close t0−1, sell at close t0 |
+
+**Rows:**
+* E1 and E2: events with z-scores, in weeks with ≥ 10 events. E2 also needs F.
+* E4: every event in the period. Its DK t clusters by week.
+
+**Book (E1, reported with the test; also E2's book on z(composite) + z(F)):**
+* each week, a cohort goes long the top third of events by signal and short the bottom third, equal weight, 50% a
+  side, beta-hedged with SPY using the fund's beta;
+* each cohort is held 20 sessions; four overlapping cohorts are averaged, each at 1/4 weight;
+* costs: 5 bp a side at entry and at exit;
+* reported: net % a year and Sharpe.
+
+**Verdicts:**
+* E1, E2: pass = Holm p < 0.05 with the book's net mean > 0.
+* E4: pass = Holm p < 0.05 with mean e_{t0} > 10 bp, the round trip.
+
+**Gates (development 2012–2021):** t ≥ 1.5 in the predicted direction, and for E1/E2 a net book mean > 0.
+
+**OOS:** 2022–2025, one read (`OOS6_READ.lock`), Holm across round 6's finalists.
+
+**Replication, if anything passes:** the S&P 400 (P8 events and closes, current list, survivorship disclosed),
+2022–2025, one read (`REP6_READ.lock`).
