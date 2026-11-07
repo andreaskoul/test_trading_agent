@@ -25,3 +25,22 @@ B1 against the fund's beta, by year (MSE):
 
 B1 coefficients on all decisions with targets ended by 2025-12-31: intercept 0.003, HF 21 0.332, HF 63 0.269, daily OLS 0.389.
 B1 minus fund beta, OOS: mean -0.024, sd 0.213, 5th/95th percentiles -0.315 / +0.334.
+
+## Round 5, I1 by year (descriptive, after the one read)
+
+Slope in bp per sd of the text neighbours' earnings shocks, 10:00 → close; the top-minus-bottom decile spread.
+
+| Year | bp/sd | t | spread bp | sessions |
+|---|---:|---:|---:|---:|
+| 2016 | −6.82 | −1.18 | −26.3 | 18 |
+| 2017 | 0.82 | 0.44 | 4.3 | 101 |
+| 2018 | 3.70 | 2.05 | 12.6 | 104 |
+| 2019 | 3.49 | 1.34 | 12.5 | 105 |
+| 2020 | 5.61 | 1.96 | 17.1 | 117 |
+| 2021 | 1.81 | 0.99 | −5.1 | 92 |
+| 2022 | 4.63 | 1.60 | 16.9 | 93 |
+| 2023 | −2.49 | −1.02 | 2.8 | 103 |
+| 2024 | 4.12 | 2.30 | 9.6 | 99 |
+| 2025 | 2.56 | 1.17 | 4.9 | 105 |
+
+The slope is positive in 5 of the 6 OOS years. 2016 has only 18 sessions, because bars and kernels start in February.
