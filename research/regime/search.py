@@ -356,7 +356,7 @@ def oos():
     scw = (xc * u).reshape(-1, len(FACTORS)).sum(1)
     S_ = (scw ** 2).sum() + sum(2 * (1 - l / 5) * (scw[l:] * scw[:-l]).sum() for l in range(1, 5))
     tt = bb / (np.sqrt(S_) / (xc ** 2).sum())
-    record("H14", np.zeros(len(D)), np.zeros(len(D)), c_, u_, dates, mk, -1)
+    record("H14", c_["gross"], np.arange(len(D), dtype=float), c_, u_, dates, mk, -1)   # b, t replaced below (pooled)
     res["H14"].update({"b": float(bb), "t": float(tt), "t_dir": float(-tt), "p_one_sided": float(norm.sf(-tt)), "n": int(mk.sum())})
     U = pd.read_parquet(os.path.join(OUT, "umd_weekly.parquet"))
     x, lin, bin_ = umd_detector(U, "mvol21", "panic")
