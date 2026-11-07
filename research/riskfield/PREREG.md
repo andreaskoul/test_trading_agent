@@ -342,3 +342,41 @@ fixed effects and a Driscoll–Kraay t (5 lags).
 * development: sessions 2011-06-01 .. 2019-12-31; gate t ≥ 1.5;
 * OOS: sessions 2020-01-02 .. 2025-12-30, one read (`OOS4_READ.lock`);
 * Holm across round 4's finalists; pass = Holm p < 0.05 with a positive slope.
+
+### Amendment 8 (2026-11-07, after round 4's development and before any statistic of round 5): intraday contagion
+
+**Round 4** (`DEV4_RESULT.md`): no finalists. Next-day drift was +0.16 to +0.21 bp per sd (t ≤ 0.68).
+
+**Descriptive** (development years, not a test): on the same day, the text neighbours' earnings shocks move a
+non-reporting stock's residual by 9.8 bp per sd (DK t 24.9). The contagion is real but completes within the
+session.
+
+**Round 5 asks:** after a neighbour's earnings gap is known at 10:00, does the stock keep adjusting until the close?
+Data: the 30-minute bars (current constituents, 2016–2025; survivorship disclosed).
+
+**Definitions:**
+* **Shock of j at session t:** j has an earnings reaction session at t (P8 `events.parquet` t0) announced outside
+  trading hours (accepted before 09:30 ET on t, or after 16:00 ET before t). The shock is j's residual return from
+  the previous close to 10:00 (the overnight return plus the 09:30 bar), net of β_j × SPY over the same interval.
+  β is the daily OLS of §5 at t−1.
+* **Target:** i's residual return from 10:00 to the close (bars 10:00–15:30), net of β_i × SPY, for names i with no
+  earnings reaction at t.
+
+| Test | Signal at 10:00 of session t (predicted sign) |
+|---|---|
+| I1 | text field of the neighbours' shocks (+) |
+| I2 | co-movement field of the neighbours' shocks (+) |
+
+**Rows:** name-sessions where at least one kernel neighbour has a shock.
+
+**Statistic:** the pooled slope of the target on the session's cross-sectional z-score of the signal, with session
+fixed effects and a DK t (5 lags).
+
+**Reported:**
+* bp per sd;
+* the top-minus-bottom-decile spread in bp, against an intraday round trip of 10 bp.
+
+**Splits:**
+* development: sessions 2016-02-01 .. 2019-12-31; gate t ≥ 1.5 and a positive slope;
+* OOS: 2020-01-02 .. 2025-12-31, one read (`OOS5_READ.lock`);
+* Holm across the finalists; pass = Holm p < 0.05 with a positive slope.
