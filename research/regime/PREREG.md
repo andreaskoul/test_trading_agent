@@ -96,3 +96,33 @@ in an amendment below before the OOS read.
 * The news detectors rest on 31 large caps; they proxy the market's news state, they do not measure it.
 * Literature results (H1, H3) are well known; the question is whether they hold in this universe, after 5 bp costs,
   in 2020–2025.
+
+---
+
+## Amendment 1 (2026-11-07, before any round-2 statistic; the OOS sample is still unread)
+
+**Round 1 result (development only).** No hypothesis reached development t ≥ 1.5 in its predicted direction (H1 0.63,
+H2 0.33, H3 1.19, H4 0.03, H5 −0.82, H6 0.93; `.cache/regime/dev_table.csv`). There are no round-1 finalists, so no
+round-1 OOS read will be made. **Disclosure:** the panel build printed full-period (2010–2025) summary statistics
+of the three unconditioned books (mean weekly gross: REV +7.8 bp, SREV +5.4 bp, MOM −3.0 bp; REV turnover 1.8 a
+week). No conditioned or regime statistic was computed on 2020–2025.
+
+**Round 2: five further hypotheses**, same mechanics, development rule (t ≥ 1.5 in the predicted direction and a
+conditioned net mean above the unconditioned), and OOS rules. Holm runs across all finalists of both rounds.
+
+Added data: S&P 500 earnings events 2012–2025 (`.cache/p8/events.parquet`: report session t0 by SEC acceptance time
+and SUE from first-filed XBRL EPS; the P8 construction). The P8 validation read (2022–2025) used these events for
+other hypotheses (peer sympathy, earnings decay); none below was tested there.
+
+| | Strategy | Detector | Mechanism | Predicted |
+|---|---|---|---|---|
+| H7 | **PEAD**: long the top, short the bottom SUE quintile of S&P 500 members whose t0 fell in the last 20 sessions | **CROWD**: S&P 500 reports in the last 5 sessions | limited attention: drift is larger when many firms report at once (Hirshleifer, Lim & Teoh 2009) | b > 0 |
+| H8 | **NREV**: REV with the sign flipped for names whose t0 fell in the formation week (hard news continues, no-news moves revert; Chan 2003) | **SEASON**: share of S&P 500 members reporting in the last 20 sessions | the news/no-news split matters when much news arrives | b > 0 for (NREV − REV) |
+| H9 | **FMOM**: each of five factor books (MOM, REV, SREV, LOWVOL = minus 60-session volatility, HIGH52 = price over its 252-session high), held only while its own trailing return is positive | the factor's own trailing return (26 or 52 weeks) | factor momentum (Ehsani & Linnainmaa 2022) | b > 0 (pooled over the five factors, week-clustered) |
+| H10 | **SECMOM**: long the top 3, short the bottom 3 of the 11 GICS sector equal-weight portfolios by 12-1 month return | **ACORR**: average correlation of residual returns across sectors (L = 21 or 63) | when sectors decouple, sector trends persist | b < 0 |
+| H11 | **MOM** scaled by the inverse of its own realised volatility | **MOMVOL**: MOM book's realised volatility over the last 26 or 52 weeks | momentum crashes cluster when momentum is volatile (Barroso & Santa-Clara 2015) | b < 0 |
+
+For H9 the conditioned book is the equal-weight mix of the factors in their "on" state, the unconditioned one all
+five; the two variants are the 26- and 52-week trailing windows, and the forms binary (on/off) and linear (weight by
+the percentile of the trailing return). H11's linear form scales by (1 − percentile); its binary form trades only
+when MOMVOL is below its median.
