@@ -219,3 +219,35 @@ and its net mean positive, all on the pooled equal-weight book across regions. C
 
 **If H16-INT passes**, the proposal to the owner is a forward paper book (never traded) that applies the panic switch
 to a momentum book in the fund's universe, with its own pre-registration. Nothing changes in any running book.
+
+---
+
+## Amendment 6 (2026-11-07, before the first forward record): forward paper books for the panic switch
+
+**Round 5 result** (`INT_RESULT.md`): **H16-INT passes** (pooled t 2.72, one-sided p 0.0033, Holm p 0.0066; the
+switched momentum book's net Sharpe 1.14 against 0.70, its worst fall −29.8% against −51.3%; the predicted sign in
+all three regions: Europe t 3.14, Asia Pacific ex Japan 1.66, Japan 1.49). H14-INT fails (wrong sign, t −1.71).
+**The edge taken forward:** momentum earns more, and crashes far less, when it is switched off in the panic state.
+The panic state is the regime detector: the market's 252-session return is negative **and** its 21-session realised
+volatility is above its median of the last 156 weekly decisions. Evidence: US 1927–1999 (development), US 2000–2025
+(OOS, p 0.043 alone) and three international regions 1992–2025 (p 0.003).
+
+**What is not claimed.** In the fund's universe the S&P 500 momentum book lost money in 2020–2025 with or without
+the switch (−2.61% against −2.91% a year): large-cap momentum has been weak, and the switch only removes crash
+weeks. The switch is a risk regime, not a source of return by itself.
+
+**Forward paper books** (`research/regime/forward.py`; never traded; records on research-data under
+`fund_state/live/research/regime/`, one per Thursday from 2026-11-12, append-only; realised weeks frozen at first
+computation in `ledger.json`). Decisions, holding period (close Friday → next Friday close), eligibility, betas and
+costs are those of the forward S&P books (PREREG_quant_transformers.md Amendment 4), so their accounting code is reused:
+* `mom`: S&P 500 12-1 momentum, long the top and short the bottom decile, 50% per side, SPY to zero beta;
+* `mom_panic`: the same × (1 − PANIC);
+* `ens`: the AI "average" book's recorded weights (fw_ensemble, the same Thursday's record), and `ens_panic`: × (1 − PANIC).
+  The AI books load heavily on momentum (week of 2026-10-30: Spearman of scores with 12-1 momentum +0.50 to +0.62),
+  so this measures what the switch would do for them. Nothing in the AI books changes.
+* Recorded each week, frozen: the PANIC state and its inputs (SPY close, 252-session return, 21-session volatility
+  and its percentile), and each AI model's momentum loading (Spearman of its scores with 12-1 momentum).
+
+**Evaluation.** No verdict on returns: the switch acts only in panic weeks, which come rarely (2000–2025: about 16% of
+weeks). In each panic episode (consecutive panic weeks) the page reports the loss avoided, `mom_panic − mom` and
+`ens_panic − ens`. A proposal to use the switch in any traded or registered book would need its own protocol.
