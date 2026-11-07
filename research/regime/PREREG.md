@@ -126,3 +126,26 @@ For H9 the conditioned book is the equal-weight mix of the factors in their "on"
 five; the two variants are the 26- and 52-week trailing windows, and the forms binary (on/off) and linear (weight by
 the percentile of the trailing return). H11's linear form scales by (1 − percentile); its binary form trades only
 when MOMVOL is below its median.
+
+---
+
+## Amendment 2 (2026-11-07, before any round-3 statistic; the OOS sample is still unread)
+
+**Round 2 result (development only).** Development t in the predicted direction: H7 1.26, H8 2.20, H9 −1.15
+(factor *reversal*, not momentum: −1.84 at 26 weeks), H10 1.30, H11 0.50. **H8 is a finalist** (variant: 3-year
+percentile history; form: linear). Its conditioned book still loses after costs in development (−0.52% a year,
+turnover 1.7 a week), so on its own it cannot meet "worth taking forward" criterion 3.
+
+**Round 3: four further hypotheses.** Same development rule, OOS rules, and Holm across all finalists of all rounds.
+
+| | Strategy | Detector | Mechanism | Predicted |
+|---|---|---|---|---|
+| H12 | **H8 with a holding band** (cost-aware): each of NREV and REV enters at its top/bottom decile and keeps a name while it stays in its top/bottom 30%; the season regime blends them as in H8 | SEASON (as H8) | as H8; the band only lowers turnover | b > 0 for (NREV − REV), banded books |
+| H13 | **Novel vs stale news** (31 names, names with news in the formation week): score = r5 × (2·rank(novelty) − 1), long the top third, short the bottom third, beta-hedged; unconditioned = REV on the same names | **NOVELTY**, per firm and week: 1 − cosine(the week's news centroid, the firm's trailing 13- or 26-week centroid), ranked across firms with news | stale news is over-reacted to and reverses, novel news is under-reacted to and continues (Tetlock 2011), measured in embedding space | b > 0: Fama–MacBeth slope on r5 × (rank − 0.5) of next-week residual return |
+| H14 | **Factor reversal**: each of the five factor books held only while its own trailing return is negative | the factor's own trailing return, 26 or 52 weeks (decisions k−1−w .. k−2) | factor crowding unwinds (suggested by H9's development sign; stated here as a new hypothesis, so OOS decides) | b < 0 (pooled) |
+| H15 | **Industry momentum, long history**: Ken French 49 industries (value-weighted, daily, 1926–2025): long the top 7, short the bottom 7 by 12-1 month return, equal weight, weekly | **IACORR**: average pairwise correlation of industry returns in excess of the 49-industry mean, over L = 21 or 63 sessions | when industries decouple, industry trends persist (H10's mechanism with 100 years of data) | b < 0 |
+
+H15 has its own split: **development 1927–1999, OOS 2000–2025**, read once with the others; 2026 is not used. Its
+costs: 5 bp per side on industry weights (tradeable through sector baskets or ETFs; no hedge, the book is dollar
+neutral). H13's forms: binary (r5 if novelty above the cross-sectional median, else −r5) and linear (as in the
+table); its variants are the 13- and 26-week trailing centroids.

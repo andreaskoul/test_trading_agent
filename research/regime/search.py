@@ -26,7 +26,14 @@ HYP = {
     "H4": ("REV", +1, {"hist1y": ("newshom", 52, None), "hist3y": ("newshom", 156, None)}),
     "H5": ("MOM", -1, {"hist1y": ("newsshift", 52, None), "hist3y": ("newsshift", 156, None)}),
     "H6": ("REV-MOM", +1, {"hist1y": ("hmm", 52, None), "hist3y": ("hmm", 156, None)}),
+    # round 2 (Amendment 1)
+    "H7": ("PEAD", +1, {"hist1y": ("crowd", 52, "events"), "hist3y": ("crowd", 156, "events")}),
+    "H8": ("NREV-REV", +1, {"hist1y": ("season", 52, "events"), "hist3y": ("season", 156, "events")}),
+    "H10": ("SECMOM", -1, {"L21": ("acorr21", 156, None), "L63": ("acorr63", 156, None)}),
+    "H11": ("MOM", -1, {"w26": ("momvol26", 156, None), "w52": ("momvol52", 156, None)}),
 }
+FACTORS = ("MOM", "REV", "SREV", "LOWVOL", "HIGH52")
+EVENTS0 = pd.Timestamp("2012-03-01")                    # events start 2012-01: crowding and season from March 2012
 
 
 def nw_t(y, x=None, L=4):
@@ -50,23 +57,50 @@ def nw_t(y, x=None, L=4):
     return float(b[j]), float(b[j] / np.sqrt(V[j, j])), n
 
 
+def lagged_trailing(y, w):
+    """At decision k: the sum of weekly returns of decisions k-1-w .. k-2. Decision k-1's week ends one session
+    after decision k, so it is not yet known."""
+    y = np.asarray(y, float)
+    out = np.full(len(y), np.nan)
+    for k in range(w + 1, len(y)):
+        out[k] = np.nansum(y[k - 1 - w:k - 1])
+    return out
+
+
+def add_derived(D):
+    for w in (26, 52):
+        out = np.full(len(D), np.nan)
+        y = D["MOM_gross"].to_numpy()
+        for k in range(w + 1, len(D)):
+            out[k] = np.std(y[k - 1 - w:k - 1], ddof=1)
+        D[f"momvol{w}"] = out
+    return D
+
+
 def detector(D, col, hist, tf):
-    p = pct_hist(D[col].to_numpy(float), hist)
+    x = D[col].to_numpy(float)
+    if tf == "events":
+        x = np.where(D["date"] >= EVENTS0, x, np.nan)
+    p = pct_hist(x, hist)
     if tf == "panic":                                   # Daniel-Moskowitz: bear market and volatility above median
         p = np.where(np.isfinite(p), ((D["bear"].to_numpy() > 0) & (p > 0.5)).astype(float), np.nan)
     return p
 
 
 def books():
-    W = {k: np.load(os.path.join(OUT, f"book_{k}.npy")) for k in ("REV", "SREV", "MOM")}
-    H = {k: np.load(os.path.join(OUT, f"hedge_{k}.npy")) for k in ("REV", "SREV", "MOM")}
+    ks = ("REV", "SREV", "MOM", "PEAD", "NREV", "LOWVOL", "HIGH52", "SECMOM")
+    W = {k: np.load(os.path.join(OUT, f"book_{k}.npy")) for k in ks}
+    H = {k: np.load(os.path.join(OUT, f"hedge_{k}.npy")) for k in ks}
     return W, H
 
 
 def conditioned(D, W, H, book, sign, x, form):
     """Weekly gross and net returns, turnover and active share of the conditioned book and of the unconditioned one."""
-    if book == "REV-MOM":
-        g = {k: D[f"{k}_gross"].to_numpy() for k in ("REV", "MOM")}
+    if "-" in book:
+        A_, B_ = book.split("-")
+        g = {"REV": D[f"{A_}_gross"].to_numpy(), "MOM": D[f"{B_}_gross"].to_numpy()}
+        W = {"REV": W[A_], "MOM": W[B_]}
+        H = {"REV": H[A_], "MOM": H[B_]}
         if form == "binary":
             a = np.where(x > 0.5, 1.0, 0.0)
         else:
@@ -106,6 +140,35 @@ def summary(x, mask):
             "active_share": x["active"][mask].mean(), "weeks": int(mask.sum())}
 
 
+def fmom(D, W, H, w, form, mask_fn=None):
+    """H9: factor momentum. Returns b, t (pooled over factors, NW on weekly score sums) and the conditioned and
+    unconditioned book results."""
+    ys, xs, on = [], [], []
+    for f in FACTORS:
+        y = D[f"{f}_gross"].to_numpy()
+        tr = lagged_trailing(y, w)
+        ys.append(y); xs.append(pct_hist(tr, 156)); on.append(np.where(np.isfinite(tr), (tr > 0).astype(float), np.nan))
+    Y, X, ON = np.column_stack(ys), np.column_stack(xs), np.column_stack(on)
+    ok = np.isfinite(X).all(1)
+    yv, xv = Y[ok].ravel(), X[ok].ravel()
+    xc = xv - xv.mean()
+    b = (xc * (yv - yv.mean())).sum() / (xc ** 2).sum()
+    u = (yv - yv.mean()) - b * xc
+    sc = (xc * u).reshape(-1, len(FACTORS)).sum(1)                                # weekly score sums
+    L, T = 4, len(sc)
+    S_ = (sc ** 2).sum() + sum(2 * (1 - l / (L + 1)) * (sc[l:] * sc[:-l]).sum() for l in range(1, L + 1))
+    t = b / (np.sqrt(S_) / (xc ** 2).sum())
+    a = (ON if form == "binary" else X) / len(FACTORS)
+    a = np.where(np.isfinite(a), a, 1 / len(FACTORS))
+    gross = (a * Y).sum(1)
+    Wt = sum(a[:, j][:, None] * W[f] for j, f in enumerate(FACTORS))
+    Ht = sum(a[:, j] * H[f] for j, f in enumerate(FACTORS))
+    u5 = np.full(len(D), 1 / len(FACTORS))
+    cond = _net(gross, Wt, Ht, (a > 0).mean(1))
+    unc = _net((u5[:, None] * Y).sum(1), sum(u5[:, None] * W[f] for f in FACTORS), sum(u5 * H[f] for f in FACTORS), np.ones(len(D)))
+    return float(b), float(t), int(ok.sum()), cond, unc, ok
+
+
 def dev():
     D = pd.read_parquet(os.path.join(OUT, "weekly.parquet"))
     keep = D["date"] <= DEV_END
@@ -114,9 +177,10 @@ def dev():
     W = {k: v[keep.to_numpy()] for k, v in W.items()}
     H = {k: v[keep.to_numpy()] for k, v in H.items()}
     assert D["date"].max() <= DEV_END
+    D = add_derived(D)
     rows, choice = [], {}
     for h, (book, sign, var) in HYP.items():
-        y = D["REV_gross"] - D["MOM_gross"] if book == "REV-MOM" else D[f"{book}_gross"]
+        y = D[f"{book.split('-')[0]}_gross"] - D[f"{book.split('-')[1]}_gross"] if "-" in book else D[f"{book}_gross"]
         best = None
         for vn, (col, hist, tf) in var.items():
             x = detector(D, col, hist, tf)
@@ -133,6 +197,17 @@ def dev():
         pick = Rv.loc[Rv["c_sharpe"].idxmax()]                          # then the form by development net Sharpe
         choice[h] = {"variant": top_v, "form": pick["form"], "t_dir": float(pick["t_dir"]),
                      "finalist": bool(pick["t_dir"] >= 1.5 and pick["c_net_mean_bp"] > pick["u_net_mean_bp"])}
+    for w in (26, 52):                                                   # H9 factor momentum
+        for form in ("binary", "linear"):
+            b, t, n, c_, u_, ok = fmom(D, W, H, w, form)
+            sc, su = summary(c_, ok), summary(u_, ok)
+            rows.append({"H": "H9", "variant": f"w{w}", "form": form, "b": b, "t": t, "n": n, "t_dir": t,
+                         **{f"c_{k}": v for k, v in sc.items()}, **{f"u_{k}": v for k, v in su.items()}})
+    R = pd.DataFrame([r for r in rows if r["H"] == "H9"])
+    top_v = R.loc[R["t_dir"].idxmax(), "variant"]
+    pick = R[R["variant"] == top_v].loc[lambda r: r["c_sharpe"].idxmax()]
+    choice["H9"] = {"variant": top_v, "form": pick["form"], "t_dir": float(pick["t_dir"]),
+                    "finalist": bool(pick["t_dir"] >= 1.5 and pick["c_net_mean_bp"] > pick["u_net_mean_bp"])}
     T = pd.DataFrame(rows)
     pd.set_option("display.width", 250)
     cols = ["H", "variant", "form", "n", "b", "t_dir", "c_net_pct_yr", "u_net_pct_yr", "c_sharpe", "u_sharpe",

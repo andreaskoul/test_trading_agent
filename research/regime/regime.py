@@ -257,3 +257,82 @@ if __name__ == "__main__":
         D = build()
         D.to_parquet(os.path.join(OUT, "weekly.parquet"))
         print(D.describe().T.to_string())
+
+
+# ------------------------------------------------------------------------------------------- round 2 (Amendment 1)
+EVENTS = os.path.join(ROOT, ".cache", "p8", "events.parquet")
+
+
+def build2(D):
+    """Round-2 books and detectors, appended to the round-1 weekly frame (same decisions)."""
+    P = panel()
+    S, names = P["S"], P["names"]
+    col = {t: j for j, t in enumerate(names)}
+    ev = pd.read_parquet(EVENTS)
+    ev = ev[(ev.universe == "sp500") & ev.ticker.isin(col) & (ev.t0 <= END)]
+    tix = S.get_indexer(pd.DatetimeIndex(ev.t0))                    # report session index (t0 is a session)
+    ev = ev.assign(ti=tix)[tix >= 0]
+    print(f"events matched: {len(ev)} of S&P 500 rows; tickers {ev.ticker.nunique()}")
+    lp = np.log(P["close"])
+    vol60 = pd.DataFrame(P["r"]).rolling(60, min_periods=50).std().values
+    hi252 = pd.DataFrame(P["close"]).rolling(252, min_periods=200).max().values
+    cr = np.vstack([np.zeros((1, P["e"].shape[1])), np.nancumsum(np.nan_to_num(P["e"]), 0)])
+    out = {k: [] for k in ("PEAD", "NREV", "LOWVOL", "HIGH52", "SECMOM")}
+    rows = []
+    for t in D["t"].to_numpy():
+        el = P["elig"][t] & np.isfinite(P["close"][t + 1])
+        R, Rm = hold_ret(P, t)
+        g = sectors_at(P, t)
+        e20 = ev[(ev.ti > t - 20) & (ev.ti <= t)]
+        e5 = ev[(ev.ti > t - 5) & (ev.ti <= t)]
+        row = {"crowd": float(sum(el[col[x]] for x in e5.ticker)), "season": float(sum(el[col[x]] for x in e20.ticker)) / max(el.sum(), 1)}
+        # PEAD: latest report in the last 20 sessions, SUE quintiles
+        sue = np.full(len(names), np.nan)
+        for x, s_ in e20.sort_values("ti")[["ticker", "sue"]].itertuples(index=False):
+            sue[col[x]] = s_
+        sue[~el] = np.nan
+        w = np.zeros(len(names)); wspy = 0.0
+        if np.isfinite(sue).sum() >= 25:
+            q = np.nanquantile(sue, [0.2, 0.8])
+            L_, S_ = np.isfinite(sue) & (sue >= q[1]), np.isfinite(sue) & (sue <= q[0])
+            w[L_], w[S_] = 0.5 / L_.sum(), -0.5 / S_.sum()
+            wspy = -float(np.nansum(w * np.nan_to_num(P["beta"][t], nan=1.0)))
+        out["PEAD"].append((w, wspy))
+        # NREV: REV, sign flipped for names that reported in the formation week
+        rev = -(cr[t + 1] - cr[t - 4])
+        flip = np.zeros(len(names), bool)
+        flip[[col[x] for x in e5.ticker]] = True
+        out["NREV"].append(decile_book(zs(np.where(el, np.where(flip, -rev, rev), np.nan)), P["beta"][t]))
+        out["LOWVOL"].append(decile_book(zs(np.where(el, -vol60[t], np.nan)), P["beta"][t]))
+        out["HIGH52"].append(decile_book(zs(np.where(el, P["close"][t] / hi252[t], np.nan)), P["beta"][t]))
+        # SECMOM: GICS sector equal-weight portfolios, 12-1 month log return; top 3 long, bottom 3 short
+        secs = [s for s in sorted(set(g[el])) if s not in ("other", None) and (el & (g == s)).sum() >= 5]
+        m12 = {}
+        for s in secs:
+            mm = el & (g == s)
+            dr = np.nanmean(P["r"][t - 251:t - 19][:, mm], 1)
+            m12[s] = np.nansum(np.log1p(dr))
+        rk = sorted(secs, key=lambda s: m12[s])
+        w = np.zeros(len(names))
+        for s in rk[-3:]:
+            mm = el & (g == s); w[mm] = 0.5 / 3 / mm.sum()
+        for s in rk[:3]:
+            mm = el & (g == s); w[mm] = -0.5 / 3 / mm.sum()
+        out["SECMOM"].append((w, -float(np.nansum(w * np.nan_to_num(P["beta"][t], nan=1.0)))))
+        for k in out:
+            w, ws = out[k][-1]
+            row[f"{k}_gross"] = float(np.nansum(w * R) + ws * Rm)
+        rows.append(row)
+    D2 = pd.DataFrame(rows, index=D.index)
+    for k in out:
+        np.save(os.path.join(OUT, f"book_{k}.npy"), np.array([w for w, _ in out[k]], dtype=np.float32))
+        np.save(os.path.join(OUT, f"hedge_{k}.npy"), np.array([s for _, s in out[k]]))
+    return pd.concat([D.drop(columns=[c for c in D2.columns if c in D.columns]), D2], axis=1)
+
+
+if __name__ == "__main__" and sys.argv[1:] == ["build2"]:
+    D = pd.read_parquet(os.path.join(OUT, "weekly.parquet"))
+    D = build2(D)
+    D.to_parquet(os.path.join(OUT, "weekly.parquet"))
+    dev_ = D[D["date"] <= pd.Timestamp("2019-12-31")]                 # sanity on development rows only
+    print(dev_[[c for c in D.columns if c.endswith("_gross") or c in ("crowd", "season")]].describe().T.round(4).to_string())
