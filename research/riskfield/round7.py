@@ -119,8 +119,8 @@ def run(period):
         n1, n2 = signals(D, t, len(names))
         n3 = A.fld(Wt, np.where(el & has, n1, np.nan))
         sig = {"N1": np.where(el, n1, np.nan), "N2": np.where(el, n2, np.nan), "N3": np.where(el & has, n3, np.nan)}
-        counts["N1_nonzero"].append(int((sig["N1"] != 0).sum() - np.isnan(sig["N1"]).sum() * 0))
-        counts["N2_nonzero"].append(int(np.nansum(sig["N2"] != 0)))
+        counts["N1_nonzero"].append(int((np.isfinite(sig["N1"]) & (sig["N1"] != 0)).sum()))
+        counts["N2_nonzero"].append(int((np.isfinite(sig["N2"]) & (sig["N2"] != 0)).sum()))
         y20 = np.where(el, cr[t + HOLD + 2] - cr[t + 2], np.nan)
         y60 = np.where(el, cr[min(t + 62, n)] - cr[t + 2], np.nan) if t + 62 <= last else np.full(len(names), np.nan)
         for k, s in sig.items():
