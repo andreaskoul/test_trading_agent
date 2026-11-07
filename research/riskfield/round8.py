@@ -89,7 +89,7 @@ def scores(P, kind, lo, hi):
     return s, beta, rB
 
 
-def simulate(P, s, beta, rB, lag, lo, hi):
+def simulate(P, s, beta, rB, lag, lo, hi, block=None):
     """A-L state machine on s (decided at close t). The position held over session d (close d-1 -> close d) is the
     decision of session d - lag: lag 1 = traded at close t, lag 2 = traded at close t+1. Costs are charged on the
     first session of a changed holding: 5 bp x |change| x (1 + |beta|)."""
@@ -101,6 +101,8 @@ def simulate(P, s, beta, rB, lag, lo, hi):
         st = s[t]
         new = pos.copy()
         opn = pos == 0
+        if block is not None:                                       # Amendment 13: no new position after news
+            opn = opn & ~block[t]
         new[opn & (st < -SO)] = 1
         new[opn & (st > SO)] = -1
         new[(pos == -1) & (st < SBC)] = 0

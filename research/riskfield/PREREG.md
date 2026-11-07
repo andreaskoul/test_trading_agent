@@ -564,3 +564,38 @@ mean. Reported: the gross mean, the net at 5 bp, and returns by year.
 * **A3c:** that replication is not possible (the bar universe is S&P 500 only); it is reported as such.
 
 **Before any money:** a pass is a paper candidate, recorded forward like the beta records.
+
+### Amendment 13 (2026-11-07, after Amendment 12's OOS read; before any statistic of round 9): news-filtered stat-arb, and a data defect
+
+**Amendment 12's read** (`OOS8_RESULT.md`): no pass. At 2 bp a side, S1c–S3c and A3c were positive but not
+significant: S3c +1.9% a year, Sharpe 0.46, t 0.96. 2020 was the strong year (+14%) and 2022 lost 6%.
+
+**Data defect found** (descriptive; rule 3). The close panel of `research/regime` and of this study covers only
+part of the point-in-time S&P 500 member-days:
+* 68.6% in 2012, 76.6% in 2016, 87.2% in 2020 and 97.1% in 2025;
+* the missing names are mostly companies later acquired or delisted.
+
+P8's Alpaca closes cover 98–100% from 2016 (`reports/research/p8/D1_coverage.md`). Results here carry this
+survivorship. It tends to flatter reversal strategies, so the nulls stand. Future work should use the Alpaca panel.
+
+**Round 9 logic:** a residual's excursion from its peer basket mixes transient liquidity pressure, which reverts,
+with information, which does not (Chan 2003). The news calendar of Amendment 6 marks where the information is.
+
+| Test | Rule (otherwise S3: co-movement basket, close t+1, 2 bp a side) |
+|---|---|
+| S4 | no position may **open** at t if the name had a news day (earnings or unscheduled 8-K) in t−4..t |
+| S5 | S4, and no position may open if any of its basket neighbours had an earnings day in t−4..t |
+
+**Development:** 2011-06 .. 2019 at 2 bp a side. Reported with S3 at 2 bp on the same days.
+
+**Gate:**
+* t ≥ 1.5;
+* a positive net mean;
+* a mean above S3's.
+
+**Confirmation:** 2020–2025 has been read for S3, so it cannot confirm S4 or S5. A confirmation needs data not yet
+read:
+* 2026-01-02 .. 2026-10-30 (P8's sealed window, already spent by P8's own read), **only with the owner's agreement**;
+* or forward paper records.
+
+Until one of these exists, nothing here is a result.
