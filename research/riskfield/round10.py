@@ -100,8 +100,8 @@ def weekly_mean(df, col, S, names, t, k=5, need=3):
     return pd.Series(g).reindex(names).to_numpy(dtype=float)
 
 
-def build(fam, period):
-    P = RG.panel()
+def build(fam, period, P=None):
+    P = P if P is not None else RG.panel()
     S, names, n = P["S"], P["names"], len(P["S"])
     cr = np.vstack([np.zeros((1, len(names))), np.nancumsum(np.nan_to_num(P["e"]), 0)])
     last = int(np.searchsorted(S.values, np.datetime64(period[1]), side="right")) - 1
