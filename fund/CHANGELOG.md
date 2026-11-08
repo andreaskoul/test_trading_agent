@@ -4,6 +4,11 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-11-08: **Protocol 10** (PROTOCOL_fund.md), from session 2026-11-16 with Protocol 9: the SPY hedge of the lifecycle books (live and control) uses the intraday-calibrated beta B1 from the weekly screen (`fund/screen.py: beta_b1`, `fund/lifecycle_rules.py: hedge_beta`, `P10`).
+  * Stops, targets, CAR, entry volatility and sizing keep the lot beta.
+  * A non-blocking weekly runner step opens an issue when B1 is not ok; names without B1 fall back to the lot beta.
+  * Checks: `fund/tests/test_p10.py` (5) and the suite pass; dry run on live bars for 2026-11-04 (99.4% coverage).
+  * Could this change a decision? **Yes:** the hedge ratio, from 2026-11-16. The median B1 is 0.48 against 0.73. Recorded days are unchanged: gated by date, and the old expression is kept exactly before P10.
 - 2026-11-07: forward S&P books on the assessment page: booked weeks are drawn at every close, not only at each week's end (owner: "Why is performance not visible for the intermediate days?"; display only). `spx_forward.daily_lines` keeps each booked weekly point exactly as in the ledger and fills the closes inside the week with the running-week arithmetic (`running()`) on that week's record, before the week's rebalancing costs, which stay charged at its last close. Contract test `test_daily_lines_keep_booked_weeks_and_mark_closes_inside`. Checked on a copy of research-data: the 30 Oct to 6 Nov week now has 6 points instead of 2, its end values are unchanged, and the SPY line matches the raw SPY closes. Could this change a decision? No: ledger and records are untouched; the page only.
 - 2026-11-07: the Friday S&P research job also writes **forward beta records** (`research/riskfield/forward.py`; research/riskfield/PREREG.md Amendment 5; never traded). These are the fund's beta and an intraday-calibrated beta for every S&P 500 member each Thursday, scored against the realised beta 21 sessions later.
   * The job now needs the Alpaca keys, for 30-minute SIP bars. The bars are cached in `~/.fund-runner/cache/spx`; a split re-fetches the name's window.

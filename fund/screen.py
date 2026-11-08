@@ -76,6 +76,27 @@ wins = last252[Z.index].clip(lower=lo_, upper=hi_, axis=0)
 bw = wins.apply(lambda s: s.cov(rm) / rm[s.notna()].var())
 Z["beta252w"] = bw
 Z["beta_hedge"] = (2 / 3) * bw.fillna(1.0) + 1 / 3
+# Protocol 10: the intraday-calibrated beta B1 used for the SPY hedge from P10 (fund/lifecycle_rules.py). It is computed
+# with the forward beta records' code and bar cache (research/riskfield/forward.py; frozen coefficients
+# FROZEN_B1.json). Any failure leaves NaN: the hedge then falls back to the lot beta, and the runner opens an issue.
+b1_status = "ok"
+try:
+    import importlib.util
+    _spec = importlib.util.spec_from_file_location("rf_forward", os.path.join(ROOT, "research", "riskfield", "forward.py"))
+    RF = importlib.util.module_from_spec(_spec)
+    _spec.loader.exec_module(RF)
+    ses = px.index[px.index <= asof][-63:]
+    syms = list(Z.index) + ["SPY"]
+    R_hf = RF.day_returns(RF.bars_for(syms, ses, px.index), ses, syms)
+    h21, h63 = RF.hf_beta(R_hf[-21:], len(syms) - 1, 17)[:-1], RF.hf_beta(R_hf, len(syms) - 1, 50)[:-1]
+    Z["beta_b1"] = RF.b1(json.load(open(RF.FROZEN)), h21, h63, bw.reindex(Z.index).to_numpy())
+    cov_b1 = float(Z["beta_b1"].notna().mean())
+    if cov_b1 < 0.9:
+        b1_status = f"B1 for {cov_b1:.0%} of members (< 90%)"
+except Exception as exc:                                     # noqa: BLE001 (never blocks the desk; the runner reports it)
+    Z["beta_b1"] = np.nan
+    b1_status = f"B1 unavailable: {type(exc).__name__}: {str(exc)[:160]}"
+print(f"screen: Protocol 10 B1 {b1_status}; median B1 {Z['beta_b1'].median():.2f} vs hedge beta {Z['beta_hedge'].median():.2f}")
 Z["ret_1w_pct"] = (np.exp(-sig["rev1w"]) - 1) * 100
 Z["ret_1m_pct"] = (np.exp(-sig["rev1m"]) - 1) * 100
 Z["ret_12_1_pct"] = (np.exp(sig["mom12_1"]) - 1) * 100
@@ -134,7 +155,7 @@ except Exception as exc:
 Z["earnings_in_holding_week"] = pd.Series(earn, dtype=object).reindex(Z.index).fillna("none")
 print(f"screen: {int((Z['earnings_in_holding_week'] != 'none').sum())} members report earnings in the holding week")
 
-save(asof, "screen.json", {"asof": str(asof.date()), "n": int(len(Z)), "news_window": [str(lo), str(hi)],
+save(asof, "screen.json", {"asof": str(asof.date()), "n": int(len(Z)), "news_window": [str(lo), str(hi)], "beta_b1_status": b1_status,
                            "ridge_spec": spec, "rows": json.loads(Z.reset_index(names="ticker").to_json(orient="records"))})
 print(f"screen {asof.date()}: {len(Z)} members, attention for {Z.news_7d.notna().sum()}, "
       f"median beta60 {Z.beta60.median():.2f}, hedge beta {Z.beta_hedge.median():.2f}")

@@ -98,7 +98,7 @@ Z_HI, ID_HI, TO_LO, EXT_MAX, EXT_TOTAL, SAMPLES, REVERT_N = 1.5, 0.1, 1.0, 2, 40
 LABELS = ("CONFIRMING", "CONTRADICTING", "STALE", "NONE")
 
 # ---- Protocol 7B (owner, 2026-10-27): R1-R3 and their constants live in fund/lifecycle_rules.py (contract-tested)
-from lifecycle_rules import (P7B, P7B_ASOF, A7B1, P7B2, P7B2_ASOF, A7B2_FIX_ASOF, A7B3, soft_view, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
+from lifecycle_rules import (P10, hedge_beta, P7B, P7B_ASOF, A7B1, P7B2, P7B2_ASOF, A7B2_FIX_ASOF, A7B3, soft_view, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
                              may_increase, checkpoint_exit, slots, structural_h, structural_mean)
 DESK_SAMPLES, DESK_DRAWS = 5, 8
 
@@ -304,6 +304,7 @@ def cohorts(replay=False):
         S = pd.DataFrame(json.load(open(os.path.join(wd, "screen.json")))["rows"]).set_index("ticker")
         out.append({"asof": os.path.basename(wd), "entry_day": L["entry_day"], "w": book["books"]["fund"], "names": L["names"],
                     "scores": sc, "beta": (S["beta_hedge"] if "beta_hedge" in S else S["beta60"]).fillna(1.0).to_dict(),
+                    "beta_h": S["beta_b1"].dropna().to_dict() if "beta_b1" in S else {},        # Protocol 10
                     "sector": S["GICS Sector"].fillna("Unknown").to_dict()})
     return out
 
@@ -1057,6 +1058,7 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
     sector_all = {t: s for c in C for t, s in c.get("sector", {}).items()}
     prev_day = None
     out_live = None
+    hb_now = {}                                         # Protocol 10: each name's latest B1, from cohorts entered so far
     a2_logs = {}                                        # 7B A2: per day, B1 horizons and B3 checks of the new names
     a3_logs = {}                                        # 7B A3: per day, the soft views not acted on
     for d, r, close_ts, is_live in seq:            # close_ts: the session's real close (a live day: the news cutoff)
@@ -1238,6 +1240,8 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
                         trade(L, tgt, "news_increase"); L["increased"] = True
         lots = [L for L in lots if L["n"] != 0.0]
         # 3. this week's cohort enters at today's close
+        if d in by_entry:                           # Protocol 10: a cohort's screen (as-of the Wednesday before) brings B1
+            hb_now.update({t_: float(b_) for t_, b_ in by_entry[d].get("beta_h", {}).items() if b_ == b_})
         c = by_entry.get(d) if act == "compute" else None
         if c is not None:
             if replay:
@@ -1331,7 +1335,7 @@ def run(replay=False, fetch_news=True, live=None, variant=None):
                 lots = [L for L in lots if L["n"] != 0.0]
         # 4. SPY hedge: on cohort days always, otherwise on trading days when |net beta| > 10% of gross
         if act == "compute" and not replay:
-            stock_beta = sum(L["n"] * L["beta"] for L in lots)
+            stock_beta = hedge_beta(lots, hb_now, d)                 # Protocol 10: B1 from P10, else the lot beta
             gross = sum(abs(L["n"]) for L in lots) + abs(hedge)
             if (c is not None or traded) and (c is not None or abs(stock_beta + hedge) > REHEDGE * gross):
                 cost += abs(-stock_beta - hedge) * COST

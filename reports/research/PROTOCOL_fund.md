@@ -1266,3 +1266,61 @@ test_release_window_in_sessions_from_the_fix_date`, on the real XOM case.
 * Any rule change for structural lots waits for that evidence.
 
 Under Protocol 9 the 7B book is one third of the account from session 2026-11-16.
+
+## Protocol 10 (owner, 2026-11-08; with Protocol 9, from session 2026-11-16): the stock book is hedged with the intraday-calibrated beta
+
+**Decision.**
+* The owner, 2026-11-08: "Apply it, together with protocol 9 … we should have the best models being tested at any
+  moment … every discovery should be added gracefully."
+* Evidence (`research/riskfield/REPORT.md`, pre-registered, read once on 2020–2025):
+  * B1, the intraday-calibrated beta, cut the error of next month's realised beta by 33% against the fund's beta
+    (t 7.56, Holm p < 1e−13), and it did better in every year;
+  * hedging weekly books with B1 lowered their variance (Holm p 0.016).
+
+**The rule.**
+* **Hedge.** From session **P10 = 2026-11-16**, the SPY hedge of every lifecycle book (the live 7B model and its
+  shadow control) is −Σ_lots n × B1(ticker).
+  * B1(ticker) is the name's value in the latest weekly screen: the one entered with the most recent cohort, whose
+    screen is as-of the Wednesday before.
+  * A name without B1 uses its lot beta.
+  * The hedge moves to B1 at the next hedge decision: a cohort day, or a trading day when |net beta| exceeds the
+    10% band.
+  * Through Protocol 9 (λ = 1/3), this sets the model's share of the account's net SPY.
+* **B1** = 0.0030 + 0.332 × β_HF,21 + 0.269 × β_HF,63 + 0.389 × β_252w.
+  * The coefficients are frozen in `research/riskfield/FROZEN_B1.json`.
+  * β_HF is the realised beta from the day's 13 thirty-minute returns plus the overnight return (Alpaca SIP bars,
+    split-adjusted).
+  * β_252w is the screen's winsorised 252-day beta.
+  * The weekly screen computes it as `beta_b1` with the code and cache of the forward beta records
+    (`research/riskfield/forward.py`).
+* **Unchanged:**
+  * the residual returns behind stops, targets, CAR and entry volatility keep the lot beta;
+  * sizing (`caps`), the 10% re-hedge band, the core, λ and the 1.9× cap;
+  * so the 7B rules act as calibrated, and only the hedge ratio improves.
+* **Failure:** `beta_b1` is NaN and `beta_b1_status` is recorded. The runner opens an issue, the hedge falls back to
+  the lot beta, and the desk is never blocked.
+
+**Size of the change** (dry run, as-of 2026-11-04):
+* the median B1 is 0.48 against 0.73 for the fund's beta;
+* defensive names have recently moved against the index (XOM −0.78 against 0.02; KO −0.42 against 0.20);
+* AI-linked names move more (INTC 3.74 against 1.80).
+
+**Scoring.**
+* The 7B gate keeps its 2026-10-28 clock: the change applies equally to the live book and its control, so the gate
+  still compares the same stock-selection rules.
+* Protocol 9's fidelity gate is unchanged; its model composite uses the model's own hedge.
+
+**Reversion rule** (mechanical): at 26 scored weeks of the forward beta records
+(`research-data:fund_state/live/research/beta/ledger.json`, about 2027-05), if the mean weekly squared-error gain of
+B1 over the fund's beta is ≤ 0, the hedge returns to the lot beta from the next session.
+
+**Checks before the first session.**
+* Contract tests pass: `fund/tests/test_p10.py` and the suite. Before P10 the hedge is the old expression, so
+  recorded days and rebuilds are unchanged.
+* A dry run of the screen's B1 on live bars for 2026-11-04: 503 members, 99.4% coverage, correlation 0.99 with the
+  forward record of 11-05.
+* The weekly screen of 2026-11-11 is the first to carry `beta_b1`. Its coverage is inspected before P10.
+
+**Next additions under the same policy** (each by a dated amendment, once its evidence is in):
+* F2, the short-volume tilt: after 52 forward weeks, if its net mean is > 0 with one-sided p < 0.10;
+* the momentum panic switch, for momentum-heavy books.

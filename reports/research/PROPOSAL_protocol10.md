@@ -1,4 +1,6 @@
-# Proposal: Protocol 10, hedge the stock book with the intraday-calibrated beta (draft for the owner)
+# Proposal: Protocol 10, hedge the stock book with the intraday-calibrated beta
+
+**Adopted 2026-11-08 by the owner, with Protocol 9 from 2026-11-16** (PROTOCOL_fund.md, Protocol 10). The start date moved from the proposed 11-23 to 11-16 at the owner's request.
 
 *2026-11-08. Owner: "If it works successfully and statistically then we should enhance our models with these
 additions; if that's a new protocol so be it." Nothing here is live. The code change below touches the traded

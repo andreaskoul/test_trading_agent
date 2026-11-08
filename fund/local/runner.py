@@ -340,6 +340,12 @@ from common import asof_from_env, deadline_ok
 a = asof_from_env()
 raise SystemExit(0 if deadline_ok(a) else f'live run for {a.date()} is past its Thursday 19:00 UTC deadline: nothing to decide.')" """)
     j.step("Desk 1 · screen", "python fund/screen.py")
+    # Protocol 10: the hedge's B1 never blocks the desk; anything but "ok" opens an issue (the hedge falls back)
+    j.step("Protocol 10 · B1 hedge beta (issue when not ok)", f"""w=$(cd fund && python -c "from common import asof_from_env, week_dir; print(week_dir(asof_from_env()))")
+[ -f "$w/screen.json" ] || exit 0
+s=$(python -c "import json,sys;print(json.load(open(sys.argv[1])).get('beta_b1_status','missing'))" "$w/screen.json"); echo "B1: $s"
+[ "$s" = "ok" ] || gh issue create -R {GH_REPO} --title "Fund: Protocol 10 B1 hedge beta not ok $(date -u +%F)" --body "$s. The SPY hedge falls back to the lot beta for names without B1. @andreaskoul"
+""", when="always", allow_fail=True)
     j.step("Desk 2 · ideation", "python fund/ideate.py")
     j.step("Pull embedding cache from Hugging Face", "python fund/emb_store.py pull")
     j.step("Desk 3 · research", "python fund/research.py")
