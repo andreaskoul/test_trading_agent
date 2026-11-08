@@ -505,6 +505,7 @@ SPX_ENV = (f'cd research/quant_trials && SPX_CACHE="{HOME}/cache/spx" SPX_MODELS
            'SPX_REC="$PWD/../../fund_state/live/research/spx" PYTHONPATH=. ')
 REGIME_ENV = 'REGIME_REC="$PWD/../../fund_state/live/research/regime" '
 BETA_ENV = 'BETA_REC="$PWD/../../fund_state/live/research/beta" '
+F2_ENV = 'F2_REC="$PWD/../../fund_state/live/research/f2" '
 SPX_COMMIT = QS_COMMIT.replace('git commit -q -m "qshadow research books', 'git commit -q -m "spx forward books')
 
 
@@ -524,6 +525,10 @@ def job_spx(j, a):
     j.step("Beta records: fund's vs intraday beta (research; never traded)",
            f"{SPX_ENV}{BETA_ENV}{VR} ../riskfield/forward.py weekly" + (f" --asof {a.date}" if a.date else ""), when="always")
     j.step("Ledger: beta records scored after 21 sessions", f"{SPX_ENV}{BETA_ENV}{VR} ../riskfield/forward.py ledger", when="always")
+    # short-volume (F2) paper book (research/riskfield/PREREG.md Amendment 16; never traded): free FINRA files
+    j.step("Short-volume book (research; never traded)",
+           f"{SPX_ENV}{F2_ENV}{VR} ../riskfield/forward_f2.py weekly" + (f" --asof {a.date}" if a.date else ""), when="always")
+    j.step("Ledger: short-volume book", f"{SPX_ENV}{F2_ENV}{VR} ../riskfield/forward_f2.py ledger", when="always")
     j.step("Commit to research-data", SPX_COMMIT, when="always")
     j.step("GitHub Pages: rebuild (S&P forward books on the shadow page)", f"gh workflow run fund_pages.yml -R {GH_REPO} --ref main",
            allow_fail=True)

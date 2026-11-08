@@ -20,7 +20,7 @@
     <nav class="site"><a class="on" href="./">Models under assessment</a><a href="account/">Paper account</a><a href="ledger/">Position ledger</a><a href="report.html">Performance report</a></nav>
   </header>
   <details class="ops" id="ops"><summary><b>Operations</b> · checking the runner and its jobs…</summary></details>
-  <p class="lead">Six things are being tested. The live fund trades a paper account at Alpaca; everything else is paper only and never sent to the broker. Each test compares a model only with what it must beat, over the same dates, and says when and by what rule it will be decided. Live results are weeks old, so differences are still mostly noise: <b>no verdict before mid-April 2027</b>. Returns are cumulative over the dates shown; % per year appears from 26 weeks. Backtests are labelled and never mixed with live weeks. Models retired on 5 Nov 2026 are listed at the bottom.</p>
+  <p class="lead">Seven things are being tested. The live fund trades a paper account at Alpaca; everything else is paper only and never sent to the broker. Each test compares a model only with what it must beat, over the same dates, and says when and by what rule it will be decided. Live results are weeks old, so differences are still mostly noise: <b>no verdict before mid-April 2027</b>. Returns are cumulative over the dates shown; % per year appears from 26 weeks. Backtests are labelled and never mixed with live weeks. Models retired on 5 Nov 2026 are listed at the bottom.</p>
 
   <section><h2>Where each test stands</h2>
     <div class="muted" style="margin-bottom:6px">One row per question. The bar runs from the start of the live test to its final decision, filled to today; each tick is a registered check. Click a row for its section.</div>
@@ -88,6 +88,13 @@
     <h3>Forward record: each week's betas, scored 21 sessions later (from 12 Nov 2026)</h3><div class="scroll" id="s6tab"></div>
   </section>
 
+  <section id="s7" hidden>
+    <h2>7 · Off-exchange short selling: a slow signal (research, paper only)</h2>
+    <dl class="about" id="s7about"></dl>
+    <div class="kpis" id="s7kpis"></div>
+    <h3>Forward paper book (from 12 Nov 2026)</h3><div class="scroll" id="s7tab"></div>
+  </section>
+
   <section><details class="fold" id="f-retired"><summary><h2>Retired, and no longer shown</h2></summary>
     <div class="muted" style="line-height:1.6">Retired on 5 Nov 2026 with the S&amp;P core, because no remaining question uses them: the six weekly-fund experiments (five-answer vote; news only, company hidden; sized by inverse volatility; plus short-term reversal; plus macro and peer news; one model ranking all stocks) and the fixed 20-stock list. The weekly fund without its second-opinion review is still recorded but answers no current question. Their records stay in the data branch (<code>fund-data</code>, <code>shadow.json</code>); nothing was deleted. Four of the six 31-name research books are recorded but not judged: only the two chosen on 17 Oct are.</div>
   </details></section>
@@ -133,7 +140,7 @@ const dayBefore = (pts, day) => { let d0 = null; for (const p of ptsSorted(pts))
 const diffTxt = (a, b, an, bn) => a == null || b == null ? "not enough data yet" : `${an} ${pct(a)} vs ${bn} ${pct(b)}: <b>${pct(a - b)}</b>`;
 
 // ---- "Where each test stands": one row per question, filled in as each data file arrives --------------------------
-const QROWS = {}, QORDER = ["fund", "fixes", "weekly", "account", "spx", "news31", "regime", "beta"];
+const QROWS = {}, QORDER = ["fund", "fixes", "weekly", "account", "spx", "news31", "regime", "beta", "f2"];
 function qset(k, row) {
   QROWS[k] = row;
   table("board", [["Question", r => `<b>${r.q}</b><div class="muted">${r.books}</div>`, "wrap q"],
@@ -501,6 +508,26 @@ fetch("beta.json", { cache: "no-store" }).then(r => r.json()).then(G => {
     bar: "", ev: `${G.records || 0} weekly record${G.records === 1 ? "" : "s"}; ${G.scored || 0} scored`,
     res: E.oos_mse_B0 ? `out of sample 2020–2025: error ${Math.round((1 - E.oos_mse_B1 / E.oos_mse_B0) * 100)}% lower, t ${E.oos_t}` : "",
     rule: "Risk measurement, not a return source: confirmed live if its error stays below the fund's beta's; no verdict before 26 scored weeks." });
+}).catch(() => {});
+
+// ---- 7 · short-volume paper book (research/riskfield; PREREG.md Amendments 14-16): computed in forward_f2.py -----
+fetch("f2.json", { cache: "no-store" }).then(r => r.json()).then(G => {
+  document.getElementById("s7").hidden = false;
+  const E = G.evidence || {}, o = E.oos_2020_2025 || {}, r4 = E.sp400_2016_2025 || {};
+  about("s7about", [
+    ["What is tested", "Whether stocks with a high share of short selling in their off-exchange volume (FINRA's free daily files) do worse the following week. Of 9 option, short-sale and insider ideas tested (implied-volatility spread, skew, option volume, neighbours' option markets, insider trades), this is the one that held up out of sample."],
+    ["How it works", "Each Thursday, the short share of each S&amp;P 500 stock's off-exchange volume over the last 20 sessions. Long the lowest tenth, short the highest tenth, hedged against the market, held a week."],
+    ["How it is judged", `Out of sample (2020–2025, read once): ${o.bp_per_sd} bp a week per standard deviation (t ${o.t}); the book made ${o.net_pct_yr_2bp}% a year at the fund's measured trading costs, Sharpe ${o.sharpe}. In mid-sized companies (S&amp;P 400) it had the same sign and size, just short of significance (p ${r4.p}). Small and modest: no verdict before 52 weeks of the forward book.`]]);
+  document.getElementById("s7kpis").innerHTML = [["Weeks recorded / booked", `${G.records || 0} / ${G.weeks || 0}`],
+    ["Cumulative", G.cum == null ? '<span class="muted">first booked week after the second record</span>' : pct(G.cum)],
+    ["Latest record", G.latest ? `${G.latest.asof}: ${G.latest.members} members, data for ${Math.round(G.latest.coverage * 100)}%` : "—"]]
+    .map(([a, b]) => `<div class="kpi"><div class="muted">${a}</div><div class="v">${b}</div></div>`).join("");
+  table("s7tab", [["Decided", w => w.asof], ["To", w => w.to], ["Book", w => pct(w.book), "n"], ["S&amp;P 500", w => pct(w.spy), "n"]],
+    (G.weekly || []).slice().reverse(), null, "The first record is Thursday 12 Nov 2026; its week is booked with the next record.");
+  qset("f2", { sec: "s7", q: "Does off-exchange short selling predict next week's losers? (research)", books: "Decile book on FINRA's short-volume share (paper)",
+    bar: "", ev: `${G.records || 0} record${G.records === 1 ? "" : "s"}; ${G.weeks || 0} week${G.weeks === 1 ? "" : "s"} booked`,
+    res: o.t != null ? `out of sample 2020–2025: t ${o.t}; ${o.net_pct_yr_2bp}% a year at measured costs` : "",
+    rule: "A small, slow edge: judged on 52 forward weeks. Using it in any book needs a protocol." });
 }).catch(() => {});
 
 folds();

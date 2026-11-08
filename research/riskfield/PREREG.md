@@ -689,3 +689,23 @@ Before F2 is called robust, three checks are registered:
 
 **Then:** if checks 1 and 2 pass, F2 becomes a paper candidate, recorded forward like the beta records, with the
 owner's decision before any use.
+
+### Amendment 16 (2026-11-08): forward paper book for F2 (never traded)
+
+**Verification** (`VERIFY10.md`):
+* **Replication:** the S&P 400 has the same sign and size (−2.7 bp per sd, t −1.61, p 0.054). By the registered
+  rule it **narrowly fails**. Its book nets +2.35% a year at 2 bp.
+* **Controls:** F2 survives short-term reversal, volatility and volume (t −2.38).
+* **Stability:** the slope is negative in 10 of 14 years, and the same before and after FINRA's 2018 switch.
+
+All three samples agree in sign, but the evidence is modest: about +2% a year at a Sharpe near 0.5. F2 is
+therefore a **paper candidate**, not a result.
+
+**From Thursday 2026-11-12,** `forward_f2.py` records the F2 decile book in the Friday S&P job:
+* long the lowest 20-session short-volume ratios and short the highest;
+* point-in-time members, beta-hedged with the fund's beta;
+* the free FINRA consolidated files, cached per day;
+* the forward S&P books' booking arithmetic: entry at close t+1, 5 bp a side, frozen at first computation.
+
+Below 90% coverage the job fails loudly, after saving. **No verdict before 52 booked weeks;** using F2 in any book is
+the owner's decision under a protocol.

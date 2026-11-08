@@ -4,6 +4,11 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-11-08: the Friday S&P research job also writes a **short-volume paper book** (`research/riskfield/forward_f2.py`; research/riskfield/PREREG.md Amendment 16; never traded). It is a decile book on each member's 20-session off-exchange short-volume share, from FINRA's free daily files (no key), cached in `~/.fund-runner/cache/spx/finra`.
+  * Its two steps run even if an earlier research step failed, before the research-data commit. Below 90% coverage the job fails loudly, after saving.
+  * Section 7 of the assessment page shows it (`f2.json`).
+  * Checks: contract test `research/riskfield/test_forward_f2.py`; a dry run on live data for 2026-11-05 (503 members, 99.2% coverage).
+  * Could this change a decision? No: research records only.
 - 2026-11-07: forward S&P books on the assessment page: booked weeks are drawn at every close, not only at each week's end (owner: "Why is performance not visible for the intermediate days?"; display only). `spx_forward.daily_lines` keeps each booked weekly point exactly as in the ledger and fills the closes inside the week with the running-week arithmetic (`running()`) on that week's record, before the week's rebalancing costs, which stay charged at its last close. Contract test `test_daily_lines_keep_booked_weeks_and_mark_closes_inside`. Checked on a copy of research-data: the 30 Oct to 6 Nov week now has 6 points instead of 2, its end values are unchanged, and the SPY line matches the raw SPY closes. Could this change a decision? No: ledger and records are untouched; the page only.
 - 2026-11-07: the Friday S&P research job also writes **forward beta records** (`research/riskfield/forward.py`; research/riskfield/PREREG.md Amendment 5; never traded). These are the fund's beta and an intraday-calibrated beta for every S&P 500 member each Thursday, scored against the realised beta 21 sessions later.
   * The job now needs the Alpaca keys, for 30-minute SIP bars. The bars are cached in `~/.fund-runner/cache/spx`; a split re-fetches the name's window.

@@ -1,6 +1,6 @@
 # Risk measurement and peer-field signals: what held up
 
-*2026-11-07. Pre-registration and amendments 1–13: `research/riskfield/PREREG.md` (each committed before the
+*2026-11-08. Pre-registration and amendments 1–16: `research/riskfield/PREREG.md` (each committed before the
 statistics it governs). Results: `DEV_RESULT.md`, `OOS_RESULT.md` (one read), `DEV2_RESULT.md`, `POSTHOC.md`.
 Nothing here trades. No 2026 data was read.*
 
@@ -131,6 +131,39 @@ weekly or daily decisions with entry at the close, at the fund's costs.
 * **the intraday-calibrated beta:** passed; forward records from 2026-11-12. It improves every hedge but adds no
   return;
 * **the intraday news contagion (I1):** passed; about 8 bp, an order-timing use only.
+
+## Free options and short-sale data (round 10, Amendments 14–16)
+
+**Data found free and verified:**
+* **Alpaca options:** historical daily bars of expired equity options from 2024-02, through the fund's keys. The
+  sample is 391k monthly contracts within ±15% of spot, 533 S&P 500 names and 7.0M bars, with implied volatility
+  solved from synchronous daily VWAPs.
+* **FINRA Reg SHO daily short volume:** consolidated files from 2018-08 and facility files from 2012; 3.4M
+  name-days.
+* **Alpaca/Benzinga news:** from 2015, every S&P 500 name, with company tags. This is the next data set.
+
+| Test | Development | OOS | Verdict |
+|---|---|---|---|
+| O1 call–put IV spread (Cremers & Weinbaum) | −3.9 bp, t −0.95 (wrong sign) | — | no |
+| O2 put smirk (Xing, Zhang & Zhao) | +17 bp, t +2.03 (**opposite** of the registered sign) | — | no |
+| O3 option/stock volume (Johnson & So) | t 0.34 | — | no |
+| O4 neighbours' option IV spread (information transfer) | t −1.10 (wrong sign) | — | no |
+| F1 abnormal short-volume ratio | t −1.24 | — | no |
+| **F2 20-session short-volume ratio** (sign chosen in development: negative) | −2.4 bp per sd, t −1.94; book +2.1% a year at 2 bp | **−3.4 bp, t −1.88, p 0.030; book +2.08% a year at 2 bp, +1.31% at 5 bp, Sharpe 0.49** | **passes** |
+
+**Verifying F2** (`VERIFY10.md`):
+* **Replication:** the S&P 400 has the same sign and size (−2.7 bp, t −1.61, p 0.054), so by the registered rule it
+  narrowly fails. Its book makes +2.35% a year at 2 bp.
+* **Controls:** reversal, volatility and volume leave F2 stronger (t −2.38).
+* **Stability:** negative in 10 of 14 years, with the same slope before and after FINRA's 2018 switch.
+
+**Reading:** a high off-exchange short share predicts slightly lower returns next week. It is consistent with
+informed shorting, not with market makers filling retail buys. The edge is small but has the same sign in all
+three samples. The options signals did not hold in 2024: the samples are short (40 development weeks) and S&P 500
+options are the most efficient of all.
+
+**Forward:** the F2 paper book is recorded from 2026-11-12 (Amendment 16, section 7 of the assessment page). No
+verdict before 52 weeks.
 
 ## Forward beta records (set up; Amendments 5 and 5a)
 
