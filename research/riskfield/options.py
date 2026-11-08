@@ -71,7 +71,18 @@ def underlyings():
     return sorted(n for n in names if n in px.columns), px
 
 
+REJECTED = []
+
+
 def contracts(u):
+    try:
+        return _contracts(u)
+    except RuntimeError as e:                    # a typed defect: the API rejects the underlying; recorded, skipped
+        REJECTED.append((u, str(e)[:120]))
+        return []
+
+
+def _contracts(u):
     rows, tok = [], None
     for status in ("inactive", "active"):
         tok = None
@@ -139,7 +150,7 @@ def download():
             got = [r for part in ex.map(contracts, names) for r in part]
         C = pd.DataFrame(got, columns=["symbol", "underlying", "type", "strike", "expiry"])
         C.to_parquet(cp)
-        print("contracts listed", len(C))
+        print("contracts listed", len(C), "; underlyings rejected by the API:", REJECTED)
     C = pd.read_parquet(cp)
     C["expiry"] = pd.to_datetime(C.expiry)
     exps = set(monthly_expiries())
