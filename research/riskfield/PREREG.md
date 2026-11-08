@@ -599,3 +599,62 @@ read:
 * or forward paper records.
 
 Until one of these exists, nothing here is a result.
+
+### Amendment 14 (2026-11-08, before any statistic that uses options or short-volume data): round 10, free options and short-sale data
+
+**Round 9** (`DEV9_RESULT.md`): no finalists. S4 nets 0.55 bp a day against S3's 0.45, t 1.17.
+
+**Owner (2026-11-08):** "can we access free options data … information transfer … what other data sources … combine
+(… a CNN head and transformer) … always test and verify".
+
+Two free data families were found and checked to be accessible:
+* **Options** (`options.py`): Alpaca's historical daily bars of expired equity option contracts, from 2024-02,
+  through the fund's keys.
+  * Contracts come from the typed contract list (underlying, type, strike, expiry).
+  * Kept: monthly expiries, strikes within ±15% of spot 45 days before expiry, bars from 75 days before expiry.
+  * The underlying is Alpaca's daily SIP bars, with the VWAP.
+* **Short-sale volume** (`finra.py`): FINRA Reg SHO daily files.
+  * Consolidated from 2018-08; before that, the sum of the TRF/ORF facility files, from 2012.
+
+**Implied volatility** (daily, per contract): Black–Scholes on the contract's daily VWAP against the underlying's
+daily VWAP, which keeps both prices synchronous.
+* Inputs: r = DTB3, continuous; T = calendar days to expiry / 365; no dividend yield.
+* Kept: contracts with 10–60 days to expiry, moneyness K/S in [0.85, 1.15], volume ≥ 1, and a price above the
+  intrinsic value. The IV is solved in [0.01, 5].
+* American early exercise biases put IVs up a little, by about the same amount across names.
+
+| Test | Signal at Thursday t (mean of the daily values over t−4..t, ≥ 3 days) | Sign |
+|---|---|---|
+| O1 | IV spread: over call–put pairs with the same strike and expiry, K/S in [0.9, 1.1], the mean of IV_call − IV_put weighted by min(volume_call, volume_put) (Cremers & Weinbaum 2010) | + |
+| O2 | smirk: IV of the put nearest K/S = 0.90 (in [0.85, 0.95]) minus the mean IV of calls with K/S in [0.95, 1.05] (Xing, Zhang & Zhao 2010) | − |
+| O3 | O/S: 100 × the summed option volume of the kept contracts over the stock's volume (Johnson & So 2012) | − |
+| O4 | text field (§3 kernel) of O1: information transfer from neighbours' option markets | + |
+| F1 | abnormal short-volume ratio: short/total over t−4..t minus the same over t−64..t−5 | two-sided |
+| F2 | short-volume ratio over t−19..t | two-sided |
+
+**F1 and F2 are two-sided** because the sign is ambiguous. Market makers short to fill retail buys, which would
+make a high ratio predict positive returns. Informed short sellers would make it predict negative returns. The
+development sign fixes the OOS direction (disclosed).
+
+**Target:** next week's residual Σ e over t+2..t+6, point-in-time S&P 500 members (`research/regime` panel).
+
+**Statistic:** the pooled slope on the week's cross-sectional z, with week fixed effects and a DK t (5 lags).
+
+**Book:** weekly decile book, beta-hedged, at **2 bp a side** (Amendment 12); 5 bp is reported.
+
+**Gate:** |t| ≥ 1.5 in the registered direction (either direction for F), with a positive net book at 2 bp.
+
+**Splits:**
+* options: development decisions 2024-03-07 .. 2024-12-31, OOS 2025-01-01 .. 2025-12-24, about 40 and 50 weeks.
+  Power is low: only a strong effect can pass;
+* FINRA: development 2012–2019, OOS 2020–2025;
+* one read (`OOS10_READ.lock`), Holm across all round-10 finalists.
+
+**Combination** (the owner's ML idea, registered now in its simplest honest form):
+* if two or more of O1–O4, F1 and F2 reach |t| ≥ 1.0 in development, a ridge combination of their weekly z-scores
+  (signed as in development, L2 penalty 1, fitted on development only) is read once OOS as one more test;
+* a CNN or transformer head is **not** registered: with two years of options data it would fit noise; it waits
+  for longer forward data.
+
+**2026:** the owner's sealed window. It is not downloaded and serves no read here. It can confirm a pass only with
+the owner's agreement.
