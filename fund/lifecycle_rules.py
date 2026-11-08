@@ -36,6 +36,22 @@ A7B2_FIX_ASOF = os.environ.get("FUND_A7B2_FIX_ASOF") or "2026-11-11"
 # the desk's event type in SOFT and not labelled hard (the rule's definition). The control keeps soft entries: it is
 # the counterfactual.
 A7B3 = pd.Timestamp(os.environ.get("FUND_A7B3") or "2026-11-05")
+# Protocol 10 (owner, 2026-11-08; with Protocol 9 from its first traded session): from session P10 the SPY hedge of
+# every lifecycle book (live and control) uses each name's intraday-calibrated beta B1 from the latest weekly screen
+# (screen.json "beta_b1"; research/riskfield, read once 2020-2025: forecast error -33%, hedged-book variance lower).
+# Residual returns (stops, targets, CAR, entry vol) and sizing (caps) keep the lot beta. A name without B1 is hedged
+# with its lot beta. Gated by date: recorded days and replays never change.
+P10 = pd.Timestamp(os.environ.get("FUND_P10") or "2026-11-16")
+
+
+def hedge_beta(lots, hb_now, d):
+    """Protocol 10: the stock book's beta exposure for the SPY hedge, sum of n x beta. From P10 the beta is the name's
+    latest B1 (hb_now), else the lot's own beta; before P10 always the lot's beta."""
+    if d >= P10:
+        return sum(L["n"] * hb_now.get(L["ticker"], L["beta"]) for L in lots)
+    return sum(L["n"] * L["beta"] for L in lots)
+
+
 SOFT = {"product_launch", "partnership", "leadership", "macro_readthrough", "mna_rumour", "other"}
 
 
