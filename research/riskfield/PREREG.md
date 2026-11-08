@@ -658,3 +658,34 @@ development sign fixes the OOS direction (disclosed).
 
 **2026:** the owner's sealed window. It is not downloaded and serves no read here. It can confirm a pass only with
 the owner's agreement.
+
+### Amendment 15 (2026-11-08, after round 10's OOS read; before any of the checks below): verifying F2
+
+**Round 10 OOS** (`OOS10_RESULT.md`): **F2 passes.**
+* The slope is −3.4 bp per sd of the 20-session off-exchange short-volume ratio (DK t −1.88, one-sided p 0.030).
+* The weekly decile book nets +2.08% a year at 2 bp (Sharpe 0.49), and +1.31% at 5 bp.
+* Development gave −2.4 bp, t −1.94.
+
+The options signals failed development: O2's smirk was significant, but with the opposite sign to the one
+registered.
+
+Before F2 is called robust, three checks are registered:
+
+1. **Replication, one read** (`REP10_READ.lock`): the S&P 400 current list (survivorship disclosed), 2016-02 ..
+   2025-12, with P8's Alpaca daily closes (`.cache/p8/alpaca_bars.parquet`).
+   * Residuals: against SPY, with the fund's 252-session shrunk beta (as `research/regime`).
+   * F2 and the target are as round 10; z-scores are taken within the S&P 400 cross-section.
+   * Pass = one-sided p < 0.05 for a negative slope, with a positive net book at 2 bp.
+2. **Controls** (OOS sample, one regression, read with check 1): the pooled week-fixed-effects regression of next
+   week's residual on z(F2) together with:
+   * z(own residual over t−4..t), for short-term reversal;
+   * z(log 20-session realised volatility);
+   * z(log 20-session dollar turnover = mean close × volume).
+
+   F2 is robust if its DK t stays ≤ −1.65 with the controls. Volume comes from FINRA's TotalVolume (off-exchange)
+   over the same 20 sessions, as a turnover proxy.
+3. **Stability** (descriptive): F2's slope by year 2012–2025, and separately before and after FINRA's 2018-08 switch
+   to the consolidated file.
+
+**Then:** if checks 1 and 2 pass, F2 becomes a paper candidate, recorded forward like the beta records, with the
+owner's decision before any use.
