@@ -169,6 +169,9 @@ def download():
         spot = g.underlying.map(r)
         keep.append(g[(g.strike >= 0.85 * spot) & (g.strike <= 1.15 * spot)])
     C = pd.concat(keep)
+    std = C.symbol.str.match(r"^[A-Z]{1,5}\d{6}[CP]\d{8}$")          # adjusted contracts (non-standard deliverable) out
+    print(f"adjusted (non-standard) contracts dropped: {int((~std).sum())}")
+    C = C[std]
     C.to_parquet(os.path.join(RAW, "contracts_kept.parquet"))
     print(f"contracts kept {len(C)} over {C.underlying.nunique()} underlyings and {C.expiry.nunique()} expiries")
     jobs = []
@@ -180,8 +183,17 @@ def download():
         syms = g.symbol.tolist()
         jobs += [(syms[i:i + 100], st, en) for i in range(0, len(syms), 100)]
     print("bar requests (groups)", len(jobs))
+    failed = []
+
+    def safe(j):
+        try:
+            return bars(*j)
+        except RuntimeError as e:                   # a rejected group is a recorded defect
+            failed.append((j[0][0], len(j[0]), str(e)[:100]))
+            return []
     with ThreadPoolExecutor(4) as ex:
-        rows = [r for part in ex.map(lambda j: bars(*j), jobs) for r in part]
+        rows = [r for part in ex.map(safe, jobs) for r in part]
+    print(f"bar groups rejected: {len(failed)} {failed[:3]}")
     B = pd.DataFrame(rows, columns=["symbol", "date", "open", "close", "vwap", "volume", "trades"])
     B = B[pd.to_datetime(B.date) <= END]
     B.to_parquet(os.path.join(RAW, "bars.parquet"))
