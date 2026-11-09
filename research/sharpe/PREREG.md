@@ -91,3 +91,31 @@ and in the US; the same against a risk-matched buy and hold; results by decade; 
 
 No claim about the stock book. No claim that a higher Sharpe ratio means a higher return than the S&P: at equal
 exposure a timing rule can raise Sharpe and still lag in a long bull market.
+
+### Result of the read (2026-11-10, `RESULT.json`, three regions, 1993-06 .. 2025-12, 8,487 pooled days)
+
+| | Policy band [0.7, 1.3] | Wide band [0, 1.5] |
+|---|---|---|
+| H1 ENS − buy and hold | +0.038, p 0.14: fails | +0.077, p 0.21: fails |
+| H2 ENS − incumbent T200 | −0.032, p 0.96: fails (90% interval −0.063 .. −0.001) | −0.037, p 0.76: fails |
+| H3 FS − ENS | −0.004, p 0.74: fails | +0.005, p 0.37: fails |
+
+Mean Sharpe over the regions, policy band: T200 0.379, TSM 0.390, ENS 0.347, FS 0.343, buy and hold 0.309, VOL 0.283,
+PANIC 0.316. Consequences as registered: **the incumbent stays; no adaptive re-weighting; no further exposure rule is
+tested on the three regions.**
+
+### Amendment 1 (2026-11-10, after the read above; before any statistic of H4): one replication of an exploratory lead
+
+**The lead.** Among the six exploratory FS settings reported with the read, the fastest (η × 100, α = 1/63) had the
+highest mean Sharpe in the wide band (0.524, against 0.497 for the best single rule, TSM, and 0.424 for T200). In the
+policy band it showed nothing (0.380 against 0.379 for T200). Six settings were looked at, so this is a lead, not a
+result.
+
+**The test, once, on the United States file (1929 .. 2026-09), wide band only.** FS* = FS with η × 100 and α = 1/63.
+That setting has not been run on the US file; the default FS has (Sharpe 0.612, below T200's 0.653 and TSM's 0.728).
+* **H4a:** FS* has a higher Sharpe ratio than ENS.
+* **H4b:** FS* has a higher Sharpe ratio than T200.
+Same bootstrap (seed 20261110), one-sided, Holm across the two. Lock: `READ_US.lock`.
+
+**Consequences.** Both pass: recorded as a candidate for the owner, with the note that it lives outside the
+[0.7, 1.3] policy band. Either fails: fast adaptation is closed, on both samples.
