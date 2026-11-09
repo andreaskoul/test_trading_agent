@@ -1,0 +1,5531 @@
+{
+ "records": {
+  "AAON": {
+   "ticker": "AAON",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Building Products",
+   "last_release": "2026-08-10 11:12:15+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/824142/000082414226000052/liveaaonpressreleaseexs.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Backlog Conversion and Demand",
+      "last_report": "Total backlog increased 98.0% to $2.0 billion, with BASX backlog up 185.4%. Record revenue was driven by strong backlog conversion and demand.",
+      "guidance": "Management remains encouraged by the volume of opportunities and strong customer engagement across both brands."
+     }
+    ],
+    "guidance": "The company updated its full-year 2026 outlook, projecting net sales growth of 55%-60%, gross margins of 25%-26%, and SG&A as a percentage of sales of 13%-14%. Management expects sequential margin improvement in the second half of the year.",
+    "kill_conditions": [
+     "Slowing backlog conversion rates or significant decline in total backlog.",
+     "Failure to achieve sequential margin improvement due to persistent cost pressures.",
+     "Signs of cooling or slowing investment in data center infrastructure."
+    ]
+   },
+   "card_provider": "OpenInference",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 9,
+    "found": 9,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 82,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "AAON declares quarterly cash dividend",
+        "date": "2026-08-13",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AAON introduces The Aaon Group enterprise identity",
+        "date": "2026-08-21",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Comfort Systems reports 92% EPS surge, record backlog, data-center exposure",
+        "date": "2026-10-05",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "United Rentals beats Q3, raises 2026 outlook",
+        "date": "2026-10-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Lennox Q3 EPS miss, revenue beat",
+        "date": "2026-10-28",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Carrier Global beats Q3 earnings and revenue",
+        "date": "2026-10-29",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AAON announces Q3 2026 conference call and webcast",
+        "date": "2026-10-30",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AAON to present at 2026 Baird Global Industrial Conference",
+        "date": "2026-11-06",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "WMS",
+    "WTS",
+    "TREX",
+    "OC",
+    "FBIN"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "WMS",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Softer construction demand and higher rates weigh on nonresidential HVAC demand."
+       },
+       {
+        "peer": "WTS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong data center demand and price support AAON BASX backlog conversion and demand."
+       },
+       {
+        "peer": "TREX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Growth is Trex-specific; no meaningful read on AAON's HVAC or data center demand."
+       },
+       {
+        "peer": "OC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "other",
+        "why": "Rising input and transportation costs pressure margins; weak residential not core to AAON."
+       },
+       {
+        "peer": "FBIN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Residential new construction and channel destocking not relevant to AAON's commercial/data center demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "WMS",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Softer nonresidential construction demand and higher rates signal weaker HVAC demand, though data center backlog may offset."
+       },
+       {
+        "peer": "WTS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong data center demand and raised guidance support AAON's BASX backlog conversion and demand outlook."
+       },
+       {
+        "peer": "TREX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Residential decking strength is Trex-specific; no read-through to AAON's commercial HVAC or data center demand."
+       },
+       {
+        "peer": "OC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "other",
+        "why": "Rising transportation and input material costs signal margin pressure; weak residential construction has limited AAON read-through."
+       },
+       {
+        "peer": "FBIN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Residential new construction and channel inventory weakness; no direct read-through to AAON's commercial/data center backlog."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FBIN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Home products weakness and single-family softening not relevant to AAON's commercial/data center demand."
+       },
+       {
+        "peer": "OC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "other",
+        "why": "Rising transportation and input material costs may pressure AAON margins, though demand weakness is residential/storm."
+       },
+       {
+        "peer": "TREX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Trex-specific decking strength and share gains; no read-through to AAON's HVAC/data center demand."
+       },
+       {
+        "peer": "WTS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong data center demand supports AAON/BASX backlog conversion and demand outlook."
+       },
+       {
+        "peer": "WMS",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Softer nonresidential/infrastructure demand and higher rates may weigh on AAON commercial HVAC demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": -0.5,
+   "score_combined": -0.25,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 0.5848,
+   "revenue_estimate": 611664858,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:34:00.347611+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "2ec87579b37642548a73069687878b17f5955724d5393b84106f4af2c1a6e894"
+  },
+  "AMG": {
+   "ticker": "AMG",
+   "index": "SP400",
+   "sector": "Financials",
+   "sub_industry": "Asset Management & Custody Banks",
+   "last_release": "2026-07-30 11:14:53+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1004434/000162828026050793/amgq22026ex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Alternative strategy net inflows",
+      "last_report": "Record alternative net inflows of ~$29B in Q2, ~$58B H1, driving total net client cash flows of $12.9B.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Overall net client cash flows",
+      "last_report": "Q2 net client cash flows $12.9B; H1 $35.5B, but equities had $14.5B Q2 outflows and multi-asset $1.5B.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "AUM and market changes",
+      "last_report": "Record AUM $942.4B at June 30, up 22% YoY; Q2 market changes added $55.9B, FX -$0.6B.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Economic EPS and EBITDA",
+      "last_report": "Q2 Economic EPS $8.29 up 54% YoY; Adjusted EBITDA $316.0M up 44%; net income controlling $185.9M.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Capital allocation and buybacks",
+      "last_report": "Repurchased $189M in Q2, $375M H1; debt rose to $3.004B; growth investments added AUM.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Alternative net inflows fall sharply below Q2's $29B or turn negative.",
+     "Overall net client cash flows turn negative or equity long-only outflows exceed $14.5B.",
+     "Economic EPS growth stalls or Adjusted EBITDA declines sequentially, signaling margin pressure."
+    ]
+   },
+   "card_provider": "DeepInfra",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 18,
+    "found": 17,
+    "share": 0.9444444444444444,
+    "missing": [
+     "3.004"
+    ]
+   },
+   "peer_defects": {
+    "CG": "only 2 of 5 earnings-release markers"
+   },
+   "news_raw": 63,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.5
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.95
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "AMG scheduled to announce Q3 results on November 9, 2026.",
+        "date": "2026-11-02",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AMG Critical Materials plans to apply for a secondary listing on the Frankfurt Stock Exchange.",
+        "date": "2026-08-24",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Estimates point to strong profit and revenue growth for Affiliated Managers in Q3.",
+        "date": "2026-11-03",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "BEN",
+    "HLNE",
+    "APO",
+    "CRBG"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BEN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong alternative fundraising/record alt AUM and positive long-term flows signal continued industry demand for alternatives."
+       },
+       {
+        "peer": "HLNE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only cites AUM and dividend; no flows or growth detail relevant to AMG."
+       },
+       {
+        "peer": "APO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record alternative inflows, origination and strong pipeline indicate robust alt demand benefiting AMG flows."
+       },
+       {
+        "peer": "CRBG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Insurance/annuity results and merger are not relevant to AMG’s alternative asset management drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Alibaba",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BEN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong alternative fundraising and positive industry flows suggest continued demand for AMG's alternative strategies."
+       },
+       {
+        "peer": "HLNE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release lacks flow or earnings detail; AUM alone does not signal AMG's coming results."
+       },
+       {
+        "peer": "APO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record alternative inflows and robust momentum signal strong industry demand, supporting AMG's alternative net inflows."
+       },
+       {
+        "peer": "CRBG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Insurance and retirement results not relevant to AMG's asset management flows or earnings."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CRBG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Insurance and retirement results not relevant to AMG's asset management flows or earnings."
+       },
+       {
+        "peer": "APO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record alternative inflows and pipelines signal robust industry demand for alternatives, supporting AMG's alternative fundraising."
+       },
+       {
+        "peer": "HLNE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Release only notes AUM and dividend; no flow or earnings detail to inform AMG's outlook."
+       },
+       {
+        "peer": "BEN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Broad asset manager reports strong equity and multi-asset inflows, suggesting AMG's equity outflows may ease."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 2.886751345948129,
+   "score_combined": 1.4433756729740645,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "above"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 8.8737,
+   "revenue_estimate": 661631557,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:33:30.835981+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "d37582d9afde5eb20db128405d5aa0f252862ff6e68c59054fa58884225a3d60"
+  },
+  "CEG": {
+   "ticker": "CEG",
+   "index": "SP500",
+   "sector": "Utilities",
+   "sub_industry": "Electric Utilities",
+   "last_release": "2026-08-06 10:52:23+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1868275/000186827526000097/ceg-20260806991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Nuclear output and outage recovery",
+      "last_report": "Q2 nuclear output 44,160 GWh, capacity factor 93.0%, 86 refueling outage days vs 41; unfavorable nuclear outages offset Calpine.",
+      "guidance": "No Q3 guidance; Crane restart expected 2027; NY license renewals filed for Ginna and Nine Mile Point 1."
+     },
+     {
+      "id": "D2",
+      "name": "Calpine integration and gas fleet",
+      "last_report": "Calpine addition drove adjusted earnings; EFOF 6.2%; $84M integration costs; Brazos Valley divestiture for $860M, last required asset sale.",
+      "guidance": "Full-year adjusted EPS raised to $11.50–$12.50; Brazos Valley sale expected to close by end of year."
+     },
+     {
+      "id": "D3",
+      "name": "Long-term PPA contracting",
+      "last_report": "Signed additional 920 MW long-term PPAs, 15-20 years, starting 2029-2032; Walmart 176 MW enables 30 MW Dresden expansion.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Crane Clean Energy Center restart",
+      "last_report": "FERC approved CIR transfer to Crane; NRC approved fuel license; restart expected in 2027.",
+      "guidance": "Restart expected in 2027."
+     },
+     {
+      "id": "D5",
+      "name": "Market conditions and full-year guidance",
+      "last_report": "Adjusted earnings reflected favorable market and portfolio conditions; unrealized fair value loss $340M; acquired commodity contract amortization $149M.",
+      "guidance": "Full-year 2026 adjusted operating EPS guidance raised to $11.50–$12.50; no quarterly guidance."
+     }
+    ],
+    "guidance": "Full-year 2026 Adjusted (non-GAAP) Operating Earnings guidance raised to $11.50–$12.50 per share. No specific third-quarter guidance provided.",
+    "kill_conditions": [
+     "Q3 nuclear output falls or refueling outage days rise versus Q2, reducing adjusted earnings.",
+     "Calpine integration costs rise or Brazos Valley sale is delayed or blocked by DOJ.",
+     "Full-year adjusted EPS guidance cut below $11.50 or Crane restart slips past 2027."
+    ]
+   },
+   "card_provider": "Relace",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 16,
+    "found": 16,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 513,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "DOE announces $5B conditional loan to Constellation for nuclear uprates",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PSEG and Constellation plan 200 MW uprate at Salem nuclear plant",
+        "date": "2026-11-03",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Salem nuclear unit faces extended outage for degraded components",
+        "date": "2026-11-03",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Democratic midterm sweep; Texas governor-elect vows data center pause",
+        "date": "2026-11-04",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "DOE offers $5B conditional loan for nuclear modernization and uprates",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PSEG and Constellation plan 200 MW Salem nuclear uprate",
+        "date": "2026-11-03",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Salem unit faces extended outage due to degraded equipment",
+        "date": "2026-11-03",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Democratic midterm sweep; Texas governor backs data-center pause",
+        "date": "2026-11-04",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.62
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Constellation signed 20-year nuclear power deals with Amazon and Alphabet",
+        "date": "2026-10-29",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "DOE announced $5B conditional loan to Constellation for nuclear uprates",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PSEG and Constellation plan 200 MW uprate at Salem nuclear plant",
+        "date": "2026-11-03",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Salem nuclear unit faces extended outage due to degradation",
+        "date": "2026-11-03",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Democratic midterm sweep and Texas data-center pause threaten power demand",
+        "date": "2026-11-03",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Talen guided 2027 EBITDA up 26% on strong PJM fundamentals",
+        "date": "2026-11-03",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "PPL",
+    "VST",
+    "SO",
+    "EVRG",
+    "DUK"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PPL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "PJM data-center 2 GW supply deal signals strong long-term power demand, supportive for CEG's PPA contracting."
+       },
+       {
+        "peer": "VST",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D5",
+        "why": "Record PJM/ERCOT demand and strong merchant EBITDA signal favorable power-market conditions for CEG."
+       },
+       {
+        "peer": "SO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Warmer weather and broad customer growth indicate strong electricity demand, modestly positive for CEG market conditions."
+       },
+       {
+        "peer": "EVRG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Data-center ESAs/LOI show robust long-term power demand, supportive for CEG's PPA contracting."
+       },
+       {
+        "peer": "DUK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Favorable weather and infrastructure-driven demand growth signal constructive power demand, modestly positive for CEG."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PPL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "PPL's 2GW data center deal and strong PJM demand signal robust long-term PPA opportunities for CEG."
+       },
+       {
+        "peer": "VST",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D5",
+        "why": "VST's >50% EBITDA growth, raised guidance, record demand confirm favorable power market conditions for CEG."
+       },
+       {
+        "peer": "SO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "SO's warmer weather, customer growth, and large C&I demand indicate broad power demand strength, modestly positive for CEG."
+       },
+       {
+        "peer": "EVRG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "EVRG's raised guidance and 1.4GW Digital Realty LOI show strong data center demand, supporting CEG's PPA pipeline."
+       },
+       {
+        "peer": "DUK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "DUK's favorable weather and 16GW build reflect growing power demand, mildly positive for CEG's market conditions."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "DUK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Favorable weather and strong demand support power markets, modest positive for CEG's market conditions."
+       },
+       {
+        "peer": "EVRG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Data center LOI and large-load growth signal robust long-term PPA demand, positive for CEG's contracting."
+       },
+       {
+        "peer": "SO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Strong Southeast demand and large C&I growth indicate favorable power market conditions for CEG."
+       },
+       {
+        "peer": "VST",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D5",
+        "why": "VST's >50% EBITDA growth, raised guidance, record PJM demand signal strong merchant power market for CEG."
+       },
+       {
+        "peer": "PPL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "2 GW data center generation deal in PJM signals strong long-term PPA demand for CEG."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.22360679774997896,
+   "score_peer": 3.6742346141747673,
+   "score_combined": 2.060724104837363,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 3.8857,
+   "revenue_estimate": 9465329917,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:34:42.736754+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "0c70cb2bc26d3cc324b7da30ec99f76d5ce5c69ebdbf253f434007d71bd3f1a3"
+  },
+  "CNH": {
+   "ticker": "CNH",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Agricultural & Farm Machinery",
+   "last_release": "2026-08-03 10:35:36+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1567094/000156709426000015/ex991q226.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Agriculture margin recovery",
+      "last_report": "Q2 Ag net sales flat at $3.3B; adj EBIT $170M, 5.2% margin, down 290 bps on South America volumes, mix, tariffs, higher SG&A/R&D.",
+      "guidance": "FY Ag net sales about flat incl +2% FX; adj EBIT margin 5.0-5.5%."
+     },
+     {
+      "id": "D2",
+      "name": "Construction sales and margin",
+      "last_report": "Q2 Construction net sales +12% to $866M; adj EBIT $15M, 1.7% margin, down 280 bps on tariffs and higher R&D.",
+      "guidance": "FY Construction net sales up 5-10% incl +2% FX; adj EBIT margin 1.8-2.3%."
+     },
+     {
+      "id": "D3",
+      "name": "Financial Services credit quality",
+      "last_report": "Q2 Financial Services net income $71M, down 18%; past-due >30 days 4.4% vs 3.9%, Brazil risk costs higher.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Free cash flow generation",
+      "last_report": "Q2 Industrial FCF $150M; YTD FCF -$439M, versus -$116M prior year, on working capital and lower earnings.",
+      "guidance": "FY Industrial FCF $200-400M."
+     },
+     {
+      "id": "D5",
+      "name": "Tariffs and cost inflation",
+      "last_report": "Tariffs hit Ag and Construction margins; higher SG&A/R&D and transportation costs; Ag had favorable price realization.",
+      "guidance": "Benefiting from recent tariff changes but higher transportation costs; South America challenging."
+     }
+    ],
+    "guidance": "2026: Ag net sales about flat incl +2% FX; Ag adj EBIT margin 5.0-5.5%; Construction net sales up 5-10% incl +2% FX; Construction adj EBIT margin 1.8-2.3%; Industrial FCF $200-400M; adjusted diluted EPS $0.41-0.46.",
+    "kill_conditions": [
+     "Q3 Agriculture adjusted EBIT margin below 5.0% or Ag net sales decline year-over-year.",
+     "Q3 Construction adjusted EBIT margin below 1.8% or sales growth under 5%.",
+     "Q3 Industrial free cash flow negative or Financial Services past-due receivables above 4.4%."
+    ]
+   },
+   "card_provider": "Together",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 26,
+    "found": 26,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 86,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "AGCO Q2 miss, lowers 2026 outlook on weak industry conditions",
+        "date": "2026-08-06",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Deere Q3 beat on Construction & Turf strength",
+        "date": "2026-08-20",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Deere narrows profit outlook, farm recovery seen in 2027",
+        "date": "2026-08-20",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Oil jumps near $90 on Iran risk, raising transport costs",
+        "date": "2026-08-31",
+        "driver": "D5",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "FTC and USDA launch agricultural equipment competition inquiry",
+        "date": "2026-10-07",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Falling crop prices pressure farm equipment demand",
+        "date": "2026-10-09",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AGCO Q3 earnings beat estimates",
+        "date": "2026-10-29",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Terex misses on Q1 earnings and revenues",
+        "date": "2026-10-29",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Astec Industries reports break-even Q3 earnings",
+        "date": "2026-11-05",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "AGCO Q2 misses and cuts 2026 outlook on weaker industry",
+        "date": "2026-08-06",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Deere Q3 mixed: construction strength offsets Ag weakness; recovery seen 2027",
+        "date": "2026-08-20",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CNH announces emissions software updates to improve uptime, rollout starts Q4",
+        "date": "2026-09-16",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "FTC and USDA launch agricultural equipment competition inquiry",
+        "date": "2026-10-07",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AGCO Q3 earnings beat estimates",
+        "date": "2026-10-29",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Terex misses earnings and revenue",
+        "date": "2026-10-29",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Astec Q3 break-even earnings, revenue miss",
+        "date": "2026-11-05",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Ukraine-Russia peace talks spotlight European reconstruction demand for CNH",
+        "date": "2026-11-04",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "AGCO Q2 miss, cuts 2026 outlook on weak industry conditions",
+        "date": "2026-08-06",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Deere Q3 beat on construction, ag weak; farm recovery seen 2027",
+        "date": "2026-08-20",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Oil jumps near $90 on Iran risk, raising transport costs",
+        "date": "2026-08-31",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CNH announces emissions software updates, Q4 rollout to improve uptime",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "FTC and USDA launch agricultural equipment competition inquiry",
+        "date": "2026-10-07",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Falling crop prices pressure farm equipment demand",
+        "date": "2026-10-09",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AGCO Q3 earnings beat estimates, positive read-through for ag equipment",
+        "date": "2026-10-29",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "AGCO"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "AGCO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "AGCO cites weakest global ag demand in decade, softening EME/LATAM, lower farm income, pressuring CNH Ag sales and margin versus flat guidance."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "AGCO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Weakest global ag demand in a decade, lower farm income, and softer EME/LATAM conditions imply worse Ag volumes/margins for CNH."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Alibaba",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "AGCO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Weak global ag demand, lower farm income, LATAM/EME softening, input costs pressure CNH Ag volumes/margin recovery."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -3.320391543176798,
+   "score_peer": -2.1213203435596424,
+   "score_combined": -4.3810517149566195,
+   "overall_votes": [
+    "below",
+    "below",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "bmo",
+   "eps_estimate": 0.0996,
+   "revenue_estimate": 4201884234,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:33:38.197921+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "6e02bc380957b933694ecf53584f18fd1f36843606ffb08d28c1004841001d7a"
+  },
+  "FERG": {
+   "ticker": "FERG",
+   "index": "SP500",
+   "sector": "Industrials",
+   "sub_industry": "Trading Companies & Distributors",
+   "last_release": "2026-08-10 10:50:04+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/2011641/000201164126000038/exhibit991pressreleasejune.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Non-residential market performance",
+      "last_report": "Non-residential revenue increased 8% in Q2, driven by strong share gains and healthy large capital project activity.",
+      "guidance": "The company expects to continue delivering market outperformance by leveraging large capital projects and specialized solutions."
+     },
+     {
+      "id": "D2",
+      "name": "Residential market recovery",
+      "last_report": "Residential markets remained subdued with weak new construction and soft RMI work, though the company outperformed its market by 2%.",
+      "guidance": "The company expects to return to growth in residential despite the challenging market backdrop."
+     },
+     {
+      "id": "D3",
+      "name": "M&A execution and FloWorks acquisition",
+      "last_report": "Five acquisitions were completed, and a definitive agreement was signed to acquire FloWorks, expected to close during the third quarter.",
+      "guidance": "The FloWorks acquisition is expected to close during the third quarter, impacting future results."
+     },
+     {
+      "id": "D4",
+      "name": "Gross margin and cost management",
+      "last_report": "Gross margin was 31.0%, down 20 bps from prior year, attributed to supplier price increases.",
+      "guidance": "The company is focused on balancing disciplined cost management with investments for future growth."
+     },
+     {
+      "id": "D5",
+      "name": "Canadian market health",
+      "last_report": "Canada sales decreased by 1.9% in Q2, with challenging markets, particularly in residential.",
+      "guidance": "No specific guidance provided for the Canadian market."
+     }
+    ],
+    "guidance": "For the full year 2026, Ferguson expects mid-single digit net sales growth, an adjusted operating margin of 9.5% - 9.8%, and capital expenditures between $375 - $425 million.",
+    "kill_conditions": [
+     "A sustained sharp decline in non-residential demand or large capital project activity.",
+     "Failure to close the FloWorks acquisition in the third quarter.",
+     "A significant, unexpected deterioration in the Canadian market performance."
+    ]
+   },
+   "card_provider": "OpenInference",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 7,
+    "found": 7,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 54,
+   "news_used": 53,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Priced $1.2B senior notes to fund FloWorks acquisition",
+        "date": "2026-08-11",
+        "driver": "D3",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Completed acquisition of FloWorks",
+        "date": "2026-09-01",
+        "driver": "D3",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Ferguson prices $1.2B senior notes to fund FloWorks acquisition",
+        "date": "2026-08-11",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Ferguson completes acquisition of FloWorks",
+        "date": "2026-09-01",
+        "driver": "D3",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Ferguson prices $1.2B senior notes to fund FWI Holdings acquisition",
+        "date": "2026-08-11",
+        "driver": "D3",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Ferguson completes acquisition of FloWorks",
+        "date": "2026-09-01",
+        "driver": "D3",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "WCC",
+    "AIT",
+    "WSO",
+    "MSM",
+    "URI"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "WCC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record sales, 80% backlog growth, and major capital project demand signal strong non-residential conditions for FERG."
+       },
+       {
+        "peer": "AIT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Favorable industrial demand, 7% organic growth, and October up 10% support FERG's non-residential market outperformance."
+       },
+       {
+        "peer": "WSO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Residential HVAC sales up 7% and stabilization signal improving residential demand, supporting FERG's expected return to growth."
+       },
+       {
+        "peer": "MSM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong MRO sales, 10% core customer growth, and accelerating National Accounts indicate healthy industrial/non-res demand."
+       },
+       {
+        "peer": "URI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record results, raised guidance, and large-project momentum signal robust non-residential construction activity for FERG."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "WCC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record sales, 80% backlog growth, and raised outlook signal strong non-residential capital project demand."
+       },
+       {
+        "peer": "AIT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Favorable industrial demand and order momentum support Ferguson's non-residential and industrial growth outlook."
+       },
+       {
+        "peer": "WSO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Residential HVAC sales up 7% and continued stabilization support Ferguson's expected residential recovery."
+       },
+       {
+        "peer": "MSM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong MRO sales growth and national account momentum indicate healthy industrial/non-residential demand."
+       },
+       {
+        "peer": "URI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record results, raised guidance, and large-project momentum support non-residential construction demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "URI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record results, raised guidance, strong large-project backlogs signal healthy non-res construction demand for Ferguson."
+       },
+       {
+        "peer": "MSM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong sales and core customer growth indicate improving industrial/MRO demand, supporting Ferguson's non-residential trends."
+       },
+       {
+        "peer": "WSO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Residential HVAC sales up 7% and stabilization suggest residential demand recovery, supporting Ferguson's expected return to growth."
+       },
+       {
+        "peer": "AIT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Organic sales up 7.1% with positive order momentum signals solid industrial/non-res demand for Ferguson."
+       },
+       {
+        "peer": "WCC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record sales, 80% backlog growth, and raised outlook indicate very strong non-res capital project demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 4.898979485566357,
+   "score_combined": 2.4494897427831783,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 3.3704,
+   "revenue_estimate": 8910451362,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:33:56.685062+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "7166f391a3e5fc92922c70056d7780def24a00052917667f9dcae4a0984c499c"
+  },
+  "HIMS": {
+   "ticker": "HIMS",
+   "index": "SP400",
+   "sector": "Health Care",
+   "sub_industry": "Health Care Services",
+   "last_release": "2026-08-10 20:08:59+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1773751/000177375126000161/hims-20260630x8xkearningsr.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "US revenue growth re-acceleration",
+      "last_report": "US revenue $621.8M, up 16% YoY; management said domestic business should keep accelerating through H2 2026.",
+      "guidance": "No separate US figure; total Q3 revenue guided to $880–900M."
+     },
+     {
+      "id": "D2",
+      "name": "International revenue scale-up",
+      "last_report": "Rest of World revenue $131.4M, up 1,641% YoY, lifted by June close of Eucalyptus acquisition.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Gross margin compression",
+      "last_report": "Gross margin fell to 64% from 76% YoY, with lower Adjusted EBITDA and a $86.3M net loss.",
+      "guidance": "Not guided; Q3 Adjusted EBITDA margin implied at 9–11%."
+     },
+     {
+      "id": "D4",
+      "name": "Subscribers and revenue per subscriber",
+      "last_report": "Subscribers 2.891M, up 19% YoY; monthly revenue per average subscriber $92, up 21%.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Adjusted EBITDA and cash burn",
+      "last_report": "Adjusted EBITDA $60.3M vs $82.2M prior year; free cash flow negative $68.2M; operating cash flow negative $35.9M.",
+      "guidance": "Q3 Adjusted EBITDA $75–95M; full year $275–325M."
+     }
+    ],
+    "guidance": "Q3 2026: revenue $880–900M; Adjusted EBITDA $75–95M (9–11% margin). Full year 2026: revenue $3.1–3.3B; Adjusted EBITDA $275–325M (9–10% margin). Long-term 2030 targets: at least $6.5B revenue and $1.3B Adjusted EBITDA.",
+    "kill_conditions": [
+     "Q3 revenue lands below $880M or full-year revenue guidance is cut below $3.1B.",
+     "US revenue growth decelerates below 16% YoY, or international growth stalls after Eucalyptus.",
+     "Gross margin drops below 64%, or Adjusted EBITDA misses $75M (under 9% margin)."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 27,
+    "found": 24,
+    "share": 0.8888888888888888,
+    "missing": [
+     "131.4",
+     "2.891",
+     "621.8"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 248,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Hers women's health platform launched in Australia",
+        "date": "2026-10-14",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Hers hair loss and wellness care launched in UK",
+        "date": "2026-10-16",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Hims men's weight-loss care launched in Germany",
+        "date": "2026-10-20",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Injectable and oral testosterone replacement therapies launched in US",
+        "date": "2026-10-21",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "HHS enforcement discretion allows compounding of six peptides",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Hims & Hers Benefits adds Grüns, Medjet, Tonal, Viome partners",
+        "date": "2026-11-05",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Eli Lilly partnership to sell Zepbound and Foundayo on Hims platform",
+        "date": "2026-11-06",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Hers women's health launch in Australia",
+        "date": "2026-10-14",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Hers hair loss and wellness launch in UK",
+        "date": "2026-10-16",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Hims men's weight-loss care launch in Germany",
+        "date": "2026-10-20",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Injectable and oral testosterone replacement therapy launch",
+        "date": "2026-10-21",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "HHS enforcement discretion for peptide compounding",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Hims & Hers Benefits adds four new partners",
+        "date": "2026-11-05",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Eli Lilly partnership to sell Zepbound and Foundayo",
+        "date": "2026-11-06",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Acquired California peptide facility",
+        "date": "2026-10-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Sought dismissal of FTC privacy and subscription lawsuit",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Hers women's health platform launched in Australia",
+        "date": "2026-10-14",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Hers Hair subscription rollout in UK",
+        "date": "2026-10-17",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Hims men's weight-loss care launched in Germany",
+        "date": "2026-10-20",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Injectable and oral testosterone therapies launched",
+        "date": "2026-10-21",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Hims seeks dismissal of FTC privacy/subscription lawsuit",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "HHS enforcement discretion permits compounding six peptides",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Hims Benefits adds Gruens, Medjet, Tonal, Viome partners",
+        "date": "2026-11-05",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Eli Lilly agreement to sell Zepbound/Foundayo at self-pay prices",
+        "date": "2026-11-06",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "CI",
+    "CVS",
+    "SHC",
+    "BTSG",
+    "DVA"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CI",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Insurer/PBM results and cost trends do not map to HIMS telehealth demand, subscribers, or margins."
+       },
+       {
+        "peer": "CVS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Retail pharmacy/insurer strength and cost caution are not a clear read-across to HIMS DTC model."
+       },
+       {
+        "peer": "SHC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Sterilization/lab testing trends unrelated to HIMS telehealth, GLP-1, or subscriber economics."
+       },
+       {
+        "peer": "BTSG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Complex-population pharmacy/home health growth does not clearly signal HIMS DTC demand or margins."
+       },
+       {
+        "peer": "DVA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dialysis volume, reimbursement, and cost trends have no clear read-across to HIMS."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CI",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Health insurer/PBM results not tied to HIMS consumer telehealth demand, pricing, or costs."
+       },
+       {
+        "peer": "CVS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Pharmacy/insurer results and cautious cost trends not specific to HIMS direct-to-consumer telehealth."
+       },
+       {
+        "peer": "SHC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Sterilization and lab testing demand unrelated to HIMS telehealth subscriptions or margins."
+       },
+       {
+        "peer": "BTSG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Home/community pharmacy services for complex populations; no clear read-through to HIMS consumer platform."
+       },
+       {
+        "peer": "DVA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dialysis provider metrics unrelated to HIMS telehealth, subscriptions, or GLP-1 demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "DVA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dialysis metrics not relevant to HIMS telehealth/pharmacy."
+       },
+       {
+        "peer": "BTSG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Pharmacy gross profit per script +27% suggests expanding pharmacy margins, easing HIMS gross-margin compression."
+       },
+       {
+        "peer": "SHC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Sterilization/lab testing unrelated to HIMS consumer telehealth."
+       },
+       {
+        "peer": "CVS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Broad insurer/retail pharmacy results do not reveal DTC telehealth conditions."
+       },
+       {
+        "peer": "CI",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "PBM/insurance results not relevant to HIMS direct-to-consumer model."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 6.363961030678928,
+   "score_peer": 0.0,
+   "score_combined": 6.363961030678928,
+   "overall_votes": [
+    "above",
+    "above",
+    "inline"
+   ],
+   "overall": "above",
+   "hour": "amc",
+   "eps_estimate": 0.0649,
+   "revenue_estimate": 910745841,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:35:15.602893+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "1b95e3711a5a231b21cf0f40a125b781c2792bab1d93f67871f5b8c3326ba61d"
+  },
+  "HRB": {
+   "ticker": "HRB",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Specialized Consumer Services",
+   "last_release": "2026-08-11 20:10:16+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/12659/000001265926000019/q4fy26earningsrelease.htm",
+   "release_doc": "type EX-99",
+   "status": "card_ungrounded",
+   "error": "card numbers not in the release: {'numbers': 20, 'found': 8, 'share': 0.4, 'missing': ['12.3', '122.7', '2.3', '2.56', '265.4', '3.04', '384.6', '5.5', '6.1', '7.4']}",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "U.S. assisted tax preparation",
+      "last_report": "FY26 revenue $2.56B, up 6.1%; growth from higher net average charge and company-owned volume.",
+      "guidance": "FY27 total revenue guided $4.11–$4.16B; no separate assisted segment outlook."
+     },
+     {
+      "id": "D2",
+      "name": "Wave subscription and payments",
+      "last_report": "FY26 revenue $122.7M, up 12.3%, driven by subscription revenue and payments volume growth.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "International tax preparation",
+      "last_report": "FY26 revenue $265.4M, up 7.4%, contributing to total revenue growth.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Operating expenses and field wages",
+      "last_report": "FY26 operating expenses $3.04B, up 3.6%; field wages rose 7.5% on higher assisted revenue; occupancy and tech also increased.",
+      "guidance": "FY27 adjusted EBITDA guided $1.11–$1.14B; no expense guidance."
+     },
+     {
+      "id": "D5",
+      "name": "DIY and financial services",
+      "last_report": "FY26 DIY revenue $384.6M, up 0.2%; financial services $99.5M, down 2.3%; refund transfers rose 5.5%.",
+      "guidance": null
+     }
+    ],
+    "guidance": "FY2027: revenue $4.11–$4.16B; adjusted EBITDA $1.11–$1.14B; adjusted diluted EPS $6.04–$6.24; effective tax rate ~23%. No quarterly guidance.",
+    "kill_conditions": [
+     "U.S. assisted tax preparation revenue or net average charge declines year over year.",
+     "Wave subscription revenue growth stalls or payments volume falls.",
+     "Operating expenses grow faster than revenue, especially field wages or occupancy."
+    ]
+   },
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 20,
+    "found": 8,
+    "share": 0.4,
+    "missing": [
+     "12.3",
+     "122.7",
+     "2.3",
+     "2.56",
+     "265.4",
+     "3.04",
+     "384.6",
+     "5.5",
+     "6.1",
+     "7.4"
+    ]
+   },
+   "hour": "amc",
+   "eps_estimate": -1.4483,
+   "revenue_estimate": 214401032,
+   "fiscal": "2027Q1",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:32:14.017836+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "2af34237d9f000c59bf6025200537be48e9b39477e58536c15ed5d419ff4084e"
+  },
+  "KKR": {
+   "ticker": "KKR",
+   "index": "SP500",
+   "sector": "Financials",
+   "sub_industry": "Asset Management & Custody Banks",
+   "last_release": "2026-07-30 10:55:03+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1404912/000140491226000022/q226earningsrelease_vf.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Fee Related Earnings growth",
+      "last_report": "FRE $1.2B, up 37% YoY; LTM $4.2B, up 19%; record per-share FRE.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Management fees and FPAUM",
+      "last_report": "Management fees $1.25B vs $996M; FPAUM $638B up 15%; AUM $796B up 16%.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Realized performance income",
+      "last_report": "Net realized performance income $212M vs $109M; strongest monetization quarter ever; realized performance income $848M.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "New capital raised",
+      "last_report": "New capital raised $34B in quarter, $133B LTM; capital invested $24B; uncalled commitments $143B.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Insurance operating earnings",
+      "last_report": "Insurance operating earnings $288M vs $278M; Global Atlantic segment.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Next quarter FRE or management fees decline versus 2Q26 levels.",
+     "New capital raised falls materially below $34B or AUM/FPAUM growth stalls.",
+     "Realized performance income drops sharply from record 2Q26 monetization."
+    ]
+   },
+   "card_provider": "Morph",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 19,
+    "found": 12,
+    "share": 0.631578947368421,
+    "missing": [
+     "1.25",
+     "109",
+     "143",
+     "278",
+     "288",
+     "848",
+     "996"
+    ]
+   },
+   "peer_defects": {
+    "CG": "only 2 of 5 earnings-release markers"
+   },
+   "news_raw": 321,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "KKR and TotalEnergies expand US renewables JV with $1.2B solar portfolio",
+        "date": "2026-10-13",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KKR to sell Infinity Transportation to Ares for $2.9B",
+        "date": "2026-10-19",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "EC statement of objections to KKR over Telecom Italia deal",
+        "date": "2026-10-19",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KKR to acquire HOERBIGER explosion protection and static control segments",
+        "date": "2026-10-22",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KKR invests $475M in Alexandria Real Estate Equities' Campus Point",
+        "date": "2026-10-28",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KKR, Singtel, Tata proceed with multi-billion STT GDC India stake sale",
+        "date": "2026-11-04",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "KKR-backed Sapphiros and Binx Health combine to form Onvaro",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "FS KKR Capital reports weak Q3 results and lowers dividend",
+        "date": "2026-11-05",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.95
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "KKR/TotalEnergies expand US renewables JV with $1.2B solar, 700 MW",
+        "date": "2026-10-12",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KKR to sell Infinity Transportation to Ares for $2.9B",
+        "date": "2026-10-19",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KKR to acquire IEP Technologies and Newson Gale from HOERBIGER",
+        "date": "2026-10-22",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KKR invests $475M in Alexandria Real Estate Equities' Campus Point",
+        "date": "2026-10-28",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "KKR moves ahead with STT GDC India stake sale",
+        "date": "2026-11-04",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Sapphiros and binx health combine to form Onvaro (KKR-backed)",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "European Commission statement of objections re KKR/Telecom Italia",
+        "date": "2026-10-19",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "BEN",
+    "HLNE",
+    "APO",
+    "CRBG"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BEN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Strong alternative/private markets fundraising and inflows signal robust industry demand for capital raising."
+       },
+       {
+        "peer": "HLNE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No substantive results or flows; only AUM and dividend, no clear read-through."
+       },
+       {
+        "peer": "APO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "Record origination, inflows and pipelines signal robust alternative demand, supporting KKR fundraising."
+       },
+       {
+        "peer": "CRBG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Resilient insurance operating earnings, annuity demand and spread income support Global Atlantic segment."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BEN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Strong long-term inflows and private-markets fundraising signal healthy industry demand, supporting KKR's capital raising."
+       },
+       {
+        "peer": "HLNE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D4",
+        "why": "Private-markets AUM scale and higher dividend suggest steady alternative demand, mildly positive for KKR fundraising."
+       },
+       {
+        "peer": "APO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "Record origination, $270B inflows and strong pipeline signal buoyant alternative demand, positive for KKR fundraising and fees."
+       },
+       {
+        "peer": "CRBG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Strong annuity sales and retirement demand suggest favorable insurance conditions, mildly positive for KKR's Global Atlantic."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CRBG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Stable-to-higher insurance operating earnings and retirement demand modestly support Global Atlantic."
+       },
+       {
+        "peer": "APO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "Record inflows and origination signal strong private-markets demand, supporting KKR fundraising and AUM growth."
+       },
+       {
+        "peer": "HLNE",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Only AUM and dividend disclosed; no flows or earnings trend, so no clear read-through."
+       },
+       {
+        "peer": "BEN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D4",
+        "why": "Broad inflows and record alternatives AUM/fundraising suggest healthy demand, modestly positive for KKR capital raising."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 3.0,
+   "score_peer": 3.1304951684997055,
+   "score_combined": 4.565247584249853,
+   "overall_votes": [
+    "above",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 1.6044,
+   "revenue_estimate": 2622445052,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:34:02.732188+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "5f29448cb2673f3f22efcdeea8e56d160db5bfba783e62c42a1be60c1f2921c8"
+  },
+  "NOVT": {
+   "ticker": "NOVT",
+   "index": "SP400",
+   "sector": "Information Technology",
+   "sub_industry": "Electronic Equipment & Instruments",
+   "last_release": "2026-08-05 20:50:16+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1076930/000119312526335356/novt-ex99_1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Organic revenue growth and bookings",
+      "last_report": "Q2 revenue rose 10.3% to $265.8M; organic growth 9.3%, strongest since Q1 2023, on strong bookings/backlog and new products.",
+      "guidance": "Q3 revenue $300-304M, >21% growth; FY revenue $1,130-1,140M, >15% growth."
+     },
+     {
+      "id": "D2",
+      "name": "Riverpoint Medical acquisition contribution",
+      "last_report": "Recently closed; roughly doubles recurring medical consumables to ~25% of annualized sales and lifts medical end-market to ~60% of revenue.",
+      "guidance": "Q3/FY guidance incorporates Riverpoint; expected immediately accretive to revenue growth, gross margins, EBITDA margins, and EPS."
+     },
+     {
+      "id": "D3",
+      "name": "Adjusted EBITDA and gross margin",
+      "last_report": "Q2 Adjusted EBITDA $60.7M, +16.4%, 22.8% margin; Adjusted Gross Margin 47%; operating cash flow $64.9M.",
+      "guidance": "Q3 Adjusted EBITDA $74-77M; FY Adjusted EBITDA $273-278M, >24% growth."
+     },
+     {
+      "id": "D4",
+      "name": "Adjusted EPS profitability",
+      "last_report": "Q2 Adjusted Diluted EPS $0.89, up 17.1% YoY; GAAP diluted EPS $0.30.",
+      "guidance": "Q3 Adjusted Diluted EPS $0.95-1.00; FY $3.68-3.74, >12% growth."
+     }
+    ],
+    "guidance": "Q3 2026: GAAP revenue $300-304M, Adjusted EBITDA $74-77M, Adjusted Diluted EPS $0.95-1.00. FY 2026: GAAP revenue $1,130-1,140M, Adjusted EBITDA $273-278M, Adjusted Diluted EPS $3.68-3.74. Includes Riverpoint; assumes no significant FX changes.",
+    "kill_conditions": [
+     "Novanta cuts Q3 revenue guidance below $300 million or full-year revenue below $1,130 million.",
+     "Organic revenue growth decelerates below Q2’s 9.3%, or bookings/backlog weaken.",
+     "Adjusted EBITDA below $74M or Adjusted EPS below $0.95, or Riverpoint accretion delayed."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 29,
+    "found": 29,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 50,
+   "news_used": 50,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.95
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Novanta closes Riverpoint Medical acquisition, largest in company history",
+        "date": "2026-08-09",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": false
+       },
+       {
+        "what": "Littelfuse Q3 earnings beat estimates, positive read-through for electronic components demand",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CTS Q3 earnings and revenues top estimates, positive sector demand signal",
+        "date": "2026-10-27",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Allient Q3 earnings and revenues surpass estimates, positive motion control read-through",
+        "date": "2026-11-04",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "VNT",
+    "CGNX",
+    "CXT",
+    "ZBRA",
+    "ROP"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VNT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Mobility/fuel/retail end markets not relevant to Novanta's medical and industrial drivers."
+       },
+       {
+        "peer": "CGNX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record revenue, broad-based industrial demand, and margin expansion support Novanta's organic growth and margin outlook."
+       },
+       {
+        "peer": "CXT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Authentication/traceability end markets not relevant to Novanta's medical and industrial drivers."
+       },
+       {
+        "peer": "ZBRA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong automation demand and raised outlook support Novanta organic growth; memory cost pressure is a watch item."
+       },
+       {
+        "peer": "ROP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Solid organic growth and raised guidance suggest healthy tech/medical demand, mildly positive for Novanta."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VNT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Mobility/fueling and convenience retail end markets are not relevant to Novanta's medical/industrial drivers."
+       },
+       {
+        "peer": "CGNX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Broad-based machine vision/automation demand and strong margin expansion support Novanta's organic growth, bookings, and profitability."
+       },
+       {
+        "peer": "CXT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Authentication/traceability end markets and mixed organic trends are not directly relevant to Novanta's drivers."
+       },
+       {
+        "peer": "ZBRA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong automation and enterprise demand with raised outlook support Novanta's organic growth and bookings."
+       },
+       {
+        "peer": "ROP",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Roper's software-centric end markets and organic growth do not directly signal Novanta's medical/industrial demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ROP",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Diversified software/industrial results have limited direct read-across to Novanta's medical and automation drivers."
+       },
+       {
+        "peer": "ZBRA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong automation demand supports organic growth, though memory cost pressure is a margin watch."
+       },
+       {
+        "peer": "CXT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Mixed organic trends in authentication/traceability; little read-across to Novanta's drivers."
+       },
+       {
+        "peer": "CGNX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record machine-vision revenue and margin expansion signal strong automation demand, supporting Novanta's organic growth outlook."
+       },
+       {
+        "peer": "VNT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Mobility and retail-focused results have limited read-across to Novanta's medical/automation drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 2.886751345948129,
+   "score_combined": 1.4433756729740645,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 0.986,
+   "revenue_estimate": 307030200,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:34:30.116837+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "6867d6379acc71a15a6854047e84a7a35de3d1a4e81e0ff4bb7152d508cb19db"
+  },
+  "NRG": {
+   "ticker": "NRG",
+   "index": "SP500",
+   "sector": "Utilities",
+   "sub_industry": "Independent Power Producers & Energy Traders",
+   "last_release": "2026-08-04 11:28:50+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1013871/000101387126000018/nrgq22026ex991.htm",
+   "release_doc": "type EX-99",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Texas segment Adjusted EBITDA",
+      "last_report": "Q2 Adjusted EBITDA $381M, down $131M YoY; 1H $597M, down $214M. Higher supply costs, mild winter weather, lower retail load, new gen opex.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "East segment Adjusted EBITDA",
+      "last_report": "Q2 Adjusted EBITDA $469M, up $370M YoY; 1H $933M, up $360M. New gen/CPower, higher capacity prices, offset by Winter Storm Fern supply costs, lower gas margins.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Vivint Smart Home",
+      "last_report": "Q2 Adjusted EBITDA $301M, up $42M YoY; 1H $595M, up $56M. Higher new customer adds and increased monthly recurring service margin per customer.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "BYOP data center strategy",
+      "last_report": "Advanced BYOP with hyperscaler; aligned on principal commercial terms for 1.2 GW CCGT in Texas, subject to final documentation and approvals.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "TEF new-build generation",
+      "last_report": "T.H. Wharton 415 MW achieved commercial operations; completion bonus up to $54.72M. Two additional TEF projects on time and on budget; 1.5 GW by mid-2028.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Reaffirmed 2026: Adjusted Net Income $1,685-$2,115M; Adjusted EPS $7.90-$9.90; Adjusted EBITDA $5,325-$5,825M; FCFbG $2,800-$3,300M. Plans $1.0B buybacks and ~$407M dividends.",
+    "kill_conditions": [
+     "NRG cuts or narrows 2026 guidance below reaffirmed ranges.",
+     "BYOP 1.2 GW hyperscaler agreement delayed, terminated, or terms materially changed.",
+     "TEF projects delayed or over budget; Texas segment EBITDA falls further."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 26,
+    "found": 26,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 166,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Texas elects governor campaigning to pause new data centers, threatening BYOP/data center demand.",
+        "date": "2026-11-05",
+        "driver": "D4",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Vistra Q3 adjusted EBITDA jumps >50%, strong 2027 guidance, positive Texas power market read.",
+        "date": "2026-11-06",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.55
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Texas elects governor who campaigned on pausing new data centers",
+        "date": "2026-11-03",
+        "driver": "D4",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Vistra reports Q3 adjusted EBITDA up 50%, strong Texas power markets",
+        "date": "2026-11-06",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Midterm elections flip Congress, creating energy policy uncertainty",
+        "date": "2026-11-03",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Texas elects governor campaigning to pause new data centers, threatening BYOP",
+        "date": "2026-11-03",
+        "driver": "D4",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Vistra Q3 adjusted EBITDA rises >50%, guides 2027, read-across Texas power",
+        "date": "2026-11-06",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "TLN"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TLN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong PJM power/capacity prices and growing demand support NRG's East segment; Talen's gains partly acquisitions, so moderate positive."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TLN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong PJM fundamentals, higher capacity revenues and power prices support NRG's East segment outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TLN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong PJM fundamentals, higher capacity and power prices support NRG's East segment."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -0.8660254037844387,
+   "score_peer": 1.414213562373095,
+   "score_combined": -0.15891862259789125,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 3.3634,
+   "revenue_estimate": 9332638612,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:38:33.832084+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "035998abbd6d55fb9a4870855efbeb7cbe963666a66c168abbebb5edf5e26ec5"
+  },
+  "ONTO": {
+   "ticker": "ONTO",
+   "index": "SP400",
+   "sector": "Information Technology",
+   "sub_industry": "Semiconductor Materials & Equipment",
+   "last_release": "2026-08-06 20:09:51+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/704532/000119312526337990/onto-ex99_1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Advanced Nodes revenue",
+      "last_report": "Grew 50% sequentially to a new quarterly record on broad-based strengthening demand across logic and memory customers.",
+      "guidance": "No separate segment guide; Q3 total revenue of $380-400M implies further sequential growth."
+     },
+     {
+      "id": "D2",
+      "name": "Advanced Packaging and Specialty Devices",
+      "last_report": "Revenue hit an all-time high on advanced packaging demand including 2.5D logic, high-bandwidth memory and silicon photonics.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Gross margin",
+      "last_report": "Non-GAAP gross margin 57.0% versus 54.5% a year ago; GAAP gross margin 53.4%.",
+      "guidance": "Q3 non-GAAP gross margin guided to 57.3%-57.8%."
+     },
+     {
+      "id": "D4",
+      "name": "Backlog and demand visibility",
+      "last_report": "Backlog exceeded $1 billion for the first time; customers maintaining multi-year growth investment plans.",
+      "guidance": "Expects strong second half 2026, with demand trends believed to extend into 2027."
+     },
+     {
+      "id": "D5",
+      "name": "Operating margin leverage",
+      "last_report": "Non-GAAP operating margin 30.0% versus 25.9% a year ago; GAAP operating margin 18.5%.",
+      "guidance": "Q3 non-GAAP operating margin guided to 31.5%-32.5%."
+     }
+    ],
+    "guidance": "Q3 2026: revenue $380-400 million; non-GAAP gross margin 57.3%-57.8%; GAAP operating margin 21.4%-22.4%; non-GAAP operating margin 31.5%-32.5%; GAAP EPS $1.54-$1.70; non-GAAP EPS $2.18-$2.38.",
+    "kill_conditions": [
+     "Q3 revenue below $380M or Q4 outlook cut, signaling AI-driven demand is rolling over.",
+     "Non-GAAP gross margin below 57.3%, or advanced nodes revenue declining sequentially.",
+     "Backlog dropping below $1 billion, or customer order pushouts/cancellations in logic or memory."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 20,
+    "found": 20,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 149,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Closed $720M purchase of 27% stake in Rigaku Holdings",
+        "date": "2026-08-10",
+        "driver": "other",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Received Best Partner Award from SK hynix for HBM defect prevention",
+        "date": "2026-10-12",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "SK hynix warns of prolonged AI memory shortage, boosting HBM demand",
+        "date": "2026-10-28",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "SK hynix Best Partner Award for HBM defect prevention",
+        "date": "2026-10-12",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "SK Hynix warns of prolonged AI memory shortage",
+        "date": "2026-10-29",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "FormFactor reports record Q3, factory nears capacity limits",
+        "date": "2026-10-29",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Onto closed $720M purchase of 27% minority stake in Rigaku Holdings",
+        "date": "2026-08-10",
+        "driver": "other",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Onto received Best Partner Award from SK hynix for HBM defect prevention",
+        "date": "2026-10-12",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "SK Hynix warned of prolonged AI memory shortage, positive for HBM demand",
+        "date": "2026-10-28",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "MKSI",
+    "Q",
+    "AEIS",
+    "ENTG",
+    "KLAC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MKSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "Record semis and advanced packaging growth, robust orders and margin expansion signal broad industry demand."
+       },
+       {
+        "peer": "Q",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong semiconductor materials growth, raised guidance, and stack demand support advanced packaging trends."
+       },
+       {
+        "peer": "AEIS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record semiconductor and data-center power revenue, up 64%, signals strong advanced-node equipment demand."
+       },
+       {
+        "peer": "ENTG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record sales, margin expansion, and upbeat Q4 guide indicate leading-edge semiconductor demand remains strong."
+       },
+       {
+        "peer": "KLAC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Process-control demand strong across leading-edge logic, memory, advanced packaging; positive read-through for ONTO."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MKSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "Record revenue and robust orders support ONTO's backlog and demand visibility."
+       },
+       {
+        "peer": "Q",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Interconnect/advanced packaging growth and raised guidance support ONTO's advanced packaging demand."
+       },
+       {
+        "peer": "AEIS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record semiconductor revenue and strong Q4 guide signal robust equipment demand, supporting ONTO's advanced-node growth."
+       },
+       {
+        "peer": "ENTG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record revenue, leading-edge demand, and margin expansion support ONTO's advanced-node and margin outlook."
+       },
+       {
+        "peer": "KLAC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "KLA's process-control strength and accelerated leading-edge demand support ONTO's advanced-node outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KLAC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong process-control demand and record results/up guidance confirm leading-edge logic/memory and advanced packaging strength for ONTO."
+       },
+       {
+        "peer": "ENTG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record sales and sequential Q4 growth guidance signal broad semiconductor demand and capex/unit visibility supporting ONTO backlog."
+       },
+       {
+        "peer": "AEIS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record semiconductor revenue and above-guidance Q4 outlook indicate strengthening equipment demand, supporting ONTO's demand visibility."
+       },
+       {
+        "peer": "Q",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Raised guidance and materials growth on shrink/stack trends support advanced packaging and advanced-node demand for ONTO."
+       },
+       {
+        "peer": "MKSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "Record semiconductor/advanced-packaging revenue, robust orders, and margin expansion reinforce ONTO's packaging and margin drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 1.5,
+   "score_peer": 4.898979485566357,
+   "score_combined": 3.9494897427831783,
+   "overall_votes": [
+    "above",
+    "inline",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "amc",
+   "eps_estimate": 2.3503,
+   "revenue_estimate": 399856595,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:36:30.808701+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "d2c71c727c28cb38e872a86e4c0887012f57f3be3498d6f8e96bfbc1948f6d94"
+  },
+  "OXY": {
+   "ticker": "OXY",
+   "index": "SP500",
+   "sector": "Energy",
+   "sub_industry": "Oil & Gas Exploration & Production",
+   "status": "already_reported",
+   "last_release": "2026-10-13 11:01:22+00:00",
+   "hour": "amc",
+   "eps_estimate": 1.4767,
+   "revenue_estimate": 6858446854,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:33:56.686174+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "f4aed1e1198d0760474af73bbd56443d69f2f27b4016f86049cb520e2bb130e5"
+  },
+  "QLYS": {
+   "ticker": "QLYS",
+   "index": "SP400",
+   "sector": "Information Technology",
+   "sub_industry": "Systems Software",
+   "last_release": "2026-08-04 20:09:15+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1107843/000110784326000034/qlys-20260804xex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Revenue growth and guidance",
+      "last_report": "Q2 revenue rose 11% YoY to $182.2M; FY 2026 revenue guidance was raised to $732M-$738M.",
+      "guidance": "Q3 revenue $185.5M-$187.5M, 9%-10% YoY growth; FY 2026 $732M-$738M, 9%-10% growth."
+     },
+     {
+      "id": "D2",
+      "name": "EPS and profitability margins",
+      "last_report": "Q2 non-GAAP EPS $1.98; non-GAAP operating margin 45%; Adjusted EBITDA margin 46%.",
+      "guidance": "Q3 GAAP EPS $1.43-$1.50, non-GAAP EPS $1.91-$1.98; FY non-GAAP EPS $7.74-$7.88."
+     },
+     {
+      "id": "D3",
+      "name": "ETM and AI product adoption",
+      "last_report": "Management cited growing AI-native Risk Operations Center adoption, Enterprise TruRisk Management, and promising early QFlex engagement.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Federal pipeline and FedRAMP",
+      "last_report": "TotalCloud achieved FedRAMP High Authorization; management cited a growing federal pipeline of new business opportunity.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Partner-led execution",
+      "last_report": "Management cited strong partner-led execution and a Converge joint offering for cyber insurance premium reductions.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q3 2026 revenue $185.5M-$187.5M, 9%-10% growth; GAAP EPS $1.43-$1.50; non-GAAP EPS $1.91-$1.98. FY 2026 revenue $732M-$738M, 9%-10% growth; GAAP EPS $5.76-$5.90; non-GAAP EPS $7.74-$7.88.",
+    "kill_conditions": [
+     "Q3 revenue below $185.5M or FY 2026 revenue guidance cut below $732M.",
+     "Q3 non-GAAP EPS below $1.91 or FY 2026 non-GAAP EPS guidance below $7.74.",
+     "Federal pipeline delays, FedRAMP setback, or ETM/QFlex adoption described as slowing or stalling."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 17,
+    "found": 15,
+    "share": 0.8823529411764706,
+    "missing": [
+     "732",
+     "738"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 131,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Qualys to speak at upcoming investor conference",
+        "date": "2026-08-05",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Qualys conference highlights ETM and patch management growth ambitions",
+        "date": "2026-08-16",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Qualys launches TruRisk Eliminate 2.0 with TruConfidence AI remediation",
+        "date": "2026-10-14",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Qualys announces Q3 2026 earnings date of November 9",
+        "date": "2026-10-26",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "CISA warns China-based cybersecurity company enabling critical infrastructure attacks",
+        "date": "2026-10-08",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Qualys launches TruRisk Eliminate 2.0 with TruConfidence for autonomous RemOps",
+        "date": "2026-10-14",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Qualys launched TruRisk Eliminate 2.0 with TruConfidence AI remediation engine",
+        "date": "2026-10-14",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CrowdStrike and Okta beat earnings and raised guidance, positive cybersecurity read-through",
+        "date": "2026-08-27",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Zscaler Q4 earnings beat, revenue surged 25% YoY, positive sector demand signal",
+        "date": "2026-09-04",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "NOW",
+    "FTNT",
+    "GEN",
+    "MSFT",
+    "CVLT"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NOW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong AI/security risk demand supports QLYS ETM/AI adoption; not direct VM share shift."
+       },
+       {
+        "peer": "FTNT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Broad cybersecurity demand strong; raised guidance signals healthy budgets for QLYS revenue growth."
+       },
+       {
+        "peer": "GEN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Consumer cyber strength has limited read-through to QLYS enterprise vulnerability management."
+       },
+       {
+        "peer": "MSFT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Enterprise cloud/AI strength and security focus support AI security demand, though Microsoft competes in security."
+       },
+       {
+        "peer": "CVLT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Cyber resilience demand and FedRAMP High expansion support QLYS federal pipeline/FedRAMP driver."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NOW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong AI/security demand and enterprise software budgets support QLYS AI risk adoption."
+       },
+       {
+        "peer": "FTNT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad cybersecurity demand strong; raised guidance positive read-through for QLYS revenue growth."
+       },
+       {
+        "peer": "GEN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Consumer security demand not relevant to QLYS enterprise vulnerability management."
+       },
+       {
+        "peer": "MSFT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong cloud/AI adoption supports demand for cloud security and risk management."
+       },
+       {
+        "peer": "CVLT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Strong cyber resilience demand and FedRAMP federal momentum support QLYS federal pipeline."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CVLT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "FedRAMP High expansion and strong subscription growth signal healthy federal cybersecurity demand, supporting QLYS's federal pipeline."
+       },
+       {
+        "peer": "MSFT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong cloud/AI growth and agent security focus suggest accelerating AI security demand, supporting QLYS's AI-native products."
+       },
+       {
+        "peer": "GEN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Consumer cybersecurity demand does not directly inform QLYS's enterprise vulnerability management and federal pipeline."
+       },
+       {
+        "peer": "FTNT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Raised 2026 guidance and 20% revenue growth signal robust cybersecurity demand, supporting QLYS's revenue growth outlook."
+       },
+       {
+        "peer": "NOW",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "ServiceNow's strong AI and security risk momentum may indicate competitive share gains, pressuring QLYS's AI product adoption."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.598076211353316,
+   "score_peer": 3.5777087639996634,
+   "score_combined": 4.3869305933531475,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "above"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 1.9946,
+   "revenue_estimate": 190403104,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:35:40.112799+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "a4447c8e9d819b94d040903b4a0796b3734d379e2fa1189e259b9e5faabb2706"
+  },
+  "SANM": {
+   "ticker": "SANM",
+   "index": "SP400",
+   "sector": "Information Technology",
+   "sub_industry": "Electronic Manufacturing Services",
+   "last_release": "2026-07-27 20:03:48+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/897723/000089772326000036/sanmina_exx991xjune272026.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Revenue and demand",
+      "last_report": "Q3 revenue $3.46B at high end; secured more orders in core Sanmina and ZT Systems; strong fiscal 2027 demand.",
+      "guidance": "Q4 revenue $3.3B-$3.6B; FY26 revenue $14.0B-$14.3B."
+     },
+     {
+      "id": "D2",
+      "name": "Non-GAAP operating margin",
+      "last_report": "Q3 non-GAAP operating margin 8.0%, exceeded outlook; GAAP operating margin 6.4%.",
+      "guidance": "Q4 non-GAAP operating margin 7.5%-8.0%; FY26 6.85%-7.25%."
+     },
+     {
+      "id": "D3",
+      "name": "Non-GAAP diluted EPS",
+      "last_report": "Q3 non-GAAP diluted EPS $3.31 exceeded outlook; GAAP diluted EPS $2.12.",
+      "guidance": "Q4 non-GAAP diluted EPS $3.05-$3.35; FY26 $11.90-$12.20."
+     },
+     {
+      "id": "D4",
+      "name": "ZT Systems integration and synergies",
+      "last_report": "Secured more ZT orders; expanded capabilities/capacity; vertical integration synergies progressing; Q3 acquisition/integration expense $21.1M.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Free cash flow and capex",
+      "last_report": "Q3 operating cash flow $124M; free cash flow $24M; capex $101M; ending cash $1.84B.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q4 FY26: revenue $3.3B-$3.6B; non-GAAP operating margin 7.5%-8.0%; non-GAAP diluted EPS $3.05-$3.35. FY26: revenue $14.0B-$14.3B; non-GAAP operating margin 6.85%-7.25%; non-GAAP diluted EPS $11.90-$12.20.",
+    "kill_conditions": [
+     "Q4 revenue reported below $3.3 billion or FY26 revenue outlook cut below $14.0 billion.",
+     "Q4 non-GAAP operating margin below 7.5% or non-GAAP EPS below $3.05.",
+     "ZT Systems integration/synergy delays or major cloud/AI customer order pushout reported."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 21,
+    "found": 19,
+    "share": 0.9047619047619048,
+    "missing": [
+     "101",
+     "21.1"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 165,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Sanmina schedules Q4/FY26 earnings call for Nov 9",
+        "date": "2026-10-19",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Plexus Q4 EPS and revenue beat estimates",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Flex Q2 earnings show AI infrastructure demand and rising margins",
+        "date": "2026-11-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Viavi Q1 earnings beat on data center and A&D strength",
+        "date": "2026-11-05",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Morph",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.9
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Plexus Q4 earnings and revenues surpass estimates",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "IPGP",
+    "FN",
+    "FLEX",
+    "TEL",
+    "TTMI"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "IPGP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Industrial and semiconductor/defense demand improving, a modest positive read for Sanmina's end markets."
+       },
+       {
+        "peer": "FN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record revenue +51% and strong guidance signal robust EMS/optical demand for Sanmina."
+       },
+       {
+        "peer": "FLEX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong EMS sales growth and AI/data-center demand indicate healthy industry conditions for Sanmina."
+       },
+       {
+        "peer": "TEL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad data/power/industrial demand and strong orders support Sanmina's end-market demand outlook."
+       },
+       {
+        "peer": "TTMI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record sales, book-to-bill 2.13, and AI data-center demand signal strong electronics demand for Sanmina."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "IPGP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Industrial and semiconductor demand improving; modest positive read-across to SANM demand."
+       },
+       {
+        "peer": "FN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record optical/EMS revenue and strong guidance signal robust data-center demand for SANM/ZT."
+       },
+       {
+        "peer": "FLEX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong EMS revenue growth and AI/data-center demand support SANM revenue outlook."
+       },
+       {
+        "peer": "TEL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong orders and AI/data-power connectivity demand point to healthy industrial/data-center demand."
+       },
+       {
+        "peer": "TTMI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record PCB sales and 2.13 book-to-bill indicate strong AI/data-center demand for SANM."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TTMI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record sales +60%, book-to-bill 2.13, AI data center demand strong; implies robust industry demand for Sanmina's Q4."
+       },
+       {
+        "peer": "TEL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad 12% sales growth, orders +29%, AI/data center momentum; supports Sanmina demand but less direct."
+       },
+       {
+        "peer": "FLEX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Direct EMS peer reports +25% sales, guides +28%, strong AI/cloud demand; positive for Sanmina revenue outlook."
+       },
+       {
+        "peer": "FN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record optical revenue +51%, strong AI data center demand; signals healthy end-market for Sanmina's ZT/data center business."
+       },
+       {
+        "peer": "IPGP",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Laser/industrial results not directly relevant to Sanmina's EMS, AI data center, or ZT drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.0124611797498106,
+   "score_peer": 4.898979485566357,
+   "score_combined": 4.4619509225329885,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 3.3313,
+   "revenue_estimate": 3547225440,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:36:26.629029+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "fa84188d3d71a34b0f8a35d269c990606ad8442c359ee652e14ee5551b66eeeb"
+  },
+  "SGI": {
+   "ticker": "SGI",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Home Furnishings",
+   "last_release": "2026-08-06 10:37:21+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1206264/000120626426000099/sgireports2q2026results.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Mattress Firm same-store sales and margins",
+      "last_report": "Net sales -2.8% on store closures; same-store sales up slightly; adjusted gross margin -240 bps to 33.3% on mix, financing, store investment, deleverage.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Tempur Sealy North America sales trend",
+      "last_report": "Reported net sales -5.7% to $601.8M on market conditions; wholesale -5.5%, direct -6.7% partly divestiture; adjusted gross margin +680 bps.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Commodity inflation versus pricing actions",
+      "last_report": "Commodity cost inflation before pricing actions pressured North America and International gross margins; price increases implemented subsequent to quarter end.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "International segment sales and margin",
+      "last_report": "Net sales +2.0% to $299.5M, constant-currency +1.3%; gross margin -80 bps, operating margin -120 bps on commodity inflation.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Leggett & Platt acquisition close",
+      "last_report": "Definitive agreement to acquire Leggett & Platt in all-stock transaction ~$2.5B; expected close by end Q3 2026 subject to approvals.",
+      "guidance": "Expected to close by end of Q3 2026, subject to shareholder and regulatory approvals."
+     }
+    ],
+    "guidance": "Full year 2026 adjusted EPS $2.85-$3.15, ~11% increase from 2025 at midpoint; no quarterly guidance. Leggett & Platt acquisition expected to close by end Q3 2026.",
+    "kill_conditions": [
+     "Mattress Firm same-store sales turn negative or adjusted gross margin declines further.",
+     "Tempur Sealy North America sales decline worsens or price increases fail to offset commodity inflation.",
+     "Company lowers full-year adjusted EPS guidance or Leggett & Platt acquisition is delayed/blocked."
+    ]
+   },
+   "card_provider": "Venice",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 17,
+    "found": 17,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 73,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Leggett & Platt shareholders approve merger with Somnigroup",
+        "date": "2026-08-20",
+        "driver": "D5",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "European Commission approves Somnigroup's acquisition of Leggett & Platt",
+        "date": "2026-08-26",
+        "driver": "D5",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Somnigroup completes Leggett & Platt acquisition",
+        "date": "2026-08-26",
+        "driver": "D5",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Somnigroup lifts synergy target to $75M after Leggett & Platt close",
+        "date": "2026-09-03",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Leggett & Platt closing Kentucky manufacturing plant",
+        "date": "2026-10-11",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Haverty Furniture Q3 earnings and revenue miss estimates",
+        "date": "2026-11-04",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Leggett & Platt shareholders approve merger",
+        "date": "2026-08-20",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "European Commission approves Leggett & Platt acquisition",
+        "date": "2026-08-26",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Leggett & Platt acquisition closed; synergy target raised to $75M",
+        "date": "2026-09-03",
+        "driver": "D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Leggett & Platt closing Kentucky plant",
+        "date": "2026-10-11",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Haverty Furniture Q3 miss signals weak home furnishings demand",
+        "date": "2026-11-04",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Leggett & Platt shareholders approve merger with Somnigroup",
+        "date": "2026-08-20",
+        "driver": "D5",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "European Commission approves Somnigroup's acquisition of Leggett & Platt",
+        "date": "2026-08-26",
+        "driver": "D5",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Somnigroup completes acquisition of Leggett & Platt",
+        "date": "2026-09-03",
+        "driver": "D5",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Somnigroup raises Leggett & Platt synergy target to $75M",
+        "date": "2026-09-03",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Leggett & Platt announces closing Kentucky manufacturing plant",
+        "date": "2026-10-11",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Haverty Furniture Q3 earnings and revenue miss estimates",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 0.5669467095138409,
+   "score_peer": null,
+   "score_combined": 0.5669467095138409,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 1.0613,
+   "revenue_estimate": 2449985381,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:35:47.465241+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "c59e12aae16143a39a776e98aeb9349f47dc5fc730d532e521e86f51d7dc8759"
+  },
+  "TTD": {
+   "ticker": "TTD",
+   "index": "SP500",
+   "sector": "Communication Services",
+   "sub_industry": "Advertising",
+   "last_release": "2026-08-06 20:09:47+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1671933/000167193326000085/ttd-20260806x8kexx991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Revenue growth",
+      "last_report": "Q2 revenue $715M, up 3% YoY, decelerating from 19% growth in prior-year quarter.",
+      "guidance": "Q3 revenue at least $650M."
+     },
+     {
+      "id": "D2",
+      "name": "Adjusted EBITDA margin",
+      "last_report": "Q2 Adjusted EBITDA $241M, 34% margin, down from 39% a year earlier.",
+      "guidance": "Q3 Adjusted EBITDA approximately $160M, implying roughly 25% margin on $650M revenue."
+     },
+     {
+      "id": "D3",
+      "name": "Platform operations costs",
+      "last_report": "Q2 platform operations expense $184M, up 22% YoY, growing faster than revenue.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "CTV and commerce media ramp",
+      "last_report": "Netflix, Samsung Ads, Booking.com, Uber and others added; customer retention over 95%.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Operating expense discipline",
+      "last_report": "Q2 sales/marketing +8%, tech/dev +5%, G&A down on lower stock comp.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Third quarter 2026: revenue at least $650 million; Adjusted EBITDA approximately $160 million. No GAAP net income outlook or reconciliation provided.",
+    "kill_conditions": [
+     "Q3 revenue reported below $650 million or Q4 guidance cut.",
+     "Q3 Adjusted EBITDA below ~$160 million or margin under ~25%.",
+     "Customer retention falls below 95% or a major advertiser/client loss is disclosed."
+    ]
+   },
+   "card_provider": "Fireworks",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 11,
+    "found": 10,
+    "share": 0.9090909090909091,
+    "missing": [
+     "184"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 380,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Skydance Pause Ads on HBO Max and discovery+ in Italy exclusively via TTD",
+        "date": "2026-10-21",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Digital Envoy NetAcuity data integrated for audience targeting beyond geography",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "15% workforce reduction and reorganization into smaller pods",
+        "date": "2026-10-20",
+        "driver": "D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Troubled AI platform rollout",
+        "date": "2026-11-03",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Skydance pause ads on HBO Max/discovery+ Italy sold exclusively via TTD",
+        "date": "2026-10-21",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Integrated Digital Envoy NetAcuity data for improved audience targeting",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Expanded co-founder Dave Pickles' leadership role",
+        "date": "2026-11-03",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "15% workforce reduction to cut operating costs",
+        "date": "2026-11-05",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Alibaba",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Launched Skydance Pause Ads on HBO Max and discovery+ in Italy exclusively",
+        "date": "2026-10-21",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Integrated Digital Envoy NetAcuity data for audience targeting beyond geography",
+        "date": "2026-10-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Expanded engagement with co-founder Dave Pickles to strengthen leadership",
+        "date": "2026-11-03",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Reorganized operations with 15% workforce reduction and smaller teams",
+        "date": "2026-11-05",
+        "driver": "D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CEO Jeff Green's 1.6M stock options repriced",
+        "date": "2026-10-26",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "APP",
+    "OMC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "APP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record ad platform growth signals strong digital ad demand, supporting TTD revenue growth."
+       },
+       {
+        "peer": "OMC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Solid agency organic growth indicates healthy ad spend, positive for TTD's revenue outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "APP",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "AppLovin's 55% growth suggests it is taking ad budgets/share from open internet DSPs like TTD."
+       },
+       {
+        "peer": "OMC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Omnicom's 7.2% organic growth signals healthy ad demand, supporting TTD's revenue."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "OMC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Omnicom's 7.2% organic growth signals healthy ad demand, supporting TTD's revenue despite its weak Q3 guidance."
+       },
+       {
+        "peer": "APP",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "AppLovin's 55% growth and 84% margin suggest it is taking digital ad share from TTD, worsening revenue deceleration."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.4596747752497685,
+   "score_peer": 0.0,
+   "score_combined": 2.4596747752497685,
+   "overall_votes": [
+    "below",
+    "above",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "amc",
+   "eps_estimate": 0.2562,
+   "revenue_estimate": 656795758,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:37:11.571683+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "e059192b08d47f0e493516c63864047d7aa2657bff154fdd8e6d72ed1f45e4f9"
+  },
+  "TTWO": {
+   "ticker": "TTWO",
+   "index": "SP500",
+   "sector": "Communication Services",
+   "sub_industry": "Interactive Home Entertainment",
+   "last_release": "2026-08-07 11:37:31+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/946581/000162828026054580/ttwo1q27earningsrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net Bookings and recurrent spending",
+      "last_report": "Q1 Net Bookings $1.39B, down 3% YoY, slightly above guidance; recurrent consumer spending 84% of bookings, down 1%.",
+      "guidance": "Q2 Net Bookings $1.62-$1.67B; FY $8.0-$8.2B."
+     },
+     {
+      "id": "D2",
+      "name": "NBA 2K27 launch",
+      "last_report": "NBA 2K was largest Net Bookings contributor; NBA 2K27 releases September 4, 2026.",
+      "guidance": "Q2 Net Bookings outlook $1.62-$1.67B; no separate NBA 2K27 guidance."
+     },
+     {
+      "id": "D3",
+      "name": "Mobile live services",
+      "last_report": "Toon Blast, Match Factory!, Empires & Puzzles, Words With Friends, Color Block Jam, Zynga Poker, Toy Blast among top contributors; recurrent bookings down 1%.",
+      "guidance": "Key assumption includes mobile player acquisition costs; no specific mobile outlook."
+     },
+     {
+      "id": "D4",
+      "name": "Operating expenses and profitability",
+      "last_report": "GAAP net loss $34.1M, $0.18/share; included $43.4M impairment; Non-GAAP EBITDA $167.0M.",
+      "guidance": "Q2 net loss $(157)-$(140)M, EPS $(0.84)-$(0.75), EBITDA $(20)-$4M; FY EPS $0.55-$0.75."
+     },
+     {
+      "id": "D5",
+      "name": "GTA VI launch timing",
+      "last_report": "GTA VI set for November 19, 2026; GTA series largest contributor; GTA Online summer update released July 14.",
+      "guidance": "FY Net Bookings $8.0-$8.2B reiterates with excitement around GTA VI launch; timely delivery assumed."
+     }
+    ],
+    "guidance": "Q2 FY2027: Net Bookings $1.62-$1.67B; net revenue $1.42-$1.47B; net loss $(157)-$(140)M; EPS $(0.84)-$(0.75); Non-GAAP EBITDA $(20)-$4M. FY2027: Net Bookings $8.0-$8.2B; net revenue $7.9-$8.1B; EPS $0.55-$0.75; EBITDA $993-$1,053M.",
+    "kill_conditions": [
+     "GTA VI delayed beyond November 19, 2026, or FY Net Bookings guidance cut below $8.0B.",
+     "Q2 Net Bookings miss $1.62B or NBA 2K27 launch underperforms expectations.",
+     "Mobile recurrent spending declines further or player acquisition costs rise materially."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 24,
+    "found": 19,
+    "share": 0.7916666666666666,
+    "missing": [
+     "1.47",
+     "1.62",
+     "1.67",
+     "7.9",
+     "8.1"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 254,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "NBA 2K27 launched September 4, 2026, as planned",
+        "date": "2026-09-04",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "GTA 6 leaker Cyberleek threatens to reveal game ending",
+        "date": "2026-10-15",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Roblox Q4 guidance cites GTA VI as modest headwind",
+        "date": "2026-10-30",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Piper Sandler teen survey: 70% of console owners intend to buy GTA VI",
+        "date": "2026-11-02",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "GTA VI preorder sales hit $751 million two weeks ahead of release",
+        "date": "2026-11-05",
+        "driver": "D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "GTA VI preorder sales hit $751M two weeks ahead of release",
+        "date": "2026-11-05",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Piper Sandler teen survey shows 70% of console owners intend to buy GTA VI",
+        "date": "2026-11-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "GTA VI preorder sales hit $751M two weeks ahead of release",
+        "date": "2026-11-05",
+        "driver": "D5",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Piper Sandler survey: 70% of latest console owners intend to buy GTA VI",
+        "date": "2026-11-02",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "PINS"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PINS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Pinterest is digital advertising/social, not video game demand or TTWO's bookings drivers; no clear read-through."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PINS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Pinterest’s ad and user metrics are unrelated to TTWO’s game bookings, NBA 2K, mobile live services, or GTA VI timing."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PINS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Pinterest is digital advertising, not video game demand; no direct read-through to TTWO bookings."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 3.7527767497325675,
+   "score_peer": 0.0,
+   "score_combined": 3.7527767497325675,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 0.9589,
+   "revenue_estimate": 1606767240,
+   "fiscal": "2027Q2",
+   "report_date": "2026-11-09",
+   "cutoff": "2026-11-06 22:00:00+00:00",
+   "decided_at": "2026-11-09T02:36:32.012885+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "f6e3045cf096d1537b2aa728987039d2257b08abfe7072ee6fa1e8049ccc3948"
+  }
+ },
+ "report_date": "2026-11-09",
+ "cutoff": "2026-11-06 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "a5a7f8c3ce2fa5849734f56dddf86d8721a3b3409b2eb1c758443e698a976fc5",
+ "runs": [
+  {
+   "at": "2026-11-09T02:38:33.907900+00:00",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "quality": {
+    "counts": {
+     "ok": 15,
+     "card_ungrounded": 1,
+     "already_reported": 1
+    },
+    "attempted": 16,
+    "bad": 1,
+    "bad_share": 0.062,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
