@@ -165,3 +165,34 @@ measured there.
 **Out-of-sample read:** finalists E1 (H = 5, H = 15), P-E1 (Holm across these three), E2 (own p) and E4 FOMC at
 the sector level (Bonferroni over the six E4 tests, ratio ≥ 1.25 required). CPI and the employment report do not go
 forward: macro data releases are dropped from the design.
+
+### Amendment 2 (2026-11-10, before any statistic of AP1 or AP2): the earnings-announcement premium
+
+**Why.** Owner's brief (2026-11-10): find ways to raise the Sharpe ratio and beat the S&P. The literature reports
+that firms scheduled to report earn an abnormal return (Frazzini and Lamont 2007; Barber et al. 2013; Savor and
+Wilson 2016: 9.9% a year), and a later paper argues it has disappeared [all search summaries]. The repo has not
+tested it. It also bears on Protocol 11: the size scalar shrinks positions before a report, which forgoes a premium on
+longs if one exists.
+
+**Disclosure.** §§5–6 read 2020–2025 for variance statistics only (squares, and stop rates over both sides). No mean
+return of announcers was computed. This family has its own lock, `OOS2_READ.lock`.
+
+**Definitions** (data, universe, hedged return e and eligibility as in §§3–4 and Amendment 1).
+* Origins: every Thursday session t. x_i = Σ_{k=1..5} e_{i,t+k}.
+* Announcers A_t: names with an earnings session in t+1..t+5. Others N_t. A week counts only if |A_t| ≥ 10.
+* **AP1:** d_t = mean_{A_t} x − mean_{N_t} x. A book long announcers and short the others, equal weights, each leg
+  hedged to zero beta. Predicted sign: positive.
+* **AP2:** a_t = mean_{A_t} x. Announcers against SPY only. Predicted sign: positive.
+* Statistic: mean and Newey–West t (2 lags) of the weekly series; reported as % a year (52 × mean) and annualised
+  Sharpe. Costs: 2 bp a side on the turnover of the equal weights of each leg, week to week, reported net as well;
+  weeks that do not count hold nothing.
+
+**Periods and gates.** As §6: development Thursdays with windows ending ≤ 2019-12-31, gate t ≥ 1.5 with the predicted
+sign; one out-of-sample read 2020-01-02 .. 2025-12-31, one-sided p, Holm across {AP1, AP2}.
+
+**Consequences, fixed now.**
+* AP1 passes net of costs: propose a forward paper book (research only), and add it to the list of validated
+  overlays. Fails: no book.
+* AP2 passes: the Protocol 11 text must state the scalar's cost on long positions, μ_A × (1 − s) per position-week,
+  and the owner decides whether the scalar applies to longs. Fails: the scalar is symmetric, as planned.
+* Failure control: the placebo calendar (+21 sessions) must give t < 2 for both.
