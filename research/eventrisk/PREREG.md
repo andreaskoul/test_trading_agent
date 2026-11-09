@@ -126,3 +126,42 @@ against the 500 expected.
 
 No return or alpha claim. No claim about option-implied announcement variance (history from 2024-02 only). No claim
 about prediction-market probabilities: no test in this file uses them.
+
+### Amendment 1 (2026-11-09, after the development results, before the out-of-sample read)
+
+**Coverage defect found in development, and its fix.** The first development run used the intraday panel named in
+§3. A daily return there is missing when any 30-minute bar is missing (8–9% of name-days in 2016–2019), so only
+266 names a day at H = 5 and 230 at H = 15 had a complete window, against about 500 expected (CLAUDE.md rule 3).
+That run is kept as `DEV_RESULT_intraday_panel.json`.
+
+**Change, data only:** daily returns now come from the P8 Alpaca closes, adjusted for splits and dividends
+(`research/p8/prices.py: panel`), with point-in-time S&P 500 membership (`members`). A name is used at origin t only
+if it is a member at t. This also removes most of the survivorship bias. No definition, test, statistic or gate in
+§§4–7 changes. Disclosed: the change was made after the first development numbers were seen; every test had the same
+sign and passed its gate on both panels.
+
+**Development results on the amended data** (`DEV_RESULT.json`, targets ending ≤ 2019-12-31):
+
+| Test | Result | t | Gate (t ≥ 1.5) |
+|---|---|---:|---|
+| E1, H = 5 | QLIKE gain 0.189 | 8.10 | finalist |
+| E1, H = 15 | QLIKE gain 0.126 | 7.48 | finalist |
+| E2, H = 15 | QLIKE gain 0.036 on event windows | 3.72 | finalist |
+| P-E1 | position variance ratio 0.860 at equal gross | 6.95 | finalist |
+| E4 FOMC, sector level | variance ratio 1.20 | 1.74 | finalist |
+| E4 FOMC, name level | 1.02 | 0.23 | no |
+| E4 CPI, name / sector | 0.83 / 0.75 | −3.15 / −3.42 | no (wrong sign) |
+| E4 employment report, name / sector | 0.79 / 0.71 | −4.66 / −4.22 | no (wrong sign) |
+
+**Failure control (placebo calendar, +21 sessions):** the event term's gain is −0.006 (t −0.73) at H = 5 and −0.002
+(t −0.77) at H = 15, against +3.32 (t 13.3) and +0.76 (t 12.2) with the real calendar. The control fails as it
+should, so the results are read.
+
+**Remaining coverage limit, disclosed:** 353 of 504 members a day are used. About 130 members a day have no complete
+earnings calendar in `.cache/p8/events.parquet` (about 100 members have no events in it at all, e.g. BLK, V, HSY).
+They are excluded, not guessed. The live fund reads Finnhub's calendar, so its coverage will differ and must be
+measured there.
+
+**Out-of-sample read:** finalists E1 (H = 5, H = 15), P-E1 (Holm across these three), E2 (own p) and E4 FOMC at
+the sector level (Bonferroni over the six E4 tests, ratio ≥ 1.25 required). CPI and the employment report do not go
+forward: macro data releases are dropped from the design.
