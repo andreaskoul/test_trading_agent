@@ -167,5 +167,5 @@ One component is built, one source is added to a job that already runs, and thre
 * 2020–2025 had been read before for other hypotheses.
 * The development run first used a panel with a coverage defect; Amendment 1 records the change.
 * Literature claims rest on search summaries, not on the papers.
-* The placebo run shows a statistically visible but negligible P-E1 effect (variance ratio 0.9997), because the
-  placebo multiple is not exactly 1.
+* The placebo run shows a statistically visible but negligible P-E1 effect (variance ratio 0.9993 out of sample, t 2.4), because
+  the placebo multiple is not exactly 1.
