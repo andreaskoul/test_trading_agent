@@ -177,3 +177,38 @@ this is at least the sixth exposure hypothesis read on this century in this proj
 
 **Consequences.** A pass: a candidate for the owner, which could only be confirmed on forward data. Both fail: neural
 exposure rules are closed on the US century.
+
+### Amendment 3 (2026-11-10, before any code or statistic of C1–C6): placing the long/short positions and limiting falls
+
+**Why.** Owner (2026-11-10): research more advanced algorithms and econometrics to reduce drawdown and to place
+long/short positions better. The only validated stock-level signal is the MASTER 5-day score
+(`research/quant_trials`). Its plain decile book lost money in 2013–19 at 5 bp and loads on momentum.
+
+**Status of the evidence, stated before running.** These predictions were scored and seen in October. Everything
+below is therefore development on a seen sample, not a confirmation; that project's rule (the traded variant is
+chosen on forward weeks only) is unchanged. A construction that passes here earns a forward paper book, nothing more.
+
+**Literature** (search summaries or memory): sector- and characteristic-neutral ranking (standard practice; momentum
+crashes, Daniel and Moskowitz 2016); shrinkage covariance for optimised weights (Ledoit and Wolf 2004); volatility
+targeting (Moreira and Muir 2017); optimal investment under a drawdown constraint (Grossman and Zhou 1993).
+
+**Common frame** (the simulator of `strategies.py`): Thursday decisions, 2013–2025, book gross 1.0 (0.5 a side),
+beta-hedged with SPY, on top of the 1.3×/0.7× 200-session core, 5 bp a side on all turnover, margin at the bill
++ 2.43%. **Baseline S0:** top and bottom deciles of the score, equal weights.
+
+| | Construction | Definition, fixed now |
+|---|---|---|
+| C1 | sector-neutral deciles | top and bottom 10% within each GICS sector (sectors with fewer than 10 eligible names, or none known, pooled) |
+| C2 | characteristic-neutral score | each week, the residual of the z-scored score on the panel's five z-scored price characteristics, beta and sector dummies; then deciles |
+| C3 | covariance-optimised weights | w ∝ Σ⁻¹z, Σ the Ledoit–Wolf covariance of the last 252 daily returns of eligible names with at least 200 of them; positive weights scaled to 0.5, negative to −0.5 |
+| C4 | panic switch on the book | S0, but no book in a week when SPY's 252-session return is negative and its 21-session volatility is above its median of the last 780 sessions |
+| C5 | volatility-targeted book | S0 scaled by min(1.5, 10% ÷ the unscaled book's volatility over its last 13 weeks) |
+| C6 | drawdown control on the whole fund | core and book both multiplied by clip(1 − D ÷ 0.25, 0, 1), D the fall of the controlled fund from its 52-week high at the previous decision |
+
+**Tests (one run).** For each of C1–C6: the Sharpe ratio of the whole fund (core + book) minus S0's; stationary
+bootstrap of paired weekly returns (mean block 4 weeks, 5,000 draws, seed 20261110), one-sided; Holm across the six at
+α = 0.05. **Reported for each:** % a year, volatility, worst fall, return ÷ worst fall, the book's own Sharpe,
+turnover, 2013–19 and 2020–25 separately, and the same at 1 bp.
+
+**Consequences.** A construction that passes: propose one forward paper book with it (research only). None passes:
+the plain deciles stay. A combination of several constructions may be reported, labelled exploratory.
