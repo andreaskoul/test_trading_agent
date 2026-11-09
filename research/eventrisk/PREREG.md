@@ -196,3 +196,15 @@ sign; one out-of-sample read 2020-01-02 .. 2025-12-31, one-sided p, Holm across 
 * AP2 passes: the Protocol 11 text must state the scalar's cost on long positions, μ_A × (1 − s) per position-week,
   and the owner decides whether the scalar applies to longs. Fails: the scalar is symmetric, as planned.
 * Failure control: the placebo calendar (+21 sessions) must give t < 2 for both.
+
+**Amendment 2, development result (2026-11-10, `DEV2_RESULT.json`, Thursdays with windows ending ≤ 2019-12-31).**
+151 weeks, 75 counted (about 50 announcers each).
+
+| Test | % a year, gross | t | % a year, net of 2 bp a side | Gate |
+|---|---:|---:|---:|---|
+| AP1 announcers minus others | −5.0 | −0.89 | −6.4 | fails: wrong sign |
+| AP2 announcers against SPY | −5.8 | −1.00 | −6.8 | fails: wrong sign |
+
+Placebo calendar: t 1.03 and 0.91 (below 2, as required). **Neither test goes forward; the 2020–2025 read for this
+family was not made (`OOS2_READ.lock` does not exist).** Consequences as registered: no announcer book; the Protocol 11
+size scalar stays symmetric.
