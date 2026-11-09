@@ -212,3 +212,30 @@ turnover, 2013–19 and 2020–25 separately, and the same at 1 bp.
 
 **Consequences.** A construction that passes: propose one forward paper book with it (research only). None passes:
 the plain deciles stay. A combination of several constructions may be reported, labelled exploratory.
+
+### Result of Amendment 3 (2026-11-10, `RESULT_CONSTRUCT.json`, one run, 2013–2025, book gross 1.0)
+
+At 5 bp a side. S&P buy and hold: 14.6% a year.
+
+| | % a year | Sharpe | Worst fall | Book's own Sharpe | Sharpe minus plain deciles | p | Holm |
+|---|---:|---:|---:|---:|---:|---:|---|
+| S0 plain deciles | 18.8 | 0.91 | −30.5% | 0.38 | | | |
+| C1 sector-neutral | 17.7 | 0.90 | −29.8% | 0.33 | −0.01 | n.s. | fails |
+| C2 characteristic-neutral | 12.9 | 0.72 | −30.9% | −0.72 | −0.19 | 0.95 | fails |
+| C3 covariance-optimised | 14.3 | 0.81 | −29.0% | −0.64 | −0.10 | 0.84 | fails |
+| C4 panic switch | 17.0 | 0.86 | −30.2% | 0.25 | −0.05 | 0.89 | fails |
+| C5 volatility-targeted | 18.8 | 0.90 | −30.6% | 0.36 | −0.01 | 0.62 | fails |
+| C6 drawdown control | 12.3 | 0.80 | −20.5% | 0.21 | −0.11 | 0.92 | fails |
+
+At 1 bp the order is the same (S0 Sharpe 1.04; C5 1.06; C1 1.04; C6 0.95 with a worst fall of −20.4%).
+
+**Consequence as registered: the plain deciles stay; no construction earns a forward book.**
+
+**What the run shows (descriptive):**
+* **The score's edge is mostly a tilt to known price characteristics.** With momentum, reversal, volatility, beta and
+  sector removed from the score (C2), the book's own Sharpe falls from 0.38 to −0.72 at 5 bp, and from 0.66 to 0.13 at
+  1 bp.
+* **The fund's worst fall is the core's, not the book's.** No change to the book moved it by more than 1.5 points.
+  Only scaling the whole fund down in a fall (C6) reduced it, from −30.5% to −20.5%, at a cost of 6.5 points of return
+  a year; return per unit of worst fall did not improve (0.60 against 0.62).
+* Optimised weights (C3) did worse than equal weights, as estimation error in a 450-name covariance usually implies.
