@@ -119,3 +119,27 @@ Same bootstrap (seed 20261110), one-sided, Holm across the two. Lock: `READ_US.l
 
 **Consequences.** Both pass: recorded as a candidate for the owner, with the note that it lives outside the
 [0.7, 1.3] policy band. Either fails: fast adaptation is closed, on both samples.
+
+### Result of Amendment 1 (2026-11-10, `RESULT_US.json`, United States 1929 .. 2026-09, wide band, read once)
+
+| | Sharpe | % a year | Worst fall | Turnover a year |
+|---|---:|---:|---:|---:|
+| FS* (fast adaptive mix) | 0.729 | 14.6 | −49.6% | 23.6 |
+| TSM (multi-horizon trend) | 0.728 | 13.2 | −41.5% | 14.6 |
+| T200 (incumbent rule, wide band) | 0.653 | 13.5 | −47.8% | 8.3 |
+| ENS | 0.634 | 12.3 | −53.0% | 8.0 |
+| Buy and hold | 0.428 | 9.3 | −84.1% | 0.0 |
+
+* H4a FS* − ENS: +0.096, p 0.012, passes Holm. H4b FS* − T200: +0.076, p 0.094, **fails**.
+* By period, FS* against T200: 0.94 / 0.74 (1929–62), 0.90 / 0.75 (1963–99), **0.29 / 0.42 (2000–2026)**.
+
+**Consequence as registered: fast adaptation is closed on both samples.** It did not beat the incumbent rule, it only
+matched the plain multi-horizon trend rule with more trading, and it was the worst of the five since 2000.
+
+### What this study leaves standing (descriptive, not tested)
+
+* The 200-session rule beat buy and hold in two of three regions and on average (0.379 against 0.309, policy band),
+  which agrees with the century result. It lagged in Japan.
+* Volatility targeting and the panic switch lowered the Sharpe ratio outside the US.
+* In the wide band the trend rules' Sharpe ratios and worst falls were better than in the policy band in Europe, Asia
+  Pacific and the US, and worse in Japan. This was not a registered test. The band is the owner's policy.
