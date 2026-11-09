@@ -143,3 +143,37 @@ matched the plain multi-horizon trend rule with more trading, and it was the wor
 * Volatility targeting and the panic switch lowered the Sharpe ratio outside the US.
 * In the wide band the trend rules' Sharpe ratios and worst falls were better than in the policy band in Europe, Asia
   Pacific and the US, and worse in Japan. This was not a registered test. The band is the owner's policy.
+
+### Amendment 2 (2026-11-10, before any code or statistic of H5–H6): neural exposure rules, walk-forward on the US century
+
+**Why.** Owner (2026-11-10): keep searching for a strategy that beats S&P buy and hold; neural and deep networks are
+welcome. Deep models were already tested here for stock selection (`research/quant_trials`: one of twelve passed).
+They have not been tested for the core's exposure. The three regions are closed to further exposure rules by §6, so
+the only sample is the US century, used walk-forward: every prediction comes from a model fitted on earlier data only.
+
+**Literature** (search summaries or memory): networks trained directly on the Sharpe ratio of the resulting position
+(Lim, Zohren, Roberts 2019, "deep momentum networks"; Zhang, Zohren, Roberts 2020).
+
+**Models.** Output w = lo + (hi − lo)·sigmoid(f(x)), decided at the previous close.
+* **MLP:** inputs at the close: the market's return over 1, 5, 21, 63, 126 and 252 sessions, each divided by
+  σ63·√L; idx ÷ its 50- and 200-session averages − 1, divided by σ63·√50 and σ63·√200; log σ21; log(σ21 ÷ σ252);
+  the fall from the 252-session high. Two hidden layers of 16 units, tanh.
+* **CNN:** input: the last 126 daily returns divided by σ63 (as known the day before each), clipped to ±5.
+  Conv(1→8, k 5), ReLU, Conv(8→8, k 5, stride 2), ReLU, average-pool to 4, linear 32→16, ReLU, linear 16→1.
+* **Training, fixed now:** loss = −Sharpe of the net excess return w·(r − rf) − 1%·max(w − 1, 0)/252 − 2 bp·|Δw| on
+  the training days in order (full batch); Adam, learning rate 0.001, weight decay 0.0001; at most 500 steps;
+  validation = the last 20% of the fitting window, checked every 10 steps, stop after 5 checks without improvement,
+  keep the best. Five seeds (0–4); the rule is the mean of the five weights.
+* **Walk-forward:** refit at the start of 1950 and every five years after, on all earlier data; each fit predicts the
+  next five years. Out-of-sample span: 1950-01 .. 2026-09.
+
+**Tests (once; `READ_NN.lock`), policy band [0.7, 1.3]:**
+* **H5:** the MLP rule has a higher Sharpe ratio than the incumbent T200 over the out-of-sample span.
+* **H6:** the CNN rule has a higher Sharpe ratio than T200.
+Stationary bootstrap as §5 (seed 20261110), one-sided. **Holm across the two at family α = 0.01**, not 0.05, because
+this is at least the sixth exposure hypothesis read on this century in this project.
+
+**Reported:** each rule against buy and hold; the wide band; 1950–1999 and 2000–2026; turnover; 10 bp costs.
+
+**Consequences.** A pass: a candidate for the owner, which could only be confirmed on forward data. Both fail: neural
+exposure rules are closed on the US century.
