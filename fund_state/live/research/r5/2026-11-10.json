@@ -1,0 +1,406 @@
+{
+ "records": {
+  "TDG": {
+   "ticker": "TDG",
+   "index": "SP500",
+   "sector": "Industrials",
+   "sub_industry": "Aerospace & Defense",
+   "last_release": "2026-08-04 11:17:39+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1260221/000126022126000052/exhibit991tdg2026q3earning.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Commercial aftermarket growth",
+      "last_report": "Q3 commercial aftermarket revenue grew 17%; management said growth remained strong.",
+      "guidance": "FY2026 commercial aftermarket revenue growth in low double-digit percentage range."
+     },
+     {
+      "id": "D2",
+      "name": "Commercial OEM growth",
+      "last_report": "Q3 commercial OEM grew nicely as aircraft OEMs continue to increase build rates.",
+      "guidance": "FY2026 commercial OEM revenue growth in mid-teens percentage range."
+     },
+     {
+      "id": "D3",
+      "name": "Defense revenue and backlog",
+      "last_report": "Q3 Defense had another quarter of consistent growth and built sizable backlog.",
+      "guidance": "FY2026 defense revenue growth high single-digit to low double-digit percentage range."
+     },
+     {
+      "id": "D4",
+      "name": "EBITDA As Defined margin",
+      "last_report": "Q3 EBITDA As Defined margin 52.8% vs 54.4%; base margins expanded excluding acquisition dilution.",
+      "guidance": "FY2026 EBITDA As Defined $5,490-$5,550M, margin guide approximately 52.5%."
+     },
+     {
+      "id": "D5",
+      "name": "Acquisition and capital deployment",
+      "last_report": "Q3 repurchased $1.0B; completed JPE/Victor Sierra; post-quarter P&I deal ~$1.07B; higher interest expense.",
+      "guidance": "FY2026 guidance excludes P&I contribution; no separate Q4 guidance."
+     }
+    ],
+    "guidance": "FY2026: net sales $10,470-$10,550M; net income $2,102-$2,150M; EPS $35.38-$36.21; EBITDA As Defined $5,490-$5,550M (~52.5% margin); adjusted EPS $40.62-$41.46. Excludes pending P&I acquisition. Market growth: commercial OEM mid-teens, commercial aftermarket low double-digit, defense high-single to low-double-digit.",
+    "kill_conditions": [
+     "Commercial aftermarket growth reported below low double digits or decelerating from Q3's 17%.",
+     "Commercial OEM growth below mid-teens or defense growth below high single digits.",
+     "FY2026 EBITDA As Defined margin guided below ~52.5% or guidance cut on acquisition dilution/interest costs."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 16,
+    "found": 16,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 122,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Trump says defense factories running 24/7, building new plants",
+        "date": "2026-09-14",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Prince & Izant acquisition announced, expanding aerospace materials portfolio",
+        "date": "2026-08-07",
+        "driver": "D5",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": false
+       },
+       {
+        "what": "Trump post claims US weapons production at record high, defense factories 24/7",
+        "date": "2026-09-14",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Junk bond yields surpass 15%, highest since 2022, raising debt costs",
+        "date": "2026-09-25",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Pentagon and SBA sign agreement to expand capital access for small defense suppliers",
+        "date": "2026-10-12",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "TransDigm announced $1.07B acquisition of Prince & Izant",
+        "date": "2026-08-07",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": false
+       },
+       {
+        "what": "Trump said US producing more weapons, defense factories moving 24/7",
+        "date": "2026-09-14",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Junk bond yields above 15%, highest since 2022, pressure on debt",
+        "date": "2026-09-25",
+        "driver": "D5",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Pentagon and SBA signed agreement to expand capital for small defense businesses",
+        "date": "2026-10-12",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "SARO",
+    "AXON",
+    "KTOS",
+    "CW",
+    "BWXT"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SARO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Healthy aftermarket/services demand and raised guidance support D1; commercial aerospace growth was only modest."
+       },
+       {
+        "peer": "AXON",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Public safety/drone business unrelated to TransDigm's aerospace component drivers."
+       },
+       {
+        "peer": "KTOS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong defense revenue growth, bookings and raised guidance signal robust defense demand and backlog."
+       },
+       {
+        "peer": "CW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Commercial aerospace OEM growth, strong A&D orders and raised guidance support higher build-rate demand."
+       },
+       {
+        "peer": "BWXT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Nuclear-specific government/commercial results have little read-across to TransDigm's aerospace aftermarket, OEM or defense components."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Alibaba",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SARO",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D1",
+        "why": "Mixed: aftermarket services resilient, but commercial aerospace growth only 1.3%, below TDG's low-double-digit guide."
+       },
+       {
+        "peer": "AXON",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Public safety/drone company; no read on TDG's aerospace aftermarket, OEM, defense, or margins."
+       },
+       {
+        "peer": "KTOS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong defense revenue growth, bookings, and raised guidance support TDG's defense revenue and backlog driver."
+       },
+       {
+        "peer": "CW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Commercial aerospace OEM growth and strong defense demand, with raised guidance, support TDG's commercial OEM outlook."
+       },
+       {
+        "peer": "BWXT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Nuclear defense/energy company; no read on TDG's aerospace aftermarket, OEM, or defense components."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BWXT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Nuclear defense and commercial power demand not a read on TDG aerospace components."
+       },
+       {
+        "peer": "CW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Broad A&D strength, commercial aerospace OEM growth and defense demand support TDG's OEM and defense outlook."
+       },
+       {
+        "peer": "KTOS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong defense revenue growth, bookings and raised guidance signal robust defense demand, supporting TDG's defense backlog."
+       },
+       {
+        "peer": "AXON",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Public safety and drone demand unrelated to TDG's aerospace components and aftermarket drivers."
+       },
+       {
+        "peer": "SARO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Commercial aerospace end market grew only 1.3%, suggesting softer aftermarket demand than TDG's low-double-digit guide."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -0.25,
+   "score_peer": 2.0,
+   "score_combined": 0.75,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 12.3286,
+   "revenue_estimate": 2976769495,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-10",
+   "cutoff": "2026-11-09 22:00:00+00:00",
+   "decided_at": "2026-11-10T02:33:27.877403+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "sha256": "f951a5f13831686eb6f955046e97510b00009e15a4c32410ced3705fbbecfe1d"
+  }
+ },
+ "report_date": "2026-11-10",
+ "cutoff": "2026-11-09 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "121279310e5a50a55b27c4c673227be2ec027fe9be20509534d585b844cde7eb",
+ "runs": [
+  {
+   "at": "2026-11-10T02:33:27.890197+00:00",
+   "version": "r5-v2",
+   "code": "8c8c1ed5bde9e09d7ea07f92b9dbc9201d327b70",
+   "quality": {
+    "counts": {
+     "ok": 1
+    },
+    "attempted": 1,
+    "bad": 0,
+    "bad_share": 0.0,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
