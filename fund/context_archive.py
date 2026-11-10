@@ -14,6 +14,8 @@ its own fetched_at; nothing is overwritten. A desk reads only rows with fetched_
 Sources (each independent; a failure is logged and the others run):
   fred     release calendar, 14 days back and 21 ahead          FRED_API_KEY (skipped without it)
   kalshi   open markets of a fixed list of US macro series        public, no key
+  polymarket  events with at least $1M of volume, open or resolved   public, no key (fund/polymarket.py holds
+           in the last 14 days, outside sport/entertainment tags      the selection and the content contract)
   gpr      Caldara-Iacoviello AI-GPR files (daily + splits)       public CSV
   gdelt    daily volume and tone for a fixed theme list, 14 days  public, 1 request / 5 s
   finnhub  general market news                                    FINNHUB_API_KEY
@@ -128,6 +130,32 @@ def kalshi():
             time.sleep(0.2)
             if not cur or not d.get("markets"):
                 break
+
+
+def polymarket():
+    import polymarket as PM
+    base, events, seen = "https://gamma-api.polymarket.com/events?", [], set()
+    lo = (now - timedelta(days=14)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    for q, pages in (({"closed": "false"}, 10), ({"closed": "true", "end_date_min": lo}, 1)):   # resolved: the outcome row
+        for k in range(pages):
+            d = get(base + urllib.parse.urlencode({**q, "order": "volume", "ascending": "false", "limit": 100, "offset": 100 * k}),
+                    headers={"User-Agent": "fund-context-archive"})
+            if not isinstance(d, list):
+                raise RuntimeError(f"polymarket: expected a list of events, got {type(d).__name__}")
+            events += [e for e in d if e.get("id") not in seen and not seen.add(e.get("id"))]
+            vols = [PM._num(e.get("volume")) or 0.0 for e in d]
+            time.sleep(0.5)
+            if len(d) < 100 or min(vols) < PM.MIN_VOLUME:      # sorted by volume: the rest is below the floor
+                break
+    got, defects, unlisted = PM.market_rows(events)
+    PM.check(got, defects)
+    for key, published, payload in got:
+        add("polymarket", key, published, payload)
+    print(f"context polymarket: {len(events)} events read, {len(got)} markets stored, {unlisted} unlisted placeholders skipped", flush=True)
+    if defects:
+        print(f"context polymarket: {len(defects)} input defects not stored, e.g. {defects[:3]}", flush=True)
+    if not got:
+        raise RuntimeError("polymarket: no market passed the contract (expected hundreds)")
 
 
 def gpr():
@@ -317,7 +345,7 @@ def options():
 
 
 ONLY = [x for x in os.environ.get("CONTEXT_SOURCES", "").split(",") if x]     # e.g. "kalshi,gpr" for a test
-for name, fn in (("fred", fred), ("kalshi", kalshi), ("gpr", gpr), ("gdelt", gdelt), ("finnhub", finnhub),
+for name, fn in (("fred", fred), ("kalshi", kalshi), ("polymarket", polymarket), ("gpr", gpr), ("gdelt", gdelt), ("finnhub", finnhub),
                  ("edgar", edgar), ("options", options)):
     if not ONLY or name in ONLY:
         run(name, fn)

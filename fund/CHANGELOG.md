@@ -4,6 +4,11 @@ Operational changes during the protocol window that cannot change a decision
 (crashes, retries, logging) are recorded here. Anything that could change a
 decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
 
+- 2026-11-10: the context archive gains a **Polymarket source** (`fund/context_archive.py: polymarket`, selection and content contract in `fund/polymarket.py`): markets of events with at least $1M of volume, open or resolved in the last 14 days, outside sport, entertainment and short-horizon crypto-price tags (public API, no key).
+  * Selection is by the declared `volume` and tag slugs, never by title. A market without parsable prices in [0, 1] summing to 1 is an input defect, counted and not stored; more than 20% defects fails the source. Unlisted placeholder slots (`active` false, no prices, no volume) are skipped and counted.
+  * Checks: `fund/tests/test_polymarket.py` (5, on a real saved response) and the suite pass. Live local-only run on 2026-11-10: 400 events read, 2,822 markets stored, 745 placeholders skipped, 0 defects; a sample of rows was read against the site's fields.
+  * Why: the prediction-market exposure test of `research/eventrisk/PLAN.md` (Decision 6) needs resolved events with price history, which cannot be back-filled.
+  * Could this change a decision? **No.** The context archive is a shadow input that no desk reads; the step is `allow_fail` in the runner.
 - 2026-11-08: **Protocol 10** (PROTOCOL_fund.md), from session 2026-11-16 with Protocol 9: the SPY hedge of the lifecycle books (live and control) uses the intraday-calibrated beta B1 from the weekly screen (`fund/screen.py: beta_b1`, `fund/lifecycle_rules.py: hedge_beta`, `P10`).
   * Stops, targets, CAR, entry volatility and sizing keep the lot beta.
   * A non-blocking weekly runner step opens an issue when B1 is not ok; names without B1 fall back to the lot beta.
