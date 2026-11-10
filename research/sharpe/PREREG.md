@@ -239,3 +239,27 @@ At 1 bp the order is the same (S0 Sharpe 1.04; C5 1.06; C1 1.04; C6 0.95 with a 
   Only scaling the whole fund down in a fall (C6) reduced it, from −30.5% to −20.5%, at a cost of 6.5 points of return
   a year; return per unit of worst fall did not improve (0.60 against 0.62).
 * Optimised weights (C3) did worse than equal weights, as estimation error in a 450-name covariance usually implies.
+
+### Result of Amendment 2 (2026-11-10, `RESULT_NN.json`, US, walk-forward 1950-01 .. 2026-09, read once)
+
+| Policy band [0.7, 1.3] | % a year | Sharpe | Worst fall | Turnover a year | Sharpe 1950–99 | Sharpe 2000–26 |
+|---|---:|---:|---:|---:|---:|---:|
+| MLP rule | 15.8 | 0.819 | −62.4% | 33.4 | 1.25 | **0.33** |
+| CNN rule | 11.3 | 0.550 | −52.1% | 3.2 | 0.67 | 0.41 |
+| T200 (incumbent) | 13.6 | 0.649 | −49.2% | 3.4 | 0.80 | 0.46 |
+| Buy and hold | 11.6 | 0.539 | −54.6% | 0 | 0.66 | 0.42 |
+
+* **H5 (MLP − T200): +0.170, p < 0.001, passes Holm at α = 0.01.** H6 (CNN − T200): −0.099, fails.
+* Wide band [0, 1.5]: MLP 1.18 against T200 0.71; by period 2.46 / 0.91 (1950–99) and 0.54 / 0.42 (2000–26).
+
+**The pass is registered, and it should not be taken at face value.** Three facts from the reported splits:
+* All of the MLP's advantage is before 2000. Since 2000, in the band the fund uses, it is the worst of the four
+  (0.33 against 0.46 for the incumbent and 0.42 for buy and hold), with a deeper worst fall over the whole span.
+* It trades its exposure about 33 times a year, ten times the incumbent, and its weights are almost unrelated to the
+  trend rule's (correlation 0.17). A Sharpe of 2.46 in the wide band in 1950–99 is not a plausible timing skill.
+* My reading (not tested): the network learned the day-to-day autocorrelation of the CRSP value-weighted index, which
+  before index futures and ETFs partly reflected stale prices of thinly traded stocks. That pattern could not be
+  traded then and is absent now.
+
+**Consequence as registered:** a candidate for the owner that only forward data can confirm. **Recommendation:** do
+not adopt; the post-2000 record does not support it.
