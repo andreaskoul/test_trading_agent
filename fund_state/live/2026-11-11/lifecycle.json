@@ -1,0 +1,6111 @@
+{
+ "asof": "2026-11-11",
+ "status": "ok",
+ "entry_day": "2026-11-12",
+ "names": {
+  "AAPL": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.026,
+   "out": {
+    "event_type": "earnings",
+    "driving_event": "Apple Q4 earnings beat with memory-cost holiday margin warning",
+    "first_reported": "2026-11-11",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Apple raises holiday gross margin guidance or downplays memory cost impact",
+     "Apple services revenue growth reaccelerates above prior trend",
+     "Memory chip prices fall sharply or supply constraints ease"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": null,
+    "structural": false
+   },
+   "provider": "Alibaba",
+   "samples": [
+    {
+     "event_type": "guidance",
+     "driving_event": "Apple Q4 beat paired with warning that rising memory costs will squeeze holiday gross margins.",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Apple raises holiday-quarter gross-margin guidance, stating memory-cost inflation is fully mitigated",
+      "Apple reports services revenue growth accelerating, reversing the deceleration",
+      "Apple announces locked-in low-cost memory supply covering FY27"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Apple Q4 earnings beat with memory-cost holiday margin warning",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Apple raises holiday gross margin guidance or downplays memory cost impact",
+      "Apple services revenue growth reaccelerates above prior trend",
+      "Memory chip prices fall sharply or supply constraints ease"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q4 earnings beat with warning that rising memory costs will squeeze holiday gross margins",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Apple raises holiday gross-margin guidance, citing easing memory costs",
+      "Apple reports services revenue growth reaccelerating from the prior quarter",
+      "Apple announces new memory supply agreements that materially lower input costs"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": "earnings",
+     "structural": false
+    },
+    {
+     "event_type": "guidance",
+     "driving_event": "Q4 earnings beat with warning that rising memory costs will squeeze holiday gross margins",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Apple reports holiday gross margin expansion, easing memory cost concerns",
+      "Apple raises Q1 guidance on stronger services and iPhone demand",
+      "Memory prices decline, reducing input cost pressure for Apple"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q4 beat paired with warning that rising memory costs will squeeze holiday gross margins",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Apple guides holiday-quarter gross margin above prior guidance or says memory cost pressure is easing",
+      "Apple reports services revenue growth reaccelerating rather than decelerating",
+      "Industry memory pricing falls, easing the input-cost squeeze on Apple's hardware margins"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": null,
+     "structural": true
+    }
+   ],
+   "news_age": 1,
+   "H_raw": 24.4,
+   "H": 35,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [24, 24, 25, 24, 25] = 24.4; structural: next report 2027-01-27 (time n/a): 50 sessions + 1 -> H 51; 7B mean over samples [51, 24, 25, 24, 51] = 35.0",
+   "samples_h": [
+    {
+     "H": 24,
+     "stale": false,
+     "why": "guidance B 20 x m 1.25 - age 1, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "guidance",
+      "m": 1.25,
+      "av": 0.7852598183136198,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 02:28:25",
+      "car": 0.010260999505836305,
+      "M": 0.05759035906948981,
+      "M_group": "hard",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2027-01-27",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 24,
+     "stale": false,
+     "why": "earnings B 20 x m 1.25 - age 1, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.25,
+      "av": 0.7852598183136198,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 02:28:25",
+      "car": 0.010260999505836305,
+      "M": 0.05759035906948981,
+      "M_group": "hard",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2027-01-27",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 25,
+     "stale": false,
+     "why": "earnings B 20 x m 1.50 - age 1, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.5,
+      "av": 0.7852598183136198,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 02:28:25",
+      "car": 0.010260999505836305,
+      "M": 0.05759035906948981,
+      "M_group": "hard",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2027-01-27",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    },
+    {
+     "H": 24,
+     "stale": false,
+     "why": "guidance B 20 x m 1.25 - age 1, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "guidance",
+      "m": 1.25,
+      "av": 0.7852598183136198,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 02:28:25",
+      "car": 0.010260999505836305,
+      "M": 0.05759035906948981,
+      "M_group": "hard",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2027-01-27",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 25,
+     "stale": false,
+     "why": "earnings B 20 x m 1.50 - age 1, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.5,
+      "av": 0.7852598183136198,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 02:28:25",
+      "car": 0.010260999505836305,
+      "M": 0.05759035906948981,
+      "M_group": "hard",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2027-01-27",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    }
+   ],
+   "inputs": {
+    "B": 20,
+    "B_key": "earnings",
+    "m": 1.25,
+    "av": 0.7852598183136198,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-11",
+    "news_time_et": "2026-11-11 02:28:25",
+    "car": 0.010260999505836305,
+    "M": 0.05759035906948981,
+    "M_group": "hard",
+    "sector": "Information Technology",
+    "p": 0.0,
+    "catalyst": [
+     "2027-01-27",
+     ""
+    ],
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "Apple raises holiday gross margin guidance or downplays memory cost impact",
+    "Apple services revenue growth reaccelerates above prior trend",
+    "Memory chip prices fall sharply or supply constraints ease"
+   ],
+   "first_reported": "2026-11-11",
+   "driving_event": "Apple Q4 earnings beat with memory-cost holiday margin warning",
+   "confidence": 0.52,
+   "structural": false,
+   "structural_votes": [
+    true,
+    false,
+    false,
+    false,
+    true
+   ],
+   "H_a8": 24,
+   "report_session": "2027-01-27",
+   "release": null
+  },
+  "AMD": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.025,
+   "out": {
+    "event_type": "earnings",
+    "driving_event": "AMD Q3 2026 earnings beat, data center nearly doubled, 2027 growth guidance raised to 80%+",
+    "first_reported": "2026-11-03",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "AMD cuts or withdraws its 2027 revenue growth guidance",
+     "AMD data center revenue growth stalls or turns negative",
+     "Google Cloud abandons or reverses its AMD EPYC deployment"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": null,
+    "structural": true
+   },
+   "provider": "CoreWeave",
+   "samples": [
+    {
+     "event_type": "earnings",
+     "driving_event": "AMD Q3 2026 earnings beat, data center nearly doubled, 2027 growth guidance raised to 80%+",
+     "first_reported": "2026-11-03",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "AMD cuts or withdraws its 2027 revenue growth guidance",
+      "AMD data center revenue growth stalls or turns negative",
+      "Google Cloud abandons or reverses its AMD EPYC deployment"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "AMD Q3 2026 earnings beat; 2027 revenue growth guidance raised to 80%+",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "AMD cuts or withdraws its 2027 revenue growth guidance of 80%+",
+      "Google Cloud cancels or delays its EPYC AI system deployment",
+      "AMD reports a decline in data center revenue or misses Q4 estimates"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "AMD Q3 2026 earnings beat; 2027 revenue growth guidance raised to 80%+",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "AMD cuts, withdraws, or lowers its 2027 revenue growth guidance",
+      "AMD data center revenue growth stalls or declines in a later quarter",
+      "Google Cloud terminates or drops AMD EPYC from its AI systems"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "AMD Q3 2026 earnings beat; data center revenue nearly doubled, 2027 growth guidance raised",
+     "first_reported": "2026-11-03",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "AMD cuts or lowers its data center or 2027 revenue growth guidance",
+      "Google Cloud drops or terminates its AMD EPYC AI system deal",
+      "A major analyst downgrade reverses the Oppenheimer Outperform upgrade"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "AMD Q3 2026 earnings beat, data center nearly doubled, 2027 growth guidance raised to 80%+",
+     "first_reported": "2026-11-03",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "AMD cuts or withdraws its 2027 revenue growth guidance of 80%+",
+      "AMD data center revenue declines or next-quarter guidance misses estimates",
+      "Google Cloud cancels or delays its AMD EPYC AI system deployment"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    }
+   ],
+   "news_age": 7,
+   "H_raw": 6.2,
+   "H": 55,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [3, 11, 11, 3, 3] = 6.2; structural: next report 2027-02-01 (amc): 54 sessions + 1 -> H 55; 7B mean over samples [55, 55, 55, 55, 55] = 55.0",
+   "samples_h": [
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 7, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.8040745573172703,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-03",
+      "news_time_et": "2026-11-03 00:13:25",
+      "car": 0.1786333481056373,
+      "M": 0.05759035906948981,
+      "M_group": "hard",
+      "sector": "Information Technology",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-01",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 11,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 1, p 0.79",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.7844689243065701,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:35:07",
+      "car": 0.04553498513899032,
+      "M": 0.05759035906948981,
+      "M_group": "hard",
+      "sector": "Information Technology",
+      "p": 0.790670276669864,
+      "catalyst": [
+       "2027-02-01",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 11,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 1, p 0.79",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.7844689243065701,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:35:07",
+      "car": 0.04553498513899032,
+      "M": 0.05759035906948981,
+      "M_group": "hard",
+      "sector": "Information Technology",
+      "p": 0.790670276669864,
+      "catalyst": [
+       "2027-02-01",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 7, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.8040745573172703,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-03",
+      "news_time_et": "2026-11-03 00:13:25",
+      "car": 0.1786333481056373,
+      "M": 0.05759035906948981,
+      "M_group": "hard",
+      "sector": "Information Technology",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-01",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 7, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.8040745573172703,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-03",
+      "news_time_et": "2026-11-03 00:13:25",
+      "car": 0.1786333481056373,
+      "M": 0.05759035906948981,
+      "M_group": "hard",
+      "sector": "Information Technology",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-01",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 20,
+    "B_key": "earnings",
+    "m": 1.0,
+    "av": 1.8040745573172703,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-03",
+    "news_time_et": "2026-11-03 00:13:25",
+    "car": 0.1786333481056373,
+    "M": 0.05759035906948981,
+    "M_group": "hard",
+    "sector": "Information Technology",
+    "p": 1.5,
+    "catalyst": [
+     "2027-02-01",
+     "amc"
+    ],
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "AMD cuts or withdraws its 2027 revenue growth guidance",
+    "AMD data center revenue growth stalls or turns negative",
+    "Google Cloud abandons or reverses its AMD EPYC deployment"
+   ],
+   "first_reported": "2026-11-03",
+   "driving_event": "AMD Q3 2026 earnings beat, data center nearly doubled, 2027 growth guidance raised to 80%+",
+   "confidence": 0.5,
+   "structural": true,
+   "structural_votes": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "H_a8": 6,
+   "report_session": "2027-02-02",
+   "release": {
+    "session": "2026-11-04",
+    "source": "8-K 2.02",
+    "accepted": "2026-11-03 16:16:27"
+   }
+  },
+  "BA": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.031,
+   "out": {
+    "event_type": "other",
+    "driving_event": "Boeing cuts 5% of commercial airplane workforce as production ramp slows",
+    "first_reported": "2026-11-09",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Boeing announces an accelerated production rate increase or raises full-year guidance",
+     "Boeing monthly deliveries rise sequentially and exceed Airbus",
+     "Boeing reverses the workforce cuts or secures a new large order"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": null,
+    "structural": false
+   },
+   "provider": "Wafer",
+   "samples": [
+    {
+     "event_type": "other",
+     "driving_event": "Boeing cuts 5% of commercial airplane workforce as production ramp slows",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Boeing announces an accelerated production rate increase or raises full-year guidance",
+      "Boeing monthly deliveries rise sequentially and exceed Airbus",
+      "Boeing reverses the workforce cuts or secures a new large order"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "other",
+     "driving_event": "Boeing cuts 5% of commercial airplane workforce as production increase takes longer",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Boeing announces it is reversing the 5% commercial workforce cut or accelerating production ahead of schedule",
+      "Boeing reports November deliveries rose year-over-year and exceeded Airbus",
+      "Boeing raises FY 2027 production or financial guidance"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "other",
+     "driving_event": "Boeing cuts 5% of commercial airplane workforce as production ramp slips",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Boeing raises 737 MAX production rate and reaffirms delivery targets",
+      "Boeing's November deliveries rise and exceed Airbus tally",
+      "Boeing reverses the layoffs or announces new hiring for commercial airplanes"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "other",
+     "driving_event": "Boeing cuts 5% of commercial airplane workforce as production increase takes longer than expected",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Boeing announces production rates rising faster than expected or raises delivery targets",
+      "Boeing reports monthly deliveries ahead of Airbus and prior-year levels",
+      "Boeing reverses the commercial workforce cuts, citing improved production outlook"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "other",
+     "driving_event": "Boeing cuts 5% of commercial workforce due to slower production ramp",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Boeing announces production rate increase ahead of schedule",
+      "Boeing reports monthly deliveries exceeding Airbus",
+      "Boeing raises FY guidance or reports earnings beat"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    }
+   ],
+   "news_age": 3,
+   "H_raw": 3.0,
+   "H": 3,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [3, 3, 3, 3, 3] = 3.0",
+   "samples_h": [
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 3, p 1.44: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 1.596625824207652,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 05:30:05",
+      "car": -0.026737044976283743,
+      "M": 0.018528664794781987,
+      "M_group": "news",
+      "sector": "Industrials",
+      "p": 1.4430098052080573,
+      "catalyst": [
+       "2027-01-25",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 3, p 1.44: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 1.596625824207652,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 05:30:05",
+      "car": -0.026737044976283743,
+      "M": 0.018528664794781987,
+      "M_group": "news",
+      "sector": "Industrials",
+      "p": 1.4430098052080573,
+      "catalyst": [
+       "2027-01-25",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 3, p 1.44: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 1.596625824207652,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 05:30:05",
+      "car": -0.026737044976283743,
+      "M": 0.018528664794781987,
+      "M_group": "news",
+      "sector": "Industrials",
+      "p": 1.4430098052080573,
+      "catalyst": [
+       "2027-01-25",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 3, p 1.44: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 1.596625824207652,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 05:30:05",
+      "car": -0.026737044976283743,
+      "M": 0.018528664794781987,
+      "M_group": "news",
+      "sector": "Industrials",
+      "p": 1.4430098052080573,
+      "catalyst": [
+       "2027-01-25",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 3, p 1.44: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 1.596625824207652,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 05:30:05",
+      "car": -0.026737044976283743,
+      "M": 0.018528664794781987,
+      "M_group": "news",
+      "sector": "Industrials",
+      "p": 1.4430098052080573,
+      "catalyst": [
+       "2027-01-25",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 5,
+    "B_key": "soft",
+    "m": 1.0,
+    "av": 1.596625824207652,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-09",
+    "news_time_et": "2026-11-09 05:30:05",
+    "car": -0.026737044976283743,
+    "M": 0.018528664794781987,
+    "M_group": "news",
+    "sector": "Industrials",
+    "p": 1.4430098052080573,
+    "catalyst": [
+     "2027-01-25",
+     "amc"
+    ],
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "Boeing announces an accelerated production rate increase or raises full-year guidance",
+    "Boeing monthly deliveries rise sequentially and exceed Airbus",
+    "Boeing reverses the workforce cuts or secures a new large order"
+   ],
+   "first_reported": "2026-11-09",
+   "driving_event": "Boeing cuts 5% of commercial airplane workforce as production ramp slows",
+   "confidence": 0.62,
+   "structural": false,
+   "structural_votes": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "H_a8": 3,
+   "release": null
+  },
+  "BRK.B": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.0275,
+   "out": {
+    "event_type": "earnings",
+    "driving_event": "Q3 operating earnings fell 5.8% with insurance underwriting weakness, offset by record $9.6B buybacks",
+    "first_reported": "2026-11-07",
+    "catalyst_date": "2026-11-16",
+    "kill_conditions": [
+     "Berkshire Q4 operating earnings grow and insurance underwriting returns to profit",
+     "Berkshire announces a new record buyback, special dividend, or major acquisition lifting shares",
+     "Analysts upgrade Berkshire citing improved insurance margins and earnings momentum"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": true,
+    "catalyst": "other",
+    "structural": false
+   },
+   "provider": "Wafer",
+   "samples": [
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 operating earnings fell 5.8% with insurance underwriting weakness, offset by record $9.6B buybacks",
+     "first_reported": "2026-11-07",
+     "catalyst_date": "2026-11-16",
+     "kill_conditions": [
+      "Berkshire Q4 operating earnings grow and insurance underwriting returns to profit",
+      "Berkshire announces a new record buyback, special dividend, or major acquisition lifting shares",
+      "Analysts upgrade Berkshire citing improved insurance margins and earnings momentum"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 operating earnings fell 5.8% on insurance underwriting weakness despite record buybacks",
+     "first_reported": "2026-11-07",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Berkshire reports Q4 operating earnings growth with insurance underwriting back in profit",
+      "Analysts upgrade BRK.B, reversing cautious commentary on the Q3 operating decline",
+      "Berkshire announces a larger buyback or special dividend beyond the $9.6B"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 operating earnings fell 5.8% with insurance underwriting weakness, mixed results and record buybacks.",
+     "first_reported": "2026-11-07",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Berkshire reports Q4 operating earnings growth and insurance underwriting profit.",
+      "Berkshire announces a special dividend or a new record buyback increase.",
+      "Analysts upgrade Berkshire citing improved insurance and BNSF/Energy strength."
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 operating earnings fell 5.8% on insurance underwriting weakness; record $9.6B buybacks",
+     "first_reported": "2026-11-07",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Berkshire reports Q4 operating earnings growth with insurance underwriting back in profit",
+      "Berkshire announces a large accretive acquisition or sharply accelerated buyback program",
+      "Analysts upgrade Berkshire to buy with raised price targets citing undervaluation"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 operating earnings fell 5.8% with insurance underwriting weakness",
+     "first_reported": "2026-11-07",
+     "catalyst_date": "2026-11-16",
+     "kill_conditions": [
+      "Berkshire reports insurance underwriting profit recovering and operating earnings growth in a later quarter",
+      "Berkshire announces a major acquisition or large capital deployment lifting its earnings outlook",
+      "Analysts upgrade Berkshire citing improved insurance results and attractive valuation"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": "other",
+     "structural": false
+    }
+   ],
+   "news_age": 4,
+   "H_raw": 25.0,
+   "H": 25,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [25, 25, 25, 25, 25] = 25.0",
+   "samples_h": [
+    {
+     "H": 25,
+     "stale": false,
+     "why": "earnings B 20 x m 1.50 - age 4, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.5,
+      "av": 1.3268139783854864,
+      "friday": true,
+      "after_close": true,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-07 02:49:19",
+      "car": 0.017085443776494614,
+      "M": 0.04616282734045334,
+      "M_group": "hard",
+      "sector": "Financials",
+      "p": 0.0,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    },
+    {
+     "H": 25,
+     "stale": false,
+     "why": "earnings B 20 x m 1.50 - age 4, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.5,
+      "av": 1.3268139783854864,
+      "friday": true,
+      "after_close": true,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-07 02:49:19",
+      "car": 0.017085443776494614,
+      "M": 0.04616282734045334,
+      "M_group": "hard",
+      "sector": "Financials",
+      "p": 0.0,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    },
+    {
+     "H": 25,
+     "stale": false,
+     "why": "earnings B 20 x m 1.50 - age 4, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.5,
+      "av": 1.3268139783854864,
+      "friday": true,
+      "after_close": true,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-07 02:49:19",
+      "car": 0.017085443776494614,
+      "M": 0.04616282734045334,
+      "M_group": "hard",
+      "sector": "Financials",
+      "p": 0.0,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    },
+    {
+     "H": 25,
+     "stale": false,
+     "why": "earnings B 20 x m 1.50 - age 4, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.5,
+      "av": 1.3268139783854864,
+      "friday": true,
+      "after_close": true,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-07 02:49:19",
+      "car": 0.017085443776494614,
+      "M": 0.04616282734045334,
+      "M_group": "hard",
+      "sector": "Financials",
+      "p": 0.0,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    },
+    {
+     "H": 25,
+     "stale": false,
+     "why": "earnings B 20 x m 1.50 - age 4, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.5,
+      "av": 1.3268139783854864,
+      "friday": true,
+      "after_close": true,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-07 02:49:19",
+      "car": 0.017085443776494614,
+      "M": 0.04616282734045334,
+      "M_group": "hard",
+      "sector": "Financials",
+      "p": 0.0,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    }
+   ],
+   "inputs": {
+    "B": 20,
+    "B_key": "earnings",
+    "m": 1.5,
+    "av": 1.3268139783854864,
+    "friday": true,
+    "after_close": true,
+    "news_session": "2026-11-09",
+    "news_time_et": "2026-11-07 02:49:19",
+    "car": 0.017085443776494614,
+    "M": 0.04616282734045334,
+    "M_group": "hard",
+    "sector": "Financials",
+    "p": 0.0,
+    "catalyst": null,
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": true
+   },
+   "kill_conditions": [
+    "Berkshire Q4 operating earnings grow and insurance underwriting returns to profit",
+    "Berkshire announces a new record buyback, special dividend, or major acquisition lifting shares",
+    "Analysts upgrade Berkshire citing improved insurance margins and earnings momentum"
+   ],
+   "first_reported": "2026-11-07",
+   "driving_event": "Q3 operating earnings fell 5.8% with insurance underwriting weakness, offset by record $9.6B buybacks",
+   "confidence": 0.55,
+   "structural": false,
+   "structural_votes": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "H_a8": 25,
+   "release": {
+    "session": "2026-11-09",
+    "source": "8-K 2.02",
+    "accepted": "2026-11-09 06:10:14"
+   }
+  },
+  "CRM": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.03,
+   "out": {
+    "event_type": "analyst_revisions",
+    "driving_event": "S&P cuts Salesforce rating to A on Braze/Cresta deals and $25B buyback",
+    "first_reported": "2026-11-06",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "S&P upgrades Salesforce's credit rating or revises its outlook to stable/positive",
+     "Salesforce terminates or walks away from the Braze or Cresta acquisition",
+     "Salesforce cuts its buyback or announces debt reduction that eases leverage concerns"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": "down",
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": null,
+    "structural": false
+   },
+   "provider": "Cohere",
+   "samples": [
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "S&P cuts Salesforce rating to A on Braze/Cresta deals and $25B buyback",
+     "first_reported": "2026-11-10",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "S&P upgrades Salesforce's credit rating or revises its outlook to stable/positive",
+      "Salesforce terminates or walks away from the Braze or Cresta acquisition",
+      "Salesforce cuts its buyback or announces debt reduction that eases leverage concerns"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": "down",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "other",
+     "driving_event": "S&P cuts Salesforce credit rating to A from A+ on Braze/Cresta deals and $25B buyback",
+     "first_reported": "2026-11-10",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "S&P upgrades Salesforce's credit rating or revises its outlook to stable or positive",
+      "Salesforce terminates or walks away from the Braze or Cresta acquisition",
+      "Salesforce raises full-year guidance or reports accelerating revenue growth"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "S&P cuts Salesforce credit rating to A from A+ on Braze/Cresta deals and $25B buyback.",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "S&P upgrades Salesforce rating to A+ or revises outlook to stable.",
+      "Salesforce terminates the Braze or Cresta acquisitions.",
+      "Salesforce cancels or significantly reduces the $25B buyback."
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": "down",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "S&P cuts Salesforce credit rating to A on Braze, Cresta deals and $25B buyback",
+     "first_reported": "2026-11-10",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "S&P upgrades Salesforce's credit rating or lifts its outlook to positive",
+      "Salesforce terminates or walks away from the Braze or Cresta acquisition",
+      "Salesforce reports results or guidance that ease leverage and deal-spending concerns"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": "down",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "S&P cuts Salesforce to A on Braze/Cresta deals and $25B buyback",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "S&P upgrades Salesforce or revises its rating outlook to stable",
+      "Salesforce terminates or walks away from the Braze and Cresta deals",
+      "Salesforce trims or cancels the $25B buyback to reduce leverage"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": "down",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    }
+   ],
+   "news_age": 2,
+   "H_raw": 11.2,
+   "H": 11,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [23, 4, 3, 23, 3] = 11.2",
+   "samples_h": [
+    {
+     "H": 23,
+     "stale": false,
+     "why": "analyst_down B 20 x m 1.25 - age 2, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "analyst_down",
+      "m": 1.25,
+      "av": 1.145296442503937,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-10",
+      "news_time_et": "2026-11-10 02:53:59",
+      "car": 0.008919245063666802,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2026-12-02",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 4,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 2, p 0.00",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 1.145296442503937,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-10",
+      "news_time_et": "2026-11-10 02:53:59",
+      "car": 0.008919245063666802,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2026-12-02",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "analyst_down B 20 x m 1.25 - age 4, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "analyst_down",
+      "m": 1.25,
+      "av": 0.9179173274711149,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 02:16:38",
+      "car": -0.039948007583535845,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 1.5,
+      "catalyst": [
+       "2026-12-02",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 23,
+     "stale": false,
+     "why": "analyst_down B 20 x m 1.25 - age 2, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "analyst_down",
+      "m": 1.25,
+      "av": 1.145296442503937,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-10",
+      "news_time_et": "2026-11-10 02:53:59",
+      "car": 0.008919245063666802,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2026-12-02",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "analyst_down B 20 x m 1.25 - age 4, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "analyst_down",
+      "m": 1.25,
+      "av": 0.9179173274711149,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 02:16:38",
+      "car": -0.039948007583535845,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 1.5,
+      "catalyst": [
+       "2026-12-02",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 20,
+    "B_key": "analyst_down",
+    "m": 1.25,
+    "av": 0.9179173274711149,
+    "friday": true,
+    "after_close": false,
+    "news_session": "2026-11-06",
+    "news_time_et": "2026-11-06 02:16:38",
+    "car": -0.039948007583535845,
+    "M": 0.022952224979871427,
+    "M_group": "news",
+    "sector": "Information Technology",
+    "p": 1.5,
+    "catalyst": [
+     "2026-12-02",
+     "amc"
+    ],
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "S&P upgrades Salesforce's credit rating or revises its outlook to stable/positive",
+    "Salesforce terminates or walks away from the Braze or Cresta acquisition",
+    "Salesforce cuts its buyback or announces debt reduction that eases leverage concerns"
+   ],
+   "first_reported": "2026-11-06",
+   "driving_event": "S&P cuts Salesforce rating to A on Braze/Cresta deals and $25B buyback",
+   "confidence": 0.6,
+   "structural": false,
+   "structural_votes": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "H_a8": 11,
+   "release": null
+  },
+  "FOX": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.0425,
+   "out": {
+    "event_type": "other",
+    "driving_event": "Completion of $22B Roku acquisition and Q1 earnings beat",
+    "first_reported": "2026-11-06",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Fox announces Roku acquisition integration failure or write-down",
+     "Fox reports Q1 miss or cuts FY guidance",
+     "Fox advertising revenue declines"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": null,
+    "structural": true
+   },
+   "provider": "Wafer",
+   "samples": [
+    {
+     "event_type": "other",
+     "driving_event": "Completion of $22B Roku acquisition and Q1 earnings beat",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Fox announces Roku acquisition integration failure or write-down",
+      "Fox reports Q1 miss or cuts FY guidance",
+      "Fox advertising revenue declines"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "other",
+     "driving_event": "Fox completes $22B Roku acquisition, reshaping streaming business",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Roku acquisition is unwound, blocked, or integration costs materially exceed plan",
+      "Fox cuts FY guidance or reports an earnings miss",
+      "Fox's advertising or streaming growth decelerates sharply"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "mna_rumour",
+     "driving_event": "Fox completes $22B Roku acquisition, reshaping its streaming business",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Fox announces the Roku acquisition is terminated or unwound",
+      "Fox cuts full-year guidance or reports an earnings miss",
+      "Roku integration stalls or Fox discloses a large deal-related writedown"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "other",
+     "driving_event": "Fox completes $22B Roku acquisition",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Fox writes down Roku acquisition",
+      "Roku reports declining user growth",
+      "Fox cuts guidance on integration costs"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "other",
+     "driving_event": "Fox completes $22B Roku acquisition reshaping streaming; Q1 earnings beat validates strategy",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Fox cuts full-year guidance or reports a Q2 revenue miss",
+      "Roku acquisition is unwound or regulators challenge the deal after closing",
+      "Roku integration fails to deliver expected streaming growth or advertising gains"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": null,
+     "structural": true
+    }
+   ],
+   "news_age": 4,
+   "H_raw": 3.2,
+   "H": 55,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [3, 3, 3, 3, 4] = 3.2; structural: next report 2027-02-02 (time n/a): 54 sessions + 1 -> H 55; 7B mean over samples [55, 55, 55, 55, 55] = 55.0",
+   "samples_h": [
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 4, p 0.00",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 2.4015443695893266,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 04:02:25",
+      "car": -0.009214144407891436,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": [
+       "2027-02-02",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 4, p 0.00",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 2.4015443695893266,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 04:02:25",
+      "car": -0.009214144407891436,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": [
+       "2027-02-02",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 4, p 0.00",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 2.4015443695893266,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 04:02:25",
+      "car": -0.009214144407891436,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": [
+       "2027-02-02",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 4, p 0.00",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 2.4015443695893266,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 04:02:25",
+      "car": -0.009214144407891436,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": [
+       "2027-02-02",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 4,
+     "stale": false,
+     "why": "soft B 5 x m 1.50 - age 4, p 0.00",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.5,
+      "av": 2.4015443695893266,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 04:02:25",
+      "car": -0.009214144407891436,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": [
+       "2027-02-02",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    }
+   ],
+   "inputs": {
+    "B": 5,
+    "B_key": "soft",
+    "m": 1.25,
+    "av": 2.4015443695893266,
+    "friday": true,
+    "after_close": false,
+    "news_session": "2026-11-06",
+    "news_time_et": "2026-11-06 04:02:25",
+    "car": -0.009214144407891436,
+    "M": 0.01985621740997779,
+    "M_group": "news",
+    "sector": "Communication Services",
+    "p": 0.0,
+    "catalyst": [
+     "2027-02-02",
+     ""
+    ],
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "Fox announces Roku acquisition integration failure or write-down",
+    "Fox reports Q1 miss or cuts FY guidance",
+    "Fox advertising revenue declines"
+   ],
+   "first_reported": "2026-11-06",
+   "driving_event": "Completion of $22B Roku acquisition and Q1 earnings beat",
+   "confidence": 0.85,
+   "structural": true,
+   "structural_votes": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "H_a8": 3,
+   "report_session": "2027-02-02",
+   "release": null
+  },
+  "GOOGL": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.025,
+   "out": {
+    "event_type": "product_launch",
+    "driving_event": "Google expands TPU 8tx lineup and taps AMD EPYC, escalating Nvidia rivalry",
+    "first_reported": "2026-11-11",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Google cancels or delays its new TPU 8tx rollout",
+     "Google's AMD EPYC partnership is terminated or scaled back",
+     "Google cuts AI capex or walks back its data center buildout plans"
+    ],
+    "hard": false,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": null,
+    "structural": false
+   },
+   "provider": "Wafer",
+   "samples": [
+    {
+     "event_type": "product_launch",
+     "driving_event": "Google expands TPU 8tx lineup and taps AMD EPYC, escalating Nvidia rivalry",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Google cancels or delays its new TPU 8tx rollout",
+      "Google's AMD EPYC partnership is terminated or scaled back",
+      "Google cuts AI capex or walks back its data center buildout plans"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "product_launch",
+     "driving_event": "Google expands TPU 8tx lineup and taps AMD EPYC, escalating Nvidia rivalry",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Google cancels or delays the expanded TPU lineup",
+      "Google ends the AMD EPYC partnership or reverts to Nvidia-only chips",
+      "Alphabet cuts AI data center capex or shelves the Wyoming data center"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "product_launch",
+     "driving_event": "Google expands TPU 8tx lineup and taps AMD EPYC, escalating Nvidia rivalry",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Google delays or cancels the TPU 8tx lineup expansion",
+      "AMD terminates its EPYC partnership with Google",
+      "Google cuts AI capex guidance or delays Gemini 4 launch"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "product_launch",
+     "driving_event": "Google expands TPU 8tx lineup and taps AMD EPYC, escalating Nvidia rivalry",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Google delays or cancels the TPU 8tx lineup expansion",
+      "Google's AMD EPYC partnership is terminated or scrapped",
+      "Google cuts AI capex or shelves the $17B Wyoming data center"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "product_launch",
+     "driving_event": "Google expands TPU 8tx lineup and taps AMD EPYC, escalating Nvidia rivalry",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Google cancels or delays TPU 8tx rollout or AMD EPYC partnership",
+      "Google cuts AI capex or Cloud guidance",
+      "Google loses key AI customer or Anthropic investment is blocked"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": null,
+     "structural": false
+    }
+   ],
+   "news_age": 1,
+   "H_raw": 4.4,
+   "H": 4,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [4, 4, 4, 5, 5] = 4.4",
+   "samples_h": [
+    {
+     "H": 4,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 1, p 0.33",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 0.8961051099394175,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:35:07",
+      "car": 0.00647108312958662,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.32589707273928653,
+      "catalyst": [
+       "2027-02-02",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 4,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 1, p 0.33",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 0.8961051099394175,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:35:07",
+      "car": 0.00647108312958662,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.32589707273928653,
+      "catalyst": [
+       "2027-02-02",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 4,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 1, p 0.33",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 0.8961051099394175,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:35:07",
+      "car": 0.00647108312958662,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.32589707273928653,
+      "catalyst": [
+       "2027-02-02",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 5,
+     "stale": false,
+     "why": "soft B 5 x m 1.50 - age 1, p 0.33",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.5,
+      "av": 0.8961051099394175,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:35:07",
+      "car": 0.00647108312958662,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.32589707273928653,
+      "catalyst": [
+       "2027-02-02",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    },
+    {
+     "H": 5,
+     "stale": false,
+     "why": "soft B 5 x m 1.50 - age 1, p 0.33",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.5,
+      "av": 0.8961051099394175,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:35:07",
+      "car": 0.00647108312958662,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.32589707273928653,
+      "catalyst": [
+       "2027-02-02",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    }
+   ],
+   "inputs": {
+    "B": 5,
+    "B_key": "soft",
+    "m": 1.25,
+    "av": 0.8961051099394175,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-11",
+    "news_time_et": "2026-11-11 00:35:07",
+    "car": 0.00647108312958662,
+    "M": 0.01985621740997779,
+    "M_group": "news",
+    "sector": "Communication Services",
+    "p": 0.32589707273928653,
+    "catalyst": [
+     "2027-02-02",
+     "amc"
+    ],
+    "hard": false,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "Google cancels or delays its new TPU 8tx rollout",
+    "Google's AMD EPYC partnership is terminated or scaled back",
+    "Google cuts AI capex or walks back its data center buildout plans"
+   ],
+   "first_reported": "2026-11-11",
+   "driving_event": "Google expands TPU 8tx lineup and taps AMD EPYC, escalating Nvidia rivalry",
+   "confidence": 0.5,
+   "structural": false,
+   "structural_votes": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "H_a8": 4,
+   "release": null
+  },
+  "HUM": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.025,
+   "out": {
+    "event_type": "earnings",
+    "driving_event": "Humana Q3 2026 earnings beat with raised FY2026 adjusted EPS guidance and Star ratings momentum",
+    "first_reported": "2026-11-06",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Humana cuts or withdraws its raised FY2026 adjusted EPS guidance",
+     "Q4 medical cost ratio rises sharply, reversing the unexpected cost decline",
+     "Medicare Star ratings downgraded for bonus year 2028"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": null,
+    "structural": false
+   },
+   "provider": "Cohere",
+   "samples": [
+    {
+     "event_type": "earnings",
+     "driving_event": "Humana Q3 2026 earnings beat with raised FY2026 adjusted EPS guidance and Star ratings momentum",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Humana cuts or withdraws its raised FY2026 adjusted EPS guidance",
+      "Q4 medical cost ratio rises sharply, reversing the unexpected cost decline",
+      "Medicare Star ratings downgraded for bonus year 2028"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Humana Q3 2026 earnings beat with raised FY2026 adjusted EPS guidance",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Humana cuts FY2026 EPS guidance",
+      "Humana reports Q4 earnings miss",
+      "Medicare Star rating downgraded for bonus year 2028"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 2026 earnings beat and raised FY2026 adjusted EPS guidance",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Humana lowers or withdraws its FY2026 adjusted EPS guidance.",
+      "Humana's Medicare Advantage Star rating for bonus year 2028 is downgraded below 4.0.",
+      "Humana's new oncology model partnership with Evolent and American Oncology Network is terminated."
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Humana Q3 2026 earnings beat with raised FY2026 adjusted EPS guidance and Star rating momentum",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Humana cuts FY2026 adjusted EPS guidance",
+      "CMS lowers Humana's 2028 Star rating",
+      "Humana reports Q4 medical cost ratio above expectations"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 earnings beat with raised FY2026 adjusted EPS guidance and Medicare Star ratings momentum.",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Humana cuts or withdraws its FY2026 adjusted EPS guidance.",
+      "Humana reports higher-than-expected medical cost trend or MLR deterioration.",
+      "Humana's 2028 Medicare Star rating falls below 4.0 or loses bonus status."
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    }
+   ],
+   "news_age": 4,
+   "H_raw": 3.0,
+   "H": 15,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [3, 3, 3, 3, 3] = 3.0; structural: next report 2027-02-09 (amc): 60 sessions + 1 -> H 61; 7B mean over samples [3, 61, 3, 3, 3] = 14.6",
+   "samples_h": [
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.25 - age 4, p 1.13: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.25,
+      "av": 1.8862941442765186,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 00:28:47",
+      "car": 0.05828221154567036,
+      "M": 0.051562120009647675,
+      "M_group": "hard",
+      "sector": "Health Care",
+      "p": 1.1303300084396317,
+      "catalyst": [
+       "2027-02-09",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.25 - age 4, p 1.13: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.25,
+      "av": 1.8862941442765186,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 00:28:47",
+      "car": 0.05828221154567036,
+      "M": 0.051562120009647675,
+      "M_group": "hard",
+      "sector": "Health Care",
+      "p": 1.1303300084396317,
+      "catalyst": [
+       "2027-02-09",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.25 - age 4, p 1.13: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.25,
+      "av": 1.8862941442765186,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 00:28:47",
+      "car": 0.05828221154567036,
+      "M": 0.051562120009647675,
+      "M_group": "hard",
+      "sector": "Health Care",
+      "p": 1.1303300084396317,
+      "catalyst": [
+       "2027-02-09",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.25 - age 4, p 1.13: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.25,
+      "av": 1.8862941442765186,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 00:28:47",
+      "car": 0.05828221154567036,
+      "M": 0.051562120009647675,
+      "M_group": "hard",
+      "sector": "Health Care",
+      "p": 1.1303300084396317,
+      "catalyst": [
+       "2027-02-09",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.25 - age 4, p 1.13: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.25,
+      "av": 1.8862941442765186,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 00:28:47",
+      "car": 0.05828221154567036,
+      "M": 0.051562120009647675,
+      "M_group": "hard",
+      "sector": "Health Care",
+      "p": 1.1303300084396317,
+      "catalyst": [
+       "2027-02-09",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 20,
+    "B_key": "earnings",
+    "m": 1.25,
+    "av": 1.8862941442765186,
+    "friday": true,
+    "after_close": false,
+    "news_session": "2026-11-06",
+    "news_time_et": "2026-11-06 00:28:47",
+    "car": 0.05828221154567036,
+    "M": 0.051562120009647675,
+    "M_group": "hard",
+    "sector": "Health Care",
+    "p": 1.1303300084396317,
+    "catalyst": [
+     "2027-02-09",
+     "amc"
+    ],
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "Humana cuts or withdraws its raised FY2026 adjusted EPS guidance",
+    "Q4 medical cost ratio rises sharply, reversing the unexpected cost decline",
+    "Medicare Star ratings downgraded for bonus year 2028"
+   ],
+   "first_reported": "2026-11-06",
+   "driving_event": "Humana Q3 2026 earnings beat with raised FY2026 adjusted EPS guidance and Star ratings momentum",
+   "confidence": 0.5,
+   "structural": false,
+   "structural_votes": [
+    false,
+    true,
+    false,
+    false,
+    false
+   ],
+   "H_a8": 3,
+   "report_session": "2027-02-10",
+   "release": {
+    "session": "2026-11-06",
+    "source": "8-K 2.02",
+    "accepted": "2026-11-06 06:09:28"
+   }
+  },
+  "LLY": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.0275,
+   "out": {
+    "event_type": "other",
+    "driving_event": "Foundayo ATTAIN-OSA Phase 3 win with planned year-end FDA filing",
+    "first_reported": "2026-11-09",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "FDA issues a complete response letter for Foundayo's planned filing",
+     "Hims & Hers or LifeMD terminates its direct-access partnership with Lilly",
+     "Foundayo Phase 3 OSA data fails to replicate or a new safety signal emerges"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": "other",
+    "structural": true
+   },
+   "provider": "Wafer",
+   "samples": [
+    {
+     "event_type": "other",
+     "driving_event": "Foundayo ATTAIN-OSA Phase 3 win with planned year-end FDA filing",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "FDA issues a complete response letter for Foundayo's planned filing",
+      "Hims & Hers or LifeMD terminates its direct-access partnership with Lilly",
+      "Foundayo Phase 3 OSA data fails to replicate or a new safety signal emerges"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": true
+    },
+    {
+     "event_type": "other",
+     "driving_event": "Foundayo ATTAIN-OSA Phase 3 win with planned year-end FDA filing",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "FDA issues a complete response letter for Foundayo, delaying or rejecting approval",
+      "Novo Nordisk's Wegovy pill significantly gains GLP-1 market share from Lilly",
+      "Hims & Hers or LifeMD terminates its direct-access partnership with Lilly"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "other",
+     "driving_event": "Foundayo ATTAIN-OSA Phase 3 win with planned year-end FDA filing",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "FDA rejects Foundayo filing or delays it beyond year-end",
+      "Foundayo Phase 3 data fails to replicate or serious safety signal emerges",
+      "Novo's Wegovy pill gains major GLP-1 market share, eroding Lilly's retatrutide outlook"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": true
+    },
+    {
+     "event_type": "other",
+     "driving_event": "Foundayo ATTAIN-OSA Phase 3 win and planned year-end FDA filing",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "FDA issues a complete response letter for Foundayo/orforglipron, blocking approval",
+      "Retatrutide Phase 3 trial fails endpoint or shows serious safety signal",
+      "Hims & Hers or LifeMD terminates its Lilly GLP-1 access partnership"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": true
+    },
+    {
+     "event_type": "other",
+     "driving_event": "Foundayo ATTAIN-OSA Phase 3 win with planned year-end FDA filing",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "FDA issues a complete response letter or delays approval for Foundayo (orforglipron).",
+      "Foundayo Phase 3 OSA data fails to replicate or shows a new safety signal.",
+      "Hims & Hers or LifeMD terminates its GLP-1 access partnership with Lilly."
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": true
+    }
+   ],
+   "news_age": 3,
+   "H_raw": 3.0,
+   "H": 45,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [3, 3, 3, 3, 3] = 3.0; structural: next report 2027-02-02 (bmo): 54 sessions + 1 -> H 55; 7B mean over samples [55, 3, 55, 55, 55] = 44.6",
+   "samples_h": [
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 1.4657697118236621,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 01:33:00",
+      "car": 0.04028617035053082,
+      "M": 0.018986465090787354,
+      "M_group": "news",
+      "sector": "Health Care",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-02",
+       "bmo"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 1.4657697118236621,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 01:33:00",
+      "car": 0.04028617035053082,
+      "M": 0.018986465090787354,
+      "M_group": "news",
+      "sector": "Health Care",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-02",
+       "bmo"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 1.4657697118236621,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 01:33:00",
+      "car": 0.04028617035053082,
+      "M": 0.018986465090787354,
+      "M_group": "news",
+      "sector": "Health Care",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-02",
+       "bmo"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 1.4657697118236621,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 01:33:00",
+      "car": 0.04028617035053082,
+      "M": 0.018986465090787354,
+      "M_group": "news",
+      "sector": "Health Care",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-02",
+       "bmo"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 1.4657697118236621,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 01:33:00",
+      "car": 0.04028617035053082,
+      "M": 0.018986465090787354,
+      "M_group": "news",
+      "sector": "Health Care",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-02",
+       "bmo"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 5,
+    "B_key": "soft",
+    "m": 1.25,
+    "av": 1.4657697118236621,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-09",
+    "news_time_et": "2026-11-09 01:33:00",
+    "car": 0.04028617035053082,
+    "M": 0.018986465090787354,
+    "M_group": "news",
+    "sector": "Health Care",
+    "p": 1.5,
+    "catalyst": [
+     "2027-02-02",
+     "bmo"
+    ],
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "FDA issues a complete response letter for Foundayo's planned filing",
+    "Hims & Hers or LifeMD terminates its direct-access partnership with Lilly",
+    "Foundayo Phase 3 OSA data fails to replicate or a new safety signal emerges"
+   ],
+   "first_reported": "2026-11-09",
+   "driving_event": "Foundayo ATTAIN-OSA Phase 3 win with planned year-end FDA filing",
+   "confidence": 0.55,
+   "structural": true,
+   "structural_votes": [
+    true,
+    false,
+    true,
+    true,
+    true
+   ],
+   "H_a8": 3,
+   "report_session": "2027-02-02",
+   "release": null
+  },
+  "MSFT": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.025,
+   "out": {
+    "event_type": "product_launch",
+    "driving_event": "Anthropic launched Claude Sheets to rival Excel, pressuring Microsoft's Office franchise and MSFT shares.",
+    "first_reported": "2026-11-11",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Anthropic delays or cancels the Claude Sheets launch",
+     "Microsoft reports Office/Excel revenue acceleration or strong customer retention",
+     "Analysts conclude Claude Sheets is not a substitute for Excel"
+    ],
+    "hard": false,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": true,
+    "complex": true,
+    "catalyst": null,
+    "structural": false
+   },
+   "provider": "Morph",
+   "samples": [
+    {
+     "event_type": "product_launch",
+     "driving_event": "Anthropic launched Claude Sheets to rival Excel, pressuring Microsoft's Office franchise and MSFT shares.",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Anthropic delays or cancels the Claude Sheets launch",
+      "Microsoft reports Office/Excel revenue acceleration or strong customer retention",
+      "Analysts conclude Claude Sheets is not a substitute for Excel"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": true,
+     "complex": true,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "product_launch",
+     "driving_event": "Anthropic launches Claude Sheets AI tool directly targeting Microsoft Excel/Office",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Anthropic discontinues or fails to monetize Claude Sheets",
+      "Microsoft reports accelerating Microsoft 365 commercial revenue with no AI-driven churn",
+      "Microsoft unveils an enterprise AI bundling deal that defends Office/Excel share"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": true,
+     "complex": true,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "product_launch",
+     "driving_event": "Anthropic launches Claude Sheets, threatening Microsoft's Office/Excel franchise; MSFT falls",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Microsoft reports Office revenue growth accelerating despite Anthropic's Claude Sheets",
+      "Anthropic discontinues or stalls Claude Sheets adoption",
+      "Microsoft integrates Anthropic AI into Office, neutralizing competitive threat"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": true,
+     "complex": true,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "product_launch",
+     "driving_event": "Anthropic launches Claude Sheets, threatening Microsoft Excel/Office franchise",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Anthropic discontinues Claude Sheets or fails to gain enterprise adoption",
+      "Microsoft reports Office/Excel revenue acceleration or share gains despite Claude Sheets",
+      "Microsoft launches AI Excel features that analysts call a direct answer to Claude Sheets"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": true,
+     "complex": true,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "product_launch",
+     "driving_event": "Anthropic launches Claude Sheets, threatening Microsoft's Office/Excel franchise and pressuring MSFT shares",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Microsoft reports Office/Excel revenue growth accelerating or no sign of Anthropic disruption",
+      "Analysts conclude Claude Sheets is not a viable substitute for Excel",
+      "Anthropic discontinues Claude Sheets or fails to gain enterprise adoption"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": true,
+     "complex": true,
+     "catalyst": null,
+     "structural": false
+    }
+   ],
+   "news_age": 1,
+   "H_raw": 0.0,
+   "H": 3,
+   "stale": true,
+   "why": "mean of 5 samples' horizons [0, 0, 0, 0, 0] = 0.0",
+   "samples_h": [
+    {
+     "H": 14,
+     "stale": true,
+     "why": "cross_firm B 20 x m 1.50 - age 1, p 1.50: priced in, not entered",
+     "inputs": {
+      "B": 20,
+      "B_key": "cross_firm",
+      "m": 1.5,
+      "av": 1.1843491997243965,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:35:07",
+      "car": -0.035159769952072775,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 1.5,
+      "catalyst": [
+       "2027-01-26",
+       ""
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": true,
+      "complex": true
+     }
+    },
+    {
+     "H": 14,
+     "stale": true,
+     "why": "cross_firm B 20 x m 1.50 - age 1, p 1.50: priced in, not entered",
+     "inputs": {
+      "B": 20,
+      "B_key": "cross_firm",
+      "m": 1.5,
+      "av": 1.1843491997243965,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:35:07",
+      "car": -0.035159769952072775,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 1.5,
+      "catalyst": [
+       "2027-01-26",
+       ""
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": true,
+      "complex": true
+     }
+    },
+    {
+     "H": 14,
+     "stale": true,
+     "why": "cross_firm B 20 x m 1.50 - age 1, p 1.50: priced in, not entered",
+     "inputs": {
+      "B": 20,
+      "B_key": "cross_firm",
+      "m": 1.5,
+      "av": 1.1843491997243965,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:35:07",
+      "car": -0.035159769952072775,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 1.5,
+      "catalyst": [
+       "2027-01-26",
+       ""
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": true,
+      "complex": true
+     }
+    },
+    {
+     "H": 14,
+     "stale": true,
+     "why": "cross_firm B 20 x m 1.50 - age 1, p 1.50: priced in, not entered",
+     "inputs": {
+      "B": 20,
+      "B_key": "cross_firm",
+      "m": 1.5,
+      "av": 1.1843491997243965,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:35:07",
+      "car": -0.035159769952072775,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 1.5,
+      "catalyst": [
+       "2027-01-26",
+       ""
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": true,
+      "complex": true
+     }
+    },
+    {
+     "H": 14,
+     "stale": true,
+     "why": "cross_firm B 20 x m 1.50 - age 1, p 1.50: priced in, not entered",
+     "inputs": {
+      "B": 20,
+      "B_key": "cross_firm",
+      "m": 1.5,
+      "av": 1.1843491997243965,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:35:07",
+      "car": -0.035159769952072775,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 1.5,
+      "catalyst": [
+       "2027-01-26",
+       ""
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": true,
+      "complex": true
+     }
+    }
+   ],
+   "inputs": {
+    "B": 20,
+    "B_key": "cross_firm",
+    "m": 1.5,
+    "av": 1.1843491997243965,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-11",
+    "news_time_et": "2026-11-11 00:35:07",
+    "car": -0.035159769952072775,
+    "M": 0.022952224979871427,
+    "M_group": "news",
+    "sector": "Information Technology",
+    "p": 1.5,
+    "catalyst": [
+     "2027-01-26",
+     ""
+    ],
+    "hard": false,
+    "first_report": true,
+    "cross_firm": true,
+    "complex": true
+   },
+   "kill_conditions": [
+    "Anthropic delays or cancels the Claude Sheets launch",
+    "Microsoft reports Office/Excel revenue acceleration or strong customer retention",
+    "Analysts conclude Claude Sheets is not a substitute for Excel"
+   ],
+   "first_reported": "2026-11-11",
+   "driving_event": "Anthropic launched Claude Sheets to rival Excel, pressuring Microsoft's Office franchise and MSFT shares.",
+   "confidence": 0.5,
+   "structural": false,
+   "structural_votes": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "H_a8": 3,
+   "release": null
+  },
+  "NFLX": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.02,
+   "out": {
+    "event_type": "mna_rumour",
+    "driving_event": "Skydance-WBD merger completes with $6B cost cuts, a competitive negative for Netflix",
+    "first_reported": "2026-11-10",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Netflix raises full-year guidance or reports accelerating subscriber growth",
+     "Skydance-WBD merger cost cuts scaled back or the deal is unwound",
+     "Netflix announces a large buyback or initiates a dividend"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": true,
+    "complex": true,
+    "catalyst": null,
+    "structural": true
+   },
+   "provider": "Cohere",
+   "samples": [
+    {
+     "event_type": "mna_rumour",
+     "driving_event": "Skydance-WBD merger completes with $6B cost cuts, a competitive negative for Netflix",
+     "first_reported": "2026-11-10",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Netflix raises full-year guidance or reports accelerating subscriber growth",
+      "Skydance-WBD merger cost cuts scaled back or the deal is unwound",
+      "Netflix announces a large buyback or initiates a dividend"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": true,
+     "complex": true,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "mna_rumour",
+     "driving_event": "Skydance-WBD merger completes with $6B cost cuts, a competitive negative for Netflix",
+     "first_reported": "2026-11-10",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Netflix raises full-year guidance on accelerating subscriber and revenue growth",
+      "Paramount-WBD deal collapses or the $6B cost-cut plan is abandoned",
+      "Netflix announces a large buyback or initiates a dividend"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": true,
+     "complex": true,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "mna_rumour",
+     "driving_event": "Skydance-WBD merger completes with $6B cost cuts, a competitive negative for Netflix",
+     "first_reported": "2026-11-10",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Skydance-WBD abandons or trims its $6 billion cost-cut plan",
+      "Netflix reports accelerating subscriber growth and raises full-year guidance",
+      "Netflix announces a large buyback or initiates a dividend"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": true,
+     "complex": true,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "mna_rumour",
+     "driving_event": "Skydance-Paramount Warner Bros. merger closes with $6B cost cuts, pressuring Netflix competitively",
+     "first_reported": "2026-11-10",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Skydance-WBD merger terminated or the $6 billion cost-cut plan abandoned",
+      "Netflix reports accelerating subscriber growth or raises forward guidance",
+      "Netflix announces a large buyback or initiates a dividend"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": true,
+     "complex": true,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "mna_rumour",
+     "driving_event": "Skydance-WBD merger completion with $6B cost cuts, a relative competitive negative for Netflix.",
+     "first_reported": "2026-11-10",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Skydance-WBD merger abandoned or blocked by regulators.",
+      "Netflix reports accelerating subscriber growth or record engagement.",
+      "Co-CEO Peters buys NFLX shares, reversing the sale."
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": true,
+     "complex": true,
+     "catalyst": null,
+     "structural": true
+    }
+   ],
+   "news_age": 2,
+   "H_raw": 25.0,
+   "H": 45,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [25, 25, 25, 25, 25] = 25.0; structural: next report 2027-01-18 (amc): 44 sessions + 1 -> H 45; 7B mean over samples [45, 45, 45, 45, 45] = 45.0",
+   "samples_h": [
+    {
+     "H": 25,
+     "stale": false,
+     "why": "cross_firm B 20 x m 1.50 - age 2, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "cross_firm",
+      "m": 1.5,
+      "av": 0.6345376476054762,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-10",
+      "news_time_et": "2026-11-10 02:43:36",
+      "car": 0.003910312737042577,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": [
+       "2027-01-18",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": true,
+      "complex": true
+     }
+    },
+    {
+     "H": 25,
+     "stale": false,
+     "why": "cross_firm B 20 x m 1.50 - age 2, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "cross_firm",
+      "m": 1.5,
+      "av": 0.6345376476054762,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-10",
+      "news_time_et": "2026-11-10 02:43:36",
+      "car": 0.003910312737042577,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": [
+       "2027-01-18",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": true,
+      "complex": true
+     }
+    },
+    {
+     "H": 25,
+     "stale": false,
+     "why": "cross_firm B 20 x m 1.50 - age 2, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "cross_firm",
+      "m": 1.5,
+      "av": 0.6345376476054762,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-10",
+      "news_time_et": "2026-11-10 02:43:36",
+      "car": 0.003910312737042577,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": [
+       "2027-01-18",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": true,
+      "complex": true
+     }
+    },
+    {
+     "H": 25,
+     "stale": false,
+     "why": "cross_firm B 20 x m 1.50 - age 2, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "cross_firm",
+      "m": 1.5,
+      "av": 0.6345376476054762,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-10",
+      "news_time_et": "2026-11-10 02:43:36",
+      "car": 0.003910312737042577,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": [
+       "2027-01-18",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": true,
+      "complex": true
+     }
+    },
+    {
+     "H": 25,
+     "stale": false,
+     "why": "cross_firm B 20 x m 1.50 - age 2, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "cross_firm",
+      "m": 1.5,
+      "av": 0.6345376476054762,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-10",
+      "news_time_et": "2026-11-10 02:43:36",
+      "car": 0.003910312737042577,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": [
+       "2027-01-18",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": true,
+      "complex": true
+     }
+    }
+   ],
+   "inputs": {
+    "B": 20,
+    "B_key": "cross_firm",
+    "m": 1.5,
+    "av": 0.6345376476054762,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-10",
+    "news_time_et": "2026-11-10 02:43:36",
+    "car": 0.003910312737042577,
+    "M": 0.01985621740997779,
+    "M_group": "news",
+    "sector": "Communication Services",
+    "p": 0.0,
+    "catalyst": [
+     "2027-01-18",
+     "amc"
+    ],
+    "hard": true,
+    "first_report": true,
+    "cross_firm": true,
+    "complex": true
+   },
+   "kill_conditions": [
+    "Netflix raises full-year guidance or reports accelerating subscriber growth",
+    "Skydance-WBD merger cost cuts scaled back or the deal is unwound",
+    "Netflix announces a large buyback or initiates a dividend"
+   ],
+   "first_reported": "2026-11-10",
+   "driving_event": "Skydance-WBD merger completes with $6B cost cuts, a competitive negative for Netflix",
+   "confidence": 0.4,
+   "structural": true,
+   "structural_votes": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "H_a8": 25,
+   "report_session": "2027-01-19",
+   "release": null
+  },
+  "NKE": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.03,
+   "out": {
+    "event_type": "analyst_revisions",
+    "driving_event": "Truist and Morgan Stanley Sell downgrades flag Jordan inventory, China weakness, stretched valuation",
+    "first_reported": "2026-11-05",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Nike raises FY guidance or reports improving North America and China sales",
+     "Sell-side upgrades Nike to Buy or lifts price targets above the current share price",
+     "Nike Investor Day sets multi-year targets above consensus expectations"
+    ],
+    "hard": false,
+    "first_report": true,
+    "revision_direction": "down",
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": "other",
+    "structural": false
+   },
+   "provider": "InferenceNet",
+   "samples": [
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "Truist and Morgan Stanley Sell downgrades flag Jordan inventory, China weakness, stretched valuation",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Nike raises FY guidance or reports improving North America and China sales",
+      "Sell-side upgrades Nike to Buy or lifts price targets above the current share price",
+      "Nike Investor Day sets multi-year targets above consensus expectations"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": "down",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "Nov 5 sell-side downgrades (Truist, Morgan Stanley) flagging Jordan inventory, China weakness, stretched valuation",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Nike reports a quarterly beat and raises its full-year guidance",
+      "A major analyst upgrades Nike to Buy with a materially higher price target",
+      "Nike's Investor Day unveils multi-year targets well above consensus expectations"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": "down",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "Nov 5 Truist and Morgan Stanley Sell downgrades on Jordan inventory, China weakness, valuation",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "A major analyst upgrades Nike to Buy or lifts its price target above the current share price",
+      "Nike raises FY guidance or Investor Day targets come in above consensus",
+      "Nike reports clearing Jordan inventory or a return to revenue growth"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": "down",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "Truist and Morgan Stanley Sell ratings flag Jordan inventory, China weakness and stretched valuation after rally",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Nike raises FY guidance or reports a sales and margin beat",
+      "Analysts upgrade NKE to Buy and lift price targets",
+      "Investor Day targets exceed consensus while Jordan inventory normalizes"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": "down",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "Truist and Morgan Stanley Sell downgrades on Jordan inventory, China weakness, valuation",
+     "first_reported": "2026-11-06",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Nike raises FY guidance",
+      "Nike reports earnings beat and raises outlook",
+      "Nike announces a large share buyback"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": "down",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    }
+   ],
+   "news_age": 4,
+   "H_raw": 0.6,
+   "H": 3,
+   "stale": true,
+   "why": "mean of 5 samples' horizons [0, 0, 0, 3, 0] = 0.6",
+   "samples_h": [
+    {
+     "H": 10,
+     "stale": true,
+     "why": "analyst_down B 20 x m 1.25 - age 4, p 1.50: priced in, not entered",
+     "inputs": {
+      "B": 20,
+      "B_key": "analyst_down",
+      "m": 1.25,
+      "av": 0.8364052554154396,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 01:12:03",
+      "car": -0.06056801817435614,
+      "M": 0.019137048217274837,
+      "M_group": "news",
+      "sector": "Consumer Discretionary",
+      "p": 1.5,
+      "catalyst": [
+       "2026-12-16",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 10,
+     "stale": true,
+     "why": "analyst_down B 20 x m 1.25 - age 5, p 1.50: priced in, not entered",
+     "inputs": {
+      "B": 20,
+      "B_key": "analyst_down",
+      "m": 1.25,
+      "av": 1.1575384894512248,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 00:11:36",
+      "car": -0.046990516803555475,
+      "M": 0.019137048217274837,
+      "M_group": "news",
+      "sector": "Consumer Discretionary",
+      "p": 1.5,
+      "catalyst": [
+       "2026-12-16",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 10,
+     "stale": true,
+     "why": "analyst_down B 20 x m 1.25 - age 5, p 1.50: priced in, not entered",
+     "inputs": {
+      "B": 20,
+      "B_key": "analyst_down",
+      "m": 1.25,
+      "av": 1.1575384894512248,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 00:11:36",
+      "car": -0.046990516803555475,
+      "M": 0.019137048217274837,
+      "M_group": "news",
+      "sector": "Consumer Discretionary",
+      "p": 1.5,
+      "catalyst": [
+       "2026-12-16",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "analyst_down B 20 x m 1.25 - age 5, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "analyst_down",
+      "m": 1.25,
+      "av": 1.1575384894512248,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 00:11:36",
+      "car": -0.046990516803555475,
+      "M": 0.019137048217274837,
+      "M_group": "news",
+      "sector": "Consumer Discretionary",
+      "p": 1.5,
+      "catalyst": [
+       "2026-12-16",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 10,
+     "stale": true,
+     "why": "analyst_down B 20 x m 1.25 - age 4, p 1.50: priced in, not entered",
+     "inputs": {
+      "B": 20,
+      "B_key": "analyst_down",
+      "m": 1.25,
+      "av": 0.8364052554154396,
+      "friday": true,
+      "after_close": false,
+      "news_session": "2026-11-06",
+      "news_time_et": "2026-11-06 01:12:03",
+      "car": -0.06056801817435614,
+      "M": 0.019137048217274837,
+      "M_group": "news",
+      "sector": "Consumer Discretionary",
+      "p": 1.5,
+      "catalyst": [
+       "2026-12-16",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 20,
+    "B_key": "analyst_down",
+    "m": 1.25,
+    "av": 1.1575384894512248,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-05",
+    "news_time_et": "2026-11-05 00:11:36",
+    "car": -0.046990516803555475,
+    "M": 0.019137048217274837,
+    "M_group": "news",
+    "sector": "Consumer Discretionary",
+    "p": 1.5,
+    "catalyst": [
+     "2026-12-16",
+     "amc"
+    ],
+    "hard": false,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "Nike raises FY guidance or reports improving North America and China sales",
+    "Sell-side upgrades Nike to Buy or lifts price targets above the current share price",
+    "Nike Investor Day sets multi-year targets above consensus expectations"
+   ],
+   "first_reported": "2026-11-05",
+   "driving_event": "Truist and Morgan Stanley Sell downgrades flag Jordan inventory, China weakness, stretched valuation",
+   "confidence": 0.6,
+   "structural": false,
+   "structural_votes": [
+    false,
+    false,
+    false,
+    false,
+    true
+   ],
+   "H_a8": 3,
+   "release": null
+  },
+  "NRG": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.025,
+   "out": {
+    "event_type": "earnings",
+    "driving_event": "Q3 2026 earnings beat alongside $4B gas-plant sale, $3B buyback and dividend hike",
+    "first_reported": "2026-11-09",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "NRG cuts or withdraws its FY2026 or FY2027 adjusted EPS guidance",
+     "LS Power $4B gas-plant sale is terminated or blocked by regulators",
+     "NRG suspends or scales back its $3B buyback or dividend increase"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": null,
+    "structural": false
+   },
+   "provider": "Wafer",
+   "samples": [
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 2026 earnings beat alongside $4B gas-plant sale, $3B buyback and dividend hike",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "NRG cuts or withdraws its FY2026 or FY2027 adjusted EPS guidance",
+      "LS Power $4B gas-plant sale is terminated or blocked by regulators",
+      "NRG suspends or scales back its $3B buyback or dividend increase"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "earnings",
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "NRG Q3 EPS beat, $4B gas asset sale, $3B buyback and dividend hike",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "NRG cuts FY2026 adjusted EPS guidance below $7.90-$9.90 or withdraws FY2027 guidance.",
+      "LS Power's $4B purchase of the six gas plants is terminated or blocked by regulators.",
+      "NRG cancels its $3B buyback or cuts the dividend."
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 2026 earnings beat alongside $4B gas asset sale and $3B buyback",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "NRG cuts FY2026 or FY2027 adjusted EPS guidance",
+      "LS Power $4B gas asset sale is terminated or blocked by regulators",
+      "NRG suspends the $3B buyback or cuts the dividend"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "NRG Q3 earnings beat with $4B LS Power gas-plant sale, $3B buyback and dividend hike",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "NRG cuts, suspends or withdraws its FY2026 adjusted EPS guidance of $7.90-$9.90",
+      "The $4B LS Power sale of six gas-fired assets is terminated or blocked by regulators",
+      "NRG cancels the $3B buyback or reduces its dividend"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "NRG Q3 2026 earnings beat, $4B gas plant sale to LS Power, $3B buyback/dividend hike",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "NRG cuts FY2026 adjusted EPS guidance below $7.90",
+      "LS Power $4B gas asset sale terminated or blocked by regulators",
+      "NRG suspends $3B buyback or reduces dividend"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    }
+   ],
+   "news_age": 3,
+   "H_raw": 3.0,
+   "H": 3,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [3, 3, 3, 3, 3] = 3.0",
+   "samples_h": [
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.9116570054095383,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:46:23",
+      "car": 0.06500888401243898,
+      "M": 0.04317532000917487,
+      "M_group": "hard",
+      "sector": "Utilities",
+      "p": 1.5,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.9116570054095383,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:46:23",
+      "car": 0.06500888401243898,
+      "M": 0.04317532000917487,
+      "M_group": "hard",
+      "sector": "Utilities",
+      "p": 1.5,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.9116570054095383,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:46:23",
+      "car": 0.06500888401243898,
+      "M": 0.04317532000917487,
+      "M_group": "hard",
+      "sector": "Utilities",
+      "p": 1.5,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.9116570054095383,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:46:23",
+      "car": 0.06500888401243898,
+      "M": 0.04317532000917487,
+      "M_group": "hard",
+      "sector": "Utilities",
+      "p": 1.5,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.9116570054095383,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:46:23",
+      "car": 0.06500888401243898,
+      "M": 0.04317532000917487,
+      "M_group": "hard",
+      "sector": "Utilities",
+      "p": 1.5,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 20,
+    "B_key": "earnings",
+    "m": 1.0,
+    "av": 1.9116570054095383,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-09",
+    "news_time_et": "2026-11-09 02:46:23",
+    "car": 0.06500888401243898,
+    "M": 0.04317532000917487,
+    "M_group": "hard",
+    "sector": "Utilities",
+    "p": 1.5,
+    "catalyst": null,
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "NRG cuts or withdraws its FY2026 or FY2027 adjusted EPS guidance",
+    "LS Power $4B gas-plant sale is terminated or blocked by regulators",
+    "NRG suspends or scales back its $3B buyback or dividend increase"
+   ],
+   "first_reported": "2026-11-09",
+   "driving_event": "Q3 2026 earnings beat alongside $4B gas-plant sale, $3B buyback and dividend hike",
+   "confidence": 0.5,
+   "structural": false,
+   "structural_votes": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "H_a8": 3,
+   "release": {
+    "session": "2026-11-09",
+    "source": "8-K 2.02",
+    "accepted": "2026-11-09 06:45:04"
+   }
+  },
+  "NVDA": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.0275,
+   "out": {
+    "event_type": "leadership",
+    "driving_event": "Board probe into CEO Huang over spy claims and admitted affair",
+    "first_reported": "2026-11-11",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Board probe concludes with no findings against CEO Huang",
+     "US lifts or eases China export restrictions on Nvidia",
+     "Nvidia raises guidance at the Nov 17 earnings report"
+    ],
+    "hard": false,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": "earnings",
+    "structural": false
+   },
+   "provider": "Cohere",
+   "samples": [
+    {
+     "event_type": "leadership",
+     "driving_event": "Board probe into CEO Huang over spy claims and admitted affair",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Board probe concludes with no findings against CEO Huang",
+      "US lifts or eases China export restrictions on Nvidia",
+      "Nvidia raises guidance at the Nov 17 earnings report"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "earnings",
+     "structural": false
+    },
+    {
+     "event_type": "leadership",
+     "driving_event": "Board opens probe into CEO Huang over spy claims and admitted affair",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Nvidia board probe clears CEO Huang of espionage allegations",
+      "US lifts restrictions on Nvidia China chip sales",
+      "Nvidia reports blowout Q3 results and raises guidance"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "earnings",
+     "structural": false
+    },
+    {
+     "event_type": "leadership",
+     "driving_event": "Board probe into CEO Huang's foreign-intelligence targeting and admitted affair; new China sales restrictions",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Nvidia board clears CEO Huang of espionage allegations and affirms no misconduct",
+      "Nvidia raises Q3 or full-year guidance above consensus",
+      "US eases or lifts restrictions on Nvidia China sales"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "earnings",
+     "structural": false
+    },
+    {
+     "event_type": "leadership",
+     "driving_event": "Board probe into CEO Huang's affair and foreign intelligence targeting",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Board probe clears CEO Huang of foreign intelligence ties",
+      "Nvidia reinstates China sales via partners",
+      "Nvidia Q3 earnings beat and raises guidance"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "earnings",
+     "structural": false
+    },
+    {
+     "event_type": "leadership",
+     "driving_event": "Board probe into CEO Huang over spy claims and admitted affair pressures Nvidia",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Board probe clears CEO Huang of foreign-intelligence ties or closes without action",
+      "Nvidia restores unrestricted China sales or secures export licenses",
+      "Q3 earnings beat and guidance raises, removing governance overhang"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "earnings",
+     "structural": false
+    }
+   ],
+   "news_age": 1,
+   "H_raw": 5.0,
+   "H": 5,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [5, 5, 5, 5, 5] = 5.0",
+   "samples_h": [
+    {
+     "H": 5,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 1, p 0.00; earnings 2026-11-17 (amc): 4 sessions + 1",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 2.6963694075747573,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:14:34",
+      "car": 0.009206429986858847,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2026-11-17",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 5,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 1, p 0.00; earnings 2026-11-17 (amc): 4 sessions + 1",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 2.6963694075747573,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:14:34",
+      "car": 0.009206429986858847,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2026-11-17",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 5,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 1, p 0.00; earnings 2026-11-17 (amc): 4 sessions + 1",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 2.6963694075747573,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:14:34",
+      "car": 0.009206429986858847,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2026-11-17",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 5,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 1, p 0.00; earnings 2026-11-17 (amc): 4 sessions + 1",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 2.6963694075747573,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:14:34",
+      "car": 0.009206429986858847,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2026-11-17",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 5,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 1, p 0.00; earnings 2026-11-17 (amc): 4 sessions + 1",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 2.6963694075747573,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:14:34",
+      "car": 0.009206429986858847,
+      "M": 0.022952224979871427,
+      "M_group": "news",
+      "sector": "Information Technology",
+      "p": 0.0,
+      "catalyst": [
+       "2026-11-17",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 5,
+    "B_key": "soft",
+    "m": 1.0,
+    "av": 2.6963694075747573,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-11",
+    "news_time_et": "2026-11-11 00:14:34",
+    "car": 0.009206429986858847,
+    "M": 0.022952224979871427,
+    "M_group": "news",
+    "sector": "Information Technology",
+    "p": 0.0,
+    "catalyst": [
+     "2026-11-17",
+     "amc"
+    ],
+    "hard": false,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "Board probe concludes with no findings against CEO Huang",
+    "US lifts or eases China export restrictions on Nvidia",
+    "Nvidia raises guidance at the Nov 17 earnings report"
+   ],
+   "first_reported": "2026-11-11",
+   "driving_event": "Board probe into CEO Huang over spy claims and admitted affair",
+   "confidence": 0.55,
+   "structural": false,
+   "structural_votes": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "H_a8": 5,
+   "release": null
+  },
+  "TAP": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.03,
+   "out": {
+    "event_type": "earnings",
+    "driving_event": "Q3 2026 revenue miss and FY26 sales, profit, cash flow guidance cut",
+    "first_reported": "2026-11-05",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Molson Coors raises its FY2026 sales or EPS guidance",
+     "Headline reports US beer industry volumes returning to growth",
+     "Company announces cost cuts or buyback restoring the FY26 profit outlook"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": null,
+    "structural": false
+   },
+   "provider": "Cohere",
+   "samples": [
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 2026 revenue miss and FY26 sales, profit, cash flow guidance cut",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Molson Coors raises its FY2026 sales or EPS guidance",
+      "Headline reports US beer industry volumes returning to growth",
+      "Company announces cost cuts or buyback restoring the FY26 profit outlook"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "guidance",
+     "driving_event": "Q3 revenue miss and FY26 sales, EPS guidance cut on weak beer demand and cost inflation",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Molson Coors raises its FY2026 sales and EPS guidance",
+      "Company reports returning US and EMEA volume growth with easing input costs",
+      "Company announces pricing or cost actions that fully offset aluminum and freight inflation"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 2026 earnings miss and FY26 guidance cut on weak beer demand",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Molson Coors raises FY2026 guidance",
+      "Molson Coors reports Q4 revenue growth and margin expansion",
+      "Molson Coors announces cost savings that fully offset inflation"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "guidance",
+     "driving_event": "Q3 2026 revenue miss and FY26 sales, EPS and cash flow guidance cut",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Molson Coors raises FY2026 guidance or reports Q4 revenue and EPS above estimates",
+      "Beer volumes recover and aluminum/freight costs ease, lifting Molson Coors margins",
+      "Molson Coors announces a large buyback, activist stake or strategic review"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 revenue miss and FY26 guidance cut on weak beer demand and inflation",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Company raises FY2026 guidance or reports better-than-expected sales and profit.",
+      "Industry beer demand recovers and volume trends improve.",
+      "Aluminum and freight cost inflation eases materially."
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    }
+   ],
+   "news_age": 5,
+   "H_raw": 3.0,
+   "H": 27,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [3, 3, 3, 3, 3] = 3.0; structural: next report 2027-02-16 (amc): 64 sessions + 1 -> H 63; 7B mean over samples [3, 63, 3, 3, 63] = 27.0",
+   "samples_h": [
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 5, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.5513281970911847,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 02:31:40",
+      "car": -0.07996258271808745,
+      "M": 0.0490451697533367,
+      "M_group": "hard",
+      "sector": "Consumer Staples",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-16",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "guidance B 20 x m 1.00 - age 5, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "guidance",
+      "m": 1.0,
+      "av": 1.5513281970911847,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 02:31:40",
+      "car": -0.07996258271808745,
+      "M": 0.0490451697533367,
+      "M_group": "hard",
+      "sector": "Consumer Staples",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-16",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 5, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.5513281970911847,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 02:31:40",
+      "car": -0.07996258271808745,
+      "M": 0.0490451697533367,
+      "M_group": "hard",
+      "sector": "Consumer Staples",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-16",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "guidance B 20 x m 1.00 - age 5, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "guidance",
+      "m": 1.0,
+      "av": 1.5513281970911847,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 02:31:40",
+      "car": -0.07996258271808745,
+      "M": 0.0490451697533367,
+      "M_group": "hard",
+      "sector": "Consumer Staples",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-16",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 5, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.5513281970911847,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 02:31:40",
+      "car": -0.07996258271808745,
+      "M": 0.0490451697533367,
+      "M_group": "hard",
+      "sector": "Consumer Staples",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-16",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 20,
+    "B_key": "earnings",
+    "m": 1.0,
+    "av": 1.5513281970911847,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-05",
+    "news_time_et": "2026-11-05 02:31:40",
+    "car": -0.07996258271808745,
+    "M": 0.0490451697533367,
+    "M_group": "hard",
+    "sector": "Consumer Staples",
+    "p": 1.5,
+    "catalyst": [
+     "2027-02-16",
+     "amc"
+    ],
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "Molson Coors raises its FY2026 sales or EPS guidance",
+    "Headline reports US beer industry volumes returning to growth",
+    "Company announces cost cuts or buyback restoring the FY26 profit outlook"
+   ],
+   "first_reported": "2026-11-05",
+   "driving_event": "Q3 2026 revenue miss and FY26 sales, profit, cash flow guidance cut",
+   "confidence": 0.6,
+   "structural": false,
+   "structural_votes": [
+    false,
+    true,
+    false,
+    false,
+    true
+   ],
+   "H_a8": 3,
+   "report_session": "2027-02-17",
+   "release": {
+    "session": "2026-11-05",
+    "source": "8-K 2.02",
+    "accepted": "2026-11-05 06:33:43"
+   }
+  },
+  "TRGP": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.0275,
+   "out": {
+    "event_type": "earnings",
+    "driving_event": "Q3 2026 earnings beat with $6B 2026 EBITDA guidance and 20% 2027 dividend increase expectation",
+    "first_reported": "2026-11-05",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Company cuts FY2026 EBITDA guidance below $6 billion",
+     "ExxonMobil Permian processing or pipeline pact is delayed or terminated",
+     "Targa cancels or walks back expected 20% 2027 dividend increase"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": null,
+    "structural": true
+   },
+   "provider": "Alibaba",
+   "samples": [
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 2026 earnings beat with $6B 2026 EBITDA guidance and 20% 2027 dividend increase expectation",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Company cuts FY2026 EBITDA guidance below $6 billion",
+      "ExxonMobil Permian processing or pipeline pact is delayed or terminated",
+      "Targa cancels or walks back expected 20% 2027 dividend increase"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 2026 earnings beat, $6B 2026 EBITDA guidance, expected 20% 2027 dividend increase, ExxonMobil pact",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Targa cuts its 2026 EBITDA guidance below $6 billion",
+      "Targa drops or delays the expected 20% increase to its 2027 dividend",
+      "ExxonMobil Permian processing agreement is terminated, delayed, or materially reduced"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 2026 EPS beat, $6B 2026 EBITDA guidance, 20% 2027 dividend increase expectation",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Company cuts 2026 EBITDA guidance below $6B or withdraws it.",
+      "Targa abandons or cuts the expected 20% 2027 dividend increase.",
+      "ExxonMobil Permian pact is terminated or materially delayed."
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 2026 earnings beat with $6B EBITDA guidance, record Permian volumes, and expected 20% 2027 dividend hike.",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Targa cuts or withdraws its 2026 EBITDA guidance of at least $6B.",
+      "Targa scraps or reduces the expected 20% increase to its 2027 dividend.",
+      "Analysts cut TRGP estimates or downgrade the stock after Q3."
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 2026 earnings beat with $6B EBITDA guidance, 20% 2027 dividend hike, record Permian volumes",
+     "first_reported": "2026-11-05",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Targa cuts its 2026 EBITDA guidance below $6B or withdraws the target",
+      "Targa scraps or reduces the planned 20% increase to its 2027 dividend",
+      "ExxonMobil Permian processing/pipeline pact is terminated or delayed"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    }
+   ],
+   "news_age": 5,
+   "H_raw": 10.0,
+   "H": 52,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [10, 10, 10, 10, 10] = 10.0; structural: next report 2027-02-17 (amc): 65 sessions + 1 -> H 63; 7B mean over samples [10, 63, 63, 63, 63] = 52.4",
+   "samples_h": [
+    {
+     "H": 10,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 5, p 0.62",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.755289719397913,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 00:19:34",
+      "car": 0.029377281525381594,
+      "M": 0.04711272925350114,
+      "M_group": "hard",
+      "sector": "Energy",
+      "p": 0.6235529546019337,
+      "catalyst": [
+       "2027-02-17",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 10,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 5, p 0.62",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.755289719397913,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 00:19:34",
+      "car": 0.029377281525381594,
+      "M": 0.04711272925350114,
+      "M_group": "hard",
+      "sector": "Energy",
+      "p": 0.6235529546019337,
+      "catalyst": [
+       "2027-02-17",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 10,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 5, p 0.62",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.755289719397913,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 00:19:34",
+      "car": 0.029377281525381594,
+      "M": 0.04711272925350114,
+      "M_group": "hard",
+      "sector": "Energy",
+      "p": 0.6235529546019337,
+      "catalyst": [
+       "2027-02-17",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 10,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 5, p 0.62",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.755289719397913,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 00:19:34",
+      "car": 0.029377281525381594,
+      "M": 0.04711272925350114,
+      "M_group": "hard",
+      "sector": "Energy",
+      "p": 0.6235529546019337,
+      "catalyst": [
+       "2027-02-17",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 10,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 5, p 0.62",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 1.755289719397913,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-05",
+      "news_time_et": "2026-11-05 00:19:34",
+      "car": 0.029377281525381594,
+      "M": 0.04711272925350114,
+      "M_group": "hard",
+      "sector": "Energy",
+      "p": 0.6235529546019337,
+      "catalyst": [
+       "2027-02-17",
+       "amc"
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 20,
+    "B_key": "earnings",
+    "m": 1.0,
+    "av": 1.755289719397913,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-05",
+    "news_time_et": "2026-11-05 00:19:34",
+    "car": 0.029377281525381594,
+    "M": 0.04711272925350114,
+    "M_group": "hard",
+    "sector": "Energy",
+    "p": 0.6235529546019337,
+    "catalyst": [
+     "2027-02-17",
+     "amc"
+    ],
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "Company cuts FY2026 EBITDA guidance below $6 billion",
+    "ExxonMobil Permian processing or pipeline pact is delayed or terminated",
+    "Targa cancels or walks back expected 20% 2027 dividend increase"
+   ],
+   "first_reported": "2026-11-05",
+   "driving_event": "Q3 2026 earnings beat with $6B 2026 EBITDA guidance and 20% 2027 dividend increase expectation",
+   "confidence": 0.55,
+   "structural": true,
+   "structural_votes": [
+    false,
+    true,
+    true,
+    true,
+    true
+   ],
+   "H_a8": 10,
+   "report_session": "2027-02-18",
+   "release": {
+    "session": "2026-11-05",
+    "source": "8-K 2.02",
+    "accepted": "2026-11-05 06:15:14"
+   }
+  },
+  "TSLA": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.025,
+   "out": {
+    "event_type": "mna_rumour",
+    "driving_event": "Tesla special committee formed to review possible all-stock Tesla-SpaceX merger",
+    "first_reported": "2026-11-11",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Tesla-SpaceX merger talks terminated or special committee rejects the combination",
+     "Tesla delays or cancels Cybercab production, reversing the capacity shift rationale",
+     "Tesla restarts Cybertruck production, undoing the wind-down thesis"
+    ],
+    "hard": false,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": true,
+    "catalyst": null,
+    "structural": true
+   },
+   "provider": "CoreWeave",
+   "samples": [
+    {
+     "event_type": "mna_rumour",
+     "driving_event": "Tesla special committee formed to review possible all-stock Tesla-SpaceX merger",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Tesla-SpaceX merger talks terminated or special committee rejects the combination",
+      "Tesla delays or cancels Cybercab production, reversing the capacity shift rationale",
+      "Tesla restarts Cybertruck production, undoing the wind-down thesis"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "mna_rumour",
+     "driving_event": "Tesla board forms special committee to review possible Tesla-SpaceX all-stock merger",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Tesla-SpaceX merger talks terminated or special committee rejects the all-stock deal",
+      "Cybercab production delayed or robotaxi rollout halted by regulators",
+      "Cybertruck wind-down reversed and production restarted at scale"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "mna_rumour",
+     "driving_event": "Tesla forms special committee to review possible all-stock merger with SpaceX",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Tesla-SpaceX merger talks terminated or special committee rejects the combination",
+      "Tesla delays or cancels Cybercab production and robotaxi rollout",
+      "Tesla reverses the Cybertruck wind-down, keeping Texas capacity for Cybertruck output"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "mna_rumour",
+     "driving_event": "Tesla special committee formed to review possible all-stock Tesla-SpaceX merger",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Special committee ends review or Tesla-SpaceX merger talks collapse",
+      "Tesla shelves or delays its Cybercab production plans",
+      "Tesla reverses the Cybertruck wind-down and keeps production running"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": null,
+     "structural": true
+    },
+    {
+     "event_type": "mna_rumour",
+     "driving_event": "Tesla forms special committee to review Tesla-SpaceX all-stock merger",
+     "first_reported": "2026-11-11",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Tesla-SpaceX merger talks terminated or special committee rejects merger",
+      "Tesla cancels Cybercab production or delays robotaxi launch beyond 2027",
+      "Democrats block federal autonomy legislation, halting robotaxi expansion"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": true,
+     "catalyst": null,
+     "structural": true
+    }
+   ],
+   "news_age": 1,
+   "H_raw": 4.6,
+   "H": 51,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [4, 5, 4, 5, 5] = 4.6; structural: next report 2027-01-26 (amc): 50 sessions + 1 -> H 51; 7B mean over samples [51, 51, 51, 51, 51] = 51.0",
+   "samples_h": [
+    {
+     "H": 4,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 1, p 0.40",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 0.7363786677688822,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:01:26",
+      "car": 0.007725396031064608,
+      "M": 0.019137048217274837,
+      "M_group": "news",
+      "sector": "Consumer Discretionary",
+      "p": 0.40368796396149353,
+      "catalyst": [
+       "2027-01-26",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 5,
+     "stale": false,
+     "why": "soft B 5 x m 1.50 - age 1, p 0.40",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.5,
+      "av": 0.7363786677688822,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:01:26",
+      "car": 0.007725396031064608,
+      "M": 0.019137048217274837,
+      "M_group": "news",
+      "sector": "Consumer Discretionary",
+      "p": 0.40368796396149353,
+      "catalyst": [
+       "2027-01-26",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    },
+    {
+     "H": 4,
+     "stale": false,
+     "why": "soft B 5 x m 1.25 - age 1, p 0.40",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.25,
+      "av": 0.7363786677688822,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:01:26",
+      "car": 0.007725396031064608,
+      "M": 0.019137048217274837,
+      "M_group": "news",
+      "sector": "Consumer Discretionary",
+      "p": 0.40368796396149353,
+      "catalyst": [
+       "2027-01-26",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 5,
+     "stale": false,
+     "why": "soft B 5 x m 1.50 - age 1, p 0.40",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.5,
+      "av": 0.7363786677688822,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:01:26",
+      "car": 0.007725396031064608,
+      "M": 0.019137048217274837,
+      "M_group": "news",
+      "sector": "Consumer Discretionary",
+      "p": 0.40368796396149353,
+      "catalyst": [
+       "2027-01-26",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    },
+    {
+     "H": 5,
+     "stale": false,
+     "why": "soft B 5 x m 1.50 - age 1, p 0.40",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.5,
+      "av": 0.7363786677688822,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-11",
+      "news_time_et": "2026-11-11 00:01:26",
+      "car": 0.007725396031064608,
+      "M": 0.019137048217274837,
+      "M_group": "news",
+      "sector": "Consumer Discretionary",
+      "p": 0.40368796396149353,
+      "catalyst": [
+       "2027-01-26",
+       "amc"
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": true
+     }
+    }
+   ],
+   "inputs": {
+    "B": 5,
+    "B_key": "soft",
+    "m": 1.5,
+    "av": 0.7363786677688822,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-11",
+    "news_time_et": "2026-11-11 00:01:26",
+    "car": 0.007725396031064608,
+    "M": 0.019137048217274837,
+    "M_group": "news",
+    "sector": "Consumer Discretionary",
+    "p": 0.40368796396149353,
+    "catalyst": [
+     "2027-01-26",
+     "amc"
+    ],
+    "hard": false,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": true
+   },
+   "kill_conditions": [
+    "Tesla-SpaceX merger talks terminated or special committee rejects the combination",
+    "Tesla delays or cancels Cybercab production, reversing the capacity shift rationale",
+    "Tesla restarts Cybertruck production, undoing the wind-down thesis"
+   ],
+   "first_reported": "2026-11-11",
+   "driving_event": "Tesla special committee formed to review possible all-stock Tesla-SpaceX merger",
+   "confidence": 0.5,
+   "structural": true,
+   "structural_votes": [
+    true,
+    true,
+    true,
+    true,
+    true
+   ],
+   "H_a8": 5,
+   "report_session": "2027-01-27",
+   "release": null
+  },
+  "TTD": {
+   "status": "ok",
+   "error": null,
+   "weight": -0.032,
+   "out": {
+    "event_type": "earnings",
+    "driving_event": "Q3 earnings beat on low bar with revenue down 0.5% and weaker margins; cautious CFO tone.",
+    "first_reported": "2026-11-09",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Trade Desk reports Q4 revenue growth and EBITDA margin expansion, reversing Q3 weakness",
+     "Management issues materially higher Q4/FY guidance and withdraws cautious tone",
+     "Multiple covering analysts upgrade TTD to Buy with price targets well above $20"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": null,
+    "structural": false
+   },
+   "provider": "Crusoe",
+   "samples": [
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 earnings beat on low bar with revenue down 0.5% and weaker margins; cautious CFO tone.",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Trade Desk reports Q4 revenue growth and EBITDA margin expansion, reversing Q3 weakness",
+      "Management issues materially higher Q4/FY guidance and withdraws cautious tone",
+      "Multiple covering analysts upgrade TTD to Buy with price targets well above $20"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 earnings beat on low bar with revenue down 0.5% and weaker EBITDA/margins, capping post-rally upside",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Trade Desk reports Q4 revenue growth and expanding EBITDA margins",
+      "Management raises full-year revenue and margin guidance",
+      "A broker upgrades Trade Desk to Buy from Neutral"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 2026 earnings beat with revenue decline and margin pressure",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Trade Desk guides Q4 revenue above consensus or raises full-year outlook",
+      "Analyst upgrades TTD to Buy with price target above $20",
+      "Company reports revenue growth and EBITDA margin expansion"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 beat on a low bar with revenue down 0.5% and weaker EBITDA/margins",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Trade Desk raises Q4 revenue guidance above $755M or lifts its full-year outlook",
+      "An analyst upgrades TTD to Buy with a price target above $20",
+      "Next results show revenue growth reaccelerating and EBITDA margins expanding"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    },
+    {
+     "event_type": "earnings",
+     "driving_event": "Q3 beat seen as low-bar: revenue fell 0.5%, EBITDA/margins weakened, CFO cautious",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Trade Desk guides Q4 revenue and EBITDA above consensus",
+      "Analyst upgrades TTD to Buy with price target well above $20",
+      "Revenue growth reaccelerates and EBITDA margins expand year-over-year"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": null,
+     "structural": false
+    }
+   ],
+   "news_age": 3,
+   "H_raw": 13.0,
+   "H": 13,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [13, 13, 13, 13, 13] = 13.0",
+   "samples_h": [
+    {
+     "H": 13,
+     "stale": false,
+     "why": "earnings B 20 x m 0.80 - age 3, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 0.8,
+      "av": 6.974487786782978,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:00:06",
+      "car": 0.19031509020569845,
+      "M": 0.053697669212043234,
+      "M_group": "hard",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 13,
+     "stale": false,
+     "why": "earnings B 20 x m 0.80 - age 3, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 0.8,
+      "av": 6.974487786782978,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:00:06",
+      "car": 0.19031509020569845,
+      "M": 0.053697669212043234,
+      "M_group": "hard",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 13,
+     "stale": false,
+     "why": "earnings B 20 x m 0.80 - age 3, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 0.8,
+      "av": 6.974487786782978,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:00:06",
+      "car": 0.19031509020569845,
+      "M": 0.053697669212043234,
+      "M_group": "hard",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 13,
+     "stale": false,
+     "why": "earnings B 20 x m 0.80 - age 3, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 0.8,
+      "av": 6.974487786782978,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:00:06",
+      "car": 0.19031509020569845,
+      "M": 0.053697669212043234,
+      "M_group": "hard",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 13,
+     "stale": false,
+     "why": "earnings B 20 x m 0.80 - age 3, p 0.00",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 0.8,
+      "av": 6.974487786782978,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:00:06",
+      "car": 0.19031509020569845,
+      "M": 0.053697669212043234,
+      "M_group": "hard",
+      "sector": "Communication Services",
+      "p": 0.0,
+      "catalyst": null,
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 20,
+    "B_key": "earnings",
+    "m": 0.8,
+    "av": 6.974487786782978,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-09",
+    "news_time_et": "2026-11-09 02:00:06",
+    "car": 0.19031509020569845,
+    "M": 0.053697669212043234,
+    "M_group": "hard",
+    "sector": "Communication Services",
+    "p": 0.0,
+    "catalyst": null,
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "Trade Desk reports Q4 revenue growth and EBITDA margin expansion, reversing Q3 weakness",
+    "Management issues materially higher Q4/FY guidance and withdraws cautious tone",
+    "Multiple covering analysts upgrade TTD to Buy with price targets well above $20"
+   ],
+   "first_reported": "2026-11-09",
+   "driving_event": "Q3 earnings beat on low bar with revenue down 0.5% and weaker margins; cautious CFO tone.",
+   "confidence": 0.64,
+   "structural": false,
+   "structural_votes": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "H_a8": 13,
+   "release": {
+    "session": "2026-11-10",
+    "source": "8-K 2.02",
+    "accepted": "2026-11-09 16:09:41"
+   }
+  },
+  "TTWO": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.031,
+   "out": {
+    "event_type": "dated_catalyst",
+    "driving_event": "GTA VI launch on Nov 19 with record pre-orders",
+    "first_reported": "2026-11-09",
+    "catalyst_date": "2026-11-19",
+    "kill_conditions": [
+     "Take-Two delays GTA VI launch beyond November 19",
+     "Take-Two cuts FY27 bookings guidance",
+     "GTA VI pre-orders reported below expectations"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": null,
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": "other",
+    "structural": false
+   },
+   "provider": "DigitalOcean",
+   "samples": [
+    {
+     "event_type": "earnings",
+     "driving_event": "Q2 FY27 earnings beat with FY27 guidance raised and record GTA VI pre-orders",
+     "first_reported": "2026-11-09",
+     "catalyst_date": "2026-11-19",
+     "kill_conditions": [
+      "GTA VI launch is delayed beyond November 19, 2026",
+      "Take-Two cuts or withdraws its FY27 bookings guidance",
+      "Company reports GTA VI pre-orders cancelled or demand below expectations"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "dated_catalyst",
+     "driving_event": "GTA VI launch on Nov 19 with record pre-orders",
+     "first_reported": "2026-11-09",
+     "catalyst_date": "2026-11-19",
+     "kill_conditions": [
+      "Take-Two delays GTA VI launch beyond November 19",
+      "Take-Two cuts FY27 bookings guidance",
+      "GTA VI pre-orders reported below expectations"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "dated_catalyst",
+     "driving_event": "GTA VI launch on Nov 19 with record pre-orders; demand far exceeds expectations",
+     "first_reported": "2026-11-09",
+     "catalyst_date": "2026-11-19",
+     "kill_conditions": [
+      "GTA VI launch delayed beyond November 19, 2026",
+      "Take-Two cuts or withdraws its FY bookings guidance",
+      "GTA VI pre-orders or early launch sales reported below expectations"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "dated_catalyst",
+     "driving_event": "GTA VI launch on Nov 19 with record pre-orders",
+     "first_reported": "2026-11-09",
+     "catalyst_date": "2026-11-19",
+     "kill_conditions": [
+      "GTA VI launch delayed beyond November 19, 2026",
+      "Take-Two cuts FY27 bookings or earnings guidance",
+      "GTA VI pre-order figures revised down or demand disappoints"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": false
+    },
+    {
+     "event_type": "dated_catalyst",
+     "driving_event": "GTA VI scheduled Nov 19 launch with record $751M pre-orders and raised FY27 guidance",
+     "first_reported": "2026-11-09",
+     "catalyst_date": "2026-11-19",
+     "kill_conditions": [
+      "GTA VI launch is delayed beyond November 19, 2026",
+      "Take-Two cuts or withdraws FY27 bookings guidance",
+      "GTA VI pre-orders are reported materially below the record $751M level"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": null,
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "other",
+     "structural": false
+    }
+   ],
+   "news_age": 3,
+   "H_raw": 3.0,
+   "H": 3,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [3, 3, 3, 3, 3] = 3.0",
+   "samples_h": [
+    {
+     "H": 3,
+     "stale": false,
+     "why": "earnings B 20 x m 1.00 - age 3, p 1.05: priced in, hard news -> 3",
+     "inputs": {
+      "B": 20,
+      "B_key": "earnings",
+      "m": 1.0,
+      "av": 2.587720698109649,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:05:35",
+      "car": 0.0561881058211114,
+      "M": 0.053697669212043234,
+      "M_group": "hard",
+      "sector": "Communication Services",
+      "p": 1.0463788586285532,
+      "catalyst": [
+       "2027-02-01",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 2.587720698109649,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:05:35",
+      "car": 0.0561881058211114,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-01",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 2.587720698109649,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:05:35",
+      "car": 0.0561881058211114,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-01",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 2.587720698109649,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:05:35",
+      "car": 0.0561881058211114,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-01",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 3,
+     "stale": false,
+     "why": "soft B 5 x m 1.00 - age 3, p 1.50: priced in, hard news -> 3",
+     "inputs": {
+      "B": 5,
+      "B_key": "soft",
+      "m": 1.0,
+      "av": 2.587720698109649,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 02:05:35",
+      "car": 0.0561881058211114,
+      "M": 0.01985621740997779,
+      "M_group": "news",
+      "sector": "Communication Services",
+      "p": 1.5,
+      "catalyst": [
+       "2027-02-01",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 5,
+    "B_key": "soft",
+    "m": 1.0,
+    "av": 2.587720698109649,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-09",
+    "news_time_et": "2026-11-09 02:05:35",
+    "car": 0.0561881058211114,
+    "M": 0.01985621740997779,
+    "M_group": "news",
+    "sector": "Communication Services",
+    "p": 1.5,
+    "catalyst": [
+     "2027-02-01",
+     ""
+    ],
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "Take-Two delays GTA VI launch beyond November 19",
+    "Take-Two cuts FY27 bookings guidance",
+    "GTA VI pre-orders reported below expectations"
+   ],
+   "first_reported": "2026-11-09",
+   "driving_event": "GTA VI launch on Nov 19 with record pre-orders",
+   "confidence": 0.62,
+   "structural": false,
+   "structural_votes": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "H_a8": 3,
+   "release": null
+  },
+  "WMT": {
+   "status": "ok",
+   "error": null,
+   "weight": 0.0425,
+   "out": {
+    "event_type": "analyst_revisions",
+    "driving_event": "Investment banks raise WMT price targets on earnings growth and market share gains",
+    "first_reported": "2026-11-09",
+    "catalyst_date": null,
+    "kill_conditions": [
+     "Analyst downgrades Walmart or cuts its price target",
+     "Walmart issues weak guidance or misses quarterly earnings expectations",
+     "Walmart loses grocery or AI market share to competitors"
+    ],
+    "hard": true,
+    "first_report": true,
+    "revision_direction": "up",
+    "cross_firm": false,
+    "complex": false,
+    "catalyst": "earnings",
+    "structural": false
+   },
+   "provider": "Wafer",
+   "samples": [
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "Investment banks raise WMT price targets on earnings growth and market share gains",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Analyst downgrades Walmart or cuts its price target",
+      "Walmart issues weak guidance or misses quarterly earnings expectations",
+      "Walmart loses grocery or AI market share to competitors"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": "up",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "earnings",
+     "structural": false
+    },
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "UBS and BofA raise WMT price targets on earnings growth and market share gains.",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "Analyst downgrades Walmart or cuts its price target.",
+      "Walmart issues weak guidance or cuts full-year outlook.",
+      "Walmart reports losing grocery or AI market share to rivals."
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": "up",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "earnings",
+     "structural": false
+    },
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "Investment banks raise Walmart price targets, citing earnings growth and market share gains.",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "A major bank downgrades Walmart or cuts its price target.",
+      "Walmart reports an earnings miss or cuts guidance.",
+      "Walmart loses grocery market share to Kroger, Costco, or Amazon."
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": "up",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "earnings",
+     "structural": false
+    },
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "UBS, JPM, Mizuho and BofA raise Walmart price targets on earnings growth and market share gains",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "An analyst downgrades Walmart or cuts its price target",
+      "Walmart cuts or guides FY outlook below consensus",
+      "Walmart's Q3 earnings miss estimates or show market share losses"
+     ],
+     "hard": true,
+     "first_report": true,
+     "revision_direction": "up",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "earnings",
+     "structural": false
+    },
+    {
+     "event_type": "analyst_revisions",
+     "driving_event": "Investment banks raise Walmart price targets citing earnings growth and market share gains",
+     "first_reported": "2026-11-09",
+     "catalyst_date": null,
+     "kill_conditions": [
+      "A major investment bank downgrades Walmart or cuts its price target",
+      "Walmart reports Q3 earnings that miss expectations or lowers guidance"
+     ],
+     "hard": false,
+     "first_report": true,
+     "revision_direction": "up",
+     "cross_firm": false,
+     "complex": false,
+     "catalyst": "earnings",
+     "structural": false
+    }
+   ],
+   "news_age": 3,
+   "H_raw": 6.0,
+   "H": 6,
+   "stale": false,
+   "why": "mean of 5 samples' horizons [6, 6, 6, 6, 6] = 6.0",
+   "samples_h": [
+    {
+     "H": 6,
+     "stale": false,
+     "why": "analyst_up B 10 x m 1.25 - age 3, p 0.00; earnings 2026-11-19 (time n/a): 5 sessions + 1",
+     "inputs": {
+      "B": 10,
+      "B_key": "analyst_up",
+      "m": 1.25,
+      "av": 1.1402539495136454,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 00:15:00",
+      "car": -0.010494839510134028,
+      "M": 0.0186976392766409,
+      "M_group": "news",
+      "sector": "Consumer Staples",
+      "p": 0.0,
+      "catalyst": [
+       "2026-11-19",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 6,
+     "stale": false,
+     "why": "analyst_up B 10 x m 1.25 - age 3, p 0.00; earnings 2026-11-19 (time n/a): 5 sessions + 1",
+     "inputs": {
+      "B": 10,
+      "B_key": "analyst_up",
+      "m": 1.25,
+      "av": 1.1402539495136454,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 00:15:00",
+      "car": -0.010494839510134028,
+      "M": 0.0186976392766409,
+      "M_group": "news",
+      "sector": "Consumer Staples",
+      "p": 0.0,
+      "catalyst": [
+       "2026-11-19",
+       ""
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 6,
+     "stale": false,
+     "why": "analyst_up B 10 x m 1.25 - age 3, p 0.00; earnings 2026-11-19 (time n/a): 5 sessions + 1",
+     "inputs": {
+      "B": 10,
+      "B_key": "analyst_up",
+      "m": 1.25,
+      "av": 1.1402539495136454,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 00:15:00",
+      "car": -0.010494839510134028,
+      "M": 0.0186976392766409,
+      "M_group": "news",
+      "sector": "Consumer Staples",
+      "p": 0.0,
+      "catalyst": [
+       "2026-11-19",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 6,
+     "stale": false,
+     "why": "analyst_up B 10 x m 1.25 - age 3, p 0.00; earnings 2026-11-19 (time n/a): 5 sessions + 1",
+     "inputs": {
+      "B": 10,
+      "B_key": "analyst_up",
+      "m": 1.25,
+      "av": 1.1402539495136454,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 00:15:00",
+      "car": -0.010494839510134028,
+      "M": 0.0186976392766409,
+      "M_group": "news",
+      "sector": "Consumer Staples",
+      "p": 0.0,
+      "catalyst": [
+       "2026-11-19",
+       ""
+      ],
+      "hard": true,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    },
+    {
+     "H": 6,
+     "stale": false,
+     "why": "analyst_up B 10 x m 1.25 - age 3, p 0.00; earnings 2026-11-19 (time n/a): 5 sessions + 1",
+     "inputs": {
+      "B": 10,
+      "B_key": "analyst_up",
+      "m": 1.25,
+      "av": 1.1402539495136454,
+      "friday": false,
+      "after_close": false,
+      "news_session": "2026-11-09",
+      "news_time_et": "2026-11-09 00:15:00",
+      "car": -0.010494839510134028,
+      "M": 0.0186976392766409,
+      "M_group": "news",
+      "sector": "Consumer Staples",
+      "p": 0.0,
+      "catalyst": [
+       "2026-11-19",
+       ""
+      ],
+      "hard": false,
+      "first_report": true,
+      "cross_firm": false,
+      "complex": false
+     }
+    }
+   ],
+   "inputs": {
+    "B": 10,
+    "B_key": "analyst_up",
+    "m": 1.25,
+    "av": 1.1402539495136454,
+    "friday": false,
+    "after_close": false,
+    "news_session": "2026-11-09",
+    "news_time_et": "2026-11-09 00:15:00",
+    "car": -0.010494839510134028,
+    "M": 0.0186976392766409,
+    "M_group": "news",
+    "sector": "Consumer Staples",
+    "p": 0.0,
+    "catalyst": [
+     "2026-11-19",
+     ""
+    ],
+    "hard": true,
+    "first_report": true,
+    "cross_firm": false,
+    "complex": false
+   },
+   "kill_conditions": [
+    "Analyst downgrades Walmart or cuts its price target",
+    "Walmart issues weak guidance or misses quarterly earnings expectations",
+    "Walmart loses grocery or AI market share to competitors"
+   ],
+   "first_reported": "2026-11-09",
+   "driving_event": "Investment banks raise WMT price targets on earnings growth and market share gains",
+   "confidence": 0.85,
+   "structural": false,
+   "structural_votes": [
+    false,
+    false,
+    false,
+    false,
+    false
+   ],
+   "H_a8": 6,
+   "release": null
+  }
+ },
+ "amendment": 8,
+ "m_table": {
+  "asof": "2026-11-11",
+  "n": {
+   "hard": {
+    "events": 4165,
+    "pooled_median": 0.03915041556234697,
+    "own": 38
+   },
+   "news": {
+    "events": 1237,
+    "pooled_median": 0.02063354383472365,
+    "own": 62
+   }
+  },
+  "hard": {
+   "Communication Services": 0.053697669212043234,
+   "Consumer Discretionary": 0.051492149722843675,
+   "Consumer Staples": 0.0490451697533367,
+   "Energy": 0.04711272925350114,
+   "Financials": 0.04616282734045334,
+   "Health Care": 0.051562120009647675,
+   "Industrials": 0.051911020296760035,
+   "Information Technology": 0.05759035906948981,
+   "Materials": 0.04927620879561657,
+   "Real Estate": 0.04579202467394623,
+   "Utilities": 0.04317532000917487
+  },
+  "news": {
+   "Communication Services": 0.01985621740997779,
+   "Consumer Discretionary": 0.019137048217274837,
+   "Consumer Staples": 0.0186976392766409,
+   "Energy": 0.018856765765292785,
+   "Financials": 0.01814953501613727,
+   "Health Care": 0.018986465090787354,
+   "Industrials": 0.018528664794781987,
+   "Information Technology": 0.022952224979871427,
+   "Materials": 0.018447274364470113,
+   "Real Estate": 0.017312352811963423,
+   "Utilities": 0.017118482396272623
+  }
+ }
+}
