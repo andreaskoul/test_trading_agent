@@ -1,0 +1,1195 @@
+{
+ "records": {
+  "CTVA": {
+   "ticker": "CTVA",
+   "index": "SP500",
+   "sector": "Materials",
+   "sub_industry": "Fertilizers & Agricultural Chemicals",
+   "last_release": "2026-07-30 20:44:01+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1755672/000175567226000022/a2q_2026xearningsxnewsxr.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Seed price/mix and volumes",
+      "last_report": "1H Seed sales +4%, organic +3%; price/mix +3%, volume flat. 2Q sales flat, price/mix +3%, volume -3% on acre shifts/timing.",
+      "guidance": "FY Seed demand supported by differentiated technologies; no segment guidance."
+     },
+     {
+      "id": "D2",
+      "name": "Crop Protection pricing and demand",
+      "last_report": "1H CP sales +3%, organic -1%; volume +2%, price -3%. 2Q sales -4%, organic -6%; price -4%, volume -2%, Latin America pressure.",
+      "guidance": "Normalized channel inventories and improving fundamentals; no segment guidance."
+     },
+     {
+      "id": "D3",
+      "name": "Operating EBITDA margin and cost",
+      "last_report": "1H Operating EBITDA $3.70B, +10%; margin +235 bps Seed, +120 bps CP. 2Q EBITDA +4%, margin +190 bps.",
+      "guidance": "FY Operating EBITDA $4.1-$4.3B; Operating EPS $3.60-$3.80; includes $25M separation headwind."
+     },
+     {
+      "id": "D4",
+      "name": "Separation execution and dis-synergies",
+      "last_report": "On-track for October 1 Vylor spin-off; boards, Form 10, capital structure progress. Net dis-synergies largely offset on run-rate basis.",
+      "guidance": "Targeting October 1 separation; $25M headwind included in FY 2026 guidance."
+     },
+     {
+      "id": "D5",
+      "name": "Regional demand, currency and weather",
+      "last_report": "1H organic: North America +2%, EMEA +1%, Latin America -3%, Asia Pacific +7%. Currency favorable, led by Euro and Brazilian Real.",
+      "guidance": "Trade, currency, weather to influence conditions; overall end-market consumption durable."
+     }
+    ],
+    "guidance": "FY 2026: Operating EBITDA $4.1-$4.3B (9% growth at midpoint); Operating EPS $3.60-$3.80 (11% growth at midpoint); includes $25M separation headwind. No quarterly guidance.",
+    "kill_conditions": [
+     "Corteva cuts FY 2026 Operating EBITDA guidance below $4.1B.",
+     "Crop Protection price declines worsen in Latin America or North America volume falls further.",
+     "October 1 Vylor separation delayed or separation costs exceed $25M headwind."
+    ]
+   },
+   "card_provider": "DeepInfra",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 11,
+    "found": 11,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {
+    "CF": "only 1 of 5 earnings-release markers"
+   },
+   "news_raw": 224,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "New Jersey PFAS settlements with Corteva and others approved",
+        "date": "2026-08-07",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Board approves Vylor spin-off distribution",
+        "date": "2026-09-16",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Corteva and Inari reach confidential settlement agreement",
+        "date": "2026-09-28",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Vylor completes separation from Corteva after court ruling",
+        "date": "2026-10-01",
+        "driver": "D4",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "15 states and one sovereign commence PFAS litigation against Corteva",
+        "date": "2026-10-12",
+        "driver": "other",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "FMC cuts Q3 revenue guidance on high channel inventories",
+        "date": "2026-10-15",
+        "driver": "D2",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "New Jersey approved over $2.5 billion in pollution settlements with Corteva.",
+        "date": "2026-08-07",
+        "driver": "D3",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Vylor launched Vylor Edge, a new investment platform for global agriculture innovation.",
+        "date": "2026-09-03",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Vylor announced plans to ramp up soybean strategy, accelerating Latin America lineup.",
+        "date": "2026-09-15",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Corteva and Inari reached a confidential settlement agreement to resolve a lawsuit.",
+        "date": "2026-09-28",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Vylor completed its separation from Corteva and began trading independently.",
+        "date": "2026-10-01",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Court ruling confirmed PFAS litigation order does not affect Vylor separation.",
+        "date": "2026-10-12",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Vylor separation completed Oct 1 after court ruling",
+        "date": "2026-10-01",
+        "driver": "D4",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "15 states and one sovereign filed PFAS litigation against Corteva",
+        "date": "2026-10-01",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "New Jersey $2.5B PFAS settlements with DuPont, Chemours, Corteva approved",
+        "date": "2026-08-07",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Corteva and Inari reach confidential settlement in seed lawsuit",
+        "date": "2026-09-28",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Vylor announces soybean expansion with next-gen tech and Latin America lineup",
+        "date": "2026-09-15",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Vylor launches Vylor Edge investment platform for agriculture innovation",
+        "date": "2026-09-03",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "FMC slashes Q3 revenue guidance to $65-125M, negative EBITDA",
+        "date": "2026-10-15",
+        "driver": "D2",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Corteva completed debt exchange offers",
+        "date": "2026-08-18",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Court ruling allows Vylor separation to proceed on October 1",
+        "date": "2026-10-01",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "SMG",
+    "MOS"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SMG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Consumer lawn/garden results have no direct read-through to Corteva's seed/crop protection drivers."
+       },
+       {
+        "peer": "MOS",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Mosaic's weak Q3, lower volumes and Brazil Fertilizantes losses signal continued Latin America ag input demand pressure, negative for Corteva crop protection."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SMG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Consumer lawn/garden results do not reveal row-crop seed or crop-protection conditions."
+       },
+       {
+        "peer": "MOS",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Weak fertilizer demand and Brazil pressure signal farmer spending headwinds for CTVA crop protection."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MOS",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Mosaic's weak Fertilizantes/Brazil volumes and higher costs signal continued Latin America ag input demand pressure, negative for Corteva's regional demand."
+       },
+       {
+        "peer": "SMG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Consumer lawn/garden strength not relevant to Corteva's row-crop seed and crop protection drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Parasail",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -0.9486832980505138,
+   "score_peer": -1.414213562373095,
+   "score_combined": -1.6557900792370612,
+   "overall_votes": [
+    "below",
+    "below",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "amc",
+   "eps_estimate": 0.0969,
+   "revenue_estimate": 1799571720,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-11",
+   "cutoff": "2026-11-10 22:00:00+00:00",
+   "decided_at": "2026-11-11T02:32:28.311548+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8683c82d176b591dcaa7d32a1f4e3374e660a000",
+   "sha256": "5241c5d735cfb76f9a4be155509c55b8a167e553bbb84b704819962b364b51e0"
+  },
+  "ENS": {
+   "ticker": "ENS",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Electrical Components & Equipment",
+   "last_release": "2026-08-12 20:17:06+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1289308/000162828026056216/ex991_earningsx1qfy27.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net sales and volume recovery",
+      "last_report": "Q1 net sales $935.6M, up 4.8%, in line with $915-955M guidance; 3% pricing, 1% FX, 1% organic volume.",
+      "guidance": "Q2 net sales $955-995M; expects higher topline growth later in FY27 on material handling recovery."
+     },
+     {
+      "id": "D2",
+      "name": "IRC 45X credit benefits",
+      "last_report": "Q1 adjusted EPS ex-45X $2.41; 45X boosted adjusted EPS by $1.25; GM ex-45X 28.5%, up 440 bps.",
+      "guidance": "Q2 IRC 45X benefits to cost of sales $42-47M; adjusted EPS $3.15-3.25 inclusive; ex-45X $1.95-2.05."
+     },
+     {
+      "id": "D3",
+      "name": "Gross margin and price/mix",
+      "last_report": "Q1 gross margin 33.5%, up 510 bps; ex-45X 28.5%, up 440 bps, helped by favorable price/mix.",
+      "guidance": "Q2 outlook implies margin expansion; no explicit gross margin guidance. FY27 growth first from margin expansion, then topline."
+     },
+     {
+      "id": "D4",
+      "name": "Segment mix and material handling",
+      "last_report": "NIS and PPS improved volumes and price/mix; IMS soft on prolonged material handling recovery. Data centers, communications, aerospace/defense strong.",
+      "guidance": "Q2 reflects strength in data centers, communications, aerospace/defense, early transportation recovery; material handling recovery expected later FY27."
+     },
+     {
+      "id": "D5",
+      "name": "Tariff refunds and one-time items",
+      "last_report": "Q1 included $30.9M tariff refunds; adjusted EPS ex-45X and refunds $1.78, up 42%.",
+      "guidance": "Q2 guidance does not mention tariff refunds; adjusted EPS ex-45X $1.95-2.05 vs Q1 $1.78 ex-45X/refunds."
+     }
+    ],
+    "guidance": "Q2 FY27: net sales $955-995M; IRC 45X benefits to cost of sales $42-47M; adjusted diluted EPS $3.15-3.25; adjusted diluted EPS ex-45X $1.95-2.05. FY27 capex ~$70M.",
+    "kill_conditions": [
+     "Q2 net sales below $955M or FY27 topline growth pushed further out.",
+     "IRC 45X benefits below $42M or adjusted EPS ex-45X below $1.95.",
+     "Gross margin ex-45X contracts, or material handling recovery delayed again."
+    ]
+   },
+   "card_provider": "Cohere",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 21,
+    "found": 20,
+    "share": 0.9523809523809523,
+    "missing": [
+     "1.25"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 132,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "EnerSys to acquire Ultralife for $320M in cash",
+        "date": "2026-10-27",
+        "driver": "D4",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "EnerSys to acquire Ultralife for $320M in all-cash deal",
+        "date": "2026-10-27",
+        "driver": "D4",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Agreed to acquire Ultralife for $320M cash, expanding defense battery technologies",
+        "date": "2026-10-27",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "ROK",
+    "EMR",
+    "AME",
+    "RRX",
+    "ETN"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ROK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "ROK shows strong organic growth and significant margin expansion, supporting a positive industry trend for ENS."
+       },
+       {
+        "peer": "EMR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "EMR reports strong underlying orders and broad-based demand across growth verticals, validating ENS's segment strength."
+       },
+       {
+        "peer": "AME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "AME reports record sales and strong operating margins driven by alignment with secular growth trends."
+       },
+       {
+        "peer": "RRX",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D4",
+        "why": "Data center sales are booming (307% growth), but the guidance cut and strategic review introduce uncertainty."
+       },
+       {
+        "peer": "ETN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "ETN shows massive organic growth and margin strength, particularly in data center markets, validating ENS's segment performance."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ROK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "IEEPA refunds favorable, though customer refunds cut sales; ENS Q2 guide excludes potential tariff refunds."
+       },
+       {
+        "peer": "EMR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad-based orders +14% and underlying sales +4% support industrial demand and ENS volume recovery."
+       },
+       {
+        "peer": "AME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record sales/orders and raised guidance signal broad industrial strength, supporting ENS net sales/volume recovery."
+       },
+       {
+        "peer": "RRX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Data center sales up 307% and discrete automation orders up 26% support ENS data center strength; material handling unclear."
+       },
+       {
+        "peer": "ETN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "Record data center/electrical orders and backlog signal strong demand, reinforcing ENS data center and communications outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ETN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "Record electrical/data-center orders and backlog signal strong demand for ENS Energy Systems; supports volume/mix."
+       },
+       {
+        "peer": "RRX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Data-center sales up 307% and orders growth reinforce ENS data-center/communications strength; positive volume/mix read."
+       },
+       {
+        "peer": "AME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Broad organic growth, orders, and core margin expansion support ENS pricing/mix and margin expansion outlook."
+       },
+       {
+        "peer": "EMR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Robust orders, backlog, and industrial demand support ENS topline/volume recovery despite some soft verticals."
+       },
+       {
+        "peer": "ROK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "IEEPA tariff refunds continue across peers; potential upside to ENS Q2 guidance that excludes refunds."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 4.08248290463863,
+   "score_combined": 2.041241452319315,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 3.2118,
+   "revenue_estimate": 976266000,
+   "fiscal": "2027Q2",
+   "report_date": "2026-11-11",
+   "cutoff": "2026-11-10 22:00:00+00:00",
+   "decided_at": "2026-11-11T02:33:30.391523+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8683c82d176b591dcaa7d32a1f4e3374e660a000",
+   "sha256": "c15fdd5bbf4c4021f79bf1805ed1feab392f0cc50050416ea8cd144e53097aeb"
+  },
+  "TTEK": {
+   "ticker": "TTEK",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Construction & Engineering",
+   "last_release": "2026-07-29 20:58:47+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/831641/000110465926088213/tm2621536d1_ex99-1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "U.S. Federal and International Market Demand",
+      "last_report": "Growth was driven by U.S. federal and international end markets, both increasing at a double-digit rate.",
+      "guidance": "Continued double-digit growth is expected across both U.S. and international markets."
+     },
+     {
+      "id": "D2",
+      "name": "Backlog Health and New Order Intake",
+      "last_report": "Backlog was $4.49 billion, up 5% sequentially, with new orders exceeding $200 million.",
+      "guidance": "The company expects continued strong order flow and backlog growth."
+     },
+     {
+      "id": "D3",
+      "name": "Key Sector Performance (AI/Water/Infra)",
+      "last_report": "Secured multiple wins in AI Data Center, water infrastructure, and environmental services.",
+      "guidance": "Execution on key infrastructure and digital automation projects is expected to continue."
+     },
+     {
+      "id": "D4",
+      "name": "Operational Efficiency and Cash Flow",
+      "last_report": "Generated strongest cash flow on record ($467M YTD), allowing for acquisitions and buybacks.",
+      "guidance": "Strong cash generation is expected to support financial flexibility and capital returns."
+     }
+    ],
+    "guidance": "For Q4 2026, net revenue is expected to range from $1.12 billion to $1.17 billion, with EPS between $0.45 and $0.48. For FY2026, adjusted EPS is raised to $1.56 to $1.59, and net revenue is narrowed to $4.315 billion to $4.365 billion.",
+    "kill_conditions": [
+     "Significant funding disruptions or contract cancellations from U.S. government agencies.",
+     "A sharp slowdown in demand for core services like water or data center infrastructure.",
+     "Failure to maintain strong cash flow generation or increase in DSO."
+    ]
+   },
+   "card_provider": "OpenInference",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 11,
+    "found": 11,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 69,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Won $49M NOAA 5-year coastal geospatial and engineering services contract",
+        "date": "2026-08-18",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Awarded $12.7M MCC engineering services contracts",
+        "date": "2026-08-20",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tetra Tech EC agreed to pay $57M to settle False Claims Act allegations",
+        "date": "2026-08-24",
+        "driver": "D4",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Won $16.8M EPA land revitalization technical services contract",
+        "date": "2026-08-25",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Board approved additional $500M share repurchase authorization",
+        "date": "2026-09-10",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Tetra Tech wins 5-year $49M NOAA coastal geospatial services contract",
+        "date": "2026-08-18",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tetra Tech awarded $12.7M MCC engineering services contracts",
+        "date": "2026-08-20",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tetra Tech EC agrees to pay $57M to settle False Claims Act allegations",
+        "date": "2026-08-24",
+        "driver": "D4",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tetra Tech awarded $16.8M EPA land revitalization technical services contract",
+        "date": "2026-08-25",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tetra Tech increases share repurchase authorization by $500M to $898M",
+        "date": "2026-09-10",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "NOAA awards $49M 5-year coastal geospatial services contract",
+        "date": "2026-08-18",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "MCC awards $12.7M international engineering services contracts",
+        "date": "2026-08-20",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tetra Tech EC agrees to pay $57M False Claims Act settlement",
+        "date": "2026-08-24",
+        "driver": "D4",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "EPA awards $16.8M land revitalization technical services contract",
+        "date": "2026-08-25",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Board approves additional $500M share buyback, total $898M",
+        "date": "2026-09-10",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "FLR",
+    "MTZ",
+    "EME",
+    "APG",
+    "PWR"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FLR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Record new awards and 21% backlog growth signal strong infrastructure demand, supporting TTEK's order intake."
+       },
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record backlog and 74% power delivery growth signal strong utility/AI infrastructure demand for TTEK."
+       },
+       {
+        "peer": "EME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record RPO growth in mission-critical and water/wastewater sectors signals strong demand for TTEK's key markets."
+       },
+       {
+        "peer": "APG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong project activity, pricing, and backlog growth indicate healthy infrastructure demand, though material cost pressure noted."
+       },
+       {
+        "peer": "PWR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record backlog and broad utility, power, industrial, technology demand support TTEK's infrastructure and data center outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FLR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Record new awards and 21% backlog growth signal robust engineering demand, supporting TTEK's order intake and backlog outlook."
+       },
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record power/utility backlog and AI-driven data infrastructure demand support TTEK's AI data center and infrastructure sectors."
+       },
+       {
+        "peer": "EME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record RPO growth in mission-critical, water/wastewater, and institutional markets signals strong demand for TTEK's key sectors."
+       },
+       {
+        "peer": "APG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong project activity, pricing gains, and growing backlog support demand, though material/fuel cost inflation is a mild headwind."
+       },
+       {
+        "peer": "PWR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record backlog and broad utility/power/technology demand signal strong infrastructure and data center spending, supporting TTEK's key sectors."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PWR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record backlog and double-digit growth across utility, power, and technology signal strong infrastructure/data-center demand for TTEK."
+       },
+       {
+        "peer": "APG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Broad infrastructure services demand, pricing, and backlog growth suggest healthy project activity for TTEK's water and environmental services."
+       },
+       {
+        "peer": "EME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record RPO growth in network/communications, water/wastewater, and infrastructure signals robust demand for TTEK's key sectors and backlog."
+       },
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record backlog and strong power/utility infrastructure demand, plus AI data consumption, support TTEK's infrastructure and data-center sectors."
+       },
+       {
+        "peer": "FLR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record new awards and backlog growth across infrastructure, energy, and mission solutions signal strong federal/international project demand for TTEK."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 1.2247448713915892,
+   "score_peer": 4.898979485566357,
+   "score_combined": 3.6742346141747673,
+   "overall_votes": [
+    "below",
+    "below",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "amc",
+   "eps_estimate": 0.4777,
+   "revenue_estimate": 1173680003,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-11",
+   "cutoff": "2026-11-10 22:00:00+00:00",
+   "decided_at": "2026-11-11T02:32:34.530654+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8683c82d176b591dcaa7d32a1f4e3374e660a000",
+   "sha256": "7f4eea1d1a89b976b264debd5de82fd276fbacaabc00fd1571b276230342a0e4"
+  }
+ },
+ "report_date": "2026-11-11",
+ "cutoff": "2026-11-10 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "abcb9ae9c3a5608d0261f03f7e0c9b3ecc495cda4f6b51089059cd6a424b740a",
+ "runs": [
+  {
+   "at": "2026-11-11T02:33:30.417148+00:00",
+   "version": "r5-v2",
+   "code": "8683c82d176b591dcaa7d32a1f4e3374e660a000",
+   "quality": {
+    "counts": {
+     "ok": 3
+    },
+    "attempted": 3,
+    "bad": 0,
+    "bad_share": 0.0,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
