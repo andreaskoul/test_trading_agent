@@ -1,0 +1,404 @@
+{
+ "asof": "2026-11-11",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "Cohere",
+  "usage": {
+   "prompt_tokens": 40964,
+   "completion_tokens": 57172,
+   "total_tokens": 98136,
+   "cost": 0.0457215,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 0,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.0457215,
+    "upstream_inference_prompt_cost": 0.00798798,
+    "upstream_inference_completions_cost": 0.03773352
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 56348,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"long_ideas\":[{\"ticker\":\"FERG\",\"hypothesis\":\"Beats and raises guidance; high attention and positive earnings surprise could drive follow-through despite valuation debate.\"},{\"ticker\":\"NRG\",\"hypothesis\":\"Q3 asset sale and data-center power ambitions could extend NRG's 17% weekly surge; high attention suggests follow-through.\"},{\"ticker\":\"TTWO\",\"hypothesis\":\"GTA franchise momentum and JPMorgan top pick could drive TTWO higher after 10.7% weekly gain.\"},{\"ticker\":\"SOLV\",\"hypothesis\":\"ERP transition and separation milestones could unlock value; high attention suggests news is driving the stock.\"},{\"ticker\":\"TKO\",\"hypothesis\":\"Strong Buy upgrade and momentum screen mention could attract buyers after 15.7% monthly gain.\"},{\"ticker\":\"AXON\",\"hypothesis\":\"Axon's 25% weekly drop on Q3 pressure may be overdone; solid fundamentals intact per headline.\"},{\"ticker\":\"IRM\",\"hypothesis\":\"15% dividend raise and 34% data-center revenue growth could re-rate IRM despite recent pullback.\"},{\"ticker\":\"APP\",\"hypothesis\":\"Strong Q3 results and 'still cheap' narrative could sustain AppLovin's 49% weekly surge; high attention.\"},{\"ticker\":\"EW\",\"hypothesis\":\"Raised outlooks and cancer approval provide catalysts for Edwards Lifesciences near 52-week high.\"},{\"ticker\":\"TRGP\",\"hypothesis\":\"Q3 earnings beat and rising U.S. natural gas demand support TRGP's pipeline growth narrative.\"},{\"ticker\":\"HUM\",\"hypothesis\":\"Star Ratings and Q3 beat plus new oncology model could extend Humana's rally to new highs.\"},{\"ticker\":\"LITE\",\"hypothesis\":\"Marvell's $80B acquisition of Lumentum could narrow deal gap; LITE is a merger-arb long.\"}],\"short_ideas\":[{\"ticker\":\"TAP\",\"hypothesis\":\"TAP was among stocks downgraded; -8% weekly drop and negative analyst calls could pressure further.\"},{\"ticker\":\"TTD\",\"hypothesis\":\"Trade Desk rallied 21% but Q3 revealed margin strain; Cantor neutral suggests limited upside.\"},{\"ticker\":\"PODD\",\"hypothesis\":\"Insulet faces rivals building patch pumps; competitive threat could pressure shares after 9% weekly drop.\"},{\"ticker\":\"MCHP\",\"hypothesis\":\"Truist and Evercore slashed Microchip price targets; negative analyst action could drive further weakness.\"},{\"ticker\":\"AMCR\",\"hypothesis\":\"Citigroup lowered Amcor price target; International Paper comparison may highlight relative weakness.\"},{\"ticker\":\"WYNN\",\"hypothesis\":\"Citigroup lowered Wynn price target; Q3 presentation may not offset Macau concerns.\"},{\"ticker\":\"FOX\",\"hypothesis\":\"Fox faces new risk from $22B deal; negative headline could weigh on FOX shares.\"},{\"ticker\":\"MKC\",\"hypothesis\":\"McCormick-Unilever $45B merger hits UK antitrust snag; deal uncertainty could pressure MKC.\"},{\"ticker\":\"IP\",\"hypothesis\":\"International Paper CEO warns 2027 will be a slog as DS Smith separation advances; negative outlook.\"},{\"ticker\":\"NKE\",\"hypothesis\":\"Nike's CEO comeback isn't working; negative narrative and 5% weekly drop could continue.\"},{\"ticker\":\"APTV\",\"hypothesis\":\"Aptiv's average analyst price target cut 10.5%; negative revisions could drive further downside.\"},{\"ticker\":\"QCOM\",\"hypothesis\":\"Barclays kept Sell on Qualcomm; negative analyst stance could pressure shares.\"}],\"themes\":[\"AI data-center power demand lifts utilities and infrastructure names.\",\"M&A and strategic deals create merger-arb and acquirer catalysts.\",\"Post-earnings guidance and analyst revisions drive single-stock moves.\",\"Health-care approvals and pipeline data offer idiosyncratic catalysts.\",\"Housing and antitrust headwinds pressure consumer and industrial shorts.\"]}"
+ },
+ "llm": {
+  "long_ideas": [
+   {
+    "ticker": "FERG",
+    "hypothesis": "Beats and raises guidance; high attention and positive earnings surprise could drive follow-through despite valuation debate."
+   },
+   {
+    "ticker": "NRG",
+    "hypothesis": "Q3 asset sale and data-center power ambitions could extend NRG's 17% weekly surge; high attention suggests follow-through."
+   },
+   {
+    "ticker": "TTWO",
+    "hypothesis": "GTA franchise momentum and JPMorgan top pick could drive TTWO higher after 10.7% weekly gain."
+   },
+   {
+    "ticker": "SOLV",
+    "hypothesis": "ERP transition and separation milestones could unlock value; high attention suggests news is driving the stock."
+   },
+   {
+    "ticker": "TKO",
+    "hypothesis": "Strong Buy upgrade and momentum screen mention could attract buyers after 15.7% monthly gain."
+   },
+   {
+    "ticker": "AXON",
+    "hypothesis": "Axon's 25% weekly drop on Q3 pressure may be overdone; solid fundamentals intact per headline."
+   },
+   {
+    "ticker": "IRM",
+    "hypothesis": "15% dividend raise and 34% data-center revenue growth could re-rate IRM despite recent pullback."
+   },
+   {
+    "ticker": "APP",
+    "hypothesis": "Strong Q3 results and 'still cheap' narrative could sustain AppLovin's 49% weekly surge; high attention."
+   },
+   {
+    "ticker": "EW",
+    "hypothesis": "Raised outlooks and cancer approval provide catalysts for Edwards Lifesciences near 52-week high."
+   },
+   {
+    "ticker": "TRGP",
+    "hypothesis": "Q3 earnings beat and rising U.S. natural gas demand support TRGP's pipeline growth narrative."
+   },
+   {
+    "ticker": "HUM",
+    "hypothesis": "Star Ratings and Q3 beat plus new oncology model could extend Humana's rally to new highs."
+   },
+   {
+    "ticker": "LITE",
+    "hypothesis": "Marvell's $80B acquisition of Lumentum could narrow deal gap; LITE is a merger-arb long."
+   }
+  ],
+  "short_ideas": [
+   {
+    "ticker": "TAP",
+    "hypothesis": "TAP was among stocks downgraded; -8% weekly drop and negative analyst calls could pressure further."
+   },
+   {
+    "ticker": "TTD",
+    "hypothesis": "Trade Desk rallied 21% but Q3 revealed margin strain; Cantor neutral suggests limited upside."
+   },
+   {
+    "ticker": "PODD",
+    "hypothesis": "Insulet faces rivals building patch pumps; competitive threat could pressure shares after 9% weekly drop."
+   },
+   {
+    "ticker": "MCHP",
+    "hypothesis": "Truist and Evercore slashed Microchip price targets; negative analyst action could drive further weakness."
+   },
+   {
+    "ticker": "AMCR",
+    "hypothesis": "Citigroup lowered Amcor price target; International Paper comparison may highlight relative weakness."
+   },
+   {
+    "ticker": "WYNN",
+    "hypothesis": "Citigroup lowered Wynn price target; Q3 presentation may not offset Macau concerns."
+   },
+   {
+    "ticker": "FOX",
+    "hypothesis": "Fox faces new risk from $22B deal; negative headline could weigh on FOX shares."
+   },
+   {
+    "ticker": "MKC",
+    "hypothesis": "McCormick-Unilever $45B merger hits UK antitrust snag; deal uncertainty could pressure MKC."
+   },
+   {
+    "ticker": "IP",
+    "hypothesis": "International Paper CEO warns 2027 will be a slog as DS Smith separation advances; negative outlook."
+   },
+   {
+    "ticker": "NKE",
+    "hypothesis": "Nike's CEO comeback isn't working; negative narrative and 5% weekly drop could continue."
+   },
+   {
+    "ticker": "APTV",
+    "hypothesis": "Aptiv's average analyst price target cut 10.5%; negative revisions could drive further downside."
+   },
+   {
+    "ticker": "QCOM",
+    "hypothesis": "Barclays kept Sell on Qualcomm; negative analyst stance could pressure shares."
+   }
+  ],
+  "themes": [
+   "AI data-center power demand lifts utilities and infrastructure names.",
+   "M&A and strategic deals create merger-arb and acquirer catalysts.",
+   "Post-earnings guidance and analyst revisions drive single-stock moves.",
+   "Health-care approvals and pipeline data offer idiosyncratic catalysts.",
+   "Housing and antitrust headwinds pressure consumer and industrial shorts."
+  ]
+ },
+ "core": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM"
+ ],
+ "nominated": [
+  "FERG",
+  "NRG",
+  "TTWO",
+  "SOLV",
+  "TKO",
+  "AXON",
+  "IRM",
+  "APP",
+  "EW",
+  "TRGP",
+  "HUM",
+  "LITE",
+  "TAP",
+  "TTD",
+  "PODD",
+  "MCHP",
+  "AMCR",
+  "WYNN",
+  "FOX",
+  "MKC",
+  "IP",
+  "NKE",
+  "APTV",
+  "QCOM"
+ ],
+ "rule_based": [
+  "MRNA",
+  "AXON",
+  "EXPE",
+  "COIN",
+  "NOW",
+  "MCHP",
+  "APP",
+  "TTD",
+  "CPAY",
+  "VTRS",
+  "MSI",
+  "LHX",
+  "BRK.B",
+  "FERG",
+  "MTD",
+  "NRG",
+  "TAP",
+  "TTWO"
+ ],
+ "coverage": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM",
+  "FERG",
+  "NRG",
+  "TTWO",
+  "SOLV",
+  "TKO",
+  "AXON",
+  "IRM",
+  "APP",
+  "EW",
+  "TRGP",
+  "HUM",
+  "LITE",
+  "TAP",
+  "TTD",
+  "PODD",
+  "MCHP",
+  "AMCR",
+  "WYNN",
+  "FOX",
+  "MKC",
+  "IP",
+  "NKE",
+  "APTV",
+  "QCOM",
+  "MRNA"
+ ],
+ "why": {
+  "NVDA": [
+   "core"
+  ],
+  "AAPL": [
+   "core"
+  ],
+  "MSFT": [
+   "core"
+  ],
+  "GOOGL": [
+   "core"
+  ],
+  "AMZN": [
+   "core"
+  ],
+  "META": [
+   "core"
+  ],
+  "AVGO": [
+   "core"
+  ],
+  "TSLA": [
+   "core"
+  ],
+  "AMD": [
+   "core"
+  ],
+  "INTC": [
+   "core"
+  ],
+  "TSM": [
+   "core"
+  ],
+  "JPM": [
+   "core"
+  ],
+  "LLY": [
+   "core"
+  ],
+  "WMT": [
+   "core"
+  ],
+  "BRK.B": [
+   "core",
+   "rule"
+  ],
+  "ORCL": [
+   "core"
+  ],
+  "CRM": [
+   "core"
+  ],
+  "NFLX": [
+   "core"
+  ],
+  "BA": [
+   "core"
+  ],
+  "XOM": [
+   "core"
+  ],
+  "FERG": [
+   "nominated",
+   "rule"
+  ],
+  "NRG": [
+   "nominated",
+   "rule"
+  ],
+  "TTWO": [
+   "nominated",
+   "rule"
+  ],
+  "SOLV": [
+   "nominated"
+  ],
+  "TKO": [
+   "nominated"
+  ],
+  "AXON": [
+   "nominated",
+   "rule"
+  ],
+  "IRM": [
+   "nominated"
+  ],
+  "APP": [
+   "nominated",
+   "rule"
+  ],
+  "EW": [
+   "nominated"
+  ],
+  "TRGP": [
+   "nominated"
+  ],
+  "HUM": [
+   "nominated"
+  ],
+  "LITE": [
+   "nominated"
+  ],
+  "TAP": [
+   "nominated",
+   "rule"
+  ],
+  "TTD": [
+   "nominated",
+   "rule"
+  ],
+  "PODD": [
+   "nominated"
+  ],
+  "MCHP": [
+   "nominated",
+   "rule"
+  ],
+  "AMCR": [
+   "nominated"
+  ],
+  "WYNN": [
+   "nominated"
+  ],
+  "FOX": [
+   "nominated"
+  ],
+  "MKC": [
+   "nominated"
+  ],
+  "IP": [
+   "nominated"
+  ],
+  "NKE": [
+   "nominated"
+  ],
+  "APTV": [
+   "nominated"
+  ],
+  "QCOM": [
+   "nominated"
+  ],
+  "MRNA": [
+   "rule"
+  ]
+ },
+ "prompt_chars": 114527
+}
