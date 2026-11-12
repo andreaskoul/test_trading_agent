@@ -142,3 +142,11 @@ and retries the chunk.
 **Queued from the review (development data, each to be registered with its control before scoring):** rank or
 winsorise the five base characteristics; missing-value indicators for the long-window features; per-stock volatility
 scaling of sequence inputs (Q1); 10 seeds for network finalists.
+
+## Step 7 — L1 findings fed to each leaf (2026-11-13)
+
+Each running agent (Q1-Q4) received the findings that bear on its branch, as optional variants to be added to its plan
+before scoring, plus the survivorship caveat and the seed-noise rule (re-score a nominated candidate with seeds 0-9).
+The same text, per branch, is in `L1_lit/FEED.md`, so a successor agent resuming after a limit gets it too. The news
+branch (N4, not started) has its notes there: missing-news weeks as an explicit state, increment over MASTER, size
+terciles.
