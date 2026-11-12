@@ -22,7 +22,8 @@ sys.path.insert(0, HERE)
 import harness as H  # noqa: E402
 
 EV = "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/riskfield/.cache/p8/events.parquet"
-CUT = pd.Timestamp("2019-12-31")
+FULL = os.environ.get("FUND_FULL") == "1"            # holdout read (PREREG phase 2, Amendment 2): full panel, filings to 2025
+CUT = pd.Timestamp("2025-12-31" if FULL else "2019-12-31")
 FLOWS = {"revenue": ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet"],
          "gross_profit": ["GrossProfit"], "operating_income": ["OperatingIncomeLoss"], "net_income": ["NetIncomeLoss"],
          "cfo": ["NetCashProvidedByUsedInOperatingActivities"], "capex": ["PaymentsToAcquirePropertyPlantAndEquipment"],
@@ -66,7 +67,11 @@ def series(facts_by_tag, tags, annual):
 
 
 def main():
-    D = H.load()
+    if FULL:
+        import holdout as HO
+        D = HO.full_panel()
+    else:
+        D = H.load()
     S, names = D["S"], D["names"]
     ev = pd.read_parquet(EV)
     tick2cik = ev.dropna(subset=["cik"]).groupby("ticker").cik.last().astype(int).to_dict()
@@ -115,7 +120,7 @@ def main():
             + ", ".join(FLOWS) + ". Stocks (fiscal-year-end): " + ", ".join(STOCKS) + ". 'sue' = latest standardised "
             "earnings surprise from its reaction session. Values in reported units (USD; shares in shares). "
             "Coverage of eligible name-days 2013-2019: " + json.dumps({k: round(v, 3) for k, v in cov.items()}))
-    np.savez_compressed(os.path.join(ROOT, ".cache", "tree", "extra_fundamentals.npz"), note=np.array(note), **A)
+    np.savez_compressed(os.path.join(ROOT, ".cache", "tree", "extra_fundamentals_full.npz" if FULL else "extra_fundamentals.npz"), note=np.array(note), **A)
     print(f"names matched to a CIK file: {have} of {len(names)}")
     print(json.dumps({k: round(v, 3) for k, v in cov.items()}))
 
