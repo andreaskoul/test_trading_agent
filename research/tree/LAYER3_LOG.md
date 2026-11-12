@@ -47,3 +47,15 @@ read of a candidate with a strong prior (IPCA, the trees) is weak evidence again
   volume, price above $5, 252 sessions of history, read names excluded). To share code with the S&P 400 panel,
   `panel400.build` was refactored into `fields()`; the S&P 400 panel was checked **bit-identical** before and after
   (SHA-1 of every array), so the phase-2 read is unaffected.
+
+## Step 2a — exploitation round result (X4, development data, 2026-11-12)
+
+* **No combination beats its best single piece by more than noise.** The best blend (MASTER + IPCA + trees, equal
+  thirds) has IC .0247 against .0236 for the trees alone.
+* **IPCA does not beat its declared control** on 2013–2019: +.0017 over the Fama-MacBeth ridge on the same 24
+  characteristics (t 0.23), rank correlation 0.70. This is the control check the phase-2 finalist rule skipped. It
+  weakens the reading of IPCA's S&P 400 pass as evidence for the IPCA method specifically: the ridge may do as well.
+* **The no-trade band is the one robust gain:** +1.0 to +1.5%/yr on fast single signals (t 2.0–2.65), little on blends,
+  negative on the slow short-volume signal.
+* **Consequence for the registered read (L3.1):** none; candidates and controls were fixed before this result. The
+  read reports IPCA against the ridge as a paired difference, which will show whether the gap stays at zero.

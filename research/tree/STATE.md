@@ -1,6 +1,6 @@
 # Tree search: progress ledger
 
-*Rebuilt 2026-11-12 15:35 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
+*Rebuilt 2026-11-12 15:40 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
 
 | branch | phase | status | scored | best | metric | model.py | REPORT.md | verdict |
 |---|---:|---|---:|---|---:|---|---|---|
@@ -22,5 +22,5 @@
 | X1_combine | 1 | done | 11 | 8p_hgbD_mh+fmC_mh+mlpC_mh_panic | 2.91 | yes | yes | finalist X1_8p failed the holdout (p 0.0173 vs 0.0167) |
 | X2_costs | 1 | done | 11 | c1_base_mh | 2.41 | yes | yes | smoothing cuts costs; hurt MASTER in the holdout |
 | X3_online | 1 | done | 32 | c32_fm_exp | online, extra lag 52w | 2.47 | yes | yes | updating inside the year does not help |
-| X4_exploit | 3 | not started | 0 |  |  | no | no |  |
-| X5_overfit | 3 | not started | 0 |  |  | no | no |  |
+| X4_exploit | 3 | done | 10 | ref_f2 | 2.51 | yes | yes | no blend beats its best piece; IPCA does not beat its ridge control (t 0.23); band helps single fast signals (t 2-2.65); pre-declared blend: thirds + band |
+| X5_overfit | 3 | in progress | 0 |  |  | no | no |  |

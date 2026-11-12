@@ -13,7 +13,14 @@
   "5 CALIBRATION.json for 6 finalists + MASTER reference",
   "6 REPORT.md (<=45 lines) with rule"
  ],
- "pending": [],
+ "pending": [
+  "1 weekly IC matrices from saved preds (D, M2-M6, MASTER) + checks vs RESULTS.jsonl",
+  "2 PBO by CSCV S=16 (select by mean IC and by t) -> PBO.json; coarse yearly CSCV for all branches",
+  "3 DSR (branch N and cumulative 114/251) -> DSR.json",
+  "4 James-Stein shrunk IC -> SHRINK.json",
+  "5 CALIBRATION.json for 6 finalists + MASTER reference",
+  "6 REPORT.md (<=45 lines) with rule"
+ ],
  "deliverables": {
   "model.py": false,
   "REPORT.md": false
@@ -21,8 +28,9 @@
  "verdict": null,
  "notes": [
   "layer 3 step 2: overfitting diagnostics (PHASE3_PLAN L3.3)",
-  "read inputs; D_ensembles also has pred_*.npy (7 configs) so D's PBO is computable; N1 trial set = 9 increment rows (14 single-char rows are standalone ICs). Next: write overfit.py"
+  "read inputs; D_ensembles also has pred_*.npy (7 configs) so D's PBO is computable; N1 trial set = 9 increment rows (14 single-char rows are standalone ICs). Next: write overfit.py",
+  "step1 done: ICMAT.npz, 72 configs all match logged IC to 5e-5 (ICMAT_CHECKS.json). Next: steps 2-5 (python3 overfit.py 2 3 4 5)"
  ],
  "resume": "Read research/tree/X5_overfit/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-12T15:37:51Z"
+ "updated": "2026-11-12T15:40:31Z"
 }
