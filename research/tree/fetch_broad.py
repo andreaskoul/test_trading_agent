@@ -71,8 +71,8 @@ def bars(adj="all"):
         p = os.path.join(OUT, "chunks" if adj == "all" else "chunks_raw", f"{i:06d}.parquet")
         if os.path.exists(p):
             continue
-        chunk, token, rows = syms[i:i + 50], None, []
-        while True:
+        chunk, token, rows = [c for c in syms[i:i + 50] if c not in dropped], None, []
+        while chunk:
             q = (f"/v2/stocks/bars?symbols={','.join(chunk)}&timeframe=1Day&adjustment={adj}&feed=sip&limit=10000"
                  f"&start={START}&end={END}T23:59:59Z" + (f"&page_token={token}" if token else ""))
             for wait in (0, 5, 15, 45, 90):  # 429/5xx: back off and retry

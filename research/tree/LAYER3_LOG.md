@@ -177,3 +177,11 @@ terciles.
 * **Q3 interim (5 of 16 scored):** no ranking objective beats squared-error trees. Control .0216; RankNet .0206;
   LightGBM L2 .0204; monotone .0192; LambdaRank (quintile grades) .0171. Second batch running, including the two
   literature variants (native NaN; ranked Z).
+
+## Step 10 — adjusted bars complete (2026-11-13)
+
+* All 191 chunks saved; no failed chunk. 379 symbols rejected by the bars endpoint as invalid and dropped
+  (`chunks/_dropped.json`): CUSIP-like ids of contingent value rights, escrow and similar non-trading lines, and
+  `*_DELISTED` renames. The first five chunks held only such symbols, so they are empty. The `*_DELISTED` renames are
+  the one real loss (delisted names whose bars Alpaca does not serve under that symbol); counted in the read.
+* Unadjusted bars (Amendment 4, eligibility only) downloading now; then the panel, its coverage check, and the read.
