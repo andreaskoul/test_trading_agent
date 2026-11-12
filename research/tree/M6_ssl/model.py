@@ -238,8 +238,14 @@ def get_emb(D, te, seed, kind, d, steps):
     if k not in _C:
         for kk in [x for x in _C if x[0] == "emb" and x[1:4] != (kind, d, steps)]:
             del _C[kk]
-        enc, last = pretrain(D, te, seed, kind, d=d, steps=steps)
-        _C[k] = embed(D, enc, thu(D))
+        f = os.path.join(HERE, "emb_cache", "%s_d%d_s%d_te%d_seed%d.npy" % (kind, d, steps, te, seed))
+        if os.path.exists(f):
+            _C[k] = np.load(f).astype(np.float32)
+        else:
+            enc, last = pretrain(D, te, seed, kind, d=d, steps=steps)
+            _C[k] = embed(D, enc, thu(D))
+            os.makedirs(os.path.dirname(f), exist_ok=True)
+            np.save(f, _C[k].astype(np.float16))
     return _C[k]
 
 

@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(HERE))
 
 import run  # noqa: E402
 
-BEST = "R3_C24_peer"
+BEST = "R4_C24_peermomrev"
 fit_predict = run.CONFIGS[BEST][0]()
 
 if __name__ == "__main__":

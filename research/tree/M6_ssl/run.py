@@ -22,6 +22,9 @@ CONFIGS = {
     "com16_embZ": dict(kind="com", d=16, base="Z"),
     "com16_peerZ": dict(kind="com", d=16, base="Z", use_emb=False, peer=True),
     "ctrl_C": dict(kind=None, base="C"),
+    "con16_embC": dict(kind="con", d=16, base="C"),
+    "con16_peerC": dict(kind="con", d=16, base="C", use_emb=False, peer=True),
+    "con16_peerZ": dict(kind="con", d=16, base="Z", use_emb=False, peer=True),
 }
 STATE = os.path.join(HERE, "STATE.json")
 

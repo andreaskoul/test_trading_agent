@@ -2,21 +2,24 @@
  "branch": "M6_ssl",
  "phase": 2,
  "status": "in progress",
- "configurations_scored": 6,
+ "configurations_scored": 9,
  "scored": [
   "ctrl_Z",
   "com16_emb",
   "com16_embZ",
   "com16_peerZ",
   "mae16_emb",
-  "mae16_embZ"
+  "mae16_embZ",
+  "con16_emb",
+  "con16_embZ",
+  "ctrl_C"
  ],
  "best": {
-  "name": "com16_peerZ",
-  "ic": 0.019674737917726323,
-  "ic_t": 2.0134757620310775,
-  "decile_net_pct_per_year": 1.0492083922537607,
-  "decile_net_sharpe": 0.1515445425903768
+  "name": "con16_embZ",
+  "ic": 0.01909869525069656,
+  "ic_t": 2.078532211015671,
+  "decile_net_pct_per_year": 1.707062381508926,
+  "decile_net_sharpe": 0.2519995759326072
  },
  "plan": [
   "ctrl_Z",
@@ -27,12 +30,15 @@
   "com16_emb",
   "com16_embZ",
   "com16_peerZ",
-  "ctrl_C"
+  "ctrl_C",
+  "con16_embC",
+  "con16_peerC",
+  "con16_peerZ"
  ],
  "pending": [
-  "con16_emb",
-  "con16_embZ",
-  "ctrl_C"
+  "con16_embC",
+  "con16_peerC",
+  "con16_peerZ"
  ],
  "deliverables": {
   "model.py": true,
@@ -46,8 +52,12 @@
   "scored com16_embZ IC 0.0097 t 1.09 min_year -0.0214 net -3.0%/yr sharpe -0.47 | 0.1 min",
   "scored com16_peerZ IC 0.0197 t 2.01 min_year -0.0269 net 1.0%/yr sharpe 0.15 | 0.3 min",
   "scored mae16_emb IC 0.0058 t 0.96 min_year -0.0170 net -1.1%/yr sharpe -0.26 | 10.6 min",
-  "scored mae16_embZ IC 0.0176 t 1.87 min_year -0.0267 net 0.3%/yr sharpe 0.05 | 0.1 min"
+  "scored mae16_embZ IC 0.0176 t 1.87 min_year -0.0267 net 0.3%/yr sharpe 0.05 | 0.1 min",
+  "scored con16_emb IC 0.0100 t 1.76 min_year -0.0236 net -0.1%/yr sharpe -0.02 | 16.6 min",
+  "scored con16_embZ IC 0.0191 t 2.08 min_year -0.0288 net 1.7%/yr sharpe 0.25 | 0.1 min",
+  "round 1 (8 configs): no embedding beats ctrl_Z 0.0195 (con+Z 0.0191, mae+Z 0.0176, com+Z 0.0097; peer from com 0.0197). Next: C32 base with/without contrastive embedding and contrastive peer feature; embeddings now cached in emb_cache/ (delete at end); then increments for best two.",
+  "scored ctrl_C IC 0.0164 t 1.67 min_year -0.0330 net 0.2%/yr sharpe 0.03 | 0.1 min"
  ],
  "resume": "Read research/tree/M6_ssl/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-12T13:49:05Z"
+ "updated": "2026-11-12T13:56:08Z"
 }
