@@ -1,6 +1,6 @@
 # Tree search: progress ledger
 
-*Rebuilt 2026-11-12 13:56 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
+*Rebuilt 2026-11-12 14:02 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
 
 | branch | phase | status | scored | best | metric | model.py | REPORT.md | verdict |
 |---|---:|---|---:|---|---:|---|---|---|
@@ -14,7 +14,7 @@
 | M3_cae | 2 | done (seed ensemble never ran) | 8 | ca2_c32_k3 | 2.00 | yes | yes | no finalist; factor structure does not beat direct prediction |
 | M4_sdf | 2 | done | 12 | S04_X324_wk_mv | 3.67 | yes | yes | finalist candidate S04 for the S&P 400 confirmation (IC 0.0141, t 3.67, 7/7 years); no increment over MASTER |
 | M5_graph | 2 | done | 13 | R0_C24_fm | 2.30 | yes | yes | no finalist; edges lower IC in 6 of 7 pairs |
-| M6_ssl | 2 | in progress | 9 | con16_embZ | 2.08 | yes | no |  |
+| M6_ssl | 2 | done | 12 | con16_embZ | 2.08 | yes | yes | no finalist; embedding adds nothing over its control |
 | N1_fundamentals | 2 | done | 23 | fm_fixed70 | 2.29 | yes | yes | finalist fm_fixed70 (increment +0.0047, t 2.29); registered fallback comp_blend70 t 1.61; double ML t 2.10 |
 | N2_short | 2 | done | 11 | c3 MASTER+F2 0.7/0.3 | 1.14 | yes | yes | no finalist; increment t 1.14, double-ML t 1.61 |
 | N3_intraday | 2 | done | 20 | N3_c8_control_tot21 | 1.72 | yes | yes | no finalist; increment is 1-month reversal, not intraday |

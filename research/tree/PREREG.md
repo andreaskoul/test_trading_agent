@@ -103,3 +103,33 @@ Plan: `PHASE2_PLAN.md`. Harness additions: `load_extra` (input files ending 2019
 over the frozen MASTER 5-day scores). Track N branches are judged by `increment`; track M branches by `score` on the
 S&P 500 development sample, and confirmed once on the S&P 400 (2019–2025) by the coordinating session. Development
 gate for both tracks: t ≥ 1.5 with the predicted sign; one read per finalist, Holm across all phase-2 finalists.
+
+## Phase 2, Amendment 2 (2026-11-12, after all phase-2 development results, before any phase-2 holdout data is built or read): finalists and the reads
+
+**Search size, phase 2:** M1 18, M2 20, M3 8, M4 12, M5 13, M6 12, N1 23 (9 configurations + 14 single characteristics),
+N2 11, N3 20 logged rows. N4 (news) not run. With phase 1's 114, 251 logged configurations in all.
+
+**Finalists** (each branch's best by its registered metric among those meeting the t >= 1.5 gate):
+
+| Finalist | Track | Development | Read |
+|---|---|---|---|
+| N1 fm_fixed70: 0.7 MASTER + 0.3 Fama-MacBeth fundamentals | N | increment +0.0047, t 2.29 | S&P 500, 2020-2025: mean weekly increment over MASTER > 0 |
+| M2 M05_U: IPCA, 24 characteristics, unrestricted | M | IC 0.0224, t 2.27 | S&P 400, 2019-2025: mean weekly IC > 0 |
+| M4 S04: unshrunk SDF on 324 characteristic products | M | IC 0.0141, t 3.67 | S&P 400, 2019-2025: mean weekly IC > 0 |
+
+One-sided Newey-West t (4 lags), Holm across the three at alpha 0.05. Lock: `READ2.lock`.
+
+**How each read is built (fixed now):**
+* **N1:** the full S&P 500 panel 2009-2025 (`holdout.full_panel`), MASTER's 2020-2025 scores as already computed, and the
+  point-in-time fundamentals rebuilt by `build_fundamentals.py` with the filing cut-off moved from 2019-12-31 to
+  2025-12-31 and the same rules. Annual refits 2020..2025 as in phase 1. The model's own loaders are pointed at these
+  full-period inputs. Reported, not tested: the registered no-fit fallback comp_blend70.
+* **M2, M4:** one panel holding the S&P 500 names (2009-2025, as in phase 1) and the 390 current S&P 400 members
+  (Alpaca adjusted closes, 2016-2025; current constituents only: survivorship, disclosed), every characteristic built
+  by the same code on the combined cross-section. Each year y in 2019..2025 is predicted by a model fitted on all rows
+  whose target ended before y (S&P 500 and S&P 400 names together); weekly IC is scored on the S&P 400 names only.
+  Reported, not tested: the phase-1 best X1_8p on the same S&P 400 weeks, and each finalist's decile book with and
+  without M1's no-trade band.
+* A finalist whose code cannot run on the read's inputs is reported as not read, not repaired after seeing data.
+
+**Consequences.** A pass earns a forward paper book (research only). Fail: closed on that panel.

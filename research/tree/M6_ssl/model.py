@@ -282,4 +282,7 @@ def make(kind=None, d=16, steps=800, use_emb=True, base="Z", peer=False, k_peer=
     return fit_predict
 
 
-BEST = dict(kind="mae", d=16, base="Z")   # placeholder; updated after scoring
+# Best by IC: com16_peerZ (Z + peer return of 10 nearest co-movement-embedding neighbours), IC 0.0197 vs control 0.0195.
+# No configuration beat its own no-embedding control by more than noise (see REPORT.md).
+BEST = dict(kind="com", d=16, base="Z", use_emb=False, peer=True)
+fit_predict = make(**BEST)
