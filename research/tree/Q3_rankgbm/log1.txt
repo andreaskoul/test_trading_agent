@@ -1,0 +1,11 @@
+ref_control              IC +0.0216 t +2.30 | +0.026 +0.021 +0.054 -0.015 +0.014 +0.030 +0.021 | pos 6/7 | dec +0.4%/y | 44s
+lgb_l2                   IC +0.0204 t +2.23 | +0.024 +0.024 +0.051 -0.019 +0.015 +0.029 +0.019 | pos 6/7 | dec -0.2%/y | 33s
+lgb_lambdarank_q5        IC +0.0171 t +1.88 | +0.013 +0.016 +0.046 -0.002 +0.015 +0.017 +0.014 | pos 6/7 | dec -0.4%/y | 323s
+lgb_ranknet              IC +0.0206 t +2.28 | +0.026 +0.021 +0.052 -0.018 +0.017 +0.028 +0.018 | pos 6/7 | dec +0.2%/y | 342s
+Traceback (most recent call last):
+  File "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/tree-search/research/tree/Q3_rankgbm/run.py", line 101, in <module>
+    
+  File "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/tree-search/research/tree/Q3_rankgbm/run.py", line 89, in main
+    "decile_net_pct_per_year": round(res["decile_net_pct_per_year"], 2)})
+                  ^^^^^^^^^^^^^^^^^^^
+TypeError: string indices must be integers, not 'str'

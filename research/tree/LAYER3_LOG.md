@@ -185,3 +185,19 @@ terciles.
   `*_DELISTED` renames. The first five chunks held only such symbols, so they are empty. The `*_DELISTED` renames are
   the one real loss (delisted names whose bars Alpaca does not serve under that symbol); counted in the read.
 * Unadjusted bars (Amendment 4, eligibility only) downloading now; then the panel, its coverage check, and the read.
+
+## Step 11 — Q3 ranking trees result (development data, 2026-11-13)
+
+* **No learning-to-rank objective, constraint or ensemble variant beats squared-error trees on a ranked target.**
+  19 rows. Best `ens_ctrl_mh_huber` (rank average of the control, multi-horizon LightGBM and Huber LightGBM): IC
+  .0222 vs .0216, paired difference +.0006, Newey-West t +0.48. Shrinkage factor 0: the configurations are not
+  distinguishable from one another.
+* **Ranking losses**: one-sided LambdaRank loses (.0171, .0154) because NDCG weights the top of the list while the
+  long/short book uses both ends; a two-sided version ties (.0214). Monotone constraints hurt (t -1.76). Bigger trees
+  hurt (t -1.46): D's low-capacity settings are near the optimum.
+* **Literature variants** (native NaN, ranked Z): no gain.
+* **Seed check**: 10 seeds move the control by .0001 and lgb_mh by .0005, about the size of the best edge.
+* **Huber loss** gives the best decile net (+1.7 %/yr) at a lower IC; a tail effect, not a ranking gain. Noted as a
+  construction-side lead, not tested.
+* **Consequence**: the trees branch is saturated on these 25 inputs; further gains must come from new information
+  (news, survivorship-repaired data, other universes), not from loss or ensemble engineering.

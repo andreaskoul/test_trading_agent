@@ -1,6 +1,6 @@
 # Tree search: progress ledger
 
-*Rebuilt 2026-11-12 22:30 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
+*Rebuilt 2026-11-12 23:07 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
 
 | branch | phase | status | scored | best (Amendment 2 rule) | mean IC / increment / net Sharpe | model.py | REPORT.md | verdict |
 |---|---:|---|---:|---|---:|---|---|---|
@@ -20,9 +20,9 @@
 | N2_short | 2 | done | 11 | c2 MASTER+F2 0.5/0.5 | 0.0020 | yes | yes | no finalist; increment t 1.14, double-ML t 1.61 |
 | N3_intraday | 2 | done | 20 | N3_c3c_anchoredfm2 | 0.0118 | yes | yes | no finalist; increment is 1-month reversal, not intraday |
 | N4_news | 2 | not started | 0 |  |  | no | no |  |
-| Q1_seqnet | 3 | running | 1 | ref_control | 0.0141 | no | no |  |
-| Q2_xsattn | 3 | running | 0 |  |  | yes | no |  |
-| Q3_rankgbm | 3 | running | 6 | ref_control | 0.0216 | no | no |  |
+| Q1_seqnet | 3 | running | 4 | mlp_D27_ic | 0.0202 | no | no |  |
+| Q2_xsattn | 3 | running | 10 | moe_unif | 0.0225 | yes | no |  |
+| Q3_rankgbm | 3 | done | 19 | ens_ctrl_mh_huber | 0.0222 | yes | yes | No: ranking objectives, monotone constraints, DART, bigger trees, NaN-native, ranked Z, short window do not beat squared-error trees; best ens_ctrl_mh_huber IC 0.0222 vs control 0.0216, paired +0.0006 (NW t +0.48); JS shrinkage factor 0 |
 | Q4_portfolio | 3 | done | 30 | mvnl_nt_trees | 0.6351 | yes | yes | No construction beats the M1 no-trade band by more than noise (best vol-matched paired t 0.72); best net Sharpe mvnl_nt_trees (LW2020 mean-variance + L1 no-trade region) 0.64 vs control 0.35, max DD 2.8% (12.2% at control vol) vs 16.2%, but post hoc, grid-edge tuned, fails on the other three signals in 2013-16 and earns only +0.88%/yr at gross 1: not nominated; keep the band. |
 | X1_combine | 1 | done | 11 | 8p_hgbD_mh+fmC_mh+mlpC_mh_panic | 0.0282 | yes | yes | finalist X1_8p failed the holdout (p 0.0173 vs 0.0167) |
 | X2_costs | 1 | done | 11 | c1_base_mh | 0.0236 | yes | yes | smoothing cuts costs; hurt MASTER in the holdout |
