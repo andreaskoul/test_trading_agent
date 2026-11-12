@@ -93,3 +93,15 @@ against the current OpenRouter price list), so even the embedding step is cheap;
 agent builds and tests the N4 branch on the development years as an increment over MASTER, saving every
 configuration's predictions (Amendment 2). Coverage caveat: one name in the sample has 1,027 articles and the median
 has 57, so news features will be sparse for most names in most weeks.
+
+## Step 4a — universe download repaired; read script fixed before the panel exists (2026-11-13)
+
+* **Download.** The first bars run saved 122 of 191 chunks; 69 got a non-200 answer, spread evenly through the run
+  (rate limiting, not bad symbols). `fetch_broad.py` now retries a failed request four times (5, 15, 45, 90 s) and
+  resumes from the saved chunks. No saved chunk is re-downloaded.
+* **Read script.** `read3.py` was written and committed **before the broad panel was built**. It runs exactly the
+  Amendment 1 test: candidates and controls as registered, seeds 0-2, years 2017-2025, broad names scored,
+  Newey-West t at 4 lags, Holm across L3a and L3b; `READ3.lock` records each candidate's start and refuses a second
+  read. Coverage (`read3.py panel`) is checked before any prediction is scored.
+* **Checks.** The D-trees library's disk cache is off by default (`X1_combine/lib.py` `DISK = None`), and every
+  in-memory cache is keyed by the panel's arrays or cleared each call. No development fit can leak into the read.

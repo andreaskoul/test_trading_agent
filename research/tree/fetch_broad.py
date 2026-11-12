@@ -70,7 +70,12 @@ def bars():
         while True:
             q = (f"/v2/stocks/bars?symbols={','.join(chunk)}&timeframe=1Day&adjustment=all&feed=sip&limit=10000"
                  f"&start={START}&end={END}T23:59:59Z" + (f"&page_token={token}" if token else ""))
-            s, b = broker.api("GET", q, base=broker.DATA)
+            for wait in (0, 5, 15, 45, 90):  # retries: the first run lost 69 of 191 chunks to non-200 answers
+                time.sleep(wait)
+                s, b = broker.api("GET", q, base=broker.DATA)
+                if s == 200:
+                    break
+                print(f"chunk {i}: status {s}, retry", flush=True)
             if s != 200:
                 failed.append(i)
                 rows = None
