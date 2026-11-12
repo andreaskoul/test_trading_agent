@@ -219,3 +219,22 @@ most two finalists, each with a declared control; record power at the shrunk IC,
 ratio at branch and cumulative counts, and flag a weekly IC sd below 0.6 x the branch median. Every configuration's
 predictions are saved from now on. Basis: six finalists, pattern found after looking: adopted as a prudent rule, not
 as a validated one.
+
+## Layer 3, Amendment 3 (2026-11-13, before any of these branches is scored): fourth wave, development data only
+
+Owner's request: continue exploring and exploiting with several agents; machine-learning and deep-learning models
+accepted. Development file only (2013-2019 validation years, `harness.load()`); no agent opens the broad panel, the
+S&P 400 panel or any 2020+ data. Each branch keeps `STATE.json` and saves every configuration's predictions to
+`.cache/tree/preds/<branch>/<config>.npy` (Amendment 2). Selection by Amendment 2's rule: development mean IC, positive
+in at least 5 of 7 years, shrunk IC across the branch's logged configurations; the branch nominates at most one
+candidate, reported with its declared control. No candidate gets a sealed read from this amendment; reads need a later
+amendment naming fresh data.
+
+| Branch | Question | Declared control |
+|---|---|---|
+| Q1_seqnet | Do sequence networks (GRU/LSTM, temporal convolution, a small time-axis transformer) on each name's last 60 sessions of returns, residual returns and volume features add to direct characteristics? | B_arch's best MLP on the same rows (`B_arch/model.py`) |
+| Q2_xsattn | Does attention across names within a week (a set transformer, as in MASTER's inter-stock module), or a market-state-gated mixture of experts, beat the same network without it? | the same network with the cross-name attention (or gate) removed |
+| Q3_rankgbm | Do learning-to-rank objectives (pairwise/listwise losses in boosted trees or a ranking MLP), monotone constraints or deeper ensembles beat squared-error trees? | D trees on the 5-session target (`D_ensembles/model.py`) |
+| Q4_portfolio | Given fixed signals (MASTER, D trees, IPCA, from their saved development predictions), does construction raise net Sharpe or cut drawdown: nonlinear covariance shrinkage (Ledoit-Wolf 2020) with mean-variance long/short weights, turnover penalty, leg vol-matching, volatility-managed scaling (Moreira-Muir 2017), drawdown-conditioned exposure? Metrics: net Sharpe and maximum drawdown at 5 bp. | the decile book with M1's no-trade band on the same signal |
+
+Every configuration is added to `plan` in `STATE.json` before it is scored.

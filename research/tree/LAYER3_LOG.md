@@ -105,3 +105,18 @@ has 57, so news features will be sparse for most names in most weeks.
   read. Coverage (`read3.py panel`) is checked before any prediction is scored.
 * **Checks.** The D-trees library's disk cache is off by default (`X1_combine/lib.py` `DISK = None`), and every
   in-memory cache is keyed by the panel's arrays or cleared each call. No development fit can leak into the read.
+
+## Step 5 — fourth wave launched: four agents, development data only (2026-11-13)
+
+Owner's request: continue exploring and exploiting with several agents, deep learning welcome. Registered first
+(PREREG Layer 3, Amendment 3), then launched, each with `STATE.json` and every configuration's predictions saved:
+
+| Branch | What it explores | Control | Why this, now |
+|---|---|---|---|
+| Q1_seqnet | GRU/LSTM, temporal convolution, time-axis transformer on 60-session histories + rich characteristics, rank/IC losses | B_arch's MLP | B_arch's networks saw only 5 characteristics, 6 epochs, MSE (best IC .016); the trees reach .0236 with 27 inputs, so the gap may be inputs and training, not architecture |
+| Q2_xsattn | attention across names within a week (set transformer, MASTER-style), market-state mixture of experts | the same network without the module | one week is a natural set; listwise losses fit it |
+| Q3_rankgbm | learning-to-rank boosted trees (LambdaRank / pairwise), monotone constraints, DART, horizon averaging | D trees, 5-session target | the trees are the best development model; ranking objectives match the IC metric |
+| Q4_portfolio | nonlinear covariance shrinkage, mean-variance long/short, turnover penalty, volatility-managed scaling, drawdown control | decile book + no-trade band | X4: construction (the band) was the one robust gain; Sharpe and drawdown live here |
+
+No candidate from this wave gets a sealed read without a later amendment naming fresh data. Q1-Q3 are judged by the
+Amendment 2 rule (mean IC, years positive, shrunk IC); Q4 by net Sharpe with drawdown no worse than its control.
