@@ -3,6 +3,7 @@ Run through the redacting wrapper (needs the Alpaca keys). Resumable: finished c
 
     python research/tree/fetch_broad.py symbols    # Alpaca assets (active + inactive) + Nasdaq Trader flags -> symbols.json
     python research/tree/fetch_broad.py bars       # daily bars 2016-01-04 .. 2025-12-31, 50 symbols a request
+    python research/tree/fetch_broad.py raw        # the same, unadjusted, for eligibility only (Amendment 4)
 """
 import io
 import json
@@ -58,24 +59,42 @@ def symbols():
     print(json.dumps(meta))
 
 
-def bars():
+def bars(adj="all"):
+    """adj="all": returns and the model fields; adj="raw": eligibility only (price filter, dollar volume), PREREG L3 Am. 4."""
     import broker
     syms = sorted({s["symbol"] for s in json.load(open(os.path.join(OUT, "symbols.json")))["symbols"]})
     failed = []
+    os.makedirs(os.path.join(OUT, "chunks_raw"), exist_ok=True)
+    dpath = os.path.join(OUT, "chunks", "_dropped.json")
+    dropped = json.load(open(dpath)) if os.path.exists(dpath) else {}
     for i in range(0, len(syms), 50):
-        p = os.path.join(OUT, "chunks", f"{i:06d}.parquet")
+        p = os.path.join(OUT, "chunks" if adj == "all" else "chunks_raw", f"{i:06d}.parquet")
         if os.path.exists(p):
             continue
         chunk, token, rows = syms[i:i + 50], None, []
         while True:
-            q = (f"/v2/stocks/bars?symbols={','.join(chunk)}&timeframe=1Day&adjustment=all&feed=sip&limit=10000"
+            q = (f"/v2/stocks/bars?symbols={','.join(chunk)}&timeframe=1Day&adjustment={adj}&feed=sip&limit=10000"
                  f"&start={START}&end={END}T23:59:59Z" + (f"&page_token={token}" if token else ""))
-            for wait in (0, 5, 15, 45, 90):  # retries: the first run lost 69 of 191 chunks to non-200 answers
+            for wait in (0, 5, 15, 45, 90):  # 429/5xx: back off and retry
                 time.sleep(wait)
                 s, b = broker.api("GET", q, base=broker.DATA)
-                if s == 200:
+                if s == 200 or s == 400:
                     break
                 print(f"chunk {i}: status {s}, retry", flush=True)
+            msg = (b or {}).get("message", "") if isinstance(b, dict) else ""
+            if s == 400 and msg.startswith("invalid symbol: "):
+                # the 69 failed chunks of the first run: symbols the bars endpoint rejects (CUSIP-like ids, *_DELISTED
+                # renames). Drop the symbol, record it, restart the chunk.
+                bad = msg.split(": ", 1)[1].strip()
+                if bad not in chunk:
+                    failed.append(i)
+                    rows = None
+                    break
+                chunk = [c for c in chunk if c != bad]
+                dropped[bad] = "invalid symbol (bars endpoint 400)"
+                json.dump(dropped, open(dpath, "w"), indent=0)
+                token, rows = None, []
+                continue
             if s != 200:
                 failed.append(i)
                 rows = None
@@ -95,4 +114,4 @@ def bars():
 
 
 if __name__ == "__main__":
-    {"symbols": symbols, "bars": bars}[sys.argv[1]]()
+    {"symbols": symbols, "bars": bars, "raw": lambda: bars("raw")}[sys.argv[1]]()

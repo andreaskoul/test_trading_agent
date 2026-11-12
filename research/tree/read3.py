@@ -94,11 +94,38 @@ def read(cand):
             r["books_reported"] = {"error": repr(exc)[:200]}
         res[role] = r
         print(role, json.dumps({k: r[k] for k in ("ic", "t", "weeks")}), flush=True)
+    res["reported_amendment4"] = extras(preds, Ds, rows)
     a, b = ic_series(preds["candidate"], Ds, rows), ic_series(preds["control"], Ds, rows)
     m = np.isfinite(a) & np.isfinite(b)
     res["paired_vs_control_reported"] = dict(zip(("diff", "t", "weeks"), nw(a[m] - b[m])))
     res["p_one_sided"] = res["candidate"]["p_one_sided"]
     return res
+
+
+def extras(preds, Ds, rows):
+    """Reported only (PREREG Layer 3, Amendment 4): IC with delisting returns kept; IC by dollar-volume tercile."""
+    out = {}
+    Dd = dict(Ds)
+    Dd["y5"] = Ds["y5_delist"]
+    for role, p in preds.items():
+        o = {"ic_delist_kept": nw(ic_series(p, Dd, rows))[:2]}
+        for k, (lo, hi) in enumerate(((0, 1 / 3), (1 / 3, 2 / 3), (2 / 3, 1.0001))):
+            Dt = dict(Ds)
+            q = np.full(Ds["elig"].shape, False)
+            for t in rows:
+                e = Ds["elig"][t] & np.isfinite(Ds["dv"][t])
+                if e.sum():
+                    pr = pd_rank(Ds["dv"][t][e])
+                    q[t, np.where(e)[0][(pr >= lo) & (pr < hi)]] = True
+            Dt["elig"] = q
+            o[f"ic_dv_tercile_{k + 1}"] = nw(ic_series(p, Dt, rows))[:2]
+        out[role] = o
+    return out
+
+
+def pd_rank(x):
+    import pandas as pd
+    return pd.Series(x).rank(pct=True).to_numpy()
 
 
 def save(key, res):

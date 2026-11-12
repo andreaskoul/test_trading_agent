@@ -23,8 +23,11 @@ BROAD = os.path.join(ROOT, ".cache", "tree", "broad")
 TOP, MIN_PX, HIST, DV_WIN = 1500, 5.0, 252, 63
 
 
-def broad_prices(exclude, S):
-    b = pd.concat([pd.read_parquet(p) for p in sorted(glob.glob(os.path.join(BROAD, "chunks", "*.parquet")))])
+def broad_prices(exclude, S, sub="chunks"):
+    files = sorted(glob.glob(os.path.join(BROAD, sub, "*.parquet")))
+    if not files:
+        raise SystemExit(f"no {sub} files: run fetch_broad.py " + ("bars" if sub == "chunks" else "raw"))
+    b = pd.concat([pd.read_parquet(p) for p in files])
     b = b[~b.ticker.isin(exclude)]
     b["date"] = pd.to_datetime(b["date"])
     close = b.pivot_table(index="date", columns="ticker", values="close").reindex(S)
@@ -50,10 +53,14 @@ def build():
     S = px5.index
     names5 = list(px5.columns)
     read400 = [n for n, f in zip(D4["names"], is4) if f]
-    close, vol = broad_prices(set(names5) | set(read400) | {"SPY"}, S)
-    elig_b = eligibility(close, vol)
+    excl = set(names5) | set(read400) | {"SPY"}
+    close, _ = broad_prices(excl, S)                                   # adjusted: returns and model fields
+    rclose, rvol = broad_prices(excl, S, "chunks_raw")                 # unadjusted: eligibility only (Amendment 4)
+    rclose, rvol = rclose.reindex(columns=close.columns), rvol.reindex(columns=close.columns)
+    elig_b = eligibility(rclose, rvol)
     keep = elig_b.any(0)
     close, elig_b = close.loc[:, keep], elig_b[:, keep]
+    dv_b = (rclose * rvol).rolling(DV_WIN, min_periods=DV_WIN).mean().loc[:, keep].to_numpy()
     namesb = list(close.columns)
     mem = T.membership().reindex(S, method="ffill")
     elig5 = np.array([[t in s for t in names5] for s in mem.values])
@@ -64,7 +71,33 @@ def build():
         raise SystemExit("panel400.fields is required (refactor of panel400.build into fields(px, spy, elig))")
     D["names"] = names5 + namesb
     isb = np.array([False] * len(names5) + [True] * len(namesb))
+    D["dv"] = np.concatenate([np.full((len(S), len(names5)), np.nan), dv_b], 1).astype(np.float32)
+    D["y5_delist"] = delist_target(D, isb)
     return D, isb
+
+
+def delist_target(D, isb, h=5):
+    """Reported only (Amendment 4): y5 keeping names that stop trading for good inside the window. The return runs to
+    the last close, then 0 (no delisting reason is available, so no Shumway -30%). Same construction as fields()."""
+    r, rm, beta, elig, valid = D["r"], D["rm"], D["beta"], D["elig"], D["valid"]
+    n = len(D["S"])
+    cr = np.vstack([np.zeros((1, r.shape[1])), np.cumsum(np.nan_to_num(r.astype(np.float64)), 0)])
+    cm = np.concatenate([[0], np.cumsum(np.nan_to_num(rm.astype(np.float64)))])
+    last = np.where(valid.any(0), n - 1 - np.argmax(valid[::-1], 0), -1)
+    y = np.full(r.shape, np.nan)
+    for d in range(n - 1 - h):
+        a, bb = d + 2, d + 2 + h
+        y[d] = (cr[bb] - cr[a]) - beta[d] * (cm[bb] - cm[a])
+    ok = np.zeros_like(valid)
+    ok[: n - 1 - h] = valid[1 + h:] & valid[: n - 1 - h]
+    gone = np.zeros_like(valid)
+    idx = np.arange(n - 1 - h)[:, None]
+    gone[: n - 1 - h] = valid[: n - 1 - h] & (last[None, :] < idx + 1 + h) & (last[None, :] > idx) & (last[None, :] < n - 1)
+    m = (ok | (gone & isb[None, :])) & elig
+    y[~m] = np.nan
+    with np.errstate(all="ignore"):
+        y = y - np.nanmean(y, 1, keepdims=True)
+    return y.astype(np.float32)
 
 
 if __name__ == "__main__":

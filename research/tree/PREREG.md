@@ -238,3 +238,27 @@ amendment naming fresh data.
 | Q4_portfolio | Given fixed signals (MASTER, D trees, IPCA, from their saved development predictions), does construction raise net Sharpe or cut drawdown: nonlinear covariance shrinkage (Ledoit-Wolf 2020) with mean-variance long/short weights, turnover penalty, leg vol-matching, volatility-managed scaling (Moreira-Muir 2017), drawdown-conditioned exposure? Metrics: net Sharpe and maximum drawdown at 5 bp. | the decile book with M1's no-trade band on the same signal |
 
 Every configuration is added to `plan` in `STATE.json` before it is scored.
+
+## Layer 3, Amendment 4 (2026-11-13, after the L1 literature review, before the broad panel is built or any of its returns read)
+
+Source: `L1_lit/REPORT.md` (an in-project literature reading by a separate AI session; not an outside review).
+
+**Change to the L3.1 test universe (look-ahead fix).** Eligibility (close above $5; 63-session mean dollar volume)
+uses **unadjusted** Alpaca SIP closes and volumes (`adjustment=raw`, `fetch_broad.py raw`); returns and every model
+field keep `adjustment=all`. Reason: adjusted past closes embed later splits and dividends, so a name that later
+reverse-split passes the $5 filter in the past at a price it never traded (`panel_broad.py`, previous line 38). The
+candidates, controls, window, test and Holm step are unchanged.
+
+**Reported, not tested (added to `read3.py`).** (a) Each candidate's and control's IC with delisting returns kept: a
+broad name whose last close falls inside the 5-session window keeps a target, the return to its last close then 0
+(Alpaca gives no delisting reason, so no Shumway -30%; this bounds the bias from one side only). (b) IC by
+dollar-volume tercile of the eligible broad names each week (Avramov-Cheng-Metzker; Gu-Kelly-Xiu: profits concentrate
+in small names).
+
+**Disclosure (development panel).** 241 of the 738 S&P 500 names ever eligible in the development file have no price;
+on average 136 of 501 eligible names a session are unpriced (146 in 2013, 80 in 2019); 23.5% of eligible Thursday
+name-weeks 2013-2019 have no target (checked by the coordinating session from `dev.npz`). The panel's prices omit
+names that left the index, which is survivorship bias in every development result and in the 2020-2025 S&P 500
+holdout built the same way. Its sign and size are unknown. The broad universe (L3.1) is built from active and inactive
+Alpaca assets and does not share it, except for the symbols the bars endpoint rejects (listed in
+`.cache/tree/broad/chunks/_dropped.json`, counted in the read).

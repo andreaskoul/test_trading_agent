@@ -120,3 +120,25 @@ Owner's request: continue exploring and exploiting with several agents, deep lea
 
 No candidate from this wave gets a sealed read without a later amendment naming fresh data. Q1-Q3 are judged by the
 Amendment 2 rule (mean IC, years positive, shrunk IC); Q4 by net Sharpe with drawdown no worse than its control.
+
+## Step 6 — literature review of preprocessing (L1); two pipeline faults found and fixed before the read (2026-11-13)
+
+**What was done.** One agent read the published preprocessing choices for machine-learning return models (Gu-Kelly-Xiu
+2020, Chen-Pelger-Zhu, MASTER, the Qlib benchmarks, Bryzgalova-Lerner-Lettau-Pelger, Jensen-Kelly-Pedersen, Poh et al.
+and others; access labels and the search log in `L1_lit/REPORT.md`) and compared them with our code.
+
+**Findings acted on now.**
+1. *Development-panel survivorship* (checked here, not taken on the relay): 241 of 738 ever-eligible names have no
+   price; 23.5% of eligible name-weeks lack a target. Disclosed in PREREG Layer 3, Amendment 4. Repair is a separate,
+   later job (Alpaca bars for the missing names, 2016 on), queued after the downloads.
+2. *Look-ahead in the broad universe filter*: the $5 rule read adjusted closes. Fixed by Amendment 4 (unadjusted
+   prices for eligibility), before the panel exists.
+3. *Delisting returns dropped*: reported as a bound (Amendment 4), with IC by size tercile.
+
+**The bars download, diagnosed.** The 69 failed chunks were not rate limits: the bars endpoint answers 400 "invalid
+symbol" for some asset symbols (CUSIP-like ids, `*_DELISTED` renames). The fetch now drops such a symbol, records it,
+and retries the chunk.
+
+**Queued from the review (development data, each to be registered with its control before scoring):** rank or
+winsorise the five base characteristics; missing-value indicators for the long-window features; per-stock volatility
+scaling of sequence inputs (Q1); 10 seeds for network finalists.
