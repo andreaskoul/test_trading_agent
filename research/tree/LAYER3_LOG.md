@@ -72,3 +72,24 @@ read of a candidate with a strong prior (IPCA, the trees) is weak evidence again
 * **Adopted (PREREG Layer 3, Amendment 2):** choose by mean IC, never t; rank by shrunk IC; at most two finalists with
   controls; report PBO and the deflated Sharpe ratio, not gate on them. For the pending read, power at the shrunk IC
   is about 70% for the trees and 42% for IPCA, so a failed IPCA read was registered in advance as uninformative.
+
+## Step 3 — news: size and cost (2026-11-12)
+
+**What was done.** `news_probe.py` counted every 2019 Alpaca (Benzinga) article for 25 names drawn with a fixed seed
+from the development panel's mid-2019 members (69 API calls; no text kept; `N4_news/PROBE.json`).
+
+| | Value |
+|---|---|
+| Articles per name per year | mean 116, median 57, range 23–1,027 |
+| Articles with a summary | 0%: headlines only for this period |
+| Estimate, S&P 500 2015–2025 | about 640,000 headlines, 15,000 API calls, about 85 minutes at the rate limit |
+| Text volume | about 16 million headline tokens |
+
+**Cost.** Dictionary features (counts, novelty, Loughran–McDonald tone) cost nothing beyond the download. Embedding
+16 million tokens with a small embedding model would cost well under a dollar at typical list prices (not checked
+against the current OpenRouter price list), so even the embedding step is cheap; the LLM budget is not the constraint.
+
+**Decision.** Go. The download shares the Alpaca rate limit with the universe bars, so it starts after them. Then one
+agent builds and tests the N4 branch on the development years as an increment over MASTER, saving every
+configuration's predictions (Amendment 2). Coverage caveat: one name in the sample has 1,027 articles and the median
+has 57, so news features will be sparse for most names in most weeks.
