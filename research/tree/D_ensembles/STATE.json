@@ -1,0 +1,32 @@
+{
+ "branch": "D_ensembles",
+ "phase": 1,
+ "status": "done",
+ "configurations_scored": 7,
+ "scored": [
+  "hgb",
+  "et",
+  "rf",
+  "ridge",
+  "hgb_multihorizon",
+  "ew_hgb_et_ridge",
+  "ew_all6"
+ ],
+ "best": {
+  "name": "hgb_multihorizon",
+  "ic": 0.023568388085769547,
+  "ic_t": 2.4092185511563864,
+  "decile_net_pct_per_year": 1.0381052737794996,
+  "decile_net_sharpe": 0.14991612641776286
+ },
+ "plan": [],
+ "pending": [],
+ "deliverables": {
+  "model.py": true,
+  "REPORT.md": true
+ },
+ "verdict": "finalist D_hgb_mh failed the holdout",
+ "notes": [],
+ "resume": "Read research/tree/D_ensembles/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
+ "updated": "2026-11-12T13:25:37Z"
+}

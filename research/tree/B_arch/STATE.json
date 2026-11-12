@@ -1,0 +1,36 @@
+{
+ "branch": "B_arch",
+ "phase": 1,
+ "status": "done",
+ "configurations_scored": 11,
+ "scored": [
+  "mlp_Z",
+  "mlp_Z_gate",
+  "mlp_Z_xattn",
+  "cnn_e60",
+  "gru_e20",
+  "tfm_e60",
+  "gru_e20_Z",
+  "gru_e20_Z_gate",
+  "mlp_Z_res_deep",
+  "mlp_Z_wide_nonorm",
+  "gru_e20_Z_xattn"
+ ],
+ "best": {
+  "name": "mlp_Z_res_deep",
+  "ic": 0.016211640258347388,
+  "ic_t": 1.956599769504846,
+  "decile_net_pct_per_year": -0.14436098765985636,
+  "decile_net_sharpe": -0.028385295008227996
+ },
+ "plan": [],
+ "pending": [],
+ "deliverables": {
+  "model.py": true,
+  "REPORT.md": true
+ },
+ "verdict": "no gain over a small MLP",
+ "notes": [],
+ "resume": "Read research/tree/B_arch/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
+ "updated": "2026-11-12T13:25:37Z"
+}

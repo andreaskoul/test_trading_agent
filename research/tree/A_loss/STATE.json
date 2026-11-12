@@ -1,0 +1,37 @@
+{
+ "branch": "A_loss",
+ "phase": 1,
+ "status": "done",
+ "configurations_scored": 12,
+ "scored": [
+  "mse_rank",
+  "mse_raw",
+  "mse_gauss",
+  "huber_z",
+  "ic_gauss",
+  "listmle",
+  "softmax_ce",
+  "pairwise",
+  "cls_quintile",
+  "spread",
+  "spread_sharpe",
+  "ic_sharpe"
+ ],
+ "best": {
+  "name": "mse_rank",
+  "ic": 0.0187895381245544,
+  "ic_t": 2.4485862994457284,
+  "decile_net_pct_per_year": -1.0170608632128852,
+  "decile_net_sharpe": -0.18505234080601016
+ },
+ "plan": [],
+ "pending": [],
+ "deliverables": {
+  "model.py": false,
+  "REPORT.md": false
+ },
+ "verdict": "development lead; finalist A_mse_rank failed the holdout",
+ "notes": [],
+ "resume": "Read research/tree/A_loss/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
+ "updated": "2026-11-12T13:25:37Z"
+}

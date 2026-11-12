@@ -78,3 +78,10 @@ M2 and M3 (the two leading academic models, built for this exact task), M4, then
 * Every configuration logged; the count is reported with the result.
 * Agents write `model.py` and their report early: the account's usage limits stopped agents four times in phase 1.
 * Each agent gets its own worktree.
+
+## Resuming after a usage limit (owner, 2026-11-12)
+
+`python research/tree/state.py` rebuilds `STATE.md` (the ledger) and each branch's `STATE.json` from its logs. Every
+agent prompt from now on starts with: read your branch's `STATE.json`; never re-score what is listed in `scored`;
+score only `pending`; update `STATE.json` (`plan`, `notes`) after every configuration. A stopped branch is resumed
+by sending its agent, or a new one, the `resume` line of its `STATE.json`. The ledger is committed after each wave.

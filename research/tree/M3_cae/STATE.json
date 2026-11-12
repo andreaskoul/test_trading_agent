@@ -1,0 +1,37 @@
+{
+ "branch": "M3_cae",
+ "phase": 2,
+ "status": "done (seed ensemble never ran)",
+ "configurations_scored": 8,
+ "scored": [
+  "ca1_z5_k3",
+  "ca0_z5_k3",
+  "ca1_c32_k5",
+  "ca0_c32_k3",
+  "ca1_c32_k3",
+  "ca1_c32_k1",
+  "ca2_c32_k3",
+  "ca1_c32_k3_alpha"
+ ],
+ "best": {
+  "name": "ca2_c32_k3",
+  "ic": 0.02125683575824862,
+  "ic_t": 2.0044785905577007,
+  "decile_net_pct_per_year": 1.6213953795117593,
+  "decile_net_sharpe": 0.2090026141219609
+ },
+ "plan": [
+  "ca1_c32_k3_ens5"
+ ],
+ "pending": [
+  "ca1_c32_k3_ens5"
+ ],
+ "deliverables": {
+  "model.py": true,
+  "REPORT.md": true
+ },
+ "verdict": "no finalist; factor structure does not beat direct prediction",
+ "notes": [],
+ "resume": "Read research/tree/M3_cae/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
+ "updated": "2026-11-12T13:25:37Z"
+}

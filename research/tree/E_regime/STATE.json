@@ -1,0 +1,40 @@
+{
+ "branch": "E_regime",
+ "phase": 1,
+ "status": "done",
+ "configurations_scored": 15,
+ "scored": [
+  "E01 ew ridge hl52",
+  "E02 rolling ridge 104w",
+  "E03 interaction ridge",
+  "E04 panic rule",
+  "E05 kernel ridge",
+  "E06 exp weights",
+  "E07 ic timing 52w",
+  "E08 hypernet",
+  "E09 mixture of experts",
+  "E10 static ridge control",
+  "E11 panic rule ew52 base",
+  "E12 panic mom+52wh off",
+  "E13 kernel ridge + panic",
+  "E14 kernel h0.7 shrink0.3",
+  "E15 panic rule vol median"
+ ],
+ "best": {
+  "name": "E13 kernel ridge + panic",
+  "ic": 0.016668211811650693,
+  "ic_t": 1.6240679410848238,
+  "decile_net_pct_per_year": 0.7458775138559939,
+  "decile_net_sharpe": 0.09973262690029541
+ },
+ "plan": [],
+ "pending": [],
+ "deliverables": {
+  "model.py": true,
+  "REPORT.md": false
+ },
+ "verdict": "panic rule carried into X1; adaptation +0.005",
+ "notes": [],
+ "resume": "Read research/tree/E_regime/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
+ "updated": "2026-11-12T13:25:37Z"
+}

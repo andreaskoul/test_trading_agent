@@ -1,0 +1,37 @@
+{
+ "branch": "M2_ipca",
+ "phase": 2,
+ "status": "in progress",
+ "configurations_scored": 12,
+ "scored": [
+  "M01_Z5_wk_R",
+  "M01_Z5_wk_U",
+  "M02_C24_wk_R",
+  "M02_C24_wk_U",
+  "M03_C32_wk_R",
+  "M03_C32_wk_U",
+  "M04_C24_wk_l01_R",
+  "M04_C24_wk_l01_U",
+  "M05_C24_wk_xn_R",
+  "M05_C24_wk_xn_U",
+  "M06_C24_day_R",
+  "M06_C24_day_U"
+ ],
+ "best": {
+  "name": "M05_C24_wk_xn_U",
+  "ic": 0.022429098715018067,
+  "ic_t": 2.272647713092628,
+  "decile_net_pct_per_year": 1.4758966382700156,
+  "decile_net_sharpe": 0.2221127933998779
+ },
+ "plan": [],
+ "pending": [],
+ "deliverables": {
+  "model.py": false,
+  "REPORT.md": false
+ },
+ "verdict": null,
+ "notes": [],
+ "resume": "Read research/tree/M2_ipca/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
+ "updated": "2026-11-12T13:25:37Z"
+}

@@ -1,0 +1,40 @@
+{
+ "branch": "C_features",
+ "phase": 1,
+ "status": "done",
+ "configurations_scored": 15,
+ "scored": [
+  "C01 rev group",
+  "C02 mom group",
+  "C03 risk group",
+  "C04 52w-high + vol-scaled",
+  "C05 all 24",
+  "C06 all 24 + market-state interactions",
+  "C07 rev + risk groups",
+  "C08 all 24 + all x market vol",
+  "C09 C06 with z-scores",
+  "C10 C06 with gaussianised ranks",
+  "C11 C06 rolling 3y window",
+  "C12 C06 exp-weighted hl 2y",
+  "C13 C06 Fama-MacBeth",
+  "C14 C06 heavy shrinkage lam 3",
+  "C15 C06 Thursdays only"
+ ],
+ "best": {
+  "name": "C13 C06 Fama-MacBeth",
+  "ic": 0.02088251049341205,
+  "ic_t": 2.294270355462059,
+  "decile_net_pct_per_year": -0.2767471377862949,
+  "decile_net_sharpe": -0.04453003745776522
+ },
+ "plan": [],
+ "pending": [],
+ "deliverables": {
+  "model.py": true,
+  "REPORT.md": false
+ },
+ "verdict": "features carried into X1",
+ "notes": [],
+ "resume": "Read research/tree/C_features/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
+ "updated": "2026-11-12T13:25:37Z"
+}

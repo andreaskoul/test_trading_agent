@@ -1,0 +1,36 @@
+{
+ "branch": "X1_combine",
+ "phase": 1,
+ "status": "done",
+ "configurations_scored": 11,
+ "scored": [
+  "1b_C_fmridge",
+  "1a_D_hgb_mh",
+  "2_hgb_Cfeat",
+  "3_ew3_Cfeat",
+  "6_hgbD_mh+fmC",
+  "6p_hgbD_mh+fmC_panic",
+  "4_ew3_Cfeat_mh",
+  "5_ew3_Cfeat_mh_panic",
+  "7p_hgbD_mh+fmC_mh_panic",
+  "8p_hgbD_mh+fmC_mh+mlpC_mh_panic",
+  "6p_model_py_check"
+ ],
+ "best": {
+  "name": "8p_hgbD_mh+fmC_mh+mlpC_mh_panic",
+  "ic": 0.02819641804783444,
+  "ic_t": 2.905591849820195,
+  "decile_net_pct_per_year": 1.1088329709905496,
+  "decile_net_sharpe": 0.17554483212939287
+ },
+ "plan": [],
+ "pending": [],
+ "deliverables": {
+  "model.py": true,
+  "REPORT.md": true
+ },
+ "verdict": "finalist X1_8p failed the holdout (p 0.0173 vs 0.0167)",
+ "notes": [],
+ "resume": "Read research/tree/X1_combine/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
+ "updated": "2026-11-12T13:25:37Z"
+}

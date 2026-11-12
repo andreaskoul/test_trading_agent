@@ -1,0 +1,46 @@
+{
+ "branch": "N3_intraday",
+ "phase": 2,
+ "status": "done",
+ "configurations_scored": 20,
+ "scored": [
+  "N3_screen_on5",
+  "N3_screen_id5",
+  "N3_screen_on21",
+  "N3_screen_id21",
+  "N3_screen_on63",
+  "N3_screen_id63",
+  "N3_screen_on21_minus_id21",
+  "N3_screen_last30_5",
+  "N3_screen_last30_share21",
+  "N3_screen_logvol_id_over_on21",
+  "N3_screen_tow_freq21",
+  "N3_c2a_rankavg_id21",
+  "N3_c2b_rankavg_id21_tow",
+  "N3_c3a_ridge4",
+  "N3_c3b_fm4",
+  "N3_c3c_anchoredfm2",
+  "N3_c4_dml_id21",
+  "N3_c4_dml_on21_minus_id21",
+  "N3_c8_control_tot21",
+  "N3_screen_neg_tot21"
+ ],
+ "best": {
+  "name": "N3_c8_control_tot21",
+  "ic": 0.020197771526128793,
+  "increment": 0.0036650264372167043,
+  "increment_t": 1.721190612296975,
+  "decile_net_pct_per_year": 2.4718884884795824,
+  "decile_net_sharpe": 0.4106615175964459
+ },
+ "plan": [],
+ "pending": [],
+ "deliverables": {
+  "model.py": true,
+  "REPORT.md": true
+ },
+ "verdict": "no finalist; increment is 1-month reversal, not intraday",
+ "notes": [],
+ "resume": "Read research/tree/N3_intraday/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
+ "updated": "2026-11-12T13:25:37Z"
+}

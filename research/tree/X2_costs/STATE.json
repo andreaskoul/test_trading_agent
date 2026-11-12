@@ -1,0 +1,36 @@
+{
+ "branch": "X2_costs",
+ "phase": 1,
+ "status": "done",
+ "configurations_scored": 11,
+ "scored": [
+  "c1b_base_h5",
+  "c1_base_mh",
+  "c2a_mh_ema_hl1",
+  "c2b_mh_ema_hl3",
+  "c3_h10_h20",
+  "c4_blend_slow",
+  "c5_nofast_mh",
+  "c6_tc_target",
+  "c7_mh_ema1_band5",
+  "c8_h10h20_ema1",
+  "c9_mh_ema_hl2"
+ ],
+ "best": {
+  "name": "c1_base_mh",
+  "ic": 0.023568388085769547,
+  "ic_t": 2.4092185511563864,
+  "decile_net_pct_per_year": 1.0381052737794996,
+  "decile_net_sharpe": 0.14991612641776286
+ },
+ "plan": [],
+ "pending": [],
+ "deliverables": {
+  "model.py": true,
+  "REPORT.md": true
+ },
+ "verdict": "smoothing cuts costs; hurt MASTER in the holdout",
+ "notes": [],
+ "resume": "Read research/tree/X2_costs/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
+ "updated": "2026-11-12T13:25:37Z"
+}

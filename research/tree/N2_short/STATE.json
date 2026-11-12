@@ -1,0 +1,37 @@
+{
+ "branch": "N2_short",
+ "phase": 2,
+ "status": "done",
+ "configurations_scored": 11,
+ "scored": [
+  "c1 F2 alone",
+  "c1 F2 alone (score)",
+  "c2 MASTER+F2 0.5/0.5",
+  "c3 MASTER+F2 0.7/0.3",
+  "c4 FM [MASTER, F2]",
+  "c5 FM [MASTER, 7 short feats]",
+  "c6 FM [MASTER, screened]",
+  "c7 HGB [MASTER, 7 feats, Z]",
+  "DML f2 | MASTER + Z",
+  "DML f5 | MASTER + Z",
+  "DML f60 | MASTER + Z"
+ ],
+ "best": {
+  "name": "c3 MASTER+F2 0.7/0.3",
+  "ic": 0.014499035112941632,
+  "increment": 0.001967434106856566,
+  "increment_t": 1.1426402916661047,
+  "decile_net_pct_per_year": 0.42350325125566296,
+  "decile_net_sharpe": 0.07358875529751227
+ },
+ "plan": [],
+ "pending": [],
+ "deliverables": {
+  "model.py": true,
+  "REPORT.md": true
+ },
+ "verdict": "no finalist; increment t 1.14, double-ML t 1.61",
+ "notes": [],
+ "resume": "Read research/tree/N2_short/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
+ "updated": "2026-11-12T13:25:37Z"
+}
