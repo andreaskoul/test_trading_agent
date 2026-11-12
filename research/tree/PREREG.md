@@ -133,3 +133,29 @@ One-sided Newey-West t (4 lags), Holm across the three at alpha 0.05. Lock: `REA
 * A finalist whose code cannot run on the read's inputs is reported as not read, not repaired after seeing data.
 
 **Consequences.** A pass earns a forward paper book (research only). Fail: closed on that panel.
+
+## Result of the phase-2 reads (2026-11-12, `HOLDOUT2_RESULT.json`; locks `READ2_N1.lock`, `READ2_M2.lock`, `READ2_M4.lock`)
+
+| Finalist | Panel | Statistic | Newey–West t | one-sided p | Holm (α 0.05) |
+|---|---|---:|---:|---:|---|
+| **M2 IPCA (M05_U)** | S&P 400, 2019–2025, 353 weeks, ~332 names | IC **0.0183** | **2.17** | **0.0149** | **passes** (needs 0.0167) |
+| M4 unshrunk SDF (S04) | same | IC 0.0033 | 0.86 | 0.196 | fails |
+| N1 fundamentals over MASTER | S&P 500, 2020–2025, 303 weeks | increment −0.0001 | −0.02 | 0.507 | fails |
+
+* M2 IC by year 2019 → 2025: .014 .015 .010 .030 −.002 .042 .019 (positive in 6 of 7).
+* N1: MASTER's IC on these weeks is 0.0326; the fundamentals blend scores 0.0326 as well. The registered no-fit
+  fallback: increment +0.0003 (t 0.11). The development gain (t 2.29) did not survive.
+* Reported, not tested: decile book net of 5 bp (harness definition) on the S&P 400: M2 +19.0%/yr (Sharpe 0.45), M4
+  +12.9%/yr (0.31). Return levels on a current-members panel are not reliable (below). The band comparison failed to run
+  (a bug in the reporting helper, which is not part of the test).
+
+**Survivorship check (descriptive, disclosed; not a test).** The S&P 400 panel holds today's members only, which
+conditions on 2019–2025 outcomes (names that left the index by rising, falling or being acquired are missing). The same
+M2 model was therefore also run on the point-in-time S&P 500, 2020–2025 (a panel already read in phase 1 for other
+models; these predictions had not been seen): IC 0.0121 (t 1.02), decile net −3.3%/yr, correlation with MASTER 0.26,
+against MASTER 0.0326 on the same weeks. The S&P 400 pass is real under its registered test, but part of it may
+come from the survivorship conditioning or from mid-caps being less efficient; the S&P 500 check cannot tell which.
+
+**Consequences as registered.** M2 IPCA earns a forward paper book (research only), to run on S&P 400 and S&P 500
+members with point-in-time membership, which removes the survivorship question going forward. M4 and N1 are closed on
+their panels.

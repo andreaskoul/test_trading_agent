@@ -1,0 +1,108 @@
+{
+ "N1": {
+  "panel": "S&P 500 2020-2025",
+  "weeks": 303,
+  "ic": 0.032567759340464325,
+  "master_ic": 0.032631536587407126,
+  "increment": -6.377724694279799e-05,
+  "t": -0.018475847718698056,
+  "p_one_sided": 0.5073703774972658,
+  "increment_by_year": {
+   "2020": 0.009160283009283772,
+   "2021": 0.0020007802518279215,
+   "2022": -0.005871435135188771,
+   "2023": 0.0005481360581460552,
+   "2024": 0.0003323582704498762,
+   "2025": -0.007142264077978411
+  },
+  "decile_net_pct_per_year": 8.331786416069962,
+  "fallback_comp_blend70": {
+   "increment": 0.0002788076127624293,
+   "t": 0.11431114397986478,
+   "weeks": 303
+  },
+  "run": "2026-11-12T14:07:39+00:00"
+ },
+ "M2": {
+  "panel": "S&P 400 2019-2025 (current members; model fitted on S&P 500 + S&P 400 rows before each year)",
+  "weeks": 353,
+  "ic": 0.018287160402754687,
+  "t": 2.174044878627905,
+  "p_one_sided": 0.014850882481092011,
+  "ic_by_year": {
+   "2019": 0.01353605801678513,
+   "2020": 0.015066567482756553,
+   "2021": 0.010337490480989944,
+   "2022": 0.030216817854579796,
+   "2023": -0.00202702097617375,
+   "2024": 0.042225442787355766,
+   "2025": 0.019144571198600534
+  },
+  "names_per_week": 331.6912181303116,
+  "books_reported": {
+   "error": "UnboundLocalError(\"cannot access local variable 'P' where it is not associated with a value\")"
+  },
+  "run": "2026-11-12T14:11:23+00:00"
+ },
+ "M4": {
+  "panel": "S&P 400 2019-2025 (current members; model fitted on S&P 500 + S&P 400 rows before each year)",
+  "weeks": 353,
+  "ic": 0.003340135052536911,
+  "t": 0.8577538188962316,
+  "p_one_sided": 0.1955142075657912,
+  "ic_by_year": {
+   "2019": 0.009039010821482379,
+   "2020": -0.014922148128829575,
+   "2021": 0.011182070077126545,
+   "2022": -0.017436163420443514,
+   "2023": 0.01215409906978111,
+   "2024": 0.012892807349218202,
+   "2025": 0.011615170326249313
+  },
+  "names_per_week": 331.5750708215297,
+  "books_reported": {
+   "error": "UnboundLocalError(\"cannot access local variable 'P' where it is not associated with a value\")"
+  },
+  "run": "2026-11-12T14:11:42+00:00"
+ },
+ "holm": {
+  "p": {
+   "N1": 0.5073703774972658,
+   "M2": 0.014850882481092011,
+   "M4": 0.1955142075657912
+  },
+  "holm_pass": {
+   "M2": true,
+   "M4": false,
+   "N1": false
+  }
+ },
+ "books_reported_harness": {
+  "M2": {
+   "decile_net_pct_per_year": 19.03,
+   "net_sharpe": 0.45
+  },
+  "M4": {
+   "decile_net_pct_per_year": 12.93,
+   "net_sharpe": 0.31
+  }
+ },
+ "M2_sp500_check_descriptive": {
+  "label": "descriptive check, not a test: S&P 500 2020-2025 was already read in phase 1 for other models; this model's predictions there were not seen before",
+  "ic": 0.012148338562413827,
+  "t": 1.0247984670072323,
+  "weeks": 303,
+  "ic_by_year": {
+   "2020": 0.012351024851153932,
+   "2021": -0.013302758071577886,
+   "2022": 0.028422645175360133,
+   "2023": -0.001651443629645414,
+   "2024": 0.02398963861590324,
+   "2025": 0.024006682170317595
+  },
+  "master_ic_same_weeks": 0.032631536587407126,
+  "corr_with_master": 0.26391710117053724,
+  "decile_net_pct_per_year": -3.32375654824811,
+  "decile_net_sharpe": -0.30669332547674855
+ }
+}
