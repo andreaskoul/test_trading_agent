@@ -43,6 +43,16 @@ def build():
     elig5 = np.array([[t in s for t in names5] for s in mem.values])
     elig4 = px4.notna().to_numpy() & (S >= pd.Timestamp("2016-01-01"))[:, None]
     elig = np.concatenate([elig5, elig4], 1)
+    D = fields(px, spy, elig)
+    D["names"] = names
+    is400 = np.array([False] * len(names5) + [True] * len(names4))
+    return D, is400
+
+
+def fields(px, spy, elig):
+    """Every panel field, as research/quant_trials/sp500_test.build constructs it, on the given cross-section."""
+    import sp500_test as T  # noqa: F401  (path set at import)
+    S = px.index
     # ---- from here the same construction as sp500_test.build, on the combined cross-section
     close = px.values
     lp = np.log(px)
@@ -76,11 +86,10 @@ def build():
     with np.errstate(all="ignore"):
         y = y - np.nanmean(y, 1, keepdims=True)
     e = r - np.vstack([np.full((1, r.shape[1]), np.nan), beta[:-1]]) * rm[:, None]
-    D = {"S": S, "names": names, "Z": Z.astype(np.float32), "y5": y.astype(np.float32), "elig": elig,
+    D = {"S": S, "Z": Z.astype(np.float32), "y5": y.astype(np.float32), "elig": elig,
          "e": e.astype(np.float32), "spy": spy.values, "rm": rm.astype(np.float32), "r": r.astype(np.float32),
          "beta": beta.astype(np.float32), "valid": valid}
-    is400 = np.array([False] * len(names5) + [True] * len(names4))
-    return D, is400
+    return D
 
 
 if __name__ == "__main__":
