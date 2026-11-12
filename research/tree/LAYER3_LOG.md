@@ -165,3 +165,15 @@ terciles.
 * **Both books earn in calm weeks** and in middle-volatility names, not in volatile periods or names.
 * **What to carry forward.** The covariance-aware book is the one lead worth a registered test: fix k and the hedge
   in advance, test it on all four signals at once, and judge it on fresh weeks.
+
+## Step 9 — ledger fault fixed; Q3 interim (2026-11-13)
+
+* **Fault (reported by the Q3 agent, confirmed in the code):** `state.py` rewrote every branch's `STATE.json`,
+  including running agents', and crashed Q3's bookkeeping once (no result lost: `RESULTS.jsonl` and predictions are
+  written separately). It also chose "best" by t, against Amendment 2, and never cleared "name: spec" plan entries
+  from pending. Fixed: the script now only reads branch files (checked: checksums of every `STATE.json` unchanged by a
+  rebuild); best = highest mean IC (mean increment for track N, net Sharpe for Q4) among configurations positive in at
+  least 5 of 7 years. Q1 and Q2 were told to re-check their state files.
+* **Q3 interim (5 of 16 scored):** no ranking objective beats squared-error trees. Control .0216; RankNet .0206;
+  LightGBM L2 .0204; monotone .0192; LambdaRank (quintile grades) .0171. Second batch running, including the two
+  literature variants (native NaN; ranked Z).
