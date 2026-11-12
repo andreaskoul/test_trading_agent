@@ -1,0 +1,1577 @@
+{
+ "records": {
+  "AMAT": {
+   "ticker": "AMAT",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Semiconductor Materials & Equipment",
+   "last_release": "2026-08-13 20:03:36+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/6951/000162828026056699/exhibit991q32026earningsre.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Semiconductor Systems revenue and margin",
+      "last_report": "Record $7.04B, 67% foundry/logic, 26% DRAM, 7% flash; gross margin 55.3%, operating margin 37.7%.",
+      "guidance": "Raising calendar 2026 Semiconductor Systems revenue expectations; expects strong growth in DRAM, leading-edge foundry-logic and advanced packaging in H2."
+     },
+     {
+      "id": "D2",
+      "name": "DRAM and memory demand",
+      "last_report": "DRAM rose to 26% of Semiconductor Systems revenue from 22%; flash fell to 7% from 9%; new DRAM/HBM systems launched.",
+      "guidance": "CFO expects continued strong revenue growth in second half calendar year, particularly in DRAM."
+     },
+     {
+      "id": "D3",
+      "name": "Foundry-logic and advanced packaging",
+      "last_report": "Foundry, logic and other was 67% of Semiconductor Systems revenue; advanced packaging products and Broadcom EPIC partnership announced.",
+      "guidance": "CFO expects strong revenue growth particularly in leading-edge foundry-logic and advanced packaging in second half of calendar year."
+     },
+     {
+      "id": "D4",
+      "name": "Applied Global Services revenue and margin",
+      "last_report": "Revenue $1.781B; gross margin 35.6%, operating margin 30.1%, up from 33.8% and 27.3% year over year.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Gross margin and EPS",
+      "last_report": "Non-GAAP gross margin 50.4%, record operating margin 34.0%, record EPS $3.50; 13th consecutive quarter of YoY gross margin expansion.",
+      "guidance": "Q4 non-GAAP EPS $4.02 +/- $0.20; revenue $10.25B +/- $500M."
+     }
+    ],
+    "guidance": "Q4 FY2026 total revenue $10.25B +/- $500M; non-GAAP diluted EPS $4.02 +/- $0.20. Company also expects continued strong H2 calendar revenue growth, particularly DRAM, leading-edge foundry-logic and advanced packaging.",
+    "kill_conditions": [
+     "Q4 revenue below $9.75B or non-GAAP EPS below $3.82.",
+     "Semiconductor Systems revenue or DRAM mix declines sequentially, or gross margin falls below 50%.",
+     "Other segment operating loss widens beyond $118M or AGS margin contracts year over year."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 19,
+    "found": 16,
+    "share": 0.8421052631578947,
+    "missing": [
+     "1.781",
+     "10.25",
+     "7.04"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 660,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "CoreWeave blowout earnings ease AI spending fears",
+        "date": "2026-11-11",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Lam Research reports record 52.4% gross margin, strong demand",
+        "date": "2026-11-10",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ONTO Innovation beats Q3 estimates and uplifts outlook",
+        "date": "2026-11-10",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TSMC says remains focused on logic chips, not memory",
+        "date": "2026-11-09",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "HBM tool shortage article: orders for HBM tools rising",
+        "date": "2026-11-10",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Alibaba",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "CoreWeave earnings alleviate AI spending fears, supporting semiconductor demand.",
+        "date": "2026-11-11",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Lam Research reports record 52.4% gross margin on strong AI demand.",
+        "date": "2026-11-10",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ONTO Innovation beats Q3 estimates, uplifts view, cites AI-driven demand and $1.3B backlog.",
+        "date": "2026-11-10",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "ONTO",
+    "MKSI",
+    "Q",
+    "AEIS",
+    "ENTG"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ONTO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record advanced nodes/packaging revenue, 88% YoY growth, $1.3B backlog signal strong leading-edge and advanced packaging demand for AMAT."
+       },
+       {
+        "peer": "MKSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Semiconductor +54% and advanced packaging +43% YoY, record revenue, robust orders indicate broad WFE and packaging strength for AMAT."
+       },
+       {
+        "peer": "Q",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Raises FY guidance on 22% sales growth; materials innovation for shrink/stack supports leading-edge and advanced packaging demand."
+       },
+       {
+        "peer": "AEIS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record semiconductor revenue +64% YoY and strong Q4 guide signal robust semiconductor equipment demand, positive for AMAT's Systems revenue."
+       },
+       {
+        "peer": "ENTG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record sales, margin expansion, leading-edge materials intensity, and strong Q4 outlook indicate healthy leading-edge fab demand for AMAT."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ONTO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record revenue, advanced packaging and advanced nodes strength, backlog >$1.3B signal robust semicap demand."
+       },
+       {
+        "peer": "MKSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record semi revenue +54% YoY, advanced packaging growth, robust orders indicate strong industry demand."
+       },
+       {
+        "peer": "Q",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Raises guidance on 22% sales growth; semiconductor and interconnect strength supports advanced packaging demand."
+       },
+       {
+        "peer": "AEIS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record semiconductor and data-center revenue, +50% total, strong Q4 guide signals robust equipment demand."
+       },
+       {
+        "peer": "ENTG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record sales, margin expansion, leading-edge and capex strength indicate healthy semiconductor demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ENTG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record sales, margin expansion, and strong leading-edge/capex demand signal healthy WFE conditions for AMAT."
+       },
+       {
+        "peer": "AEIS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record semiconductor revenue +64% and strong Q4 guide signal robust WFE demand, positive for AMAT Semiconductor Systems."
+       },
+       {
+        "peer": "Q",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Raises guidance on 22% sales growth and strong interconnect/advanced packaging demand, positive for AMAT's foundry-logic and packaging."
+       },
+       {
+        "peer": "MKSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record semi revenue +54%, advanced packaging strength, and strong Q4 guide signal robust WFE/packaging demand for AMAT."
+       },
+       {
+        "peer": "ONTO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record revenue +88%, advanced packaging record, and $1.3B backlog signal strong WFE/packaging demand for AMAT."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 4.4907311951024935,
+   "score_peer": 5.30722777603022,
+   "score_combined": 7.144345083117603,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 4.1345,
+   "revenue_estimate": 10504570449,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-12",
+   "cutoff": "2026-11-11 22:00:00+00:00",
+   "decided_at": "2026-11-12T02:34:50.876048+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8683c82d176b591dcaa7d32a1f4e3374e660a000",
+   "sha256": "f0382131f84bd7b7f557c365bfc7fdf56c2dc1cfb0023bd76c52d84ad4d06397"
+  },
+  "ARWR": {
+   "ticker": "ARWR",
+   "index": "SP400",
+   "sector": "Health Care",
+   "sub_industry": "Biotechnology",
+   "last_release": "2026-08-04 20:03:02+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/879407/000087940726000058/arwr-202608048kex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "REDEMPLO U.S. launch momentum",
+      "last_report": "Rx volume roughly doubled in fiscal Q3; >400 unique prescribers; favorable policies with major U.S. payers; EU and Australia authorizations granted.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Plozasiran sHTG regulatory submission",
+      "last_report": "SHASTA-3/4 met primary and all secondary endpoints; 79%/81% TG reductions; 78% AP reduction; PRV acquired.",
+      "guidance": "sNDA submission anticipated before end of 2026; ESC late-breaker August 30, 2026."
+     },
+     {
+      "id": "D3",
+      "name": "Zodasiran YOSEMITE and pipeline data",
+      "last_report": "YOSEMITE enrollment completed, target increased to 70; ARO-INHBE interim data showed liver fat reductions; ARO-PNPLA3 licensed to Madrigal.",
+      "guidance": "YOSEMITE completion anticipated mid-2027; Madrigal $25M upfront, up to $975M milestones."
+     },
+     {
+      "id": "D4",
+      "name": "Financials and cash burn",
+      "last_report": "Q3 revenue $75.3M; R&D $198.2M; SG&A $47.1M; operating loss $170.1M; cash resources $1.57B.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "REDEMPLO prescription volume growth stalls or declines in next quarterly update.",
+     "Plozasiran sHTG sNDA submission delayed beyond 2026 or FDA rejects filing.",
+     "New safety signal or clinical hold reported for plozasiran, zodasiran, or ARO-INHBE."
+    ]
+   },
+   "card_provider": "Cohere",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 13,
+    "found": 8,
+    "share": 0.6153846153846154,
+    "missing": [
+     "1.57",
+     "170.1",
+     "198.2",
+     "47.1",
+     "75.3"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 89,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Germany access for REDEMPLO (plozasiran) in FCS",
+        "date": "2026-08-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ESC 2026: plozasiran 12-month data reduced pancreatitis risk, sustained TG reductions",
+        "date": "2026-08-31",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ARO-DIMER-PA interim Phase 1/2a data for mixed hyperlipidemia",
+        "date": "2026-09-15",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Management: Redemplo launch not gangbusters, slow burn to $3-4B peak",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "FDA STAR Pilot Program entry for plozasiran in sHTG",
+        "date": "2026-10-07",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ARO-MAPT interim Phase 1/2a: up to 73% mean, 85% max tau reduction",
+        "date": "2026-10-14",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "UK MHRA authorizes REDEMPLO; NICE recommends NHS funding in England/Wales",
+        "date": "2026-10-27",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Debt refinancing: new $400M term loan, lower costs, extended maturity",
+        "date": "2026-11-04",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AHA 2026: plozasiran sustained TG reductions, 78% lower acute pancreatitis rate",
+        "date": "2026-11-07",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AHA 2026: ARO-DIMER-PA detailed data lowers LDL cholesterol and triglycerides",
+        "date": "2026-11-07",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "REDEMPLO launched in Germany for FCS",
+        "date": "2026-08-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ARO-DIMER-PA interim Phase 1/2a data for mixed hyperlipidemia",
+        "date": "2026-09-15",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Company guides Redemplo slow burn to $3-4B peak",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "FDA STAR Pilot Program entry for plozasiran in sHTG",
+        "date": "2026-10-07",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ARO-MAPT interim Phase 1/2a data shows up to 85% tau reduction",
+        "date": "2026-10-14",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "UK MHRA authorization and NICE recommendation for REDEMPLO",
+        "date": "2026-10-27",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Debt refinancing with Sixth Street lowers borrowing costs",
+        "date": "2026-11-04",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AHA 2026 plozasiran data: 78% lower AP, 91% in recent history",
+        "date": "2026-11-07",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Germany REDEMPLO access for FCS patients",
+        "date": "2026-08-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ESC presentation of SHASTA-3/4 12-month plozasiran data",
+        "date": "2026-08-30",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ARO-DIMER-PA interim Phase 1/2a data in mixed hyperlipidemia",
+        "date": "2026-09-15",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Company predicts slow burn to $3-4B peak for Redemplo",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "FDA STAR Pilot Program entry for plozasiran in sHTG",
+        "date": "2026-10-07",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ARO-MAPT interim Phase 1/2a data: up to 73% tau reduction",
+        "date": "2026-10-14",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "UK MHRA authorisation for REDEMPLO; NICE recommends NHS funding",
+        "date": "2026-10-27",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Debt refinancing: new $400M loan, lower costs, extended maturity",
+        "date": "2026-11-04",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AHA 2026 plozasiran data: 78% lower acute pancreatitis, sustained TG reductions",
+        "date": "2026-11-07",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "ROIV",
+    "MRNA",
+    "HALO",
+    "CYTK",
+    "UTHR"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ROIV",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Autoimmune/immunology focus; no read-through to ARWR's RNAi cardiometabolic drivers."
+       },
+       {
+        "peer": "MRNA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Vaccines/oncology; no overlap with ARWR's lipid, liver, or obesity programs."
+       },
+       {
+        "peer": "HALO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Drug delivery royalties; no relevance to ARWR's RNAi pipeline or launch."
+       },
+       {
+        "peer": "CYTK",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "HCM cardiology launch; different indication, no direct read-through to ARWR."
+       },
+       {
+        "peer": "UTHR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Pulmonary hypertension sales; no overlap with ARWR's sHTG or lipid programs."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ROIV",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Autoimmune and cash updates not relevant to ARWR's hypertriglyceridemia/RNAi programs."
+       },
+       {
+        "peer": "MRNA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Vaccine/oncology results unrelated to ARWR's cardiometabolic and RNAi drivers."
+       },
+       {
+        "peer": "HALO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Royalty and drug-delivery news has no bearing on ARWR's launch or pipeline."
+       },
+       {
+        "peer": "CYTK",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Different cardiology indication; no shared demand/pricing for REDEMPLO or plozasiran."
+       },
+       {
+        "peer": "UTHR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "PAH competitive dynamics not relevant to ARWR's hypertriglyceridemia programs."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "UTHR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "PAH/cardiopulmonary results unrelated to ARWR lipid/cardiometabolic drivers."
+       },
+       {
+        "peer": "CYTK",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "HCM launch unrelated to ARWR lipid/cardiometabolic drivers."
+       },
+       {
+        "peer": "HALO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Drug delivery royalties unrelated to ARWR lipid/cardiometabolic drivers."
+       },
+       {
+        "peer": "MRNA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Vaccine results unrelated to ARWR lipid/cardiometabolic drivers."
+       },
+       {
+        "peer": "ROIV",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Immunology results unrelated to ARWR lipid/cardiometabolic drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 6.957010852370434,
+   "score_peer": 0.0,
+   "score_combined": 6.957010852370434,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": -1.6184,
+   "revenue_estimate": 56955076,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-12",
+   "cutoff": "2026-11-11 22:00:00+00:00",
+   "decided_at": "2026-11-12T02:36:36.648834+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8683c82d176b591dcaa7d32a1f4e3374e660a000",
+   "sha256": "6d72bc693ee36f6bce904d877428550b5491b4153cb377777d2795f96a303dca"
+  },
+  "CSCO": {
+   "ticker": "CSCO",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Communications Equipment",
+   "last_release": "2026-08-12 20:07:06+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/858877/000085887726000106/exhibit991pressrelease-q4f.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "AI infrastructure orders and revenue",
+      "last_report": "Q4 AI orders $4B; FY26 $9.3B orders, ~$4B revenue; FY27 AI revenue expected $7.5B.",
+      "guidance": "FY27 AI infrastructure revenue expected $7.5B."
+     },
+     {
+      "id": "D2",
+      "name": "Networking product orders and revenue",
+      "last_report": "Q4 Networking revenue +28% Y/Y; networking product orders +40% Y/Y, eighth straight double-digit quarter.",
+      "guidance": "No separate segment guidance; total Q1 revenue guided $18.0B-$18.2B."
+     },
+     {
+      "id": "D3",
+      "name": "Non-GAAP gross margin",
+      "last_report": "Q4 non-GAAP total gross margin 66.3%, down from 68.4% Y/Y; product GM 64.8%.",
+      "guidance": "Q1 non-GAAP gross margin guided 65%-66%."
+     },
+     {
+      "id": "D4",
+      "name": "Security and Collaboration growth",
+      "last_report": "Q4 Security +14%, Collaboration +12%, Observability +6%; FY Security +2%, Collaboration +4%.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Operating margin and opex discipline",
+      "last_report": "Q4 non-GAAP operating margin 35.9%; non-GAAP opex +5% Y/Y; GAAP opex +10%.",
+      "guidance": "Q1 non-GAAP operating margin guided 35.5%-36.5%."
+     }
+    ],
+    "guidance": "Q1 FY27 revenue $18.0B-$18.2B; non-GAAP gross margin 65%-66%; non-GAAP operating margin 35.5%-36.5%; non-GAAP EPS $1.32-$1.34; GAAP EPS $1.08-$1.10. FY27 revenue $72.2B-$73.4B; non-GAAP EPS $5.05-$5.11; GAAP EPS $4.00-$4.06.",
+    "kill_conditions": [
+     "Cisco Q1 revenue misses $18.0B or cuts FY27 revenue guidance.",
+     "AI infrastructure orders or FY27 AI revenue outlook falls below $7.5B.",
+     "Non-GAAP gross margin drops below 65% or networking orders growth turns single-digit."
+    ]
+   },
+   "card_provider": "Relace",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 27,
+    "found": 27,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 715,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Cisco integrates Anthropic Claude Mythos into AI Defense for agentic enterprise security",
+        "date": "2026-11-09",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Schurz Broadband deploys Cisco 8712 routing platform for AI-ready enterprise fiber",
+        "date": "2026-11-10",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CoreWeave earnings ease AI spending fears, AI trade rebounds",
+        "date": "2026-11-11",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Cisco adds Claude Mythos to AI Defense for red teaming and agent observability",
+        "date": "2026-11-09",
+        "driver": "D4 Security and Collaboration growth",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Schurz Broadband deploys Cisco 8000 Series routing for enterprise fiber network",
+        "date": "2026-11-10",
+        "driver": "D2 Networking product orders and revenue",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "_Cut('answer cut at max_tokens 24000')",
+     "provider": null,
+     "log": {
+      "attempts": [
+       {
+        "kind": "transport",
+        "error": "_Cut('answer cut at max_tokens 24000')"
+       }
+      ],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "VIAV",
+    "MSI",
+    "ANET",
+    "LITE",
+    "IDCC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VIAV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Viavi's data center/network demand strength supports Cisco networking product orders and revenue."
+       },
+       {
+        "peer": "MSI",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Motorola's public safety/security demand not relevant to Cisco's networking/AI/security software drivers."
+       },
+       {
+        "peer": "ANET",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Arista's AI networking hypergrowth suggests share gains vs Cisco, pressuring Cisco AI infrastructure orders/revenue."
+       },
+       {
+        "peer": "LITE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Lumentum's AI/cloud optical demand surge signals strong AI infrastructure spending, supporting Cisco AI orders/revenue."
+       },
+       {
+        "peer": "IDCC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "InterDigital's licensing results unrelated to Cisco's networking/AI/security drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "VIAV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong network and data center demand signals healthy networking spend for Cisco."
+       },
+       {
+        "peer": "MSI",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Public safety and physical security demand not directly relevant to Cisco's networking/AI drivers."
+       },
+       {
+        "peer": "ANET",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Arista's AI networking hypergrowth implies share gains vs Cisco, pressuring Cisco's AI infrastructure outlook."
+       },
+       {
+        "peer": "LITE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Lumentum's AI optics/OCS strength and $5B commitments signal robust AI data center buildout."
+       },
+       {
+        "peer": "IDCC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Licensing results driven by new agreements, not Cisco's networking/AI demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "IDCC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Wireless/video licensing news unrelated to Cisco's networking, AI, or margin drivers."
+       },
+       {
+        "peer": "LITE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong AI/cloud optical demand and huge Q2 guide positive for Cisco AI infrastructure orders/revenue."
+       },
+       {
+        "peer": "ANET",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Arista's AI networking share gains and record growth suggest competitive pressure on Cisco's AI infrastructure."
+       },
+       {
+        "peer": "MSI",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Public safety and physical security demand does not read through to Cisco's networking or security software."
+       },
+       {
+        "peer": "VIAV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Data center and network test demand strength positive for Cisco networking product orders/revenue."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.366025403784439,
+   "score_peer": 1.0,
+   "score_combined": 2.866025403784439,
+   "overall_votes": [
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 1.3514,
+   "revenue_estimate": 18479907548,
+   "fiscal": "2027Q1",
+   "report_date": "2026-11-12",
+   "cutoff": "2026-11-11 22:00:00+00:00",
+   "decided_at": "2026-11-12T02:34:36.951627+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8683c82d176b591dcaa7d32a1f4e3374e660a000",
+   "sha256": "8f0991f1744cfebd0619e642d10dd7c86459d2a224b9c8aac83fb8d7ea9f21ec"
+  },
+  "YETI": {
+   "ticker": "YETI",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Leisure Products",
+   "last_release": "2026-08-13 10:04:03+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1670592/000167059226000039/yeti-20260813xex991pressre.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D5",
+      "name": "SG&A Efficiency and Investment",
+      "last_report": "SG&A expenses increased 17% due to brand campaigns, inflationary pressures, and international expansion investments.",
+      "guidance": "The company is investing in innovation, supply chain flexibility, and digital capabilities to drive value."
+     }
+    ],
+    "guidance": "YETI raised its full-year 2026 outlook, projecting sales growth of 7% to 8% and adjusted EPS of $2.94 to $3.00, reflecting strong brand momentum and operational improvements.",
+    "kill_conditions": [
+     "A significant deceleration in Coolers & Equipment sales growth.",
+     "Unexpected increases in US tariff rates above the assumed 20% in the second half of 2026.",
+     "A sharp decline in consumer demand across key regions."
+    ]
+   },
+   "card_provider": "OpenInference",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 3,
+    "found": 3,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 79,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Investor Day sets 2030 targets, Project Upcycle $100M productivity, reaffirms FY26 guidance",
+        "date": "2026-09-17",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Investor Day: 2030 targets, $100M Project Upcycle productivity, reaffirms FY26 guidance",
+        "date": "2026-09-17",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Reaffirms FY26 guidance at Investor Day",
+        "date": "2026-09-17",
+        "driver": "GUIDANCE",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Announces $100M Project Upcycle productivity opportunity",
+        "date": "2026-09-17",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "MAT",
+    "BC",
+    "PII",
+    "HAS"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MAT",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Higher advertising expenses signal continued brand-cost inflation, pressuring YETI's SG&A efficiency."
+       },
+       {
+        "peer": "BC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Cost-reduction actions offset inflation, suggesting YETI's SG&A cost pressure may be manageable."
+       },
+       {
+        "peer": "PII",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Opex down 1% and 223 bps leverage despite inflation; positive read for YETI's SG&A efficiency."
+       },
+       {
+        "peer": "HAS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Cost productivity drove operating profit growth; positive read for YETI's SG&A efficiency."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MAT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Mattel improved margins and sales, showing successful execution despite cost pressures, which supports YETI's investment strategy."
+       },
+       {
+        "peer": "BC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Brunswick successfully navigated inflation and uncertainty, achieving margin expansion through pricing and operational efficiencies."
+       },
+       {
+        "peer": "PII",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Polaris raised guidance by focusing on operational excellence and innovation, supporting YETI's investment strategy."
+       },
+       {
+        "peer": "HAS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Hasbro achieved 15% revenue growth driven by strong brand portfolio performance and digital gaming investment."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HAS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Cost productivity and operating profit growth suggest industry SG&A efficiency may improve, aiding YETI's expense leverage."
+       },
+       {
+        "peer": "PII",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Operating expenses fell 1% and 223 bps of sales; outdoor demand strong, implying better SG&A efficiency for YETI."
+       },
+       {
+        "peer": "BC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Cost-reduction actions offset inflation; outdoor recreation demand resilient, positive read for YETI's expense efficiency."
+       },
+       {
+        "peer": "MAT",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Higher advertising expenses offset gross profit gains, signaling continued brand-cost inflation for YETI's SG&A."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.1213203435596424,
+   "score_peer": 1.7888543819998317,
+   "score_combined": 3.015747534559558,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.8571,
+   "revenue_estimate": 533505359,
+   "fiscal": "2026Q3",
+   "report_date": "2026-11-12",
+   "cutoff": "2026-11-11 22:00:00+00:00",
+   "decided_at": "2026-11-12T02:35:00.479006+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "8683c82d176b591dcaa7d32a1f4e3374e660a000",
+   "sha256": "d70613d8a206e060ccebe543f85b8abd08453e874fbcadb37a5d38bf26141b3c"
+  }
+ },
+ "report_date": "2026-11-12",
+ "cutoff": "2026-11-11 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "b0fc6b401be135dde7bc42e1e767a025bbe2eb8748badb0415214c090e581533",
+ "runs": [
+  {
+   "at": "2026-11-12T02:36:36.689442+00:00",
+   "version": "r5-v2",
+   "code": "8683c82d176b591dcaa7d32a1f4e3374e660a000",
+   "quality": {
+    "counts": {
+     "ok": 4
+    },
+    "attempted": 4,
+    "bad": 0,
+    "bad_share": 0.0,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
