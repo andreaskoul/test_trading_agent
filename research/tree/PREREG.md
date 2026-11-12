@@ -96,3 +96,10 @@ configurations. The best search model missed the Holm bar narrowly (p 0.0173 aga
 six holdout years, but it is below the MASTER 5-day model on the same weeks, which therefore remains the project's best
 stock-selection model. Development leads of about +0.01 IC over MASTER did not survive the holdout: they reversed to
 −0.010 to −0.025, the size of selection bias the protocol warned of (§1).
+
+## Phase 2 (2026-11-12, before any phase-2 agent runs)
+
+Plan: `PHASE2_PLAN.md`. Harness additions: `load_extra` (input files ending 2019) and `increment` (paired weekly IC
+over the frozen MASTER 5-day scores). Track N branches are judged by `increment`; track M branches by `score` on the
+S&P 500 development sample, and confirmed once on the S&P 400 (2019–2025) by the coordinating session. Development
+gate for both tracks: t ≥ 1.5 with the predicted sign; one read per finalist, Holm across all phase-2 finalists.

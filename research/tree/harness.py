@@ -134,3 +134,39 @@ if __name__ == "__main__":
     D = load()
     print(json.dumps(score(walk_forward(ridge_fit_predict, seeds=(0,), D=D), "ridge reference", D=D), indent=1))
     print(json.dumps(score(D["master_h5_ref"].astype(np.float64), "MASTER 5-day (October read), reference", D=D), indent=1))
+
+
+# ---------------------------------------------------------------- phase 2 additions (research/tree/PHASE2_PLAN.md)
+def load_extra(key):
+    """A phase-2 input file, aligned to load()'s rows and columns and ending 2019-12-31: "finra" (daily short and total
+    volume) or "intraday" (overnight + 13 half-hour log returns, 2016-2019). Read its "note" field before use."""
+    z = np.load(os.path.join(ROOT, ".cache", "tree", f"extra_{key}.npz"), allow_pickle=False)
+    return {k: z[k] for k in z.files}
+
+
+def increment(pred, name, log=None, note="", D=None, years=VAL_YEARS, base=None):
+    """Phase-2 track N: is `pred` better than the frozen MASTER 5-day scores on the same weeks?
+    Reports both ICs and the paired weekly difference with its t (Newey-West, 4 lags)."""
+    D = D or load()
+    base = D["master_h5_ref"].astype(np.float64) if base is None else base
+    rows = np.concatenate([thursdays(D, y) for y in years])
+    a, b = weekly_ic(pred, D, rows), weekly_ic(base, D, rows)
+    m = np.isfinite(a) & np.isfinite(b)
+    d = a[m] - b[m]
+    n, dd = len(d), d - d.mean()
+    v = dd @ dd / n
+    for l in range(1, 5):
+        v += 2 * (1 - l / 5) * (dd[l:] @ dd[:-l]) / n
+    by = {int(y): float(np.nanmean(weekly_ic(pred, D, thursdays(D, y)) - weekly_ic(base, D, thursdays(D, y)))) for y in years}
+    res = {"name": name, "note": note, "ic": float(a[m].mean()), "base_ic": float(b[m].mean()), "increment": float(d.mean()),
+           "increment_t": float(d.mean() / np.sqrt(v / n)), "weeks": int(n), "increment_by_year": by,
+           "years_increment_positive": int(sum(x > 0 for x in by.values())), "corr_with_base": float(np.nanmean(
+               [pd.Series(pred[t]).corr(pd.Series(base[t]), method="spearman") for t in rows[m]])),
+           "at": time.strftime("%Y-%m-%dT%H:%M:%S")}
+    full = score(pred, name, None, note, D, years)
+    res.update({k: full[k] for k in ("decile_net_pct_per_year", "decile_net_sharpe")})
+    if log:
+        os.makedirs(os.path.dirname(log), exist_ok=True)
+        with open(log, "a") as f:
+            f.write(json.dumps(res) + "\n")
+    return res
