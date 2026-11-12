@@ -1,20 +1,69 @@
 {
  "branch": "N1_fundamentals",
  "phase": 2,
- "status": "not started",
- "configurations_scored": 0,
- "scored": [],
- "best": null,
- "plan": [],
- "pending": [],
+ "status": "in progress",
+ "configurations_scored": 19,
+ "scored": [
+  "single_gpa",
+  "single_opa",
+  "single_roa",
+  "single_accruals",
+  "single_agrowth",
+  "single_invest",
+  "single_payout",
+  "single_issuance",
+  "single_sue",
+  "single_rnd",
+  "single_leverage",
+  "single_cfoa",
+  "single_prof",
+  "single_logassets",
+  "single_composite",
+  "comp_blend70",
+  "comp_blend50",
+  "fm_ridge",
+  "hgb_blend"
+ ],
+ "best": {
+  "name": "hgb_blend",
+  "ic": 0.01647400926499177,
+  "increment": 0.003942408258906708,
+  "increment_t": 2.2698014089184433,
+  "decile_net_pct_per_year": -0.17596358953239014,
+  "decile_net_sharpe": -0.027887859977281295
+ },
+ "plan": [
+  "comp_blend70",
+  "comp_blend50",
+  "fm_ridge",
+  "hgb_blend",
+  "dml_composite",
+  "hgb_zonly_blend70",
+  "hgb_fundonly_blend70",
+  "fm_fixed70",
+  "comp_lit7_blend70"
+ ],
+ "pending": [
+  "dml_composite",
+  "hgb_zonly_blend70",
+  "hgb_fundonly_blend70",
+  "fm_fixed70",
+  "comp_lit7_blend70"
+ ],
  "deliverables": {
-  "model.py": false,
+  "model.py": true,
   "REPORT.md": false
  },
  "verdict": null,
  "notes": [
-  "wave 2: SEC XBRL fundamentals over MASTER (data downloading)"
+  "wave 2: SEC XBRL fundamentals over MASTER (data downloading)",
+  "set 1 done: single_* references (score) for 12 characteristics + prof, logassets, composite; next: comp_blend70, comp_blend50",
+  "comp_blend70: increment 0.0027 t 1.61, net -0.5%/yr",
+  "comp_blend50: increment 0.0031 t 0.84, net 0.5%/yr",
+  "fm_ridge: increment 0.0055 t 1.01, net 0.4%/yr",
+  "hgb_blend: increment 0.0039 t 2.27, net -0.2%/yr",
+  "hgb_blend: increment .0039 t 2.27, 6/7 yrs; includes Z, so a Z-only control is needed; next dml_composite, hgb_zonly_blend70, hgb_fundonly_blend70, fm_fixed70, comp_lit7_blend70"
  ],
  "resume": "Read research/tree/N1_fundamentals/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-12T13:32:41Z"
+ "updated": "2026-11-12T13:41:45Z"
 }

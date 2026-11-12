@@ -1,20 +1,48 @@
 {
  "branch": "M6_ssl",
  "phase": 2,
- "status": "not started",
- "configurations_scored": 0,
- "scored": [],
- "best": null,
- "plan": [],
- "pending": [],
+ "status": "in progress",
+ "configurations_scored": 1,
+ "scored": [
+  "ctrl_Z"
+ ],
+ "best": {
+  "name": "ctrl_Z",
+  "ic": 0.01947307576150098,
+  "ic_t": 1.970539543177875,
+  "decile_net_pct_per_year": 1.184313509368974,
+  "decile_net_sharpe": 0.17087613767881116
+ },
+ "plan": [
+  "ctrl_Z",
+  "mae16_emb",
+  "mae16_embZ",
+  "con16_emb",
+  "con16_embZ",
+  "com16_emb",
+  "com16_embZ",
+  "com16_peerZ",
+  "ctrl_C"
+ ],
+ "pending": [
+  "mae16_emb",
+  "mae16_embZ",
+  "con16_emb",
+  "con16_embZ",
+  "com16_emb",
+  "com16_embZ",
+  "com16_peerZ",
+  "ctrl_C"
+ ],
  "deliverables": {
-  "model.py": false,
+  "model.py": true,
   "REPORT.md": false
  },
  "verdict": null,
  "notes": [
-  "wave 2: self-supervised return embeddings"
+  "wave 2: self-supervised return embeddings",
+  "scored ctrl_Z IC 0.0195 t 1.97 min_year -0.0279 net 1.2%/yr sharpe 0.17 | 0.0 min"
  ],
  "resume": "Read research/tree/M6_ssl/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-12T13:32:41Z"
+ "updated": "2026-11-12T13:41:45Z"
 }

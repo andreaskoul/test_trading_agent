@@ -1,20 +1,54 @@
 {
  "branch": "M5_graph",
  "phase": 2,
- "status": "not started",
- "configurations_scored": 0,
- "scored": [],
- "best": null,
- "plan": [],
- "pending": [],
+ "status": "in progress",
+ "configurations_scored": 4,
+ "scored": [
+  "R0_C24_fm",
+  "R1_peerrev_alone",
+  "R2_Z5_peer",
+  "R3_C24_peer"
+ ],
+ "best": {
+  "name": "R0_C24_fm",
+  "ic": 0.020761744683938804,
+  "ic_t": 2.2999241138272866,
+  "decile_net_pct_per_year": -1.0772550069595213,
+  "decile_net_sharpe": -0.17273170220437353
+ },
+ "plan": [
+  "R0_C24_fm",
+  "R1_peerrev_alone",
+  "R2_Z5_peer",
+  "R3_C24_peer",
+  "G0_mlp_C24",
+  "G1_sage_C24",
+  "G2_gat_C24",
+  "G3_sage2_C24",
+  "G4_mlp_Z5",
+  "G5_sage_Z5"
+ ],
+ "pending": [
+  "G0_mlp_C24",
+  "G1_sage_C24",
+  "G2_gat_C24",
+  "G3_sage2_C24",
+  "G4_mlp_Z5",
+  "G5_sage_Z5"
+ ],
  "deliverables": {
-  "model.py": false,
+  "model.py": true,
   "REPORT.md": false
  },
  "verdict": null,
  "notes": [
-  "wave 2: peer graph network on 10-K text neighbours"
+  "wave 2: peer graph network on 10-K text neighbours",
+  "started: m5lib.py (graph, peer features, FM ridge), gnn.py (SAGE/GAT/MLP control), run.py; plan = 4 ridge + 6 network configs",
+  "R0_C24_fm scored: IC 0.0208 t 2.30 (16s). Next: remaining plan.",
+  "R1_peerrev_alone scored: IC 0.0061 t 1.11 (13s). Next: remaining plan.",
+  "R2_Z5_peer scored: IC 0.0095 t 1.16 (22s). Next: remaining plan.",
+  "R3_C24_peer scored: IC 0.0177 t 2.11 (166s). Next: remaining plan."
  ],
  "resume": "Read research/tree/M5_graph/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-12T13:32:41Z"
+ "updated": "2026-11-12T13:41:45Z"
 }
