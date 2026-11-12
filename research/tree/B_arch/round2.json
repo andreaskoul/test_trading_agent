@@ -1,0 +1,7 @@
+{
+ "gru_e20_Z":         {"temporal": "gru", "L": 20},
+ "gru_e20_Z_xattn":   {"temporal": "gru", "L": 20, "xattn": true},
+ "gru_e20_Z_gate":    {"temporal": "gru", "L": 20, "gate": true},
+ "mlp_Z_res_deep":    {"d": 11, "depth": 4, "residual": true},
+ "mlp_Z_wide_nonorm": {"d": 32, "depth": 1, "norm": false}
+}
