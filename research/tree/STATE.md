@@ -1,6 +1,6 @@
 # Tree search: progress ledger
 
-*Rebuilt 2026-11-12 13:41 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
+*Rebuilt 2026-11-12 13:49 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
 
 | branch | phase | status | scored | best | metric | model.py | REPORT.md | verdict |
 |---|---:|---|---:|---|---:|---|---|---|
@@ -13,9 +13,9 @@
 | M2_ipca | 2 | done | 20 | M05_C24_wk_xn_U | 2.27 | yes | yes | finalist candidate M05_U for the S&P 400 confirmation (IC 0.0224, t 2.27) |
 | M3_cae | 2 | done (seed ensemble never ran) | 8 | ca2_c32_k3 | 2.00 | yes | yes | no finalist; factor structure does not beat direct prediction |
 | M4_sdf | 2 | done | 12 | S04_X324_wk_mv | 3.67 | yes | yes | finalist candidate S04 for the S&P 400 confirmation (IC 0.0141, t 3.67, 7/7 years); no increment over MASTER |
-| M5_graph | 2 | in progress | 4 | R0_C24_fm | 2.30 | yes | no |  |
-| M6_ssl | 2 | in progress | 1 | ctrl_Z | 1.97 | yes | no |  |
-| N1_fundamentals | 2 | in progress | 19 | hgb_blend | 2.27 | yes | no |  |
+| M5_graph | 2 | in progress | 9 | R0_C24_fm | 2.30 | yes | no |  |
+| M6_ssl | 2 | in progress | 6 | com16_peerZ | 2.01 | yes | no |  |
+| N1_fundamentals | 2 | done | 23 | fm_fixed70 | 2.29 | yes | yes | finalist fm_fixed70 (increment +0.0047, t 2.29); registered fallback comp_blend70 t 1.61; double ML t 2.10 |
 | N2_short | 2 | done | 11 | c3 MASTER+F2 0.7/0.3 | 1.14 | yes | yes | no finalist; increment t 1.14, double-ML t 1.61 |
 | N3_intraday | 2 | done | 20 | N3_c8_control_tot21 | 1.72 | yes | yes | no finalist; increment is 1-month reversal, not intraday |
 | N4_news | 2 | not started | 0 |  |  | no | no |  |

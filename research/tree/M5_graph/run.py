@@ -53,6 +53,12 @@ CONFIGS = {
     "G3_sage2_C24": (lambda: gnn.make("C24", graph=True, L=2), "GraphSAGE 2 layers H32, C24"),
     "G4_mlp_Z5": (lambda: gnn.make("Z5", graph=False), "control: per-node MLP, 5 characteristics"),
     "G5_sage_Z5": (lambda: gnn.make("Z5", graph=True), "GraphSAGE 1 layer, 5 characteristics"),
+    "R4_C24_peermomrev": (lambda: m5lib.ridge(cat(base("C24"), peer("C24", list(range(12)), gap=False))),
+                          "refine: C24 + peer means only of the 12 reversal/momentum features (industry/peer momentum); FM ridge"),
+    "G6_mlp_C24_reg": (lambda: gnn.make("C24", graph=False, H=16, epochs=8, drop=0.3, wd=1e-3),
+                       "refine control: per-node MLP H16, 8 epochs, dropout 0.3, wd 1e-3"),
+    "G7_sage_C24_reg": (lambda: gnn.make("C24", graph=True, H=16, epochs=8, drop=0.3, wd=1e-3),
+                        "refine: GraphSAGE as G6 plus edges (H16, 8 epochs, dropout 0.3, wd 1e-3)"),
 }
 
 

@@ -2,16 +2,21 @@
  "branch": "M6_ssl",
  "phase": 2,
  "status": "in progress",
- "configurations_scored": 1,
+ "configurations_scored": 6,
  "scored": [
-  "ctrl_Z"
+  "ctrl_Z",
+  "com16_emb",
+  "com16_embZ",
+  "com16_peerZ",
+  "mae16_emb",
+  "mae16_embZ"
  ],
  "best": {
-  "name": "ctrl_Z",
-  "ic": 0.01947307576150098,
-  "ic_t": 1.970539543177875,
-  "decile_net_pct_per_year": 1.184313509368974,
-  "decile_net_sharpe": 0.17087613767881116
+  "name": "com16_peerZ",
+  "ic": 0.019674737917726323,
+  "ic_t": 2.0134757620310775,
+  "decile_net_pct_per_year": 1.0492083922537607,
+  "decile_net_sharpe": 0.1515445425903768
  },
  "plan": [
   "ctrl_Z",
@@ -25,13 +30,8 @@
   "ctrl_C"
  ],
  "pending": [
-  "mae16_emb",
-  "mae16_embZ",
   "con16_emb",
   "con16_embZ",
-  "com16_emb",
-  "com16_embZ",
-  "com16_peerZ",
   "ctrl_C"
  ],
  "deliverables": {
@@ -41,8 +41,13 @@
  "verdict": null,
  "notes": [
   "wave 2: self-supervised return embeddings",
-  "scored ctrl_Z IC 0.0195 t 1.97 min_year -0.0279 net 1.2%/yr sharpe 0.17 | 0.0 min"
+  "scored ctrl_Z IC 0.0195 t 1.97 min_year -0.0279 net 1.2%/yr sharpe 0.17 | 0.0 min",
+  "scored com16_emb IC -0.0007 t -0.10 min_year -0.0355 net -4.5%/yr sharpe -0.95 | 10.0 min",
+  "scored com16_embZ IC 0.0097 t 1.09 min_year -0.0214 net -3.0%/yr sharpe -0.47 | 0.1 min",
+  "scored com16_peerZ IC 0.0197 t 2.01 min_year -0.0269 net 1.0%/yr sharpe 0.15 | 0.3 min",
+  "scored mae16_emb IC 0.0058 t 0.96 min_year -0.0170 net -1.1%/yr sharpe -0.26 | 10.6 min",
+  "scored mae16_embZ IC 0.0176 t 1.87 min_year -0.0267 net 0.3%/yr sharpe 0.05 | 0.1 min"
  ],
  "resume": "Read research/tree/M6_ssl/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-12T13:41:45Z"
+ "updated": "2026-11-12T13:49:05Z"
 }

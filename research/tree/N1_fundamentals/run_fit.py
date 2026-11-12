@@ -62,16 +62,16 @@ def fit_fm(feats=FEATS, lam=1e-3):
     return fit_predict
 
 
-def fit_hgb(w=0.7, z=True, iters=200):
+def fit_hgb(w=0.7, z=True, iters=200, feats=FEATS):
     from sklearn.ensemble import HistGradientBoostingRegressor
     def fit_predict(Dm, te, rows, seed):
         tr = lib.train_thursdays(te)
-        X, Y = X_at(tr, fill=False, z=z), lib.target_rank(Dm, tr)
+        X, Y = X_at(tr, feats, fill=False, z=z), lib.target_rank(Dm, tr)
         m = np.isfinite(Y) & Dm["elig"][tr]
         mdl = HistGradientBoostingRegressor(max_iter=iters, learning_rate=0.05, max_leaf_nodes=15, min_samples_leaf=500,
                                             l2_regularization=1.0, early_stopping=False, random_state=seed)
         mdl.fit(X[m], Y[m])
-        Xp = X_at(rows, fill=False, z=z)
+        Xp = X_at(rows, feats, fill=False, z=z)
         p = mdl.predict(Xp.reshape(-1, Xp.shape[-1])).reshape(len(rows), -1)
         p = np.where(Dm["elig"][rows], p, np.nan)
         s = np.full(Dm["y5"].shape, np.nan); s[rows] = p
@@ -85,3 +85,9 @@ if __name__ == "__main__":
         run("fm_ridge", fit_fm(), "Fama-MacBeth on 13 ranked characteristics (missing 0), MASTER weight by FM on 2013..train_end (0.7 in 2013)")
     if "hgb_blend" in which:
         run("hgb_blend", fit_hgb(), "HGB (200 it, lr .05, 15 leaves, min leaf 500) on ranked fundamentals (NaN kept) + ranked Z, rank target; 0.7 MASTER / 0.3 trees fixed")
+
+    P2 = ['comp_blend70','comp_blend50','fm_ridge','hgb_blend','dml_composite','hgb_zonly_blend70','hgb_fundonly_blend70','fm_fixed70','comp_lit7_blend70']
+    if "hgb_zonly_blend70" in which:
+        run("hgb_zonly_blend70", fit_hgb(feats=[]), "CONTROL for hgb_blend: same HGB on ranked Z only (no fundamentals), 0.7 MASTER / 0.3 trees", P2)
+    if "hgb_fundonly_blend70" in which:
+        run("hgb_fundonly_blend70", fit_hgb(z=False), "same HGB on ranked fundamentals only (no Z), 0.7 MASTER / 0.3 trees", P2)

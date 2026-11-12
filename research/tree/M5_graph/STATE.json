@@ -2,12 +2,17 @@
  "branch": "M5_graph",
  "phase": 2,
  "status": "in progress",
- "configurations_scored": 4,
+ "configurations_scored": 9,
  "scored": [
   "R0_C24_fm",
   "R1_peerrev_alone",
   "R2_Z5_peer",
-  "R3_C24_peer"
+  "R3_C24_peer",
+  "G0_mlp_C24",
+  "G1_sage_C24",
+  "R4_C24_peermomrev",
+  "G4_mlp_Z5",
+  "G5_sage_Z5"
  ],
  "best": {
   "name": "R0_C24_fm",
@@ -29,12 +34,8 @@
   "G5_sage_Z5"
  ],
  "pending": [
-  "G0_mlp_C24",
-  "G1_sage_C24",
   "G2_gat_C24",
-  "G3_sage2_C24",
-  "G4_mlp_Z5",
-  "G5_sage_Z5"
+  "G3_sage2_C24"
  ],
  "deliverables": {
   "model.py": true,
@@ -47,8 +48,13 @@
   "R0_C24_fm scored: IC 0.0208 t 2.30 (16s). Next: remaining plan.",
   "R1_peerrev_alone scored: IC 0.0061 t 1.11 (13s). Next: remaining plan.",
   "R2_Z5_peer scored: IC 0.0095 t 1.16 (22s). Next: remaining plan.",
-  "R3_C24_peer scored: IC 0.0177 t 2.11 (166s). Next: remaining plan."
+  "R3_C24_peer scored: IC 0.0177 t 2.11 (166s). Next: remaining plan.",
+  "G0_mlp_C24 scored: IC 0.0129 t 1.51 (187s). Next: remaining plan.",
+  "G1_sage_C24 scored: IC 0.0063 t 0.77 (291s). Next: remaining plan.",
+  "R4_C24_peermomrev scored: IC 0.0186 t 2.21 (34s). Next: remaining plan.",
+  "G4_mlp_Z5 scored: IC 0.0155 t 1.81 (96s). Next: remaining plan.",
+  "G5_sage_Z5 scored: IC 0.0085 t 1.04 (154s). Next: remaining plan."
  ],
  "resume": "Read research/tree/M5_graph/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-12T13:41:45Z"
+ "updated": "2026-11-12T13:49:05Z"
 }
