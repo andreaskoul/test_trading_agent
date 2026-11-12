@@ -174,3 +174,33 @@ every candidate declares its control in advance, and both rules are written befo
 
 Reported only, after fixing a field-name bug in the reporting helper: on the S&P 400 read, M1's no-trade band changed
 M2's decile book from +19.2%/yr (Sharpe 0.45) to +15.9%/yr (0.48), and M4's from +13.0% (0.31) to +11.5% (0.33).
+
+## Layer 3, Amendment 1 (2026-11-12, before the universe is built or any of its returns are read)
+
+**Universe (rule fixed now; typed fields only).**
+* Symbols: Alpaca assets with `class` = `us_equity`, active and inactive (inactive keeps delisted names), listed on
+  `NYSE`, `NASDAQ` or `AMEX` (not ARCA, BATS or OTC); minus every symbol flagged `ETF` = Y or `Test Issue` = Y in Nasdaq
+  Trader's `nasdaqlisted.txt` / `otherlisted.txt`; minus the 850 S&P 500 panel names and the 346 S&P 400 names already
+  read. Residual risk disclosed: delisted ETFs listed on Nasdaq that no current file flags.
+* Prices: Alpaca SIP daily bars, `adjustment=all`, 2016-01-04 .. 2025-12-31.
+* Eligibility each session: close above $5, at least 252 sessions of history, and among the 1,500 eligible names with
+  the highest 63-session mean dollar volume (close × volume). Point in time by construction.
+* Panel: the S&P 500 panel (as in phase 1) plus these names, every field built by `panel400.build`'s code on the
+  combined cross-section. Each year y is predicted by a model fitted on all rows whose target ended before y; weekly
+  IC is scored on the broad names only.
+
+**Candidates and declared controls.**
+
+| | Candidate | Control (reported as a paired difference, not tested) |
+|---|---|---|
+| L3a | M2 IPCA M05_U (`M2_ipca/model.py`) | C's Fama-MacBeth ridge on the same 24 characteristics (`C_features/model.py`) |
+| L3b | D trees on 4 horizons (`finalists/D_hgb_mh/model.py`) | the same trees on the 5-session target only (`D_ensembles/model.py`) |
+
+**Test (once; `READ3.lock`).** Read window 2017-01 .. 2025-12. For each candidate, mean weekly IC > 0, one-sided
+Newey–West t (4 lags); Holm across the two at α 0.05. Power (Step 1): about 65% at a true IC of 0.02.
+
+**Reported, not tested.** Paired difference against the control; IC by year; decile book net of 5 bp with and without
+M1's no-trade band; names per week; the share of the universe that is delisted by 2025.
+
+**Consequences.** A pass: replication evidence, added to the case for a forward paper book. A fail: recorded with the
+power above; the candidate is not discarded on this read alone if its forward record later says otherwise.
