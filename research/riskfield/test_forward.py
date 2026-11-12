@@ -134,6 +134,26 @@ def test_first_fetch_into_an_empty_cache_keeps_numeric_prices():
         assert pd.read_parquet(FWD.BARS).close.dtype == float
 
 
+def test_requests_never_ask_for_sip_bars_newer_than_15_minutes():
+    """2026-11-11: the weekly screen at 22:15 UTC asked for bars to 04:00 UTC the next day; Alpaca refused every request
+    (HTTP 403, recent SIP data). The end is capped at now - 16 minutes; past windows are unchanged."""
+    real_now, real_get = FWD._now, FWD._get
+    urls = []
+    try:
+        FWD._get = lambda u: urls.append(u) or {"bars": {}}
+        FWD._now = lambda: pd.Timestamp("2026-11-11T22:16:00Z")          # the weekly screen's start
+        FWD._chain(["AAPL"], "2026-08-01", "2026-11-11")
+        assert "end=2026-11-11T22%3A00%3A00Z" in urls[-1], urls[-1]
+        FWD._now = lambda: pd.Timestamp("2026-11-13T03:45:00Z")          # the Friday S&P job
+        FWD._chain(["AAPL"], "2026-08-01", "2026-11-12")
+        assert "end=2026-11-13T03%3A29%3A00Z" in urls[-1], urls[-1]       # Thursday's 21:00 UTC close is inside
+        FWD._now = lambda: pd.Timestamp("2026-11-20T00:00:00Z")          # a past window keeps its end
+        FWD._chain(["AAPL"], "2026-08-01", "2026-11-05")
+        assert "end=2026-11-06T04%3A00%3A00Z" in urls[-1], urls[-1]
+    finally:
+        FWD._now, FWD._get = real_now, real_get
+
+
 if __name__ == "__main__":
     for k, f in list(globals().items()):
         if k.startswith("test_"):
