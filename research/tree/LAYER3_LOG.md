@@ -150,3 +150,18 @@ before scoring, plus the survivorship caveat and the seed-noise rule (re-score a
 The same text, per branch, is in `L1_lit/FEED.md`, so a successor agent resuming after a limit gets it too. The news
 branch (N4, not started) has its notes there: missing-news weeks as an explicit state, increment over MASTER, size
 terciles.
+
+## Step 8 — Q4 portfolio construction result (development data, 2026-11-13)
+
+* **No construction beats the no-trade band** on the same signal by more than noise (30 rows; best vol-matched
+  paired t 0.72). The band stays the construction rule; no candidate nominated.
+* **Mean-variance with Ledoit-Wolf 2020 shrinkage carries real information**: gross Sharpe about 1.0 on the trees
+  against the band's 0.56. But it trades too much to keep it net of 5 bp; with an L1 no-trade region, net Sharpe 0.64
+  vs 0.35. The branch agent declined to nominate it: added after seeing results, k at a grid edge, fails on the other
+  three signals in 2013-2016, and drifts net long without a hedge. Linear shrinkage does as well gross: the gain is
+  the covariance, not the nonlinear shrinkage.
+* **Volatility-managed scaling** helps trees and IPCA, hurts MASTER and the blend (all |t| ≤ 0.4). **Drawdown rule**:
+  lower raw drawdown, same Sharpe.
+* **Both books earn in calm weeks** and in middle-volatility names, not in volatile periods or names.
+* **What to carry forward.** The covariance-aware book is the one lead worth a registered test: fix k and the hedge
+  in advance, test it on all four signals at once, and judge it on fresh weeks.

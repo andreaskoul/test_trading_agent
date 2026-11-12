@@ -1,20 +1,603 @@
 {
  "branch": "Q4_portfolio",
  "phase": 3,
- "status": "not started",
- "configurations_scored": 0,
- "scored": [],
- "best": null,
- "plan": [],
- "pending": [],
- "deliverables": {
-  "model.py": false,
-  "REPORT.md": false
+ "status": "done",
+ "configurations_scored": 30,
+ "scored": [
+  "C_band_master",
+  "C_band_trees",
+  "C_band_ipca",
+  "C_band_blend",
+  "R_decile_master",
+  "R_decile_trees",
+  "R_decile_ipca",
+  "R_decile_blend",
+  "rank_trees",
+  "rank_blend",
+  "band_legvol_trees",
+  "band_legvol_blend",
+  "band_vm_trees",
+  "band_vm_blend",
+  "band_dd_trees",
+  "band_dd_blend",
+  "rank_pa_trees",
+  "rank_pa_blend",
+  "mvnl_trees",
+  "mvnl_blend",
+  "mvnl_pa_trees",
+  "mvnl_pa_blend",
+  "band_vm_master",
+  "band_vm_ipca",
+  "mvnl_nt_trees",
+  "mvnl_nt_blend",
+  "mvlw_nt_trees",
+  "mvnl_ntx_trees",
+  "mvnl_ntx_ipca",
+  "mvnl_ntx_master"
+ ],
+ "best": {
+  "name": "mvnl_nt_trees"
  },
- "verdict": "",
+ "plan": [
+  {
+   "name": "C_band_master",
+   "signal": "master",
+   "spec": {
+    "target": "band"
+   },
+   "note": "declared control: M1 no-trade band 0.1, equal weights"
+  },
+  {
+   "name": "C_band_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "band"
+   },
+   "note": "declared control: M1 no-trade band 0.1, equal weights"
+  },
+  {
+   "name": "C_band_ipca",
+   "signal": "ipca",
+   "spec": {
+    "target": "band"
+   },
+   "note": "declared control: M1 no-trade band 0.1, equal weights"
+  },
+  {
+   "name": "C_band_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "band"
+   },
+   "note": "declared control: M1 no-trade band 0.1, equal weights"
+  },
+  {
+   "name": "R_decile_master",
+   "signal": "master",
+   "spec": {
+    "target": "decile"
+   },
+   "note": "reference: phase-1 decile book (not a candidate)"
+  },
+  {
+   "name": "R_decile_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "decile"
+   },
+   "note": "reference: phase-1 decile book (not a candidate)"
+  },
+  {
+   "name": "R_decile_ipca",
+   "signal": "ipca",
+   "spec": {
+    "target": "decile"
+   },
+   "note": "reference: phase-1 decile book (not a candidate)"
+  },
+  {
+   "name": "R_decile_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "decile"
+   },
+   "note": "reference: phase-1 decile book (not a candidate)"
+  },
+  {
+   "name": "rank_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "rank"
+   },
+   "note": "rank-proportional weights over all names, sides 0.5"
+  },
+  {
+   "name": "rank_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "rank"
+   },
+   "note": "rank-proportional weights over all names, sides 0.5"
+  },
+  {
+   "name": "band_legvol_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "band",
+    "legvol": true
+   },
+   "note": "band + leg vol matching (LW-NL leg vols)"
+  },
+  {
+   "name": "band_legvol_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "band",
+    "legvol": true
+   },
+   "note": "band + leg vol matching (LW-NL leg vols)"
+  },
+  {
+   "name": "band_vm_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "band",
+    "vm": 2.0
+   },
+   "note": "band + Moreira-Muir inverse-variance scaling, cap 2"
+  },
+  {
+   "name": "band_vm_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "band",
+    "vm": 2.0
+   },
+   "note": "band + Moreira-Muir inverse-variance scaling, cap 2"
+  },
+  {
+   "name": "band_dd_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "band",
+    "dd": true
+   },
+   "note": "band + drawdown-conditioned exposure (0.5 when DD > 1 vol)"
+  },
+  {
+   "name": "band_dd_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "band",
+    "dd": true
+   },
+   "note": "band + drawdown-conditioned exposure (0.5 when DD > 1 vol)"
+  },
+  {
+   "name": "rank_pa_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "rank",
+    "tau": "tune"
+   },
+   "note": "rank-proportional + partial adjustment (tau tuned 2013-16)"
+  },
+  {
+   "name": "rank_pa_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "rank",
+    "tau": "tune"
+   },
+   "note": "rank-proportional + partial adjustment (tau tuned 2013-16)"
+  },
+  {
+   "name": "mvnl_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "mvnl"
+   },
+   "note": "mean-variance, LW2020 nonlinear shrinkage, dollar+beta neutral, gross 1"
+  },
+  {
+   "name": "mvnl_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "mvnl"
+   },
+   "note": "mean-variance, LW2020 nonlinear shrinkage, dollar+beta neutral, gross 1"
+  },
+  {
+   "name": "mvnl_pa_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "mvnl",
+    "tau": "tune"
+   },
+   "note": "mvnl + partial adjustment (tau tuned 2013-16)"
+  },
+  {
+   "name": "mvnl_pa_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "mvnl",
+    "tau": "tune"
+   },
+   "note": "mvnl + partial adjustment (tau tuned 2013-16)"
+  },
+  {
+   "name": "band_vm_master",
+   "signal": "master",
+   "spec": {
+    "target": "band",
+    "vm": 2.0
+   },
+   "note": "band + Moreira-Muir inverse-variance scaling, cap 2"
+  },
+  {
+   "name": "band_vm_ipca",
+   "signal": "ipca",
+   "spec": {
+    "target": "band",
+    "vm": 2.0
+   },
+   "note": "band + Moreira-Muir inverse-variance scaling, cap 2"
+  },
+  {
+   "name": "mvnl_nt_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "mvnl",
+    "nt": "tune"
+   },
+   "note": "mvnl + L1 no-trade region (k tuned 2013-16)"
+  },
+  {
+   "name": "mvnl_nt_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "mvnl",
+    "nt": "tune"
+   },
+   "note": "mvnl + L1 no-trade region (k tuned 2013-16)"
+  },
+  {
+   "name": "mvlw_nt_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "mvlw",
+    "nt": "tune"
+   },
+   "note": "ablation: linear LW (2004) instead of LW2020, + no-trade region"
+  },
+  {
+   "name": "mvnl_ntx_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "mvnl",
+    "nt": "tune_wide"
+   },
+   "note": "mvnl + no-trade region, wider grid 2/3/4/6 (tuned 2013-16)"
+  },
+  {
+   "name": "mvnl_ntx_ipca",
+   "signal": "ipca",
+   "spec": {
+    "target": "mvnl",
+    "nt": "tune_wide"
+   },
+   "note": "mvnl + no-trade region, wider grid 2/3/4/6 (tuned 2013-16)"
+  },
+  {
+   "name": "mvnl_ntx_master",
+   "signal": "master",
+   "spec": {
+    "target": "mvnl",
+    "nt": "tune_wide"
+   },
+   "note": "mvnl + no-trade region, wider grid 2/3/4/6 (tuned 2013-16)"
+  }
+ ],
+ "pending": [
+  {
+   "name": "C_band_master",
+   "signal": "master",
+   "spec": {
+    "target": "band"
+   },
+   "note": "declared control: M1 no-trade band 0.1, equal weights"
+  },
+  {
+   "name": "C_band_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "band"
+   },
+   "note": "declared control: M1 no-trade band 0.1, equal weights"
+  },
+  {
+   "name": "C_band_ipca",
+   "signal": "ipca",
+   "spec": {
+    "target": "band"
+   },
+   "note": "declared control: M1 no-trade band 0.1, equal weights"
+  },
+  {
+   "name": "C_band_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "band"
+   },
+   "note": "declared control: M1 no-trade band 0.1, equal weights"
+  },
+  {
+   "name": "R_decile_master",
+   "signal": "master",
+   "spec": {
+    "target": "decile"
+   },
+   "note": "reference: phase-1 decile book (not a candidate)"
+  },
+  {
+   "name": "R_decile_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "decile"
+   },
+   "note": "reference: phase-1 decile book (not a candidate)"
+  },
+  {
+   "name": "R_decile_ipca",
+   "signal": "ipca",
+   "spec": {
+    "target": "decile"
+   },
+   "note": "reference: phase-1 decile book (not a candidate)"
+  },
+  {
+   "name": "R_decile_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "decile"
+   },
+   "note": "reference: phase-1 decile book (not a candidate)"
+  },
+  {
+   "name": "rank_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "rank"
+   },
+   "note": "rank-proportional weights over all names, sides 0.5"
+  },
+  {
+   "name": "rank_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "rank"
+   },
+   "note": "rank-proportional weights over all names, sides 0.5"
+  },
+  {
+   "name": "band_legvol_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "band",
+    "legvol": true
+   },
+   "note": "band + leg vol matching (LW-NL leg vols)"
+  },
+  {
+   "name": "band_legvol_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "band",
+    "legvol": true
+   },
+   "note": "band + leg vol matching (LW-NL leg vols)"
+  },
+  {
+   "name": "band_vm_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "band",
+    "vm": 2.0
+   },
+   "note": "band + Moreira-Muir inverse-variance scaling, cap 2"
+  },
+  {
+   "name": "band_vm_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "band",
+    "vm": 2.0
+   },
+   "note": "band + Moreira-Muir inverse-variance scaling, cap 2"
+  },
+  {
+   "name": "band_dd_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "band",
+    "dd": true
+   },
+   "note": "band + drawdown-conditioned exposure (0.5 when DD > 1 vol)"
+  },
+  {
+   "name": "band_dd_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "band",
+    "dd": true
+   },
+   "note": "band + drawdown-conditioned exposure (0.5 when DD > 1 vol)"
+  },
+  {
+   "name": "rank_pa_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "rank",
+    "tau": "tune"
+   },
+   "note": "rank-proportional + partial adjustment (tau tuned 2013-16)"
+  },
+  {
+   "name": "rank_pa_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "rank",
+    "tau": "tune"
+   },
+   "note": "rank-proportional + partial adjustment (tau tuned 2013-16)"
+  },
+  {
+   "name": "mvnl_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "mvnl"
+   },
+   "note": "mean-variance, LW2020 nonlinear shrinkage, dollar+beta neutral, gross 1"
+  },
+  {
+   "name": "mvnl_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "mvnl"
+   },
+   "note": "mean-variance, LW2020 nonlinear shrinkage, dollar+beta neutral, gross 1"
+  },
+  {
+   "name": "mvnl_pa_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "mvnl",
+    "tau": "tune"
+   },
+   "note": "mvnl + partial adjustment (tau tuned 2013-16)"
+  },
+  {
+   "name": "mvnl_pa_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "mvnl",
+    "tau": "tune"
+   },
+   "note": "mvnl + partial adjustment (tau tuned 2013-16)"
+  },
+  {
+   "name": "band_vm_master",
+   "signal": "master",
+   "spec": {
+    "target": "band",
+    "vm": 2.0
+   },
+   "note": "band + Moreira-Muir inverse-variance scaling, cap 2"
+  },
+  {
+   "name": "band_vm_ipca",
+   "signal": "ipca",
+   "spec": {
+    "target": "band",
+    "vm": 2.0
+   },
+   "note": "band + Moreira-Muir inverse-variance scaling, cap 2"
+  },
+  {
+   "name": "mvnl_nt_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "mvnl",
+    "nt": "tune"
+   },
+   "note": "mvnl + L1 no-trade region (k tuned 2013-16)"
+  },
+  {
+   "name": "mvnl_nt_blend",
+   "signal": "blend",
+   "spec": {
+    "target": "mvnl",
+    "nt": "tune"
+   },
+   "note": "mvnl + L1 no-trade region (k tuned 2013-16)"
+  },
+  {
+   "name": "mvlw_nt_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "mvlw",
+    "nt": "tune"
+   },
+   "note": "ablation: linear LW (2004) instead of LW2020, + no-trade region"
+  },
+  {
+   "name": "mvnl_ntx_trees",
+   "signal": "trees",
+   "spec": {
+    "target": "mvnl",
+    "nt": "tune_wide"
+   },
+   "note": "mvnl + no-trade region, wider grid 2/3/4/6 (tuned 2013-16)"
+  },
+  {
+   "name": "mvnl_ntx_ipca",
+   "signal": "ipca",
+   "spec": {
+    "target": "mvnl",
+    "nt": "tune_wide"
+   },
+   "note": "mvnl + no-trade region, wider grid 2/3/4/6 (tuned 2013-16)"
+  },
+  {
+   "name": "mvnl_ntx_master",
+   "signal": "master",
+   "spec": {
+    "target": "mvnl",
+    "nt": "tune_wide"
+   },
+   "note": "mvnl + no-trade region, wider grid 2/3/4/6 (tuned 2013-16)"
+  }
+ ],
+ "deliverables": {
+  "model.py": true,
+  "REPORT.md": true
+ },
+ "verdict": "No construction beats the M1 no-trade band by more than noise (best vol-matched paired t 0.72); best net Sharpe mvnl_nt_trees (LW2020 mean-variance + L1 no-trade region) 0.64 vs control 0.35, max DD 2.8% (12.2% at control vol) vs 16.2%, but post hoc, grid-edge tuned, fails on the other three signals in 2013-16 and earns only +0.88%/yr at gross 1: not nominated; keep the band.",
  "notes": [
-  "registered in PREREG Layer 3 Amendment 3"
+  "registered in PREREG Layer 3 Amendment 3",
+  "scored C_band_master; next: C_band_trees",
+  "scored C_band_trees; next: C_band_ipca",
+  "scored C_band_ipca; next: C_band_blend",
+  "scored C_band_blend; next: R_decile_master",
+  "scored R_decile_master; next: R_decile_trees",
+  "scored R_decile_trees; next: R_decile_ipca",
+  "scored R_decile_ipca; next: R_decile_blend",
+  "scored R_decile_blend; next: rank_trees",
+  "scored rank_trees; next: rank_blend",
+  "scored rank_blend; next: band_legvol_trees",
+  "scored band_legvol_trees; next: band_legvol_blend",
+  "scored band_legvol_blend; next: band_vm_trees",
+  "scored band_vm_trees; next: band_vm_blend",
+  "scored band_vm_blend; next: band_dd_trees",
+  "scored band_dd_trees; next: band_dd_blend",
+  "scored band_dd_blend; next: rank_pa_trees",
+  "scored rank_pa_trees; next: rank_pa_blend",
+  "scored rank_pa_blend; next: mvnl_trees",
+  "scored mvnl_trees; next: mvnl_blend",
+  "scored mvnl_blend; next: mvnl_pa_trees",
+  "scored mvnl_pa_trees; next: mvnl_pa_blend",
+  "scored mvnl_pa_blend; next: deliverables",
+  "22 first-wave rows scored; MV-NL has gross Sharpe ~1.0 on trees but costs > gross at gross 1; partial adjustment kills its alpha (fast signal). Registered: band_vm on master/ipca (replication of current best, declared at the start), mvnl + L1 no-trade region (k tuned 2013-16) on trees/blend, linear-LW ablation on trees.",
+  "scored band_vm_master; next: band_vm_ipca",
+  "scored band_vm_ipca; next: mvnl_nt_trees",
+  "scored mvnl_nt_trees; next: mvnl_nt_blend",
+  "scored mvnl_nt_blend; next: mvlw_nt_trees",
+  "scored mvlw_nt_trees; next: deliverables",
+  "scored mvnl_ntx_trees; next: mvnl_ntx_ipca",
+  "scored mvnl_ntx_ipca; next: mvnl_ntx_master",
+  "scored mvnl_ntx_master; next: deliverables",
+  "diagnostics (diag.py, DIAG.json; no new configurations): gross vs net for all rows; best and control split by residual-vol tercile (both earn mostly in the middle tercile) and by high/low-vol weeks (both earn mainly in low-vol weeks). Correction: the linear-LW ablation has gross Sharpe 0.83 vs 0.79, so its net 0.00 comes from its tuned k=0.5 (turnover 19%), not from the shrinkage. REPORT.md write refused for a subagent: the full report is in the hand-back. Done."
  ],
  "resume": "Read research/tree/Q4_portfolio/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-12T22:09:09Z"
+ "updated": "2026-11-12T22:28:31Z"
 }
