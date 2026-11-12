@@ -134,11 +134,25 @@ def _get(url):
             time.sleep(5 * 2 ** min(attempt, 3))
 
 
+SIP_DELAY = pd.Timedelta(minutes=16)       # Alpaca's free plan refuses SIP data newer than 15 minutes (HTTP 403)
+
+
+def _now():
+    return pd.Timestamp.now(tz="UTC")
+
+
+def window_end(end):
+    """The request's end: 04:00 UTC the day after `end`, but never later than now - 16 minutes. On 2026-11-11 the
+    weekly screen (22:15 UTC) asked for bars to 04:00 UTC the next morning and every request was refused: "subscription
+    does not permit querying recent SIP data"."""
+    want = pd.Timestamp(f"{(pd.Timestamp(end) + pd.Timedelta(days=1)).date()}T04:00:00Z")
+    return min(want, _now() - SIP_DELAY).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
 def _chain(symbols, start, end):
     """One symbol group, all pages (Alpaca returns about 370 bars a page whatever the limit)."""
     q = {"symbols": ",".join(symbols), "timeframe": "30Min", "feed": "sip", "adjustment": "split",
-         "start": f"{start}T08:00:00Z", "end": f"{(pd.Timestamp(end) + pd.Timedelta(days=1)).date()}T04:00:00Z",
-         "limit": 10000}
+         "start": f"{start}T08:00:00Z", "end": window_end(end), "limit": 10000}
     rows, tok = [], None
     while True:
         d = _get("https://data.alpaca.markets/v2/stocks/bars?" + urllib.parse.urlencode({**q, **({"page_token": tok} if tok else {})}))

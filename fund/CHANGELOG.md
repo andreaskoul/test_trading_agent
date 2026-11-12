@@ -9,6 +9,12 @@ decision restarts the clock under a new protocol number (PROTOCOL_fund.md).
   * Checks: `fund/tests/test_polymarket.py` (5, on a real saved response) and the suite pass. Live local-only run on 2026-11-10: 400 events read, 2,822 markets stored, 745 placeholders skipped, 0 defects; a sample of rows was read against the site's fields.
   * Why: the prediction-market exposure test of `research/eventrisk/PLAN.md` (Decision 6) needs resolved events with price history, which cannot be back-filled.
   * Could this change a decision? **No.** The context archive is a shadow input that no desk reads; the step is `allow_fail` in the runner.
+- 2026-11-12: **Protocol 10's B1 never reached the screen** (issue #165). The first B1 screen (weekly job, 2026-11-11 22:15 UTC) asked Alpaca for bars up to 04:00 UTC the next morning. Alpaca's plan refuses SIP data newer than 15 minutes ("subscription does not permit querying recent SIP data", HTTP 403), so all six attempts failed.
+  * As designed, the screen and the desk ran on, the hedge fell back to the lot beta, and an issue was opened.
+  * Every bar request now ends at the earlier of 04:00 UTC the next day and now − 16 minutes (`research/riskfield/forward.py: window_end`). This covers the weekly screen and the Friday beta records, which ask at 03:45 UTC for a window ending at 04:00.
+  * Contract test: `research/riskfield/test_forward.py::test_requests_never_ask_for_sip_bars_newer_than_15_minutes`, with the 11-11 screen, the Friday job, and a past window unchanged. Checked live: the bars of 11-09..11-11 come back complete, 13 a day.
+  * Cause of the miss: the dry runs used past dates.
+  * Could this change a decision? Only as Protocol 10 already decided: B1 becomes available as designed. The 11-11 screen is a recorded day and stays without B1.
 - 2026-11-08: **Protocol 10** (PROTOCOL_fund.md), from session 2026-11-16 with Protocol 9: the SPY hedge of the lifecycle books (live and control) uses the intraday-calibrated beta B1 from the weekly screen (`fund/screen.py: beta_b1`, `fund/lifecycle_rules.py: hedge_beta`, `P10`).
   * Stops, targets, CAR, entry volatility and sizing keep the lot beta.
   * A non-blocking weekly runner step opens an issue when B1 is not ok; names without B1 fall back to the lot beta.
