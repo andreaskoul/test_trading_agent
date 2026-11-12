@@ -48,3 +48,28 @@ scored in October, IC 0.0125 (t 1.43).
 ## 5. Not claimed
 
 Nothing found on the development sample is evidence. A holdout pass is evidence for a forward test, not for trading.
+
+## Amendment 1 (2026-11-12, before any holdout data is read): finalists
+
+**Search size.** Round 1: 60 configurations (A 12, B 11, C 15, D 7, E 15). Round 2: X1 11, X2 11, X3 32 (14
+online/yearly pairs and 4 staleness diagnostics). Total 114 logged configurations.
+
+**Finalists by the §4 rule** (highest development IC t with a positive IC in at least 5 of 7 years, one per branch):
+
+| Finalist | Branch | Development IC | t |
+|---|---|---:|---:|
+| X1_8p: D trees + C ridge + MLP, 4 horizons each, panic overlay | X1 | 0.0282 | 2.91 |
+| A_mse_rank: MLP on ranked targets | A | 0.0188 | 2.45 |
+| D_hgb_mh: boosted trees, 4 horizons | D | 0.0236 | 2.41 |
+
+**One departure, disclosed.** The second-highest t (2.47) belongs to an X3 row that its agent labelled a post-hoc
+diagnostic, "not proposed as a model": the same linear model run with a deliberate one-year extra lag. It is excluded
+as not a candidate. The X2 row with t 2.41 is the same model as D_hgb_mh, reproduced; D's is used.
+
+**Code check before the read.** Each finalist's `model.py` (`research/tree/finalists/`) must reproduce its logged
+development IC to four decimals (`verify.py`, results in each `VERIFY.json`). A finalist that does not reproduce is
+dropped, not repaired.
+
+**Reported beside the registered tests** (not tested): each finalist's decile spread with the X2 score smoothing
+(exponential, half-life 1 week, over the current and 12 preceding Thursdays), since branch X2 showed smoothing cuts
+costs without lowering IC on the development sample.
