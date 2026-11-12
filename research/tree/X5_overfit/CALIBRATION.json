@@ -18,7 +18,9 @@
    "n_cum": 114,
    "shrunk": 0.02366552315396736,
    "shrunk_over_dev": 0.8393095574700112,
-   "shrunk_paired": null
+   "shrunk_paired": null,
+   "weekly_sd": 0.18232519426042684,
+   "selected_by_t_not_ic": false
   },
   {
    "finalist": "D_hgb_mh",
@@ -38,7 +40,9 @@
    "n_cum": 114,
    "shrunk": 0.021442567892662797,
    "shrunk_over_dev": 0.9098020541171287,
-   "shrunk_paired": 0.021929230288138535
+   "shrunk_paired": 0.021929230288138535,
+   "weekly_sd": 0.18372475308595348,
+   "selected_by_t_not_ic": false
   },
   {
    "finalist": "A_mse_rank",
@@ -58,7 +62,9 @@
    "n_cum": 114,
    "shrunk": 0.014026808437063153,
    "shrunk_over_dev": 0.7465222585079272,
-   "shrunk_paired": null
+   "shrunk_paired": null,
+   "weekly_sd": 0.14417436329416453,
+   "selected_by_t_not_ic": true
   },
   {
    "finalist": "M2_M05_U",
@@ -74,11 +80,13 @@
    "degradation_slope_yearly": -0.5518724997903344,
    "psr": 0.9873212859089994,
    "dsr_branch": 0.9050888460842645,
-   "dsr_cum": 0.564110148558339,
+   "dsr_cum": 0.24235452454584272,
    "n_cum": 251,
    "shrunk": 0.015103315477740378,
    "shrunk_over_dev": 0.6733804005966368,
-   "shrunk_paired": 0.015103315477740378
+   "shrunk_paired": 0.015103315477740378,
+   "weekly_sd": 0.18542447362174835,
+   "selected_by_t_not_ic": false
   },
   {
    "finalist": "M4_S04",
@@ -94,11 +102,13 @@
    "degradation_slope_yearly": -0.7084845978334614,
    "psr": 0.9998418730644937,
    "dsr_branch": 0.9949906016003904,
-   "dsr_cum": 0.937370539021773,
+   "dsr_cum": 0.7502888827997507,
    "n_cum": 251,
    "shrunk": 0.015340471628348335,
    "shrunk_over_dev": 1.0849373364026327,
-   "shrunk_paired": 0.015193384925352788
+   "shrunk_paired": 0.015193384925352788,
+   "weekly_sd": 0.07235941966254611,
+   "selected_by_t_not_ic": true
   },
   {
    "finalist": "N1_fm_fixed70",
@@ -114,23 +124,58 @@
    "degradation_slope_yearly": -0.6243819535321526,
    "psr": 0.9881826007476266,
    "dsr_branch": 0.9130425962915447,
-   "dsr_cum": 0.5710273108693606,
+   "dsr_cum": 0.24664057527626893,
    "n_cum": 251,
    "shrunk": 0.0031835441049039986,
    "shrunk_over_dev": 0.6777968010606358,
-   "shrunk_paired": null
+   "shrunk_paired": null,
+   "weekly_sd": 0.038540771163160945,
+   "selected_by_t_not_ic": true
   }
  ],
  "spearman_with_retention_n6": {
   "pbo_yearly_coarse": 0.3188740696088466,
   "dsr_branch": -0.2,
-  "dsr_cum": -0.2571428571428572,
+  "dsr_cum": -0.08571428571428573,
   "shrunk_over_dev": -0.2571428571428572,
   "shrunk": 0.5428571428571429,
   "psr": -0.2571428571428572,
   "dev": 0.8285714285714287,
   "shrunk_vs_holdout_level": 0.8285714285714287,
   "dev_vs_holdout_level": 1.0
+ },
+ "forecast_errors": {
+  "mae_dev_as_forecast": 0.006936640596379857,
+  "mae_shrunk_as_forecast": 0.004825933289867545,
+  "mean_dev_minus_holdout": 0.006936640596379857,
+  "mean_shrunk_minus_holdout": 0.0037603717824476707,
+  "shrunk_closer_count": 5
+ },
+ "pbo_fine_vs_coarse": {
+  "D_ensembles": {
+   "fine": 0.41802641802641805,
+   "coarse": 0.6
+  },
+  "M2_ipca": {
+   "fine": 0.7510489510489511,
+   "coarse": 0.6
+  },
+  "M3_cae": {
+   "fine": 0.5863247863247864,
+   "coarse": 0.5428571428571428
+  },
+  "M4_sdf": {
+   "fine": 0.6208236208236209,
+   "coarse": 0.44285714285714284
+  },
+  "M5_graph": {
+   "fine": 0.3306138306138306,
+   "coarse": 0.2571428571428571
+  },
+  "M6_ssl": {
+   "fine": 0.6006216006216006,
+   "coarse": 0.6714285714285714
+  }
  },
  "MASTER_reference": {
   "dev": 0.0125,

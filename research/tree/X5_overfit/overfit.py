@@ -178,11 +178,12 @@ def dsr(sr, T, skew, kurt, var_sr, N):
 
 
 def all_sr(branches):
-    srs = []
+    srs = []   # every logged row with a t (ic_t, else increment_t) and weeks; mixed metrics, disclosed
     for b in branches:
-        for r in metric_rows(b):
-            if r["weeks"] and np.isfinite(r["t"]) and r["t"] != 0:
-                srs.append(r["t"] / np.sqrt(r["weeks"]))
+        for r in rows_of(b):
+            t = r.get("ic_t", r.get("increment_t"))
+            if r.get("weeks") and t is not None and np.isfinite(t) and t != 0:
+                srs.append(t / np.sqrt(r["weeks"]))
     return np.array(srs)
 
 
@@ -278,7 +279,17 @@ def step5():
     held = np.array([r["holdout"] for r in tab])
     corr["shrunk_vs_holdout_level"] = float(stats.spearmanr([r["shrunk"] for r in tab], held)[0])
     corr["dev_vs_holdout_level"] = float(stats.spearmanr([r["dev"] for r in tab], held)[0])
-    out = dict(table=tab, spearman_with_retention_n6=corr,
+    for r in tab:
+        ds = Dd["finalists"][r["finalist"]]
+        r["weekly_sd"] = r["dev"] / ds["sr_weekly"]
+        r["selected_by_t_not_ic"] = r["dev"] < max(x["m"] for x in metric_rows(r["branch"]))
+    err = dict(mae_dev_as_forecast=float(np.mean([abs(r["dev"] - r["holdout"]) for r in tab])),
+               mae_shrunk_as_forecast=float(np.mean([abs(r["shrunk"] - r["holdout"]) for r in tab])),
+               mean_dev_minus_holdout=float(np.mean([r["dev"] - r["holdout"] for r in tab])),
+               mean_shrunk_minus_holdout=float(np.mean([r["shrunk"] - r["holdout"] for r in tab])),
+               shrunk_closer_count=int(sum(abs(r["shrunk"] - r["holdout"]) < abs(r["dev"] - r["holdout"]) for r in tab)))
+    fine_vs_coarse = {b: dict(fine=P["fine"][b]["mean"]["pbo"], coarse=P["coarse_yearly"][b]["pbo"]) for b in P["fine"]}
+    out = dict(table=tab, spearman_with_retention_n6=corr, forecast_errors=err, pbo_fine_vs_coarse=fine_vs_coarse,
                MASTER_reference=dict(dev=0.0125, holdout=0.0326, retention=0.0326 / 0.0125, psr=Dd["MASTER_reference"]["psr_vs_0"]),
                note="six points; Spearman values are descriptive only (with n = 6, |rho| must reach 0.886 for p < 0.05 two-sided).")
     dump(out, "CALIBRATION.json")

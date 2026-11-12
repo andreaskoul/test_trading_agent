@@ -59,3 +59,16 @@ read of a candidate with a strong prior (IPCA, the trees) is weak evidence again
   negative on the slow short-volume signal.
 * **Consequence for the registered read (L3.1):** none; candidates and controls were fixed before this result. The
   read reports IPCA against the ridge as a paired difference, which will show whether the gap stays at zero.
+
+## Step 2b — overfitting diagnostics result (X5, development data, 2026-11-12)
+
+* **PBO and the deflated Sharpe ratio would not have predicted which finalists survived** (rank correlations with
+  retention +0.32, −0.20, −0.09). The best deflated Sharpe (the SDF, 0.995) kept 23%; IPCA, with the worst PBO (0.75),
+  passed.
+* **Why:** selection inside every branch was noise (PBO about 0.5; the in-sample best never beat the branch median out
+  of sample). Survival depended on whether a branch's level was real, which these tools do not measure.
+* **What did line up:** the shrunk IC forecast holdout IC better than the raw IC; finalists chosen by mean IC kept
+  78–82%, those chosen by t over a higher-IC sibling kept −2% to 41%. Six points, found after looking.
+* **Adopted (PREREG Layer 3, Amendment 2):** choose by mean IC, never t; rank by shrunk IC; at most two finalists with
+  controls; report PBO and the deflated Sharpe ratio, not gate on them. For the pending read, power at the shrunk IC
+  is about 70% for the trees and 42% for IPCA, so a failed IPCA read was registered in advance as uninformative.

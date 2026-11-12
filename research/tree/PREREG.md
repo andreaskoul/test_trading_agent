@@ -204,3 +204,18 @@ M1's no-trade band; names per week; the share of the universe that is delisted b
 
 **Consequences.** A pass: replication evidence, added to the case for a forward paper book. A fail: recorded with the
 power above; the candidate is not discarded on this read alone if its forward record later says otherwise.
+
+## Layer 3, Amendment 2 (2026-11-12, after the X5 diagnostics, before the L3.1 universe panel is built or read)
+
+**Interpretation of the L3.1 read, fixed now (the test itself is unchanged).** Power at the shrunk IC (X5): D trees
+(shrunk IC .0214) about 70%; IPCA (shrunk IC .0151) about 42%. Because IPCA's power is below 50%, a failed IPCA read
+is registered now as not evidence against it: forward weeks decide. A failed trees read, at about 70% power, counts
+against them.
+
+**Selection rule for every later read** (from X5; adopted as written there, section 6): within a branch choose by
+development mean IC (mean increment for track N), never by t, among configurations positive in at least 5 of 7
+years; forecast by the shrunk IC over all the branch's logged configurations; rank across branches by shrunk IC; at
+most two finalists, each with a declared control; record power at the shrunk IC, PBO (S = 16), the deflated Sharpe
+ratio at branch and cumulative counts, and flag a weekly IC sd below 0.6 x the branch median. Every configuration's
+predictions are saved from now on. Basis: six finalists, pattern found after looking: adopted as a prudent rule, not
+as a validated one.
