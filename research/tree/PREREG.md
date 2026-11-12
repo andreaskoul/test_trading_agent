@@ -73,3 +73,26 @@ dropped, not repaired.
 **Reported beside the registered tests** (not tested): each finalist's decile spread with the X2 score smoothing
 (exponential, half-life 1 week, over the current and 12 preceding Thursdays), since branch X2 showed smoothing cuts
 costs without lowering IC on the development sample.
+
+## Result of the holdout read (2026-11-12, `HOLDOUT_RESULT.json`, `HOLDOUT_SMOOTHED.json`; 303 weeks, 2020-01 .. 2025-12)
+
+| Finalist | IC | Newey–West t | one-sided p | Holm (α 0.05) | IC by year 2020 → 2025 | IC minus MASTER (t) |
+|---|---:|---:|---:|---|---|---:|
+| X1_8p combined | 0.0224 | 2.11 | 0.0173 | **fails** (needs 0.0167) | .035 .005 .023 .014 .026 .031 | −0.010 (−0.86) |
+| D_hgb_mh trees | 0.0185 | 1.89 | 0.0293 | fails | .027 .001 .035 .002 .015 .031 | −0.014 (−1.21) |
+| A_mse_rank MLP | 0.0078 | 0.79 | 0.2162 | fails | .017 −.015 .012 −.004 .031 .006 | −0.025 (−1.87) |
+| MASTER 5-day (reference, already seen) | 0.0326 | 3.14 | | | | |
+
+Reported, not tested: decile spread net of 5 bp a side, raw and with the X2 smoothing (half-life 1 week).
+
+| | raw % a year (Sharpe) | smoothed % a year (Sharpe) |
+|---|---:|---:|
+| X1_8p | +2.6 (0.27) | +4.7 (0.53) |
+| D_hgb_mh | +2.0 (0.22) | +2.8 (0.33) |
+| A_mse_rank | −3.7 (−0.41) | −0.1 (−0.02) |
+
+**Consequence as registered: no finalist passes; the search is closed on this panel.** It cost 114 logged
+configurations. The best search model missed the Holm bar narrowly (p 0.0173 against 0.0167) and was positive in all
+six holdout years, but it is below the MASTER 5-day model on the same weeks, which therefore remains the project's best
+stock-selection model. Development leads of about +0.01 IC over MASTER did not survive the holdout: they reversed to
+−0.010 to −0.025, the size of selection bias the protocol warned of (§1).
