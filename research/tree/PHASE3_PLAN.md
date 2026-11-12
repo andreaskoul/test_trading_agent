@@ -2,6 +2,79 @@
 
 *2026-11-12. From `STATE.md`, `PREREG.md` (phase-1 and phase-2 results) and `HOLDOUT2_RESULT.json`. Plan only.*
 
+
+## 0. The tree as it stands (checked against PHASE2_PLAN.md, 2026-11-12)
+
+```
+ROOT  S&P 500 daily panel 2009-2025 · weekly rank IC of 5-session hedged returns · dev 2013-19 · holdouts sealed
+│
+├── PHASE 1  EXPLORE (60)                                     dev best IC (t)       outcome
+│   ├── A  loss mathematics            12   mse_rank          .0188 (2.45) ─┐
+│   ├── B  network architecture        11   mlp_res_deep      .0162 (1.96)  │ pruned: no gain over small MLP
+│   ├── C  features & econometrics     15   FM ridge, 32 f.   .0209 (2.29)  │ → feeds X1
+│   ├── D  trees & ensembles            7   hgb 4 horizons    .0236 (2.41) ─┤
+│   └── E  regime-adaptive             15   kernel + panic    .0167 (1.62)  │ → panic overlay feeds X1
+│                                                                           │
+├── PHASE 1  EXPLOIT (54)                                                   │
+│   ├── X1 combine                     11   8p trees+FM+MLP   .0282 (2.91) ─┤
+│   ├── X2 trading costs               11   smoothing         cost −1.0..−1.6%/yr; hurt MASTER in holdout
+│   └── X3 online updating             32   (14 pairs)        no gain: pruned
+│                                                                           │
+├── HOLDOUT 1  S&P 500 2020-25 (spent) ◄────────────────────────────────────┘
+│       X1_8p .0224 (2.11) fail by 0.0006 · D_hgb_mh .0185 (1.89) fail · A_mse_rank .0078 (0.79) fail
+│
+├── PHASE 2  TRACK M: methods (dev S&P 500 2013-19; read S&P 400 2019-25)
+│   ├── M1 Garleanu-Pedersen trading   18   no-trade band     paired t 2.5 / 2.3 → construction rule
+│   ├── M2 IPCA                        20   M05_U             .0224 (2.27) ──► READ S&P 400: .0183 (2.17) PASS
+│   ├── M3 conditional autoencoder      8   ca2_c32_k3        .0213 (2.00)  not beaten its control; seed ensemble unrun
+│   ├── M4 SDF shrinkage               12   S04 unshrunk 324  .0141 (3.67) ──► READ S&P 400: .0033 (0.86) fail
+│   ├── M5 peer graph (10-K)           13   R4 peer ridge     .0186 (2.21)  edges lower IC in 6 of 7 pairs
+│   ├── M6 self-supervised embeddings  12   con16_embZ        .0191 (2.08)  embedding adds nothing over control
+│   ├── M7 double ML                   (used inside N1-N3)                  done
+│   └── M8 nonlinear covariance         0   NOT RUN                         (M1 used linear Ledoit-Wolf only)
+│
+├── PHASE 2  TRACK N: new information over frozen MASTER (gate: increment t >= 1.5)
+│   ├── N1 fundamentals (SEC XBRL)     23   fm_fixed70        +.0047 (2.29) ──► READ S&P 500: −.0001 (−0.02) fail
+│   ├── N2 short volume (FINRA)        11   0.7/0.3 blend     +.0020 (1.14)  below gate (double ML t 1.61)
+│   ├── N3 intraday (30-min bars)      20   0.8 M − 0.2 id21  +.0030 (1.53)  = 1-month reversal, not intraday
+│   └── N4 news                         0   NOT RUN
+│
+└── PHASE 2  EXPLOIT                    0   NOT RUN
+```
+
+Total 251 logged configurations; 6 finalists read; 1 pass.
+
+**Checked against PHASE2_PLAN.md:** M8 was planned and never run; M3's seed ensemble never ran; the planned phase-2
+exploitation layer (combinations of passing branches) never ran; N4 never ran; the reported band comparison failed on
+a bug (fixed after the reads, reported only); and the finalist rule was applied unevenly (Correction in PREREG.md).
+
+## 0b. The policy, applied again to every node
+
+The policy, written down now: **(1)** a node that failed a holdout is closed on that panel; **(2)** a node whose
+method did not beat its declared control in development is pruned; **(3)** a node that passed, or failed narrowly with
+at least 75% of its development IC kept, is exploited and replicated on a fresh panel; **(4)** an unrun node gets one
+cheap visit only if it brings new information or its parent family is still open; **(5)** at most two finalists per
+read, each with a declared control, chosen by a rule written before selection.
+
+| Node | Rule | Decision for layer 3 |
+|---|---|---|
+| M2 IPCA | 3 (passed) | **Exploit:** replicate on the broad survivorship-free universe (L3.1); MASTER + IPCA blend; band; forward book |
+| D trees 4 horizons | 3 (78% kept, near miss) | **Replicate** on L3.1 as the second finalist |
+| X1 combined | 3 (79% kept, near miss) | Not a third finalist (rule 5). Its pieces are D + C; D carries it |
+| M1 band | construction | **Carry** as the default book rule; it raised Sharpe slightly on both S&P 400 books |
+| X2 smoothing | construction | Superseded by the band (M1 showed the band dominates smoothing) |
+| A, M4, N1 | 1 | Closed |
+| B, X3, M3, M5, M6 | 2 | Pruned. M3's seed ensemble is not run: its parent failed its control |
+| N2 short volume | 2 (below gate) | Pruned as an increment; kept as its own validated forward book |
+| N3 intraday | 2 | Pruned |
+| M8 nonlinear covariance | 4 | **Pruned without a visit:** its only use is the mean-variance aim, and M1's mean-variance aims lost to the band in both covariance versions |
+| N4 news | 4 (new information) | **One visit:** count and cost first, then dictionary features, judged as an increment over MASTER |
+| Phase-2 exploit layer | 3 | **Run** as L3.2 on development data: MASTER + IPCA (correlation 0.26), IPCA + band |
+
+The plan below (L3.1-L3.6) already matches these decisions; the two changes are that M8 and M3's ensemble are pruned
+explicitly, and that L3.1's two candidates each carry a declared control: IPCA against C's Fama-MacBeth ridge on the
+same 24 characteristics, the trees against the same trees on the 5-session target only.
+
 ## 1. State
 
 * 18 branches opened, 17 run (news not started), 251 logged configurations, 2 holdout rounds, 6 finalists, 1 pass

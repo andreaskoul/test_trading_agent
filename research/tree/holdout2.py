@@ -55,9 +55,9 @@ def band_book(scores, D, rows):
     import lib as M1
     rows = np.array([t for t in rows if M1.mask(scores, D, t).sum() >= 50])
     out = {}
-    for kind, kw in (("deciles", {}), ("band", {"band": 0.1})):
+    for kind, kw in (("decile", {}), ("band", {"band": 0.1})):
         W = M1.build(kind, scores, D, rows, **kw)
-        net = np.asarray(M1.simulate(W, D, rows)[0], float)
+        net = np.asarray(M1.simulate(W, D, rows)["net"], float)[1:]
         out[kind] = {"net_pct_per_year": float(52 * net.mean() * 100), "net_sharpe": float(net.mean() / net.std(ddof=1) * math.sqrt(52))}
     return out
 

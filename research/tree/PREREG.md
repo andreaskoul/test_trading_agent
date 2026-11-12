@@ -159,3 +159,18 @@ come from the survivorship conditioning or from mid-caps being less efficient; t
 **Consequences as registered.** M2 IPCA earns a forward paper book (research only), to run on S&P 400 and S&P 500
 members with point-in-time membership, which removes the survivorship question going forward. M4 and N1 are closed on
 their panels.
+
+## Correction (2026-11-12, after the phase-2 reads): how the phase-2 finalists were actually chosen
+
+Amendment 2 says finalists were "each branch's best by its registered metric among those meeting the t >= 1.5 gate".
+That is not what was done. Under that wording, M3 (ca2_c32_k3, t 2.00), M5 (best peer configuration R4, t 2.21) and
+M6 (con16_embZ, t 2.08) also qualified and were not named. They were left out because each failed against its own
+control in development (factor structure vs direct prediction; graph vs no-graph; embedding vs no-embedding), as
+their agents reported. That control rule was not written down, and it was not applied to M2 and M4, which had no
+declared control (M2 was +0.0015 over C's ridge on the same characteristics, not significant). The phase-2 reads
+themselves are unaffected: each finalist's read was registered before any holdout data was built. But the finalist
+set was chosen by an unwritten, unevenly applied rule; the M2 pass should be read with that in mind. Fix for layer 3:
+every candidate declares its control in advance, and both rules are written before selection.
+
+Reported only, after fixing a field-name bug in the reporting helper: on the S&P 400 read, M1's no-trade band changed
+M2's decile book from +19.2%/yr (Sharpe 0.45) to +15.9%/yr (0.48), and M4's from +13.0% (0.31) to +11.5% (0.33).
