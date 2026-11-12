@@ -139,7 +139,9 @@ if __name__ == "__main__":
 # ---------------------------------------------------------------- phase 2 additions (research/tree/PHASE2_PLAN.md)
 def load_extra(key):
     """A phase-2 input file, aligned to load()'s rows and columns and ending 2019-12-31: "finra" (daily short and total
-    volume) or "intraday" (overnight + 13 half-hour log returns, 2016-2019). Read its "note" field before use."""
+    volume), "intraday" (overnight + 13 half-hour log returns, 2016-2019), "fundamentals" (point-in-time annual SEC
+    XBRL values and the latest earnings surprise) or "peers" (yearly 10-K text-neighbour graph). Read its "note" field
+    before use."""
     z = np.load(os.path.join(ROOT, ".cache", "tree", f"extra_{key}.npz"), allow_pickle=False)
     return {k: z[k] for k in z.files}
 

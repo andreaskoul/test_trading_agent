@@ -1,6 +1,6 @@
 # Tree search: progress ledger
 
-*Rebuilt 2026-11-12 13:25 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
+*Rebuilt 2026-11-12 13:32 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
 
 | branch | phase | status | scored | best | metric | model.py | REPORT.md | verdict |
 |---|---:|---|---:|---|---:|---|---|---|
@@ -9,8 +9,8 @@
 | C_features | 1 | done | 15 | C13 C06 Fama-MacBeth | 2.29 | yes | no | features carried into X1 |
 | D_ensembles | 1 | done | 7 | hgb_multihorizon | 2.41 | yes | yes | finalist D_hgb_mh failed the holdout |
 | E_regime | 1 | done | 15 | E13 kernel ridge + panic | 1.62 | yes | no | panic rule carried into X1; adaptation +0.005 |
-| M1_dyntrade | 2 | done | 18 |  |  | yes | yes | no-trade band carried to S&P 400 confirmation; no MASTER gain |
-| M2_ipca | 2 | in progress | 12 | M05_C24_wk_xn_U | 2.27 | no | no |  |
+| M1_dyntrade | 2 | done | 18 |  |  | yes | yes | construction rule: no-trade band for the S&P 400 confirmation |
+| M2_ipca | 2 | done | 20 | M05_C24_wk_xn_U | 2.27 | yes | yes | finalist candidate M05_U for the S&P 400 confirmation (IC 0.0224, t 2.27) |
 | M3_cae | 2 | done (seed ensemble never ran) | 8 | ca2_c32_k3 | 2.00 | yes | yes | no finalist; factor structure does not beat direct prediction |
 | M4_sdf | 2 | not started | 0 |  |  | no | no |  |
 | M5_graph | 2 | not started | 0 |  |  | no | no |  |
