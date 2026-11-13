@@ -302,3 +302,43 @@ to the fund's existing stock book (a rule fixed before running) gives Sharpe 1.0
   2017-2019 reported separately. Selection by net Sharpe with drawdown no worse than the control. At most one
   candidate is nominated; it gets a read only under a later amendment naming fresh data.
 * **N4_news.** The headline download starts now. The branch is launched when the download completes (FEED.md notes).
+
+## Layer 3, Amendment 7 (2026-11-13, before any 2026 price is fetched): the 2026 sealed test of the combined fund (H7)
+
+**Why.** Every past sample is spent for the combination (fund 2020-2025; broad 2017-2025). January to November 2026
+has been used by no backtest of it: the research panels end 2025-12-31. (The live forward research books have run
+since late October 2026, a few weeks the owner may have seen; disclosed.) Train on data up to 2025, test once on 2026.
+
+**Data (coordinating session; frozen at first fetch, CLAUDE.md rule 4).** Alpaca SIP daily bars from 2025-01-02 to
+the fetch date for the broad symbols, the 850 S&P 500 panel names and SPY, both `adjustment=all` and `raw`, into new
+folders (`.cache/tree/y2026/`). S&P names and SPY: 2026 daily returns chain-linked onto the panel's 2025-12-31 closes.
+The 2025 overlap is used only to check the seam (no scored statistic). Membership: point in time from the repository's
+membership files. Broad eligibility: the Amendment 1/4 rule on unadjusted prices.
+
+**Models (fitted on targets ending before 2026-01-01; no 2026 target used).**
+* MASTER 5-day: one refit with the October read's configuration and seeds (`sp500_transformers.py`, part `master_h5`),
+  training through 2025. The live model (trained to October 2026) is excluded.
+* Broad trees: the L3b candidate (`finalists/D_hgb_mh/model.py`), seeds 0-2, on the broad panel through 2025.
+* Weeks: Thursdays from 2026-01-08 whose 5-session target is complete by the fetch date.
+
+**Arms.** Fund = 200-session S&P core 1.3×/0.7× + MASTER decile book (gross 0.6, 5 bp), as in `OOS_RETURNS.json`.
+* **H7a:** fund + k_a × broad trees decile book (M1 decile, 14 bp a unit traded, target clipped at ±1).
+* **H7b:** the same, but the broad book is restricted each week to broad names in the top two-thirds by 63-session
+  dollar volume.
+* k = the equal-risk weight (sd of the fund's stock book / sd of the broad book), estimated on 2020-2025 weekly series
+  (already spent) before the 2026 read. k_a = 0.59 (COMBO_CHECK); k_b computed the same way and written into
+  `H7_WEIGHTS.json`, committed before the read.
+
+**Test (once; `H7.lock`).** Per arm: the weekly increment of the combined fund over the fund alone (= k × the broad
+book's weekly net return). One-sided Newey-West t (4 lags) of its mean > 0; Holm across H7a and H7b at α 0.05.
+
+**Power, registered.** About 43 weeks. At the 2020-2025 increment (broad book net Sharpe 0.3-0.55 at 10-20 bp), power
+is about 10-20%. A fail is therefore not evidence against the combination. "Broken" is declared only if both the broad
+trees' 2026 IC ≤ 0 and the increment's mean < 0; then the combination is stopped and reviewed.
+
+**Reported, not tested.** % per year, net Sharpe and worst fall of the fund alone and of each combined arm; IC of
+MASTER and of the broad trees; turnover; IC by dollar-volume tercile.
+
+**After the read.** The same pipeline, unchanged, runs on forward weeks as an extension of H7. The cumulative test is
+reported every 13 weeks; a verdict at cumulative t ≥ 2 or 104 weeks. A forward runner needs the owner's go-ahead (it
+touches the machine that runs the fund).
