@@ -211,3 +211,28 @@ terciles.
 * **Content check found bad prints** (AQB $0.144 on 8 shares between $528 and $530): 95 targets beyond ±100%.
   Amendment 5, before any prediction: books earn the clipped target; the rank-IC test is unchanged.
 * **Next: the registered read** (L3a IPCA vs ridge, L3b trees vs 5-session trees), once.
+
+## Step 13 — the registered L3.1 read (broad survivorship-free universe, 2017-2025, 455 weeks, 1,500 names a week)
+
+**Both candidates pass (Holm, alpha 0.05).** Out-of-sample: fitted only on rows whose target ended before each year.
+
+| | IC | t | p (one-sided) | years positive | decile book net %/yr (Sharpe) | band book net %/yr (Sharpe) |
+|---|---:|---:|---:|---:|---:|---:|
+| L3b trees, 4 horizons (candidate) | .0249 | 4.41 | 5e-6 | 9/9 | 6.3 (0.65) | 5.6 (0.62) |
+| trees, 5-session target (control) | .0237 | 4.15 | — | 9/9 | 7.2 (0.72) | 6.4 (0.68) |
+| L3a IPCA (candidate) | .0173 | 3.11 | 9e-4 | 9/9 | 2.2 (0.22) | 2.5 (0.28) |
+| Fama-MacBeth ridge, 24 characteristics (control) | .0224 | 4.04 | — | 9/9 | 6.5 (0.65) | 6.0 (0.65) |
+
+Books: stock long/short only, gross 1, beta-hedged, 5 bp a side, target clipped at ±100% (Amendment 5).
+
+* **Replication, on data with delisted names.** The trees pass at about 70% registered power, so this counts as
+  evidence for them. Keeping delisting returns changes no IC by more than .0001.
+* **Controls.** The 4-horizon trees beat their 5-session control by +.0012 IC (t 1.18; not significant). IPCA trails
+  the ridge by .005 (t −2.04), as on development data: the information is in the characteristics, not IPCA's method.
+* **Not a small-name effect.** Trees IC by dollar-volume tercile .032 / .019 / .024. The smallest tercile is
+  strongest, so trading costs there need checking before the book is traded.
+* **The band does not help here** (6.3 → 5.6 %/yr for the candidate), unlike on development data.
+* **A process fault.** In the trees read, the books call failed on a module-name clash (`lib`). The books were
+  recomputed from the saved read predictions with the same code; the IC test was unaffected.
+* **Against the owner's bar** (net Sharpe > 1, out of sample): no stock book reaches it alone. Best book 0.72; the
+  whole fund on 2020-2025 is 0.94 (`OOS_RETURNS.json`).
