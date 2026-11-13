@@ -411,64 +411,39 @@
 {
 "date": "2026-11-11",
 "nav": 96079.17477832892,
-"pnl_lots": -264.4273776104072,
-"pnl_hedge": -164.82388830461448,
+"pnl_lots": -264.42737761040684,
+"pnl_hedge": -164.82388830461392,
 "cash_income": 11.747073958735452,
 "cost": 2.2790108356556487,
-"r_gross": -0.004448247679513811,
+"r_gross": -0.004448247679513802,
 "r_cost": 2.3616947616175462e-05,
 "r_cash": 0.00012173265084410195,
 "n_long": 8,
 "n_short": 9,
-"stock_gross": 0.7979624192607851,
+"stock_gross": 0.7979624192607854,
 "hedge": -0.1317952033270226,
-"net_beta": -0.05536602667702995,
+"net_beta": -0.055366026677029966,
+"traded": true
+},
+{
+"date": "2026-11-12",
+"nav": 96407.90986594395,
+"pnl_lots": 291.2596830539325,
+"pnl_hedge": 44.83076436192145,
+"cash_income": 12.443399862106412,
+"cost": 19.798759662926752,
+"r_gross": 0.0034980571824359662,
+"r_cost": 0.00020606712858021393,
+"r_cash": 0.00012951193524315195,
+"n_long": 10,
+"n_short": 10,
+"stock_gross": 0.9136921330279655,
+"hedge": -0.01287518432215015,
+"net_beta": 0.00015391922251947957,
 "traded": true
 }
 ],
 "lots": [
-{
-"id": "2026-10-21|SMCI",
-"ticker": "SMCI",
-"side": 1,
-"w0": 0.07583012523653307,
-"beta": 2.0551470887,
-"sigma_e": 0.04617076198201026,
-"H": 44,
-"W": 0.16647104975338137,
-"kill_conditions": [
-"Company cuts FY 2027 revenue or EPS guidance",
-"Major customer cuts or delays AI server orders, worsening 44% concentration",
-"Gross margin declines further and management lowers margin outlook"
-],
-"first_reported": "2026-11-03",
-"score": 2,
-"cohort": "2026-10-21",
-"entry_day": "2026-10-22",
-"entry_close_ts": 1792698000,
-"n": 4051.492172840364,
-"R": -0.07469092724207524,
-"days": 14,
-"e": [
--0.01239808,
--0.02219249,
-0.06189758,
-0.01344263,
--0.03068666,
--0.00655002,
--0.06633159,
-0.02506071,
--0.09097049,
-0.00547991,
-0.05561782,
--0.05419656,
--0.02075846,
-0.06789477
-],
-"news_until": 1794429600,
-"increased": true,
-"reduced": true
-},
 {
 "id": "2026-10-21|HAS",
 "ticker": "HAS",
@@ -488,9 +463,9 @@
 "cohort": "2026-10-21",
 "entry_day": "2026-10-22",
 "entry_close_ts": 1792698000,
-"n": 2607.843318075566,
-"R": 0.06040182696317489,
-"days": 14,
+"n": 2554.433206578131,
+"R": 0.042863964795961496,
+"days": 15,
 "e": [
 0.00613247,
 -0.00147825,
@@ -505,14 +480,15 @@
 -0.00786696,
 -0.00276581,
 0.01050182,
-0.00709766
+0.00709766,
+-0.01753786
 ],
-"news_until": 1794429600,
+"news_until": 1794516000,
 "H0": 13,
 "ext": 1,
 "stop_R": -0.050306111824776054,
 "target_R": 0.20747082307538126,
-"ext_pnl": 46.260726493842014
+"ext_pnl": -7.149385003593153
 },
 {
 "id": "2026-10-28|EQIX",
@@ -535,9 +511,9 @@
 "entry_close_ts": 1793302800,
 "driving_event": "Q3 2026 FFO beat, EPS beat, record bookings, raised 2026 guidance",
 "news_session": "2026-10-28",
-"n": 6446.869397453349,
-"R": 0.042412779788937115,
-"days": 9,
+"n": 6475.299218682499,
+"R": 0.04963095906297184,
+"days": 10,
 "e": [
 -0.00809431,
 -0.0159399,
@@ -547,9 +523,10 @@
 0.01292265,
 0.02249444,
 -0.00134824,
-0.00673884
+0.00673884,
+0.00721818
 ],
-"news_until": 1794429600
+"news_until": 1794516000
 },
 {
 "id": "2026-10-28|MSFT",
@@ -572,9 +549,9 @@
 "entry_close_ts": 1793302800,
 "driving_event": "Microsoft Q1 FY27 earnings beat with Azure growth accelerating",
 "news_session": "2026-10-28",
-"n": 8149.87997943985,
-"R": -0.002234024445561443,
-"days": 9,
+"n": 8179.203126403533,
+"R": 0.004739164460813789,
+"days": 10,
 "e": [
 0.00137778,
 -0.02377154,
@@ -584,9 +561,10 @@
 -0.01290508,
 0.00489874,
 -0.01853931,
--0.03514582
+-0.03514582,
+0.00697319
 ],
-"news_until": 1794429600,
+"news_until": 1794516000,
 "increased": true
 },
 {
@@ -611,9 +589,9 @@
 "driving_event": "Q3 2026 earnings beat, revenue +10.6%, FY profit guidance floor raised",
 "report_session": "2027-02-05",
 "news_session": "2026-10-28",
-"n": 5444.048717402459,
-"R": 0.02344103907670746,
-"days": 9,
+"n": 5381.315401479747,
+"R": 0.014078290849101914,
+"days": 10,
 "e": [
 0.02672155,
 -0.01525358,
@@ -623,9 +601,10 @@
 0.01621341,
 0.01181203,
 -0.00411035,
--0.00745584
+-0.00745584,
+-0.00936275
 ],
-"news_until": 1794429600
+"news_until": 1794516000
 },
 {
 "id": "2026-10-28|GOOGL",
@@ -648,9 +627,9 @@
 "entry_close_ts": 1793302800,
 "driving_event": "Alphabet Q3 revenue miss with slowing Search growth overshadowing strong cloud; shares fell ~7% after hours.",
 "news_session": "2026-10-28",
-"n": -6307.439750401951,
-"R": -0.047184461726922367,
-"days": 9,
+"n": -6420.283705725209,
+"R": -0.06921736146700885,
+"days": 10,
 "e": [
 -0.00672032,
 -0.0025671,
@@ -660,9 +639,10 @@
 -0.00416576,
 0.0158538,
 -0.00163361,
--0.00569156
+-0.00569156,
+-0.0220329
 ],
-"news_until": 1794429600
+"news_until": 1794516000
 },
 {
 "id": "2026-10-28|BSX",
@@ -687,9 +667,9 @@
 "structural": true,
 "report_session": "2027-02-03",
 "news_session": "2026-10-28",
-"n": -9497.539411827986,
-"R": -0.06520246813115366,
-"days": 9,
+"n": -9301.82233553727,
+"R": -0.04609544124752858,
+"days": 10,
 "e": [
 0.00911945,
 -0.05777049,
@@ -699,9 +679,10 @@
 0.04366246,
 -0.01968072,
 -0.01700686,
--0.00403168
+-0.00403168,
+0.01910703
 ],
-"news_until": 1794429600,
+"news_until": 1794516000,
 "increased": true
 },
 {
@@ -724,9 +705,9 @@
 "entry_close_ts": 1793302800,
 "driving_event": "US Energy Secretary opens door to more Russian diesel imports, shrinking refining margins and pressuring refiners.",
 "news_session": "2026-10-28",
-"n": -2559.0739538492853,
-"R": 0.04654375104668185,
-"days": 9,
+"n": -2638.158915058122,
+"R": 0.014511334720004272,
+"days": 10,
 "e": [
 -0.04489068,
 0.0440116,
@@ -736,9 +717,10 @@
 0.0146053,
 -0.02218594,
 0.01575739,
--0.03286328
+-0.03286328,
+-0.03203242
 ],
-"news_until": 1794429600
+"news_until": 1794516000
 },
 {
 "id": "2026-11-04|EL",
@@ -763,16 +745,17 @@
 "structural": true,
 "report_session": "2027-02-03",
 "news_session": "2026-11-02",
-"n": 3230.015622135284,
-"R": 0.002560045784891444,
-"days": 4,
+"n": 3177.6820653625055,
+"R": -0.009674048253222763,
+"days": 5,
 "e": [
 0.0188857,
 0.00164281,
 0.00651083,
--0.0244793
+-0.0244793,
+-0.01223409
 ],
-"news_until": 1794429600
+"news_until": 1794516000
 },
 {
 "id": "2026-11-04|AMD",
@@ -795,16 +778,17 @@
 "entry_close_ts": 1793911200,
 "driving_event": "AMD Q3 2026 earnings beat with data center sales nearly doubling and Q4 revenue guidance above consensus",
 "news_session": "2026-11-04",
-"n": 5528.536950623456,
-"R": 0.25812252651284895,
-"days": 4,
+"n": 5852.509815879741,
+"R": 0.3236527207512325,
+"days": 5,
 "e": [
 0.10427039,
 0.08627255,
 0.02023999,
-0.0473396
+0.0473396,
+0.06553019
 ],
-"news_until": 1794429600,
+"news_until": 1794516000,
 "increased": true
 },
 {
@@ -828,16 +812,17 @@
 "entry_close_ts": 1793911200,
 "driving_event": "Q3 earnings beat on record refining margins and dividend hike",
 "news_session": "2026-11-02",
-"n": 2881.7054626517966,
-"R": 0.009337273258560645,
-"days": 4,
+"n": 2934.772679797385,
+"R": 0.02768218919431748,
+"days": 5,
 "e": [
 0.00351031,
 -0.00640299,
 -0.00165141,
-0.01388136
+0.01388136,
+0.01834492
 ],
-"news_until": 1794429600
+"news_until": 1794516000
 },
 {
 "id": "2026-11-04|ZBRA",
@@ -862,16 +847,17 @@
 "structural": true,
 "report_session": "2027-02-02",
 "news_session": "2026-11-03",
-"n": -3005.819580115349,
-"R": 0.030501445700111606,
-"days": 4,
+"n": -2917.6021168704538,
+"R": 0.05509139881844422,
+"days": 5,
 "e": [
 0.00301802,
 0.01724491,
 0.01136734,
--0.00112883
+-0.00112883,
+0.02458995
 ],
-"news_until": 1794429600
+"news_until": 1794516000
 },
 {
 "id": "2026-11-04|ORCL",
@@ -896,16 +882,17 @@
 "structural": true,
 "report_session": "2026-12-08",
 "news_session": "2026-11-04",
-"n": -4964.937747295568,
-"R": -0.05475585530376573,
-"days": 4,
+"n": -4915.822067757748,
+"R": -0.05054318340213434,
+"days": 5,
 "e": [
 -0.00315045,
 0.00618167,
 0.0092057,
--0.06699277
+-0.06699277,
+0.00421267
 ],
-"news_until": 1794429600,
+"news_until": 1794516000,
 "increased": true
 },
 {
@@ -930,84 +917,18 @@
 "driving_event": "FIS cut FY26 EPS and sales guidance after Q3 beat, with CFO exit compounding the selloff.",
 "structural": true,
 "news_session": "2026-11-04",
-"n": -4721.3234598814315,
-"R": -0.011495817675446822,
-"days": 4,
+"n": -4432.199050719543,
+"R": 0.047934907540196484,
+"days": 5,
 "e": [
 0.02405143,
 0.02565468,
 -0.00082005,
--0.06038187
+-0.06038187,
+0.05943073
 ],
-"news_until": 1794429600,
+"news_until": 1794516000,
 "increased": true
-},
-{
-"id": "2026-11-04|IDXX",
-"ticker": "IDXX",
-"side": -1,
-"w0": -0.03,
-"beta": 0.8925288459,
-"sigma_e": 0.042489635269216,
-"H": 13,
-"W": 0.15319855863892146,
-"kill_conditions": [
-"IDEXX raises FY2026 EPS and sales guidance again on sustained demand",
-"Q4 results show accelerating clinic traffic and margin expansion",
-"Management guides FY2027 above consensus, signaling durable growth beyond Q3"
-],
-"first_reported": "2026-11-02",
-"score": -1,
-"cohort": "2026-11-04",
-"entry_day": "2026-11-05",
-"entry_close_ts": 1793911200,
-"driving_event": "Q3 EPS/sales beat and FY26 guidance raise drove a 20% one-day stock surge",
-"news_session": "2026-11-02",
-"n": -2993.146503455357,
-"R": -0.015205334138545091,
-"days": 4,
-"e": [
--0.00515841,
--0.02415747,
-0.0108808,
-0.00322974
-],
-"news_until": 1794429600
-},
-{
-"id": "2026-11-04|LLY",
-"ticker": "LLY",
-"side": -1,
-"w0": -0.03,
-"beta": 0.5619746737,
-"sigma_e": 0.021852654491741896,
-"H": 45,
-"W": 0.146592062797053,
-"kill_conditions": [
-"Novo Nordisk cuts 2026 outlook or Wegovy pill sales miss estimates",
-"Eli Lilly's oral obesity pill beats Novo's Wegovy pill in head-to-head trial",
-"Eli Lilly raises 2026 guidance above $92 billion"
-],
-"first_reported": "2026-11-04",
-"score": -1,
-"cohort": "2026-11-04",
-"entry_day": "2026-11-05",
-"entry_close_ts": 1793911200,
-"driving_event": "Novo's Q3 Wegovy pill blowout and raised 2026 outlook",
-"structural": true,
-"report_session": "2027-02-02",
-"news_session": "2026-11-04",
-"n": -1506.6431262913538,
-"R": -0.03243571908424106,
-"days": 4,
-"e": [
-0.00961805,
--0.02950047,
--0.01647375,
-0.00392045
-],
-"news_until": 1794429600,
-"reduced": true
 },
 {
 "id": "2026-11-04|META",
@@ -1032,16 +953,169 @@
 "structural": true,
 "report_session": "2027-01-27",
 "news_session": "2026-11-04",
-"n": -2771.25559295476,
-"R": 0.0070862917887046725,
-"days": 4,
+"n": -2748.5132883606375,
+"R": 0.010709522067259843,
+"days": 5,
 "e": [
 -0.00433461,
 -0.0205327,
 -0.0047954,
-0.036749
+0.036749,
+0.00362323
 ],
-"news_until": 1794429600
+"news_until": 1794516000
+},
+{
+"id": "2026-11-11|WMT",
+"ticker": "WMT",
+"side": 1,
+"w0": 0.0425,
+"beta": 0.3524234517,
+"sigma_e": 0.017302779734937802,
+"H": 6,
+"W": 0.04238298148236678,
+"kill_conditions": [
+"Analyst downgrades Walmart or cuts its price target",
+"Walmart issues weak guidance or misses quarterly earnings expectations",
+"Walmart loses grocery or AI market share to competitors"
+],
+"first_reported": "2026-11-09",
+"score": 1,
+"cohort": "2026-11-11",
+"entry_day": "2026-11-12",
+"entry_close_ts": 1794516000,
+"driving_event": "Investment banks raise WMT price targets on earnings growth and market share gains",
+"news_session": "2026-11-09",
+"n": 4099.019626835931,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-11|FOX",
+"ticker": "FOX",
+"side": 1,
+"w0": 0.0425,
+"beta": 0.5518797876,
+"sigma_e": 0.021407948557162323,
+"H": 55,
+"W": 0.158765595701449,
+"kill_conditions": [
+"Fox announces Roku acquisition integration failure or write-down",
+"Fox reports Q1 miss or cuts FY guidance",
+"Fox advertising revenue declines"
+],
+"first_reported": "2026-11-06",
+"score": 1,
+"cohort": "2026-11-11",
+"entry_day": "2026-11-12",
+"entry_close_ts": 1794516000,
+"driving_event": "Completion of $22B Roku acquisition and Q1 earnings beat",
+"structural": true,
+"report_session": "2027-02-02",
+"news_session": "2026-11-06",
+"n": 4099.019626835931,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-11|TTWO",
+"ticker": "TTWO",
+"side": 1,
+"w0": 0.031,
+"beta": 0.6590796071,
+"sigma_e": 0.028480528181597246,
+"H": 3,
+"W": 0.049329721836923676,
+"kill_conditions": [
+"Take-Two delays GTA VI launch beyond November 19",
+"Take-Two cuts FY27 bookings guidance",
+"GTA VI pre-orders reported below expectations"
+],
+"first_reported": "2026-11-09",
+"score": 1,
+"cohort": "2026-11-11",
+"entry_day": "2026-11-12",
+"entry_close_ts": 1794516000,
+"driving_event": "GTA VI launch on Nov 19 with record pre-orders",
+"news_session": "2026-11-09",
+"n": 2989.873139574444,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-11|TTD",
+"ticker": "TTD",
+"side": -1,
+"w0": -0.032,
+"beta": 1.0098931643,
+"sigma_e": 0.03809611404789321,
+"H": 13,
+"W": 0.13735749259560295,
+"kill_conditions": [
+"Trade Desk reports Q4 revenue growth and EBITDA margin expansion, reversing Q3 weakness",
+"Management issues materially higher Q4/FY guidance and withdraws cautious tone",
+"Multiple covering analysts upgrade TTD to Buy with price targets well above $20"
+],
+"first_reported": "2026-11-09",
+"score": -1,
+"cohort": "2026-11-11",
+"entry_day": "2026-11-12",
+"entry_close_ts": 1794516000,
+"driving_event": "Q3 earnings beat on low bar with revenue down 0.5% and weaker margins; cautious CFO tone.",
+"news_session": "2026-11-09",
+"n": -3086.3206602058785,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-11|BA",
+"ticker": "BA",
+"side": -1,
+"w0": -0.031,
+"beta": 1.0052533187,
+"sigma_e": 0.024301692022035883,
+"H": 3,
+"W": 0.04209176529205739,
+"kill_conditions": [
+"Boeing announces an accelerated production rate increase or raises full-year guidance",
+"Boeing monthly deliveries rise sequentially and exceed Airbus",
+"Boeing reverses the workforce cuts or secures a new large order"
+],
+"first_reported": "2026-11-09",
+"score": -1,
+"cohort": "2026-11-11",
+"entry_day": "2026-11-12",
+"entry_close_ts": 1794516000,
+"driving_event": "Boeing cuts 5% of commercial airplane workforce as production ramp slows",
+"news_session": "2026-11-09",
+"n": -2989.873139574444,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-11|CRM",
+"ticker": "CRM",
+"side": -1,
+"w0": -0.03,
+"beta": 0.5792998647,
+"sigma_e": 0.028021960837719625,
+"H": 11,
+"W": 0.09293832998874907,
+"kill_conditions": [
+"S&P upgrades Salesforce's credit rating or revises its outlook to stable/positive",
+"Salesforce terminates or walks away from the Braze or Cresta acquisition",
+"Salesforce cuts its buyback or announces debt reduction that eases leverage concerns"
+],
+"first_reported": "2026-11-06",
+"score": -1,
+"cohort": "2026-11-11",
+"entry_day": "2026-11-12",
+"entry_close_ts": 1794516000,
+"driving_event": "S&P cuts Salesforce rating to A on Braze/Cresta deals and $25B buyback",
+"news_session": "2026-11-06",
+"n": -2893.4256189430102,
+"R": 0.0,
+"days": 0
 }
 ],
 "events": [
@@ -2794,6 +2868,113 @@
 "R": 0.009167,
 "W": 0.04641,
 "days_held": 14
+},
+{
+"day": "2026-11-12",
+"id": "2026-10-21|SMCI",
+"ticker": "SMCI",
+"action": "capacity",
+"from": 3593.49,
+"to": 0.0,
+"R": -0.180461,
+"W": 0.166471,
+"days_held": 15
+},
+{
+"day": "2026-11-12",
+"id": "2026-11-04|IDXX",
+"ticker": "IDXX",
+"action": "capacity",
+"from": -2973.68,
+"to": 0.0,
+"R": -0.011861,
+"W": 0.153199,
+"days_held": 5
+},
+{
+"day": "2026-11-12",
+"id": "2026-11-04|LLY",
+"ticker": "LLY",
+"action": "flip_close",
+"from": -1496.15,
+"to": 0.0,
+"R": -0.027461,
+"W": 0.146592,
+"days_held": 5
+},
+{
+"day": "2026-11-12",
+"id": "2026-11-11|WMT",
+"ticker": "WMT",
+"action": "entry",
+"from": 0.0,
+"to": 4099.02,
+"R": 0.0,
+"W": 0.042383,
+"days_held": 0
+},
+{
+"day": "2026-11-12",
+"id": "2026-11-11|FOX",
+"ticker": "FOX",
+"action": "entry",
+"from": 0.0,
+"to": 4099.02,
+"R": 0.0,
+"W": 0.158766,
+"days_held": 0
+},
+{
+"day": "2026-11-12",
+"id": "2026-11-11|TTWO",
+"ticker": "TTWO",
+"action": "entry",
+"from": 0.0,
+"to": 2989.87,
+"R": 0.0,
+"W": 0.04933,
+"days_held": 0
+},
+{
+"day": "2026-11-12",
+"id": "2026-11-11|TTD",
+"ticker": "TTD",
+"action": "entry",
+"from": 0.0,
+"to": -3086.32,
+"R": 0.0,
+"W": 0.137357,
+"days_held": 0
+},
+{
+"day": "2026-11-12",
+"id": "2026-11-11|BA",
+"ticker": "BA",
+"action": "entry",
+"from": 0.0,
+"to": -2989.87,
+"R": 0.0,
+"W": 0.042092,
+"days_held": 0
+},
+{
+"day": "2026-11-12",
+"id": "2026-11-11|CRM",
+"ticker": "CRM",
+"action": "entry",
+"from": 0.0,
+"to": -2893.43,
+"R": 0.0,
+"W": 0.092938,
+"days_held": 0
+},
+{
+"day": "2026-11-12",
+"id": "SPY",
+"ticker": "SPY",
+"action": "hedge",
+"from": -12617.94,
+"to": -1241.27
 }
 ],
 "cohorts": [
@@ -3357,5 +3538,5 @@
 "ext": 1
 }
 ],
-"updated": "2026-11-12T01:11:19+00:00"
+"updated": "2026-11-13T01:10:42+00:00"
 }
