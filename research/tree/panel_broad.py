@@ -27,7 +27,8 @@ def broad_prices(exclude, S, sub="chunks"):
     files = sorted(glob.glob(os.path.join(BROAD, sub, "*.parquet")))
     if not files:
         raise SystemExit(f"no {sub} files: run fetch_broad.py " + ("bars" if sub == "chunks" else "raw"))
-    b = pd.concat([pd.read_parquet(p) for p in files])
+    b = pd.concat([f for f in (pd.read_parquet(p) for p in files) if len(f)])   # empty chunks: invalid symbols only
+    b["close"], b["volume"] = b["close"].astype(np.float64), b["volume"].astype(np.float64)
     b = b[~b.ticker.isin(exclude)]
     b["date"] = pd.to_datetime(b["date"])
     close = b.pivot_table(index="date", columns="ticker", values="close").reindex(S)

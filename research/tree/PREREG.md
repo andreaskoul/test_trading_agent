@@ -262,3 +262,18 @@ names that left the index, which is survivorship bias in every development resul
 holdout built the same way. Its sign and size are unknown. The broad universe (L3.1) is built from active and inactive
 Alpaca assets and does not share it, except for the symbols the bars endpoint rejects (listed in
 `.cache/tree/broad/chunks/_dropped.json`, counted in the read).
+
+## Layer 3, Amendment 5 (2026-11-13, after the broad panel's coverage and content check, before any prediction on it)
+
+**Panel as built** (`READ3_PANEL.json`): 3,684 broad names eligible at some point in 2017-2025; 1,500 eligible every
+Thursday by construction (1,499 with a target on average); 17.3% inactive at Alpaca, 16.2% with a last bar before
+December 2025. 379 symbols the bars endpoint rejects were dropped, 59 of them `*_DELISTED` renames (the one real
+survivorship loss); the rest are CUSIP-like ids of non-trading lines.
+
+**Content check** (CLAUDE.md rule 11). Daily moves above 100% in 0.012% of eligible name-days (318 names). The
+largest are bad prints: e.g. AQB on 2017-01-09 at $0.144 on 8 shares between closes of $528 and $530, giving 5-day
+targets near +179 (17,900%). 95 of 681,939 eligible broad Thursday targets in 2017-2025 exceed ±1 (±100%).
+
+**Change (reported books only).** The decile and band books in `read3.py` earn the target clipped to [-1, 1]. The
+registered test (weekly rank IC, Newey-West t, Holm) uses the unclipped target: a rank statistic, which one print
+moves by at most one rank position. No print is removed from the panel; the models see the data as a live fund would.

@@ -89,7 +89,9 @@ def read(cand):
              "ic_by_year": {y: float(np.nanmean(ic_series(p, Ds, rows_for(D, (y,))))) for y in YEARS},
              "names_per_week": float(np.mean([np.isfinite(p[t_][Ds["elig"][t_]]).sum() for t_ in rows]))}
         try:
-            r["books_reported"] = band_book(np.where(Ds["elig"], p, np.nan), Ds, rows)
+            Db = dict(Ds)
+            Db["y5"] = np.clip(Ds["y5"], -1.0, 1.0)          # Amendment 5: books only; the IC test uses y5 unchanged
+            r["books_reported"] = band_book(np.where(Ds["elig"], p, np.nan), Db, rows)
         except Exception as exc:                                                       # reported only
             r["books_reported"] = {"error": repr(exc)[:200]}
         res[role] = r

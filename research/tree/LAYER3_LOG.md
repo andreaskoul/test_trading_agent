@@ -201,3 +201,13 @@ terciles.
   construction-side lead, not tested.
 * **Consequence**: the trees branch is saturated on these 25 inputs; further gains must come from new information
   (news, survivorship-repaired data, other universes), not from loss or ensemble engineering.
+
+## Step 12 — broad panel built and checked (2026-11-13)
+
+* Two build bugs: empty chunk files (only invalid symbols) made the price table non-numeric; and an earlier run's exit
+  status was hidden by a pipe into `tail`. Fixed (numeric cast, empty files skipped, exit code captured).
+* **Coverage** as designed: 1,500 eligible names every Thursday 2017-2025, 3,684 distinct; 17.3% inactive at Alpaca;
+  16.2% stop trading before December 2025. Survivorship loss: 59 `*_DELISTED` symbols.
+* **Content check found bad prints** (AQB $0.144 on 8 shares between $528 and $530): 95 targets beyond ±100%.
+  Amendment 5, before any prediction: books earn the clipped target; the rank-IC test is unchanged.
+* **Next: the registered read** (L3a IPCA vs ridge, L3b trees vs 5-session trees), once.
