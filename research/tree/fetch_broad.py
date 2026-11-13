@@ -59,22 +59,33 @@ def symbols():
     print(json.dumps(meta))
 
 
-def bars(adj="all"):
-    """adj="all": returns and the model fields; adj="raw": eligibility only (price filter, dollar volume), PREREG L3 Am. 4."""
+def sp500_names():
+    sys.path.insert(0, HERE)
+    import panel400  # noqa: F401  (sets the quant-tf path)
+    import sp500_test as T
+    return sorted(pd.read_parquet(T.PX).columns)            # includes SPY
+
+
+def bars(adj="all", start=START, end=END, outdir=None, extra=()):
+    """adj="all": returns and the model fields; adj="raw": eligibility only (price filter, dollar volume), PREREG L3 Am. 4.
+    With outdir: the same download into another folder (Amendment 7: 2026, into .cache/tree/y2026/)."""
     import broker
-    syms = sorted({s["symbol"] for s in json.load(open(os.path.join(OUT, "symbols.json")))["symbols"]})
+    syms = sorted({s["symbol"] for s in json.load(open(os.path.join(OUT, "symbols.json")))["symbols"]} | set(extra))
     failed = []
+    base = outdir or OUT
+    sub = "chunks" if adj == "all" else "chunks_raw"
+    os.makedirs(os.path.join(base, sub), exist_ok=True)
     os.makedirs(os.path.join(OUT, "chunks_raw"), exist_ok=True)
     dpath = os.path.join(OUT, "chunks", "_dropped.json")
     dropped = json.load(open(dpath)) if os.path.exists(dpath) else {}
     for i in range(0, len(syms), 50):
-        p = os.path.join(OUT, "chunks" if adj == "all" else "chunks_raw", f"{i:06d}.parquet")
+        p = os.path.join(base, sub, f"{i:06d}.parquet")
         if os.path.exists(p):
             continue
         chunk, token, rows = [c for c in syms[i:i + 50] if c not in dropped], None, []
         while chunk:
             q = (f"/v2/stocks/bars?symbols={','.join(chunk)}&timeframe=1Day&adjustment={adj}&feed=sip&limit=10000"
-                 f"&start={START}&end={END}T23:59:59Z" + (f"&page_token={token}" if token else ""))
+                 f"&start={start}&end={end}T23:59:59Z" + (f"&page_token={token}" if token else ""))
             for wait in (0, 5, 15, 45, 90):  # 429/5xx: back off and retry
                 time.sleep(wait)
                 s, b = broker.api("GET", q, base=broker.DATA)
@@ -113,5 +124,16 @@ def bars(adj="all"):
         sys.exit(1)
 
 
+def y2026(adj):
+    """Amendment 7: 2025-01-02 to the fetch date, broad + S&P 500 panel names + SPY, frozen at first fetch."""
+    out = os.path.join(ROOT, ".cache", "tree", "y2026")
+    meta = os.path.join(out, f"_fetch_{adj}.json")
+    end = json.load(open(meta))["end"] if os.path.exists(meta) else time.strftime("%Y-%m-%d", time.gmtime())
+    os.makedirs(out, exist_ok=True)
+    json.dump({"end": end, "start": "2025-01-02", "adj": adj}, open(meta, "w"))
+    bars(adj, "2025-01-02", end, out, extra=sp500_names())
+
+
 if __name__ == "__main__":
-    {"symbols": symbols, "bars": bars, "raw": lambda: bars("raw")}[sys.argv[1]]()
+    {"symbols": symbols, "bars": bars, "raw": lambda: bars("raw"),
+     "y2026": lambda: y2026("all"), "y2026raw": lambda: y2026("raw")}[sys.argv[1]]()
