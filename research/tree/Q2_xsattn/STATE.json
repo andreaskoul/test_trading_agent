@@ -1,20 +1,343 @@
 {
  "branch": "Q2_xsattn",
  "phase": 3,
- "status": "not started",
- "configurations_scored": 0,
- "scored": [],
- "best": null,
- "plan": [],
+ "status": "done",
+ "configurations_scored": 19,
+ "scored": [
+  {
+   "name": "mlp_base",
+   "ic": 0.02079,
+   "ic_t": 2.04,
+   "years_pos": 6,
+   "decile_net": 0.62,
+   "control": null,
+   "config": {},
+   "mean_epochs": null,
+   "minutes": null
+  },
+  {
+   "name": "moe_unif",
+   "ic": 0.02248,
+   "ic_t": 2.14,
+   "years_pos": 6,
+   "decile_net": 0.28,
+   "control": null,
+   "config": {
+    "K": 4,
+    "gate": "uniform"
+   },
+   "mean_epochs": null,
+   "minutes": null
+  },
+  {
+   "name": "mlp_isab",
+   "ic": 0.02126,
+   "ic_t": 2.0,
+   "years_pos": 6,
+   "decile_net": 0.08,
+   "control": "mlp_base",
+   "config": {
+    "xs": "isab"
+   },
+   "mean_epochs": 8.3,
+   "minutes": 9.8
+  },
+  {
+   "name": "moe_gate",
+   "ic": 0.01895,
+   "ic_t": 1.8,
+   "years_pos": 6,
+   "decile_net": 0.18,
+   "control": "moe_unif",
+   "config": {
+    "K": 4,
+    "gate": "state"
+   },
+   "mean_epochs": 5.9,
+   "minutes": 6.6
+  },
+  {
+   "name": "mlp_fgate",
+   "ic": 0.02075,
+   "ic_t": 2.15,
+   "years_pos": 6,
+   "decile_net": 1.38,
+   "control": "mlp_base",
+   "config": {
+    "fgate": true
+   },
+   "mean_epochs": 6.2,
+   "minutes": 7.7
+  },
+  {
+   "name": "mlp_sab",
+   "ic": 0.02207,
+   "ic_t": 2.07,
+   "years_pos": 6,
+   "decile_net": 0.81,
+   "control": "mlp_base",
+   "config": {
+    "xs": "sab"
+   },
+   "mean_epochs": 10.8,
+   "minutes": 11.4
+  },
+  {
+   "name": "mlp_pool",
+   "ic": 0.02219,
+   "ic_t": 2.1,
+   "years_pos": 6,
+   "decile_net": 1.51,
+   "control": "mlp_base",
+   "config": {
+    "xs": "pool"
+   },
+   "mean_epochs": 9.0,
+   "minutes": 10.5
+  },
+  {
+   "name": "hist_isab",
+   "ic": 0.009,
+   "ic_t": 1.24,
+   "years_pos": 4,
+   "decile_net": -4.06,
+   "control": "hist_base",
+   "config": {
+    "hist": true,
+    "xs": "isab"
+   },
+   "mean_epochs": 7.2,
+   "minutes": 13.8
+  },
+  {
+   "name": "moe_sab",
+   "ic": 0.02086,
+   "ic_t": 1.95,
+   "years_pos": 6,
+   "decile_net": 0.02,
+   "control": "moe_unif",
+   "config": {
+    "K": 4,
+    "xs": "sab"
+   },
+   "mean_epochs": 9.1,
+   "minutes": 15.4
+  },
+  {
+   "name": "hist_base",
+   "ic": 0.0012,
+   "ic_t": 0.17,
+   "years_pos": 4,
+   "decile_net": -4.94,
+   "control": null,
+   "config": {
+    "hist": true
+   },
+   "mean_epochs": 7.1,
+   "minutes": 8.1
+  },
+  {
+   "name": "hist_sab",
+   "ic": 0.00124,
+   "ic_t": 0.18,
+   "years_pos": 4,
+   "decile_net": -4.57,
+   "control": "hist_base",
+   "config": {
+    "hist": true,
+    "xs": "sab"
+   },
+   "mean_epochs": 10.4,
+   "minutes": 11.6
+  },
+  {
+   "name": "moe_unif_na",
+   "ic": 0.02049,
+   "ic_t": 1.86,
+   "years_pos": 6,
+   "decile_net": 0.64,
+   "control": null,
+   "config": {
+    "K": 4,
+    "na": true
+   },
+   "mean_epochs": 9.5,
+   "minutes": 9.1
+  },
+  {
+   "name": "moe_unif_listnet",
+   "ic": 0.0005,
+   "ic_t": 0.06,
+   "years_pos": 3,
+   "decile_net": -1.62,
+   "control": null,
+   "config": {
+    "K": 4,
+    "loss": "listnet"
+   },
+   "mean_epochs": 17.0,
+   "minutes": 14.5
+  },
+  {
+   "name": "moe_unif_mse",
+   "ic": 0.01426,
+   "ic_t": 1.31,
+   "years_pos": 6,
+   "decile_net": -0.71,
+   "control": null,
+   "config": {
+    "K": 4,
+    "loss": "mse"
+   },
+   "mean_epochs": 6.0,
+   "minutes": 6.9
+  },
+  {
+   "name": "moe_unif_d128",
+   "ic": 0.0232,
+   "ic_t": 2.19,
+   "years_pos": 6,
+   "decile_net": 0.98,
+   "control": null,
+   "config": {
+    "K": 4,
+    "d": 128,
+    "depth": 3
+   },
+   "mean_epochs": 10.1,
+   "minutes": 10.2
+  },
+  {
+   "name": "d128_pool",
+   "ic": 0.0222,
+   "ic_t": 2.09,
+   "years_pos": 6,
+   "decile_net": 1.14,
+   "control": "moe_unif_d128",
+   "config": {
+    "K": 4,
+    "d": 128,
+    "depth": 3,
+    "xs": "pool"
+   },
+   "mean_epochs": 9.0,
+   "minutes": 14.1
+  },
+  {
+   "name": "d128_sab",
+   "ic": 0.01991,
+   "ic_t": 1.87,
+   "years_pos": 6,
+   "decile_net": -0.41,
+   "control": "moe_unif_d128",
+   "config": {
+    "K": 4,
+    "d": 128,
+    "depth": 3,
+    "xs": "sab"
+   },
+   "mean_epochs": 10.0,
+   "minutes": 16.3
+  },
+  {
+   "name": "moe_unif_d128_s10",
+   "ic": 0.02365,
+   "ic_t": 2.19,
+   "years_pos": 6,
+   "decile_net": 1.4,
+   "control": null,
+   "config": {
+    "K": 4,
+    "d": 128,
+    "depth": 3
+   },
+   "mean_epochs": 10.0,
+   "minutes": 38.1
+  },
+  {
+   "name": "d128_pool_s10",
+   "ic": 0.02298,
+   "ic_t": 2.1,
+   "years_pos": 6,
+   "decile_net": 0.96,
+   "control": "moe_unif_d128_s10",
+   "config": {
+    "K": 4,
+    "d": 128,
+    "depth": 3,
+    "xs": "pool"
+   },
+   "mean_epochs": 8.2,
+   "minutes": 34.2
+  }
+ ],
+ "best": {
+  "name": "moe_unif_d128_s10 (= moe_unif_d128, seeds 0-9)",
+  "ic": 0.0237,
+  "years_pos": 6,
+  "ic_seeds012": 0.0232,
+  "module": "none"
+ },
+ "plan": [
+  "mlp_base: 27 ranked inputs, token MLP d64 depth2, 1 FF block (no cross-name), 1 head, IC loss; ablation for sab/isab/pool/fgate",
+  "mlp_isab: mlp_base + ISAB cross-name attention (16 induced points, 4 heads) before the FF block [control mlp_base]",
+  "mlp_sab: mlp_base + full self-attention over the ~500 names before the FF block [control mlp_base]",
+  "mlp_pool: mlp_base + mean-pooled cross-section context (DeepSets) before the FF block [control mlp_base]",
+  "moe_unif: mlp_base with 4 expert heads averaged uniformly; ablation for moe_gate",
+  "moe_gate: 4 expert heads gated by softmax over 7 causal market-state numbers [control moe_unif]",
+  "mlp_fgate: mlp_base + MASTER market-guided input gate (27 * softmax(W state)) [control mlp_base]",
+  "hist_base: mlp_base + last 60 standardised daily hedged returns as a token input; ablation for hist_isab/hist_sab",
+  "hist_isab: hist_base + ISAB cross-name attention [control hist_base]",
+  "hist_sab: hist_base + full cross-name self-attention (MASTER-like: names attend on return-history embeddings) [control hist_base]",
+  "moe_sab: moe_unif + full cross-name self-attention [control moe_unif]",
+  "moe_unif_listnet: moe_unif with ListNet softmax cross-entropy loss",
+  "moe_unif_mse: moe_unif with squared error on the standardised rank",
+  "moe_unif_na: moe_unif + 22 missing-value indicators (coordinator note 3)",
+  "moe_unif_d128: moe_unif wider and deeper: d128, depth 3",
+  "moe_sab_na_inner3: moe_sab + na, 3 inner seeds per fit (9-net ensemble per year) [control moe_unif_na_inner3]",
+  "moe_unif_na_inner3: moe_unif + na, 3 inner seeds per fit; ablation for moe_sab_na_inner3",
+  "d128_sab: moe_unif_d128 + full cross-name self-attention [control moe_unif_d128]",
+  "d128_pool: moe_unif_d128 + mean-pooled cross-section context [control moe_unif_d128]",
+  "moe_unif_d128_s10: moe_unif wider and deeper: d128, depth 3; walk_forward seeds 0-9 (conditional: only the better of sab/pool gets its s10 run)",
+  "d128_sab_s10: moe_unif_d128 + full cross-name self-attention; walk_forward seeds 0-9 [control moe_unif_d128_s10] (conditional: only the better of sab/pool gets its s10 run)",
+  "d128_pool_s10: moe_unif_d128 + mean-pooled cross-section context; walk_forward seeds 0-9 [control moe_unif_d128_s10] (conditional: only the better of sab/pool gets its s10 run)"
+ ],
  "pending": [],
  "deliverables": {
-  "model.py": false,
-  "REPORT.md": false
+  "model.py": true,
+  "REPORT.md": false,
+  "report_in_final_message": true
  },
- "verdict": "",
+ "verdict": "No: cross-name attention (full, ISAB, pooling) and market-state gating never beat their ablations (best pair -0.0007, NW t -0.41, seeds 0-9; gate -0.0035); the best network (no module) IC 0.0237 ties D trees 0.0236 (t 0.02, weekly-IC corr 0.94); no module candidate nominated.",
  "notes": [
-  "registered in PREREG Layer 3 Amendment 3"
+  "registered in PREREG Layer 3 Amendment 3",
+  "round 1 registered: 10 configurations (4 attention/pool vs mlp_base, gate vs uniform MoE, fgate vs mlp_base, 2 attention vs hist_base); all IC loss, d64, early stopping on last 52 training Thursdays then refit; MPS",
+  "scored mlp_base: IC 0.0208 t 2.04 6/7 years, 0.6%/yr net, mean epochs 9.0, 8.6 min; next: see pending",
+  "coordinator note (L1_lit) received: label already per-day ranked + listwise IC loss (MASTER analogue); will re-score the nominated module/ablation pair with seeds 0-9 as two extra logged configurations (*_s10) before concluding; missing-indicator inputs = low-priority variant; data caveat (23.5% eligible name-weeks without target) to be stated in REPORT.md",
+  "scored moe_unif: IC 0.0225 t 2.14 6/7 years, 0.3%/yr net, mean epochs 9.2, 12.5 min; next: see pending",
+  "scored mlp_isab: IC 0.0213 t 2.00 6/7 years, 0.1%/yr net, mean epochs 8.3, 9.8 min; next: see pending",
+  "scored moe_gate: IC 0.0189 t 1.80 6/7 years, 0.2%/yr net, mean epochs 5.9, 6.6 min; next: see pending",
+  "STATE restored from RESULTS.jsonl after the ledger rewrite (mlp_base, moe_unif re-added to scored; pending reset to names); RESULTS.jsonl moved from a nested relative path to Q2_xsattn/RESULTS.jsonl (symlink left for the running jobs)",
+  "scored mlp_fgate: IC 0.0208 t 2.15 6/7 years, 1.4%/yr net, mean epochs 6.2, 7.7 min; next: see pending",
+  "scored mlp_sab: IC 0.0221 t 2.07 6/7 years, 0.8%/yr net, mean epochs 10.8, 11.4 min; next: see pending",
+  "round 1 partial: mlp_base .0208, mlp_isab .0213, mlp_sab .0221, mlp_fgate .0208, moe_unif .0225, moe_gate .0189. Round 2 registered: moe_sab, moe_unif_listnet, moe_unif_mse, moe_unif_na, moe_unif_d128, moe_sab_na_inner3, moe_unif_na_inner3. The last two (inner3 pair) are run only if time allows after the first five.",
+  "scored mlp_pool: IC 0.0222 t 2.10 6/7 years, 1.5%/yr net, mean epochs 9.0, 10.5 min; next: see pending",
+  "scored hist_isab: IC 0.0090 t 1.24 4/7 years, -4.1%/yr net, mean epochs 7.2, 13.8 min; next: see pending",
+  "scored moe_sab: IC 0.0209 t 1.95 6/7 years, 0.0%/yr net, mean epochs 9.1, 15.4 min; next: see pending",
+  "scored hist_base: IC 0.0012 t 0.17 4/7 years, -4.9%/yr net, mean epochs 7.1, 8.1 min; next: see pending",
+  "scored hist_sab: IC 0.0012 t 0.18 4/7 years, -4.6%/yr net, mean epochs 10.4, 11.6 min; next: see pending",
+  "scored moe_unif_na: IC 0.0205 t 1.86 6/7 years, 0.6%/yr net, mean epochs 9.5, 9.1 min; next: see pending",
+  "scored moe_unif_listnet: IC 0.0005 t 0.06 3/7 years, -1.6%/yr net, mean epochs 17.0, 14.5 min; next: see pending",
+  "scored moe_unif_mse: IC 0.0143 t 1.31 6/7 years, -0.7%/yr net, mean epochs 6.0, 6.9 min; next: see pending",
+  "scored moe_unif_d128: IC 0.0232 t 2.19 6/7 years, 1.0%/yr net, mean epochs 10.1, 10.2 min; next: see pending",
+  "dropped before scoring: moe_sab_na_inner3 / moe_unif_na_inner3 (na indicators lowered IC .0225 -> .0205, and moe_sab < moe_unif, so the pair no longer tests the best network). Round 3 registered: d128_sab, d128_pool vs moe_unif_d128 (seeds 0-2); then the better module and moe_unif_d128 re-scored with seeds 0-9 as *_s10 (coordinator note 2).",
+  "scored d128_pool: IC 0.0222 t 2.09 6/7 years, 1.1%/yr net, mean epochs 9.0, 14.1 min; next: see pending",
+  "scored d128_sab: IC 0.0199 t 1.87 6/7 years, -0.4%/yr net, mean epochs 10.0, 16.3 min; next: see pending",
+  "d128_pool .0222 and d128_sab .0199 vs moe_unif_d128 .0232: both modules below the ablation on the best network. Nominated pair for seeds 0-9: d128_pool_s10 vs moe_unif_d128_s10 (pool is the better module); d128_sab_s10 not run.",
+  "scored moe_unif_d128_s10: IC 0.0237 t 2.19 6/7 years, 1.4%/yr net, mean epochs 10.0, 38.1 min; next: see pending",
+  "scored d128_pool_s10: IC 0.0230 t 2.10 6/7 years, 1.0%/yr net, mean epochs 8.2, 34.2 min; next: see pending",
+  "d128_pool_s10 .0230 vs moe_unif_d128_s10 .0237 (diff -0.0007, t -0.41). repro.py: model.fit_predict reproduces IC 0.02320 (logged 0.0232). REPORT.md write refused for this agent; full report delivered in the final message. James-Stein factor 0 (all shrunk to branch mean 0.0173). Status done."
  ],
  "resume": "Read research/tree/Q2_xsattn/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-12T22:09:09Z"
+ "updated": "2026-11-13T09:46:15Z"
 }

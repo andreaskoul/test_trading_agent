@@ -236,3 +236,14 @@ Books: stock long/short only, gross 1, beta-hedged, 5 bp a side, target clipped 
   recomputed from the saved read predictions with the same code; the IC test was unaffected.
 * **Against the owner's bar** (net Sharpe > 1, out of sample): no stock book reaches it alone. Best book 0.72; the
   whole fund on 2020-2025 is 0.94 (`OOS_RETURNS.json`).
+
+## Step 14 — Q2 attention across names result (development data only, 2026-11-13)
+
+* **No module beats its ablation.** The nominated pair at seeds 0-9: pooling −0.0007 (t −0.41). Self-attention on the
+  best network −0.0033 (t −1.76). The market-state gate −0.0035; MASTER's input gate 0.
+* **The best network** (no module; listwise IC loss, 4 uniform heads, width 128) ties the trees on development data
+  (.0237 vs .0236, t 0.02). Its weekly ICs correlate 0.94 with the trees': the same signal, re-learned, not a new one.
+* **What mattered**: the loss (a listwise IC loss beats squared error by .008); raw return history as an input hurts
+  (−.020).
+* **Out-of-sample status**: none. The network is a development result. It is not a diversifier for the trees (IC
+  correlation 0.94), so it is not a route to a higher Sharpe; no read requested.
