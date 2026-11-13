@@ -89,7 +89,7 @@ def bars(adj="all", start=START, end=END, outdir=None, extra=()):
             for wait in (0, 5, 15, 45, 90):  # 429/5xx: back off and retry
                 time.sleep(wait)
                 s, b = broker.api("GET", q, base=broker.DATA)
-                if s == 200 or s == 400:
+                if s in (200, 400, 403):          # 403: plan limit (e.g. recent SIP data); retrying cannot help
                     break
                 print(f"chunk {i}: status {s}, retry", flush=True)
             msg = (b or {}).get("message", "") if isinstance(b, dict) else ""
@@ -128,7 +128,9 @@ def y2026(adj):
     """Amendment 7: 2025-01-02 to the fetch date, broad + S&P 500 panel names + SPY, frozen at first fetch."""
     out = os.path.join(ROOT, ".cache", "tree", "y2026")
     meta = os.path.join(out, f"_fetch_{adj}.json")
-    end = json.load(open(meta))["end"] if os.path.exists(meta) else time.strftime("%Y-%m-%d", time.gmtime())
+    # the last complete session before the fetch date: the data plan refuses recent SIP data (403), 2026-11-13
+    end = json.load(open(meta))["end"] if os.path.exists(meta) else \
+        str((pd.Timestamp.utcnow().normalize() - pd.tseries.offsets.BDay(1)).date())
     os.makedirs(out, exist_ok=True)
     json.dump({"end": end, "start": "2025-01-02", "adj": adj}, open(meta, "w"))
     bars(adj, "2025-01-02", end, out, extra=sp500_names())
