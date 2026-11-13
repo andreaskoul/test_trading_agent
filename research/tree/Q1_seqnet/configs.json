@@ -1,0 +1,206 @@
+{
+ "ref_control": {
+  "control": true,
+  "spec": "declared control: B_arch/model.py as committed (mlp_Z_xattn: 5 characteristics, cross-name attention, MLP, MSE, 6 epochs)"
+ },
+ "gru60_Z_mse": {
+  "enc": "gru",
+  "static": "Z",
+  "loss": "mse",
+  "epochs": 6,
+  "batch_dates": 16,
+  "device": "mps",
+  "spec": "GRU(32) on 60 sessions of [e cs-z, r cs-z, rm/vol, |e| rank] + MLP on the 5 characteristics Z; MSE on per-date rank target; 6 epochs, 16 dates per batch"
+ },
+ "lstm60_D27_mse": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "D27",
+  "enc": "lstm",
+  "loss": "mse",
+  "batch_dates": 8,
+  "spec": "LSTM(32) on 60 sessions of [e cs-z, r cs-z, rm/vol, |e| rank] + MLP on D trees' 27 inputs; MSE on per-date rank target; 6 epochs"
+ },
+ "mlp_D27_ic": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "D27",
+  "enc": null,
+  "loss": "ic",
+  "batch_dates": 8,
+  "spec": "no sequence encoder: MLP on the 27 inputs only; IC loss (neg. per-date Pearson corr of standardized outputs with rank target); 6 epochs (internal no-sequence reference)"
+ },
+ "lstm60_D27_ic": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "D27",
+  "enc": "lstm",
+  "loss": "ic",
+  "batch_dates": 8,
+  "spec": "LSTM(32) on 60 sessions of [e cs-z, r cs-z, rm/vol, |e| rank] + MLP on 27 inputs; IC loss; 6 epochs"
+ },
+ "tcn60_D27_ic": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "D27",
+  "enc": "tcn",
+  "loss": "ic",
+  "batch_dates": 8,
+  "spec": "causal dilated TCN (k3, dil 1-16, residual) on 60 sessions of [e cs-z, r cs-z, rm/vol, |e| rank] + MLP on 27 inputs; IC loss; 6 epochs"
+ },
+ "tfm60_D27_ic": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "D27",
+  "enc": "tfm",
+  "loss": "ic",
+  "batch_dates": 16,
+  "spec": "time-axis transformer (5-session patches, 2 layers, 4 heads) on 60 sessions of [e cs-z, r cs-z, rm/vol, |e| rank] + MLP on 27 inputs; IC loss; 6 epochs"
+ },
+ "gru60_D27_ic": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "D27",
+  "enc": "gru",
+  "loss": "ic",
+  "batch_dates": 16,
+  "spec": "GRU(32) on 60 sessions of [e cs-z, r cs-z, rm/vol, |e| rank] + MLP on 27 inputs; IC loss; 6 epochs"
+ },
+ "gru60_D27_ic_es": {
+  "L": 60,
+  "epochs": 12,
+  "device": "mps",
+  "static": "D27",
+  "enc": "gru",
+  "loss": "ic",
+  "batch_dates": 16,
+  "es_weeks": 52,
+  "spec": "GRU(32)+27 inputs, IC loss (gru60_D27_ic) with inner early stopping: up to 12 epochs, best epoch by rank IC on the last 52 training Thursdays (8-row gap; those weeks not trained on)"
+ },
+ "gru60_D27_listnet": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "D27",
+  "enc": "gru",
+  "loss": "listnet",
+  "batch_dates": 16,
+  "spec": "GRU(32)+27 inputs, ListNet loss (top-one softmax cross-entropy per date, target temperature 2) (gru60_D27_ic)"
+ },
+ "gru60_D27_ic_mh": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "D27",
+  "enc": "gru",
+  "loss": "ic",
+  "batch_dates": 16,
+  "horizons": [
+   5,
+   10,
+   21
+  ],
+  "hw": 0.5,
+  "spec": "GRU(32)+27 inputs, IC loss (gru60_D27_ic) + extra heads on 10- and 21-session residual targets (weight 0.5 each); 5-session head predicts"
+ },
+ "gru60_D27_ic_inorm": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "D27",
+  "enc": "gru",
+  "loss": "ic",
+  "batch_dates": 16,
+  "inorm": "scale",
+  "spec": "GRU(32)+27 inputs, IC loss (gru60_D27_ic) with per-window instance scaling of the e and r channels (divide by own 60-session sd, causal); coordinator note 1"
+ },
+ "gru60_D27_ic_miss": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "D27",
+  "enc": "gru",
+  "loss": "ic",
+  "batch_dates": 16,
+  "chans": [
+   "e",
+   "r",
+   "rm",
+   "ae",
+   "miss"
+  ],
+  "spec": "GRU(32)+27 inputs, IC loss (gru60_D27_ic) + missing-indicator channel (1 where e is NaN); coordinator note 2"
+ },
+ "gru60_DC_ic": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "DC",
+  "enc": "gru",
+  "loss": "ic",
+  "batch_dates": 16,
+  "spec": "GRU(32)+27 D inputs + 32 C inputs (59), IC loss (gru60_D27_ic)"
+ },
+ "gru60_D27_ic_vol": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "D27",
+  "enc": "gru",
+  "loss": "ic",
+  "batch_dates": 16,
+  "chans": [
+   "e",
+   "r",
+   "rm",
+   "ae",
+   "vol"
+  ],
+  "spec": "GRU(32)+27 inputs, IC loss (gru60_D27_ic) + FINRA abnormal-volume rank channel (log volume minus 60-session mean; FINRA dev file, 2012+ only, 0 before)"
+ },
+ "gru60_D27_ic_reg": {
+  "L": 60,
+  "epochs": 6,
+  "device": "mps",
+  "static": "D27",
+  "enc": "gru",
+  "loss": "ic",
+  "batch_dates": 16,
+  "wd": 0.01,
+  "dropout": 0.3,
+  "spec": "GRU(32)+27 inputs, IC loss (gru60_D27_ic) with weight decay 1e-2 and dropout 0.3"
+ },
+ "mlp_D27_ic_es": {
+  "L": 60,
+  "epochs": 12,
+  "device": "mps",
+  "static": "D27",
+  "enc": null,
+  "loss": "ic",
+  "batch_dates": 8,
+  "es_weeks": 52,
+  "spec": "no sequence encoder: MLP on the 27 inputs, IC loss, same inner early stopping as gru60_D27_ic_es (matched no-sequence reference)"
+ },
+ "gru60_D27_ic_es_s10": {
+  "model_py": true,
+  "seeds": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9
+  ],
+  "spec": "nominated candidate gru60_D27_ic_es re-scored with seeds 0-9, run from model.py (coordinator note 3; also the end-to-end check of model.py)"
+ }
+}

@@ -1,6 +1,6 @@
 # Tree search: progress ledger
 
-*Rebuilt 2026-11-13 14:24 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
+*Rebuilt 2026-11-13 14:25 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
 
 | branch | phase | status | scored | best (Amendment 2 rule) | mean IC / increment / net Sharpe | model.py | REPORT.md | verdict |
 |---|---:|---|---:|---|---:|---|---|---|
@@ -22,7 +22,7 @@
 | N2_short | 2 | done | 11 | c2 MASTER+F2 0.5/0.5 | 0.0020 | yes | yes | no finalist; increment t 1.14, double-ML t 1.61 |
 | N3_intraday | 2 | done | 20 | N3_c3c_anchoredfm2 | 0.0118 | yes | yes | no finalist; increment is 1-month reversal, not intraday |
 | N4_news | 2 | not started | 0 |  |  | no | no |  |
-| Q1_seqnet | 3 | running | 18 | gru60_D27_ic_es | 0.0225 | yes | no |  |
+| Q1_seqnet | 3 | done | 18 | gru60_D27_ic_es | 0.0225 | yes | yes | No: sequence encoders add <0.0025 IC (t<=0.6) over the same network without them; nominee gru60_D27_ic_es IC .0225 (3 seeds) / .0206 (seeds 0-9) vs control .0141 (+.0065..+.0084, NW t 1.2-1.8) and D trees .0216-.0236 (not beaten); the gain comes from the 27 inputs + IC loss, not the sequences. |
 | Q2_xsattn | 3 | done | 19 | moe_unif_d128_s10 | 0.0237 | yes | yes | No: cross-name attention (full, ISAB, pooling) and market-state gating never beat their ablations (best pair -0.0007, NW t -0.41, seeds 0-9; gate -0.0035); the best network (no module) IC 0.0237 ties D trees 0.0236 (t 0.02, weekly-IC corr 0.94); no module candidate nominated. |
 | Q3_rankgbm | 3 | done | 19 | ens_ctrl_mh_huber | 0.0222 | yes | yes | No: ranking objectives, monotone constraints, DART, bigger trees, NaN-native, ranked Z, short window do not beat squared-error trees; best ens_ctrl_mh_huber IC 0.0222 vs control 0.0216, paired +0.0006 (NW t +0.48); JS shrinkage factor 0 |
 | Q4_portfolio | 3 | done | 30 | mvnl_nt_trees | 0.6351 | yes | yes | No construction beats the M1 no-trade band by more than noise (best vol-matched paired t 0.72); best net Sharpe mvnl_nt_trees (LW2020 mean-variance + L1 no-trade region) 0.64 vs control 0.35, max DD 2.8% (12.2% at control vol) vs 16.2%, but post hoc, grid-edge tuned, fails on the other three signals in 2013-16 and earns only +0.88%/yr at gross 1: not nominated; keep the band. |

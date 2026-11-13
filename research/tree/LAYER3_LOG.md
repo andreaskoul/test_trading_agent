@@ -329,3 +329,15 @@ looking at them. The one unused stretch is January-November 2026: no backtest of
   high-volatility names, lower exposure when dispersion or recent IC is high. A fixed wider band alone ties. These
   overlap with the L2 survey's rank-hysteresis rule, which is the cleaner, parameter-free version to register.
 * **Consequence**: the covariance-aware book (`mvnl_nt`) stays the construction lead; RL closed for this layer.
+
+## Step 19 — Q1 sequence networks result (development data only, 2026-11-13)
+
+* **No: sequence encoders add nothing measurable.** The best (GRU on 60 sessions + D's 27 inputs, IC loss) has IC
+  .0206 at 10 seeds (.0225 at 3), +.0003 (t 0.05) over the same network without the encoder, and does not beat the
+  trees (−.0030 vs the multi-horizon trees). The gain over the old network control (+.0065, t 1.19) comes from
+  inputs and loss.
+* **A blend with the trees** (50/50 ranks, reported, not selected) has IC .0237: no gain over the trees alone (.0236).
+* **Fourth wave closed.** Q1 sequence nets, Q2 attention, Q3 ranking trees and Q5 RL find nothing over the trees.
+  Q4 leaves the covariance book as the construction lead. The trees on these 25-27 price inputs are the ceiling of
+  model engineering here. Remaining gains are in cost and construction (L2: rank hysteresis, decay, neutralisation)
+  and in new information (news, industry-relative features).
