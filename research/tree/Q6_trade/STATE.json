@@ -1,18 +1,259 @@
 {
  "branch": "Q6_trade",
  "phase": 3,
- "status": "in progress",
- "configurations_scored": 0,
- "scored": [],
- "best": null,
- "plan": [],
+ "status": "done",
+ "configurations_scored": 27,
+ "scored": [
+  "C0_trees",
+  "C1_trees",
+  "C2_trees",
+  "T1_trees",
+  "T2_trees",
+  "T3_trees",
+  "T4_trees",
+  "T5_trees",
+  "T6_trees",
+  "C0_ipca",
+  "C1_ipca",
+  "C2_ipca",
+  "T1_ipca",
+  "T2_ipca",
+  "T3_ipca",
+  "T4_ipca",
+  "T5_ipca",
+  "T6_ipca",
+  "C0_master",
+  "C1_master",
+  "C2_master",
+  "T1_master",
+  "T2_master",
+  "T3_master",
+  "T4_master",
+  "T5_master",
+  "T6_master"
+ ],
+ "best": {
+  "name": "T1_trees",
+  "net_sharpe": 0.4536,
+  "max_drawdown": 0.1427,
+  "c1_max_drawdown": 0.161,
+  "vs_C1_t": 0.9,
+  "vs_C1_volmatched_t": 1.31,
+  "vs_C2_volmatched_t": -0.55,
+  "note": "best registered candidate on the primary signal; control C2_trees scores higher (0.697) and is not a candidate"
+ },
+ "plan": [
+  {
+   "name": "C0_trees",
+   "signal": "trees",
+   "config": "C0",
+   "what": "control: deciles (top/bottom 10%, equal weights, sides 0.5)"
+  },
+  {
+   "name": "C1_trees",
+   "signal": "trees",
+   "config": "C1",
+   "what": "control: M1 band 0.1 (enter at the 10% tails, exit past the 20% tails)"
+  },
+  {
+   "name": "C2_trees",
+   "signal": "trees",
+   "config": "C2",
+   "what": "control: Q4 mvnl_nt (LW2020 mean-variance, dollar/beta-neutral target, L1 no-trade k 2)"
+  },
+  {
+   "name": "T1_trees",
+   "signal": "trees",
+   "config": "T1",
+   "what": "rank hysteresis: enter top/bottom 10%, exit outside 30%"
+  },
+  {
+   "name": "T2_trees",
+   "signal": "trees",
+   "config": "T2",
+   "what": "signal decay: deciles on rank(r_t + 0.5 r_{t-1})"
+  },
+  {
+   "name": "T3_trees",
+   "signal": "trees",
+   "config": "T3",
+   "what": "T1 hysteresis on the T2 decayed score"
+  },
+  {
+   "name": "T4_trees",
+   "signal": "trees",
+   "config": "T4",
+   "what": "GP partial trade toward LW2020 MV aim, theta 0.25 x sqrt(ADV_i/median ADV), clip [0.05,1], re-neutralised, gross 1"
+  },
+  {
+   "name": "T5_trees",
+   "signal": "trees",
+   "config": "T5",
+   "what": "as T4, theta 0.5"
+  },
+  {
+   "name": "T6_trees",
+   "signal": "trees",
+   "config": "T6",
+   "what": "as T4, theta 0.75"
+  },
+  {
+   "name": "C0_ipca",
+   "signal": "ipca",
+   "config": "C0",
+   "what": "control: deciles (top/bottom 10%, equal weights, sides 0.5)"
+  },
+  {
+   "name": "C1_ipca",
+   "signal": "ipca",
+   "config": "C1",
+   "what": "control: M1 band 0.1 (enter at the 10% tails, exit past the 20% tails)"
+  },
+  {
+   "name": "C2_ipca",
+   "signal": "ipca",
+   "config": "C2",
+   "what": "control: Q4 mvnl_nt (LW2020 mean-variance, dollar/beta-neutral target, L1 no-trade k 2)"
+  },
+  {
+   "name": "T1_ipca",
+   "signal": "ipca",
+   "config": "T1",
+   "what": "rank hysteresis: enter top/bottom 10%, exit outside 30%"
+  },
+  {
+   "name": "T2_ipca",
+   "signal": "ipca",
+   "config": "T2",
+   "what": "signal decay: deciles on rank(r_t + 0.5 r_{t-1})"
+  },
+  {
+   "name": "T3_ipca",
+   "signal": "ipca",
+   "config": "T3",
+   "what": "T1 hysteresis on the T2 decayed score"
+  },
+  {
+   "name": "T4_ipca",
+   "signal": "ipca",
+   "config": "T4",
+   "what": "GP partial trade toward LW2020 MV aim, theta 0.25 x sqrt(ADV_i/median ADV), clip [0.05,1], re-neutralised, gross 1"
+  },
+  {
+   "name": "T5_ipca",
+   "signal": "ipca",
+   "config": "T5",
+   "what": "as T4, theta 0.5"
+  },
+  {
+   "name": "T6_ipca",
+   "signal": "ipca",
+   "config": "T6",
+   "what": "as T4, theta 0.75"
+  },
+  {
+   "name": "C0_master",
+   "signal": "master",
+   "config": "C0",
+   "what": "control: deciles (top/bottom 10%, equal weights, sides 0.5)"
+  },
+  {
+   "name": "C1_master",
+   "signal": "master",
+   "config": "C1",
+   "what": "control: M1 band 0.1 (enter at the 10% tails, exit past the 20% tails)"
+  },
+  {
+   "name": "C2_master",
+   "signal": "master",
+   "config": "C2",
+   "what": "control: Q4 mvnl_nt (LW2020 mean-variance, dollar/beta-neutral target, L1 no-trade k 2)"
+  },
+  {
+   "name": "T1_master",
+   "signal": "master",
+   "config": "T1",
+   "what": "rank hysteresis: enter top/bottom 10%, exit outside 30%"
+  },
+  {
+   "name": "T2_master",
+   "signal": "master",
+   "config": "T2",
+   "what": "signal decay: deciles on rank(r_t + 0.5 r_{t-1})"
+  },
+  {
+   "name": "T3_master",
+   "signal": "master",
+   "config": "T3",
+   "what": "T1 hysteresis on the T2 decayed score"
+  },
+  {
+   "name": "T4_master",
+   "signal": "master",
+   "config": "T4",
+   "what": "GP partial trade toward LW2020 MV aim, theta 0.25 x sqrt(ADV_i/median ADV), clip [0.05,1], re-neutralised, gross 1"
+  },
+  {
+   "name": "T5_master",
+   "signal": "master",
+   "config": "T5",
+   "what": "as T4, theta 0.5"
+  },
+  {
+   "name": "T6_master",
+   "signal": "master",
+   "config": "T6",
+   "what": "as T4, theta 0.75"
+  }
+ ],
  "pending": [],
  "deliverables": {
-  "model.py": false,
+  "model.py": true,
   "REPORT.md": false
  },
- "verdict": null,
- "notes": [],
+ "verdict": "No registered trading rule beats C2 (mvnl_nt, 0.70) on trees. Best candidate T1 rank hysteresis 0.45 vs C1 band 0.38 (t 0.90; vol-matched t 1.31), turnover 17% vs 26%, holds 0.34 at $100M vs C1 0.19; also helps IPCA (T3 0.53 vs 0.39, t <= 1.35); MASTER all negative; GP partial trading (T4-T6) fails everywhere. Nothing significant; nothing nominated. T7 not run.",
+ "notes": [
+  "built cost model (lib.simulate_sqrt), unit tests pass (test_cost.py); fetched consolidated $ volume 2011-12..2019-12 (fetch_dv.py; 472/474 names, CTVA/DOW fall back to FINRA). Declared 27 configurations (9 x trees/ipca/master); T7 not declared (optional; not run). next: score all 27 in run.py",
+  "scored C0_trees (net Sharpe sqrt $10M 0.161, flat 5bp 0.142); next: C1_trees",
+  "scored C1_trees (net Sharpe sqrt $10M 0.375, flat 5bp 0.346); next: C2_trees",
+  "scored C2_trees (net Sharpe sqrt $10M 0.697, flat 5bp 0.635); next: T1_trees",
+  "scored T1_trees (net Sharpe sqrt $10M 0.454, flat 5bp 0.426); next: T2_trees",
+  "scored T2_trees (net Sharpe sqrt $10M 0.325, flat 5bp 0.310); next: T3_trees",
+  "scored T3_trees (net Sharpe sqrt $10M 0.422, flat 5bp 0.401); next: T4_trees",
+  "scored T4_trees (net Sharpe sqrt $10M 0.167, flat 5bp -0.025); next: T5_trees",
+  "scored T5_trees (net Sharpe sqrt $10M 0.216, flat 5bp -0.130); next: T6_trees",
+  "scored T6_trees (net Sharpe sqrt $10M 0.217, flat 5bp -0.211); next: C0_ipca",
+  "scored C0_ipca (net Sharpe sqrt $10M 0.232, flat 5bp 0.220); next: C1_ipca",
+  "scored C1_ipca (net Sharpe sqrt $10M 0.389, flat 5bp 0.360); next: C2_ipca",
+  "scored C2_ipca (net Sharpe sqrt $10M 0.272, flat 5bp 0.196); next: T1_ipca",
+  "scored T1_ipca (net Sharpe sqrt $10M 0.435, flat 5bp 0.403); next: T2_ipca",
+  "scored T2_ipca (net Sharpe sqrt $10M 0.491, flat 5bp 0.478); next: T3_ipca",
+  "scored T3_ipca (net Sharpe sqrt $10M 0.525, flat 5bp 0.498); next: T4_ipca",
+  "scored T4_ipca (net Sharpe sqrt $10M 0.183, flat 5bp 0.073); next: T5_ipca",
+  "scored T5_ipca (net Sharpe sqrt $10M -0.077, flat 5bp -0.442); next: T6_ipca",
+  "scored T6_ipca (net Sharpe sqrt $10M -0.187, flat 5bp -0.651); next: C0_master",
+  "scored C0_master (net Sharpe sqrt $10M -0.263, flat 5bp -0.271); next: C1_master",
+  "scored C1_master (net Sharpe sqrt $10M -0.016, flat 5bp -0.046); next: C2_master",
+  "scored C2_master (net Sharpe sqrt $10M -0.086, flat 5bp -0.178); next: T1_master",
+  "scored T1_master (net Sharpe sqrt $10M -0.059, flat 5bp -0.095); next: T2_master",
+  "scored T2_master (net Sharpe sqrt $10M -0.134, flat 5bp -0.143); next: T3_master",
+  "scored T3_master (net Sharpe sqrt $10M -0.187, flat 5bp -0.218); next: T4_master",
+  "scored T4_master (net Sharpe sqrt $10M 0.004, flat 5bp -0.079); next: T5_master",
+  "scored T5_master (net Sharpe sqrt $10M -0.446, flat 5bp -0.757); next: T6_master",
+  "scored T6_master (net Sharpe sqrt $10M -0.520, flat 5bp -0.922); next: write model.py and REPORT.md",
+  "all 27 scored; model.py T1_trees reproduces 0.4536 (ok True). REPORT.md write refused for subagent: full text returned to the coordinator. next: none (done)"
+ ],
  "resume": "Read research/tree/Q6_trade/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-13T14:27:49Z"
+ "updated": "2026-11-13T15:08:44Z",
+ "cost_model": {
+  "half_spread_bp": 2.3,
+  "k": 0.5,
+  "k_sensitivity": 1.0,
+  "sigma": "daily total-return vol, past 60 sessions",
+  "adv": "median consolidated $ volume, past 20 sessions (Yahoo split-adjusted close x volume, return-matched; FINRA-share fallback)",
+  "aum": [
+   10000000.0,
+   100000000.0
+  ]
+ }
 }

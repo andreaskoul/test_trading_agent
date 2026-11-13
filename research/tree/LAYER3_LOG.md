@@ -399,3 +399,21 @@ Sharpe > 1 therefore needs the construction gains, not just the combination.
     Owner of the fix: the coordinating session.
 * **Consequence**: the trees on price inputs remain the model; feature engineering on industry adds nothing on large
   caps at a weekly horizon.
+
+## Step 23 — Q6 trading-less result; fifth wave closed (development data only, 2026-11-13)
+
+* **Square-root cost model built and tested.** K 0.5 is anchored on JKMP and Frazzini-Israel-Moskowitz; ADV comes
+  from Yahoo consolidated dollar volume. That is a disclosed departure: FINRA share volume cannot give dollars.
+  * At $10M, S&P 500 names cost about the flat 5 bp.
+  * At $100M the band's impact triples and its Sharpe halves.
+* **No rule beats the covariance book `mvnl_nt` on trees.** It scores 0.70 under the square-root model at $10M and
+  0.65 at $100M. The best registered candidate is rank hysteresis T1 (enter at the 10% tails, exit outside 30%): 0.45
+  vs the band's 0.38 (vol-matched t 1.31). It cuts turnover by a third at no gross cost and keeps 0.34 at $100M. It
+  also helps IPCA (t 1.35). Gârleanu-Pedersen partial trading fails everywhere. Nothing is significant.
+* **Fifth wave closed** (Q6, Q7, Q8). Development data show a consistent pattern:
+  * cost-saving construction helps a little (hysteresis, the covariance book with a no-trade region);
+  * neutralisation and industry features do not.
+* **What goes forward** (to be registered as forward-only constructions alongside H7, never chosen on 2026 data):
+  the broad trees book under (i) deciles, as H7 registers, (ii) rank hysteresis 10/30 and (iii) the covariance book
+  with an L1 no-trade region, all under the square-root cost model with the broad names' own spreads and ADV. Only
+  forward weeks can judge them on the broad universe; the development panel's low costs understate the savings.
