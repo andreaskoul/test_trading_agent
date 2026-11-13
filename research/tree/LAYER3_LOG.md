@@ -302,3 +302,18 @@ measured):
 * **Implication:** the smallest dollar-volume third carries the highest IC (.032) and the highest cost (9.4 bp mean).
   A cost-aware broad book (e.g. trading only the two larger thirds, or size-scaled cost in construction) is the
   natural next exploitation. It was found after looking at spent data, so it can only be judged forward.
+
+## Step 17 — lead's decision: test the combined fund on 2026 (2026-11-13)
+
+**The owner's question:** "can't we split the history data to train and test?" Answer: we do, but each test set can be
+read once. For the combination, 2020-2025 and 2017-2025 are spent. Re-splitting them would test ideas that came from
+looking at them. The one unused stretch is January-November 2026: no backtest of this combination has touched it.
+
+**Decision (lead):** register H7 (PREREG Layer 3, Amendment 7) before any 2026 price exists here.
+* **Arms:** combined fund, full broad book (H7a) and cost-aware broad book, top two dollar-volume thirds (H7b).
+* **Costs:** 14 bp for broad names, from the cost study.
+* **Training:** everything up to 2025; test once on 2026; Holm across the two arms.
+* **Power:** registered as low (about 10-20%), so a fail is not a rejection. Forward weeks extend the same test.
+* **Roles:** the coordinating session fetches the 2026 data (redacting wrapper, frozen at first fetch) and runs the
+  one scored read. One build agent (H7_build) builds the refits and prediction files and is barred from computing
+  any 2026 statistic.
