@@ -1,6 +1,6 @@
 # Tree search: progress ledger
 
-*Rebuilt 2026-11-13 10:00 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
+*Rebuilt 2026-11-13 14:24 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
 
 | branch | phase | status | scored | best (Amendment 2 rule) | mean IC / increment / net Sharpe | model.py | REPORT.md | verdict |
 |---|---:|---|---:|---|---:|---|---|---|
@@ -9,7 +9,9 @@
 | C_features | 1 | done | 15 | C13 C06 Fama-MacBeth | 0.0209 | yes | no | features carried into X1 |
 | D_ensembles | 1 | done | 7 | hgb_multihorizon | 0.0236 | yes | yes | finalist D_hgb_mh failed the holdout |
 | E_regime | 1 | done | 15 | E13 kernel ridge + panic | 0.0167 | yes | no | panic rule carried into X1; adaptation +0.005 |
+| H7_build | None | in progress | 0 |  |  | no | no |  |
 | L1_lit | None | in progress | 0 |  |  | no | yes |  |
+| L2_practice | None | in progress | 0 |  |  | no | yes |  |
 | M1_dyntrade | 2 | done | 18 |  |  | yes | yes | construction rule: no-trade band for the S&P 400 confirmation |
 | M2_ipca | 2 | done | 20 | M05_C24_wk_xn_U | 0.0224 | yes | yes | PASSED the S&P 400 read (IC 0.0183, t 2.17, Holm); S&P 500 check IC 0.012 (t 1.02), descriptive |
 | M3_cae | 2 | done (seed ensemble never ran) | 8 | ca2_c32_k3 | 0.0213 | yes | yes | no finalist; factor structure does not beat direct prediction |
@@ -20,11 +22,11 @@
 | N2_short | 2 | done | 11 | c2 MASTER+F2 0.5/0.5 | 0.0020 | yes | yes | no finalist; increment t 1.14, double-ML t 1.61 |
 | N3_intraday | 2 | done | 20 | N3_c3c_anchoredfm2 | 0.0118 | yes | yes | no finalist; increment is 1-month reversal, not intraday |
 | N4_news | 2 | not started | 0 |  |  | no | no |  |
-| Q1_seqnet | 3 | running | 12 | gru60_D27_ic_es | 0.0225 | no | no |  |
+| Q1_seqnet | 3 | running | 18 | gru60_D27_ic_es | 0.0225 | yes | no |  |
 | Q2_xsattn | 3 | done | 19 | moe_unif_d128_s10 | 0.0237 | yes | yes | No: cross-name attention (full, ISAB, pooling) and market-state gating never beat their ablations (best pair -0.0007, NW t -0.41, seeds 0-9; gate -0.0035); the best network (no module) IC 0.0237 ties D trees 0.0236 (t 0.02, weekly-IC corr 0.94); no module candidate nominated. |
 | Q3_rankgbm | 3 | done | 19 | ens_ctrl_mh_huber | 0.0222 | yes | yes | No: ranking objectives, monotone constraints, DART, bigger trees, NaN-native, ranked Z, short window do not beat squared-error trees; best ens_ctrl_mh_huber IC 0.0222 vs control 0.0216, paired +0.0006 (NW t +0.48); JS shrinkage factor 0 |
 | Q4_portfolio | 3 | done | 30 | mvnl_nt_trees | 0.6351 | yes | yes | No construction beats the M1 no-trade band by more than noise (best vol-matched paired t 0.72); best net Sharpe mvnl_nt_trees (LW2020 mean-variance + L1 no-trade region) 0.64 vs control 0.35, max DD 2.8% (12.2% at control vol) vs 16.2%, but post hoc, grid-edge tuned, fails on the other three signals in 2013-16 and earns only +0.88%/yr at gross 1: not nominated; keep the band. |
-| Q5_rl | 3 | in progress | 0 |  |  | no | no |  |
+| Q5_rl | 3 | done | 30 | C_mvnlnt_trees | 0.7441 | yes | yes | No RL construction beats both controls: best rrl_dsr_trees (online-DSR Moody-Saffell RRL) net Sharpe 0.43 vs band 0.31 (vol-matched +0.82%/yr, t 1.50) but below mvnl_nt 0.74 (t -0.75), fails on MASTER; PPO/EIIE/E2E lose to the band; nothing nominated. |
 | X1_combine | 1 | done | 11 | 8p_hgbD_mh+fmC_mh+mlpC_mh_panic | 0.0282 | yes | yes | finalist X1_8p failed the holdout (p 0.0173 vs 0.0167) |
 | X2_costs | 1 | done | 11 | c1_base_mh | 0.0236 | yes | yes | smoothing cuts costs; hurt MASTER in the holdout |
 | X3_online | 1 | done | 32 | c32_fm_exp | online, extra lag 52w | 0.0231 | yes | yes | updating inside the year does not help |

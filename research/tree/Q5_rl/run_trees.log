@@ -1,0 +1,44 @@
+{"name": "C_band_trees", "net_pct_per_year": 2.010160804793719, "net_sharpe": 0.3077462798845689, "gross_sharpe": 0.518024712149251, "max_drawdown": 0.16193894167395928, "turnover": 0.26430476667523367, "seeds_net_sharpe": null}
+   by_period {"2014-2016": {"net_sharpe": 0.12175348037497603, "net_pct_per_year": 0.8939023823756369, "max_drawdown": 0.16193894167395928}, "2017-2019": {"net_sharpe": 0.5575853829064891, "net_pct_per_year": 3.1338116670953644, "max_drawdown": 0.05665275233323819}} | vs band {"diff_pct_per_year": 0.0, "t_nw4": 0.0, "diff_2014_2016": 0.0, "diff_2017_2019": 0.0, "volmatched_diff_pct_per_year": -0.0, "volmatched_t_nw4": -0.138, "max_drawdown_at_control_vol": 0.162, "control_net_sharpe": 0.308, "control_max_drawdown": 0.162} | fs null
+{"name": "C_mvnlnt_trees", "net_pct_per_year": 1.0485837702885312, "net_sharpe": 0.744134880310896, "gross_sharpe": 0.8942645461943755, "max_drawdown": 0.027529247734974116, "turnover": 0.040608337592194885, "seeds_net_sharpe": null}
+   by_period {"2014-2016": {"net_sharpe": 0.42802618659550695, "net_pct_per_year": 0.603095601983433, "max_drawdown": 0.027206980433317818}, "2017-2019": {"net_sharpe": 1.060822769880494, "net_pct_per_year": 1.4970221913638613, "max_drawdown": 0.01456650539507276}} | vs band {"diff_pct_per_year": -0.962, "t_nw4": -0.388, "diff_2014_2016": -0.291, "diff_2017_2019": -1.637, "volmatched_diff_pct_per_year": 2.85, "volmatched_t_nw4": 1.086, "max_drawdown_at_control_vol": 0.123, "control_net_sharpe": 0.308, "control_max_drawdown": 0.162} | fs null
+  rrl_bs_trees 2014 trained+run (10s)
+  rrl_bs_trees 2015 trained+run (32s)
+  rrl_bs_trees 2016 trained+run (68s)
+  rrl_bs_trees 2017 trained+run (118s)
+  rrl_bs_trees 2018 trained+run (180s)
+  rrl_bs_trees 2019 trained+run (255s)
+{"name": "rrl_bs_trees", "net_pct_per_year": 0.14462729180505268, "net_sharpe": 0.02823124300747733, "gross_sharpe": 0.2009131397722412, "max_drawdown": 0.12753153850801302, "turnover": 0.17012850469669608, "seeds_net_sharpe": [-0.01628867419299074, 0.08733456125633274, 0.015091487194843378]}
+   by_period {"2014-2016": {"net_sharpe": 0.05043287974147527, "net_pct_per_year": 0.3436066949778549, "max_drawdown": 0.12753153850801302}, "2017-2019": {"net_sharpe": -0.022523096249527107, "net_pct_per_year": -0.055669855759622626, "max_drawdown": 0.04499863795291048}} | vs band {"diff_pct_per_year": -1.866, "t_nw4": -1.177, "diff_2014_2016": -0.55, "diff_2017_2019": -3.189, "volmatched_diff_pct_per_year": -1.826, "volmatched_t_nw4": -1.129, "max_drawdown_at_control_vol": 0.161, "control_net_sharpe": 0.308, "control_max_drawdown": 0.162} | fs {"oos_2017_2019_net_sharpe_seed_mean": 0.17595609198613338, "oos_2017_2019_net_sharpe_seeds": [0.18321500696419396, 0.3199401956662355, 0.024713073327970625], "oos_2017_2019_net_pct_per_year": 0.1986055281680435, "insample_2013_2016_net_sharpe_seed_mean": 1.5053365663254024}
+  rrl_dsr_trees 2014 trained+run (1s)
+  rrl_dsr_trees 2015 trained+run (2s)
+  rrl_dsr_trees 2016 trained+run (3s)
+  rrl_dsr_trees 2017 trained+run (6s)
+  rrl_dsr_trees 2018 trained+run (8s)
+  rrl_dsr_trees 2019 trained+run (11s)
+{"name": "rrl_dsr_trees", "net_pct_per_year": 2.47922748653545, "net_sharpe": 0.43359341700824194, "gross_sharpe": 0.6379065708144452, "max_drawdown": 0.13886842451976866, "turnover": 0.22500095222960578, "seeds_net_sharpe": [0.4338697341972844, 0.44054694003663275, 0.42632473667912896]}
+   by_period {"2014-2016": {"net_sharpe": 0.2236591559151829, "net_pct_per_year": 1.51408406735371, "max_drawdown": 0.13886842451976866}, "2017-2019": {"net_sharpe": 0.778369759255713, "net_pct_per_year": 3.450762583989918, "max_drawdown": 0.046210844118818595}} | vs band {"diff_pct_per_year": 0.469, "t_nw4": 0.783, "diff_2014_2016": 0.62, "diff_2017_2019": 0.317, "volmatched_diff_pct_per_year": 0.822, "volmatched_t_nw4": 1.505, "max_drawdown_at_control_vol": 0.157, "control_net_sharpe": 0.308, "control_max_drawdown": 0.162} | fs {"oos_2017_2019_net_sharpe_seed_mean": 0.7550459111978958, "oos_2017_2019_net_sharpe_seeds": [0.7581824881031262, 0.7594769751556234, 0.7474782703349374], "oos_2017_2019_net_pct_per_year": 3.459922175864729, "insample_2013_2016_net_sharpe_seed_mean": 0.34910958775502854}
+  ppo_trees 2014 trained+run (56s)
+  ppo_trees 2015 trained+run (118s)
+  ppo_trees 2016 trained+run (180s)
+  ppo_trees 2017 trained+run (243s)
+  ppo_trees 2018 trained+run (306s)
+  ppo_trees 2019 trained+run (370s)
+{"name": "ppo_trees", "net_pct_per_year": 1.3932531633161098, "net_sharpe": 0.2963898918890297, "gross_sharpe": 0.4953240331029522, "max_drawdown": 0.09840412567628398, "turnover": 0.1799828239723485, "seeds_net_sharpe": [0.3902702302692081, 0.2636282988297365, 0.22739687946953707]}
+   by_period {"2014-2016": {"net_sharpe": 0.09178629738716909, "net_pct_per_year": 0.4770657580208556, "max_drawdown": 0.09840412567628398}, "2017-2019": {"net_sharpe": 0.5573317384873404, "net_pct_per_year": 2.315508034871599, "max_drawdown": 0.048780255860692456}} | vs band {"diff_pct_per_year": -0.617, "t_nw4": -0.598, "diff_2014_2016": -0.417, "diff_2017_2019": -0.818, "volmatched_diff_pct_per_year": -0.074, "volmatched_t_nw4": -0.094, "max_drawdown_at_control_vol": 0.135, "control_net_sharpe": 0.308, "control_max_drawdown": 0.162} | fs {"oos_2017_2019_net_sharpe_seed_mean": 0.396383178983239, "oos_2017_2019_net_sharpe_seeds": [0.34564101853299933, 0.3088530518817126, 0.534655466535005], "oos_2017_2019_net_pct_per_year": 1.5265337369141543, "insample_2013_2016_net_sharpe_seed_mean": 0.4550366677767414}
+  eiie_pvm_trees 2014 trained+run (223s)
+  eiie_pvm_trees 2015 trained+run (443s)
+  eiie_pvm_trees 2016 trained+run (668s)
+  eiie_pvm_trees 2017 trained+run (887s)
+  eiie_pvm_trees 2018 trained+run (1105s)
+  eiie_pvm_trees 2019 trained+run (1357s)
+{"name": "eiie_pvm_trees", "net_pct_per_year": -1.534649810437511, "net_sharpe": -0.4045616584835563, "gross_sharpe": -0.1770102952839124, "max_drawdown": 0.14194222511342824, "turnover": 0.1658945406802, "seeds_net_sharpe": [-0.621427976325729, -0.10360927209603521, -0.43582837304146965]}
+   by_period {"2014-2016": {"net_sharpe": -0.8834790076971295, "net_pct_per_year": -3.832218409302078, "max_drawdown": 0.1257269718999483}, "2017-2019": {"net_sharpe": 0.24826125299379012, "net_pct_per_year": 0.7781344745122528, "max_drawdown": 0.03406439658746896}} | vs band {"diff_pct_per_year": -3.545, "t_nw4": -1.97, "diff_2014_2016": -4.726, "diff_2017_2019": -2.356, "volmatched_diff_pct_per_year": -4.653, "volmatched_t_nw4": -2.563, "max_drawdown_at_control_vol": 0.235, "control_net_sharpe": 0.308, "control_max_drawdown": 0.162} | fs {"oos_2017_2019_net_sharpe_seed_mean": 0.18256555821717216, "oos_2017_2019_net_sharpe_seeds": [0.1339708617652866, 0.33426358335800793, 0.07946222952822195], "oos_2017_2019_net_pct_per_year": 0.5468823751633186, "insample_2013_2016_net_sharpe_seed_mean": 0.5035524666748716}
+  e2e_trees 2014 trained+run (63s)
+  e2e_trees 2015 trained+run (192s)
+  e2e_trees 2016 trained+run (382s)
+  e2e_trees 2017 trained+run (643s)
+  e2e_trees 2018 trained+run (975s)
+  e2e_trees 2019 trained+run (1350s)
+{"name": "e2e_trees", "net_pct_per_year": -0.30899337511946595, "net_sharpe": -0.07255902044593125, "gross_sharpe": 0.09246721961891101, "max_drawdown": 0.10306580134050525, "turnover": 0.13517457856567092, "seeds_net_sharpe": [0.037804872876012585, -0.19442458748628322, -0.05951968774100067]}
+   by_period {"2014-2016": {"net_sharpe": -0.4050074030711224, "net_pct_per_year": -1.7282299152917484, "max_drawdown": 0.08856299085948915}, "2017-2019": {"net_sharpe": 0.263151428343129, "net_pct_per_year": 1.1196420825374, "max_drawdown": 0.05154022868106978}} | vs band {"diff_pct_per_year": -2.319, "t_nw4": -1.536, "diff_2014_2016": -2.622, "diff_2017_2019": -2.014, "volmatched_diff_pct_per_year": -2.484, "volmatched_t_nw4": -1.702, "max_drawdown_at_control_vol": 0.155, "control_net_sharpe": 0.308, "control_max_drawdown": 0.162} | fs {"oos_2017_2019_net_sharpe_seed_mean": 0.2647441001913286, "oos_2017_2019_net_sharpe_seeds": [0.3958210162430415, 0.10954650752043787, 0.2888647768105065], "oos_2017_2019_net_pct_per_year": 1.1451605911403153, "insample_2013_2016_net_sharpe_seed_mean": 0.40863681532887713}

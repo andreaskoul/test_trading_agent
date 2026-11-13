@@ -317,3 +317,15 @@ looking at them. The one unused stretch is January-November 2026: no backtest of
 * **Roles:** the coordinating session fetches the 2026 data (redacting wrapper, frozen at first fetch) and runs the
   one scored read. One build agent (H7_build) builds the refits and prediction files and is barred from computing
   any 2026 statistic.
+
+## Step 18 — Q5 reinforcement-learned construction result (development data only, 2026-11-13)
+
+* **No RL policy beats both controls; nothing nominated.** Best: Moody-Saffell online differential-Sharpe RRL on
+  the trees signal, net Sharpe 0.43 vs the band's 0.31 (vol-matched +0.82 %/yr, t 1.50), but behind the covariance
+  book `mvnl_nt` (0.74). It loses on MASTER (t −2.16). With 24 candidates, a best t of 1.5 is what noise produces.
+* **Overfitting is the story**: batch-Sharpe RRL reaches in-sample Sharpe 1.25-1.93 and 0.03-0.38 walk-forward; the
+  per-asset networks (EIIE, end-to-end) are negative walk-forward. About 200 training weeks cannot support them.
+* **What the one modest learner learned**, consistently on two signals: a slightly wider exit band, a tilt away from
+  high-volatility names, lower exposure when dispersion or recent IC is high. A fixed wider band alone ties. These
+  overlap with the L2 survey's rank-hysteresis rule, which is the cleaner, parameter-free version to register.
+* **Consequence**: the covariance-aware book (`mvnl_nt`) stays the construction lead; RL closed for this layer.

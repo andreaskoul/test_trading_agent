@@ -1,18 +1,560 @@
 {
  "branch": "Q5_rl",
  "phase": null,
- "status": "in progress",
- "configurations_scored": 0,
- "scored": [],
- "best": null,
- "plan": [],
+ "status": "done",
+ "configurations_scored": 30,
+ "scored": [
+  "C_band_trees",
+  "C_mvnlnt_trees",
+  "C_band_master",
+  "C_mvnlnt_master",
+  "C_band_ipca",
+  "C_mvnlnt_ipca",
+  "rrl_bs_trees",
+  "rrl_dsr_trees",
+  "rrl_bs_ipca",
+  "rrl_bs_master",
+  "rrl_dsr_ipca",
+  "rrl_dsr_master",
+  "ppo_trees",
+  "ppo_master",
+  "ppo_ipca",
+  "eiie_pvm_trees",
+  "eiie_pvm_master",
+  "eiie_pvm_ipca",
+  "e2e_trees",
+  "e2e_ipca",
+  "e2e_master",
+  "rrl_dsr_book_trees",
+  "rrl_dsr_exp_trees",
+  "band15_trees",
+  "rrl_dsr_book_ipca",
+  "rrl_dsr_exp_ipca",
+  "band15_ipca",
+  "rrl_dsr_book_master",
+  "rrl_dsr_exp_master",
+  "band15_master"
+ ],
+ "best": {
+  "name": "rrl_dsr_trees",
+  "signal": "trees",
+  "net_sharpe": 0.43359341700824194,
+  "net_pct_per_year": 2.47922748653545,
+  "max_drawdown": 0.13886842451976866,
+  "vs_band": {
+   "diff_pct_per_year": 0.4690666817417309,
+   "t_nw4": 0.7827594169262501,
+   "diff_2014_2016": 0.620181684978072,
+   "diff_2017_2019": 0.316950916894553,
+   "volmatched_diff_pct_per_year": 0.822018003065364,
+   "volmatched_t_nw4": 1.5047438263460373,
+   "max_drawdown_at_control_vol": 0.1574669985836965,
+   "control_net_sharpe": 0.3077462798845689,
+   "control_max_drawdown": 0.16193894167395928
+  },
+  "vs_mvnlnt": {
+   "diff_pct_per_year": 1.430643716246919,
+   "t_nw4": 0.6547123593271017,
+   "diff_2014_2016": 0.9109884653702764,
+   "diff_2017_2019": 1.9537403926260553,
+   "volmatched_diff_pct_per_year": -0.43759370382526386,
+   "volmatched_t_nw4": -0.7488329027480184,
+   "max_drawdown_at_control_vol": 0.03557281334070195,
+   "control_net_sharpe": 0.744134880310896,
+   "control_max_drawdown": 0.027529247734974116
+  }
+ },
+ "plan": [
+  {
+   "name": "C_band_trees",
+   "signal": "trees",
+   "method": "control",
+   "length_grid": [],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "control (a): M1 band 0.1 on the same signal"
+  },
+  {
+   "name": "C_mvnlnt_trees",
+   "signal": "trees",
+   "method": "control",
+   "length_grid": [],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "control (b): Q4 mvnl_nt (LW2020 mean-variance, L1 no-trade k 2)"
+  },
+  {
+   "name": "rrl_bs_trees",
+   "signal": "trees",
+   "method": "rrl_bs",
+   "length_grid": [
+    25,
+    100,
+    300
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "Moody-Saffell RRL, 13-parameter smooth-band policy + exposure(state), batch net Sharpe, full BPTT"
+  },
+  {
+   "name": "rrl_dsr_trees",
+   "signal": "trees",
+   "method": "rrl_dsr",
+   "length_grid": [
+    1,
+    3,
+    10
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "Moody-Saffell RRL, same policy, online differential Sharpe ratio updates"
+  },
+  {
+   "name": "ppo_trees",
+   "signal": "trees",
+   "method": "ppo",
+   "length_grid": [
+    30,
+    100,
+    300
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "PPO, linear-Gaussian policy on (trade rate, exit width, exposure) from state, DSR reward"
+  },
+  {
+   "name": "eiie_pvm_trees",
+   "signal": "trees",
+   "method": "eiie_pvm",
+   "length_grid": [
+    200,
+    1000,
+    3000
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "EIIE shared per-name network + exposure head, portfolio-vector memory, 26-week mini-batches, net Sharpe"
+  },
+  {
+   "name": "e2e_trees",
+   "signal": "trees",
+   "method": "e2e",
+   "length_grid": [
+    25,
+    100,
+    300
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "same EIIE network, full-sequence BPTT on net Sharpe (Zhang-Zohren-Roberts style, non-RL baseline)"
+  },
+  {
+   "name": "C_band_ipca",
+   "signal": "ipca",
+   "method": "control",
+   "length_grid": [],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "control (a): M1 band 0.1 on the same signal"
+  },
+  {
+   "name": "C_mvnlnt_ipca",
+   "signal": "ipca",
+   "method": "control",
+   "length_grid": [],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "control (b): Q4 mvnl_nt (LW2020 mean-variance, L1 no-trade k 2)"
+  },
+  {
+   "name": "rrl_bs_ipca",
+   "signal": "ipca",
+   "method": "rrl_bs",
+   "length_grid": [
+    25,
+    100,
+    300
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "Moody-Saffell RRL, 13-parameter smooth-band policy + exposure(state), batch net Sharpe, full BPTT"
+  },
+  {
+   "name": "rrl_dsr_ipca",
+   "signal": "ipca",
+   "method": "rrl_dsr",
+   "length_grid": [
+    1,
+    3,
+    10
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "Moody-Saffell RRL, same policy, online differential Sharpe ratio updates"
+  },
+  {
+   "name": "ppo_ipca",
+   "signal": "ipca",
+   "method": "ppo",
+   "length_grid": [
+    30,
+    100,
+    300
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "PPO, linear-Gaussian policy on (trade rate, exit width, exposure) from state, DSR reward"
+  },
+  {
+   "name": "eiie_pvm_ipca",
+   "signal": "ipca",
+   "method": "eiie_pvm",
+   "length_grid": [
+    200,
+    1000,
+    3000
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "EIIE shared per-name network + exposure head, portfolio-vector memory, 26-week mini-batches, net Sharpe"
+  },
+  {
+   "name": "e2e_ipca",
+   "signal": "ipca",
+   "method": "e2e",
+   "length_grid": [
+    25,
+    100,
+    300
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "same EIIE network, full-sequence BPTT on net Sharpe (Zhang-Zohren-Roberts style, non-RL baseline)"
+  },
+  {
+   "name": "C_band_master",
+   "signal": "master",
+   "method": "control",
+   "length_grid": [],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "control (a): M1 band 0.1 on the same signal"
+  },
+  {
+   "name": "C_mvnlnt_master",
+   "signal": "master",
+   "method": "control",
+   "length_grid": [],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "control (b): Q4 mvnl_nt (LW2020 mean-variance, L1 no-trade k 2)"
+  },
+  {
+   "name": "rrl_bs_master",
+   "signal": "master",
+   "method": "rrl_bs",
+   "length_grid": [
+    25,
+    100,
+    300
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "Moody-Saffell RRL, 13-parameter smooth-band policy + exposure(state), batch net Sharpe, full BPTT"
+  },
+  {
+   "name": "rrl_dsr_master",
+   "signal": "master",
+   "method": "rrl_dsr",
+   "length_grid": [
+    1,
+    3,
+    10
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "Moody-Saffell RRL, same policy, online differential Sharpe ratio updates"
+  },
+  {
+   "name": "ppo_master",
+   "signal": "master",
+   "method": "ppo",
+   "length_grid": [
+    30,
+    100,
+    300
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "PPO, linear-Gaussian policy on (trade rate, exit width, exposure) from state, DSR reward"
+  },
+  {
+   "name": "eiie_pvm_master",
+   "signal": "master",
+   "method": "eiie_pvm",
+   "length_grid": [
+    200,
+    1000,
+    3000
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "EIIE shared per-name network + exposure head, portfolio-vector memory, 26-week mini-batches, net Sharpe"
+  },
+  {
+   "name": "e2e_master",
+   "signal": "master",
+   "method": "e2e",
+   "length_grid": [
+    25,
+    100,
+    300
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "same EIIE network, full-sequence BPTT on net Sharpe (Zhang-Zohren-Roberts style, non-RL baseline)"
+  },
+  {
+   "name": "rrl_dsr_book_trees",
+   "signal": "trees",
+   "method": "rrl_dsr_book",
+   "length_grid": [
+    1,
+    3,
+    10
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "POST HOC ablation of rrl_dsr: exposure fixed at 1, only band shape and tilts learn"
+  },
+  {
+   "name": "rrl_dsr_exp_trees",
+   "signal": "trees",
+   "method": "rrl_dsr_exp",
+   "length_grid": [
+    1,
+    3,
+    10
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "POST HOC ablation of rrl_dsr: book fixed at the band, only the exposure head learns"
+  },
+  {
+   "name": "band15_trees",
+   "signal": "trees",
+   "method": "band15",
+   "length_grid": [
+    0
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "POST HOC reference: unlearned smooth band, exit width 0.15 (rrl_dsr's learned h), exposure 1"
+  },
+  {
+   "name": "rrl_dsr_book_ipca",
+   "signal": "ipca",
+   "method": "rrl_dsr_book",
+   "length_grid": [
+    1,
+    3,
+    10
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "POST HOC ablation of rrl_dsr: exposure fixed at 1, only band shape and tilts learn"
+  },
+  {
+   "name": "rrl_dsr_exp_ipca",
+   "signal": "ipca",
+   "method": "rrl_dsr_exp",
+   "length_grid": [
+    1,
+    3,
+    10
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "POST HOC ablation of rrl_dsr: book fixed at the band, only the exposure head learns"
+  },
+  {
+   "name": "band15_ipca",
+   "signal": "ipca",
+   "method": "band15",
+   "length_grid": [
+    0
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "POST HOC reference: unlearned smooth band, exit width 0.15 (rrl_dsr's learned h), exposure 1"
+  },
+  {
+   "name": "rrl_dsr_book_master",
+   "signal": "master",
+   "method": "rrl_dsr_book",
+   "length_grid": [
+    1,
+    3,
+    10
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "POST HOC ablation of rrl_dsr: exposure fixed at 1, only band shape and tilts learn"
+  },
+  {
+   "name": "rrl_dsr_exp_master",
+   "signal": "master",
+   "method": "rrl_dsr_exp",
+   "length_grid": [
+    1,
+    3,
+    10
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "POST HOC ablation of rrl_dsr: book fixed at the band, only the exposure head learns"
+  },
+  {
+   "name": "band15_master",
+   "signal": "master",
+   "method": "band15",
+   "length_grid": [
+    0
+   ],
+   "seeds": [
+    0,
+    1,
+    2
+   ],
+   "note": "POST HOC reference: unlearned smooth band, exit width 0.15 (rrl_dsr's learned h), exposure 1"
+  }
+ ],
  "pending": [],
  "deliverables": {
-  "model.py": false,
+  "model.py": true,
   "REPORT.md": false
  },
- "verdict": null,
- "notes": [],
+ "verdict": "No RL construction beats both controls: best rrl_dsr_trees (online-DSR Moody-Saffell RRL) net Sharpe 0.43 vs band 0.31 (vol-matched +0.82%/yr, t 1.50) but below mvnl_nt 0.74 (t -0.75), fails on MASTER; PPO/EIIE/E2E lose to the band; nothing nominated.",
+ "notes": [
+  "scored C_band_trees; next: C_mvnlnt_trees",
+  "scored C_mvnlnt_trees; next: rrl_bs_trees",
+  "scored C_band_master; next: rrl_bs_trees",
+  "scored C_mvnlnt_master; next: rrl_bs_trees",
+  "scored C_band_ipca; next: rrl_bs_trees",
+  "scored C_mvnlnt_ipca; next: rrl_bs_trees",
+  "scored rrl_bs_trees; next: rrl_dsr_trees",
+  "scored rrl_dsr_trees; next: ppo_trees",
+  "scored rrl_bs_ipca; next: ppo_trees",
+  "scored rrl_bs_master; next: ppo_trees",
+  "scored rrl_dsr_ipca; next: ppo_trees",
+  "scored rrl_dsr_master; next: ppo_trees",
+  "scored ppo_trees; next: eiie_pvm_trees",
+  "scored ppo_master; next: eiie_pvm_trees",
+  "scored ppo_ipca; next: eiie_pvm_trees",
+  "scored eiie_pvm_trees; next: e2e_trees",
+  "scored eiie_pvm_master; next: e2e_trees",
+  "scored eiie_pvm_ipca; next: e2e_trees",
+  "scored e2e_trees; next: e2e_ipca",
+  "scored e2e_ipca; next: e2e_master",
+  "scored e2e_master; next: deliverables",
+  "scored rrl_dsr_book_trees; next: rrl_dsr_exp_trees",
+  "scored rrl_dsr_exp_trees; next: band15_trees",
+  "scored band15_trees; next: rrl_dsr_book_ipca",
+  "scored rrl_dsr_book_ipca; next: rrl_dsr_exp_ipca",
+  "scored rrl_dsr_exp_ipca; next: band15_ipca",
+  "scored band15_ipca; next: rrl_dsr_book_master",
+  "scored rrl_dsr_book_master; next: rrl_dsr_exp_master",
+  "scored rrl_dsr_exp_master; next: band15_master",
+  "scored band15_master; next: deliverables",
+  "all 30 configurations scored (6 controls, 15 registered, 9 post-hoc ablations); model.py check ok; REPORT.md write refused, full text returned to coordinator; status done"
+ ],
  "resume": "Read research/tree/Q5_rl/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-13T09:59:06Z"
+ "updated": "2026-11-13T14:22:19Z"
 }
