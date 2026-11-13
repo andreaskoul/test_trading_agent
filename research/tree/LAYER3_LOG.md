@@ -341,3 +341,26 @@ looking at them. The one unused stretch is January-November 2026: no backtest of
   Q4 leaves the covariance book as the construction lead. The trees on these 25-27 price inputs are the ceiling of
   model engineering here. Remaining gains are in cost and construction (L2: rank hysteresis, decay, neutralisation)
   and in new information (news, industry-relative features).
+
+## Step 20 — two reviews merged; fifth wave launched (2026-11-13)
+
+**Inputs:** the L2 practitioner survey (Numerai, Kaggle write-ups, Quantpedia, Robot Wealth) and the L3 literature
+review (JKMP, Novy-Marx-Velikov, Frazzini-Israel-Moskowitz, Dai et al., Ehsani-Harvey-Li and others). Both are
+in-project readings, with access labels.
+
+**Lead's synthesis.** Both say the same thing: for a fast reversal-heavy signal, net Sharpe is decided by
+construction and cost, not by the forecast.
+* JKMP: net Sharpe 0.94 → 1.38 by learning weights under costs, with turnover 0.76 → 0.32 a month.
+* Novy-Marx-Velikov: a buy/hold spread lifts industry-relative reversal from net 0.16 to 0.35 %/month.
+* Quantpedia: weekly reversal −31 bp a week net on 1,500 names, +29 on 100.
+
+So the fifth wave (Amendment 8) is three development branches on cost, information and risk:
+* **Q6_trade:** a square-root cost model first, then hysteresis, decay and partial trading toward the Ledoit-Wolf aim.
+* **Q7_features:** industry-relative and announcement-masked reversal, short-run industry momentum, and horizon by
+  turnover.
+* **Q8_neutral:** partial and sector neutralisation.
+
+**Planning haircut adopted** (McLean-Pontiff, Chen-Velikov): expect the broad trees book to earn about 0.7× its
+out-of-sample Sharpe forward. On that haircut, the combined fund's projected Sharpe falls to roughly 0.96-1.0 at
+measured costs [reasoning: √(0.94² + (0.7 × 0.55)²) to √(0.94² + (0.7 × 0.75)²), ignoring the fund's own decay].
+Sharpe > 1 therefore needs the construction gains, not just the combination.
