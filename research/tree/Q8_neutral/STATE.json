@@ -1,18 +1,64 @@
 {
  "branch": "Q8_neutral",
  "phase": 3,
- "status": "in progress",
- "configurations_scored": 0,
- "scored": [],
- "best": null,
- "plan": [],
+ "status": "done",
+ "configurations_scored": 12,
+ "scored": [
+  "trees_N0",
+  "trees_N1",
+  "trees_N2w",
+  "trees_N2rule",
+  "ipca_N0",
+  "ipca_N1",
+  "ipca_N2w",
+  "ipca_N2rule",
+  "master_N0",
+  "master_N1",
+  "master_N2w",
+  "master_N2rule"
+ ],
+ "best": {
+  "trees": "N1 (decile net Sharpe 0.32 vs N0 0.15, DD 13.0% vs 19.3%; paired t 0.31, not significant)",
+  "ipca": "N0 (0.22; N1 -0.28, N2w 0.03)",
+  "master": "N1 (-0.11 vs N0 -0.26, DD 13.0% vs 23.4%; paired t 0.93)"
+ },
+ "plan": [
+  "Registered before scoring (PREREG Layer 3 Amendment 8, Q8_neutral). Signals: trees = Q4 sig_trees.npy, ipca = Q4 sig_ipca.npy, master = D['master_h5_ref']; validation Thursdays 2013-2019, harness mask.",
+  "N0: control, p = 0: the raw score (centred rank).",
+  "N1: Numerai partial neutralisation, p = 0.5: s = centred rank of score over names with score and eligibility at t; E = [1, z(beta_t), z(log ADV_t), z(vol60_t), sector dummies (11 GICS sectors by the typed 2-digit code industry_code[:2], plus one 'no sector' group)]; s -= 0.5 * E @ pinv(E) @ s; then re-rank. z = cross-sectional standardisation over the same names each week, no winsorisation. ADV_t = mean FINRA Reg SHO total share volume over sessions t-19..t (>= 10 sessions), log; vol60_t = sd of D['r'] over t-59..t (>= 40 sessions); missing exposure -> cross-sectional mean (z = 0).",
+  "N2w: within-sector ranks: percentile rank of the score within its sector group ('no sector' is a group) at t, centred. Scored on the full period, descriptive.",
+  "N2rule: Ehsani-Harvey-Li ex-ante rule on 2013-2016 only: rank-weighted book w = centred rank (sides 0.5), w_across = sector mean of w (per name), w_within = w - w_across; weekly gross returns w.y5; neutralise iff SR(across)/SR(within) < corr(across, within). If yes N2rule = N2w, else N2rule = N0. Reported: the decision, 2017-2019 result of applying it vs N0, full-period both choices. Decile-book decomposition reported descriptively only.",
+  "Metrics: weekly IC mean/sd/t; harness.decile_net (5 bp) net %/yr, net Sharpe, max drawdown; M1 band book (band 0.1, M1 simulate, first week dropped); paired weekly IC and net differences vs N0, Newey-West t (4 lags); 2013-16 vs 2017-19 split. Best per signal = highest decile net Sharpe with max drawdown no worse than N0's."
+ ],
  "pending": [],
  "deliverables": {
-  "model.py": false,
-  "REPORT.md": false
+  "model.py": true,
+  "REPORT.md": "refused by the tool (subagents may not write report files); full text returned to the caller",
+  "run.py": true,
+  "RESULTS.jsonl": 12
  },
- "verdict": null,
- "notes": [],
+ "verdict": "No neutralisation earns a place. N1 (p 0.5) cuts weekly IC sd ~20% and N2w ~35%, and both cut decile drawdown, but mean IC falls every time. Decile net Sharpe rises for trees (0.15->0.32) and MASTER (-0.26->-0.11), not significant (NW t 0.31, 0.93), all in 2013-16 (2017-19 diffs -0.08, +0.12 %/yr); band book not improved; IPCA hurt by N1 (-2.7 %/yr, t -1.59). EHL rule (2013-16): neutralise trees and MASTER, keep IPCA; applied 2017-19 trees worse (0.20->0.07), MASTER mixed (decile -0.28->-0.18, band 0.15->0.00), IPCA unchanged; the rule's inputs are unstable across periods. Neutralisation is a risk lever, not a net-return lever on these signals. Development results, not OOS; survivorship gap; current GICS applied to the past.",
+ "notes": [
+  "Plan registered before any scoring: 12 rows (3 signals x N0, N1, N2rule, N2w). Sector audit done (gics.json, 434 of 666 eligible validation names covered; missing = own group). Next: score all.",
+  "scored trees_N0; next: trees_N1",
+  "scored trees_N1; next: trees_N2rule",
+  "scored trees_N2w; next: trees_N2rule",
+  "scored trees_N2rule (EHL decision: neutralise (within-sector ranks)); next: ipca_N0",
+  "scored ipca_N0; next: ipca_N1",
+  "scored ipca_N1; next: ipca_N2rule",
+  "scored ipca_N2w; next: ipca_N2rule",
+  "scored ipca_N2rule (EHL decision: keep across-sector (raw)); next: master_N0",
+  "scored master_N0; next: master_N1",
+  "scored master_N1; next: master_N2rule",
+  "scored master_N2w; next: master_N2rule",
+  "scored master_N2rule (EHL decision: neutralise (within-sector ranks)); next: report",
+  "scored all 12 rows; check() passes and fails on corrupted inputs (mask, missing gics, empty FINRA); model.py BEST_BY_SIGNAL set by the registered rule; REPORT.md write refused, text returned. Done."
+ ],
  "resume": "Read research/tree/Q8_neutral/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-13T14:27:49Z"
+ "updated": "2026-11-13T14:33:41Z",
+ "ehl_rule_2013_2016": {
+  "trees": "neutralise (ratio 0.29 < corr 0.69)",
+  "ipca": "keep (2.27 > 0.59)",
+  "master": "neutralise (-1.10 < 0.62)"
+ }
 }

@@ -366,3 +366,16 @@ out-of-sample Sharpe forward. On that haircut, the independent-books projection 
 roughly 0.97-1.03 at measured costs [reasoning; ignores the fund's own decay]. (Corrected the same day: a first draft
 of this line said 0.96-1.0, an arithmetic slip.)
 Sharpe > 1 therefore needs the construction gains, not just the combination.
+
+## Step 21 — Q8 neutralisation result (development data only, 2026-11-13)
+
+* **No neutralisation earns a place.** Partial neutralisation (p 0.5) and within-sector ranking cut the sd of weekly
+  IC by about 20% and 35% and cut decile drawdowns, but always cost mean IC. The decile Sharpe gains (trees 0.15 →
+  0.32; MASTER −0.26 → −0.11) are insignificant (t 0.31, 0.93) and sit in 2013-16 only. The band book does not
+  improve. IPCA is hurt (t −1.59).
+* **Ehsani-Harvey-Li's rule is unstable here**: the trees decision flips between 2013-16 and 2017-19, and applying it
+  made trees worse.
+* **Useful descriptive fact**: the trees signal correlates −0.55 with beta and −0.30 with volatility; 41% of its
+  cross-sectional variance is explained by beta, size, volatility and sector. Low-beta/low-vol tilts are much of what
+  the model learned.
+* **Keep as a risk lever only**, not a return source. The book construction rule is unchanged.
