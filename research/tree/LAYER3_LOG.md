@@ -361,6 +361,8 @@ So the fifth wave (Amendment 8) is three development branches on cost, informati
 * **Q8_neutral:** partial and sector neutralisation.
 
 **Planning haircut adopted** (McLean-Pontiff, Chen-Velikov): expect the broad trees book to earn about 0.7× its
-out-of-sample Sharpe forward. On that haircut, the combined fund's projected Sharpe falls to roughly 0.96-1.0 at
-measured costs [reasoning: √(0.94² + (0.7 × 0.55)²) to √(0.94² + (0.7 × 0.75)²), ignoring the fund's own decay].
+out-of-sample Sharpe forward. On that haircut, the independent-books projection is √(0.94² + (0.7 × 0.55)²) = 1.02 to
+√(0.94² + (0.7 × 0.75)²) = 1.08. In `COMBO_CHECK.json` the equal-risk rule realised about 0.05 below that formula, so
+roughly 0.97-1.03 at measured costs [reasoning; ignores the fund's own decay]. (Corrected the same day: a first draft
+of this line said 0.96-1.0, an arithmetic slip.)
 Sharpe > 1 therefore needs the construction gains, not just the combination.
