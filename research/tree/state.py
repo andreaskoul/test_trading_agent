@@ -20,8 +20,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PHASE = {"A_loss": 1, "B_arch": 1, "C_features": 1, "D_ensembles": 1, "E_regime": 1, "X1_combine": 1, "X2_costs": 1,
          "X3_online": 1, "M1_dyntrade": 2, "M2_ipca": 2, "M3_cae": 2, "M4_sdf": 2, "M5_graph": 2, "M6_ssl": 2,
          "N1_fundamentals": 2, "N2_short": 2, "N3_intraday": 2, "N4_news": 2, "X4_exploit": 3, "X5_overfit": 3,
-         "Q1_seqnet": 3, "Q2_xsattn": 3, "Q3_rankgbm": 3, "Q4_portfolio": 3, "Q5_rl": 3}
-METRIC = {"N2_short": "increment_t", "N3_intraday": "increment_t", "N1_fundamentals": "increment_t", "N4_news": "increment_t", "Q4_portfolio": "net_sharpe", "Q5_rl": "net_sharpe"}
+         "Q1_seqnet": 3, "Q2_xsattn": 3, "Q3_rankgbm": 3, "Q4_portfolio": 3, "Q5_rl": 3, "Q6_trade": 3, "Q7_features": 3, "Q8_neutral": 3}
+METRIC = {"N2_short": "increment_t", "N3_intraday": "increment_t", "N1_fundamentals": "increment_t", "N4_news": "increment_t", "Q4_portfolio": "net_sharpe", "Q5_rl": "net_sharpe", "Q6_trade": "net_sharpe", "Q8_neutral": "net_sharpe"}
 
 
 def rows(path):

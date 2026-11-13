@@ -342,3 +342,51 @@ MASTER and of the broad trees; turnover; IC by dollar-volume tercile.
 **After the read.** The same pipeline, unchanged, runs on forward weeks as an extension of H7. The cumulative test is
 reported every 13 weeks; a verdict at cumulative t ≥ 2 or 104 weeks. A forward runner needs the owner's go-ahead (it
 touches the machine that runs the fund).
+
+## Layer 3, Amendment 8 (2026-11-13, before any of these is scored): fifth wave, from the L2 survey and the L3 review
+
+**Basis.** `L2_practice/REPORT.md` and `L3_lit/REPORT.md`: in-project readings, not outside reviews. Model engineering
+on the 25-27 price inputs is saturated (Q1, Q2, Q3, Q5 closed). The remaining levers are cost and construction, and
+new information. All three branches run on development data only (S&P 500 2013-2019); every configuration is
+declared in its `STATE.json` plan before scoring, and every prediction or weekly net is saved.
+
+**Q6_trade: trading less, under a square-root cost model.**
+* **Cost model, built first.** Per name and week: half-spread (2.3 bp for S&P 500 names, `COST_STUDY.json`) plus
+  k σ_i √(|Δw_i| × AUM / ADV_i). k is from Frazzini-Israel-Moskowitz / JKMP, documented. AUM is $10M per book, with a
+  $100M sensitivity. ADV_i is consolidated volume proxied from FINRA total volume (`extra_finra.npz`), with the scale
+  documented.
+* **Configurations** (signals: trees primary; IPCA and MASTER secondary):
+  * controls C0 deciles, C1 M1 band 0.1, C2 Q4 `mvnl_nt`;
+  * T1 rank hysteresis (enter at the top or bottom 10%, exit outside 30%);
+  * T2 signal decay, score = rank(s_t + 0.5 s_{t−1});
+  * T3 = T1 + T2 (the 2×2);
+  * T4-T6 Gârleanu-Pedersen partial trading toward the Ledoit-Wolf mean-variance aim, θ in {0.25, 0.5, 0.75}, scaled
+    per name by relative ADV;
+  * T7 optional: a direct cost-aware weight optimisation in the JKMP spirit, if it fits in the time.
+* **No other tuning.** Judged by net Sharpe under the square-root model, with drawdown no worse than C1; flat 5 bp
+  also reported.
+
+**Q7_features: industry-relative and announcement-aware reversal.**
+* **Added as one set to the D trees:** industry-relative 1/5/21-day reversal; 5- and 21-day industry momentum; 5-day
+  reversal with earnings windows masked.
+* **A second configuration:** the target horizon per name by turnover tercile (low → 20 sessions, mid → 10,
+  high → 5), mapping fixed from Dai-Medhat-Novy-Marx-Rizova and Medhat-Schmeling.
+* **Typed inputs** (CLAUDE.md rule 1): sector/industry from `.cache/p8/gics.json` (current classification applied to
+  the past: disclosed look-ahead); earnings dates from `.cache/p8/decay_earnings_events.parquet` (source checked and
+  documented).
+* **Control:** D trees, same hyperparameters. Judged by IC, years positive and decile net.
+
+**Q8_neutral: neutralisation of the weekly score.**
+* **Configurations:** partial neutralisation at p 0.5 (Numerai form) against {beta, log ADV proxy, 60-day vol, sector
+  dummies}; full sector demeaning, kept only if Ehsani-Harvey-Li's ex-ante rule, computed on 2013-2016, says so;
+  applied to trees, IPCA and MASTER.
+* **Control:** p 0. Judged by decile net Sharpe at 5 bp and the sd of weekly IC, not mean IC alone.
+
+**Folded into H7 (no new test).**
+* **Planning haircut** (McLean-Pontiff; Chen-Velikov): an expected forward Sharpe for the broad trees book of about
+  0.7× its out-of-sample figure.
+* **Decay check:** rolling 26-week IC, reported every 13 weeks.
+* **Execution audit on forward weeks:** official close vs the T−60 s mid for broad names, Nasdaq microcaps split.
+
+**For the owner (rule 17, policy).** A fund-level volatility target across core, MASTER book and broad book, tested
+once on long history: proposed, not run.
