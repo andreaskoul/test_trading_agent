@@ -379,3 +379,23 @@ Sharpe > 1 therefore needs the construction gains, not just the combination.
   cross-sectional variance is explained by beta, size, volatility and sector. Low-beta/low-vol tilts are much of what
   the model learned.
 * **Keep as a risk lever only**, not a return source. The book construction rule is unchanged.
+
+## Step 22 — Q7 industry features result, and a leak finding (development data only, 2026-11-13)
+
+* **No feature gain.** Industry-relative reversal, short-run industry momentum and earnings-masked reversal add
+  nothing to the trees: F1 −0.0009 (t −0.42); F2 +0.0010 over the multi-horizon trees (t 0.71), which reverses to
+  −0.0009 on names with a sector code. Horizon by volume tercile (H1) −0.0017; it is untested in its registered form,
+  because the proxy is share volume, not turnover.
+* **Leak finding (important beyond Q7).** Whether a name appears in `.cache/p8/gics.json`, which is built from
+  *today's* S&P 500/400 lists, predicts its 2013-2019 returns: the indicator alone has weekly IC +0.0149 (t 3.85).
+  Any model input or grouping whose *availability* depends on current index membership carries survivorship
+  information. Q7 declared a covered-subset check in advance and caught it.
+  * **Q8** used sector dummies with a "missing" group, so its N1/N2 rows may carry the same leak. They showed no gain
+    anyway.
+  * **Unaffected:** the out-of-sample whole-fund figures (`OOS_RETURNS.json`, `COMBO_CHECK.json`). The fund's S0
+    construction does not use sectors.
+  * **Queued audit A1:** list every model and read whose inputs come from current-membership files (gics.json, the
+    P8 events/sector fields, the S&P 400 current list) and check whether a missingness indicator or group entered.
+    Owner of the fix: the coordinating session.
+* **Consequence**: the trees on price inputs remain the model; feature engineering on industry adds nothing on large
+  caps at a weekly horizon.

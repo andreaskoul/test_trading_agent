@@ -1,18 +1,49 @@
 {
  "branch": "Q7_features",
  "phase": 3,
- "status": "in progress",
- "configurations_scored": 0,
- "scored": [],
- "best": null,
- "plan": [],
+ "status": "done",
+ "configurations_scored": 5,
+ "scored": [
+  "ref_control",
+  "ref_mh",
+  "F1",
+  "F2",
+  "H1"
+ ],
+ "best": {
+  "name": "F2",
+  "ic": 0.024576905396577826,
+  "ic_t": 2.5418799239379366,
+  "decile_net_pct_per_year": 1.3916632615904103,
+  "decile_net_sharpe": 0.21099443441232418,
+  "rule": "highest development mean IC among configurations positive in >= 5 of 7 years"
+ },
+ "plan": [
+  "ref_control: declared control: D_ensembles/model.py unchanged (sklearn HGB, D 27 inputs, 5-session rank target); seeds 0,1,2",
+  "ref_mh: second reference: finalists/D_hgb_mh unchanged (D 27 inputs, rank average of HGB on 3/5/10/20-session targets)",
+  "F1: D trees + one added set of 9 ranked features: industry-relative 1/5/21-day reversal on raw r and on residual e (stock minus leave-one-out equal-weight GICS-industry mean of eligible names; sector if the industry has <3 eligible names that day), 5- and 21-day leave-one-out industry momentum (raw r), 5-day residual reversal with the announcement session t0 and t0+1 set to 0 (NaN where no event is recorded in the previous 126 sessions); all from rows <= t; names without GICS get 0 (neutral) like every missing D input",
+  "F2: F1 inputs on the multi-horizon target (rank average of HGB at 3/5/10/20 sessions, as D_hgb_mh); run only if F1 runs cleanly",
+  "H1: D inputs; per-name target horizon by tercile of the 63-session mean FINRA total share volume across eligible names on each Thursday (low->20, mid->10, high->5 sessions; missing volume -> 5); target = the name's cross-sectional rank of its own-horizon return among all names at that horizon; mapping fixed",
+  "Declared diagnostics (not configurations, decided before scoring): (a) GICS coverage is survivorship-correlated (IC of the has-GICS indicator with y5 = +0.0149, t 3.85, in the audit), so F1/F2 are also scored on GICS-covered names only, candidate and reference both restricted; if the full-panel gain is not matched (>= half) on the covered subset, the gain is attributed to the coverage leak and the verdict uses the covered subset; (b) permutation importance of the 9 added inputs (each and as a group) on validation-year Thursdays, seed 0 models; (c) H1's proxy validity: share volume is not turnover (audit: Spearman 0.31 with volume/shares where XBRL shares exist)"
+ ],
  "pending": [],
  "deliverables": {
-  "model.py": false,
-  "REPORT.md": false
+  "model.py": true,
+  "REPORT.md": false,
+  "REPORT.md_note": "file write refused for subagents; full text returned to the caller",
+  "VERIFY.json": true,
+  "IMPORTANCE.json": true
  },
- "verdict": null,
- "notes": [],
+ "verdict": "No configuration adds after the GICS coverage leak is removed. F1 (added set, 5-session) -0.0009 vs ref_control (t -0.42); F2 (added set, multi-horizon) best by rule, IC 0.0246, but +0.0010 vs ref_mh (t 0.71) reverses to -0.0009 (1/7 years) on GICS-covered names: attributed to the coverage leak by the declared rule; H1 (volume-tercile horizons) -0.0017 (t -0.72), proxy is share volume not turnover (Spearman 0.31). D_hgb_mh stays the reference. Development results only.",
+ "notes": [
+  "Data audit done (see REPORT.md section 1); plan declared before scoring. next: ref_control",
+  "scored ref_control: IC 0.0216 (t 2.30), net 0.38%/yr; next: ref_mh",
+  "scored ref_mh: IC 0.0236 (t 2.41), net 1.04%/yr, increment vs ref_control +0.0020 (NW t 0.93); next: F1",
+  "scored F1: IC 0.0207 (t 2.19), net 1.40%/yr, increment vs ref_control -0.0009 (NW t -0.42); next: F2",
+  "scored F2: IC 0.0246 (t 2.54), net 1.39%/yr, increment vs ref_control +0.0030 (NW t 1.17); next: H1",
+  "scored H1: IC 0.0199 (t 2.32), net 0.43%/yr, increment vs ref_control -0.0017 (NW t -0.72); next: diagnostics, model.py, REPORT.md",
+  "diagnostics done (IMPORTANCE.json: all-added group drop +0.0007; VERIFY.json: model.py F2 reproduces 0.024577 exactly); verdict written; next: none"
+ ],
  "resume": "Read research/tree/Q7_features/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-13T14:27:49Z"
+ "updated": "2026-11-13T14:49:43Z"
 }
