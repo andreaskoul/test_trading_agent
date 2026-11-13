@@ -1,0 +1,89 @@
+{
+ "generated": "2026-11-13T03:46:57+00:00",
+ "records": 1,
+ "latest": {
+  "asof": "2026-11-12",
+  "state": {
+   "spy": 757.1199951171875,
+   "ret252": 0.12048063591962777,
+   "vol21_ann": 0.21523148627160202,
+   "vol_pct": 0.9615384615384616,
+   "hist_weeks": 156,
+   "panic": 0
+  },
+  "mom_loadings": {
+   "master_h5": 0.2122,
+   "master_h20": 0.3574,
+   "c2ft_h20": 0.5458,
+   "ridge_h5": -0.0597,
+   "ridge_h10": -0.0612,
+   "ridge_h20": -0.1646,
+   "ensemble": 0.6104
+  },
+  "eligible": 498
+ },
+ "states": [
+  {
+   "asof": "2026-11-12",
+   "spy": 757.1199951171875,
+   "ret252": 0.12048063591962777,
+   "vol21_ann": 0.21523148627160202,
+   "vol_pct": 0.9615384615384616,
+   "hist_weeks": 156,
+   "panic": 0
+  }
+ ],
+ "books": {
+  "mom": {
+   "weeks": 0,
+   "cum": null,
+   "ann": null,
+   "weekly": []
+  },
+  "mom_panic": {
+   "weeks": 0,
+   "cum": null,
+   "ann": null,
+   "weekly": []
+  },
+  "ens": {
+   "weeks": 0,
+   "cum": null,
+   "ann": null,
+   "weekly": []
+  },
+  "ens_panic": {
+   "weeks": 0,
+   "cum": null,
+   "ann": null,
+   "weekly": []
+  }
+ },
+ "evidence": {
+  "us_2000_2025": {
+   "t_dir": 1.7210683415138457,
+   "p_one_sided": 0.04261921163379928,
+   "p_holm": 0.09597490598300677,
+   "cond_sharpe": 0.5517370030641847,
+   "unc_sharpe": 0.2280349867735017,
+   "cond_net_pct_yr": 6.931166156133273,
+   "unc_net_pct_yr": 2.5388573558076555
+  },
+  "intl_1992_2025": {
+   "t_dir": 2.7161535437102535,
+   "p_one_sided": 0.0033022640001240007,
+   "p_holm": 0.006604528000248001,
+   "cond_sharpe": 1.1438306191168386,
+   "unc_sharpe": 0.6969505427158169,
+   "cond_net_pct_yr": 9.474278198137597,
+   "unc_net_pct_yr": 7.694300602215431,
+   "cond_max_dd_pct": -29.820449320214614,
+   "unc_max_dd_pct": -51.33335752281759,
+   "regions": {
+    "Europe": 3.14,
+    "Japan": 1.49,
+    "AsiaPacExJapan": 1.66
+   }
+  }
+ }
+}
