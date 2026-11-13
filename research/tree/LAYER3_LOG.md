@@ -279,3 +279,26 @@ root: weekly cross-sectional stock selection + S&P core
 │   └── R1 survivorship repair of the development panel ── queued
 └── CLOSED this layer: Q2 attention (no), Q3 ranking trees (no), Q4 construction (band stays; covariance book = lead)
 ```
+
+## Step 16 — E1 cost study: what the broad names cost to trade (2026-11-13)
+
+Quoted half-spread one second before 15:59 ET, on 12 seeded days in 2019-2025, every eligible name (`COST_STUDY.json`):
+
+| Universe | Names × days | Quoted | Median half-spread | Mean | 90th percentile |
+|---|---:|---:|---:|---:|---:|
+| S&P 500 panel names | 6,046 | 99% | 1.4 bp | 2.3 bp | 4.4 bp |
+| Broad names, all | 18,000 | 88% | 4.2 bp | 6.4 bp | 11.5 bp |
+| Broad, smallest dollar-volume third | 5,999 | 78% | 6.2 bp | 9.4 bp | 17.9 bp |
+| Broad, middle third | 6,001 | 90% | 4.2 bp | 6.2 bp | 10.6 bp |
+| Broad, largest third | 6,000 | 96% | 2.7 bp | 4.2 bp | 7.8 bp |
+
+**Reading against the combination check** (Sharpe 1.09 at 5 bp, 1.03 at 10 bp, 0.92 at 20 bp; interpolation, not
+measured):
+* **Spread alone** (mean 6.4 bp): about 1.07.
+* **With the same cushion the S&P 500 assumption carries** (5 bp charged against a 2.3 bp mean spread, ×2.2; so
+  about 14 bp for broad names): about 0.99.
+* So the combined fund sits **at the bar, not clearly above it**. Impact and the unquoted 22% of the smallest third
+  are not in these numbers.
+* **Implication:** the smallest dollar-volume third carries the highest IC (.032) and the highest cost (9.4 bp mean).
+  A cost-aware broad book (e.g. trading only the two larger thirds, or size-scaled cost in construction) is the
+  natural next exploitation. It was found after looking at spent data, so it can only be judged forward.
