@@ -247,3 +247,35 @@ Books: stock long/short only, gross 1, beta-hedged, 5 bp a side, target clipped 
   (−.020).
 * **Out-of-sample status**: none. The network is a development result. It is not a diversifier for the trees (IC
   correlation 0.94), so it is not a route to a higher Sharpe; no read requested.
+
+## Step 15 — combination check and policy round (2026-11-13)
+
+**Combination check** (`combo_check.py`, `COMBO_CHECK.json`; descriptive, both series already read, 2020-2025):
+
+| Broad book cost | Broad book Sharpe | Correlation with fund | Fund + broad book, equal-risk rule | Upper bound (best weight, ex post) |
+|---|---:|---:|---:|---:|
+| 5 bp | 0.75 | 0.07 | **1.09** (25.9 %/yr) | 1.16 |
+| 10 bp | 0.55 | 0.07 | **1.03** (24.6 %/yr) | 1.05 |
+| 20 bp | 0.13 | 0.07 | 0.92 | 0.94 |
+
+The fund alone: 0.94 (21.0 %/yr on these weeks). The broad book is close to uncorrelated with the fund (0.07; 0.16
+with its stock book), so it diversifies. Whether the bar of 1 is cleared depends on the true cost of trading the broad
+names: measure it before anything else.
+
+**Tree after the policy (PREREG Layer 3, Amendment 6):**
+
+```
+root: weekly cross-sectional stock selection + S&P core
+├── EXPLOIT (out-of-sample evidence)
+│   ├── trees, broad universe ── PASSED L3.1 (IC .0249, t 4.41)
+│   │   ├── E1 cost study: broad half-spreads from SIP quotes ── running
+│   │   └── E2 combined fund (core + MASTER + broad trees, equal risk) ── forward only, needs the owner's go-ahead
+│   ├── IPCA ── passed twice (S&P 400, broad); trails its ridge control ── no further spend
+│   └── MASTER, S&P 500 fund ── 0.94 out of sample (2020-25) ── traded
+├── EXPLORE (development data)
+│   ├── Q5_rl  RL construction (Moody-Saffell RRL, PPO, EIIE, differentiable Sharpe) ── launched
+│   ├── N4_news  headlines 2015-2025 ── downloading; branch on completion
+│   ├── Q1_seqnet  sequence nets ── finishing (best dev .0225)
+│   └── R1 survivorship repair of the development panel ── queued
+└── CLOSED this layer: Q2 attention (no), Q3 ranking trees (no), Q4 construction (band stays; covariance book = lead)
+```

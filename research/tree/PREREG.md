@@ -277,3 +277,28 @@ targets near +179 (17,900%). 95 of 681,939 eligible broad Thursday targets in 20
 **Change (reported books only).** The decile and band books in `read3.py` earn the target clipped to [-1, 1]. The
 registered test (weekly rank IC, Newey-West t, Holm) uses the unclipped target: a rank statistic, which one print
 moves by at most one rank position. No print is removed from the panel; the models see the data as a live fund would.
+
+## Layer 3, Amendment 6 (2026-11-13): policy round after the L3.1 read and the combination check
+
+**State.** The L3.1 read passed for the trees and IPCA (step 13). `combo_check.py` (descriptive; both series already
+read) found that the broad trees book correlates 0.07 with the fund's 2020-2025 weekly returns. Adding it at equal risk
+to the fund's existing stock book (a rule fixed before running) gives Sharpe 1.09 at 5 bp, 1.03 at 10 bp and 0.92 at
+20 bp, against 0.94 for the fund alone. The cost of trading the broad names decides the bar.
+
+**Exploitation (coordinating session).**
+* **E1, cost study.** Measure the quoted half-spread of the broad names from Alpaca SIP quotes, sampled at a fixed
+  time on fixed days chosen by seed. It reads no returns and no predictions, and sets the cost assumption for E2.
+* **E2, combined fund, forward only.** Core + MASTER S&P 500 book + broad trees book (L3b candidate, refit yearly) at
+  the equal-risk weight, with costs from E1. No past sample remains unread for it, so it is judged on forward paper
+  weeks only. It needs the owner's go-ahead (the traded fund is frozen; this would be a research shadow record).
+
+**Exploration (agents, development data only).**
+* **Q5_rl.** Reinforcement learning for portfolio construction given fixed signals and other inputs (market state,
+  volatility, current holdings, costs). Methods: Moody-Saffell recurrent reinforcement learning (direct differential
+  Sharpe), policy gradient or PPO on a small parametric policy (trade rate, exposure, no-trade width as functions of
+  state), a per-asset shared-network policy (EIIE-style), and an end-to-end net-Sharpe objective. Signals: MASTER, D
+  trees, IPCA (saved development predictions). Declared controls: M1's band book on the same signal, and Q4's
+  `mvnl_nt` book. Metrics: net Sharpe at 5 bp, maximum drawdown, turnover; hyperparameters chosen on 2013-2016 only,
+  2017-2019 reported separately. Selection by net Sharpe with drawdown no worse than the control. At most one
+  candidate is nominated; it gets a read only under a later amendment naming fresh data.
+* **N4_news.** The headline download starts now. The branch is launched when the download completes (FEED.md notes).
