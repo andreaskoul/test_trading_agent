@@ -1,6 +1,6 @@
 # Tree search: progress ledger
 
-*Rebuilt 2026-11-13 15:10 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
+*Rebuilt 2026-11-14 14:06 UTC by `state.py` from each branch's logs. To resume a branch after a usage limit: send its agent (or a new one) the `resume` line of its `STATE.json`.*
 
 | branch | phase | status | scored | best (Amendment 2 rule) | mean IC / increment / net Sharpe | model.py | REPORT.md | verdict |
 |---|---:|---|---:|---|---:|---|---|---|
@@ -9,6 +9,7 @@
 | C_features | 1 | done | 15 | C13 C06 Fama-MacBeth | 0.0209 | yes | no | features carried into X1 |
 | D_ensembles | 1 | done | 7 | hgb_multihorizon | 0.0236 | yes | yes | finalist D_hgb_mh failed the holdout |
 | E_regime | 1 | done | 15 | E13 kernel ridge + panic | 0.0167 | yes | no | panic rule carried into X1; adaptation +0.005 |
+| F_forward | None | in progress | 0 |  |  | no | no |  |
 | H7_build | None | in progress | 0 |  |  | no | no |  |
 | L1_lit | None | in progress | 0 |  |  | no | yes |  |
 | L2_practice | None | in progress | 0 |  |  | no | yes |  |

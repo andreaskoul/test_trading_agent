@@ -489,3 +489,51 @@ weeks, therefore executed the registered read. Nothing was seen before it, the c
 
 **Launched:** F-build (forward pipeline, no installation), A1 (audit of current-membership inputs). **Waiting:** news
 download (619 of about 850 names), then N4.
+
+## Step 26 — state checkpoint before a context compaction (2026-11-14 14:10 UTC)
+
+**Survivorship-repair check (R1, measured now).** Of the 241 ever-eligible S&P 500 names with no price in the
+development panel, only 45 have Alpaca bars on or before 2019 (44 with ≥ 252 sessions). They would fill 27,776 of
+the 99,885 eligible-but-unpriced name-days in 2016-2019 (28%). The rest (196 names) are absent from Alpaca entirely,
+largely names acquired or delisted before 2016-2019 trading, or served under renamed `*_DELISTED` symbols. Alpaca
+alone cannot repair the gap; a partial repair (2016-2019, 28% of the missing name-days) is possible and would give a
+bound on the bias, not a fix.
+
+**Agents in flight (each with its own state file; resume with SendMessage after any limit):**
+
+| Agent | Job | State |
+|---|---|---|
+| P11 | Protocol 11 shadow, branch `fund/protocol-11-shadow`, worktree `.claude/worktrees/p11`; no push/merge by the agent; coordinator reviews, runs tests, merges in the weekend window, updates the runner | nothing committed yet; **priority, must merge before Mon 2026-11-16** |
+| F-build | `h9_forward.py` (Amendment 9 forward books F0/F1/F2), RUNBOOK; no install; never compares constructions | `F_forward/STATE.json` |
+| N4 | news branch (dev ≤ 2019, increment over MASTER, availability-leak check first) | `N4_news/STATE.json` |
+| A1 | read-only audit of current-membership leaks | report pending |
+
+**Policy plan for the next layer (to register as Amendment 10 when P11 is merged; launch then, to keep the usage
+budget for P11):**
+* **Exploit: Q9_horizon, turnover by target horizon.** The binding constraint on the broad trees book is cost (42%
+  weekly turnover; Sharpe 0.79 at 5 bp vs 0.37 at 14 bp, 2017-2026). For a rank book, turnover ≈ k·√(2(1 − ρ)), with
+  ρ the week-on-week rank autocorrelation of the score (Grinold-Kahn). Training on longer targets raises ρ; Blitz et
+  al. 2023 report 3-12-month ML targets more reliably net positive after 2004.
+  * **Configurations:** D trees on 21- and 63-session targets and mixes {5, 21, 63}, with deciles and with hysteresis
+    10/30.
+  * **Measures:** net Sharpe under the square-root cost model at the S&P cost and at a broad-like 14 bp, IC on y5,
+    ρ, and turnover.
+  * **The registered frontier:** IC lost vs turnover saved.
+* **Explore: Q10_timing, liquidity-provision timing (Nagel 2012).** Reversal-heavy books are paid more when
+  liquidity is scarce. If the conditional Sharpe SR_t rises with lagged dispersion or VIX, the mean-variance exposure
+  is w_t ∝ SR_t/σ_t, the opposite sign to inverse-variance scaling (Q4 mixed; Q5's RL learned "lower exposure when
+  dispersion high").
+  * **Test:** regress weekly book returns and squared returns on lagged dispersion, causal and expanding window.
+  * **Rule:** fixed a priori, exposure = clip((SR_hat_t/σ_hat_t)/mean, 0.5, 2).
+  * **Controls:** constant exposure, and Moreira-Muir inverse variance.
+  * **Scope:** development data, then forward.
+* **R1:** partial survivorship repair for 2016-2019 from Alpaca (45 names), only to bound the bias on the leading
+  models.
+* **Owner decisions pending:** installing a weekly forward job; a fund-level volatility target (rule 17).
+
+**Out-of-sample scoreboard (for reference):**
+* fund 2020-2025 Sharpe 0.94;
+* broad trees signal IC .0264 (t 4.93), 2017-2026;
+* broad trees book Sharpe 0.79 at 5 bp, 0.37 at 14 bp;
+* H7 2026: increments +13.0 %/yr (t 1.76) and +10.4 (t 1.36), no Holm pass; combined fund 2026 Sharpe 0.76; fund
+  alone −0.10 (core whipsaw, MASTER IC .003, within its history).
