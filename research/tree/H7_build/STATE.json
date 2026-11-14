@@ -1,0 +1,24 @@
+{
+ "task": "H7 build (PREREG Layer 3, Amendment 7): extended panels, MASTER 5-day 2026 refit, broad trees 2026 refit, H7 weights",
+ "script": "research/tree/h7_build.py (subcommands: status, sp_panel, master YEAR, broad_panel, trees YEAR, weights); checks accumulate in research/tree/H7_build/CHECKS.json",
+ "python": "steps 1-2: ~/.cache/quant-tf-venv/bin/python; steps 3-5: python3",
+ "rule": "never compute any statistic combining 2026 predictions with 2026 outcomes",
+ "done": [
+  "h7_build.py written; chain() unit-tested on toy data",
+  "step 5 weights: H7_WEIGHTS.json written (k_a 0.59 fixed; k_b 0.5307; k at 14bp all-eligible reproduces 0.5924)",
+  "step 2 fidelity: MASTER 2025 refit rank corr with October read = 1.000 (CHECKS.json step2_master_2025_fidelity)",
+  "fetch_end() adapted: _fetch_*.json end is now the last complete session 2026-11-12 (kept inclusive)",
+  "step 1 sp_panel done (CHECKS.json step1_*); 25 panel names with no yfinance close never get 2026 prices",
+  "step 3 broad_panel done (.cache/tree/y2026/broad_panel.npz; CHECKS.json step3_*)",
+  "step 4 trees 2026 + terciles done; trees 2025 fidelity exact (3e-8)",
+  "BUILD.md drafted; placeholders RESULT_2026 and TREES_VS_MASTER to fill after master 2026",
+  "master 2026 complete, 5 seeds; master_h5_2026.npy saved",
+  "trees vs master rank corr on S&P names (0.37)",
+  "BUILD.md complete"
+ ],
+ "running": [],
+ "next": [
+  "nothing: build complete; the coordinator runs the scored read"
+ ],
+ "updated": "2026-11-14T00:50Z"
+}

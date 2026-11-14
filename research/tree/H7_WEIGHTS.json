@@ -1,0 +1,28 @@
+{
+ "k_a": 0.59,
+ "k_b": 0.5307,
+ "method": "Equal-risk rule (combo_check.py): k = sd(weekly fund stock-book return) / sd(weekly broad book net return), on the inner join of the two weekly series, 2020-2025 (spent data). Fund stock book: combo_check.fund_weekly() wk_book (MASTER 5-day decile book, gross 0.6, 5 bp; per-period return scaled to 7 days). Broad book: L3b candidate predictions (.cache/tree/read3_pred_L3b_candidate.npy), M1 decile book, y5 clipped at +-1 (Amendment 5), 14 bp a unit traded, weeks with >= 50 names. k_a = 0.59 is fixed by the registration (COMBO_CHECK.json equal-risk k, 0.5928 at 5 bp; 0.5926 at 10 bp; 0.5921 at 20 bp). k_b: the same rule with the broad book restricted each week to eligible broad names in dollar-volume terciles 2 and 3 (63-session mean of unadjusted close x volume, ranked among eligible broad names with a dollar volume, as read3.extras).",
+ "detail": {
+  "H7a_all_eligible": {
+   "k_equal_risk_at_14bp": 0.5923800304332268,
+   "weeks": 302,
+   "period": [
+    "2020-01-02",
+    "2025-12-11"
+   ],
+   "sd_fund_stock_book_weekly": 0.009180642044913189,
+   "sd_broad_book_weekly": 0.015497892523823071
+  },
+  "H7b_top_two_dv_terciles": {
+   "k_equal_risk_at_14bp": 0.5306794545025209,
+   "weeks": 302,
+   "period": [
+    "2020-01-02",
+    "2025-12-11"
+   ],
+   "sd_fund_stock_book_weekly": 0.009180642044913189,
+   "sd_broad_book_weekly": 0.0172997879737392
+  }
+ },
+ "computed": "2026-11-13T10:39:35Z"
+}

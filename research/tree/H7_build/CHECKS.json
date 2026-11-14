@@ -1,0 +1,559 @@
+{
+ "step5_weights": {
+  "k_a": 0.59,
+  "k_b": 0.5307,
+  "method": "Equal-risk rule (combo_check.py): k = sd(weekly fund stock-book return) / sd(weekly broad book net return), on the inner join of the two weekly series, 2020-2025 (spent data). Fund stock book: combo_check.fund_weekly() wk_book (MASTER 5-day decile book, gross 0.6, 5 bp; per-period return scaled to 7 days). Broad book: L3b candidate predictions (.cache/tree/read3_pred_L3b_candidate.npy), M1 decile book, y5 clipped at +-1 (Amendment 5), 14 bp a unit traded, weeks with >= 50 names. k_a = 0.59 is fixed by the registration (COMBO_CHECK.json equal-risk k, 0.5928 at 5 bp; 0.5926 at 10 bp; 0.5921 at 20 bp). k_b: the same rule with the broad book restricted each week to eligible broad names in dollar-volume terciles 2 and 3 (63-session mean of unadjusted close x volume, ranked among eligible broad names with a dollar volume, as read3.extras).",
+  "detail": {
+   "H7a_all_eligible": {
+    "k_equal_risk_at_14bp": 0.5923800304332268,
+    "weeks": 302,
+    "period": [
+     "2020-01-02",
+     "2025-12-11"
+    ],
+    "sd_fund_stock_book_weekly": 0.009180642044913189,
+    "sd_broad_book_weekly": 0.015497892523823071
+   },
+   "H7b_top_two_dv_terciles": {
+    "k_equal_risk_at_14bp": 0.5306794545025209,
+    "weeks": 302,
+    "period": [
+     "2020-01-02",
+     "2025-12-11"
+    ],
+    "sd_fund_stock_book_weekly": 0.009180642044913189,
+    "sd_broad_book_weekly": 0.0172997879737392
+   }
+  },
+  "computed": "2026-11-13T10:39:35Z"
+ },
+ "step2_master_2025_fidelity": {
+  "year": 2025,
+  "cfg": {
+   "d_model": 256,
+   "beta": 5
+  },
+  "seeds": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "train_rows": [
+   "2010-01-04",
+   "2024-12-20"
+  ],
+  "fit_rows": [
+   "2010-01-04",
+   "2021-12-13"
+  ],
+  "val_rows": [
+   "2021-12-22",
+   "2024-12-20"
+  ],
+  "pred_thursdays": 48,
+  "per_seed": {
+   "0": {
+    "epochs": 19,
+    "best_epoch": 3,
+    "val_ic": 0.021678380150163087
+   },
+   "1": {
+    "epochs": 24,
+    "best_epoch": 8,
+    "val_ic": 0.04029376444082237
+   },
+   "2": {
+    "epochs": 18,
+    "best_epoch": 2,
+    "val_ic": 0.028281543308162734
+   },
+   "3": {
+    "epochs": 37,
+    "best_epoch": 21,
+    "val_ic": 0.02957167611526436
+   },
+   "4": {
+    "epochs": 24,
+    "best_epoch": 8,
+    "val_ic": 0.051246971218765355
+   }
+  },
+  "shape": [
+   4276,
+   850
+  ],
+  "names_scored_per_thursday": {
+   "min": 480,
+   "max": 490
+  },
+  "rank_corr_with_october_read_2025": {
+   "mean": 1.0,
+   "min": 0.9999999999999998,
+   "max": 1.0
+  },
+  "seed_pair_rank_corr_mean": 0.32966401133955425
+ },
+ "step1_calendar": {
+  "yf_2025_sessions": 250,
+  "alpaca_2025_sessions": 250,
+  "only_yf": [],
+  "only_alpaca": [],
+  "sessions_2026": 218,
+  "first_2026": "2026-01-02",
+  "last_2026": "2026-11-12",
+  "fetch_end_meta": "2026-11-12",
+  "bars_after_fetch_end_dropped": 0,
+  "adjusted_chunk_files": 195
+ },
+ "step1_seam_2025": {
+  "names_compared": 619,
+  "quantiles": {
+   "0": 0.43296710074610156,
+   "0.001": 0.5701235192364414,
+   "0.01": 0.9903900373527804,
+   "0.05": 0.999911252780026,
+   "0.25": 0.9999912592126637,
+   "0.5": 0.9999985420491896
+  },
+  "below_0.99": {
+   "KG": [
+    0.433,
+    249
+   ],
+   "PCL": [
+    0.6553,
+    103
+   ],
+   "FTV": [
+    0.8971,
+    249
+   ],
+   "TDG": [
+    0.9686,
+    249
+   ],
+   "WDC": [
+    0.9819,
+    249
+   ],
+   "LEN": [
+    0.9876,
+    249
+   ],
+   "CAM": [
+    0.9891,
+    60
+   ]
+  },
+  "spy": 0.9999998252364878
+ },
+ "step1_membership": {
+  "file_last_date": "2026-08-18",
+  "file_rows_2026": 14,
+  "last_row_equals_sp500_current": true,
+  "carried_forward_from": "2026-08-18",
+  "names_member_in_2026_not_in_panel_no_prices": [
+   "BNY",
+   "CASY",
+   "COHR",
+   "ECHO",
+   "FDXF",
+   "FERG",
+   "FLEX",
+   "HONA",
+   "LITE",
+   "MRSH",
+   "MRVL",
+   "RDDT",
+   "SATS",
+   "VEEV",
+   "VMRK",
+   "VRT"
+  ],
+  "panel_names_with_2026_prices": 617,
+  "anchors_not_2025_12_31": {
+   "APC": null,
+   "ATGE": null,
+   "AVB": null,
+   "BBBY": null,
+   "BK": null,
+   "CA": null,
+   "CMA": null,
+   "CSRA": null,
+   "CTRA": null,
+   "DAY": null,
+   "EA": null,
+   "EQR": null,
+   "HOLX": null,
+   "LEG": null,
+   "LIFE": null,
+   "MMC": null,
+   "NFX": null,
+   "PSKY": null,
+   "PX": null,
+   "QRVO": null,
+   "SEE": null,
+   "SGP": null,
+   "SPLS": null,
+   "TGNA": null,
+   "WBD": null
+  },
+  "unanchored_names_left_without_2026_prices": [
+   "APC",
+   "ATGE",
+   "AVB",
+   "BBBY",
+   "BK",
+   "CA",
+   "CMA",
+   "CSRA",
+   "CTRA",
+   "DAY",
+   "EA",
+   "EQR",
+   "HOLX",
+   "LEG",
+   "LIFE",
+   "MMC",
+   "NFX",
+   "PSKY",
+   "PX",
+   "QRVO",
+   "SEE",
+   "SGP",
+   "SPLS",
+   "TGNA",
+   "WBD"
+  ],
+  "unanchored_that_are_2026_members": [
+   "AVB",
+   "BK",
+   "CTRA",
+   "DAY",
+   "EA",
+   "EQR",
+   "HOLX",
+   "MMC",
+   "PSKY",
+   "WBD"
+  ],
+  "anchored_names_with_missing_sessions_inside_their_2026_span": {},
+  "names_with_2026_prices_stopping_before_last_session": 1,
+  "members_last_session_in_panel_without_price_last_session": [
+   "KVUE",
+   "PSKY",
+   "WBD"
+  ]
+ },
+ "step1_equal_to_original_build_le_2025": {
+  "Z": {
+   "equal": true
+  },
+  "frozen": {
+   "equal": true
+  },
+  "y20": {
+   "equal_where_original_finite": true,
+   "cells_finite_only_in_extended": 10346,
+   "rows_with_such_cells": [
+    "2025-12-02",
+    "2025-12-03",
+    "2025-12-04",
+    "2025-12-05",
+    "2025-12-08",
+    "2025-12-09",
+    "2025-12-10",
+    "2025-12-11",
+    "2025-12-12",
+    "2025-12-15",
+    "2025-12-16",
+    "2025-12-17",
+    "2025-12-18",
+    "2025-12-19",
+    "2025-12-22",
+    "2025-12-23",
+    "2025-12-24",
+    "2025-12-26",
+    "2025-12-29",
+    "2025-12-30",
+    "2025-12-31"
+   ]
+  },
+  "y5": {
+   "equal_where_original_finite": true,
+   "cells_finite_only_in_extended": 2958,
+   "rows_with_such_cells": [
+    "2025-12-23",
+    "2025-12-24",
+    "2025-12-26",
+    "2025-12-29",
+    "2025-12-30",
+    "2025-12-31"
+   ]
+  },
+  "y10": {
+   "equal_where_original_finite": true,
+   "cells_finite_only_in_extended": 5423,
+   "rows_with_such_cells": [
+    "2025-12-16",
+    "2025-12-17",
+    "2025-12-18",
+    "2025-12-19",
+    "2025-12-22",
+    "2025-12-23",
+    "2025-12-24",
+    "2025-12-26",
+    "2025-12-29",
+    "2025-12-30",
+    "2025-12-31"
+   ]
+  },
+  "elig": {
+   "equal": true
+  },
+  "e": {
+   "equal": true
+  },
+  "spy": {
+   "equal": true
+  },
+  "rm": {
+   "equal": true
+  },
+  "r": {
+   "equal": true
+  },
+  "beta": {
+   "equal": true
+  },
+  "valid": {
+   "equal": true
+  }
+ },
+ "step1_coverage": {
+  "sessions": [
+   "2009-01-02",
+   "2026-11-12",
+   4494
+  ],
+  "names": 850,
+  "thursdays_2026": 45,
+  "eligible_per_2026_thursday": {
+   "min": 488,
+   "max": 503
+  },
+  "eligible_with_all_Z_per_2026_thursday_min": 485
+ },
+ "step3_equal_to_saved_panel_le_2025": {
+  "saved_names_missing_in_extended": [],
+  "new_broad_names_eligible_only_in_2026": 177,
+  "elig": {
+   "equal": true
+  },
+  "Z": {
+   "equal": true
+  },
+  "valid": {
+   "equal": true
+  },
+  "r": {
+   "equal": true
+  },
+  "e": {
+   "equal": true
+  },
+  "beta": {
+   "equal": true
+  },
+  "rm": {
+   "equal": true
+  },
+  "spy": {
+   "equal": true
+  },
+  "dv": {
+   "equal": true
+  },
+  "y5": {
+   "equal_where_saved_finite": true,
+   "cells_finite_in_saved_nan_in_extended": 0,
+   "cells_finite_only_in_extended": 11946,
+   "rows_with_such_cells": [
+    "2025-12-23",
+    "2025-12-24",
+    "2025-12-26",
+    "2025-12-29",
+    "2025-12-30",
+    "2025-12-31"
+   ]
+  },
+  "y5_delist": {
+   "equal_where_saved_finite": false,
+   "cells_finite_in_saved_nan_in_extended": 49,
+   "cells_finite_only_in_extended": 11946,
+   "rows_with_such_cells": [
+    "2025-12-23",
+    "2025-12-24",
+    "2025-12-26",
+    "2025-12-29",
+    "2025-12-30",
+    "2025-12-31"
+   ],
+   "cells_differing": 94458,
+   "rows_differing": [
+    "2017-07-24",
+    "2017-07-25",
+    "2017-07-26",
+    "2017-07-27",
+    "2017-07-28",
+    "2017-08-25",
+    "2017-08-28",
+    "2017-08-29",
+    "2017-08-30",
+    "2017-08-31",
+    "2018-06-07",
+    "2018-06-08",
+    "2018-06-11",
+    "2018-06-12",
+    "2018-06-13",
+    "2018-11-01",
+    "2018-11-02",
+    "2018-11-05",
+    "2018-11-06",
+    "2018-11-07"
+   ]
+  }
+ },
+ "step3_coverage": {
+  "sessions": [
+   "2009-01-02",
+   "2026-11-12",
+   4494
+  ],
+  "names": 4780,
+  "broad_names": 3930,
+  "eligible_broad_per_2026_thursday": {
+   "mean": 1500.0,
+   "min": 1500,
+   "max": 1500
+  },
+  "eligible_sp500_per_2026_thursday_min": 488,
+  "broad_anchor_not_2025_12_31": 1,
+  "broad_with_2026_prices_no_anchor": 30
+ },
+ "step4_trees_2026": {
+  "year": 2026,
+  "train_end_row": "2025-12-19",
+  "last_target_end": "2025-12-30",
+  "pred_thursdays": 45,
+  "shape": [
+   4494,
+   4780
+  ],
+  "broad_names_scored_per_thursday": {
+   "min": 1489,
+   "max": 1494
+  },
+  "tercile_counts_per_thursday_min": {
+   "1": 499,
+   "2": 500,
+   "3": 501
+  }
+ },
+ "step4_trees_2025_fidelity": {
+  "year": 2025,
+  "train_end_row": "2024-12-19",
+  "last_target_end": "2024-12-30",
+  "pred_thursdays": 48,
+  "shape": [
+   4494,
+   4780
+  ],
+  "broad_names_scored_per_thursday": {
+   "min": 1494,
+   "max": 1500
+  },
+  "nan_pattern_equal": true,
+  "max_abs_diff_vs_saved_L3b_2025": 2.979732782737443e-08,
+  "rank_corr_vs_saved_L3b_2025": {
+   "mean": 0.9999999761326279,
+   "min": 0.9999999646585596
+  }
+ },
+ "step2_master_2026": {
+  "year": 2026,
+  "cfg": {
+   "d_model": 256,
+   "beta": 5
+  },
+  "seeds": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "train_rows": [
+   "2010-01-04",
+   "2025-12-22"
+  ],
+  "fit_rows": [
+   "2010-01-04",
+   "2022-09-29"
+  ],
+  "val_rows": [
+   "2022-10-10",
+   "2025-12-22"
+  ],
+  "pred_thursdays": 45,
+  "per_seed": {
+   "0": {
+    "epochs": 29,
+    "best_epoch": 13,
+    "val_ic": 0.03734826928084321
+   },
+   "1": {
+    "epochs": 31,
+    "best_epoch": 15,
+    "val_ic": 0.0407890389758079
+   },
+   "2": {
+    "epochs": 37,
+    "best_epoch": 21,
+    "val_ic": 0.03817611457695903
+   },
+   "3": {
+    "epochs": 41,
+    "best_epoch": 25,
+    "val_ic": 0.0463172574306176
+   },
+   "4": {
+    "epochs": 29,
+    "best_epoch": 13,
+    "val_ic": 0.05764638592754703
+   }
+  },
+  "shape": [
+   4494,
+   850
+  ],
+  "names_scored_per_thursday": {
+   "min": 484,
+   "max": 493
+  },
+  "seed_pair_rank_corr_mean": 0.49715112465540223
+ },
+ "step4_rank_corr_trees_vs_master_sp500_names_2026": {
+  "mean": 0.37107842549700965,
+  "min": -0.02513254764724,
+  "max": 0.656643673977716,
+  "names_with_both_min": 484,
+  "names_with_both_max": 493,
+  "prediction_rows_equal_the_45_thursdays": true,
+  "first": "2026-01-08",
+  "last": "2026-11-12",
+  "sp_names_first_850_columns_of_broad_panel": true
+ }
+}
