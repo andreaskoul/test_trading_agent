@@ -1,0 +1,138 @@
+{
+ "note": "development data only (headlines <= 2019-12-31)",
+ "per_name_year": {
+  "2015": {
+   "eligible_names": 529,
+   "headlines_mean": 115.01701354980469,
+   "headlines_median": 65.0,
+   "names_zero": 15,
+   "names_zero_priced": 10,
+   "names_zero_unpriced": 5,
+   "median_priced": 67.5,
+   "median_unpriced": 57.0,
+   "unpriced_names": 149
+  },
+  "2016": {
+   "eligible_names": 533,
+   "headlines_mean": 123.09381103515625,
+   "headlines_median": 68.0,
+   "names_zero": 13,
+   "names_zero_priced": 8,
+   "names_zero_unpriced": 5,
+   "median_priced": 72.0,
+   "median_unpriced": 63.0,
+   "unpriced_names": 133
+  },
+  "2017": {
+   "eligible_names": 533,
+   "headlines_mean": 108.72420501708984,
+   "headlines_median": 57.0,
+   "names_zero": 6,
+   "names_zero_priced": 5,
+   "names_zero_unpriced": 1,
+   "median_priced": 58.0,
+   "median_unpriced": 56.0,
+   "unpriced_names": 117
+  },
+  "2018": {
+   "eligible_names": 529,
+   "headlines_mean": 111.7788314819336,
+   "headlines_median": 71.0,
+   "names_zero": 1,
+   "names_zero_priced": 1,
+   "names_zero_unpriced": 0,
+   "median_priced": 71.5,
+   "median_unpriced": 64.0,
+   "unpriced_names": 105
+  },
+  "2019": {
+   "eligible_names": 533,
+   "headlines_mean": 108.1219482421875,
+   "headlines_median": 66.0,
+   "names_zero": 1,
+   "names_zero_priced": 1,
+   "names_zero_unpriced": 0,
+   "median_priced": 68.5,
+   "median_unpriced": 57.0,
+   "unpriced_names": 91
+  }
+ },
+ "share_name_weeks_with_news": {
+  "2015": {
+   "has5_all_eligible": 0.5519605278968811,
+   "has21_all_eligible": 0.890791654586792,
+   "has21_with_target": 0.8932840824127197,
+   "has21_without_target": 0.8838481307029724,
+   "has21_master_names": 0.8930686116218567
+  },
+  "2016": {
+   "has5_all_eligible": 0.5588235259056091,
+   "has21_all_eligible": 0.8936830759048462,
+   "has21_with_target": 0.8967404961585999,
+   "has21_without_target": 0.8837055563926697,
+   "has21_master_names": 0.8962235450744629
+  },
+  "2017": {
+   "has5_all_eligible": 0.5258099436759949,
+   "has21_all_eligible": 0.8773058652877808,
+   "has21_with_target": 0.8755913376808167,
+   "has21_without_target": 0.8839403390884399,
+   "has21_master_names": 0.8752330541610718
+  },
+  "2018": {
+   "has5_all_eligible": 0.5650690197944641,
+   "has21_all_eligible": 0.9156196713447571,
+   "has21_with_target": 0.915378749370575,
+   "has21_without_target": 0.9166666865348816,
+   "has21_master_names": 0.9154261946678162
+  },
+  "2019": {
+   "has5_all_eligible": 0.5389702916145325,
+   "has21_all_eligible": 0.9003564119338989,
+   "has21_with_target": 0.9011882543563843,
+   "has21_without_target": 0.8964821696281433,
+   "has21_master_names": 0.901273250579834
+  }
+ },
+ "left_vs_stayed": {
+  "stayed_names": 505,
+  "left_names": 132,
+  "headlines_per_eligible_year_median_stayed": 76.9220985691574,
+  "headlines_per_eligible_year_median_left": 103.09467715153984,
+  "zero_archive_stayed": 1,
+  "zero_archive_left": 0
+ },
+ "availability": {
+  "has21_all": {
+   "ic": 0.005345332610476974,
+   "t_nw4": 1.285528912132056,
+   "weeks": 202
+  },
+  "has5_all": {
+   "ic": -0.0027096412430229074,
+   "t_nw4": -0.5571221270655968,
+   "weeks": 202
+  },
+  "has21_master_names": {
+   "ic": 0.005245523815915193,
+   "t_nw4": 1.2575942082358769,
+   "weeks": 202
+  },
+  "has_any_2015_2019_all (uses within-dev future)": {
+   "ic": 0.033371624698731533,
+   "t_nw4": 5.791961188097875,
+   "weeks": 2
+  },
+  "has21_by_year": {
+   "2016": 0.015253387241595357,
+   "2017": -0.0014896933187036234,
+   "2018": 0.01817004011737632,
+   "2019": -0.011201290790557598
+  },
+  "has21_share_by_dollar_volume_tercile": {
+   "0": 0.8077555894851685,
+   "1": 0.9074445366859436,
+   "2": 0.9765116572380066
+  }
+ }
+}

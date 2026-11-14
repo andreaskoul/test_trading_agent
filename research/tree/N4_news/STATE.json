@@ -1,20 +1,81 @@
 {
  "branch": "N4_news",
- "phase": 2,
- "status": "not started",
- "configurations_scored": 0,
- "scored": [],
- "best": null,
- "plan": [],
+ "phase": 3,
+ "status": "done",
+ "configurations_scored": 12,
+ "scored": [
+  "audit",
+  "timing test",
+  "features",
+  "c0",
+  "c1",
+  "c5",
+  "c6",
+  "c2",
+  "c3",
+  "ref_D",
+  "c4",
+  "dml"
+ ],
+ "best": {
+  "name": "c6",
+  "increment": 0.000697,
+  "increment_t": 0.43,
+  "years_increment_positive": 1,
+  "meets_rule": false,
+  "rule": "highest mean increment among configurations positive in >= 3 of 4 years (none qualifies)"
+ },
+ "rules_declared_before_scoring": [
+  "Development data only: headlines with created_at <= 2019-12-31T23:59:59Z (filtered at load, asserted); dev panel harness.load(). Nothing 2020+ opened.",
+  "News archive starts 2015-01-01, so scored years are 2016-2019 (4 validation years); training rows for news models start in 2015 (after a 63-session warm-up of the abnormal-count feature). The Amendment 2/3 rule 'positive in >= 5 of 7 years' becomes 'positive in >= 3 of 4 years'. Selection within the branch: highest mean increment over MASTER among configurations positive in >= 3 of 4 years; development gate (phase 2): increment t >= 1.5. Shrunk increment across all logged configurations reported.",
+  "Timing: a headline with created_at after 16:00:00 America/New_York on session t (or on a non-session day) belongs to the next session; features at Thursday row t use only headlines assigned to sessions <= t. Unit-tested with planted headlines (test_timing.py).",
+  "Missing news is an explicit state: has-news indicators; tone/novelty/multi-share NaN where no headline in the window, ranked features NaN -> 0 (neutral) plus the indicator. Names with no headline in the trailing 126 sessions get abnormal count NaN (no baseline).",
+  "Tone: Loughran-McDonald lists are NOT obtainable offline (pysentiment2 not installed, no package index; network fetches forbidden), so tone uses a small documented HAND list of finance words (lexicon.py), labelled as such everywhere. Tone only over single-symbol headlines.",
+  "Availability check (as Q7 did for GICS): weekly IC of the pure has-news indicators with y5 on 2016-2019 Thursdays. Covered-subset diagnostic declared for every comparison regardless: candidate and reference both restricted to name-weeks with >= 1 headline in the prior 21 sessions. Rule (as Q7): if a full-panel gain is not matched to at least half on the covered subset, the gain is attributed to the coverage leak and the verdict uses the covered subset.",
+  "Size tercile: no market cap in the dev file; proxy = trailing 63-session mean dollar volume (.cache/tree/q6_dv.npz, Yahoo close x volume), terciles across eligible names each Thursday. Increment reported by tercile. Labelled a liquidity proxy."
+ ],
+ "plan": [
+  "audit: headlines per name-year (2015-2019), share of eligible name-weeks with any headline in the prior 5/21 sessions by year, names with zero headlines split by priced/unpriced and by still-eligible-at-end-2019 vs left; availability IC of has-news (21-session) and has-archive indicators with y5",
+  "timing unit test with planted headlines (15:59 / 16:01 NY on a Thursday, a Saturday headline, a headline on t+1 that must not move row t)",
+  "features (build once, .cache/tree/extra_news_dev.npz with note): cnt1, cnt5, cnt21 (log1p), abn21 = log1p(cnt21/21) - log1p(trailing 126-session mean daily count, min 63), abn5 likewise for 5 sessions, novelty5/novelty21 (share of headlines whose normalised text - lowercase, digits and punctuation removed - was not seen for that name in the prior 21 sessions), multi21 (share of headlines with >1 symbol), tone5/tone21 (hand-list (pos-neg)/(pos+neg) per single-symbol headline, averaged; NaN if none), has5, has21 indicators, dsl (sessions since last headline, capped 252); all set NaN off-eligible, cross-sectionally ranked in [-0.5,0.5] per session, NaN -> 0 plus the indicators",
+  "c0: MASTER 5-day reference (master_h5_ref) on 2016-2019",
+  "c1: fixed blend 0.7 rank(MASTER) + 0.3 rank(tone21), tone missing -> neutral 0.5; no fit; MASTER's names only",
+  "c2: Fama-MacBeth: per-Thursday cross-sectional OLS of rank(y5) on [MASTER rank, 13 news features, has21] for training Thursdays >= 2015-04 and <= train_end; mean coefficients; predict MASTER's names",
+  "c3: HistGradientBoosting with D_ensembles settings (lr 0.03, 8 leaves, min leaf 400, l2 1, max_features 0.5, trees chosen by rank IC on the last 26 training Thursdays from 50/100/200/400 - 104 is longer than the news training span) on [MASTER rank, news features]; rank target; seeds 0-2; training Thursdays >= 2015-04",
+  "ref_D: D_ensembles/model.py trees (27 inputs, 5-session rank target, training from 2009) scored 2016-2019, seeds 0-2: declared control for c4",
+  "c4: D trees with the news features appended to the 27 inputs (news = 0, indicators 0, before the archive starts), same settings and seeds; reported vs MASTER and as a paired IC difference vs ref_D (full panel and covered subset)",
+  "c5: abnormal attention x 5-day residual reversal (Chan 2003 sign: news-driven moves drift, no-news moves reverse): s = rank(e5) * abn5 (centred ranks), blend 0.7 rank(MASTER) + 0.3 rank(s); names without baseline neutral",
+  "c6: tone x novelty: s = rank(tone5) * novelty5-rank shifted to [0,1] (tone of novel news), blend 0.7 rank(MASTER) + 0.3 rank(s); missing neutral",
+  "dml: double ML of the best configuration's news component (and of tone21, declared): partially linear, Y = rank y5, T = news score rank, controls = MASTER rank + D's 27 inputs, HGB nuisances cross-fitted by year 2016-2019, NW(4) on weekly sums",
+  "deliverables: model.py (best configuration, reproduces its increment), REPORT.md"
+ ],
  "pending": [],
  "deliverables": {
-  "model.py": false,
-  "REPORT.md": false
+  "model.py": true,
+  "REPORT.md": false,
+  "REPORT.md_note": "file write refused for subagents; full text returned to the caller",
+  "AUDIT.json": true,
+  "test_timing.py": true
  },
- "verdict": null,
+ "verdict": "No candidate: no headline configuration adds to MASTER on 2016-2019 (best c6 +0.0007, t 0.43, 1/4 years; fitted models -0.013; news added to D trees -0.0071 vs D, t -1.12; DML tone theta +0.005, t 0.93). Coverage not survivorship-informative (has-news IC t 1.29). Development results only.",
  "notes": [
-  "wave 2: headline features over MASTER (data not built)"
+  "wave 2: headline features over MASTER (data not built)",
+  "2026-11-14: plan and rules written before any feature is built or scored; next: audit + timing test + feature build (features.py)",
+  "audit done (AUDIT.json): has21 share of eligible name-weeks 0.88-0.92 by year, low/mid/high dollar-volume tercile 0.81/0.91/0.98; names that left the index have MORE headlines per eligible year (103 vs 77 median); 1 ever-eligible name with zero archive; availability IC of has21 with y5 +0.0053 (NW t 1.29; by year +.015/-.001/+.018/-.011): not significant, covered-subset diagnostic kept as declared. Content spot check KO/FB/AZO vs source headlines OK.",
+  "timing test passed (test_timing.py): 8 session-assignment cases incl. 16:00:00 exact, 16:01, EST/EDT, weekend, holiday; planted after-close headlines leave every feature at rows <= Thursday unchanged",
+  "features built: .cache/tree/extra_news_dev.npz (2768x850x13, 13 s); next: run.py c0 c1 c2 c5 c6, then c3, ref_D, c4",
+  "scored c0: IC 0.0045, increment +0.0000 (t nan), 0/4 years, covered +0.0000 (t nan)",
+  "scored c1: IC 0.0041, increment -0.0004 (t -0.23), 1/4 years, covered -0.0005 (t -0.28)",
+  "scored c5: IC 0.0051, increment +0.0006 (t 0.35), 2/4 years, covered +0.0001 (t 0.06)",
+  "scored c6: IC 0.0052, increment +0.0007 (t 0.43), 1/4 years, covered +0.0009 (t 0.51)",
+  "scored c2: IC -0.0085, increment -0.0130 (t -1.55), 2/4 years, covered -0.0134 (t -1.59)",
+  "scored c3: IC -0.0081, increment -0.0126 (t -1.50), 2/4 years, covered -0.0108 (t -1.18)",
+  "DML tone21: theta +0.0050 (t 0.93), by year {2016: -0.0021, 2017: 0.0129, 2018: 0.0008, 2019: 0.0088}, raw slope -0.0025",
+  "scored ref_D: IC 0.0123, increment +0.0077 (t 0.65), 3/4 years, covered +0.0079 (t 0.66)",
+  "scored c4: IC 0.0051, increment +0.0006 (t 0.04), 2/4 years, covered +0.0017 (t 0.12); vs ref_D -0.0071 (t -1.12, 2/4)",
+  "DML c6: theta +0.0057 (t 1.10), by year {2016: 0.0032, 2017: 0.0184, 2018: -0.0044, 2019: 0.0064}, raw slope +0.0025",
+  "DML done: tone21 theta +0.0050 (t 0.93), c6 score +0.0057 (t 1.10); both carried by 2017. Selection: no news configuration positive in >=3 of 4 years; best by mean increment c6 +0.0007 (t 0.43, 1/4); shrunk mean over 6 news configs -0.0040; c4 vs ref_D -0.0071 (t -1.12). model.py (c6) reproduces +0.000697. REPORT.md write refused for subagents; full text returned to the coordinator. next: none (done)"
  ],
  "resume": "Read research/tree/N4_news/STATE.json first. Do not re-score anything in 'scored' (RESULTS.jsonl is the record). Score only 'pending', then write the missing deliverables. Update STATE.json after every configuration: append to 'notes' what you did and what you plan next.",
- "updated": "2026-11-12T15:43:03Z"
+ "updated": "2026-11-14T14:14:59Z"
 }
