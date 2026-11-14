@@ -537,3 +537,26 @@ budget for P11):**
 * broad trees book Sharpe 0.79 at 5 bp, 0.37 at 14 bp;
 * H7 2026: increments +13.0 %/yr (t 1.76) and +10.4 (t 1.36), no Holm pass; combined fund 2026 Sharpe 0.76; fund
   alone −0.10 (core whipsaw, MASTER IC .003, within its history).
+
+## Step 27 — the A1 audit, and Amendment 10 (2026-11-14 ~16:30 UTC)
+
+**A1 (read-only audit, `A1_audit/REPORT.md`).** The material new finding concerns our own broad universe. It excludes
+current S&P 400 members and the S&P 500 panel names in every year, which is hindsight. The excluded names are 28.9%
+of a point-in-time top 1,500, and being excluded predicts y5 with IC +0.028 (t 9.4): these are tomorrow's index
+joiners. The "survivorship-free" label of Amendment 1 is therefore wrong, now corrected by dated amendment.
+* The sign of the effect on the trees' IC and book is unknown in advance. Levels are probably biased down.
+* The M2 IPCA S&P 400 pass has a Holm margin (≈ 0.0004 IC) smaller than the plausible survivor inflation (+0.0012 on
+  the S&P 500 analogue): annotated not robust.
+* Fund-side results (S0 construction) are unaffected. The live desks are unaffected.
+* Broad-universe attrition is near zero in 2017, 2023 and 2024, which suggests missing delistings; to be counted
+  against SEC Form 25 filings.
+
+**Amendment 10 (registered before any of it is computed):**
+* the correction above;
+* R2, a point-in-time rebuild of the broad book's 2017-2026 out-of-sample record, with the mechanical rule that the
+  point-in-time figure replaces the quoted one whichever way it moves;
+* a survivorship contract for every new input (availability-indicator |t| < 2 on development data);
+* Q9_horizon and Q10_timing as planned in step 26.
+
+R2 launched; Q9/Q10 wait for the Protocol 11 merge. The step-26 timestamp-only changes to 19 branch STATE.json files
+(an `updated` field rewritten) were reverted: content unchanged.
