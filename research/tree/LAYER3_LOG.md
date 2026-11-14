@@ -578,3 +578,12 @@ Those samples are spent for exposure rules. A second test on them would be a sel
 * the one untested form, a volatility scale on top of the 200-day core at whole-fund level, is added as a reported
   (not tested) item to the scheduled gross-and-overlay sizing study of Sat 2026-11-21;
 * a clean test would need forward data or an untouched market.
+
+## Step 29 — Protocol 11 merged; news and liquidity-timing branches closed (2026-11-14)
+
+* **Protocol 11 (shadow only)** merged as PR #168 and the runner reinstalled. The coordinator added time caps to its
+  two runner steps before merging. Q9 and Q10 were launched after the merge.
+* **N4 news:** no candidate. Best increment over MASTER +0.0007 (t 0.43); news added to the D trees −0.0071.
+* **Q10 timing (Nagel):** no pass, and every point estimate is negative. The book's mean return does not rise with
+  lagged dispersion or volatility on 2013-2019 (slopes of the wrong sign, t ≈ −0.5); only its variance does. The
+  base book's Sharpe in the 2015-2019 test window is 0.005, so the test had little to time.

@@ -1,0 +1,29 @@
+{
+ "task": "Q10_timing (PREREG Layer 3, Amendment 10): Nagel 2012 liquidity-provision timing of the D_hgb_mh decile book (net 5 bp), development data <= 2019 only, via harness.load(). Development results only, not out of sample.",
+ "plan": {
+  "fixed_before_scoring": "Written 2026-11-14 before any regression, exposure or Sharpe was computed. Prereg rules copied; the items marked 'declared' fill gaps the prereg leaves open and are fixed here, not tuned.",
+  "predictions": "Reuse saved D_hgb_mh development predictions: research/tree/M1_dyntrade/base_hgb_multihorizon.npy (byte-identical to D_ensembles/pred_hgb_multihorizon.npy; walk-forward 2013-2019, seeds 0-2 rank-averaged). Check: harness.score IC must equal 0.023568388 (finalists/D_hgb_mh/VERIFY.json) and decile net 1.0381 %/yr, Sharpe 0.1499 (D_ensembles RESULTS.jsonl). No refit. AMENDED before any timing quantity was computed: the saved file is float32 (D_ensembles/lib.py line 264), ~10% tied ranks per week; it gives IC 0.0235772 (logged 0.0235684) and decile net 1.077 %/yr, Sharpe 0.156 (logged 1.038, 0.150). This is the same file M1/X2/Q4/Q5 used as the trees base; used as is, tolerance 5e-5 on IC, no refit.",
+  "book": "Weekly series b_j = harness.decile_net on Thursdays 2013-2019 (top-bottom decile, 0.5 a side, gross 1, net of 5 bp on names replaced); row list recovered with the same mask (>=50 names). Week j formed at Thursday t_j, return over sessions t_j+2..t_j+6.",
+  "variables (declared timing)": "x_j measured at the previous scored Thursday t_{j-1} (one week before formation): DISP = cross-sectional std of compounded 5-session returns prod(1+r[s-4..s])-1 over names eligible at s with all 5 returns finite; SPYVOL = std(rm[s-20..s], ddof=1)*sqrt(252), rm = SPY daily return in the panel.",
+  "step1": "For each variable separately: OLS b_j = a + c x_j and b_j^2 = a2 + c2 x_j. Reported: full-sample slopes with Newey-West t (4 lags, harness convention) and the expanding-window slope at each year end. In step 2, fits at week j use only weeks k with t_k + 6 <= t_j (book return known by formation), i.e. k <= j-2; x_j itself is known at t_j.",
+  "step2 (prereg rule)": "mu_j = a + c x_j; m2_j = a2 + c2 x_j; sigma2_j = m2_j - mu_j^2; SR_j = mu_j/sigma_j; raw_j = SR_j/sigma_j = mu_j/sigma2_j; exposure_j = clip(raw_j / mean(raw over exposure weeks up to and including j), 0.5, 2). Burn-in: exposure starts at book week index 104 (the 105th week); start date reported.",
+  "declared degeneracies": "(a) sigma2_j floored at 0.1 x the sample variance of the known returns; (b) if the expanding mean of raw is <= 0, exposure_j = 0.5. Weeks on which each binds are counted and reported.",
+  "controls": "(1) constant exposure; (2) Moreira-Muir: raw_MM_j = 1/sigma2_j (same sigma2_j as the candidate built from the same variable), exposure = clip(raw_MM_j / its expanding mean, 0.5, 2).",
+  "net returns": "n_j = e_j * b_j - 5e-4 * |e_j - e_{j-1}| (exposure-change cost, 5 bp per unit of gross changed; declared: e_{start-1} = e_start, no entry charge on the first test week). Sensitivity (reported, not the test): exact weights e_j*w_j through M1 lib.simulate.",
+  "matching": "Controls scaled to the candidate's average gross (= mean exposure) over the test weeks: constant at mean(e_cand); MM multiplied by mean(e_cand)/mean(e_MM) (costs recomputed after scaling).",
+  "test (declared reading)": "Primary: Sharpe(candidate) - Sharpe(control), annualised x sqrt(52), SE by the Lo (2002) delta method generalised to a pair, with Newey-West (4 lags) covariance of the moments (mu1, mu2, E r1^2, E r2^2); iid Lo/Memmel SE reported too. Secondary: paired NW t (4 lags) on weekly differences after equal average gross. Pass = Sharpe difference > 0 with z >= 1.96 against both controls (two-sided 5%). Two candidates (DISP, SPYVOL) reported separately, no selection between them; Holm over the 2 candidates reported descriptively.",
+  "also reported": "returns % per year (52 x mean weekly), volatility (% per year), worst fall (max drawdown of compounded weekly nets), by year, corr of candidate exposure path with MM's (constant has none), weeks at clip bounds.",
+  "outputs": "research/tree/Q10_timing/run.py, RESULT.json, weekly series in .cache/tree/preds/Q10_timing/weekly.npz. REPORT.md if allowed; full report returned to coordinator."
+ },
+ "done": [
+  "plan written",
+  "prediction check: float32 drift documented, file reused",
+  "run.py fixed (exclude week 0 with NaN lagged x from fits)",
+  "RESULT.json written 2026-11-14T16:37 local; weekly series .cache/tree/preds/Q10_timing/weekly.npz",
+  "verdict: no pass (DISP z -1.39 / -1.57; SPYVOL z -0.07 / -0.46)"
+ ],
+ "running": null,
+ "next": "report to coordinator (done when handed back)",
+ "updated": "2026-11-14T17:40:00Z",
+ "status": "done"
+}

@@ -1,0 +1,369 @@
+{
+ "label": "DEVELOPMENT DATA 2013-2019, NOT OUT OF SAMPLE",
+ "check": {
+  "ic": 0.023577241153485383,
+  "decile_net_pct_per_year": 1.0765798581054176,
+  "decile_net_sharpe": 0.15553486104362127,
+  "book_weeks": 353,
+  "first_week": "2013-01-03",
+  "last_week": "2019-12-19",
+  "max_abs_diff_harness_vs_exact_weights_net": 0.0005000002764130188
+ },
+ "burn_in_weeks": 104,
+ "test_start": "2015-02-05",
+ "test_end": "2019-12-19",
+ "test_weeks": 249,
+ "step1": {
+  "DISP": {
+   "return": {
+    "intercept": 0.001745921852999517,
+    "slope": -0.051407562349436886,
+    "slope_nw_t": -0.617091377187131,
+    "x_mean": 0.030116663394828526,
+    "x_sd": 0.0072537176500690305,
+    "slope_x_1sd_pct_per_week": -0.03728959423611345,
+    "expanding_slope_at_year_end": {
+     "2014": 0.03146284354307291,
+     "2015": -0.0257878748539169,
+     "2016": -0.15292991511435577,
+     "2017": -0.14439601658553097,
+     "2018": -0.09238674833496117,
+     "2019": -0.051407562349436886
+    },
+    "weeks": 352
+   },
+   "square": {
+    "intercept": -2.0124570987215858e-05,
+    "slope": 0.0037278298184736914,
+    "slope_nw_t": 2.483572731157739,
+    "x_mean": 0.030116663394828526,
+    "x_sd": 0.0072537176500690305,
+    "slope_x_1sd_pct_per_week": 0.002704062495071625,
+    "expanding_slope_at_year_end": {
+     "2014": 0.001178912256834364,
+     "2015": 0.002859134752269304,
+     "2016": 0.006345171043429409,
+     "2017": 0.005927036107174947,
+     "2018": 0.005234982874363544,
+     "2019": 0.0037278298184736914
+    },
+    "weeks": 352
+   }
+  },
+  "SPYVOL": {
+   "return": {
+    "intercept": 0.0007974401180222674,
+    "slope": -0.005085764520614224,
+    "slope_nw_t": -0.4479075423265994,
+    "x_mean": 0.11792573443352604,
+    "x_sd": 0.05524094637018017,
+    "slope_x_1sd_pct_per_week": -0.02809424451346154,
+    "expanding_slope_at_year_end": {
+     "2014": 0.012862252645502325,
+     "2015": 0.025901554849413803,
+     "2016": 0.005709202460985001,
+     "2017": 0.004024788538566171,
+     "2018": -0.0028670136907707187,
+     "2019": -0.005085764520614224
+    },
+    "weeks": 352
+   },
+   "square": {
+    "intercept": 2.5060978890448555e-05,
+    "slope": 0.0005688685873423791,
+    "slope_nw_t": 2.1926596067471515,
+    "x_mean": 0.11792573443352604,
+    "x_sd": 0.05524094637018017,
+    "slope_x_1sd_pct_per_week": 0.003142483912506052,
+    "expanding_slope_at_year_end": {
+     "2014": -7.176461116963968e-05,
+     "2015": 0.0007923141430207717,
+     "2016": 0.0007582325624727225,
+     "2017": 0.0008302161103985305,
+     "2018": 0.0005154661690796302,
+     "2019": 0.0005688685873423791
+    },
+    "weeks": 352
+   }
+  }
+ },
+ "step2": {
+  "DISP": {
+   "mean_gross": 0.9351594305384333,
+   "mm_scale": 1.090831371447829,
+   "share_weeks_at_floor_0.5": 0.4899598393574297,
+   "share_weeks_at_cap_2": 0.13253012048192772,
+   "mm_share_floor": 0.10040160642570281,
+   "mm_share_cap": 0.004016064257028112,
+   "weeks_expanding_mean_le0": 0,
+   "weeks_sigma2_floor": 0,
+   "corr_exposure_cand_vs_mm": 0.7994554288457117,
+   "exposure_change_cost_pct_per_year": {
+    "cand": 1.1341262055912804,
+    "mm": 0.6479925399151487
+   },
+   "candidate": {
+    "pct_per_year": -2.379589749937155,
+    "vol_pct_per_year": 8.179773546673031,
+    "net_sharpe": -0.29091144594155766,
+    "worst_fall_pct": 24.190554878439762,
+    "weeks": 249
+   },
+   "constant": {
+    "pct_per_year": 0.03454536277052241,
+    "vol_pct_per_year": 7.087365239245673,
+    "net_sharpe": 0.004874217936339791,
+    "worst_fall_pct": 18.093926893414636,
+    "weeks": 249
+   },
+   "moreira_muir": {
+    "pct_per_year": -0.7332020548115926,
+    "vol_pct_per_year": 7.436755233866739,
+    "net_sharpe": -0.09859166151826734,
+    "worst_fall_pct": 18.522666212641536,
+    "weeks": 249
+   },
+   "vs_constant": {
+    "diff": -0.29638140599984575,
+    "se_lo_hac": 0.21361752876215861,
+    "z_lo_hac": -1.3874395407402933,
+    "se_lo_iid": 0.2450649476458678,
+    "z_lo_iid": -1.2093994218550301,
+    "corr_weekly": 0.8566287662507082,
+    "pct_per_year_diff": -2.4141351127076778,
+    "paired_nw_t": -1.3421840487277479
+   },
+   "vs_moreira_muir": {
+    "diff": -0.19270713584175617,
+    "se_lo_hac": 0.12271132231379049,
+    "z_lo_hac": -1.5704103925225117,
+    "se_lo_iid": 0.140562203629963,
+    "z_lo_iid": -1.3709740660374627,
+    "corr_weekly": 0.9528994357144867,
+    "pct_per_year_diff": -1.6463876951255618,
+    "paired_nw_t": -1.573057209700871
+   },
+   "exact_weights_sensitivity": {
+    "cand": {
+     "pct_per_year": -1.886024795133835,
+     "vol_pct_per_year": 8.175957395742572,
+     "net_sharpe": -0.23067938148943087,
+     "worst_fall_pct": 22.693250500491192,
+     "weeks": 249
+    },
+    "const": {
+     "pct_per_year": 0.02806903990895132,
+     "vol_pct_per_year": 7.087512698122662,
+     "net_sharpe": 0.003960351269125237,
+     "worst_fall_pct": 18.10567798484368,
+     "weeks": 249
+    },
+    "mm": {
+     "pct_per_year": -0.4412984186016551,
+     "vol_pct_per_year": 7.4260152552811665,
+     "net_sharpe": -0.059426004853385735,
+     "worst_fall_pct": 17.857314069567053,
+     "weeks": 249
+    }
+   },
+   "by_year": {
+    "2015": {
+     "weeks": 47,
+     "mean_exposure_cand": 1.0067540347521242,
+     "cand_pct_per_year": 13.285088875068126,
+     "const_pct_per_year": 12.85681245507115,
+     "mm_pct_per_year": 13.83334250329965,
+     "cand_sharpe": 1.55086387239868,
+     "const_sharpe": 1.693080327060547,
+     "mm_sharpe": 1.6432240053572829
+    },
+    "2016": {
+     "weeks": 51,
+     "mean_exposure_cand": 0.9475326823998097,
+     "cand_pct_per_year": -17.762467975233136,
+     "const_pct_per_year": -15.183333995604547,
+     "mm_pct_per_year": -12.839825272886095,
+     "cand_sharpe": -1.8391697580804784,
+     "const_sharpe": -1.624851611567734,
+     "mm_sharpe": -1.7818184496940586
+    },
+    "2017": {
+     "weeks": 51,
+     "mean_exposure_cand": 1.0363027047124556,
+     "cand_pct_per_year": -1.2926300159409094,
+     "const_pct_per_year": -1.4082541725542181,
+     "mm_pct_per_year": -2.2589844284975586,
+     "cand_sharpe": -0.23847114408860842,
+     "const_sharpe": -0.2972907166015463,
+     "mm_sharpe": -0.44834332260210835
+    },
+    "2018": {
+     "weeks": 51,
+     "mean_exposure_cand": 0.7837921578787658,
+     "cand_pct_per_year": 0.31247348838707617,
+     "const_pct_per_year": 3.1478962433110276,
+     "mm_pct_per_year": 0.3729667562529524,
+     "cand_sharpe": 0.06511446348094665,
+     "const_sharpe": 0.6566659845864176,
+     "mm_sharpe": 0.07408812269308442
+    },
+    "2019": {
+     "weeks": 49,
+     "mean_exposure_cand": 0.905882730126071,
+     "cand_pct_per_year": -5.327411739192211,
+     "const_pct_per_year": 1.8359162879336908,
+     "mm_pct_per_year": -1.66768202247968,
+     "cand_sharpe": -0.4993562731073907,
+     "const_sharpe": 0.2413527177353774,
+     "mm_sharpe": -0.16367567774751485
+    }
+   },
+   "pass": false
+  },
+  "SPYVOL": {
+   "mean_gross": 0.7045546505362452,
+   "mm_scale": 0.7795597553190544,
+   "share_weeks_at_floor_0.5": 0.6184738955823293,
+   "share_weeks_at_cap_2": 0.020080321285140562,
+   "mm_share_floor": 0.13253012048192772,
+   "mm_share_cap": 0.012048192771084338,
+   "weeks_expanding_mean_le0": 0,
+   "weeks_sigma2_floor": 0,
+   "corr_exposure_cand_vs_mm": -0.03449450049873658,
+   "exposure_change_cost_pct_per_year": {
+    "cand": 0.21580388272728507,
+    "mm": 0.19155501709854386
+   },
+   "candidate": {
+    "pct_per_year": -0.07498139786918462,
+    "vol_pct_per_year": 7.137613078281542,
+    "net_sharpe": -0.010505108226914032,
+    "worst_fall_pct": 18.342708565750975,
+    "weeks": 249
+   },
+   "constant": {
+    "pct_per_year": 0.026026680798610004,
+    "vol_pct_per_year": 5.339662924090296,
+    "net_sharpe": 0.004874217936339886,
+    "worst_fall_pct": 13.869785782751942,
+    "weeks": 249
+   },
+   "moreira_muir": {
+    "pct_per_year": 0.5923137253727548,
+    "vol_pct_per_year": 5.219270979636402,
+    "net_sharpe": 0.11348591166922282,
+    "worst_fall_pct": 11.575884409444992,
+    "weeks": 249
+   },
+   "vs_constant": {
+    "diff": -0.015410301675327335,
+    "se_lo_hac": 0.20682722151263594,
+    "z_lo_hac": -0.07450809212938082,
+    "se_lo_iid": 0.22995456548896676,
+    "z_lo_iid": -0.06701454977664587,
+    "corr_weekly": 0.8733962509620763,
+    "pct_per_year_diff": -0.10100807866779461,
+    "paired_nw_t": -0.06442592157839609
+   },
+   "vs_moreira_muir": {
+    "diff": -0.12424075029999418,
+    "se_lo_hac": 0.26742012338524074,
+    "z_lo_hac": -0.46459013154000806,
+    "se_lo_iid": 0.28442447211135036,
+    "z_lo_iid": -0.43681455880967485,
+    "corr_weekly": 0.8063834272747289,
+    "pct_per_year_diff": -0.6672951232419396,
+    "paired_nw_t": -0.3605193425035835
+   },
+   "exact_weights_sensitivity": {
+    "cand": {
+     "pct_per_year": 0.011014080018235407,
+     "vol_pct_per_year": 7.137712933071573,
+     "net_sharpe": 0.0015430825141766683,
+     "worst_fall_pct": 18.28698869730735,
+     "weeks": 249
+    },
+    "const": {
+     "pct_per_year": 0.021147380818853794,
+     "vol_pct_per_year": 5.3397740204810855,
+     "net_sharpe": 0.0039603512691251536,
+     "worst_fall_pct": 13.879093414118792,
+     "weeks": 249
+    },
+    "mm": {
+     "pct_per_year": 0.6708871210407003,
+     "vol_pct_per_year": 5.216771541182111,
+     "net_sharpe": 0.12860197456311812,
+     "worst_fall_pct": 11.380733668158893,
+     "weeks": 249
+    }
+   },
+   "by_year": {
+    "2015": {
+     "weeks": 47,
+     "mean_exposure_cand": 1.058143178432661,
+     "cand_pct_per_year": 15.150867377053546,
+     "const_pct_per_year": 9.6863986080718,
+     "mm_pct_per_year": 8.563777893078642,
+     "cand_sharpe": 1.327643424635914,
+     "const_sharpe": 1.6930803270605466,
+     "mm_sharpe": 1.581260655954446
+    },
+    "2016": {
+     "weeks": 51,
+     "mean_exposure_cand": 0.7760467272602384,
+     "cand_pct_per_year": -15.35835798132242,
+     "const_pct_per_year": -11.439213708286083,
+     "mm_pct_per_year": -10.393741176089467,
+     "cand_sharpe": -1.6989588910189306,
+     "const_sharpe": -1.624851611567734,
+     "mm_sharpe": -1.438485952709173
+    },
+    "2017": {
+     "weeks": 51,
+     "mean_exposure_cand": 0.5,
+     "cand_pct_per_year": -0.7529487093678744,
+     "const_pct_per_year": -1.060987029600799,
+     "mm_pct_per_year": 0.289071970629679,
+     "cand_sharpe": -0.2972907166015466,
+     "const_sharpe": -0.2972907166015465,
+     "mm_sharpe": 0.06565518051123635
+    },
+    "2018": {
+     "weeks": 51,
+     "mean_exposure_cand": 0.5038011332017104,
+     "cand_pct_per_year": 1.8169653969998385,
+     "const_pct_per_year": 2.371643663319941,
+     "mm_pct_per_year": 3.2354085431568063,
+     "cand_sharpe": 0.7034397938839781,
+     "const_sharpe": 0.6566659845864173,
+     "mm_sharpe": 0.9891695165674139
+    },
+    "2019": {
+     "weeks": 49,
+     "mean_exposure_cand": 0.712839545176134,
+     "cand_pct_per_year": -0.03570875128020626,
+     "const_pct_per_year": 1.38319019882435,
+     "mm_pct_per_year": 1.9453234779708548,
+     "cand_sharpe": -0.006472398890182814,
+     "const_sharpe": 0.24135271773537734,
+     "mm_sharpe": 0.40499253747541136
+    }
+   },
+   "pass": false
+  }
+ },
+ "holm_descriptive": {
+  "p_max_over_controls": {
+   "DISP": 0.1653077749037325,
+   "SPYVOL": 0.9406061024783297
+  },
+  "holm_adjusted": {
+   "DISP": 0.330615549807465,
+   "SPYVOL": 0.9406061024783297
+  }
+ },
+ "passes": [],
+ "at": "2026-11-14T16:37:29",
+ "seconds": 0.6
+}
