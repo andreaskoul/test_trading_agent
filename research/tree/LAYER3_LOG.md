@@ -560,3 +560,21 @@ joiners. The "survivorship-free" label of Amendment 1 is therefore wrong, now co
 
 R2 launched; Q9/Q10 wait for the Protocol 11 merge. The step-26 timestamp-only changes to 19 branch STATE.json files
 (an `updated` field rewritten) were reverted: content unchanged.
+
+## Step 28 — fund-level volatility target: already tested; no new test (2026-11-14)
+
+The owner approved a pre-registered test of a fund-level volatility target. Before registering it, the coordinator
+found that it was already tested on 2026-11-10 (`research/sharpe/`, read once):
+* **Exposure rule.** w = clip(16% ÷ σ21, band), daily, on Ken French daily data 1993-2025. Sharpe:
+  * Europe: 0.40, against 0.49 for the 200-day rule and 0.40 for buy and hold;
+  * Japan: 0.10, against 0.11 and 0.15;
+  * Asia Pacific ex Japan: 0.36, against 0.53 and 0.39.
+* **On the stock book (2020-2025).** The volatility-targeted book (C5) scored −0.01 Sharpe against plain deciles,
+  p 0.62: a fail.
+
+Those samples are spent for exposure rules. A second test on them would be a selection on known outcomes. **Decision:**
+* no new registered test;
+* the coordinator's suggestion of it as an open option was an error;
+* the one untested form, a volatility scale on top of the 200-day core at whole-fund level, is added as a reported
+  (not tested) item to the scheduled gross-and-overlay sizing study of Sat 2026-11-21;
+* a clean test would need forward data or an untouched market.
