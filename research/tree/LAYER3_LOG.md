@@ -455,3 +455,37 @@ weeks, therefore executed the registered read. Nothing was seen before it, the c
   43 weeks; its standard error is about 1.1, so this is not evidence of a Sharpe above 1.
 * **Next (registered path):** the same pipeline runs on forward weeks as the extension of H7. Separately, the fund's
   2026 loss needs a decomposition (core vs MASTER book) before anything else is built on MASTER.
+
+## Step 25 — after H7: decomposition, pooled evidence, forward design (2026-11-14; descriptive, all data already read)
+
+**Where the fund's 2026 loss came from** (43 weeks; `H7_DECOMP.json`):
+
+| Piece | % per year | Note |
+|---|---:|---|
+| S&P 500 | +7.3 | |
+| Core sleeve (1.3×/0.7×, net of financing) | +1.4 | whipsaw: at 1.3× through the February-March fall (−12% in six weeks), at 0.7× for the first two rebound weeks (+3.9%, +3.1%), back to 1.3× on 9 April; plus financing on the 0.3 |
+| MASTER book | −2.9 | IC .003 (t 0.17) |
+| Fund | −1.5 | |
+
+* **MASTER is not shown to be broken.** Its 2026 IC is z = −1.18 against its own 2020-2025 weeks, and its book return
+  is z = −0.83. Its history is lumpy by year (.048, .006, .025, .050, .003, .066, then .003). One weak year in three
+  is its normal pattern.
+* **The core's shortfall is the known cost of a trend rule in a V-shaped year.** It is the owner's policy
+  instrument (rule 17), so there is nothing to tune.
+
+**Pooled out-of-sample evidence on the broad trees book** (498 weeks, 2017-2026):
+
+| Cost | % per year | Net Sharpe ± s.e. | 2017-2021 | 2022-2026 |
+|---|---:|---:|---|---|
+| 5 bp | +7.9 | 0.79 ± 0.32 | weak (−4 to +2 %/yr) | strong (+6 to +26) |
+| 14 bp (measured level) | +3.8 | 0.37 ± 0.32 | negative every year | positive every year |
+
+* **The signal itself is solid** (IC .0264, t 4.93; yearly ICs all positive, rising from about .015 to about .04).
+* **The book is not, at measured costs:** 42% weekly turnover × 14 bp costs about 6 %/yr. The last five years would
+  clear any bar; the full decade does not. Whether 2022-2026 is a regime or a trend is unknown. This is the planning
+  haircut made concrete.
+* **So the next gain is cost.** Amendment 9 registers the forward comparison of deciles against rank hysteresis and
+  the covariance book, as paired differences, which forward weeks can resolve (the level of a Sharpe they cannot).
+
+**Launched:** F-build (forward pipeline, no installation), A1 (audit of current-membership inputs). **Waiting:** news
+download (619 of about 850 names), then N4.

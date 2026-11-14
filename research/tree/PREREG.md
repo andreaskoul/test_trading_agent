@@ -411,3 +411,38 @@ Source: `H7_build/BUILD.md` (the build agent computed no statistic touching 2026
 * **H7b's eligible set** each week: eligible broad names with dollar-volume percentile rank ≥ 1/3 (as `read3.extras`
   ranks; cross-checked against the build's tercile file).
 * **Weights:** k_a 0.59, k_b 0.5307 (`H7_WEIGHTS.json`, committed in f3f5376).
+
+## Layer 3, Amendment 9 (2026-11-14, after H7 and its decomposition): forward phase, constructions and stopping rule
+
+**State of evidence** (`H7_RESULT.json`, `H7_DECOMP.json`; all out of sample).
+* **Broad trees signal:** IC .0264 over 498 weeks, 2017-2026 (Newey-West t 4.93); .042 in 2026.
+* **Its decile book** turns over about 42% a week. Net Sharpe 2017-2026: 0.79 ± 0.32 at 5 bp, 0.37 ± 0.32 at the
+  measured 14 bp (Lo 2002 standard errors). By period at 14 bp: negative every year 2017-2021, positive every year
+  2022-2026.
+* **Consequence:** cost, not signal, is the binding constraint.
+
+**Forward test (extends H7; nothing below is chosen on 2026 or any later outcome).** Weekly, from the first Thursday
+after 2026-11-12. Models are refit each January on targets ending before that year.
+* **Costs:** per name, the measured half-spread by dollar-volume tercile (9.4 / 6.2 / 4.2 bp, `COST_STUDY.json`) plus
+  the square-root impact of Q6 (K 0.5, AUM $10M, the name's own volatility and 20-session median dollar volume).
+* **Three constructions of the broad trees book, run side by side:**
+  * F0, deciles: the H7a book, the reference.
+  * F1, rank hysteresis: enter at the 10% tails, exit outside 30% (Q6 T1; Novy-Marx-Velikov's buy/hold spread).
+  * F2, the covariance book: Ledoit-Wolf mean-variance target with an L1 no-trade region, k 2 (Q4 `mvnl_nt`), at
+    gross 1.
+* **Primary hypothesis H9:** F1's weekly net return exceeds F0's (paired; one-sided Newey-West t, 4 lags).
+* **Secondary:** F2 minus F0 at matched volatility. Holm across the two.
+* **Stopping rule:** fixed horizon of 104 forward weeks, read once, with no interim test on these differences.
+  Turnover and realised cost are reported every 13 weeks; these are mechanical quantities, not the test.
+* **Why paired differences:** F1 and F0 hold the same signal, so their difference has far lower variance than either
+  book. On development data the T1−C1 difference had sd about 1.9 %/yr against 6.4 %/yr for a book, so a 0.5 %/yr
+  cost saving is detectable in about 2 years. The level of a Sharpe is not: at a true Sharpe of 1, H7's cumulative t
+  reaches 2 after about 61 more weeks; at 0.5, after about 10 years.
+
+**The combined fund (H7 extension)** continues unchanged: F0, k 0.59, 14 bp flat; cumulative t reported every 13
+weeks; verdict at t ≥ 2 or 104 weeks.
+
+**MASTER.** Its 2026 IC (.003) is 1.18 standard errors below its 2020-2025 mean (.033), which is within its history:
+its yearly ICs were .048, .006, .025, .050, .003, .066. There is no evidence of a break, and no change is proposed to
+the traded fund. A decay monitor (rolling 52-week IC against its 2020-2025 distribution) is added to the forward
+record.
