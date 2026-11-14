@@ -1,0 +1,704 @@
+{
+"asof": "2026-11-11",
+"entry_day": "2026-11-12",
+"names": {
+"AAPL": {
+"H": 35,
+"H_a8": 24,
+"H_raw": 24.4,
+"confidence": 0.52,
+"driving_event": "Apple Q4 earnings beat with memory-cost holiday margin warning",
+"error": null,
+"first_reported": "2026-11-11",
+"inputs": {
+"M": 0.05759035906948981,
+"hard": true,
+"news_session": "2026-11-11",
+"p": 0.0
+},
+"kill_conditions": [
+"Apple raises holiday gross margin guidance or downplays memory cost impact",
+"Apple services revenue growth reaccelerates above prior trend",
+"Memory chip prices fall sharply or supply constraints ease"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Apple Q4 earnings beat with memory-cost holiday margin warning",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Alibaba",
+"release": null,
+"report_session": "2027-01-27",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.026
+},
+"AMD": {
+"H": 55,
+"H_a8": 6,
+"H_raw": 6.2,
+"confidence": 0.5,
+"driving_event": "AMD Q3 2026 earnings beat, data center nearly doubled, 2027 growth guidance raised to 80%+",
+"error": null,
+"first_reported": "2026-11-03",
+"inputs": {
+"M": 0.05759035906948981,
+"hard": true,
+"news_session": "2026-11-03",
+"p": 1.5
+},
+"kill_conditions": [
+"AMD cuts or withdraws its 2027 revenue growth guidance",
+"AMD data center revenue growth stalls or turns negative",
+"Google Cloud abandons or reverses its AMD EPYC deployment"
+],
+"news_age": 7,
+"out": {
+"driving_event": "AMD Q3 2026 earnings beat, data center nearly doubled, 2027 growth guidance raised to 80%+",
+"event_type": "earnings",
+"hard": true,
+"structural": true
+},
+"provider": "CoreWeave",
+"release": {
+"accepted": "2026-11-03 16:16:27",
+"session": "2026-11-04",
+"source": "8-K 2.02"
+},
+"report_session": "2027-02-02",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": 0.025
+},
+"BA": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.62,
+"driving_event": "Boeing cuts 5% of commercial airplane workforce as production ramp slows",
+"error": null,
+"first_reported": "2026-11-09",
+"inputs": {
+"M": 0.018528664794781987,
+"hard": true,
+"news_session": "2026-11-09",
+"p": 1.4430098052080573
+},
+"kill_conditions": [
+"Boeing announces an accelerated production rate increase or raises full-year guidance",
+"Boeing monthly deliveries rise sequentially and exceed Airbus",
+"Boeing reverses the workforce cuts or secures a new large order"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Boeing cuts 5% of commercial airplane workforce as production ramp slows",
+"event_type": "other",
+"hard": true,
+"structural": false
+},
+"provider": "Wafer",
+"release": null,
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.031
+},
+"BRK.B": {
+"H": 25,
+"H_a8": 25,
+"H_raw": 25.0,
+"confidence": 0.55,
+"driving_event": "Q3 operating earnings fell 5.8% with insurance underwriting weakness, offset by record $9.6B buybacks",
+"error": null,
+"first_reported": "2026-11-07",
+"inputs": {
+"M": 0.04616282734045334,
+"hard": true,
+"news_session": "2026-11-09",
+"p": 0.0
+},
+"kill_conditions": [
+"Berkshire Q4 operating earnings grow and insurance underwriting returns to profit",
+"Berkshire announces a new record buyback, special dividend, or major acquisition lifting shares",
+"Analysts upgrade Berkshire citing improved insurance margins and earnings momentum"
+],
+"news_age": 4,
+"out": {
+"driving_event": "Q3 operating earnings fell 5.8% with insurance underwriting weakness, offset by record $9.6B buybacks",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Wafer",
+"release": {
+"accepted": "2026-11-09 06:10:14",
+"session": "2026-11-09",
+"source": "8-K 2.02"
+},
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.0275
+},
+"CRM": {
+"H": 11,
+"H_a8": 11,
+"H_raw": 11.2,
+"confidence": 0.6,
+"driving_event": "S&P cuts Salesforce rating to A on Braze/Cresta deals and $25B buyback",
+"error": null,
+"first_reported": "2026-11-06",
+"inputs": {
+"M": 0.022952224979871427,
+"hard": true,
+"news_session": "2026-11-06",
+"p": 1.5
+},
+"kill_conditions": [
+"S&P upgrades Salesforce's credit rating or revises its outlook to stable/positive",
+"Salesforce terminates or walks away from the Braze or Cresta acquisition",
+"Salesforce cuts its buyback or announces debt reduction that eases leverage concerns"
+],
+"news_age": 2,
+"out": {
+"driving_event": "S&P cuts Salesforce rating to A on Braze/Cresta deals and $25B buyback",
+"event_type": "analyst_revisions",
+"hard": true,
+"structural": false
+},
+"provider": "Cohere",
+"release": null,
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.03
+},
+"FOX": {
+"H": 55,
+"H_a8": 3,
+"H_raw": 3.2,
+"confidence": 0.85,
+"driving_event": "Completion of $22B Roku acquisition and Q1 earnings beat",
+"error": null,
+"first_reported": "2026-11-06",
+"inputs": {
+"M": 0.01985621740997779,
+"hard": true,
+"news_session": "2026-11-06",
+"p": 0.0
+},
+"kill_conditions": [
+"Fox announces Roku acquisition integration failure or write-down",
+"Fox reports Q1 miss or cuts FY guidance",
+"Fox advertising revenue declines"
+],
+"news_age": 4,
+"out": {
+"driving_event": "Completion of $22B Roku acquisition and Q1 earnings beat",
+"event_type": "other",
+"hard": true,
+"structural": true
+},
+"provider": "Wafer",
+"release": null,
+"report_session": "2027-02-02",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": 0.0425
+},
+"GOOGL": {
+"H": 4,
+"H_a8": 4,
+"H_raw": 4.4,
+"confidence": 0.5,
+"driving_event": "Google expands TPU 8tx lineup and taps AMD EPYC, escalating Nvidia rivalry",
+"error": null,
+"first_reported": "2026-11-11",
+"inputs": {
+"M": 0.01985621740997779,
+"hard": false,
+"news_session": "2026-11-11",
+"p": 0.32589707273928653
+},
+"kill_conditions": [
+"Google cancels or delays its new TPU 8tx rollout",
+"Google's AMD EPYC partnership is terminated or scaled back",
+"Google cuts AI capex or walks back its data center buildout plans"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Google expands TPU 8tx lineup and taps AMD EPYC, escalating Nvidia rivalry",
+"event_type": "product_launch",
+"hard": false,
+"structural": false
+},
+"provider": "Wafer",
+"release": null,
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.025
+},
+"HUM": {
+"H": 15,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.5,
+"driving_event": "Humana Q3 2026 earnings beat with raised FY2026 adjusted EPS guidance and Star ratings momentum",
+"error": null,
+"first_reported": "2026-11-06",
+"inputs": {
+"M": 0.051562120009647675,
+"hard": true,
+"news_session": "2026-11-06",
+"p": 1.1303300084396317
+},
+"kill_conditions": [
+"Humana cuts or withdraws its raised FY2026 adjusted EPS guidance",
+"Q4 medical cost ratio rises sharply, reversing the unexpected cost decline",
+"Medicare Star ratings downgraded for bonus year 2028"
+],
+"news_age": 4,
+"out": {
+"driving_event": "Humana Q3 2026 earnings beat with raised FY2026 adjusted EPS guidance and Star ratings momentum",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Cohere",
+"release": {
+"accepted": "2026-11-06 06:09:28",
+"session": "2026-11-06",
+"source": "8-K 2.02"
+},
+"report_session": "2027-02-10",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.025
+},
+"LLY": {
+"H": 45,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.55,
+"driving_event": "Foundayo ATTAIN-OSA Phase 3 win with planned year-end FDA filing",
+"error": null,
+"first_reported": "2026-11-09",
+"inputs": {
+"M": 0.018986465090787354,
+"hard": true,
+"news_session": "2026-11-09",
+"p": 1.5
+},
+"kill_conditions": [
+"FDA issues a complete response letter for Foundayo's planned filing",
+"Hims & Hers or LifeMD terminates its direct-access partnership with Lilly",
+"Foundayo Phase 3 OSA data fails to replicate or a new safety signal emerges"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Foundayo ATTAIN-OSA Phase 3 win with planned year-end FDA filing",
+"event_type": "other",
+"hard": true,
+"structural": true
+},
+"provider": "Wafer",
+"release": null,
+"report_session": "2027-02-02",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": 0.0275
+},
+"MSFT": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 0.0,
+"confidence": 0.5,
+"driving_event": "Anthropic launched Claude Sheets to rival Excel, pressuring Microsoft's Office franchise and MSFT shares.",
+"error": null,
+"first_reported": "2026-11-11",
+"inputs": {
+"M": 0.022952224979871427,
+"hard": false,
+"news_session": "2026-11-11",
+"p": 1.5
+},
+"kill_conditions": [
+"Anthropic delays or cancels the Claude Sheets launch",
+"Microsoft reports Office/Excel revenue acceleration or strong customer retention",
+"Analysts conclude Claude Sheets is not a substitute for Excel"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Anthropic launched Claude Sheets to rival Excel, pressuring Microsoft's Office franchise and MSFT shares.",
+"event_type": "product_launch",
+"hard": false,
+"structural": false
+},
+"provider": "Morph",
+"release": null,
+"stale": true,
+"status": "ok",
+"structural": false,
+"weight": -0.025
+},
+"NFLX": {
+"H": 45,
+"H_a8": 25,
+"H_raw": 25.0,
+"confidence": 0.4,
+"driving_event": "Skydance-WBD merger completes with $6B cost cuts, a competitive negative for Netflix",
+"error": null,
+"first_reported": "2026-11-10",
+"inputs": {
+"M": 0.01985621740997779,
+"hard": true,
+"news_session": "2026-11-10",
+"p": 0.0
+},
+"kill_conditions": [
+"Netflix raises full-year guidance or reports accelerating subscriber growth",
+"Skydance-WBD merger cost cuts scaled back or the deal is unwound",
+"Netflix announces a large buyback or initiates a dividend"
+],
+"news_age": 2,
+"out": {
+"driving_event": "Skydance-WBD merger completes with $6B cost cuts, a competitive negative for Netflix",
+"event_type": "mna_rumour",
+"hard": true,
+"structural": true
+},
+"provider": "Cohere",
+"release": null,
+"report_session": "2027-01-19",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": -0.02
+},
+"NKE": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 0.6,
+"confidence": 0.6,
+"driving_event": "Truist and Morgan Stanley Sell downgrades flag Jordan inventory, China weakness, stretched valuation",
+"error": null,
+"first_reported": "2026-11-05",
+"inputs": {
+"M": 0.019137048217274837,
+"hard": false,
+"news_session": "2026-11-05",
+"p": 1.5
+},
+"kill_conditions": [
+"Nike raises FY guidance or reports improving North America and China sales",
+"Sell-side upgrades Nike to Buy or lifts price targets above the current share price",
+"Nike Investor Day sets multi-year targets above consensus expectations"
+],
+"news_age": 4,
+"out": {
+"driving_event": "Truist and Morgan Stanley Sell downgrades flag Jordan inventory, China weakness, stretched valuation",
+"event_type": "analyst_revisions",
+"hard": false,
+"structural": false
+},
+"provider": "InferenceNet",
+"release": null,
+"stale": true,
+"status": "ok",
+"structural": false,
+"weight": -0.03
+},
+"NRG": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.5,
+"driving_event": "Q3 2026 earnings beat alongside $4B gas-plant sale, $3B buyback and dividend hike",
+"error": null,
+"first_reported": "2026-11-09",
+"inputs": {
+"M": 0.04317532000917487,
+"hard": true,
+"news_session": "2026-11-09",
+"p": 1.5
+},
+"kill_conditions": [
+"NRG cuts or withdraws its FY2026 or FY2027 adjusted EPS guidance",
+"LS Power $4B gas-plant sale is terminated or blocked by regulators",
+"NRG suspends or scales back its $3B buyback or dividend increase"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Q3 2026 earnings beat alongside $4B gas-plant sale, $3B buyback and dividend hike",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Wafer",
+"release": {
+"accepted": "2026-11-09 06:45:04",
+"session": "2026-11-09",
+"source": "8-K 2.02"
+},
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.025
+},
+"NVDA": {
+"H": 5,
+"H_a8": 5,
+"H_raw": 5.0,
+"confidence": 0.55,
+"driving_event": "Board probe into CEO Huang over spy claims and admitted affair",
+"error": null,
+"first_reported": "2026-11-11",
+"inputs": {
+"M": 0.022952224979871427,
+"hard": false,
+"news_session": "2026-11-11",
+"p": 0.0
+},
+"kill_conditions": [
+"Board probe concludes with no findings against CEO Huang",
+"US lifts or eases China export restrictions on Nvidia",
+"Nvidia raises guidance at the Nov 17 earnings report"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Board probe into CEO Huang over spy claims and admitted affair",
+"event_type": "leadership",
+"hard": false,
+"structural": false
+},
+"provider": "Cohere",
+"release": null,
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.0275
+},
+"TAP": {
+"H": 27,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.6,
+"driving_event": "Q3 2026 revenue miss and FY26 sales, profit, cash flow guidance cut",
+"error": null,
+"first_reported": "2026-11-05",
+"inputs": {
+"M": 0.0490451697533367,
+"hard": true,
+"news_session": "2026-11-05",
+"p": 1.5
+},
+"kill_conditions": [
+"Molson Coors raises its FY2026 sales or EPS guidance",
+"Headline reports US beer industry volumes returning to growth",
+"Company announces cost cuts or buyback restoring the FY26 profit outlook"
+],
+"news_age": 5,
+"out": {
+"driving_event": "Q3 2026 revenue miss and FY26 sales, profit, cash flow guidance cut",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Cohere",
+"release": {
+"accepted": "2026-11-05 06:33:43",
+"session": "2026-11-05",
+"source": "8-K 2.02"
+},
+"report_session": "2027-02-17",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.03
+},
+"TRGP": {
+"H": 52,
+"H_a8": 10,
+"H_raw": 10.0,
+"confidence": 0.55,
+"driving_event": "Q3 2026 earnings beat with $6B 2026 EBITDA guidance and 20% 2027 dividend increase expectation",
+"error": null,
+"first_reported": "2026-11-05",
+"inputs": {
+"M": 0.04711272925350114,
+"hard": true,
+"news_session": "2026-11-05",
+"p": 0.6235529546019337
+},
+"kill_conditions": [
+"Company cuts FY2026 EBITDA guidance below $6 billion",
+"ExxonMobil Permian processing or pipeline pact is delayed or terminated",
+"Targa cancels or walks back expected 20% 2027 dividend increase"
+],
+"news_age": 5,
+"out": {
+"driving_event": "Q3 2026 earnings beat with $6B 2026 EBITDA guidance and 20% 2027 dividend increase expectation",
+"event_type": "earnings",
+"hard": true,
+"structural": true
+},
+"provider": "Alibaba",
+"release": {
+"accepted": "2026-11-05 06:15:14",
+"session": "2026-11-05",
+"source": "8-K 2.02"
+},
+"report_session": "2027-02-18",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": 0.0275
+},
+"TSLA": {
+"H": 51,
+"H_a8": 5,
+"H_raw": 4.6,
+"confidence": 0.5,
+"driving_event": "Tesla special committee formed to review possible all-stock Tesla-SpaceX merger",
+"error": null,
+"first_reported": "2026-11-11",
+"inputs": {
+"M": 0.019137048217274837,
+"hard": false,
+"news_session": "2026-11-11",
+"p": 0.40368796396149353
+},
+"kill_conditions": [
+"Tesla-SpaceX merger talks terminated or special committee rejects the combination",
+"Tesla delays or cancels Cybercab production, reversing the capacity shift rationale",
+"Tesla restarts Cybertruck production, undoing the wind-down thesis"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Tesla special committee formed to review possible all-stock Tesla-SpaceX merger",
+"event_type": "mna_rumour",
+"hard": false,
+"structural": true
+},
+"provider": "CoreWeave",
+"release": null,
+"report_session": "2027-01-27",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": 0.025
+},
+"TTD": {
+"H": 13,
+"H_a8": 13,
+"H_raw": 13.0,
+"confidence": 0.64,
+"driving_event": "Q3 earnings beat on low bar with revenue down 0.5% and weaker margins; cautious CFO tone.",
+"error": null,
+"first_reported": "2026-11-09",
+"inputs": {
+"M": 0.053697669212043234,
+"hard": true,
+"news_session": "2026-11-09",
+"p": 0.0
+},
+"kill_conditions": [
+"Trade Desk reports Q4 revenue growth and EBITDA margin expansion, reversing Q3 weakness",
+"Management issues materially higher Q4/FY guidance and withdraws cautious tone",
+"Multiple covering analysts upgrade TTD to Buy with price targets well above $20"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Q3 earnings beat on low bar with revenue down 0.5% and weaker margins; cautious CFO tone.",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Crusoe",
+"release": {
+"accepted": "2026-11-09 16:09:41",
+"session": "2026-11-10",
+"source": "8-K 2.02"
+},
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.032
+},
+"TTWO": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.62,
+"driving_event": "GTA VI launch on Nov 19 with record pre-orders",
+"error": null,
+"first_reported": "2026-11-09",
+"inputs": {
+"M": 0.01985621740997779,
+"hard": true,
+"news_session": "2026-11-09",
+"p": 1.5
+},
+"kill_conditions": [
+"Take-Two delays GTA VI launch beyond November 19",
+"Take-Two cuts FY27 bookings guidance",
+"GTA VI pre-orders reported below expectations"
+],
+"news_age": 3,
+"out": {
+"driving_event": "GTA VI launch on Nov 19 with record pre-orders",
+"event_type": "dated_catalyst",
+"hard": true,
+"structural": false
+},
+"provider": "DigitalOcean",
+"release": null,
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.031
+},
+"WMT": {
+"H": 6,
+"H_a8": 6,
+"H_raw": 6.0,
+"confidence": 0.85,
+"driving_event": "Investment banks raise WMT price targets on earnings growth and market share gains",
+"error": null,
+"first_reported": "2026-11-09",
+"inputs": {
+"M": 0.0186976392766409,
+"hard": true,
+"news_session": "2026-11-09",
+"p": 0.0
+},
+"kill_conditions": [
+"Analyst downgrades Walmart or cuts its price target",
+"Walmart issues weak guidance or misses quarterly earnings expectations",
+"Walmart loses grocery or AI market share to competitors"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Investment banks raise WMT price targets on earnings growth and market share gains",
+"event_type": "analyst_revisions",
+"hard": true,
+"structural": false
+},
+"provider": "Wafer",
+"release": null,
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.0425
+}
+},
+"status": "ok"
+}

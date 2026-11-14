@@ -85,10 +85,16 @@ fetch("../dashboard.json", { cache: "no-store" }).then(r => r.json()).then(d => 
       return x.at_horizon ? "at horizon: review" : (x.exit_day ? x.exit_day + " (review)" : ""); }],
     ["Thesis type", p => { const x = lc(p); if (!x) return "";
       if (!x.classified) return "— (entered before 28 Oct)";
-      return x.structural ? `long-term${x.checkpoint_day ? ", check " + x.checkpoint_day : ""}` : "one-off event"; }]];
+      return x.structural ? `long-term${x.checkpoint_day ? ", check " + x.checkpoint_day : ""}` : "one-off event"; }],
+    // Protocol 11 (shadow, display only): a report inside the horizon, and the stop width used vs the shadow width
+    ["Report inside · width (shadow)", p => { const x = ((d.p11 && d.p11.lots) || {})[p.ticker]; if (!x) return "";
+      const r = x.report_inside == null ? "unknown" : (x.report_inside ? "yes" : "no");
+      return `${r} · ${(x.W * 100).toFixed(1)}% / ${(x.W11 * 100).toFixed(1)}%`; }]];
   if (d.lifecycle) document.getElementById("lcNote").textContent =
     `Holding clock as of the ${d.lifecycle.as_of} close. A position exits at the end of its planned holding period unless ` +
-    `the end-of-period review extends it; long-term theses are checked every 20 trading days and exit if they are clearly not working.`;
+    `the end-of-period review extends it; long-term theses are checked every 20 trading days and exit if they are clearly not working.` +
+    (d.p11 && d.p11.lots ? ` "Report inside · width" (Protocol 11, shadow only from 16 Nov): whether an earnings report falls inside the ` +
+      `holding period, then the residual-return width the stop uses (W) and the earnings-inclusive width recorded beside it (W11); nothing trades on W11.` : "");
   if (S) {
     T("open", [["Ticker", p => `<b>${esc(p.ticker)}</b>`], ["Name", p => esc(p.name)], ["Side", p => p.side], ["Since", p => p.since],
       ...lcCols,
