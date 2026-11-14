@@ -587,3 +587,26 @@ Those samples are spent for exposure rules. A second test on them would be a sel
 * **Q10 timing (Nagel):** no pass, and every point estimate is negative. The book's mean return does not rise with
   lagged dispersion or volatility on 2013-2019 (slopes of the wrong sign, t ≈ −0.5); only its variance does. The
   base book's Sharpe in the 2015-2019 test window is 0.005, so the test had little to time.
+
+## Step 30 — point-in-time broad universe (R2): the quoted figures fall (2026-11-14)
+
+As registered, these replace the pooled figures for the broad trees book. All are book level, 2017-2026, spent and
+descriptive.
+
+| | Hindsight | Point in time |
+|---|---|---|
+| IC | .0264 | **.0196** (t 3.44) |
+| Sharpe at 5 bp flat | 0.79 | **0.56** |
+| Sharpe at 14 bp flat | 0.37 | **0.12** |
+| Sharpe under the forward cost model (half-spread by tercile + square-root impact at $10M) | 0.02 | **0.03** |
+
+Two readings:
+1. **The signal is real but smaller.** About 40% of the earlier IC came from smaller names that the point-in-time top
+   1,500 replaces with tomorrow's index joiners.
+2. **Under realistic costs the decile book is worth about nothing in either universe.** Its turnover of 45-48% a
+   week costs 8-10 %/yr against gross returns of 8-10 %/yr.
+
+The only constructions that can rescue it are those that trade far less. In the forward pipeline's mechanical
+backfill (cost only, not returns) over 2025-2026, the covariance book with a no-trade region costs 0.6 %/yr against
+13.9 %/yr for deciles, and hysteresis 6.1. Delistings are also still missing in 2016-2017 and 2023-2024 (Alpaca),
+so a residual survivor bias remains in those years.

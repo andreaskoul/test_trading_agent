@@ -1,0 +1,16 @@
+16:22:44 hind reading chunks
+16:22:58 hind eligibility on 8096 tickers
+16:23:01 hind fields on (4494, 4780)
+/Users/apollogodofthesun/test_trading_agent/.venv/lib/python3.12/site-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: invalid value encountered in log
+  result = func(self.values, **kwargs)
+/Users/apollogodofthesun/test_trading_agent/.venv/lib/python3.12/site-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: invalid value encountered in log
+  result = func(self.values, **kwargs)
+/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/tree-search/research/tree/panel400.py:69: RuntimeWarning: Mean of empty slice
+  Z = (Z - np.nanmean(Z, 1, keepdims=True)) / np.nanstd(Z, 1, keepdims=True)
+/Users/apollogodofthesun/test_trading_agent/.venv/lib/python3.12/site-packages/numpy/lib/nanfunctions.py:1879: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/tree-search/research/tree/panel400.py:87: RuntimeWarning: Mean of empty slice
+  y = y - np.nanmean(y, 1, keepdims=True)
+16:23:09 hind saved /Users/apollogodofthesun/test_trading_agent/.claude/worktrees/tree-search/.cache/tree/r2/hind_panel.npz broad names 3930
+16:23:12 verify_hind {'names_mine': 4780, 'names_h7': 4780, 'h7_names_missing_here': 0, 'isb_equal': True, 'elig': True, 'Z': True, 'valid': True, 'r': True, 'e': True, 'beta': True, 'dv': True, 'y5': True, 'rm': True, 'spy': True}
+exit 0
