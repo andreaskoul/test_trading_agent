@@ -371,7 +371,8 @@ s=$(python -c "import json,sys;print(json.load(open(sys.argv[1])).get('beta_b1_s
            when="always")
     # Protocol 11 (shadow only): next earnings reports and report-day multiples in <week>/p11_screen.json; a separate
     # process that never blocks the desks; anything but "ok" opens an issue (the live width and size are unchanged)
-    j.step("Protocol 11 (shadow) · weekly screen", has_book + "python fund/p11.py screen", when="always", allow_fail=True)
+    j.step("Protocol 11 (shadow) · weekly screen", has_book + "python fund/p11.py screen", when="always", allow_fail=True,
+           timeout_min=30)                    # capped: a slow EDGAR/Alpaca run must not spend the weekly job's budget
     j.step("Protocol 11 (shadow) · screen status (issue when not ok)", has_book + f"""s=$(python fund/p11.py status screen); echo "P11 screen: $s"
 [ "$s" = "ok" ] || gh issue create -R {GH_REPO} --title "Fund: Protocol 11 shadow screen not ok $(date -u +%F)" --body "$s. Shadow only: live widths and sizes are unchanged; the week's entries are recorded as typed defects. @andreaskoul"
 """, when="always", allow_fail=True)
@@ -406,7 +407,8 @@ def job_execute(j, a):
         j.step("Protocol 7B shadow control (P7 + A8/A9)", "python fund/lifecycle.py control", when="always")
         # Protocol 11 (shadow only): shadow widths of the new entries and the report-window audit, in lifecycle/p11/
         # (committed below with the lifecycle records); never fails the job; anything but "ok" opens an issue
-        j.step("Protocol 11 (shadow) · entries and audit", "python fund/p11.py nightly", when="always", allow_fail=True)
+        j.step("Protocol 11 (shadow) · entries and audit", "python fund/p11.py nightly", when="always", allow_fail=True,
+               timeout_min=15)                # capped: must not delay the reconcile commit
         j.step("Protocol 11 (shadow) · nightly status (issue when not ok)", f"""s=$(python fund/p11.py status nightly); echo "P11 nightly: $s"
 [ "$s" = "ok" ] || gh issue create -R {GH_REPO} --title "Fund: Protocol 11 shadow nightly not ok $(date -u +%F)" --body "$s. Shadow only: live widths and sizes are unchanged. @andreaskoul"
 """, when="always", allow_fail=True)
