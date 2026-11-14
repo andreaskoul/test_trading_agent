@@ -446,3 +446,59 @@ weeks; verdict at t ≥ 2 or 104 weeks.
 its yearly ICs were .048, .006, .025, .050, .003, .066. There is no evidence of a break, and no change is proposed to
 the traded fund. A decay monitor (rolling 52-week IC against its 2020-2025 distribution) is added to the forward
 record.
+
+## Layer 3, Amendment 10 (2026-11-14 ~16:30 UTC, after the A1 audit, before any quantity below is computed)
+
+**Correction to Amendment 1 (dated; the earlier text is not edited).** The broad universe was called
+"survivorship-free". It is not. Excluding the 850 S&P 500 panel names and the 346 *current* S&P 400 members in every
+year 2017-2025 is exclusion with hindsight. The excluded names are 28.9% of a point-in-time top 1,500, and being
+excluded predicts y5 (IC +0.0281, t 9.36; `A1_audit/REPORT.md`). The L3.1 read, the H7 broad history 2017-2025 and
+the pooled broad-book figures in `H7_DECOMP.json` stand as computed, relabelled "on a universe with hindsight exclusion
+of later index members". In 2026 and forward, excluding current S&P 400 members is (nearly) point in time; the
+forward books of Amendment 9 keep their universe unchanged.
+The M2 IPCA S&P 400 pass is annotated: Holm margin ≈ 0.0004 IC; survivor restriction adds +0.0012 on the S&P 500
+analogue; **not robust to survivorship**; only its point-in-time forward book can decide.
+
+**R2, the point-in-time broad universe (descriptive; every period here is already read, so nothing is a test).**
+* Universe: Amendment 1's rule, except the exclusion is only of names that are S&P 500 members at t (point-in-time
+  membership as in the S&P 500 panel). Former and current S&P 400 names, and S&P 500 names outside their membership
+  spells, are included. Same eligibility, same panel code, same y5 clip.
+* Model: `finalists/D_hgb_mh`, the same annual walk-forward refits (target ending before year y), seeds 0-2,
+  2017-2026.
+* Reported, both universes side by side, paired by week: IC (NW t); IC on the common names; IC on the re-admitted
+  names only; the F0 decile book net at 5 bp and 14 bp flat and under Amendment 9's cost model; Sharpe ± Lo SE; by
+  year.
+* **Mechanical consequence, declared now:** from R2 on, the pooled out-of-sample figure quoted for the broad trees book
+  is the point-in-time one, whichever direction it moves.
+* **Data completeness (finding 2):** delistings per year among eligible names against a Form 25 count (EDGAR full-text
+  index, form type `25-NSE` and `25`, typed field), and the 59 `*_DELISTED` symbols mapped by year. Reported, not
+  fixed, unless the gap is a bug in our code.
+
+**Survivorship contract for every new input (from now).** Before an input enters any model, compute the weekly IC of
+its availability indicator with y5 on development data (eligible names with a target; NW t, 4 lags). If |t| ≥ 2 the
+input is rejected unless gated by a point-in-time rule that drives the indicator's |t| below 2. A "missing / NA /
+Unknown" category may not be a function of current-list membership. Sectors, where needed, come from point-in-time
+SEC `sic` (`.cache/p8/edgar/submissions`), not from `gics.json`.
+
+**Q9_horizon (exploit; development data ≤ 2019, `harness.load()`).** For a rank book, turnover ≈ k·√(2(1 − ρ)), with
+ρ the week-on-week rank autocorrelation of the score (Grinold-Kahn).
+* Configurations (fixed now): D trees on the 21- and 63-session hedged targets; the rank mix {5, 21, 63}; the
+  reference D_hgb_mh {3, 5, 10, 20}. Each with deciles and with hysteresis 10/30.
+* Measures: IC on y5; ρ; weekly turnover; net Sharpe under the square-root cost model at S&P costs and at a flat
+  14 bp.
+* Selection rule: the configuration with the highest net Sharpe at 14 bp with hysteresis, provided its IC on y5 is
+  within 0.005 of the reference's. It becomes a candidate for the forward record only through a later amendment.
+* The registered output is the frontier, IC lost against turnover saved.
+
+**Q10_timing (explore; development data ≤ 2019).** Nagel (2012): reversal-type books earn more when liquidity is
+scarce.
+* Book: D_hgb_mh deciles net of 5 bp on the S&P 500 development panel. Conditioning variables, lagged one week:
+  cross-sectional dispersion of 5-day returns, and SPY 21-day realised volatility.
+* Step 1 (reported): expanding-window regressions of the weekly book return, and of its square, on each variable.
+* Step 2 (rule fixed now): exposure_t = clip((SR̂_t / σ̂_t) / its expanding mean, 0.5, 2), with SR̂_t and σ̂_t
+  from the step-1 fits using data before t.
+* Controls: constant exposure; Moreira-Muir inverse variance, c / σ̂²_t normalised the same way.
+* Test on development data only: the paired difference in net Sharpe at matched average gross, with the Lo standard
+  error. A pass makes it a candidate for the forward record via a later amendment.
+
+**Order:** R2 first. Q9 and Q10 start after Protocol 11 is merged (usage budget).
