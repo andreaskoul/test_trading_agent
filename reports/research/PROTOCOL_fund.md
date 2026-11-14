@@ -1324,3 +1324,72 @@ B1 over the fund's beta is ≤ 0, the hedge returns to the lot beta from the nex
 **Next additions under the same policy** (each by a dated amendment, once its evidence is in):
 * F2, the short-volume tilt: after 52 forward weeks, if its net mean is > 0 with one-sided p < 0.10;
 * the momentum panic switch, for momentum-heavy books.
+
+## Protocol 11 (2026-11-14; shadow only from session 2026-11-16, adoption decided on 2026-11-28): an earnings-inclusive width and size, recorded beside the live ones
+
+**Decision.** Build component 3a of `research/eventrisk/PLAN.md` ("The assembly"; Decisions 1, 2 and 4, which passed out
+of sample on 2020–2025: E1, E2, P-E1) as a shadow record for two weeks next to the live width, as Protocol 9 did.
+Nothing trades on it: the live W, weights, stops, targets, hedges and orders are unchanged.
+
+**The rule (recorded, not traded).**
+* **Weekly screen** (`fund/p11.py screen`, shadow stage of the weekly job, `<as-of>/p11_screen.json`). For each member:
+  * its earnings dates in the next 100 days from Finnhub's calendar (the fund's calendar) and the reaction session of
+    each (`catalyst_session`: the date if before the open or in hours, else the next session);
+  * its report sessions in the last ~4.5 years: 8-K / 8-K/A filings whose typed `items` field holds 2.02 (EDGAR
+    submissions API, acceptance time in UTC converted to Eastern, `fund/edgar_time.py`), session by
+    `amend7b2.session_of` (before 16:00 the same session, else the next);
+  * the multiples exactly as `research/eventrisk/study.py`: residuals e = r − b·r_SPY (b = 2/3 × the 252-session
+    slope-winsorised beta, lagged, + 1/3; Alpaca SIP closes), σ_d = max(EW std span 60, 0.75 × 252-session std) of e with
+    the firm's report sessions masked; on report sessions q = e² / σ_d(previous session)²; the pooled multiple c = mean of
+    past q and k = clip(s_w / τ, 1, 200) from a one-way random-effects split, refit on the first session of each month on
+    the ratios before it, formed only with ≥ 200 past ratios; the firm mean c_f of its last ≤ 12 ratios;
+    c* = (c_f·n + k·c) / (n + k).
+  * Each ratio is frozen at first computation (`p11/ratios.csv`, append-only; CLAUDE.md rule 4).
+* **Entry** (`fund/p11.py nightly`, after the reconcile rebuild; `lifecycle/p11/entries.json`, keyed like
+  `lifecycle/entries.json`, frozen at first write). For each lot the live book entered on a session from 2026-11-16:
+  * σ_d: `entry_vol`'s estimator (EWMA span 60, floored at 0.75 × the 252-session std) on the lot's residual returns
+    (lot beta, closes to the previous session, the live entry's information set) with the firm's report sessions
+    masked. The same closes must reproduce the recorded σ_e within 1%, else `input_mismatch`;
+  * n_E: the firm's reaction sessions among the sessions entry+1 … entry+H (H the lot's horizon at entry);
+  * W11 = √((H − n_E)·σ_d² + n_E·c*·σ_d²) and the size scalar s = √(H·σ_d² / W11²), recorded beside σ_e and W.
+* **Typed defects** (shadow = live: W11 = W, s = 1; counted): `no_report_history` (no past ratio for the firm),
+  `no_calendar_date` (no date within 100 days), `no_pooled_multiple` (< 200 ratios), `no_p11_screen`, `input_mismatch`.
+  The last three also raise the alert. An error (`shadow_error:<Type>`) is counted, not recorded, and retried the next
+  night with the same information set.
+* **Overnight audit** (`lifecycle/p11/audit.csv`, append-only): one row per report window passed (n_E ≥ 1, all H sessions
+  closed): realised Σe² over the window (frozen returns, lot beta) against W11² and W², and the report session's own e²
+  against c*·σ_d².
+* **Monitor** (trade monitor, open positions): a report inside the horizon yes / no / unknown, and both widths (W, W11).
+* **Failure** never blocks trading: separate process, separate files, runner steps `when="always", allow_fail=True`; a
+  status other than "ok" opens an issue, as Protocol 10's B1 step does. No module of the trading path imports
+  `fund/p11.py` or reads its files (contract test).
+
+**Adoption, decided on 2026-11-28** (the gate in PLAN.md; written before any shadow outcome is seen):
+* *Mechanical, from the records:* every live entry from 2026-11-16 has a shadow record (status "ok" on every night, or
+  each failure resolved by the next night).
+* *Coverage* (PLAN.md: "to measure before adoption", no threshold given): the share of entries with a calendar date and
+  with report history, reported against the research calendar (441 of 502 members a day) and Finnhub's live coverage
+  (52 of 69 entries); the share of entries with a report inside the horizon against 8% expected.
+* *Removal rule, which stays the component's reversion rule after adoption:* after 100 report windows in the audit, a
+  mean realised ÷ forecast variance outside 0.7–1.5 switches the component off for review. Two weeks give only a few
+  report windows, so this rule is not read on 2026-11-28.
+* *Open point of PLAN.md* (the 28 October amendment, Protocol 7B Amendment 1, keeps a losing position open when earnings
+  are expected; it overlaps with the wider width): **unchanged in shadow; decided at adoption.** The same holds for the
+  analyst's "lower your confidence before earnings" instruction, which PLAN.md Decision 4 removes in the protocol that
+  adopts the scalar.
+
+**Known limits of the shadow record.**
+* The pooled multiple comes from the current members' last ~4.5 years (survivors; EDGAR 8-K item 2.02, which also marks
+  some non-earnings filings), not the study's point-in-time panel: 19.8 on the 2026-11-11 dry run (k 9.35, 6,707 ratios)
+  against 14.9 at the end of 2025 in the study.
+* σ_d at entry uses the lot beta (as `entry_vol`), c* the study's rolling beta.
+* Dual-class and some names have no Finnhub date (GOOG, FOX, NWS, ... : 51 of 498 on 2026-11-11): counted defects.
+* Only reports within 100 days are seen; a lot held longer than that is a defect when no date is found.
+
+**Checks before the first session.**
+* `fund/tests/test_p11.py` (17) and the suite pass: four real positions (WMT report inside; CRM none; TTD and FOX no
+  date; ECHO no history), the multiples against `study.py` on a panel, an offline rebuild of the recorded book (27 days
+  to the cent) identical with and without Protocol 11's files, failure injection and planted faults.
+* Dry runs on live data (2026-11-14): the screens of as-of 2026-11-04 and 2026-11-11 (status ok; 497 of 498 priced,
+  424 and 447 with a date, 496 with history) and the nightly stage on the 16 entries of 11-05 and 11-12 (16 records,
+  3 no-date defects, 4 report windows); rows inspected against EDGAR and the calendar (WMT, CRM, NVDA, AAPL, BA).

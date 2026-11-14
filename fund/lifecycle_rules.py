@@ -42,7 +42,7 @@ A7B3 = pd.Timestamp(os.environ.get("FUND_A7B3") or "2026-11-05")
 # Residual returns (stops, targets, CAR, entry vol) and sizing (caps) keep the lot beta. A name without B1 is hedged
 # with its lot beta. Gated by date: recorded days and replays never change.
 P10 = pd.Timestamp(os.environ.get("FUND_P10") or "2026-11-16")
-# Protocol 11 (shadow only; owner 2026-11-14; research/eventrisk/PLAN.md): from session P11_SHADOW fund/p11.py records
+# Protocol 11 (shadow only; 2026-11-14; research/eventrisk/PLAN.md): from session P11_SHADOW fund/p11.py records
 # an event-inclusive width and size scalar next to every live entry, in its own files. Nothing in the live path reads
 # them; adoption is decided on 2026-11-28. Before P11_SHADOW nothing is written.
 P11_SHADOW = pd.Timestamp(os.environ.get("FUND_P11_SHADOW") or "2026-11-16")
