@@ -568,6 +568,28 @@ try:
     P9 = p9_block()
 except Exception as exc:                              # display only: never fails the ledger
     P9 = {"error": repr(exc)}
+
+
+def p11_block():
+    """Protocol 11 (shadow) on the monitor: per open position, whether a report falls inside its horizon and both
+    widths, the live W and the shadow W11 (fund/p11.py). Display only; read from lifecycle/p11/."""
+    lc = os.path.join(base, "lifecycle")
+    ep, sp, tp = (os.path.join(lc, "p11", "entries.json"), os.path.join(lc, "state.json"), os.path.join(lc, "p11", "status.json"))
+    if not os.path.exists(ep) or not os.path.exists(sp):
+        return None
+    E = json.load(open(ep))
+    out = {}
+    for L in json.load(open(sp)).get("lots", []):
+        x = E.get(f"{L.get('cohort')}|{L['ticker']}|{L.get('entry_day')}")
+        if x:
+            out[L["ticker"]] = {k: x.get(k) for k in ("report_inside", "W", "W11", "scalar", "defect", "reaction_sessions")}
+    return {"status": json.load(open(tp)).get("status") if os.path.exists(tp) else None, "lots": out}
+
+
+try:
+    P11 = p11_block()
+except Exception as exc:                              # display only: never fails the ledger
+    P11 = {"error": repr(exc)}
 dash = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"), "mode": MODE,
         # the paper account's latest value from Alpaca, shown even before the first trade
         "balance": {"equity": float(_nav_all["equity"].iloc[-1]), "date": str(_nav_all["date"].iloc[-1])} if len(_nav_all) else None,
@@ -583,6 +605,7 @@ dash = {"updated": pd.Timestamp.now(tz="UTC").isoformat(timespec="minutes"), "mo
         "open_std": [{k: _f(v) for k, v in o.items()} for o in STD["open"]] if STD else None,
         "lifecycle": LIFE,
         "p9": P9,
+        "p11": P11,                                  # Protocol 11 (shadow): display only
         "realized": [{k: _f(v) for k, v in t.items()} for t in STD["realized_trades"]] if STD else None}
 
 

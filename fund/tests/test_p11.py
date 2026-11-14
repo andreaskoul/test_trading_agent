@@ -171,6 +171,14 @@ def test_pooled_multiple_needs_200_past_ratios():
     e, E = _panel(N=3, T=600)
     _, c_t, k_t, cs = p11.multiples(e, E, p11.sd_daily(e, E))
     assert np.isnan(c_t).all() and np.isnan(cs).all()                    # too few ratios: no pooled multiple
+    e, E = _panel()                                                      # 40 firms: the count crosses 200 mid-panel
+    q, c_t, _, _ = p11.multiples(e, E, p11.sd_daily(e, E))
+    n_before = np.isfinite(q.to_numpy()).cumsum(0).sum(1)                # ratios up to each session
+    month = q.index.to_period("M")
+    first = np.r_[True, month[1:] != month[:-1]]
+    formed = np.array([n_before[t - 1] >= 200 if t else False for t in range(len(q))])
+    expect = np.maximum.accumulate(np.where(first, formed, False))       # from the first month-start with >= 200 before it
+    assert 0 < expect.sum() < len(q) and np.array_equal(np.isfinite(c_t), expect)
 
 
 def test_ratios_are_frozen_at_first_computation():
