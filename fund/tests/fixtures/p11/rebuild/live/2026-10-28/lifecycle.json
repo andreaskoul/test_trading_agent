@@ -1,0 +1,651 @@
+{
+"asof": "2026-10-28",
+"entry_day": "2026-10-29",
+"names": {
+"AVGO": {
+"H": 30,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.65,
+"driving_event": "Broadcom secures $63B financing for Anthropic chips",
+"error": null,
+"first_reported": "2026-10-27",
+"inputs": {
+"M": 0.021262926842356367,
+"hard": true,
+"news_session": "2026-10-27",
+"p": 1.5
+},
+"kill_conditions": [
+"Broadcom's Anthropic chip financing deal is terminated or collapses",
+"Anthropic cancels or significantly delays its custom chip orders from Broadcom",
+"Banks withdraw from Broadcom's Anthropic chip financing deal"
+],
+"news_age": 2,
+"out": {
+"driving_event": "Broadcom secures $63B financing for Anthropic chips",
+"event_type": "partnership",
+"hard": true,
+"structural": true
+},
+"provider": "CoreWeave",
+"report_session": "2026-12-10",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": 0.0325
+},
+"BA": {
+"H": 60,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.55,
+"driving_event": "Q3 2026 earnings miss with negative guidance on 737 Max ramp and 2027 FCF",
+"error": null,
+"first_reported": "2026-10-27",
+"inputs": {
+"M": 0.04345969670117175,
+"hard": true,
+"news_session": "2026-10-27",
+"p": 1.5
+},
+"kill_conditions": [
+"Boeing raises FY2027 free cash flow guidance",
+"737 Max production ramp accelerates ahead of schedule",
+"FAA certifies 777X ahead of schedule"
+],
+"news_age": 2,
+"out": {
+"driving_event": "Q3 2026 earnings miss with negative guidance on 737 Max ramp and 2027 FCF",
+"event_type": "guidance",
+"hard": true,
+"structural": true
+},
+"provider": "InferenceNet",
+"report_session": "2027-01-26",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": -0.0275
+},
+"BIIB": {
+"H": 37,
+"H_a8": 19,
+"H_raw": 19.0,
+"confidence": 0.6,
+"driving_event": "Q3 2026 earnings beat, revenue +10.6%, FY profit guidance floor raised",
+"error": null,
+"first_reported": "2026-10-28",
+"inputs": {
+"M": 0.044355738556061196,
+"hard": true,
+"news_session": "2026-10-28",
+"p": 0.0
+},
+"kill_conditions": [
+"Biogen cuts or withdraws its FY2026 EPS guidance",
+"Leqembi quarterly sales decline or growth-product growth stalls",
+"Q4 results miss estimates, reversing the post-earnings drift"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Q3 2026 earnings beat, revenue +10.6%, FY profit guidance floor raised",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Relace",
+"report_session": "2027-02-05",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.06
+},
+"BRO": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.6,
+"driving_event": "Brown & Brown Q3 2026 earnings miss with 1.2% organic growth and margin contraction",
+"error": null,
+"first_reported": "2026-10-26",
+"inputs": {
+"M": 0.03433448991127568,
+"hard": true,
+"news_session": "2026-10-26",
+"p": 1.5
+},
+"kill_conditions": [
+"Brown & Brown reports organic revenue growth reaccelerating above 5% in a subsequent quarter",
+"Brown & Brown raises full-year guidance or reports margin expansion",
+"Analysts upgrade Brown & Brown citing improving organic growth and margins"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Brown & Brown Q3 2026 earnings miss with 1.2% organic growth and margin contraction",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Relace",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.03
+},
+"BSX": {
+"H": 63,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.6,
+"driving_event": "Boston Scientific cuts FY26 guidance a third time after cyberattack, Q4 outlook below consensus",
+"error": null,
+"first_reported": "2026-10-28",
+"inputs": {
+"M": 0.044355738556061196,
+"hard": true,
+"news_session": "2026-10-28",
+"p": 1.3487659805200898
+},
+"kill_conditions": [
+"Boston Scientific raises or restores its FY2026 guidance",
+"Company reports cyberattack impact resolved with no Q4 revenue hit",
+"Q4 organic revenue grows instead of declining 1% to 3%"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Boston Scientific cuts FY26 guidance a third time after cyberattack, Q4 outlook below consensus",
+"event_type": "guidance",
+"hard": true,
+"structural": true
+},
+"provider": "Baidu",
+"report_session": "2027-02-03",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": -0.06
+},
+"CDNS": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.6,
+"driving_event": "Q3 beat-and-raise with record backlog and raised 2026 outlook",
+"error": null,
+"first_reported": "2026-10-26",
+"inputs": {
+"M": 0.053444316254475155,
+"hard": true,
+"news_session": "2026-10-26",
+"p": 1.1382422205393008
+},
+"kill_conditions": [
+"Cadence cuts its FY2026 guidance",
+"Cadence reports Q4 revenue below its guidance",
+"Cadence cancels or reduces its $2.5B buyback plan"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Q3 beat-and-raise with record backlog and raised 2026 outlook",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "CoreWeave",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.03
+},
+"CRL": {
+"H": 5,
+"H_a8": 5,
+"H_raw": 5.0,
+"confidence": 0.5,
+"driving_event": "Risk of Q3 earnings miss (4.8% revenue decline, negative ESP) despite recent stock rally",
+"error": null,
+"first_reported": "2026-10-09",
+"inputs": {
+"M": 0.044355738556061196,
+"hard": true,
+"news_session": "2026-10-09",
+"p": 0.0
+},
+"kill_conditions": [
+"CRL reports revenue growth or positive Earnings ESP",
+"Major unexpected positive business development announced"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Risk of Q3 earnings miss (4.8% revenue decline, negative ESP) despite recent stock rally",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "OpenInference",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.025
+},
+"EQIX": {
+"H": 22,
+"H_a8": 22,
+"H_raw": 22.0,
+"confidence": 0.7,
+"driving_event": "Q3 2026 FFO beat, EPS beat, record bookings, raised 2026 guidance",
+"error": null,
+"first_reported": "2026-10-28",
+"inputs": {
+"M": 0.03411078994773307,
+"hard": true,
+"news_session": "2026-10-28",
+"p": 0.16282201156687237
+},
+"kill_conditions": [
+"Equinix cuts FY 2026 guidance or withdraws outlook",
+"Q3 FFO beat is revised lower or restated",
+"Major AI data center customer cancels or delays leases"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Q3 2026 FFO beat, EPS beat, record bookings, raised 2026 guidance",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Relace",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.07
+},
+"EQT": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 0.0,
+"confidence": 0.55,
+"driving_event": "EQT's $50B all-stock acquisition of Range Resources announced Oct 26",
+"error": null,
+"first_reported": "2026-10-26",
+"inputs": {
+"M": 0.016547759338840045,
+"hard": true,
+"news_session": "2026-10-26",
+"p": 0.2937442818368124
+},
+"kill_conditions": [
+"EQT terminates or withdraws the Range Resources acquisition",
+"Antitrust regulators block or sue to block the merger",
+"Range Resources shareholders vote down the deal"
+],
+"news_age": 3,
+"out": {
+"driving_event": "EQT's $50B all-stock acquisition of Range Resources announced Oct 26",
+"event_type": "mna_rumour",
+"hard": true,
+"structural": true
+},
+"provider": "Cohere",
+"stale": true,
+"status": "ok",
+"structural": true,
+"weight": 0.0275
+},
+"GOOGL": {
+"H": 24,
+"H_a8": 24,
+"H_raw": 24.0,
+"confidence": 0.62,
+"driving_event": "Alphabet Q3 revenue miss with slowing Search growth overshadowing strong cloud; shares fell ~7% after hours.",
+"error": null,
+"first_reported": "2026-10-28",
+"inputs": {
+"M": 0.046357571150933086,
+"hard": true,
+"news_session": "2026-10-28",
+"p": 0.0
+},
+"kill_conditions": [
+"Alphabet reports stronger-than-expected Q4 revenue or raises guidance",
+"Search revenue growth reaccelerates above prior trend",
+"Alphabet announces major buyback or capital return that lifts shares"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Alphabet Q3 revenue miss with slowing Search growth overshadowing strong cloud; shares fell ~7% after hours.",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Wafer",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.062
+},
+"HCA": {
+"H": 42,
+"H_a8": 16,
+"H_raw": 16.0,
+"confidence": 0.5,
+"driving_event": "HCA Q3 2026 earnings beat with $400M uninsured hit and flat 2027 outlook",
+"error": null,
+"first_reported": "2026-10-27",
+"inputs": {
+"M": 0.044355738556061196,
+"hard": true,
+"news_session": "2026-10-27",
+"p": 0.1719213577312105
+},
+"kill_conditions": [
+"HCA raises 2027 guidance above 2026 levels",
+"HCA reports uninsured payer mix improving or ACA coverage losses reversing",
+"HCA announces cost cuts or buyback that offset margin strain"
+],
+"news_age": 2,
+"out": {
+"driving_event": "HCA Q3 2026 earnings beat with $400M uninsured hit and flat 2027 outlook",
+"event_type": "earnings",
+"hard": true,
+"structural": true
+},
+"provider": "CoreWeave",
+"report_session": "2027-01-26",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": -0.025
+},
+"LH": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.5,
+"driving_event": "Labcorp Q3 2026 EPS and sales beat with raised FY2026 guidance",
+"error": null,
+"first_reported": "2026-10-28",
+"inputs": {
+"M": 0.044355738556061196,
+"hard": true,
+"news_session": "2026-10-28",
+"p": 1.5
+},
+"kill_conditions": [
+"Labcorp cuts or withdraws its FY2026 EPS and sales guidance",
+"Q4 2026 results miss estimates and management signals weakening test volumes",
+"Company discloses reimbursement or pricing pressure that resets full-year outlook lower"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Labcorp Q3 2026 EPS and sales beat with raised FY2026 guidance",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "InferenceNet",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.025
+},
+"MRNA": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.55,
+"driving_event": "Leaked Phase 3 melanoma vaccine data met expectations, triggering sell-the-news collapse in Moderna shares",
+"error": null,
+"first_reported": "2026-10-23",
+"inputs": {
+"M": 0.01647588151808338,
+"hard": true,
+"news_session": "2026-10-23",
+"p": 0.0
+},
+"kill_conditions": [
+"Moderna announces new positive Phase 3 or regulatory news for its cancer vaccine beyond melanoma",
+"FDA grants breakthrough designation or accepts filing for intismeran",
+"Multiple analysts upgrade MRNA on broader cancer-use potential"
+],
+"news_age": 4,
+"out": {
+"driving_event": "Leaked Phase 3 melanoma vaccine data met expectations, triggering sell-the-news collapse in Moderna shares",
+"event_type": "other",
+"hard": true,
+"structural": false
+},
+"provider": "Morph",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.0275
+},
+"MSFT": {
+"H": 25,
+"H_a8": 25,
+"H_raw": 24.6,
+"confidence": 0.62,
+"driving_event": "Microsoft Q1 FY27 earnings beat with Azure growth accelerating",
+"error": null,
+"first_reported": "2026-10-28",
+"inputs": {
+"M": 0.053444316254475155,
+"hard": true,
+"news_session": "2026-10-28",
+"p": 0.0
+},
+"kill_conditions": [
+"Microsoft reports Azure growth decelerating below prior quarter",
+"Microsoft cuts FY27 guidance or issues weak cloud outlook",
+"Analysts downgrade MSFT or cut price targets on Azure concerns"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Microsoft Q1 FY27 earnings beat with Azure growth accelerating",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "DigitalOcean",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.062
+},
+"NFLX": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.55,
+"driving_event": "Weak Q4 revenue guidance after Q3 earnings beat",
+"error": null,
+"first_reported": "2026-10-20",
+"inputs": {
+"M": 0.046357571150933086,
+"hard": true,
+"news_session": "2026-10-20",
+"p": 1.5
+},
+"kill_conditions": [
+"Netflix raises Q4 revenue guidance",
+"Netflix reports Q4 revenue above guidance",
+"New data shows Netflix engagement reaccelerating"
+],
+"news_age": 4,
+"out": {
+"driving_event": "Weak Q4 revenue guidance after Q3 earnings beat",
+"event_type": "guidance",
+"hard": true,
+"structural": false
+},
+"provider": "Together",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.0275
+},
+"NVDA": {
+"H": 21,
+"H_a8": 21,
+"H_raw": 21.0,
+"confidence": 0.5,
+"driving_event": "Nvidia's $3B Meta investment and Vera Rubin $40B/gigawatt revenue guide",
+"error": null,
+"first_reported": "2026-10-28",
+"inputs": {
+"M": 0.021262926842356367,
+"hard": true,
+"news_session": "2026-10-28",
+"p": 0.0
+},
+"kill_conditions": [
+"Nvidia cuts or withdraws its growth guidance",
+"Nvidia cancels or writes down the $3B Meta investment",
+"A major customer shifts orders materially to rival AI chips"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Nvidia's $3B Meta investment and Vera Rubin $40B/gigawatt revenue guide",
+"event_type": "partnership",
+"hard": true,
+"structural": false
+},
+"provider": "CoreWeave",
+"report_session": "2026-11-27",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.025
+},
+"ORCL": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 0.0,
+"confidence": 0.9,
+"driving_event": "Oracle expands AI cloud partnerships with OpenAI, Google, and Cerebras",
+"error": null,
+"first_reported": "2026-10-27",
+"inputs": {
+"M": 0.021262926842356367,
+"hard": false,
+"news_session": "2026-10-27",
+"p": 1.5
+},
+"kill_conditions": [
+"OpenAI or Google terminates or scales back its Oracle cloud partnership",
+"Oracle delays or cancels the Agentic AI Platform launch",
+"Oracle cuts AI/cloud revenue guidance or reports major AI infrastructure setbacks"
+],
+"news_age": 2,
+"out": {
+"driving_event": "Oracle expands AI cloud partnerships with OpenAI, Google, and Cerebras",
+"event_type": "partnership",
+"hard": false,
+"structural": true
+},
+"provider": "Novita",
+"stale": true,
+"status": "ok",
+"structural": true,
+"weight": 0.045
+},
+"TSLA": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 0.0,
+"confidence": 0.55,
+"driving_event": "Tesla-SpaceX merger speculation, with Musk committee confirmation and Barclays upgrade supporting bull case.",
+"error": null,
+"first_reported": "2026-10-27",
+"inputs": {
+"M": 0.01642752188223859,
+"hard": false,
+"news_session": "2026-10-27",
+"p": 1.0590358055778166
+},
+"kill_conditions": [
+"Tesla or SpaceX denies merger talks or says no deal is being considered",
+"Barclays downgrades Tesla and removes SpaceX merger from its bull case",
+"Musk or Tesla formally terminates merger discussions with SpaceX"
+],
+"news_age": 2,
+"out": {
+"driving_event": "Tesla-SpaceX merger speculation, with Musk committee confirmation and Barclays upgrade supporting bull case.",
+"event_type": "mna_rumour",
+"hard": false,
+"structural": false
+},
+"provider": "InferenceNet",
+"stale": true,
+"status": "ok",
+"structural": false,
+"weight": 0.0275
+},
+"VLO": {
+"H": 21,
+"H_a8": 21,
+"H_raw": 21.2,
+"confidence": 0.55,
+"driving_event": "US Energy Secretary opens door to more Russian diesel imports, shrinking refining margins and pressuring refiners.",
+"error": null,
+"first_reported": "2026-10-28",
+"inputs": {
+"M": 0.016547759338840045,
+"hard": false,
+"news_session": "2026-10-28",
+"p": 0.0
+},
+"kill_conditions": [
+"US blocks or reverses the Russian diesel import plan",
+"Valero reports Q4 refining margins above Q3 levels"
+],
+"news_age": 1,
+"out": {
+"driving_event": "US Energy Secretary opens door to more Russian diesel imports, shrinking refining margins and pressuring refiners.",
+"event_type": "macro_readthrough",
+"hard": false,
+"structural": false
+},
+"provider": "CoreWeave",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.0275
+},
+"XOM": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 2.0,
+"confidence": 0.5,
+"driving_event": "Surge of 'Iran War Oil Profits' narrative; windfall-tax rhetoric from Trump, Sanders, Schumer",
+"error": null,
+"first_reported": "2026-10-26",
+"inputs": {
+"M": 0.016547759338840045,
+"hard": false,
+"news_session": "2026-10-26",
+"p": 0.3795783691629033
+},
+"kill_conditions": [
+"Exxon posts a Q3 beat and raises full-year guidance, showing windfall-tax risk immaterial",
+"Windfall-tax proposals abandoned; no legislation advanced against oil majors",
+"Iran conflict escalates, driving Brent crude sharply higher"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Surge of 'Iran War Oil Profits' narrative; windfall-tax rhetoric from Trump, Sanders, Schumer",
+"event_type": "macro_readthrough",
+"hard": false,
+"structural": false
+},
+"provider": "Decart",
+"stale": true,
+"status": "ok",
+"structural": false,
+"weight": -0.025
+}
+},
+"status": "ok"
+}

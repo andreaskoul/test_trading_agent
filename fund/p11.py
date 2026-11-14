@@ -200,10 +200,10 @@ def entry_record(lot, row, pooled, e, sessions):
         if defect is None:
             if abs(chk["sigma"] - sig_e) > SIGMA_TOL * sig_e or abs(W - sig_e * math.sqrt(H)) > 1e-9 or win is None:
                 defect = "input_mismatch"            # rule 2: the inputs do not reproduce the live entry
+            elif not row.get("n_firm"):
+                defect = "no_report_history"         # the firm's own history first, then the window's calendar
             elif not row.get("calendar"):
                 defect = "no_calendar_date"
-            elif not row.get("n_firm"):
-                defect = "no_report_history"
         if win is not None:
             rec["window"] = [str(win[0].date()), str(win[-1].date())]
             rec["n_E"] = int(sum(1 for s in react if s is not None and s in win))

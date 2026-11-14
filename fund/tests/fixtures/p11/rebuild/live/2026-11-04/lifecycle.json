@@ -1,0 +1,715 @@
+{
+"asof": "2026-11-04",
+"entry_day": "2026-11-05",
+"names": {
+"AMD": {
+"H": 19,
+"H_a8": 19,
+"H_raw": 19.0,
+"confidence": 0.62,
+"driving_event": "AMD Q3 2026 earnings beat with data center sales nearly doubling and Q4 revenue guidance above consensus",
+"error": null,
+"first_reported": "2026-11-04",
+"inputs": {
+"M": 0.05467331867308939,
+"hard": true,
+"news_session": "2026-11-04",
+"p": 0.0
+},
+"kill_conditions": [
+"AMD cuts or withdraws its Q4 revenue guidance",
+"A major AI customer cancels or delays chip orders from AMD",
+"AMD data center revenue misses expectations or declines sequentially"
+],
+"news_age": 1,
+"out": {
+"driving_event": "AMD Q3 2026 earnings beat with data center sales nearly doubling and Q4 revenue guidance above consensus",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Wafer",
+"release": {
+"accepted": "2026-11-03 16:16:27",
+"session": "2026-11-04",
+"source": "8-K 2.02"
+},
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.031
+},
+"AME": {
+"H": 18,
+"H_a8": 18,
+"H_raw": 18.0,
+"confidence": 0.45,
+"driving_event": "AMETEK Q3 2026 beat with record backlog, raised FY26 guidance, shares fell 8.7%",
+"error": null,
+"first_reported": "2026-11-03",
+"inputs": {
+"M": 0.047243191630124234,
+"hard": true,
+"news_session": "2026-11-03",
+"p": 0.0
+},
+"kill_conditions": [
+"AMETEK cuts or withdraws its raised FY26 guidance",
+"Q4 orders or backlog decline, ending the record backlog narrative",
+"Additional analyst downgrades cite growth quality or valuation, extending the selloff"
+],
+"news_age": 2,
+"out": {
+"driving_event": "AMETEK Q3 2026 beat with record backlog, raised FY26 guidance, shares fell 8.7%",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Wafer",
+"release": {
+"accepted": "2026-11-03 10:28:59",
+"session": "2026-11-03",
+"source": "8-K 2.02"
+},
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.0225
+},
+"BA": {
+"H": 14,
+"H_a8": 8,
+"H_raw": 8.0,
+"confidence": 0.4,
+"driving_event": "Avolon finalizes record 140-jet 737-10 order",
+"error": null,
+"first_reported": "2026-11-04",
+"inputs": {
+"M": 0.017656304145353553,
+"hard": true,
+"news_session": "2026-11-04",
+"p": 0.20316358334288312
+},
+"kill_conditions": [
+"Avolon cancels or reduces the 140-jet 737-10 order",
+"Boeing cuts or withdraws its free cash flow target",
+"Boeing reports a larger-than-expected Q4 loss or guidance cut"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Avolon finalizes record 140-jet 737-10 order",
+"event_type": "other",
+"hard": true,
+"structural": false
+},
+"provider": "Wafer",
+"release": null,
+"report_session": "2027-01-26",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.02
+},
+"CVS": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 0.6,
+"confidence": 0.7,
+"driving_event": "CVS announces plan to split into two publicly traded companies by 2028",
+"error": null,
+"first_reported": "2026-11-03",
+"inputs": {
+"M": 0.018182156741548362,
+"hard": false,
+"news_session": "2026-11-03",
+"p": 1.5
+},
+"kill_conditions": [
+"CVS cancels or indefinitely delays the announced two-company split",
+"CVS raises FY guidance again and analysts upgrade the stock on breakup value",
+"Split is completed smoothly ahead of schedule with no execution or separation issues"
+],
+"news_age": 2,
+"out": {
+"driving_event": "CVS announces plan to split into two publicly traded companies by 2028",
+"event_type": "other",
+"hard": false,
+"structural": true
+},
+"provider": "Wafer",
+"release": null,
+"stale": true,
+"status": "ok",
+"structural": true,
+"weight": -0.035
+},
+"EL": {
+"H": 61,
+"H_a8": 11,
+"H_raw": 11.0,
+"confidence": 0.65,
+"driving_event": "Q1 earnings beat with FY27 guidance raise and FY30 ambition at Capital Markets event",
+"error": null,
+"first_reported": "2026-11-02",
+"inputs": {
+"M": 0.0437014575882325,
+"hard": true,
+"news_session": "2026-11-02",
+"p": 0.2674461080796987
+},
+"kill_conditions": [
+"Estee Lauder cuts FY2027 guidance",
+"Estee Lauder reports negative organic sales growth",
+"Estee Lauder abandons or lowers FY2030 margin targets"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Q1 earnings beat with FY27 guidance raise and FY30 ambition at Capital Markets event",
+"event_type": "earnings",
+"hard": true,
+"structural": true
+},
+"provider": "DigitalOcean",
+"release": {
+"accepted": "2026-11-02 08:01:35",
+"session": "2026-11-02",
+"source": "8-K 2.02"
+},
+"report_session": "2027-02-03",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": 0.0325
+},
+"ETN": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 1.8,
+"confidence": 0.6,
+"driving_event": "Democratic sweep revives data-center regulatory fears, pressuring electrification names sector-wide",
+"error": null,
+"first_reported": "2026-11-04",
+"inputs": {
+"M": 0.017656304145353553,
+"hard": true,
+"news_session": "2026-11-04",
+"p": 1.5
+},
+"kill_conditions": [
+"Lawmakers drop or soften data-center power regulation proposals, easing sector political risk",
+"Eaton guides Q4 above consensus or raises FY guidance again",
+"Eaton reports accelerating record orders and backlog above expectations"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Democratic sweep revives data-center regulatory fears, pressuring electrification names sector-wide",
+"event_type": "macro_readthrough",
+"hard": true,
+"structural": false
+},
+"provider": "DigitalOcean",
+"release": null,
+"stale": true,
+"status": "ok",
+"structural": false,
+"weight": -0.03
+},
+"FIS": {
+"H": 40,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.62,
+"driving_event": "FIS cut FY26 EPS and sales guidance after Q3 beat, with CFO exit compounding the selloff.",
+"error": null,
+"first_reported": "2026-11-04",
+"inputs": {
+"M": 0.03996192865221413,
+"hard": true,
+"news_session": "2026-11-04",
+"p": 1.5
+},
+"kill_conditions": [
+"FIS raises FY2026 EPS and sales guidance or issues FY2027 outlook above current expectations",
+"CFO Kehoe remains in role or FIS appoints a permanent CFO without disruption",
+"FIS reports 2027 revenue softness smaller than feared, with nonrecurring decline offset by banking growth"
+],
+"news_age": 1,
+"out": {
+"driving_event": "FIS cut FY26 EPS and sales guidance after Q3 beat, with CFO exit compounding the selloff.",
+"event_type": "guidance",
+"hard": true,
+"structural": true
+},
+"provider": "Alibaba",
+"release": {
+"accepted": "2026-11-04 07:34:43",
+"session": "2026-11-04",
+"source": "8-K 2.02"
+},
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": -0.031
+},
+"FOXA": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.58,
+"driving_event": "Fox FQ1 FY2027 record beat on World Cup and political ad surge plus Tubi",
+"error": null,
+"first_reported": "2026-11-02",
+"inputs": {
+"M": 0.04949263053948048,
+"hard": true,
+"news_session": "2026-11-02",
+"p": 1.5
+},
+"kill_conditions": [
+"DOJ sues to block the Roku deal or Fox terminates the $22B acquisition",
+"Fox cuts full-year guidance or reports a decline in advertising revenue",
+"Fox says it will not resume share repurchases this quarter"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Fox FQ1 FY2027 record beat on World Cup and political ad surge plus Tubi",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "CoreWeave",
+"release": {
+"accepted": "2026-11-02 08:03:11",
+"session": "2026-11-02",
+"source": "8-K 2.02"
+},
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.029
+},
+"IDXX": {
+"H": 13,
+"H_a8": 13,
+"H_raw": 13.0,
+"confidence": 0.6,
+"driving_event": "Q3 EPS/sales beat and FY26 guidance raise drove a 20% one-day stock surge",
+"error": null,
+"first_reported": "2026-11-02",
+"inputs": {
+"M": 0.04741159512483691,
+"hard": true,
+"news_session": "2026-11-02",
+"p": 0.0
+},
+"kill_conditions": [
+"IDEXX raises FY2026 EPS and sales guidance again on sustained demand",
+"Q4 results show accelerating clinic traffic and margin expansion",
+"Management guides FY2027 above consensus, signaling durable growth beyond Q3"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Q3 EPS/sales beat and FY26 guidance raise drove a 20% one-day stock surge",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Morph",
+"release": {
+"accepted": "2026-11-02 06:30:38",
+"session": "2026-11-02",
+"source": "8-K 2.02"
+},
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": -0.03
+},
+"LLY": {
+"H": 45,
+"H_a8": 23,
+"H_raw": 23.0,
+"confidence": 0.6,
+"driving_event": "Novo's Q3 Wegovy pill blowout and raised 2026 outlook",
+"error": null,
+"first_reported": "2026-11-04",
+"inputs": {
+"M": 0.04741159512483691,
+"hard": true,
+"news_session": "2026-11-04",
+"p": 0.06693226023575811
+},
+"kill_conditions": [
+"Novo Nordisk cuts 2026 outlook or Wegovy pill sales miss estimates",
+"Eli Lilly's oral obesity pill beats Novo's Wegovy pill in head-to-head trial",
+"Eli Lilly raises 2026 guidance above $92 billion"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Novo's Q3 Wegovy pill blowout and raised 2026 outlook",
+"event_type": "earnings",
+"hard": true,
+"structural": true
+},
+"provider": "InferenceNet",
+"release": null,
+"report_session": "2027-02-02",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": -0.03
+},
+"META": {
+"H": 56,
+"H_a8": 7,
+"H_raw": 6.8,
+"confidence": 0.56,
+"driving_event": "Meta's $15bn bond sale and S&P's negative credit outlook amid AI-capex debt concerns",
+"error": null,
+"first_reported": "2026-11-04",
+"inputs": {
+"M": 0.019130480001091948,
+"hard": true,
+"news_session": "2026-11-04",
+"p": 0.36274442367979554
+},
+"kill_conditions": [
+"S&P revises Meta's credit outlook back to stable or upgrades its rating",
+"Meta cuts, suspends or scales back its AI capital-expenditure plans",
+"Meta reports positive free cash flow, easing dilution and credit concerns"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Meta's $15bn bond sale and S&P's negative credit outlook amid AI-capex debt concerns",
+"event_type": "other",
+"hard": true,
+"structural": true
+},
+"provider": "Wafer",
+"release": null,
+"report_session": "2027-01-27",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": -0.028
+},
+"ORCL": {
+"H": 19,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.62,
+"driving_event": "Oracle cancels $7B Tencent AI chip deal under US pressure, removing revenue amid $20B financing overhang",
+"error": null,
+"first_reported": "2026-11-04",
+"inputs": {
+"M": 0.02175312381728059,
+"hard": true,
+"news_session": "2026-11-04",
+"p": 1.5
+},
+"kill_conditions": [
+"Oracle reinstates or replaces the $7B Tencent chip deal",
+"US regulatory pressure eases and the Tencent deal is approved",
+"Oracle secures alternative financing without dilution or high-cost debt"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Oracle cancels $7B Tencent AI chip deal under US pressure, removing revenue amid $20B financing overhang",
+"event_type": "legal_regulatory",
+"hard": true,
+"structural": true
+},
+"provider": "Together",
+"release": null,
+"report_session": "2026-12-08",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": -0.031
+},
+"QCOM": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 0.0,
+"confidence": 0.4,
+"driving_event": "SpaceX selects Qualcomm to supply Dragonwing cellular infrastructure for Starlink Mobile 5G",
+"error": null,
+"first_reported": "2026-11-04",
+"inputs": {
+"M": 0.02175312381728059,
+"hard": false,
+"news_session": "2026-11-04",
+"p": 1.3026638580469163
+},
+"kill_conditions": [
+"SpaceX terminates or cancels the Qualcomm agreement",
+"Starlink Mobile delays or abandons its nationwide 5G network build",
+"Qualcomm loses the Starlink infrastructure contract to a competitor"
+],
+"news_age": 1,
+"out": {
+"driving_event": "SpaceX selects Qualcomm to supply Dragonwing cellular infrastructure for Starlink Mobile 5G",
+"event_type": "partnership",
+"hard": false,
+"structural": true
+},
+"provider": "Wafer",
+"release": null,
+"stale": true,
+"status": "ok",
+"structural": true,
+"weight": 0.02
+},
+"SMCI": {
+"H": 34,
+"H_a8": 18,
+"H_raw": 18.0,
+"confidence": 0.5,
+"driving_event": "Q1 FY2027 earnings beat with Q2 guidance above consensus, record $60B backlog, raised FY outlook",
+"error": null,
+"first_reported": "2026-11-03",
+"inputs": {
+"M": 0.05467331867308939,
+"hard": true,
+"news_session": "2026-11-03",
+"p": 0.0
+},
+"kill_conditions": [
+"Company cuts FY 2027 revenue or EPS guidance",
+"Major customer cuts or delays AI server orders, worsening 44% concentration",
+"Gross margin declines further and management lowers margin outlook"
+],
+"news_age": 2,
+"out": {
+"driving_event": "Q1 FY2027 earnings beat with Q2 guidance above consensus, record $60B backlog, raised FY outlook",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "CoreWeave",
+"release": {
+"accepted": "2026-11-03 16:31:04",
+"session": "2026-11-04",
+"source": "8-K 2.02"
+},
+"report_session": "2027-02-01",
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.025
+},
+"TSLA": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 0.0,
+"confidence": 0.58,
+"driving_event": "Democratic midterm gains raise political and regulatory risk for Tesla-SpaceX merger and AI buildout.",
+"error": null,
+"first_reported": "2026-11-04",
+"inputs": {
+"M": 0.01823767683022438,
+"hard": false,
+"news_session": "2026-11-04",
+"p": 1.5
+},
+"kill_conditions": [
+"Tesla-SpaceX merger receives regulatory approval",
+"Democratic lawmakers announce support for Musk's AI data center expansion",
+"Musk reaches agreement with Democrats on data center regulation"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Democratic midterm gains raise political and regulatory risk for Tesla-SpaceX merger and AI buildout.",
+"event_type": "macro_readthrough",
+"hard": false,
+"structural": false
+},
+"provider": "Wafer",
+"release": null,
+"stale": true,
+"status": "ok",
+"structural": false,
+"weight": -0.029
+},
+"TT": {
+"H": 55,
+"H_a8": 15,
+"H_raw": 15.0,
+"confidence": 0.55,
+"driving_event": "Trane Q3 2026 earnings beat on EPS and revenue, raised FY revenue guidance, record backlog",
+"error": null,
+"first_reported": "2026-10-29",
+"inputs": {
+"M": 0.047243191630124234,
+"hard": true,
+"news_session": "2026-10-29",
+"p": 0.0
+},
+"kill_conditions": [
+"Trane cuts FY2026 revenue guidance or issues FY2027 outlook below consensus",
+"Q4 organic bookings decline or backlog falls below prior-year level",
+"Company reports margin compression that offsets revenue growth, prompting analyst downgrades"
+],
+"news_age": 5,
+"out": {
+"driving_event": "Trane Q3 2026 earnings beat on EPS and revenue, raised FY revenue guidance, record backlog",
+"event_type": "earnings",
+"hard": true,
+"structural": true
+},
+"provider": "Wafer",
+"release": {
+"accepted": "2026-10-29 06:40:47",
+"session": "2026-10-29",
+"source": "8-K 2.02"
+},
+"report_session": "2027-01-26",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": 0.0275
+},
+"VRT": {
+"H": 3,
+"H_a8": 3,
+"H_raw": 0.0,
+"confidence": 0.6,
+"driving_event": "Democrats win Congress, reviving data-center political/regulatory fears and driving VRT down 9%.",
+"error": null,
+"first_reported": "2026-11-04",
+"inputs": {
+"M": 0.017656304145353553,
+"hard": false,
+"news_session": "2026-11-04",
+"p": 1.5
+},
+"kill_conditions": [
+"Democratic lawmakers abandon or soften data-center power/regulatory restrictions",
+"Vertiv reports another record quarter with raised guidance and orders doubling",
+"Major analyst upgrades and price target hikes drive VRT to new highs"
+],
+"news_age": 1,
+"out": {
+"driving_event": "Democrats win Congress, reviving data-center political/regulatory fears and driving VRT down 9%.",
+"event_type": "macro_readthrough",
+"hard": false,
+"structural": false
+},
+"provider": "Wafer",
+"release": null,
+"stale": true,
+"status": "ok",
+"structural": false,
+"weight": -0.03
+},
+"WMB": {
+"H": 22,
+"H_a8": 22,
+"H_raw": 22.0,
+"confidence": 0.4,
+"driving_event": "Q3 2026 earnings: revenue beat, EPS miss, guidance maintained; selloff overdone",
+"error": null,
+"first_reported": "2026-11-02",
+"inputs": {
+"M": 0.041573312416388966,
+"hard": true,
+"news_session": "2026-11-02",
+"p": 0.0
+},
+"kill_conditions": [
+"Williams cuts or withdraws FY2026 EBITDA/EPS guidance",
+"Williams announces no additional power project announcements or Meta deal terminated",
+"Q4 results show further cost overruns or margin deterioration"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Q3 2026 earnings: revenue beat, EPS miss, guidance maintained; selloff overdone",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "Together",
+"release": {
+"accepted": "2026-11-02 16:06:17",
+"session": "2026-11-03",
+"source": "8-K 2.02"
+},
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.02
+},
+"XOM": {
+"H": 24,
+"H_a8": 24,
+"H_raw": 23.8,
+"confidence": 0.6,
+"driving_event": "Q3 earnings beat on record refining margins and dividend hike",
+"error": null,
+"first_reported": "2026-11-02",
+"inputs": {
+"M": 0.041573312416388966,
+"hard": true,
+"news_session": "2026-11-02",
+"p": 0.0
+},
+"kill_conditions": [
+"Exxon cuts dividend or halts share buybacks",
+"Exxon issues weak Q4 guidance or warns refining margins are falling",
+"US enacts windfall tax on oil company profits"
+],
+"news_age": 3,
+"out": {
+"driving_event": "Q3 earnings beat on record refining margins and dividend hike",
+"event_type": "earnings",
+"hard": true,
+"structural": false
+},
+"provider": "CoreWeave",
+"release": null,
+"stale": false,
+"status": "ok",
+"structural": false,
+"weight": 0.03
+},
+"ZBRA": {
+"H": 60,
+"H_a8": 3,
+"H_raw": 3.0,
+"confidence": 0.62,
+"driving_event": "Zebra Q3 2026 earnings beat overshadowed by 2027 memory-cost margin warning and soft Q4 EPS guide",
+"error": null,
+"first_reported": "2026-11-03",
+"inputs": {
+"M": 0.05467331867308939,
+"hard": true,
+"news_session": "2026-11-03",
+"p": 1.5
+},
+"kill_conditions": [
+"Zebra raises FY2027 margin or EPS guidance, easing memory-cost concerns",
+"Zebra reports gross margin expansion despite rising memory prices",
+"Zebra announces price increases or cost offsets that fully neutralize memory inflation"
+],
+"news_age": 2,
+"out": {
+"driving_event": "Zebra Q3 2026 earnings beat overshadowed by 2027 memory-cost margin warning and soft Q4 EPS guide",
+"event_type": "earnings",
+"hard": true,
+"structural": true
+},
+"provider": "CoreWeave",
+"release": {
+"accepted": "2026-11-03 09:24:23",
+"session": "2026-11-03",
+"source": "8-K 2.02"
+},
+"report_session": "2027-02-02",
+"stale": false,
+"status": "ok",
+"structural": true,
+"weight": -0.031
+}
+},
+"status": "ok"
+}
