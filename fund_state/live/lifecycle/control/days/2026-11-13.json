@@ -1,0 +1,690 @@
+{
+ "day": "2026-11-13",
+ "status": "submitted",
+ "decided": "close",
+ "nav_model": 96672.93209921263,
+ "hedge_w": -0.0952991543452836,
+ "actions": [
+  {
+   "day": "2026-11-13",
+   "id": "2026-11-11|TTWO",
+   "ticker": "TTWO",
+   "action": "news_increase",
+   "from": 2015.57,
+   "to": 2997.84,
+   "R": 0.006227,
+   "W": 0.04933,
+   "days_held": 1
+  },
+  {
+   "day": "2026-11-13",
+   "id": "2026-11-11|TSLA",
+   "ticker": "TSLA",
+   "action": "news_reduce",
+   "from": 1589.8,
+   "to": 794.9,
+   "R": -0.012298,
+   "W": 0.052996,
+   "days_held": 1
+  },
+  {
+   "day": "2026-11-13",
+   "id": "2026-11-11|BA",
+   "ticker": "BA",
+   "action": "news_increase",
+   "from": -3010.0,
+   "to": -4495.37,
+   "R": -0.00336,
+   "W": 0.042092,
+   "days_held": 1
+  }
+ ],
+ "lots_after": [
+  {
+   "id": "2026-10-28|EQIX",
+   "ticker": "EQIX",
+   "side": 1,
+   "w0": 0.07,
+   "beta": 0.7932288333,
+   "sigma_e": 0.014876331742039213,
+   "H": 22,
+   "W": 0.06977618085122227,
+   "kill_conditions": [
+    "Equinix cuts FY 2026 guidance or withdraws outlook",
+    "Q3 FFO beat is revised lower or restated",
+    "Major AI data center customer cancels or delays leases"
+   ],
+   "first_reported": "2026-10-28",
+   "score": 2,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Q3 2026 FFO beat, EPS beat, record bookings, raised 2026 guidance",
+   "news_session": "2026-10-28",
+   "R": 0.034819597392988275,
+   "days": 11,
+   "e": [
+    -0.00809431,
+    -0.0159399,
+    0.01846847,
+    0.02602439,
+    -0.01885357,
+    0.01292265,
+    0.02249444,
+    -0.00134824,
+    0.00673884,
+    0.00721818,
+    -0.01481136
+   ],
+   "news_until": 1794602400,
+   "increased": true,
+   "w": 0.07027161481612947
+  },
+  {
+   "id": "2026-10-28|MSFT",
+   "ticker": "MSFT",
+   "side": 1,
+   "w0": 0.062,
+   "beta": 0.9533507742,
+   "sigma_e": 0.01501942418059176,
+   "H": 25,
+   "W": 0.07509712090295881,
+   "kill_conditions": [
+    "Microsoft reports Azure growth decelerating below prior quarter",
+    "Microsoft cuts FY27 guidance or issues weak cloud outlook",
+    "Analysts downgrade MSFT or cut price targets on Azure concerns"
+   ],
+   "first_reported": "2026-10-28",
+   "score": 2,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Microsoft Q1 FY27 earnings beat with Azure growth accelerating",
+   "news_session": "2026-10-28",
+   "R": 0.009884511341862136,
+   "days": 11,
+   "e": [
+    0.00137778,
+    -0.02377154,
+    0.02449846,
+    0.0510681,
+    0.00628464,
+    -0.01290508,
+    0.00489874,
+    -0.01853931,
+    -0.03514582,
+    0.00697319,
+    0.00514535
+   ],
+   "news_until": 1794602400,
+   "increased": true,
+   "w": 0.062136155845918827
+  },
+  {
+   "id": "2026-10-28|BIIB",
+   "ticker": "BIIB",
+   "side": 1,
+   "w0": 0.06,
+   "beta": 0.6102588062,
+   "sigma_e": 0.02079515211660678,
+   "H": 19,
+   "W": 0.09064396659184491,
+   "kill_conditions": [
+    "Biogen cuts or withdraws its FY2026 EPS guidance",
+    "Leqembi quarterly sales decline or growth-product growth stalls",
+    "Q4 results miss estimates, reversing the post-earnings drift"
+   ],
+   "first_reported": "2026-10-28",
+   "score": 2,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "Q3 2026 earnings beat, revenue +10.6%, FY profit guidance floor raised",
+   "news_session": "2026-10-28",
+   "R": 0.02795248118053941,
+   "days": 11,
+   "e": [
+    0.02672155,
+    -0.01525358,
+    -0.00214694,
+    0.01213511,
+    -0.01447437,
+    0.01621341,
+    0.01181203,
+    -0.00411035,
+    -0.00745584,
+    -0.00936275,
+    0.01387419
+   ],
+   "news_until": 1794602400,
+   "w": 0.041359485593814145
+  },
+  {
+   "id": "2026-10-28|VLO",
+   "ticker": "VLO",
+   "side": -1,
+   "w0": -0.0275,
+   "beta": 0.3188022476,
+   "sigma_e": 0.028308971754577812,
+   "H": 21,
+   "W": 0.12972800591171965,
+   "kill_conditions": [
+    "US blocks or reverses the Russian diesel import plan",
+    "Valero reports Q4 refining margins above Q3 levels"
+   ],
+   "first_reported": "2026-10-28",
+   "score": -1,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793304000,
+   "driving_event": "US Energy Secretary opens door to more Russian diesel imports, shrinking refining margins and pressuring refiners.",
+   "news_session": "2026-10-28",
+   "R": 0.0003383172634064645,
+   "days": 11,
+   "e": [
+    -0.04489068,
+    0.0440116,
+    -0.01527339,
+    0.06281774,
+    0.02456501,
+    0.0146053,
+    -0.02218594,
+    0.01575739,
+    -0.03286328,
+    -0.03203242,
+    -0.01417302
+   ],
+   "news_until": 1794602400,
+   "w": -0.02764646822847395
+  },
+  {
+   "id": "2026-11-04|AMD",
+   "ticker": "AMD",
+   "side": 1,
+   "w0": 0.03091452947173297,
+   "beta": 1.9574529482,
+   "sigma_e": 0.03461766546030086,
+   "H": 19,
+   "W": 0.15089490540274988,
+   "kill_conditions": [
+    "AMD cuts or withdraws its Q4 revenue guidance",
+    "A major AI customer cancels or delays chip orders from AMD",
+    "AMD data center revenue misses expectations or declines sequentially"
+   ],
+   "first_reported": "2026-11-04",
+   "score": 1,
+   "cohort": "2026-11-04",
+   "entry_day": "2026-11-05",
+   "entry_close_ts": 1793912400,
+   "driving_event": "AMD Q3 2026 earnings beat with data center sales nearly doubling and Q4 revenue guidance above consensus",
+   "news_session": "2026-11-04",
+   "R": 0.24321770343232502,
+   "days": 6,
+   "e": [
+    0.10427039,
+    0.08627255,
+    0.02023999,
+    0.0473396,
+    0.06553019,
+    -0.08043502
+   ],
+   "news_until": 1794602400,
+   "increased": true,
+   "w": 0.03683344410677656
+  },
+  {
+   "id": "2026-11-04|IDXX",
+   "ticker": "IDXX",
+   "side": -1,
+   "w0": -0.03,
+   "beta": 0.8925288459,
+   "sigma_e": 0.042489635269216,
+   "H": 13,
+   "W": 0.15319855863892146,
+   "kill_conditions": [
+    "IDEXX raises FY2026 EPS and sales guidance again on sustained demand",
+    "Q4 results show accelerating clinic traffic and margin expansion",
+    "Management guides FY2027 above consensus, signaling durable growth beyond Q3"
+   ],
+   "first_reported": "2026-11-02",
+   "score": -1,
+   "cohort": "2026-11-04",
+   "entry_day": "2026-11-05",
+   "entry_close_ts": 1793912400,
+   "driving_event": "Q3 EPS/sales beat and FY26 guidance raise drove a 20% one-day stock surge",
+   "news_session": "2026-11-02",
+   "R": -0.023999124924500424,
+   "days": 6,
+   "e": [
+    -0.00515841,
+    -0.02415747,
+    0.0108808,
+    0.00322974,
+    0.00334463,
+    -0.01213842
+   ],
+   "news_until": 1794602400,
+   "w": -0.031110300945420326
+  },
+  {
+   "id": "2026-11-11|WMT",
+   "ticker": "WMT",
+   "side": 1,
+   "w0": 0.028342085926836375,
+   "beta": 0.3524234517,
+   "sigma_e": 0.017302779734937802,
+   "H": 6,
+   "W": 0.04238298148236678,
+   "kill_conditions": [
+    "Analyst downgrades Walmart or cuts its price target",
+    "Walmart issues weak guidance or misses quarterly earnings expectations",
+    "Walmart loses grocery or AI market share to competitors"
+   ],
+   "first_reported": "2026-11-09",
+   "score": 1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "Investment banks raise WMT price targets on earnings growth and market share gains",
+   "news_session": "2026-11-09",
+   "R": 0.016336727809281467,
+   "days": 1,
+   "e": [
+    0.01633673
+   ],
+   "news_until": 1794602400,
+   "w": 0.028903424116471812
+  },
+  {
+   "id": "2026-11-11|FOX",
+   "ticker": "FOX",
+   "side": 1,
+   "w0": 0.028342085926836375,
+   "beta": 0.5518797876,
+   "sigma_e": 0.021407948557162323,
+   "H": 3,
+   "W": 0.03707965458682598,
+   "kill_conditions": [
+    "Fox announces Roku acquisition integration failure or write-down",
+    "Fox reports Q1 miss or cuts FY guidance",
+    "Fox advertising revenue declines"
+   ],
+   "first_reported": "2026-11-06",
+   "score": 1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "Completion of $22B Roku acquisition and Q1 earnings beat",
+   "news_session": "2026-11-06",
+   "R": 0.04288342582376829,
+   "days": 1,
+   "e": [
+    0.04288343
+   ],
+   "news_until": 1794602400,
+   "w": 0.029638704282034408
+  },
+  {
+   "id": "2026-11-11|TTWO",
+   "ticker": "TTWO",
+   "side": 1,
+   "w0": 0.02067305091133947,
+   "beta": 0.6590796071,
+   "sigma_e": 0.028480528181597246,
+   "H": 3,
+   "W": 0.049329721836923676,
+   "kill_conditions": [
+    "Take-Two delays GTA VI launch beyond November 19",
+    "Take-Two cuts FY27 bookings guidance",
+    "GTA VI pre-orders reported below expectations"
+   ],
+   "first_reported": "2026-11-09",
+   "score": 1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "GTA VI launch on Nov 19 with record pre-orders",
+   "news_session": "2026-11-09",
+   "R": 0.006227342633253138,
+   "days": 1,
+   "e": [
+    0.00622734
+   ],
+   "news_until": 1794602400,
+   "increased": true,
+   "w": 0.031010099623982032
+  },
+  {
+   "id": "2026-11-11|TRGP",
+   "ticker": "TRGP",
+   "side": 1,
+   "w0": 0.018338996776188242,
+   "beta": 0.3553072582,
+   "sigma_e": 0.02471830891874536,
+   "H": 7,
+   "W": 0.0653984982290701,
+   "kill_conditions": [
+    "Company cuts FY2026 EBITDA guidance below $6 billion",
+    "ExxonMobil Permian processing or pipeline pact is delayed or terminated",
+    "Targa cancels or walks back expected 20% 2027 dividend increase"
+   ],
+   "first_reported": "2026-11-05",
+   "score": 1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "Q3 2026 earnings beat with $6B 2026 EBITDA guidance and 20% 2027 dividend increase expectation",
+   "news_session": "2026-11-05",
+   "R": 0.004766748284593035,
+   "days": 1,
+   "e": [
+    0.00476675
+   ],
+   "news_until": 1794602400,
+   "w": 0.018488848059163846
+  },
+  {
+   "id": "2026-11-11|LLY",
+   "ticker": "LLY",
+   "side": 1,
+   "w0": 0.018338996776188242,
+   "beta": 0.6152605061,
+   "sigma_e": 0.021161893412214132,
+   "H": 3,
+   "W": 0.03665347457431199,
+   "kill_conditions": [
+    "FDA issues a complete response letter for Foundayo's planned filing",
+    "Hims & Hers or LifeMD terminates its direct-access partnership with Lilly",
+    "Foundayo Phase 3 OSA data fails to replicate or a new safety signal emerges"
+   ],
+   "first_reported": "2026-11-09",
+   "score": 1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "Foundayo ATTAIN-OSA Phase 3 win with planned year-end FDA filing",
+   "news_session": "2026-11-09",
+   "R": 0.014826371356960962,
+   "days": 1,
+   "e": [
+    0.01482637
+   ],
+   "news_until": 1794602400,
+   "w": 0.01865679793395837
+  },
+  {
+   "id": "2026-11-11|TSLA",
+   "ticker": "TSLA",
+   "side": 1,
+   "w0": 0.01667181525108022,
+   "beta": 1.6224301051,
+   "sigma_e": 0.02370056969186004,
+   "H": 5,
+   "W": 0.052996084936470296,
+   "kill_conditions": [
+    "Tesla-SpaceX merger talks terminated or special committee rejects the combination",
+    "Tesla delays or cancels Cybercab production, reversing the capacity shift rationale",
+    "Tesla restarts Cybertruck production, undoing the wind-down thesis"
+   ],
+   "first_reported": "2026-11-11",
+   "score": 1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "Tesla special committee formed to review possible all-stock Tesla-SpaceX merger",
+   "news_session": "2026-11-11",
+   "R": -0.012298000927131748,
+   "days": 1,
+   "e": [
+    -0.012298
+   ],
+   "news_until": 1794602400,
+   "reduced": true,
+   "w": 0.008222561236310365
+  },
+  {
+   "id": "2026-11-11|TTD",
+   "ticker": "TTD",
+   "side": -1,
+   "w0": -0.032,
+   "beta": 1.0098931643,
+   "sigma_e": 0.03809611404789321,
+   "H": 13,
+   "W": 0.13735749259560295,
+   "kill_conditions": [
+    "Trade Desk reports Q4 revenue growth and EBITDA margin expansion, reversing Q3 weakness",
+    "Management issues materially higher Q4/FY guidance and withdraws cautious tone",
+    "Multiple covering analysts upgrade TTD to Buy with price targets well above $20"
+   ],
+   "first_reported": "2026-11-09",
+   "score": -1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "Q3 earnings beat on low bar with revenue down 0.5% and weaker margins; cautious CFO tone.",
+   "news_session": "2026-11-09",
+   "R": -0.0172427795602393,
+   "days": 1,
+   "e": [
+    -0.01724278
+   ],
+   "news_until": 1794602400,
+   "w": -0.03258614028740696
+  },
+  {
+   "id": "2026-11-11|BA",
+   "ticker": "BA",
+   "side": -1,
+   "w0": -0.031,
+   "beta": 1.0052533187,
+   "sigma_e": 0.024301692022035883,
+   "H": 3,
+   "W": 0.04209176529205739,
+   "kill_conditions": [
+    "Boeing announces an accelerated production rate increase or raises full-year guidance",
+    "Boeing monthly deliveries rise sequentially and exceed Airbus",
+    "Boeing reverses the workforce cuts or secures a new large order"
+   ],
+   "first_reported": "2026-11-09",
+   "score": -1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "Boeing cuts 5% of commercial airplane workforce as production ramp slows",
+   "news_session": "2026-11-09",
+   "R": -0.0033598059329152563,
+   "days": 1,
+   "e": [
+    -0.00335981
+   ],
+   "news_until": 1794602400,
+   "increased": true,
+   "w": -0.046500784643071176
+  },
+  {
+   "id": "2026-11-11|CRM",
+   "ticker": "CRM",
+   "side": -1,
+   "w0": -0.03,
+   "beta": 0.5792998647,
+   "sigma_e": 0.028021960837719625,
+   "H": 11,
+   "W": 0.09293832998874907,
+   "kill_conditions": [
+    "S&P upgrades Salesforce's credit rating or revises its outlook to stable/positive",
+    "Salesforce terminates or walks away from the Braze or Cresta acquisition",
+    "Salesforce cuts its buyback or announces debt reduction that eases leverage concerns"
+   ],
+   "first_reported": "2026-11-06",
+   "score": -1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "S&P cuts Salesforce rating to A on Braze/Cresta deals and $25B buyback",
+   "news_session": "2026-11-06",
+   "R": -0.003345104264580222,
+   "days": 1,
+   "e": [
+    -0.0033451
+   ],
+   "news_until": 1794602400,
+   "w": -0.030177764925886877
+  },
+  {
+   "id": "2026-11-11|TAP",
+   "ticker": "TAP",
+   "side": -1,
+   "w0": -0.03,
+   "beta": 0.2586665836,
+   "sigma_e": 0.024288470033421102,
+   "H": 3,
+   "W": 0.042068864135999494,
+   "kill_conditions": [
+    "Molson Coors raises its FY2026 sales or EPS guidance",
+    "Headline reports US beer industry volumes returning to growth",
+    "Company announces cost cuts or buyback restoring the FY26 profit outlook"
+   ],
+   "first_reported": "2026-11-05",
+   "score": -1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "Q3 2026 revenue miss and FY26 sales, profit, cash flow guidance cut",
+   "news_session": "2026-11-05",
+   "R": -0.033295439982380624,
+   "days": 1,
+   "e": [
+    -0.03329544
+   ],
+   "news_until": 1794602400,
+   "w": -0.031115580314503597
+  },
+  {
+   "id": "2026-11-11|NVDA",
+   "ticker": "NVDA",
+   "side": -1,
+   "w0": -0.0275,
+   "beta": 1.4749141615,
+   "sigma_e": 0.02399820850373808,
+   "H": 5,
+   "W": 0.05366162555257186,
+   "kill_conditions": [
+    "Board probe concludes with no findings against CEO Huang",
+    "US lifts or eases China export restrictions on Nvidia",
+    "Nvidia raises guidance at the Nov 17 earnings report"
+   ],
+   "first_reported": "2026-11-11",
+   "score": -1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "Board probe into CEO Huang over spy claims and admitted affair",
+   "news_session": "2026-11-11",
+   "R": 0.014740317514869983,
+   "days": 1,
+   "e": [
+    0.01474032
+   ],
+   "news_until": 1794602400,
+   "w": -0.02707339806421575
+  },
+  {
+   "id": "2026-11-11|BRK.B",
+   "ticker": "BRK.B",
+   "side": -1,
+   "w0": -0.0275,
+   "beta": 0.3923514021,
+   "sigma_e": 0.010567921849193909,
+   "H": 25,
+   "W": 0.052839609245969546,
+   "kill_conditions": [
+    "Berkshire Q4 operating earnings grow and insurance underwriting returns to profit",
+    "Berkshire announces a new record buyback, special dividend, or major acquisition lifting shares",
+    "Analysts upgrade Berkshire citing improved insurance margins and earnings momentum"
+   ],
+   "first_reported": "2026-11-07",
+   "score": -1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "Q3 operating earnings fell 5.8% with insurance underwriting weakness, offset by record $9.6B buybacks",
+   "news_session": "2026-11-09",
+   "R": -0.006697798620388043,
+   "days": 1,
+   "e": [
+    -0.0066978
+   ],
+   "news_until": 1794602400,
+   "w": -0.027774342381263424
+  },
+  {
+   "id": "2026-11-11|AAPL",
+   "ticker": "AAPL",
+   "side": -1,
+   "w0": -0.026,
+   "beta": 0.7710626137,
+   "sigma_e": 0.015056994289959323,
+   "H": 24,
+   "W": 0.07376390614080047,
+   "kill_conditions": [
+    "Apple raises holiday gross margin guidance or downplays memory cost impact",
+    "Apple services revenue growth reaccelerates above prior trend",
+    "Memory chip prices fall sharply or supply constraints ease"
+   ],
+   "first_reported": "2026-11-11",
+   "score": -1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "Apple Q4 earnings beat with memory-cost holiday margin warning",
+   "news_session": "2026-11-11",
+   "R": -0.006717459106259971,
+   "days": 1,
+   "e": [
+    -0.00671746
+   ],
+   "news_until": 1794602400,
+   "w": -0.026223960204951338
+  },
+  {
+   "id": "2026-11-11|NFLX",
+   "ticker": "NFLX",
+   "side": -1,
+   "w0": -0.02,
+   "beta": 0.5820359865,
+   "sigma_e": 0.022038165773317204,
+   "H": 25,
+   "W": 0.11019082886658602,
+   "kill_conditions": [
+    "Netflix raises full-year guidance or reports accelerating subscriber growth",
+    "Skydance-WBD merger cost cuts scaled back or the deal is unwound",
+    "Netflix announces a large buyback or initiates a dividend"
+   ],
+   "first_reported": "2026-11-10",
+   "score": -1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794517200,
+   "driving_event": "Skydance-WBD merger completes with $6B cost cuts, a competitive negative for Netflix",
+   "news_session": "2026-11-10",
+   "R": 0.00649975155445798,
+   "days": 1,
+   "e": [
+    0.00649975
+   ],
+   "news_until": 1794602400,
+   "w": -0.019920491917453875
+  }
+ ],
+ "reviews": [],
+ "cool": {
+  "BA|1": {
+   "until": "2026-10-27",
+   "kind": "stop",
+   "score": 1,
+   "first_reported": "2026-10-20"
+  }
+ },
+ "a2": null,
+ "a3": null
+}
