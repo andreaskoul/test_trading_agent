@@ -390,3 +390,24 @@ declared in its `STATE.json` plan before scoring, and every prediction or weekly
 
 **For the owner (rule 17, policy).** A fund-level volatility target across core, MASTER book and broad book, tested
 once on long history: proposed, not run.
+
+## Layer 3, Amendment 7a (2026-11-14, after the build, before the H7 read): implementation details fixed
+
+Source: `H7_build/BUILD.md` (the build agent computed no statistic touching 2026 outcomes). The test is unchanged.
+
+* **Books enter 2026 already held.** The fund and the broad book are simulated from January 2025, on 2025 scores from
+  the same models (the October MASTER scores; the trees' 2025 refit, equal to the L3.1 read's to 3e-8). Only 2026 weeks
+  are scored. Reason: starting flat on 2 January would charge a one-off full entry cost that a running fund does not
+  pay.
+* **Fetch end:** 2026-11-12, because the data plan refuses the most recent session. Scored weeks are the 2026
+  Thursdays with a complete 5-session target.
+* **25 S&P panel names without a yfinance close** stay unpriced in 2026, as in every earlier read. 10 are current
+  members.
+* **Index membership** after 2026-08-18 is carried forward from the last row of the membership file.
+* **T-bill rate:** the frozen cache; if it ends before 2026-11, the last value is used. It enters only the fund's
+  margin cost (reported figures, not the test).
+* **Seam between vendors:** 2026 returns are Alpaca's, chain-linked onto 2025-12-31. 4 current members have a 2025
+  Alpaca-yfinance return correlation below 0.99 (FTV, TDG, WDC, LEN); kept.
+* **H7b's eligible set** each week: eligible broad names with dollar-volume percentile rank ≥ 1/3 (as `read3.extras`
+  ranks; cross-checked against the build's tercile file).
+* **Weights:** k_a 0.59, k_b 0.5307 (`H7_WEIGHTS.json`, committed in f3f5376).
