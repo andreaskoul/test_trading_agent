@@ -417,3 +417,41 @@ Sharpe > 1 therefore needs the construction gains, not just the combination.
   the broad trees book under (i) deciles, as H7 registers, (ii) rank hysteresis 10/30 and (iii) the covariance book
   with an L1 no-trade region, all under the square-root cost model with the broad names' own spreads and ADV. Only
   forward weeks can judge them on the broad universe; the development panel's low costs understate the savings.
+
+## Step 24 — H7: the 2026 read of the combined fund (2026-11-14; out of sample, 43 weeks, 8 Jan - 29 Oct 2026)
+
+**Process disclosure.** The read ran once, with the script committed in c8528d3, but not when intended. A patch adding
+a dry-run mode failed its own assertion and left the script unchanged; the next command, meant as a dry run on 2025
+weeks, therefore executed the registered read. Nothing was seen before it, the code is the committed code, and
+`H7.lock` holds the time. The result stands as the one read.
+
+**Test (Holm, α 0.05): neither arm passes.** Registered power was 10-20%; a fail is not a rejection.
+
+| Arm | Increment over the fund, %/yr | t | p (one-sided) | Holm |
+|---|---:|---:|---:|---|
+| H7a full broad book, k 0.59 | +13.0 | 1.76 | 0.039 | fail (needs 0.025) |
+| H7b top two dollar-volume thirds, k 0.53 | +10.4 | 1.36 | 0.087 | fail |
+
+**"Broken" rule: not triggered.** Broad trees IC 2026 = .042 (t 2.85); increments positive.
+
+**Reported, 2026 (43 weeks; short, noisy):**
+
+| | % per year | Net Sharpe | Worst fall |
+|---|---:|---:|---:|
+| Broad trees book alone (14 bp), all names | +22.0 | 1.65 | −5.0% |
+| Broad trees book alone, top two thirds | +19.6 | 1.34 | −7.7% |
+| Fund alone (S&P core + MASTER book, 5 bp) | −1.5 | −0.10 | −11.9% |
+| Combined, H7a | +11.5 | 0.76 | −11.5% |
+| Combined, H7b | +8.9 | 0.60 | −12.2% |
+| S&P 500 (same weeks) | +7.3 | | |
+
+* **The broad trees signal held up on fresh data**: IC .042, about its 2024-2025 level; positive in every
+  dollar-volume third (.049 / .037 / .040). Turnover is 42% a week.
+* **The fund alone lost money in 2026** while the S&P gained 7.3 %/yr: MASTER's IC was .003 (t 0.17). Either the
+  MASTER book stopped working this year or the 1.3×/0.7× core whipsawed; the split is not yet computed.
+* **The cost-aware arm (H7b) did worse than the full book**: dropping the least liquid third lost more signal than
+  it saved in cost, at 14 bp.
+* **Against the owner's bar**: the combined fund's 2026 net Sharpe is 0.76, below 1. The broad book alone is 1.65 over
+  43 weeks; its standard error is about 1.1, so this is not evidence of a Sharpe above 1.
+* **Next (registered path):** the same pipeline runs on forward weeks as the extension of H7. Separately, the fund's
+  2026 loss needs a decomposition (core vs MASTER book) before anything else is built on MASTER.
