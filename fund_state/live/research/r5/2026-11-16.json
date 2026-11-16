@@ -1,0 +1,1333 @@
+{
+ "records": {
+  "ACM": {
+   "ticker": "ACM",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Construction & Engineering",
+   "last_release": "2026-08-10 20:35:57+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/868857/000110465926093421/tm2622489d1_ex99-1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Construction Management project charge",
+      "last_report": "$337M pre-tax charge; delayed completion; substantial completion expected Q2 FY2027; claims recovery likely years/litigation.",
+      "guidance": "Substantial completion expected Q2 FY2027; FY26 FCF ~$300M reflects charge."
+     },
+     {
+      "id": "D2",
+      "name": "Net service revenue growth",
+      "last_report": "Q3 NSR $1,609M, -16%; ex-charge $1,946M, +2%; design +4%, Americas +6%, International +4%.",
+      "guidance": "FY26 total NSR $7.30-$7.35B; ex-charge $7.65-$7.70B; lower growth due CM starts, Middle East conflict."
+     },
+     {
+      "id": "D3",
+      "name": "Margins excluding CM charge",
+      "last_report": "Q3 ex-charge segment adj op margin 16.5%, adj EBITDA margin 17.0%, both -60bps; Americas 18.0%, -250bps; International 14.3%, +240bps.",
+      "guidance": "FY26 ex-charge segment adj op margin 17.0%, adj EBITDA margin 17.4%; long-term 20%+ margin exit by FY2028."
+     },
+     {
+      "id": "D4",
+      "name": "Backlog and book-to-burn",
+      "last_report": "Total backlog +13% to record $27,816M; record $4.2B wins; 1.6 book-to-burn; design 1.6; Americas 1.8; International 1.4.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Cash flow and FCF conversion",
+      "last_report": "Q3 operating cash flow $95M, -66%; FCF $55M, -79%; strong ex-CM; net leverage 1.5x.",
+      "guidance": "FY26 FCF ~$300M; long-term 100%+ FCF conversion once CM headwinds subside; near-term capital allocation to organic growth and dividend."
+     }
+    ],
+    "guidance": "FY26: adj EPS $3.95-$4.15; adj EBITDA $935-965M; NSR $7.30-7.35B; FCF ~$300M. Ex-CM charge: NSR $7.65-7.70B; segment adj op margin 17.0%; adj EBITDA margin 17.4%; adj EPS $5.90-$6.10; adj EBITDA $1,275-1,305M. Long-term: 20%+ margin exit by FY28; 15%+ EPS CAGR FY26-29 ex-charge.",
+    "kill_conditions": [
+     "AECOM reports additional Construction Management project charge or delays substantial completion beyond Q2 FY2027.",
+     "AECOM lowers FY26 free cash flow guidance below ~$300M or cuts adjusted EPS/EBITDA outlook.",
+     "AECOM reports design NSR growth slowing, Americas margin falling further, or book-to-burn below 1.0."
+    ]
+   },
+   "card_provider": "River",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 39,
+    "found": 39,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 98,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "AECOM appointed design partner for New Zealand Northland Corridor Section One",
+        "date": "2026-08-31",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM selected to design Pure Water Silicon Valley demonstration facility",
+        "date": "2026-09-03",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM/Jacobs JV appointed program delivery partner for Ireland MetroLink",
+        "date": "2026-09-10",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM supports Montréal low-carbon redevelopment using One Click LCA",
+        "date": "2026-09-22",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "AECOM-led JV appointed program management consultant for Ontario Highway 413",
+        "date": "2026-10-06",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM/Jacobs JV appointed to Irish Rail’s new consultancy framework",
+        "date": "2026-11-13",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "AECOM appointed design partner for New Zealand Northland Corridor Section One",
+        "date": "2026-08-31",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM selected to design Pure Water Silicon Valley demonstration facility",
+        "date": "2026-09-03",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM/Jacobs JV appointed program delivery partner for Ireland MetroLink",
+        "date": "2026-09-10",
+        "driver": "D4",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM-led JV appointed program management consultant for Ontario Highway 413",
+        "date": "2026-10-06",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM/Jacobs JV appointed to Irish Rail new consultancy framework",
+        "date": "2026-11-13",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.55
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "AECOM appointed design partner for New Zealand's Northland Corridor Section One",
+        "date": "2026-08-31",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM selected to design Pure Water Silicon Valley demonstration facility",
+        "date": "2026-09-03",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM-Jacobs JV appointed program delivery partner for Ireland's MetroLink rail",
+        "date": "2026-09-10",
+        "driver": "D4",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM-led JV appointed program management consultant for Ontario Highway 413",
+        "date": "2026-10-06",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM-Jacobs JV appointed to Iarnród Éireann Irish Rail consultancy framework",
+        "date": "2026-11-13",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "TTEK",
+    "FLR",
+    "MTZ",
+    "EME",
+    "APG"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TTEK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong net revenue growth, backlog +13%, and margin expansion signal healthy engineering demand, supporting AECOM ex-CM NSR and margins."
+       },
+       {
+        "peer": "FLR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record new awards and 21% backlog growth indicate strong EPC/infrastructure demand, supportive for AECOM backlog and book-to-burn."
+       },
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D4",
+        "why": "Record backlog and power/utility demand positive for AECOM infrastructure design, though pipeline delays and communications deferrals are mixed."
+       },
+       {
+        "peer": "EME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record RPO growth and broad nonresidential demand positive for AECOM design backlog and future NSR."
+       },
+       {
+        "peer": "APG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Strong project activity and pricing improvements support nonresidential demand, but less direct for AECOM's design/consulting business."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TTEK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Peer margin expansion and backlog growth signal favorable engineering demand/pricing for AECOM."
+       },
+       {
+        "peer": "FLR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record new awards and 21% backlog growth indicate strong infrastructure demand, positive for AECOM book-to-burn."
+       },
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record backlog and power/pipeline demand support AECOM infrastructure backlog despite some project delays."
+       },
+       {
+        "peer": "EME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "Record RPO up 47% and raised guidance signal broad non-residential construction demand, positive for AECOM backlog."
+       },
+       {
+        "peer": "APG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Strong organic revenue and project activity/pricing suggest healthy demand for AECOM net service revenue."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "APG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Strong project demand, pricing, and growing backlog support AECOM's revenue/backlog, though material/fuel cost inflation persists."
+       },
+       {
+        "peer": "EME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "Record RPO +47% and broad mission-critical, water, institutional demand signal strong nonresidential construction, supporting AECOM backlog and revenue."
+       },
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record backlog and power-delivery strength signal robust infrastructure demand, though communications deferrals and pipeline delays are mixed."
+       },
+       {
+        "peer": "FLR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Record new awards and 21% backlog growth signal strong E&C demand, supporting AECOM's backlog/book-to-burn outlook."
+       },
+       {
+        "peer": "TTEK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Water/environmental demand and 13% backlog growth support AECOM's design NSR growth; margin expansion is also encouraging."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 4.898979485566357,
+   "score_peer": 4.08248290463863,
+   "score_combined": 6.940220937885671,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 1.5938,
+   "revenue_estimate": 1944146576,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-16",
+   "cutoff": "2026-11-13 22:00:00+00:00",
+   "decided_at": "2026-11-16T02:34:03.104710+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "45ceccbfca09101728d67d3388352b00c485f71ada6037944be04f025bb82c59"
+  },
+  "ARMK": {
+   "ticker": "ARMK",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Distributors",
+   "last_release": "2026-08-11 10:34:54+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1584509/000158450926000118/ex991armkq3fy2026.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "FSS United States organic revenue",
+      "last_report": "Q3 revenue $3,496M, organic +8%; +10% ex calendar shift. Led by Sports/Leisure/Corrections, Business & Industry, Healthcare.",
+      "guidance": "No segment guidance; FY26 total organic revenue raised to +9-10%."
+     },
+     {
+      "id": "D2",
+      "name": "FSS International organic revenue",
+      "last_report": "Q3 revenue $1,562M, GAAP +13%, organic +11%; broad-based Spain, Canada, U.K., Germany; currency tailwind.",
+      "guidance": "No segment guidance; FY26 total organic revenue +9-10%."
+     },
+     {
+      "id": "D3",
+      "name": "AOI and margin expansion",
+      "last_report": "Q3 AOI +13% to $261M; margin +~20 bps; +21% ex calendar shift on supply chain efficiencies and cost management.",
+      "guidance": "FY26 AOI +12-17%; Q4 AOI growth and margin expansion expected to accelerate."
+     },
+     {
+      "id": "D4",
+      "name": "Aramark Nexus hyperscaler ramp",
+      "last_report": "Began first Texas hyperscaler site; mobilizing second; anticipates more; multi-year colocation engagement; early Q4 profitability contribution expected.",
+      "guidance": "Q4 AOI growth/margin expansion to accelerate partly from early Aramark Nexus profitability; no numeric segment outlook."
+     },
+     {
+      "id": "D5",
+      "name": "Cash flow and leverage",
+      "last_report": "Q3 operating cash +$41M; FCF +$42M; >$1.4B availability; repaid $100M 2028 term loans; leverage below 3.0x targeted.",
+      "guidance": "FY26 leverage under 3x; large Q4 cash inflow expected from Collegiate Hospitality and Sports & Entertainment."
+     }
+    ],
+    "guidance": "FY26: organic revenue +9-10%; AOI +12-17%; adjusted EPS +20-25%; leverage under 3x. Q4 AOI growth and margin expansion to accelerate; Q4 results consistent with Wall Street estimates.",
+    "kill_conditions": [
+     "Q4 organic revenue growth below +9% or FY26 organic outlook cut below +9-10%.",
+     "Aramark Nexus hyperscaler site delays, lost awards, or no early profitability contribution.",
+     "Q4 AOI margin contracts or fiscal 2026 leverage ends above 3x."
+    ]
+   },
+   "card_provider": "River",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 16,
+    "found": 16,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 87,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Aramark Student Nutrition expands K-12 dining partnerships nationwide",
+        "date": "2026-08-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "New NCAA partnerships with Florida State and Texas State universities",
+        "date": "2026-08-20",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Collegiate Hospitality introduces 2026-2027 dining innovations for Generation Alpha",
+        "date": "2026-08-24",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Five new collegiate partnerships awarded across the country",
+        "date": "2026-09-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Aramark Nexus selected for Texas AI data center workforce housing, up to 4,000 workers",
+        "date": "2026-09-14",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "UNITE HERE Local 11 letter urges Yavapai County to replace Aramark",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Student Nutrition expands K-12 partnerships",
+        "date": "2026-08-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "New NCAA partnerships with Florida State and Texas State",
+        "date": "2026-08-20",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Five new Collegiate Hospitality partnerships",
+        "date": "2026-09-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Aramark Nexus selected for Texas AI data center workforce housing",
+        "date": "2026-09-14",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Aramark Student Nutrition expands K-12 partnerships nationwide",
+        "date": "2026-08-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Aramark expands NCAA presence with Florida State and Texas State partnerships",
+        "date": "2026-08-20",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Aramark Collegiate Hospitality adds five new college/university partnerships",
+        "date": "2026-09-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Aramark Sports + Entertainment kicks off 2026 NFL season at eight stadiums",
+        "date": "2026-09-09",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Aramark Nexus selected as hospitality partner for workforce housing provider (Texas AI data center, 4,000 workers)",
+        "date": "2026-09-14",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "UNITE HERE Local 11 letter urges Yavapai County to replace Aramark",
+        "date": "2026-09-16",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "GPC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GPC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "GPC's auto/industrial parts results do not speak to Aramark's foodservice demand, pricing, costs, or Nexus ramp."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GPC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Automotive/industrial parts demand and margins have no read-through to Aramark food and facilities services drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GPC",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Automotive/industrial parts peer; no read-through to Aramark foodservice demand, pricing, costs, or share."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 3.5906624935876583,
+   "score_peer": 0.0,
+   "score_combined": 3.5906624935876583,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "above"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.7693,
+   "revenue_estimate": 5407671035,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-16",
+   "cutoff": "2026-11-13 22:00:00+00:00",
+   "decided_at": "2026-11-16T02:32:51.568112+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "c8a0ab28da1180b56439a24549e1333bce8c7950858b6846a33445b6c8066dc6"
+  },
+  "TSN": {
+   "ticker": "TSN",
+   "index": "SP500",
+   "sector": "Consumer Staples",
+   "sub_industry": "Packaged Foods & Meats",
+   "last_release": "2026-08-03 11:37:26+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/100493/000010049326000057/tsn2026q3exh-991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Chicken segment",
+      "last_report": "Q3 adjusted OI $488M, margin 11.2%, up; sales $4.255B with volume +1.0%, price +2.2%. Seven consecutive quarters of Chicken growth.",
+      "guidance": "FY26 adjusted OI $1.90B-$2.05B; USDA chicken production up ~3%."
+     },
+     {
+      "id": "D2",
+      "name": "Beef segment",
+      "last_report": "Q3 adjusted OI $(138)M, margin (2.6)%; sales $5.391B, volume (15.9)%, price +12.1%. Nine-month adjusted loss $(483)M.",
+      "guidance": "FY26 adjusted loss $(650)M-$(500)M; USDA beef production down ~3%."
+     },
+     {
+      "id": "D3",
+      "name": "Prepared Foods segment",
+      "last_report": "Q3 adjusted OI $321M, margin 12.6%, down from 13.3%; sales $2.557B, volume +0.1%, price +1.6%. Nine-month adjusted OI $1.011B.",
+      "guidance": "FY26 adjusted OI $1.3B-$1.35B."
+     },
+     {
+      "id": "D4",
+      "name": "Pork segment",
+      "last_report": "Q3 adjusted OI $60M, margin 3.8%; sales $1.580B, volume +5.2%, price (0.3)%. Nine-month adjusted OI $212M.",
+      "guidance": "FY26 adjusted OI $250M-$300M; USDA pork production up ~2%."
+     },
+     {
+      "id": "D5",
+      "name": "International segment",
+      "last_report": "Q3 adjusted OI $48M, margin 8.0%, flat; sales $601M, volume (3.5)%, price +11.4%. Nine-month adjusted OI $131M.",
+      "guidance": "FY26 adjusted OI $150M-$200M."
+     }
+    ],
+    "guidance": "FY26: total adjusted operating income $2.1B-$2.3B; sales up 2.5%-3.5%. Segment adjusted OI: Chicken $1.90B-$2.05B, Beef $(650)M-$(500)M, Pork $250M-$300M, Prepared Foods $1.3B-$1.35B, International $150M-$200M. Corporate/amortization $950M-$975M. FCF $1.3B-$1.7B.",
+    "kill_conditions": [
+     "Chicken adjusted operating income misses FY26 $1.90B-$2.05B guidance or Q4 falls year over year.",
+     "Beef adjusted operating loss exceeds $(650)M FY26 guidance or worsens materially sequentially.",
+     "Prepared Foods adjusted operating income misses $1.3B-$1.35B FY26 guidance or declines again."
+    ]
+   },
+   "card_provider": "DeepInfra",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 44,
+    "found": 39,
+    "share": 0.8863636363636364,
+    "missing": [
+     "1.011",
+     "1.580",
+     "2.557",
+     "4.255",
+     "5.391"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 204,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Tyson prices senior notes offering",
+        "date": "2026-08-10",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tyson to close additional beef plants amid cattle shortage",
+        "date": "2026-08-13",
+        "driver": "D2",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump announces 90-day beef tariff pause",
+        "date": "2026-08-21",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Court approves Tyson broiler chicken antitrust settlement",
+        "date": "2026-08-28",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tyson cuts FY26 outlook for second time in a month",
+        "date": "2026-09-04",
+        "driver": "other",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump announces tariff-free beef imports from Brazil, Argentina",
+        "date": "2026-09-04",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "USDA confirms first US wildlife case of New World Screwworm",
+        "date": "2026-10-22",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "USDA invests $57M to boost meat processing capacity",
+        "date": "2026-10-27",
+        "driver": "D2",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tyson debuts limited-time holiday-shaped chicken nuggets",
+        "date": "2026-11-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tyson plans Allied Beef partnership to restore Amarillo second shift by 2027",
+        "date": "2026-11-09",
+        "driver": "D2",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Tyson to close additional beef plants amid cattle shortage",
+        "date": "2026-08-13",
+        "driver": "D2 Beef",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tyson cuts FY26 outlook for second time in a month",
+        "date": "2026-09-04",
+        "driver": "other",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump announces tariff-free beef imports from Brazil, Argentina",
+        "date": "2026-09-04",
+        "driver": "D2 Beef",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "USDA confirms first US wildlife case of New World screwworm",
+        "date": "2026-10-22",
+        "driver": "D2 Beef",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tyson plans long-term partnership with Allied Beef to strengthen cattle supply",
+        "date": "2026-11-09",
+        "driver": "D2 Beef",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Tyson prices senior notes offering",
+        "date": "2026-08-10",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tyson to close additional beef plants amid prolonged cattle shortage",
+        "date": "2026-08-13",
+        "driver": "D2",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Court approves Tyson broiler chicken antitrust settlement",
+        "date": "2026-08-28",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tyson cuts FY26 outlook again, second cut in a month",
+        "date": "2026-09-04",
+        "driver": "other",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump announces tariff-free beef imports from Brazil, Argentina",
+        "date": "2026-09-04",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "USDA confirms first US wildlife case of New World Screwworm",
+        "date": "2026-10-22",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "USDA invests $57M to boost meat processing capacity",
+        "date": "2026-10-26",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tyson debuts holiday-shaped chicken nuggets",
+        "date": "2026-11-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Tyson and Allied Beef announce partnership to strengthen cattle supply",
+        "date": "2026-11-09",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Mancer 2",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "KHC",
+    "MZTI",
+    "MDLZ",
+    "HSY",
+    "PPC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KHC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "North America volume declines across meats signal weaker packaged-meat demand, pressuring Tyson's Prepared Foods segment."
+       },
+       {
+        "peer": "MZTI",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Cyclospora and foodservice softness in dressings; little direct read across for Tyson's meat segments."
+       },
+       {
+        "peer": "MDLZ",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Snacks volume growth and pricing strength; no direct implication for Tyson's meat drivers."
+       },
+       {
+        "peer": "HSY",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Confectionery sales growth and margin recovery; not relevant to Tyson's protein segments."
+       },
+       {
+        "peer": "PPC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Chicken commodity cutout declines drove PPC margins down 50%, signaling weaker chicken pricing for Tyson."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "KHC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Weak North America meats demand and pricing pressure signal continued softness for Tyson's Prepared Foods segment."
+       },
+       {
+        "peer": "MZTI",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dressings/dips and cyclospora issues not relevant to Tyson's protein segments."
+       },
+       {
+        "peer": "MDLZ",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Snacks results show no direct read-through to Tyson's meat and protein drivers."
+       },
+       {
+        "peer": "HSY",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Confectionery results have no direct implication for Tyson's protein segments."
+       },
+       {
+        "peer": "PPC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Chicken margins collapsed on lower commodity cutout values, signaling industry downturn for Tyson's Chicken segment."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PPC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Chicken commodity cutout values fell sharply; PPC margins collapsed, signaling industry chicken profitability pressure for TSN."
+       },
+       {
+        "peer": "HSY",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Confectionery results not relevant to Tyson's meat segments; no shared demand or cost signal."
+       },
+       {
+        "peer": "MDLZ",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Snack food results show resilient packaged food demand but not specific to Tyson's meat categories."
+       },
+       {
+        "peer": "MZTI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "other",
+        "why": "Higher diesel/freight costs signal shared food-industry cost pressure, minor negative for Tyson margins."
+       },
+       {
+        "peer": "KHC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "KHC North America meats volume/mix declined and price fell, signaling weak packaged meats demand for Tyson's Prepared Foods."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -2.5298221281347035,
+   "score_peer": -2.886751345948129,
+   "score_combined": -3.973197801108768,
+   "overall_votes": [
+    "below",
+    "below",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "bmo",
+   "eps_estimate": 0.5885,
+   "revenue_estimate": 14310637480,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-16",
+   "cutoff": "2026-11-13 22:00:00+00:00",
+   "decided_at": "2026-11-16T02:36:09.118064+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "d5936a85ad3b2a66f8e8f13b56d4082dd39fc4da3ac89f5665f97ad99eed3057"
+  }
+ },
+ "report_date": "2026-11-16",
+ "cutoff": "2026-11-13 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "6589c973a99212a898a0970392ed563141ed67b38570df0d8eeaf3a5ee5040bb",
+ "runs": [
+  {
+   "at": "2026-11-16T02:36:09.141366+00:00",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "quality": {
+    "counts": {
+     "ok": 3
+    },
+    "attempted": 3,
+    "bad": 0,
+    "bad_share": 0.0,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
