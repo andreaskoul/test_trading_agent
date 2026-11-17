@@ -1,0 +1,2418 @@
+{
+ "records": {
+  "DIS": {
+   "ticker": "DIS",
+   "index": "SP500",
+   "sector": "Communication Services",
+   "sub_industry": "Movies & Entertainment",
+   "last_release": "2026-08-05 10:30:54+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1744489/000174448926000056/fy2026_q3xerxex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Experiences segment operating income",
+      "last_report": "Revenue +10%, op income +20%; $100M tariff refund added ~4 pts; domestic per capita +4%; Asia softness expected to continue in Q4.",
+      "guidance": "Q4 total segment operating income ~$4.9B including 53rd week; no separate Experiences guidance."
+     },
+     {
+      "id": "D2",
+      "name": "Entertainment SVOD margin",
+      "last_report": "SVOD revenue +11%, subscription +15%, ads +3%; margin 13%, helped by marketing/programming timing.",
+      "guidance": "Double-digit Entertainment SVOD operating margin for full-year fiscal 2026, excluding 53rd week."
+     },
+     {
+      "id": "D3",
+      "name": "Sports segment operating income",
+      "last_report": "Op income -17%, steeper than prior ~14% guidance on NBA playoff sweeps and carriage dispute; affiliate fees +8%.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Q4 total segment operating income",
+      "last_report": "Q3 total segment operating income $5.555B, +21%, modestly exceeded prior guidance.",
+      "guidance": "Q4 total segment operating income ~$4.9B including 53rd week; FY2026 adjusted EPS growth ~12% ex-53rd week, ~16% including."
+     },
+     {
+      "id": "D5",
+      "name": "Film slate and Consumer Products",
+      "last_report": "Toy Story 5 surpassed $1B box office; Consumer Products revenue +7%; Mandalorian/Grogu and Q4 Moana underperformed box office expectations.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Fiscal 2026 adjusted EPS growth ~12% excluding 53rd week and ~16% including; Q4 total segment operating income ~$4.9B including 53rd week; at least $9B share repurchases in fiscal 2026; fiscal 2027 double-digit adjusted EPS growth excluding 53rd week.",
+    "kill_conditions": [
+     "Q4 total segment operating income reported below ~$4.9B or FY2026 adjusted EPS growth below ~12% ex-53rd week.",
+     "Experiences Asia weakness worsens or domestic parks per capita spending turns negative.",
+     "Entertainment SVOD margin falls below double digits or Sports operating income declines further."
+    ]
+   },
+   "card_provider": "Parasail",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 14,
+    "found": 13,
+    "share": 0.9285714285714286,
+    "missing": [
+     "5.555"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 733,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Reported plan for thousands of job cuts and 20% cost cuts",
+        "date": "2026-11-05",
+        "driver": "D4",
+        "direction": 1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Adobe multi-year AI alliance for Disney parks, cruises, studio productions",
+        "date": "2026-11-09",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ESPN inks 5-year $1.7B deal to expand College Football Playoff",
+        "date": "2026-11-09",
+        "driver": "D3",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Disney+ plans free tier, creator content, vertical video clips",
+        "date": "2026-11-09",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Disney, Skydance eye TV rights bids for French Ligue 1",
+        "date": "2026-11-09",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Disney+ among streaming services raising prices again in 2026",
+        "date": "2026-11-13",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Star Wars: A New Hope coming to Cosm domes in multiyear film deal",
+        "date": "2026-11-12",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Disney's Hexed animated film holds world premiere in Los Angeles",
+        "date": "2026-11-13",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Disney expands cruise business with new ships, international destinations",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Disney plans 20% cost cuts and thousands of layoffs",
+        "date": "2026-11-05",
+        "driver": "D4",
+        "direction": 1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Adobe multi-year AI partnership for Disney creatives and parks",
+        "date": "2026-11-09",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ESPN inks 5-year $1.7B College Football Playoff deal",
+        "date": "2026-11-09",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Disney+ plans free tier, creator content, vertical video",
+        "date": "2026-11-09",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Star Wars multiyear film deal with Cosm domes",
+        "date": "2026-11-12",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Disney+ raised prices again in 2026",
+        "date": "2026-11-13",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Report: Disney plans 20% cost cuts, thousands of layoffs under new CEO",
+        "date": "2026-11-05",
+        "driver": "D4",
+        "direction": 1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Disney and Adobe announce multi-year AI creative tools alliance",
+        "date": "2026-11-09",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Disney+ plans free tier, creator content, vertical video per internal presentation",
+        "date": "2026-11-09",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "ESPN and CFP sign 5-year $1.7B playoff expansion deal",
+        "date": "2026-11-09",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Disney's Star Wars comes to Cosm domes in multiyear deal",
+        "date": "2026-11-12",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Disney expands cruise fleet with new ships, international destinations",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Disney and Skydance reportedly eye French Ligue 1 TV rights bids",
+        "date": "2026-11-09",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Disney's Hexed animated film holds world premiere",
+        "date": "2026-11-13",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "LYV",
+    "TKO",
+    "ROKU",
+    "NFLX"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "LYV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record live-event demand, international attendance +29% signals strong consumer spend on experiences, supporting Disney Experiences despite Asia softness."
+       },
+       {
+        "peer": "TKO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Raises guidance; sports consumption and live-event demand strong, positive for ESPN/Sports segment after NBA/carriage pressures."
+       },
+       {
+        "peer": "ROKU",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Platform/advertising/subscription revenue +23% signals robust streaming ad demand and monetization, supporting Disney SVOD margin/ad growth."
+       },
+       {
+        "peer": "NFLX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong streaming margins, healthy retention and pricing power indicate favorable industry economics for Disney+ SVOD profitability."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "LYV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record live-event attendance and international demand signal healthy consumer spending on experiences, supportive for Disney Experiences despite Asia softness."
+       },
+       {
+        "peer": "TKO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D3",
+        "why": "Sports consumption and live-event demand strong; may support ESPN ad/affiliate trends, though carriage dispute remains company-specific."
+       },
+       {
+        "peer": "ROKU",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong streaming ad and subscription growth, high platform gross margin, support Disney SVOD revenue/margin trajectory."
+       },
+       {
+        "peer": "NFLX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Healthy streaming demand, improved churn, accepted price increases support Disney SVOD margin and pricing outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NFLX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Healthy streaming demand, improved churn, price hikes sticking; margin upside from expense timing mirrors Disney+ SVOD setup."
+       },
+       {
+        "peer": "ROKU",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Streaming advertising and subscriptions both +23%, engagement up; signals firm streaming monetization backdrop for Disney+ and Hulu."
+       },
+       {
+        "peer": "TKO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Raised guidance on live events/experiences secular demand; supportive read for consumer spending on Disney Experiences offerings."
+       },
+       {
+        "peer": "LYV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record attendance +19% and double-digit AOI growth show consumers still prioritizing paid live experiences, boding well for Experiences demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.2677868380553634,
+   "score_peer": 3.1304951684997055,
+   "score_combined": 3.833034422305216,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 1.6909,
+   "revenue_estimate": 25434389599,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-17",
+   "cutoff": "2026-11-16 22:00:00+00:00",
+   "decided_at": "2026-11-17T02:34:29.911790+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "b70454dcc77096fd26f8af9dc03163cd5603f86c9b789cb52031216a30866724"
+  },
+  "DLB": {
+   "ticker": "DLB",
+   "index": "SP400",
+   "sector": "Information Technology",
+   "sub_industry": "Application Software",
+   "last_release": "2026-07-30 20:15:06+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1308547/000119312526326149/d165402dex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Licensing revenue",
+      "last_report": "Q3 total revenue $305M, down from $316M prior year; Q4 licensing guided $335-365M.",
+      "guidance": "Q4 licensing $335-365M; FY26 licensing $1.31-1.34B."
+     },
+     {
+      "id": "D2",
+      "name": "Total revenue ramp",
+      "last_report": "Q3 total revenue $305M; Q4 guided $362-392M, implying sequential growth.",
+      "guidance": "Q4 total revenue $362-392M; FY26 $1.41-1.44B."
+     },
+     {
+      "id": "D3",
+      "name": "Gross margin",
+      "last_report": "Q3 gross margin not highlighted; Q4 guided ~88% GAAP/~90% non-GAAP.",
+      "guidance": "Q4/FY26 gross margin ~88% GAAP, ~90% non-GAAP."
+     },
+     {
+      "id": "D4",
+      "name": "Operating expenses",
+      "last_report": "Q4 OpEx guided $227-237M GAAP, $195-205M non-GAAP; FY26 $937-947M GAAP.",
+      "guidance": "Q4 OpEx $227-237M GAAP/$195-205M non-GAAP; FY26 $937-947M/$785-795M."
+     },
+     {
+      "id": "D5",
+      "name": "Dolby Vision 2 / Atmos adoption",
+      "last_report": "Dolby Vision 2 in Hisense TVs; TCL/Philips by calendar year-end; Android Auto Atmos; Meta joined VDP.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q4 FY26: revenue $362-392M; licensing $335-365M; non-GAAP EPS $1.13-1.28; gross margin ~90% non-GAAP. FY26: revenue $1.41-1.44B; licensing $1.31-1.34B; non-GAAP EPS $4.25-4.40.",
+    "kill_conditions": [
+     "Q4 licensing revenue below $335M or total revenue below $362M.",
+     "Non-GAAP gross margin below ~90% or non-GAAP operating expenses above $205M.",
+     "Dolby Vision 2 TV shipments by TCL or Philips slip past calendar year-end."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 24,
+    "found": 24,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 57,
+   "news_used": 57,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Dolby Vision 2 now available on select Hisense TVs",
+        "date": "2026-08-06",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Dolby acquires FAU video compression technology portfolio",
+        "date": "2026-08-11",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Seattle Seahawks adopt Dolby OptiView with Dolby Vision",
+        "date": "2026-08-13",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Dolby partners with Cinemo, SmashLabs for in-car immersive gaming",
+        "date": "2026-08-21",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CEO Kevin Yeaman announces retirement from Dolby",
+        "date": "2026-08-27",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Dolby expands OptiView platform with new capabilities at IBC 2026",
+        "date": "2026-09-10",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Dolby and Meta expand Atmos and Vision across Meta ecosystem",
+        "date": "2026-09-24",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Formula 1 on Apple TV to debut in Dolby Atmos and Vision",
+        "date": "2026-10-07",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Dolby Vision 2 available on select Hisense TVs",
+        "date": "2026-08-06",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Acquired FAU video compression technology portfolio",
+        "date": "2026-08-11",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Seattle Seahawks adopt Dolby OptiView with Dolby Vision",
+        "date": "2026-08-13",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cinemo/SmashLabs in-car immersive gaming with Dolby",
+        "date": "2026-08-21",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CEO Kevin Yeaman announces retirement",
+        "date": "2026-08-27",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Dolby OptiView platform expansion at IBC 2026",
+        "date": "2026-09-10",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Meta expands Dolby Atmos and Vision across ecosystem",
+        "date": "2026-09-24",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Formula 1 on Apple TV debuts in Dolby Atmos/Vision",
+        "date": "2026-10-07",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Meta expands Dolby Atmos and Vision across AI glasses, Instagram, VR",
+        "date": "2026-09-24",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Dolby Vision 2 available on select Hisense TVs",
+        "date": "2026-08-06",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Dolby acquires FAU video compression patent portfolio",
+        "date": "2026-08-11",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Seattle Seahawks adopt Dolby OptiView with Dolby Vision",
+        "date": "2026-08-13",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cinemo, Dolby, SmashLabs bring in-car immersive gaming",
+        "date": "2026-08-21",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CEO Kevin Yeaman retires after nearly two decades",
+        "date": "2026-08-27",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Dolby expands OptiView live sports platform at IBC 2026",
+        "date": "2026-09-10",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Formula 1 on Apple TV debuts in Dolby Atmos and Vision",
+        "date": "2026-10-07",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "DBX",
+    "BILL",
+    "BSY",
+    "FICO",
+    "HUBS"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "DBX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No overlap with Dolby's licensing, revenue, margin, or adoption drivers."
+       },
+       {
+        "peer": "BILL",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No overlap with Dolby's licensing, revenue, margin, or adoption drivers."
+       },
+       {
+        "peer": "BSY",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No overlap with Dolby's licensing, revenue, margin, or adoption drivers."
+       },
+       {
+        "peer": "FICO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No overlap with Dolby's licensing, revenue, margin, or adoption drivers."
+       },
+       {
+        "peer": "HUBS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No overlap with Dolby's licensing, revenue, margin, or adoption drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "DBX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No read-through to Dolby's licensing, Atmos/Vision adoption, or consumer electronics demand."
+       },
+       {
+        "peer": "BILL",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No read-through to Dolby's licensing, Atmos/Vision adoption, or consumer electronics demand."
+       },
+       {
+        "peer": "BSY",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No read-through to Dolby's licensing, Atmos/Vision adoption, or consumer electronics demand."
+       },
+       {
+        "peer": "FICO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No read-through to Dolby's licensing, Atmos/Vision adoption, or consumer electronics demand."
+       },
+       {
+        "peer": "HUBS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No read-through to Dolby's licensing, Atmos/Vision adoption, or consumer electronics demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HUBS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "SaaS CRM demand and AI shift do not reveal Dolby licensing or device demand."
+       },
+       {
+        "peer": "FICO",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Mortgage/credit analytics trends unrelated to Dolby's audio/video licensing drivers."
+       },
+       {
+        "peer": "BSY",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Infrastructure engineering software strength has no read-through to Dolby's licensing or adoption."
+       },
+       {
+        "peer": "BILL",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "SMB finance platform results do not inform Dolby's device licensing or Vision/Atmos adoption."
+       },
+       {
+        "peer": "DBX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dropbox content/AI storage trends do not reveal Dolby's licensing demand or margins."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 4.0,
+   "score_peer": 0.0,
+   "score_combined": 4.0,
+   "overall_votes": [
+    "above",
+    "inline",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "amc",
+   "eps_estimate": 1.207,
+   "revenue_estimate": 376487852,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-17",
+   "cutoff": "2026-11-16 22:00:00+00:00",
+   "decided_at": "2026-11-17T02:32:57.339955+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "19d0a53270ff5f6a7006b633d555c42caac86308aaa2b020ce8e1fb70b7c5306"
+  },
+  "HD": {
+   "ticker": "HD",
+   "index": "SP500",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Home Improvement Retail",
+   "last_release": "2026-08-18 10:10:33+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/354950/000035495026000145/hd_exhibit991x08022026.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Comparable sales growth",
+      "last_report": "Q2 comparable sales +1.7%; U.S. comparable sales +1.3%; company said broad-based demand from smaller projects.",
+      "guidance": "FY26 comparable sales growth approximately flat to 2.0%."
+     },
+     {
+      "id": "D2",
+      "name": "Transactions vs average ticket",
+      "last_report": "Q2 comparable transactions -1.0%, comparable average ticket +2.8%; total transactions -0.8%, average ticket $92.50.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Gross margin and input costs",
+      "last_report": "Q2 gross profit $16,115M, up 6.5%; gross margin about 33.7%.",
+      "guidance": "FY26 gross margin approximately 33.1%; IEEPA tariff refunds expected to partially offset fuel, energy and other input costs."
+     },
+     {
+      "id": "D4",
+      "name": "Operating margin and SG&A",
+      "last_report": "Q2 SG&A +8.5%; total operating expenses +8.2%; operating income +4.3%; operating margin about 14.3%.",
+      "guidance": "FY26 operating margin 12.4%-12.6%; adjusted operating margin 12.8%-13.0%."
+     },
+     {
+      "id": "D5",
+      "name": "Acquisitions and new stores",
+      "last_report": "Q2 sales +5.7% versus comps +1.7%; SRS/GMS acquisitions and new stores add non-comp sales; goodwill and intangibles rose.",
+      "guidance": "FY26 total sales growth 2.5%-4.5%; approximately 15 new stores; capex about 2.5% of total sales."
+     }
+    ],
+    "guidance": "Reaffirms FY26: total sales +2.5%-4.5%; comps flat to +2.0%; gross margin ~33.1%; operating margin 12.4%-12.6%; adjusted operating margin 12.8%-13.0%; tax ~24.3%; net interest ~$2.3B; diluted EPS flat to +4.0% from $14.23; adjusted EPS flat to +4.0% from $14.69; capex ~2.5% of sales.",
+    "kill_conditions": [
+     "Q3 comparable sales below flat or U.S. comparable sales negative",
+     "FY26 gross margin below ~33.1% or tariff refunds fail to offset input costs",
+     "FY26 EPS guidance cut or operating margin below 12.4%"
+    ]
+   },
+   "card_provider": "DeepInfra",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 27,
+    "found": 25,
+    "share": 0.9259259259259259,
+    "missing": [
+     "14.3",
+     "33.7"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 574,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Home equity borrowing jumped 14% to $481B, fastest since financial crisis",
+        "date": "2026-11-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "October CPI data shows renewed inflation, pressuring input costs and margins",
+        "date": "2026-11-12",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Kuipers Ace Hardware closes; chain closes 12 locations",
+        "date": "2026-11-14",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home sales sank to 16-year low, signaling weak home improvement demand",
+        "date": "2026-11-15",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home Depot accelerates nationwide three-hour express delivery rollout",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Home equity borrowing jumped 14% to $481B, fastest since financial crisis",
+        "date": "2026-11-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home sales sank to 16-year low",
+        "date": "2026-11-15",
+        "driver": "D1",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "October CPI data shows renewed inflation",
+        "date": "2026-11-12",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "US home sales hit 16-year low, weighing on home improvement demand",
+        "date": "2026-11-15",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home equity borrowing jumps 14% to $481B, fastest since crisis",
+        "date": "2026-11-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home Depot rolls out nationwide three-hour express delivery",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Kuipers Ace Hardware closes 12 locations",
+        "date": "2026-11-14",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "October CPI shows renewed inflation, pressuring input costs",
+        "date": "2026-11-12",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "FND"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FND",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Peer comps fell 1.4% and cited challenging demand, signaling softer home-improvement demand that could pressure HD comps."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FND",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Peer comps -1.4% and challenging demand signal softer home improvement demand, negative for HD comparable sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FND",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Weak comps and challenging demand signal softer home improvement demand, pressuring HD comparable sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.6123724356957946,
+   "score_peer": -1.414213562373095,
+   "score_combined": -0.09473434549075288,
+   "overall_votes": [
+    "inline",
+    "below",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 3.9542,
+   "revenue_estimate": 44075069385,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-17",
+   "cutoff": "2026-11-16 22:00:00+00:00",
+   "decided_at": "2026-11-17T02:34:15.055966+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "6b1aa3bec03dfcbc7c5d978ae74eef99d3aa8a3179b024b87fc8d139505f2a60"
+  },
+  "NVDA": {
+   "ticker": "NVDA",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Semiconductors",
+   "last_release": "2026-08-26 20:21:19+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000073/q2fy27pr.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Data Center revenue",
+      "last_report": "Q2 Data Center revenue $89.0B, up 18% q/q and 117% y/y; Vera Rubin ramping into full production.",
+      "guidance": "Q3 total revenue $108.0B ±2%, assuming no Data Center compute revenue from China."
+     },
+     {
+      "id": "D2",
+      "name": "Gross margin",
+      "last_report": "Q2 GAAP and non-GAAP gross margin both 75.0%, up 2.6 pts y/y.",
+      "guidance": "Q3 gross margin 74.0% ±50 bps."
+     },
+     {
+      "id": "D3",
+      "name": "Operating expenses",
+      "last_report": "Q2 GAAP OpEx $8.4B, non-GAAP $8.2B, up 10-11% q/q.",
+      "guidance": "Q3 GAAP OpEx ~$9.2B; non-GAAP ~$9.0B."
+     },
+     {
+      "id": "D4",
+      "name": "Edge Computing revenue",
+      "last_report": "Q2 Edge Computing revenue $7.2B, up 13% q/q and 27% y/y; RTX Spark, DGX Station, DRIVE, robotics.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "China Data Center revenue",
+      "last_report": "Q2 release gives no China Data Center compute revenue figure; Q3 outlook excludes it.",
+      "guidance": "No Data Center compute revenue from China assumed in Q3 outlook."
+     }
+    ],
+    "guidance": "Q3 FY27 revenue $108.0B ±2%; GAAP/non-GAAP gross margin 74.0% ±50 bps; GAAP OpEx ~$9.2B, non-GAAP ~$9.0B; no China Data Center compute revenue assumed; FY27 tax 16-18%.",
+    "kill_conditions": [
+     "Q3 revenue below $108B guidance or Q4 revenue outlook cut.",
+     "Data Center revenue declines sequentially or China compute revenue stays zero and total DC misses.",
+     "Gross margin below 73.5% or GAAP OpEx above $9.2B."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 18,
+    "found": 15,
+    "share": 0.8333333333333334,
+    "missing": [
+     "16",
+     "8.2",
+     "8.4"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 728,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Jensen Huang resigns as CEO; Colette Kress interim CEO ahead of earnings",
+        "date": "2026-11-16",
+        "driver": "other",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Nvidia probe shifts to China chip smuggling",
+        "date": "2026-11-16",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "U.S. government takes steps to restrict AI tech to China",
+        "date": "2026-11-16",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump administration to name Nvidia as AI national champion",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Microsoft $1B bet on Anthropic IPO; Anthropic largest IPO",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AMD and Broadcom post record AI quarters; AMD gaining share",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Rising memory costs pressure gross margin",
+        "date": "2026-11-16",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Nvidia lawsuit puts insurance coverage in focus",
+        "date": "2026-11-16",
+        "driver": "D3",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Jensen Huang resigns as CEO; interim CEO Colette Kress; leadership uncertainty before Q3 earnings",
+        "date": "2026-11-16",
+        "driver": "other",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "US tightens China AI chip export controls; Nvidia probe shifts to chip smuggling",
+        "date": "2026-11-16",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump administration plans to name Nvidia an AI 'national champion'",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "AMD and Broadcom post record AI quarters, gaining share amid Nvidia leadership vacuum",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Rising memory costs pressure Nvidia's gross margin",
+        "date": "2026-11-16",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Microsoft's $1B Anthropic bet and Anthropic IPO signal strong AI demand",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Jensen Huang resigned as CEO, creating leadership crisis",
+        "date": "2026-11-16",
+        "driver": "other",
+        "direction": -1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Nvidia probe shifts to China chip smuggling",
+        "date": "2026-11-16",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "US government steps to restrict AI-related technology to China",
+        "date": "2026-11-16",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump administration plans to name Nvidia as AI national champion",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "AMD and Broadcom posted record AI quarters, gaining share",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Rising memory costs pressure gross margin",
+        "date": "2026-11-16",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Jensen Huang lawsuit focuses on insurance coverage",
+        "date": "2026-11-16",
+        "driver": "other",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "SLAB",
+    "MCHP",
+    "SYNA",
+    "MTSI",
+    "SITM"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SLAB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D4",
+        "why": "Broad IoT/industrial demand and low inventories suggest healthy edge demand, modestly positive for NVDA Edge Computing."
+       },
+       {
+        "peer": "MCHP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Robust bookings and data center design-win growth signal strong AI/data center demand, supporting NVDA Data Center revenue."
+       },
+       {
+        "peer": "SYNA",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D4",
+        "why": "Mixed edge AI design activity versus supply/memory constraints; unclear net impact on NVDA Edge Computing."
+       },
+       {
+        "peer": "MTSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong sequential and y/y growth with margin expansion signals healthy semiconductor demand, positive for NVDA Data Center."
+       },
+       {
+        "peer": "SITM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "AI infrastructure buildout drove 202% core growth, strongly confirming data center demand for NVDA."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SLAB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Wireless IoT/medical demand has no clear read-through to NVDA's AI data center or edge computing."
+       },
+       {
+        "peer": "MCHP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Robust data-center bookings and PCIe Gen6 design wins signal strong AI infrastructure demand, positive for NVDA Data Center."
+       },
+       {
+        "peer": "SYNA",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Mixed read: memory supply constraints negative for costs, but edge AI/robotics activity positive; no clear net impact."
+       },
+       {
+        "peer": "MTSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong sequential growth and margin expansion indicate robust semiconductor demand, positive for NVDA Data Center."
+       },
+       {
+        "peer": "SITM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "AI infrastructure buildout drove 202% core CED growth, a strong positive read for NVDA Data Center demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SITM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "AI infrastructure buildout drove 202% core CED growth, supporting NVDA Data Center demand."
+       },
+       {
+        "peer": "MTSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong q/q revenue growth and margin expansion indicate healthy semiconductor demand, positive for NVDA Data Center."
+       },
+       {
+        "peer": "SYNA",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D4",
+        "why": "Edge AI design activity positive, but supply/memory constraints and smartphone softness make read-through unclear."
+       },
+       {
+        "peer": "MCHP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad-based growth, data center design wins, and robust bookings support NVDA Data Center demand."
+       },
+       {
+        "peer": "SLAB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D4",
+        "why": "Broad-based IoT growth and low inventory suggest healthy edge demand, modestly positive for NVDA Edge Computing."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -4.0,
+   "score_peer": 3.1304951684997055,
+   "score_combined": -2.4347524157501472,
+   "overall_votes": [
+    "below",
+    "below",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "amc",
+   "eps_estimate": 2.525,
+   "revenue_estimate": 111282164311,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-17",
+   "cutoff": "2026-11-16 22:00:00+00:00",
+   "decided_at": "2026-11-17T02:33:45.608376+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "fa6e53582b0842e6182b5cf6b357101b968377628cf0c94487aaa565a82c3fb0"
+  },
+  "SR": {
+   "ticker": "SR",
+   "index": "SP400",
+   "sector": "Utilities",
+   "sub_industry": "Gas Utilities",
+   "last_release": "2026-08-05 11:06:14+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1126956/000119312526333825/sr-ex99_1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Gas Utility contribution margin",
+      "last_report": "Q3 contribution margin rose $30.6M on new Missouri rates, ISRS, Alabama RSE, higher Alabama usage net of weather mitigation, favorable CCM, off-system sales.",
+      "guidance": "FY26 adjusted EPS $3.90-$4.10; FY27 $5.40-$5.60; long-term 5-7% growth."
+     },
+     {
+      "id": "D2",
+      "name": "O&M expense and cost control",
+      "last_report": "Q3 O&M rose $3.8M; adjusted O&M up $0.4M. YTD O&M up $7.7M but essentially flat after pension and bad debt adjustments.",
+      "guidance": "Disciplined cost management; no separate O&M guidance."
+     },
+     {
+      "id": "D3",
+      "name": "Depreciation, taxes, interest expense",
+      "last_report": "Q3 depreciation +$11.8M, other taxes +$4.0M, interest expense +$2.4M from capital investment, updated Missouri depreciation, property tax amortization, higher debt.",
+      "guidance": "FY26 capex $797M; 10-year $11.2B through FY2035."
+     },
+     {
+      "id": "D4",
+      "name": "Piedmont Tennessee acquisition integration",
+      "last_report": "Q3 acquisition activities cost $36.0M pre-tax; FY26 guidance excludes Spire Tennessee; FY27 guidance includes full year of Spire Tennessee earnings.",
+      "guidance": "FY27 adjusted EPS $5.40-$5.60 includes full year Spire Tennessee contribution."
+     },
+     {
+      "id": "D5",
+      "name": "Other corporate costs and interest",
+      "last_report": "Other segment adjusted loss widened to $12.5M from $3.3M on higher corporate costs and interest expense.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Reaffirmed FY26 adjusted EPS from continuing operations $3.90-$4.10, excluding Spire Tennessee; FY27 adjusted EPS $5.40-$5.60 including full year Spire Tennessee; long-term 5-7% growth; FY26 capex $797M.",
+    "kill_conditions": [
+     "Spire cuts FY26 adjusted EPS guidance below $3.90 or FY27 below $5.40.",
+     "Missouri or Alabama regulators deny or reduce requested rate, ISRS, or RSE recovery.",
+     "Warmer-than-normal weather or weak Alabama usage cuts contribution margin or CCM."
+    ]
+   },
+   "card_provider": "Parasail",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 16,
+    "found": 16,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 40,
+   "news_used": 40,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Spire Missouri files rate case with Missouri PSC",
+        "date": "2026-11-02",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Spire Missouri filed rate case with Missouri PSC",
+        "date": "2026-11-02",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Spire board increased quarterly dividend to $0.865 per share",
+        "date": "2026-11-12",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "_Cut('answer cut at max_tokens 24000')",
+     "provider": null,
+     "log": {
+      "attempts": [
+       {
+        "kind": "transport",
+        "error": "_Cut('answer cut at max_tokens 24000')"
+       }
+      ],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "NFG",
+    "ATO",
+    "SWX",
+    "OGS"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NFG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Peer utility rate approvals support gas utility regulatory recovery; limited read-through to Spire's Missouri/Alabama margins."
+       },
+       {
+        "peer": "ATO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong annualized regulatory outcomes and FY27 growth signal constructive gas utility rate recovery for Spire's margin."
+       },
+       {
+        "peer": "SWX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Completed rate cases and Arizona recommended increases show supportive regulation, aiding Spire's rate-driven contribution margin."
+       },
+       {
+        "peer": "OGS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Raised guidance on new rates and customer growth signals resilient gas utility demand and rate recovery for Spire."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NFG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "NY tracker and PA rate increase plus 9% FY26 adjusted EPS growth signal supportive gas-utility ratemaking, consistent with SR's rate-driven margin."
+       },
+       {
+        "peer": "ATO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "FY27 EPS guidance $9.05-$9.25 and $395M annualized regulatory outcomes show peers still winning rate recovery, supporting SR's margin outlook."
+       },
+       {
+        "peer": "SWX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Nevada/California cases delivered ~$80M annual revenue increases and Arizona staff backs $58M; constructive regulation supports SR's rate recovery."
+       },
+       {
+        "peer": "OGS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Raised 2026 guidance on $13.5M new-rate revenue and customer growth; large-load demand developing, echoing SR's rate and usage-driven margin."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "OGS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Raised guidance on new rates and customer growth; supports gas utility margin, though cost inflation persists."
+       },
+       {
+        "peer": "SWX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Completed rate cases and constructive regulatory outcomes support utility revenue and infrastructure recovery."
+       },
+       {
+        "peer": "ATO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong regulatory outcomes and FY27 growth guidance signal favorable gas utility rate environment."
+       },
+       {
+        "peer": "NFG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Utility rate increases and tracker approvals support regulatory environment; Q4 adjusted EPS was flat."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 3.1304951684997055,
+   "score_combined": 1.5652475842498528,
+   "overall_votes": [
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": -1.0661,
+   "revenue_estimate": 282901860,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-17",
+   "cutoff": "2026-11-16 22:00:00+00:00",
+   "decided_at": "2026-11-17T02:34:36.135299+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "2ba735472fd8d4a164363cbf78263147071ea906b7d719b4399d0ecbec045782"
+  },
+  "WSM": {
+   "ticker": "WSM",
+   "index": "SP500",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Homefurnishing Retail",
+   "last_release": "2026-08-26 12:03:35+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/719955/000071995526000203/exhibit991fy2026q2earnings.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Comparable brand revenue growth",
+      "last_report": "Q2 comp +6.2%, total revenue +6.7%; all brands positive: PB +5.1%, West Elm +6.4%, Williams Sonoma +7.6%, PB Kids/Teen +3.5%.",
+      "guidance": "FY26 comps +4.0% to +6.5%; net revenues +4.7% to +7.2%."
+     },
+     {
+      "id": "D2",
+      "name": "Non-GAAP gross margin",
+      "last_report": "45.5% non-GAAP, -160bps; merchandise margin -230bps on tariffs, offset by supply chain +30bps and occupancy leverage +40bps.",
+      "guidance": "FY26 assumes all current tariffs remain, oil elevated, and no tariff refund or interest benefit."
+     },
+     {
+      "id": "D3",
+      "name": "Tariff refund income",
+      "last_report": "$167.8M COGS reduction plus $6.3M interest; $29.3M deferred as inventory, to hit Q3 COGS; $3.2M receivable remaining.",
+      "guidance": "FY26 guidance excludes any benefit from tariff refunds or related interest."
+     },
+     {
+      "id": "D4",
+      "name": "SG&A expense leverage",
+      "last_report": "Non-GAAP SG&A rate 28.2%, -100bps on employment leverage; SG&A $553M, +3.1%; advertising and general expenses each +10bps.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Non-GAAP operating margin",
+      "last_report": "Q2 non-GAAP operating margin 17.3%, -60bps to LY; GAAP 22.9% on tariff refunds; non-GAAP EPS $2.10, +5.0%.",
+      "guidance": "FY26 non-GAAP operating margin 17.8% to 18.2%; long-term mid-to-high teens."
+     }
+    ],
+    "guidance": "FY26 net revenues +4.7% to +7.2%, comps +4.0% to +6.5%, non-GAAP operating margin 17.8%-18.2%, interest income ~$25M, tax rate ~26%. Assumes current tariffs (Section 232, 301, Canada) remain, elevated oil, and no tariff refund benefit.",
+    "kill_conditions": [
+     "Q3 comparable brand revenue growth below +4.0%, or any major brand turning negative.",
+     "Non-GAAP gross margin down more than ~160bps as tariff-driven merchandise margin pressure worsens.",
+     "Non-GAAP operating margin tracking below the 17.8% full-year floor, or SG&A deleverage."
+    ]
+   },
+   "card_provider": "Cohere",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 35,
+    "found": 35,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 151,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "WSM gives workers $10M 401(k) windfall from $200M gain",
+        "date": "2026-10-18",
+        "driver": "D4",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Mark & Graham launches New York City Ballet collaboration",
+        "date": "2026-10-20",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Pottery Barn Kids/Teen launch ten holiday collaborations",
+        "date": "2026-10-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Bob's Discount Furniture 3Q revenue +10.3% on store expansion",
+        "date": "2026-11-05",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Arhaus Q3 sales strong, raises revenue outlook despite earnings miss",
+        "date": "2026-11-06",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Somnigroup Q3 miss on soft demand, cuts 2026 EPS outlook",
+        "date": "2026-11-10",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home Depot comps +1.7%, Pro demand offsets housing weakness",
+        "date": "2026-11-10",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Williams-Sonoma shares $200M windfall with workers via $10M 401(k) contribution",
+        "date": "2026-10-18",
+        "driver": "D4",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Mark & Graham launches collaboration with New York City Ballet",
+        "date": "2026-10-20",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Pottery Barn Kids and Teen unveil ten holiday collaborations",
+        "date": "2026-10-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "WSM shares $10M 401(k) windfall with workers from $200M tariff refund",
+        "date": "2026-10-18",
+        "driver": "D4",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Mark & Graham launches collaboration with New York City Ballet",
+        "date": "2026-10-20",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Pottery Barn Kids and Teen unveil ten holiday collaborations",
+        "date": "2026-10-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Bob's Discount Furniture Q3 net revenue rises 10.3% on new stores",
+        "date": "2026-11-05",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Arhaus Q3 earnings miss on costs despite strong sales, raised revenue outlook",
+        "date": "2026-11-06",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Somnigroup Q3 earnings miss on Dreams disruption and soft demand",
+        "date": "2026-11-10",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 0.75,
+   "score_peer": null,
+   "score_combined": 0.75,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 2.2063,
+   "revenue_estimate": 2018285353,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-17",
+   "cutoff": "2026-11-16 22:00:00+00:00",
+   "decided_at": "2026-11-17T02:34:24.697315+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "d508375d59b5a4690394551c48f9d7fbfa501f1a417b4e3bad27c04a88103d09"
+  }
+ },
+ "report_date": "2026-11-17",
+ "cutoff": "2026-11-16 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "64f408635d4998f19551ad387a011160bc761b3b4822b82e54d354330235954e",
+ "runs": [
+  {
+   "at": "2026-11-17T02:34:36.178591+00:00",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "quality": {
+    "counts": {
+     "ok": 6
+    },
+    "attempted": 6,
+    "bad": 0,
+    "bad_share": 0.0,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
