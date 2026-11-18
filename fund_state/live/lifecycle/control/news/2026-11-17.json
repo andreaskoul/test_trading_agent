@@ -1,0 +1,2381 @@
+{
+ "day": "2026-11-17",
+ "close_ts": 1794949200,
+ "lots": {
+  "2026-10-28|EQIX": {
+   "status": "checked",
+   "verdict": "increase",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 2,
+   "news_until": 1794948000,
+   "headlines": [
+    "equinix doubles down on dallas with 500mplus data center near love field",
+    "amazon sold 5 billion of data centers at a 7 cap rate thats a big problem for digital realty and equinix",
+    "valuengine weekly market commentary with strategy notes",
+    "equinix files for 372k sf da13 data center at love field",
+    "steve eisman says the biggest ai risk is local governments slowing data center construction"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Equinix plans a $500 million data center beside its $837 million Dallas facility, bringing nearby projects to roughly $1.3 billion.",
+       "article": 3
+      }
+     },
+     "error": null,
+     "provider": "River"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "No article states that Equinix cut FY 2026 guidance or withdrew its outlook.",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "No article states that the Q3 FFO beat was revised lower or restated.",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Blackstone Digital Infrastructure Trust agreed to buy a 75.1% stake in 13 new Amazon Web Services data center shells, with the portfolio valued at $5 billion, at a 7% cap rate.",
+        "article": 1
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Equinix plans a $500 million data center beside its $837 million Dallas facility, bringing nearby projects to roughly $1.3 billion.",
+       "article": 3
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    }
+   ],
+   "max_published": 1794944875
+  },
+  "2026-10-28|MSFT": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 1,
+   "news_until": 1794948000,
+   "headlines": [
+    "invesco qqq qqq adds apple and nvidia on nov 12",
+    "wisdomtree us dividend growth dgrw adds microsoft and nvidia on nov 12",
+    "ishares core sp 500 ivv sells apple and nvidia on nov 12",
+    "what ishares russell 1000 growth iwf bought ftai aviation leads on nov 12",
+    "invesco nasdaq 100 etf qqqm adds apple and nvidia on thursday",
+    "direxion daily technology bull 3x tecl adds apple and nvidia on thursday",
+    "what neos nasdaq 100 high income etf qqqi bought apple leads on nov 12",
+    "proshares trust tqqq buys 729 million more moderna on nov 12",
+    "what ishares sp 500 growth etf ivw bought nvidia leads on thursday",
+    "what state street spdr portfolio sp 500 spym bought apple leads on nov 12",
+    "us administration plans ai national champions programme including nvidia amazon and microsoft wsj reports",
+    "coreweaves rising cash flow can it offset mounting interest costs",
+    "reported earlier us department of commerces bureau of industry and security interim final rule to address remote access to advanced super intelligence chips and servers",
+    "why is unity stock going up",
+    "what sent coreweave shares lower",
+    "is microsofts outlook outage a disaster moment the stock barely moved",
+    "nobody can replace jensen huang what that means for ai",
+    "many jobs will disappear forever bill gates warns ai could wipe out careers within a decade protect your paycheck",
+    "iren limited plummets 67 in 6 months two wall street firms now expect returns above 400",
+    "nebius stock falls 10 after q3 earnings should you buy now",
+    "huang reportedly weighs comeback as bessent seeks nvidia shakeup anthropics upcoming ipo trump to meet putin and xi",
+    "bernie sanders tells big tech their 3 trillion in ai debt rides on a highstakes gamble if it fails dont come begging to taxpayers",
+    "stock market today jensen huang eyes a comeback as nvidia closes its worst week since april 2025",
+    "wall streets 5 safest dividend stocks built for any market",
+    "blue yonder named a finalist for two 2026 microsoft partner of the year awards",
+    "buy 3 ailed giants on robust fundamentals and shortterm price upside",
+    "exclusive anthropic ipo could trigger a spacexstyle etf frenzy direxion reveals what its seeing",
+    "will oracles debtfunded data center buildout weigh on the stock now",
+    "ibm vs jabil which stock is better positioned for ai growth now",
+    "one magnificent seven stock looks ready for its next big move",
+    "nvidias leadership vacuum hands amd its biggest opportunity in years analysts",
+    "2026 embodied ai robot large models and visionlanguageaction vla research report world models and oem investment accelerate commercialization and mass production",
+    "pltr raises 2026 guidance as q3 ai demand drives 96 revenue growth",
+    "global govtech dualuse defense platform market report 2026 size and forecast to 2030 capitalize on ai cloud and 15 cagr with microsoft palantir anduril and bae systems",
+    "global joint alldomain command and control jadc2 systems market report 2026 lockheed martin rtx aws and microsoft drive ai cloud and edge growth to 5769 billion by 2030",
+    "is an equalweight sp 500 fund safer right now than the one you own",
+    "thread ai joins the microsoft for startups pegasus program to deliver its ai workflow orchestration platform on microsoft marketplace",
+    "prgs or msft which is the better value stock right now",
+    "microsoft pinpoints what knocked outlook offline worldwide",
+    "wall street and main street agree its time to tame the ai trade",
+    "alithya group inc alyaf q2 2027 earnings call highlights margin expansion and bookings",
+    "microsoft reveals hidden bug behind massive global outage",
+    "wall street analyst picks a winner between coreweave and nebius after earnings",
+    "nebius stocks sink 8 as nvidias financing retreat hits neocloud builders",
+    "how to make the most of microsofts triedandtrue workflows",
+    "bill gates issues grim warning that many jobs will disappear forever due to turbulent ai era",
+    "even bad hackers have become ok pan ceo nikesh arora on ai tools",
+    "altimeter capital to invest 5 billion in anthropic ipo report",
+    "ai spending accelerates 3 hyperscaler stocks for strong 2027 returns",
+    "brad gerstner bets 5 billion on anthropic ipo cornerstone compounder for a long time",
+    "soross fund sold a quarter of its berkshire shares today berkshire reveals its own trades",
+    "trump to name nvidia amazon and microsoft ai national champions as bessent demands a shakeup",
+    "customer reports of bank app outages surge",
+    "microsoft outage triggers canadawide class action lawsuit",
+    "microsoft 365 outage what it means for the stock and market positioning",
+    "customers of at least 4 major us banks report outages days after microsoft issues",
+    "microsoft stocks move lower as 1 billion anthropic bet precedes ignite",
+    "openai hit with lawsuit by california ag over alleged inadequate safeguards monitoring of ai models",
+    "chase bank of america other banks hit by online service outages",
+    "days after microsoft and the faa went dark chase and wells fargo customers cant get to their money"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Cohere"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Microsoft slid on fresh Anthropic headlines even as its cloud business kept accelerating.",
+        "article": 29
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Microsoft slid on fresh Anthropic headlines even as its cloud business kept accelerating.",
+        "article": 29
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "No article reports an analyst downgrade or price-target cut for MSFT on Azure concerns.",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Alibaba"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Microsoft Stocks Move Lower as $1 Billion Anthropic Bet Precedes Ignite",
+       "article": 3
+      }
+     },
+     "error": null,
+     "provider": "River"
+    }
+   ],
+   "max_published": 1794861343
+  },
+  "2026-10-28|BIIB": {
+   "status": "checked",
+   "verdict": "increase",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 2,
+   "news_until": 1794948000,
+   "headlines": [
+    "what is driving alnylam stock",
+    "new fiveyear lecanemab data from clarity ad study longterm extension presented at ctad 2026",
+    "reported earlier lecanemab fiveyear clarity ad data 36 lower relative risk of diseasestage progression vs adni 62 of lowtau patients improved on cdrsb consistent safety profile per eisai and biogen",
+    "biogen inc biib presents at jefferies global healthcare conference 2026 transcript",
+    "how did abbvies neuroscience franchise perform in q3",
+    "alnylam stock trades below its pre1 billion buyback price"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Lecanemab Five-Year Clarity AD Data: 36% Lower Relative Risk Of Disease-Stage Progression Vs. ADNI, 62% Of Low-Tau Patients Improved On CDR-SB, Consistent Safety Profile",
+       "article": 2
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Biogen Inc. (BIIB) Presents at Jefferies Global Healthcare Conference 2026 Transcript",
+        "article": 3
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "latest findings demonstrating the benefits of continuous treatment with lecanemab-irmb",
+        "article": 1
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Biogen Inc. (BIIB) Presents at Jefferies Global Healthcare Conference 2026 Transcript",
+        "article": 3
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Lecanemab Five-Year Clarity AD Data: 36% Lower Relative Risk Of Disease-Stage Progression Vs. ADNI, 62% Of Low-Tau Patients Improved On CDR-SB, Consistent Safety Profile, Per Eisai And Biogen",
+       "article": 3
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    }
+   ],
+   "max_published": 1794944735
+  },
+  "2026-10-28|VLO": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1794948000,
+   "headlines": [
+    "abundia global impact group shares are trading lower after the company announced the pricing of its 20 million registered direct offering of 5934718 shares",
+    "is wall street bullish or bearish on valero energy stock",
+    "trading at just 8x pe with 464 eps growth is valero a bargain",
+    "valero energy nysevlo high growth strong cash flow and improving fundamentals",
+    "is chevron stock overpriced versus its oil rivals",
+    "why pay more for exxon mobil stock than chevron",
+    "phillips 66 and valero are turning strong refining margins into bigger dividends"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "River"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    }
+   ],
+   "max_published": 1794925066
+  },
+  "2026-11-04|AMD": {
+   "status": "checked",
+   "verdict": "increase",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 3,
+   "news_until": 1794948000,
+   "headlines": [
+    "advanced micro devices and 2 other high growth stocks",
+    "nvidia must now prove its bigger than jensen huang",
+    "amd stock is falling monday whats going on",
+    "openai explored 5 billionplus acquisition of startup that decodes how ai thinks the information",
+    "intels ceo says ai is buying almost as many cpus as gpus amd and arm gain too",
+    "advanced micro devices vs broadcom one stock has a 27 billion advantage investors shouldnt ignore",
+    "us moves to tighten ai chip export rules financial times",
+    "etfs are net sellers of advanced micro devices amd on nov 12",
+    "invesco qqq qqq adds apple and nvidia on nov 12",
+    "ishares phlx sox semiconductor soxx sells amd and broadcom on nov 12",
+    "ishares ai innovation and tech active etf bai adds broadcom and tsmc on nov 12",
+    "invesco nasdaq 100 etf qqqm adds apple and nvidia on thursday",
+    "direxion daily technology bull 3x tecl adds apple and nvidia on thursday",
+    "proshares trust tqqq buys 729 million more moderna on nov 12",
+    "reported earlier us department of commerces bureau of industry and security interim final rule to address remote access to advanced super intelligence chips and servers",
+    "why micron and sandisk stocks are falling before nvidia earnings",
+    "what has changed about owning intel stock",
+    "what is micron building that investors should watch",
+    "if phone sales keep shrinking what happens to your qualcomm stock",
+    "why did credo technology stock fall",
+    "amd intel and nvidia fall as ai chip selloff continues",
+    "nvidia faces bessents question on whether china sales goose earnings heres what tuesdays report has to show",
+    "nobody can replace jensen huang what that means for ai",
+    "can edge ai replace intels shrinking pc business",
+    "stock market today jensen huang eyes a comeback as nvidia closes its worst week since april 2025",
+    "correction t1 energys offering of convertible senior notes was reported on april 15",
+    "buy 3 ailed giants on robust fundamentals and shortterm price upside",
+    "tensorwave announces agreement with openai to deliver more than 450mw of amd powered ai infrastructure",
+    "amd completes acquisition of world labs",
+    "nvidia falls 4 ahead of earnings as elon musk joins calls to reinstate jensen huang amd drops 6 taiwan semiconductor slides 5",
+    "nvidias leadership vacuum hands amd its biggest opportunity in years analysts",
+    "amd broadcom stocks sink on tighter us chip rules coreweave and nebius shares drop",
+    "graid technology extends vroctm to amd epyctm platforms expanding choice in enterprise raid",
+    "chip stocks are falling anthropics trilliondollar ipo is a big test",
+    "chip stocks fall on us semiconductor restrictions alphacheck",
+    "nvidia china trouble could spill over to these ai chip stocks",
+    "cathie woods latest chip trades tell two different stories",
+    "broadcoms quiet 8 november move could ramp up very quickly in this volatile climate and im buying",
+    "micron sinks 5 as tighter us chip export rules deepen memory selloff",
+    "msi powers the next era of ai infrastructure at sc26",
+    "ai chip stocks extend their selloff as monday opens deep in the red",
+    "us chip stocks slide as traders unwind nvidia rival bets before earnings",
+    "amd completes world labs acquisition appoints feifei li as chief scientist",
+    "arms 50 licensing revenue surge signals strong aidriven demand",
+    "why amd stock was sliding today",
+    "tech stocks wipe out 960 billion as washington shuts chinas ai chip back door in 5 countries",
+    "amd finalizes 82 billion world labs acquisition adds godmother of ai as evp and chief scientist",
+    "at 162 nvidias going to get institutional support from those who missed out earlier so im buying",
+    "amd will capture more market share than broadcom to end november as nvidias leadership vacuum persists",
+    "jensen huang reportedly mulls nvidia comeback but not the board",
+    "amd stocks fall 425 as 25 billion anthropic stake meets ai profittaking",
+    "altimeter capital to invest 5 billion in anthropic ipo report",
+    "hpebuilt lux ai cluster debuts at no 14 on the top500",
+    "amdpowered lux supercomputer opens to scientific users at oak ridge becoming first ai factory for does genesis mission",
+    "nvdl 2x nvidia etf sinks 9 as nvidia falls 4 on jensen huang fallout ahead of earnings amd drops 5",
+    "brad gerstner bets 5 billion on anthropic ipo cornerstone compounder for a long time",
+    "what mattered most in cerebrass latest quarter",
+    "heres how much you would have made owning advanced micro devices stock in the last 15 years",
+    "intel trades at 34x pe for just 11 growth says dan niles now shareholders are suing",
+    "microsoft stocks move lower as 1 billion anthropic bet precedes ignite"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "TensorWave Announces Agreement with OpenAI to Deliver More Than 450MW of AMD Powered AI Infrastructure",
+       "article": 27
+      }
+     },
+     "error": null,
+     "provider": "Parasail"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "TensorWave Announces Agreement with OpenAI to Deliver More Than 450MW of AMD Powered AI Infrastructure ... today announced a six-year agreement with OpenAI to provide dedicated AI infrastructure capacity as part of OpenAI and AMD\u2019s previously announced strat...",
+       "article": 27
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "TensorWave Announces Agreement with OpenAI to Deliver More Than 450MW of AMD Powered AI Infrastructure ... today announced a six-year agreement with OpenAI to provide dedicated AI infrastructure capacity",
+       "article": 6
+      }
+     },
+     "error": null,
+     "provider": "Novita"
+    }
+   ],
+   "max_published": 1794858595
+  },
+  "2026-11-11|WMT": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1794948000,
+   "headlines": [
+    "nvidia is the ai chatbots top stock pick as earnings land this week",
+    "victoria greene on this weeks earnings palo alto networks is still a hold",
+    "dear target stock fans mark your calendars for november 18",
+    "ai changed the agency game avenue7media rebrands as ave7 and introduces ave7lift to lead whats next",
+    "earnings to watch nvidia walmart home depot and more report this week",
+    "stock market today nov 16 amazon falls on new ai chip export rule and leo satellite launch failure",
+    "retail earnings wmt tgt hd set to report this week",
+    "kroger has a new plan to lower prices",
+    "what happens after walmart leaves town is worse than expected",
+    "chart of the day walmart is a defensive giant with offensive upside",
+    "walmart reports earnings on nov 19 2026 heres what investors should be watching",
+    "zacks investment ideas feature highlights target and walmart",
+    "safe haven or bubble walmart and costco now trade at 45x53x pe",
+    "stifel reinstates buy on walmart announces 145 price target",
+    "valuengine weekly market commentary with strategy notes",
+    "the rotation trade chasing another bubble",
+    "wall street is trading chips for chicken staples see best run against tech since 2001",
+    "risky nvidia is cheaper than safe walmart",
+    "tyson stock jumped 9 is beef still raising your grocery bill",
+    "is costco stock increasing your market risk",
+    "is walmart stock increasing your market risk",
+    "etfs bought 2426 million of walmart wmt on nov 13",
+    "what ishares sp 500 value etf ive sold apple leads on nov 13",
+    "walmart a soft q3 may fail to hold up valuation multiples",
+    "wells fargo raises its walmart target to 135 is it still too low",
+    "dealai releases retail price study and launches daily black friday price tracking",
+    "wall street analysts see walmart wmt as a buy should you invest",
+    "is bjs wholesale ready to surprise the street this earnings season",
+    "walmarts q3 earnings on deck is wmt stock a buy or hold",
+    "own amazon or alphabet you already own some anthropic",
+    "the waltons won a tax court case in 2000 that lets a family pass a stocks growth to heirs while reporting a taxable gift of nearly 0 the trust it approved is still legal",
+    "forget schd 4 dividend stocks retirees should own instead",
+    "cisco upgraded doximity downgraded wall streets top analyst calls",
+    "what does caseys stocks winning streak really prove",
+    "which retail stocks are best positioned ahead of earnings this week",
+    "retail etfs in focus as countdown to 2026 black friday sales begins",
+    "walmart and target make a key customer service blunder",
+    "walmart q3 earnings preview what to expect from upcoming report",
+    "can doordash stock rally 40 after this dip",
+    "beyond nvidia anthropic 3 important stock catalysts to watch into december",
+    "disney earnings show consumers will still pay up for experiences",
+    "dow jones discount retail giant walmart poised to hit buy point with earnings due"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Wells Fargo raised its Walmart price target to $135 from $120 on Nov. 13 and kept its Overweight rating",
+        "article": 24
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Q3 sales guidance of 3%-3.75% trails the 5.34% median estimate",
+        "article": 23
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Walmart enters Q3 earnings with strong e-commerce momentum and market share gains",
+        "article": 28
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    }
+   ],
+   "max_published": 1794943577
+  },
+  "2026-11-11|FOX": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1794948000,
+   "headlines": [
+    "doj open to behavioral remedies in merger reviews antitrust official says",
+    "roku leaves nasdaq after 24 growth as its founder promises to stay open to every content partner",
+    "newhome buyers are getting lower starting mortgage rates than existinghome buyers realtorcom finds"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Fox closed its $22 billion purchase of Roku on November 6, months ahead of plan, after the Justice Department ended its review.",
+        "article": 1
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "No article states Fox reported a Q1 miss or cut FY guidance.",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "No article states Fox advertising revenue declined.",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "Fox closed its $22 billion purchase of Roku on November 6, months ahead of plan, after the Justice Department ended its review.",
+       "article": 1
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Cohere"
+    }
+   ],
+   "max_published": 1794913200
+  },
+  "2026-11-11|TTWO": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1794948000,
+   "headlines": [
+    "taketwo shares rise monday whats going on",
+    "roblox is down more than 40 in 2026 is gta vi week a time to sell or load up",
+    "zacks industry outlook highlights taketwo interactive software rush street interactive and accel entertainment",
+    "kalshi will pay someone 120000 to play gta vi starting at midnight on nov 19 plus a 15000 bonus",
+    "why analysts expect nearly 7 more than taketwo does",
+    "could a gta vi that meets guidance hurt taketwo stock",
+    "why did taketwo stock fall 6 before gta vi",
+    "roblox stock fell nearly 8 what happened",
+    "taketwo interactive fell 13 over 3 months gta vi launches nov 19 and this analyst predicts 55 gains",
+    "market chatter update taketwos firaxis games lays off about a third of staff"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Cohere"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "three days before Take-Two launches Grand Theft Auto VI on November 19",
+        "article": 1
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "fiscal second-quarter net bookings of $1.6 billion came in below the company's own $1.62 billion to $1.67 billion range",
+        "article": 4
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Take-Two missed badly on bookings just before its biggest launch ever",
+        "article": 8
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    }
+   ],
+   "max_published": 1794942857
+  },
+  "2026-11-11|TTD": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1794948000,
+   "headlines": [
+    "3 founder led stocks with roe up to 34",
+    "can trade desk stock double from here"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "DeepInfra"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Can Trade Desk Stock Double From Here?",
+        "article": 1
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Can Trade Desk Stock Double From Here?",
+        "article": 1
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Can Trade Desk Stock Double From Here?",
+        "article": 1
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Cohere"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    }
+   ],
+   "max_published": 1794914985
+  },
+  "2026-11-11|CRM": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1794948000,
+   "headlines": [
+    "is salesforce stock about to rebound again",
+    "9 information technology stocks whale activity in todays session",
+    "servicenow stocks now historic selloff may have gone too far",
+    "anthropic ipo who pays for a 64 billion listing",
+    "is hubspot stocks fall a bargain or a warning",
+    "sp 500 premarket movers on nov 17 gainers and losers",
+    "hackers plant cryptostealing code on websites worldwide",
+    "archive360 appoints manouj tahiliani as chief executive officer",
+    "servicenows cash yield trails the 10year treasury",
+    "global retail technology market report 2026 capitalize on ai cloud and omnichannel demand as microsoft oracle salesforce and sap drive the market to 33855b by 2030",
+    "salesforces slack gains momentum can it lift crms growth further",
+    "stock market today dow dips as retail sales do this oil plays rise but software lags live coverage",
+    "salesforce sinks 9 as software slides before anthropic ipo investor warns ai companies seek to destroy salesforce entirely",
+    "crm support and resistance levels as stock hits oversold territory",
+    "boom goes the stock market",
+    "cyber fears tank stocks",
+    "nvidia intel salesforce spacex anthropic sandisk home depot and more that explain todays market",
+    "george soros and 12 other big funds bought salesforce last quarter while 20 sold whos right",
+    "stock market today dow dives as software sags nvidia falls as this jensen huang date is set live coverage",
+    "broad selloff leaves few places to hide",
+    "salesforce crm could be 16 undervalued as ai agent fears hit software stocks",
+    "how much salesforce stock does ceo marc benioff actually own",
+    "salesforce leads wall street software selloff as investors brace for anthropic ipo",
+    "salesforce sells off before anthropics ipo",
+    "software stocks retreat amid inflation worries new openai model",
+    "stock market today dow drops as salesforce dives nvidia falls as jensen huang says this live coverage"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Crusoe"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Nothing changed at Salesforce: the selling looks like funds making room for Anthropic.",
+        "article": 12
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Nothing changed at Salesforce: the selling looks like funds making room for Anthropic.",
+        "article": 12
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Nothing changed at Salesforce: the selling looks like funds making room for Anthropic.",
+        "article": 12
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "Salesforce fell 9% today with no news of its own",
+       "article": 12
+      }
+     },
+     "error": null,
+     "provider": "DeepInfra"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Cohere"
+    }
+   ],
+   "max_published": 1794940230
+  },
+  "2026-11-04|IDXX": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1794948000,
+   "headlines": [
+    "should you continue to hold algn stock in your portfolio"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "No article mentions IDEXX or any FY2026 EPS/sales guidance change.",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "No article mentions IDEXX Q4 results, clinic traffic, or margin expansion.",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "No article mentions IDEXX FY2027 guidance or consensus.",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "No article reports a new, material, quantified IDEXX company event.",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Cohere"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    }
+   ],
+   "max_published": 1794923520
+  },
+  "2026-11-11|TRGP": {
+   "status": "no_new_news",
+   "news_until": 1794948000
+  },
+  "2026-11-11|LLY": {
+   "status": "checked",
+   "verdict": "increase",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 3,
+   "news_until": 1794948000,
+   "headlines": [
+    "barclays maintains overweight on eli lilly raises price target to 1550",
+    "eli lilly agrees to buy calytrix bio for up to 15 billion as obesityweek data roll in",
+    "defensives lead sectors monday as growth trails",
+    "final trades berkshire hathaway cisco and eli lilly",
+    "live on cnbc warren buffett says he made a mistake not investing in google and the company is now more likely to be a winner based on its record berkshire hathaway which buffett chairs owns 31b of the stock of googles parent alphabet buffett asked whether he or berkshire ceo greg abel was behind the alphabet investment says abel is the decider but neither does anything that the other disapproves of says he still likes berkshires investment in apple",
+    "novo nordisk vs amgen 1 has the blockbuster weightloss drugs the other has a promising rival",
+    "should you trim or add to your viking therapeutics position",
+    "sector update healthcare stocks decline late afternoon",
+    "stipple bio announces multitarget multimodality oncology research collaboration with lilly",
+    "whats dragging down the sp 500 apple in focus",
+    "stocks carry weekly gains into a wall of chart resistance as volatility cools",
+    "sls stock jumps afterhours retail eyes lillys cancer deal for valuation clues 2 big investors grab shares",
+    "reported november 16 roche receives fda approval for wiserdley in combination with everolimus for breast cancer treatment",
+    "berkshire hathaway cisco and a health care stock cnbcs final trades",
+    "valuengine weekly market commentary with strategy notes",
+    "the rotation trade chasing another bubble",
+    "stocks to buy while ai is plunging",
+    "was eli lilly stocks 45 run visible early",
+    "lilly agrees to acquire calytrix bio for 15bn",
+    "seawolf therapeutics and sanofi agree 12bn drug deal",
+    "merck stocks 13 billion china problem goes quiet",
+    "cathie wood and jim cramer agree on these 5 stocks",
+    "a 15 billion reason why eli lilly stock is in focus",
+    "teladoc health expands comprehensive weight care program with employer contribution option for glp1 medications",
+    "should you buy pfizer stock for its cash",
+    "jj to acquire ollin biosciences a look at its recent buyouts",
+    "isomorphic labs raises 5b as it looks to take drug candidates to clinical trials",
+    "cathie wood and 9 other big funds bought eli lilly last quarter while 18 sold whos right",
+    "astrazeneca stock up 12 in a month time to buy sell or hold",
+    "eli lilly caught in vendor hack as extortion group threatens to leak data on 12 million patients",
+    "eli lilly inks cancer pact worth up to 59bn with stipple bio",
+    "3 stocks in a bull rally right now",
+    "thirdparty vendor linked to eli lilly is hit by data breach",
+    "positive trial results could be a big moment for eli lilly stock"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Eli Lilly inks cancer pact worth up to $5.9bn with Stipple Bio",
+       "article": 30
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Eli Lilly used ObesityWeek 2026 to share late-stage data on EloraTZP, retatrutide and Foundayo, showing strong effects on weight, A1C, sleep apnea severity and knee osteoarthritis pain...",
+        "article": 33
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "No article mentions Hims & Hers or LifeMD terminating its direct-access partnership with Lilly.",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Eli Lilly used ObesityWeek 2026 to share late-stage data on EloraTZP, retatrutide and Foundayo, showing strong effects on weight, A1C, sleep apnea severity and knee osteoarthritis pain...",
+        "article": 33
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Eli Lilly inks cancer pact worth up to $5.9bn with Stipple Bio",
+       "article": 30
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Eli Lilly inks cancer pact worth up to $5.9bn with Stipple Bio",
+       "article": 19
+      }
+     },
+     "error": null,
+     "provider": "Novita"
+    }
+   ],
+   "max_published": 1794942704
+  },
+  "2026-11-11|TSLA": {
+   "status": "checked",
+   "verdict": "increase",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 3,
+   "news_until": 1794948000,
+   "headlines": [
+    "jensen huang may return as nvidia chief executive report",
+    "prediction market odds for teslaspacex merger by april 2027 top 60",
+    "huang reportedly weighs comeback as bessent seeks nvidia shakeup anthropics upcoming ipo trump to meet putin and xi",
+    "jensen huang boasted in 2024 he managed not to get fired in 31 years at nvidia an affair scandal ended his run 2 years later",
+    "elon musk backs jensen huang with one word after saying hiring him would be an honor and signing a petition to reinstate the ousted nvidia ceo",
+    "sen john kennedys jaw is stuck on the floor after jensen huangs nvidia exit if youre going to have an affair make sure its not with a chinese spy",
+    "brad gerstner bets 5 billion on anthropic ipo cornerstone compounder for a long time",
+    "should nvidia bring jensen huang back as silicon valleys elite are demanding",
+    "virtuix holdings inc vtix q2 2027 earnings call highlights omnione revenue doubles as",
+    "direxion and anthony pomplianos silvia join forces to help investors rethink income",
+    "teslas cybertruck exit reveals an expensive gamble",
+    "whats dragging down the sp 500 apple in focus",
+    "your 300000 in xly holds 125585 in amazon and tesla alone",
+    "tech leaders want jensen huang to return to nvidia heres what that would mean for the stock price",
+    "sp 500 dow nasdaq end lower as investors hold back ahead of nvidia earnings anthropic ipo this week nvda tsla ant in focus",
+    "fuel price volatility pushing consumers toward evs ac mobility ceo",
+    "tesla board member joe gebbia nvidia should reinstate jensen huang to let investigation play out",
+    "elon musks cybercab ambitions get a 33 billion boost tesla plans 1 million units a year at berlin factory",
+    "elon musk says larry pages five nines ai prediction is right despite their decadelong feud",
+    "qcln the clean energy risks are high but so is the potential",
+    "cathie woods 22 billion bet on elon musk could soon become one giant stock",
+    "stephen king tells elon musk you sound like trump after billionaire warns democrats will execute their plan to end democracy in america",
+    "adam schiff slams corporate executives over unreturned trump tariff money companies got tariff refunds consumers got",
+    "nvidia set for first earnings call since jensen huangs resignation",
+    "coming soon elon musk hints tesla owners could put their model ys to work as robotaxis without driving",
+    "elon musk steps in after jensen huang loses x verification following nvidia exit blue check coming back for free on the house",
+    "david teppers appaloosa boosts spacex stake by 1626 exits chip stocks amd and broadcom in q3 portfolio shakeup",
+    "elon musk just killed the cybertruck to build cybercabs heres what it means for tesla stock and rivians",
+    "121yearold reo nameplate has officially been revived its first vehicle targets jeff bezosbacked slate auto heres what you need to know",
+    "elon musk plans 101 billion project crystal sun tesla factory near houston says the math on solar power is obvious and trivial",
+    "tesla is seemingly rushing cybercab production to win a bet with a youtuber reckless or elon musks genius at work",
+    "teslas robotaxi push gets wall street cheer barclays sees 20 upside potential in tsla stock",
+    "state street consumer discretionary xly buys 178 million more amazon on nov 13",
+    "nvidia board reportedly rules out jensen huang return despite growing support campaign",
+    "tesla stock at 39022 already prices in most of 2030",
+    "latest news in energy transition statkraft boosts uk grid stability with first battery system",
+    "nvidias 800 billion wipeout raises a bigger question for investors",
+    "spacex just caught a spaceship out of the sky",
+    "teslas robotaxi progress isnt enough to move the stock",
+    "wait for tesla to fall to 320 patience over fomo is paramount",
+    "tesla inc tsla is attracting investor attention here is what you should know",
+    "elon musk says teslas 299 cybercab fee is too high",
+    "cathie wood and jim cramer agree on these 10 stocks latest 13f",
+    "ai innovation and optimism take center stage at baron capitals 33rd annual investment conference",
+    "own tesla you own a 95 bet beyond cars",
+    "teslas tsla record q2 revenue overshadowed by heavy rd investments",
+    "nio is down 45 this year what will it take to get nio stock back to 5",
+    "she made 235 million by hiring the right team this is the interview question she uses to spot winners",
+    "cathie wood is betting 12 billion on tesla",
+    "teslas 33b cybercab push in germany will it pay off",
+    "jensen huang holds 36 of nvidias votes so his board could show him the door musk and zuckerberg have a shield",
+    "brad gerstner dumps these 3 stocks",
+    "inside cathie woods portfolio every move she made in the third quarter",
+    "what far cheaper ai compute in space could mean for elon musk",
+    "musk says owners tesla robotaxi trials may start next month thats a threat to uber",
+    "tesla commits 330bn to expand german gigafactory for cybercab",
+    "tesla stocks decrease 051 even as texas robotaxi authorizations jump 21 in 18 days",
+    "exchange traded concepts to close and liquidate the xetfs tsla daily income etf nyse tyyy",
+    "tesla plans 33 billion german factory expansion for cybercab production",
+    "gm ceo mary barra might be leaving who could replace her"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Tesla commits $3.30bn to expand German gigafactory for Cybercab",
+       "article": 55
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Prediction market odds for Tesla-SpaceX merger by April 2027 top 60% :: The odds have climbed to 62% from 27% since Thursday, amid growing speculation that Musk's two companies will integrate.",
+        "article": 1
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Tesla will invest $3.3 billion to expand its Berlin factory, targeting 1M Cybercabs annually by 2029 in Europe.",
+        "article": 17
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Elon Musk Just Killed the Cybertruck to Build Cybercabs.",
+        "article": 27
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Tesla will invest $3.3 billion to expand its Berlin factory, targeting 1M Cybercabs annually by 2029 in Europe.",
+       "article": 17
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Tesla commits $3.30bn to expand German gigafactory for Cybercab",
+       "article": 55
+      }
+     },
+     "error": null,
+     "provider": "Novita"
+    }
+   ],
+   "max_published": 1794944640
+  },
+  "2026-11-11|TAP": {
+   "status": "no_new_news",
+   "news_until": 1794948000
+  },
+  "2026-11-11|NVDA": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1794948000,
+   "headlines": [
+    "dow jones decliners in todays us session cat nvda googl ba gs jpm",
+    "microsoft is making voluntary exit offers to engineers for the first time",
+    "should you buy costco stock for its special dividend",
+    "could nvidia be berkshires next big tech purchase",
+    "axe compute inc reports third quarter 2026 financial results and provides business update",
+    "nvidia earnings prediction market preview what will colette kress say about jensen huangs exit",
+    "prediction this memory stock will be 2027s bestperforming ai stock",
+    "alphabet custom tpus and the multiyear shift to ai inference",
+    "this 8yielding dividend stock pays you 16 times a year heres what a 25000 investment deposits each month",
+    "nvidia forms export control panel amid concerns over china sales",
+    "amazon amzn is building its own answer to nvidia heres how its going",
+    "visa and american express both raised their dividends 16 this year but only 1 of the stocks is up in 2026",
+    "coreweave an unnecessary middleman",
+    "california is now suing openai after its ai agents attacked another company",
+    "nvidias colette kress faces some serious pressure ahead of q3 earnings",
+    "why todays a pivotal test for the ai trade",
+    "nvidia isnt the whole ai story this stock could prove it",
+    "jensen huang holds 36 of nvidias votes so his board could show him the door musk and zuckerberg have a shield",
+    "disney increases dividend by 33 heres whats driving the shift",
+    "the stock market is doing something for only the second time in 155 years heres what history says could come next",
+    "berkshire hathaway slashes this top 5 stock nvidia boosts spacex",
+    "how long can heartflow keep burning cash",
+    "wall street dips ahead of nvidias first earnings since scandal",
+    "broadcoms ai revenue is contracted to double in 2027 so im buying",
+    "if nvidias earnings show tightness alphabet and amazon could rise 40 and 33 by the end of 2026 respectively",
+    "prediction this will be broadcoms stock price by the end of 2028",
+    "theres no difference between buying anthropics ipo and amazons ipo kevin oleary",
+    "gold falls below 4000 is now the time to invest in this goldbacked etf",
+    "softbank had 64 of its us stock portfolio in intel it has since halved",
+    "fed chair kevin warsh outlined 3 possible futures for ai yesterday one could be devastating for stocks",
+    "has annalys dividend made up for what its share price did",
+    "jensen huang says he would be honored to return to nvidia as ceo",
+    "what threatens keurig dr pepper stock most",
+    "i would be honored jensen huang offers to return as nvidia ceo board reportedly not interested",
+    "jensen huang breaks silence after nvidia scandal declares hed be honored to return to ceo job",
+    "grayscale says to buythedip in bitcoin",
+    "could nvidia stock fall 50 follow the cash",
+    "in his first statement since his resignation former ceo jensen huang just delivered stunning news to nvidia shareholders",
+    "nvidia dumps 25 of its intel stake as spacex becomes its biggest investment",
+    "cathie woods nvidia move breaks from a quarter of heavy buying",
+    "micron is deeply affected by the loss of jensen huangs risk appetite",
+    "nvidia stock could swing 8 after todays earnings",
+    "michael burry makes bold bet on beatendown ai software stock",
+    "is ionq stock a buy after revenue hit 1738 million in a single quarter",
+    "anthropics ipo valuation soars past 15 trillion amid frenzied ai demand",
+    "the 5 best stocks in george soross portfolio",
+    "update us equity indexes fall as technology leads sector declines ahead of nvidias results",
+    "jensen huang is out as nvidias ceo heres what analysts think the stock is worth without him",
+    "former nvidia boss jensen huang speaks out about return for first time in wake of scandal that rocked ai industry",
+    "junk bonds have split in two the index hides it",
+    "spacex is leasing 47 billion of nvidia chips like a car and lenders hold the title",
+    "vistra is down 41 from its high history suggests this is what happens next",
+    "alphabet amazon and nvidia all have a stake in anthropic heres the one id buy if i could only pick 1",
+    "jensen huang breaks his silence read his full statement here",
+    "how risky is usa rare earth stock",
+    "add a broken 200day moving average to the stock markets long list of worries",
+    "nvidia falls ahead of earnings funds have been dumping stock live coverage",
+    "the 5 best stocks in cathie woods portfolio",
+    "prediction these will be nvidias and amds stock prices by the end of 2027 hint only 1 is a buy",
+    "cathie woods ark sells 85 million in nvidia buys 40 million in crypto stocks"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "River"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "directors reportedly remain opposed to reinstatement and Congress seeks answers about potential Chinese intelligence connections.",
+        "article": 33
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Nvidia forms export control panel amid concerns over China sales",
+        "article": 9
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Nvidia looks to calm investors with its fiscal third-quarter earnings report out late Tuesday.",
+        "article": 56
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Novita"
+    }
+   ],
+   "max_published": 1794944763
+  },
+  "2026-11-11|BRK.B": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1794948000,
+   "headlines": [
+    "warren buffett donates 55 billion says kindness compounds in thanksgiving letter",
+    "warren buffetts thanksgiving letter details gifts to philanthropic foundations",
+    "final trades berkshire hathaway cisco and eli lilly",
+    "berkshire hathaway reduces capital one and bank of america stakes boosts delta air lines stake",
+    "berkshire hathaway raised its stake in delta in the third quarter it also trimmed a key bank holding",
+    "tracking berkshire hathaway portfolio q3 2026 update",
+    "how investors are reacting to berkshire hathaway brka 55 billion share donation",
+    "warren buffetts berkshire just revealed a new stock and sold more bank of america heres what a 68yearold with 400 shares owns",
+    "stock market today dow dives as trump says this on huang victorias secret flashes sell signal live coverage",
+    "warren buffetts berkshire nearly doubled its stake in one homebuilder last quarter it now owns 26 million shares",
+    "whats dragging down the sp 500 apple in focus",
+    "berkshire sold bank of america and verisign stock in q3 and bought lennar and delta",
+    "warren buffetts berkshire just sold more of one of its five biggest stocks 578 million shares are gone since march",
+    "berkshire hathaway stock rally puts a shares near historic 1 million mark",
+    "berkshire hathaway slashes this top 5 stock nvidia boosts spacex",
+    "berkshire hathaways only new q3 position is a company few investors recognize",
+    "heres what berkshire hathaway bought and sold in q3",
+    "berkshire boosts lennar starts bending spoons trims bank of america in q3",
+    "david teppers appaloosa goes big on spacex while slashing alphabet stake",
+    "warren buffetts berkshire just revealed a new 689 million stock the companys ipo was less than five months ago",
+    "berkshire trims bank of america capital one stakes adds to delta investment",
+    "warren buffetts successor greg abel overhauled berkshires portfolio for a 3rd straight quarter reducing 6 stocks and piling into a hot tech ipo",
+    "berkshire hathaway brkb could be 23 undervalued as buybacks come into focus"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Alibaba"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "The business bought back US$9.6b of its own... in the third quarter of 2026",
+        "article": 22
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Could Be 23% Undervalued As Buybacks Come Into Focus",
+        "article": 22
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "River"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Alibaba"
+    }
+   ],
+   "max_published": 1794881293
+  },
+  "2026-11-11|AAPL": {
+   "status": "checked",
+   "verdict": "reduce",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 2,
+   "hard": 0,
+   "news_until": 1794948000,
+   "headlines": [
+    "bill ackman is betting on this battered faang giant again after a famous 400 million loss",
+    "huang reportedly weighs comeback as bessent seeks nvidia shakeup anthropics upcoming ipo trump to meet putin and xi",
+    "nvidias leadership vacuum hands amd its biggest opportunity in years analysts",
+    "nvda i wouldnt touch it with a barge pole says quantum strategys david roche",
+    "i will keep holding apple stock at new alltime highs as long as it stays above this key level",
+    "berkshire hathaway takes stake in aol owner bending spoons nearly doubles lennar holding",
+    "apple adds facial recognition unlock to iphone duo",
+    "whats dragging down the sp 500 apple in focus",
+    "nvidia is not considering rehiring jensen huang and amazons data center gets bought",
+    "heres what berkshire hathaway bought and sold in q3",
+    "huangs trilliondollar dinners with taiwan chip bosses were nvidias secret weapon now hes out can he be replaced",
+    "berkshire boosts lennar starts bending spoons trims bank of america in q3",
+    "david teppers appaloosa goes big on spacex while slashing alphabet stake",
+    "apple names 26year veteran corey fugman to run apple pay and wallet as jennifer bailey exits report",
+    "gene munster says nvidia could be the next apple if investors sleep well at night",
+    "bringing apple manufacturing model to defense tiberius aerospace",
+    "ken griffin dumps spacex amazon buys arkk and bets big on marvell",
+    "apple faces french trial over alleged planned obsolescence of iphones source",
+    "valuengine weekly market commentary with strategy notes",
+    "nvidia stock fell below 170 heres why it could be a screaming buy",
+    "marvell stock rises as citadel discloses 729 stake boost slashes spacex amazon",
+    "why netflix stock is at a oneyear low",
+    "own qualcomm your stock rides on data center now",
+    "etfs are buying apple aapl on friday",
+    "state street spdr portfolio sp 500 spym adds apple and nvidia on nov 13",
+    "ishares russell 1000 value iwd adds amazon and apple on friday",
+    "jpmorgan global select equity etf jglo sells 321 million of amazon on nov 13",
+    "ishares core dividend growth dgro buys 42 million more apple on nov 13",
+    "what ishares sp 500 value etf ive sold apple leads on nov 13",
+    "samsung and apple reportedly near multiyear dram supply agreement",
+    "netflix stock down 47 too early to buy",
+    "what are apple investors betting on",
+    "cloud ai today healthcare ai spending surges transforming drug development",
+    "apple inc aapl is a trending stock facts to know before betting on it",
+    "sam altman says its hard to imagine the ai revolution without jensen",
+    "microsoft is making voluntary exit offers to engineers for the first time",
+    "could nvidia be berkshires next big tech purchase",
+    "warren buffetts berkshire didnt sell a single apple share for a second straight quarter the stake is now worth 80 billion",
+    "archer and jeppesen foreflight unveil ai partnership",
+    "alphabet stock down nearly 17 what decides it now",
+    "can subscriptions lift snap stock nearly 50",
+    "snap promised specs this fall five weeks left and the 2195 glasses still have no ship date",
+    "nvidias board reportedly isnt considering bringing jensen huang back",
+    "what triggered dell stocks 7 drop",
+    "she made 235 million by hiring the right team this is the interview question she uses to spot winners",
+    "arm could become a much bigger ai winner by 2030 heres the case",
+    "apple is now the worlds largest company time to buy the stock",
+    "what does smci stock offer that hp does not",
+    "can atts new apple device deals strengthen its subscriber growth",
+    "george soros and 21 other big funds sold apple last quarter while 13 bought whos right",
+    "apple moves towards rare longterm samsung memory deal as ai boom tightens supply",
+    "chime financial stock of the day eyes buy point as growth ramps big debut looms",
+    "warren buffetts successor greg abel has 302 of berkshires 367 billion portfolio in just 2 magnificent artificial intelligence ai stocks heres the one id buy without hesitation",
+    "what needs to be true to buy dell stock",
+    "why the fed is so concerned about ai",
+    "sector update tech stocks fall tuesday afternoon",
+    "how investors may respond to mp materials stock q3 earnings beat",
+    "apple down live updates iphones not working properly as icloud app store and apple music hit by major outage",
+    "apples 1299 iphone has a problem updates cant fix",
+    "why apple is down in a week of outages from microsoft to chase"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "partial",
+        "quote": "Apple Inc (NASDAQ:AAPL, XETRA:APC) is reportedly close to signing a four-to-five-year agreement to secure supplies of dynamic random-access memory (DRAM) from Samsung Electronics",
+        "article": 50
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Alibaba"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "as AI boom tightens supply",
+        "article": 50
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "partial",
+        "quote": "Apple Inc (NASDAQ:AAPL, XETRA:APC) is reportedly close to signing a four-to-five-year agreement to secure supplies of dynamic random-access memory (DRAM) from Samsung Electronics",
+        "article": 56
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    }
+   ],
+   "max_published": 1794944064
+  },
+  "2026-11-11|NFLX": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1794948000,
+   "headlines": [
+    "can netflix stock fall 50",
+    "bill ackman is betting on this battered faang giant again after a famous 400 million loss",
+    "todays mostactive sp 500 stocks ford leads volume as smci and micron fall",
+    "nflx stock edges higher overnight evercore swaps netflix for spotify on top picks list",
+    "the trade desk is up 21 in a month is its third quarter really that good",
+    "3 undervalued stocks trading up to 47 below fair value",
+    "why netflix stock is at a oneyear low",
+    "anthropic ipo costs about twice google per sales dollar",
+    "netflix stock down 47 too early to buy",
+    "netflix inc nflx is a trending stock facts to know before betting on it",
+    "evercore isi reshuffles top picks after q3 results swaps no 3 largecap long",
+    "5 beatendown us large caps with fair value upside above 25",
+    "own amazon or alphabet you already own some anthropic",
+    "alphabet stock down nearly 17 what decides it now",
+    "omdia netflix beats youtube in daily viewing time across four latin american markets",
+    "cathie wood and 16 other big funds bought netflix last quarter while 20 sold whos right",
+    "bill ackman just sold 35 of his microsoft stake",
+    "netflix nflx could see viewer engagement shift on major game release",
+    "netflix stock hasnt been this cheap in over 2 years is now the time to buy",
+    "disney just raised its dividend 33 giving shareholders a bigger payday",
+    "bill ackmans latest filing shows two big bets beyond streaming stocks"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "DeepInfra"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Parasail"
+    }
+   ],
+   "max_published": 1794937391
+  }
+ },
+ "shared_from_live": [
+  "2026-10-28|BIIB",
+  "2026-10-28|EQIX",
+  "2026-10-28|MSFT",
+  "2026-10-28|VLO",
+  "2026-11-04|AMD",
+  "2026-11-11|CRM",
+  "2026-11-11|FOX",
+  "2026-11-11|TTD",
+  "2026-11-11|TTWO",
+  "2026-11-11|WMT"
+ ],
+ "own": [
+  "2026-11-04|IDXX",
+  "2026-11-11|AAPL",
+  "2026-11-11|BRK.B",
+  "2026-11-11|LLY",
+  "2026-11-11|NFLX",
+  "2026-11-11|NVDA",
+  "2026-11-11|TAP",
+  "2026-11-11|TRGP",
+  "2026-11-11|TSLA"
+ ],
+ "own_at_live_time": [
+  "2026-11-04|IDXX",
+  "2026-11-11|AAPL",
+  "2026-11-11|BRK.B",
+  "2026-11-11|LLY",
+  "2026-11-11|NFLX",
+  "2026-11-11|NVDA",
+  "2026-11-11|TAP",
+  "2026-11-11|TRGP",
+  "2026-11-11|TSLA"
+ ],
+ "own_at_close": []
+}

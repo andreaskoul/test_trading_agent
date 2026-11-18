@@ -1,5 +1,19 @@
 {
  "reconcile_max_cents": 2.1300294861248403e-09,
  "no_price": [],
- "fails": []
+ "fails": [
+  "rebuild from the logged inputs does not reproduce the NAV"
+ ],
+ "rebuild_diff": {
+  "first_nav_diff": {
+   "date": "2026-11-17",
+   "first": 96489.87103467002,
+   "second": 96489.87103467004,
+   "diff": 1.4551915228366852e-11
+  },
+  "dates_only_first": [],
+  "dates_only_second": [],
+  "events_only_first": [],
+  "events_only_second": []
+ }
 }
