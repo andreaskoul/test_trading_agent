@@ -1,0 +1,1114 @@
+{
+ "day": "2026-11-18",
+ "close_ts": 1795034400,
+ "checked_at": "2026-11-18T20:46:45+00:00",
+ "lots": {
+  "2026-11-04|IDXX": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1795034400,
+   "headlines": [
+    "3 stocks rallying after strong q3 earnings and raised guidance",
+    "invesco sp 500 equal weight rsp buys 07 million more ptc on nov 16",
+    "should you continue to hold medtronic stock in your portfolio",
+    "should you continue to hold charles river stock in your portfolio"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Cohere"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "IDEXX Laboratories (IDXX)... posting strong results... raising also guidance in one way or another.",
+        "article": 0
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "DeepInfra"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Alibaba"
+    }
+   ],
+   "max_published": 1795009620
+  },
+  "2026-11-11|TRGP": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1795034400,
+   "headlines": [
+    "q3 2026 midstreammlp buybacks climb near 1 billion"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "No article mentions Targa Resources cutting FY2026 EBITDA guidance; the only article discusses midstream/MLP buybacks and Cheniere Energy.",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "No article mentions an ExxonMobil Permian processing or pipeline pact with Targa being delayed or terminated.",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "No article mentions Targa cancelling or walking back an expected 20% 2027 dividend increase.",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "Article 0 reports that buybacks were driven by Cheniere Energy (LNG), which spent $731 million on repurchases, but gives no new material quantified event for Targa.",
+       "article": 0
+      }
+     },
+     "error": null,
+     "provider": "Novita"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Relace"
+    }
+   ],
+   "max_published": 1794931500
+  },
+  "2026-11-11|LLY": {
+   "status": "checked",
+   "verdict": "increase",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 3,
+   "news_until": 1795034400,
+   "headlines": [
+    "rbc capital reiterates outperform on eli lilly maintains 1600 price target",
+    "eli lilly short interest rises remains below august peak",
+    "eli lilly inks multibilliondollar pact to develop precision cancer therapies",
+    "eli lilly vs novo nordisk which glp1 stock is a better buy for 2027",
+    "cocacola stock ko may struggle to repeat its strong 2026 performance",
+    "eli lilly is up 39 in a year barclays sees another 9",
+    "eli lilly nyselly strong growth paired with a highquality technical setup",
+    "48 etfs add to lilly lly holdings on nov 16",
+    "novo nordisk the worst may be behind",
+    "bristol myers stocks dividends couldnt close the gap",
+    "have 1000 this beatendown biotech has 4 phase 3 obesity trials underway",
+    "rhythm pharma is astrazenecaeli lillys bidding war for real dont rule it out",
+    "fda publishes rejection letter for summit drug nuvalent buyout pays more dividends for gsk",
+    "is lilly stocks winning streak skill or luck",
+    "vitrivax announces 87 million series c financing to advance lyme disease vaccine candidate into the clinic and expand pipeline",
+    "health canada approves lillys mounjaro tirzepatide to reduce cardiovascular risk in adults with type 2 diabetes"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Eli Lilly partners with Stipple Bio in a $5.9B licensing deal to develop targeted cancer treatments using its Pointillist Platform.",
+       "article": 2
+      }
+     },
+     "error": null,
+     "provider": "River"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "FDA publishes rejection letter for Summit drug",
+        "article": 12
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Eli Lilly partners with Stipple Bio in a $5.9B licensing deal to develop targeted cancer treatments using its Pointillist Platform.",
+       "article": 2
+      }
+     },
+     "error": null,
+     "provider": "River"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Eli Lilly partners with Stipple Bio in a $5.9B licensing deal to develop targeted cancer treatments using its Pointillist Platform.",
+       "article": 11
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    }
+   ],
+   "max_published": 1795024800
+  },
+  "2026-11-11|TSLA": {
+   "status": "checked",
+   "verdict": "increase",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 3,
+   "news_until": 1795034400,
+   "headlines": [
+    "sector update consumer stocks mixed late afternoon",
+    "tesla short interest falls as bears retreat from august peak",
+    "nvidia earningsfirst without huangoptions market signals 85 stock move",
+    "elon musk says nvidia needs jensen huang heres whats at stake for tesla and spacex",
+    "dan ives says clearly jensen wants to come back as ceo sees potential special shareholder meeting",
+    "spacextesla merger a 34 trillion bet on breakthroughs that havent happened",
+    "spacex stock lands in stanley druckenmillers duquesne portfolio",
+    "tesla tsla is spending 3 billion to expand berlin cybercab production",
+    "fund manager lists three reasons he still wont buy tesla stock",
+    "nio vs tesla which ev stock is a better buy for 2027",
+    "sp 500 dow nasdaq futures power ahead on nvidia outlook beat nvda tsla ant in focus",
+    "tesla enters grid hardware musk touts solid state transformers at scale from 2027",
+    "spacex spcx merger talks advance as 74 billion ai campus plan takes shape",
+    "coinbase exec says ai ipos pulling money from bitcoin is a reasonable argument as anthropic debut nears",
+    "arkk nvidia is not cathie woods biggest bet",
+    "of course musk says when told teslas 16 trillion already prices in moderate cybercab success",
+    "reported earlier alphabets waymo pulls robotaxis off freeways after california ban robotaxi services are continuing to operate on surface streets wsj",
+    "tesla is now taking cybercab orders heres where i think the stock will be in 2030",
+    "etfs bought 2417 million of tesla tsla on nov 16",
+    "state street consumer discretionary xly sells amazon and tesla on monday",
+    "elon musk makes major tesla production shift after cybertruck sales collapse",
+    "3 founder led stocks with revenue growth up to 20",
+    "apple is the only magnificent seven stock near a record",
+    "electric vehicles update xpeng shatters records with q3 growth and global expansion",
+    "rivian margin expansion is now a major catalyst for ps expansion",
+    "waymos speed bump is bad news for tesla",
+    "3 etfs for tesla as its germany expansion changes the mix",
+    "is ford stock riskier than it looks",
+    "ionna and automaker partners prove network scale with multiple crosscountry road trips",
+    "bad news for tesla as waymo gets pulled off the road",
+    "everything you need to know about the 2026 los angeles auto show",
+    "ford or gm stock the sp 500 beat both",
+    "should you buy the worstperforming magnificent seven stock of 2026 before 2027",
+    "coinbase says ai defenses blocked 47m in elon musk deepfake crypto scam",
+    "humanoids summit returns to silicon valley bringing together tesla optimus and global leaders in physical ai",
+    "tesla energys new product a meaningful positive for the company but not the stock",
+    "roamly announces insurance for tesla cybercab",
+    "carvana grows faster is the stock really cheap",
+    "tesla stock is still a highstakes bet on the future heres my price target",
+    "eganjones examines what the tesla roadster demo signals for automakers",
+    "ford begins ev battery cell production in the us with chinas tech",
+    "ellison confirms musk invested roughly 1 billion in skydance",
+    "elon musk deepfake nearly costs coinbase users 47 million"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Tesla (NasdaqGS:TSLA) plans a \u20ac3b expansion of its Berlin Gigafactory to build fully autonomous Cybercabs at scale. The enlarged German plant is targeted to support output of up to 1 million driverless Cybercabs annually from 2029.",
+       "article": 7
+      }
+     },
+     "error": null,
+     "provider": "Cohere"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Space Exploration Technologies (NasdaqGS:SPCX) and Tesla are reported to be in advanced talks over a potential merger",
+        "article": 12
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Tesla (NasdaqGS:TSLA) plans a \u20ac3b expansion of its Berlin Gigafactory to build fully autonomous Cybercabs at scale.",
+        "article": 7
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "U.S. Cybertruck sales fell 48% to 20,237 vehicles in 2025, far below Musk's earlier annual target of 250,000.",
+        "article": 20
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Tesla (NasdaqGS:TSLA) plans a \u20ac3b expansion of its Berlin Gigafactory to build fully autonomous Cybercabs at scale. The enlarged German plant is targeted to support output of up to 1 million driverless Cybercabs annually from 2029.",
+       "article": 7
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Tesla (NasdaqGS:TSLA) plans a \u20ac3b expansion of its Berlin Gigafactory to build fully autonomous Cybercabs at scale. The enlarged German plant is targeted to support output of up to 1 million driverless Cybercabs annually from 2029.",
+       "article": 13
+      }
+     },
+     "error": null,
+     "provider": "Novita"
+    }
+   ],
+   "max_published": 1795030008
+  },
+  "2026-11-11|NVDA": {
+   "status": "checked",
+   "verdict": "exit",
+   "passes_ok": 3,
+   "matched": 3,
+   "partial": 3,
+   "hard": 2,
+   "news_until": 1795034400,
+   "headlines": [
+    "nvidia just cut its intel stake intel is down 40 in a month wheres the stock headed",
+    "the most important number in nvidias earnings report was 75",
+    "this magnificent vanguard etf could turn 500 per month into 1 million in under 30 years",
+    "the retail investor is the exit liquidity",
+    "what anthropics ipo reveals about the ai buildout",
+    "anthropic ipo the most important ai stock has arrived and is a buy",
+    "under ceo satya nadella microsoft stock has soared at a 23 annualized rate for 12 years can the tech titan keep up the pace",
+    "stock market today dow drops on hawkish fed stance sec probe hits nvidia live coverage",
+    "softbank puts ohio under a thorough reassessment ge vernovas 16 billion cash outlook rests on buyers like it",
+    "how nvidias nvda planned 10 billion anthropic investment deepens its ai ties",
+    "should you buy the worstperforming magnificent seven stock of 2026 before 2027",
+    "nvidias next ceo should be hired internally jeff bezos advises",
+    "nvidia nvda q3 2027 earnings call transcript",
+    "25 big funds bought taiwan semiconductor last quarter its down 21 since time to buy",
+    "is anthropic worth 14 trillion heres what investors have to believe",
+    "bill ackman lays out how nvidia shareholders could bring jensen huang back as ceo",
+    "ai data center demand drive nvidia revenue to 1158b in q3",
+    "nvidia is well off its highs but our model still sees 29 upside",
+    "nvidias interim ceo its guarantee doesnt exist anymore if builds slip that caps a 118 billion risk",
+    "is micron next to announce a stock split",
+    "why nvidia doesnt need a big splashy hire to replace jensen huang as ceo",
+    "why microsoft could surprise and hit 4 trillion before nvidia does",
+    "nvidias solid growth outlook supported by robust demand bofa says",
+    "nvidia must prove it can win without jensen huang",
+    "nvidias supply commitments hit 390 billion mostly memory sk hynix is the real winner",
+    "nvidia shares turn lower despite record revenue as leadership uncertainty weighs",
+    "amazon and alphabet will own over 28 of anthropic after its ipo heres what that means for their stocks",
+    "stock market midday nov 18 nvidia doubles revenue but wall streets selloff continues",
+    "arkk is down but these 10 cathie wood stocks have soared up to 285 in 2026",
+    "nvidia stock at 155 cheaper than its 2018 low",
+    "digital infrastructure world 2027 announces first 85 speakers as registrants represent 80gw of ai buying capacity",
+    "nvidia stock erases earnings pop as investors face life after jensen huang",
+    "4 financial stocks to buy that gained in 2022s bear market while the sp 500 lost 19",
+    "nvidias board of directors is not planning to reinstate jensen huang but theres still another way he could return as ceo",
+    "is nvidias margin lead over amd shrinking",
+    "why target stock soared today",
+    "nvidia made 10 billion on private ai bets but 2 billion warning is emerging",
+    "the 14 chance that jensen huang returns to nvidia keeps me buying as prices fall into 150 range",
+    "how to find ai winners beyond nvidia the mag7",
+    "zim integrated shipping services ltd q3 2026 earnings call summary",
+    "zkh group limited q3 2026 earnings call summary",
+    "why nvidia is still the central bank of ai without jensen huang",
+    "ai risks lift cyber stocks as software looks to shrug off slump",
+    "trump and xi to discuss trade at apec summit what isnt said may matter more",
+    "jensen huang and howard lutnick will appear publicly before a powerful senate panel",
+    "coreweave and nebius 2 ai neocloud stocks due for a rebound",
+    "asked about a jensen huang comeback sam altman recalled his own",
+    "nvidias annual gpu upgrades are changing the hbm investment outlook",
+    "agility robotics opened at 1126 and dropped to 6 heres the price where id buy the first humanoid robot stock",
+    "nvidia reportedly approaches arm ceo rene haas for top job after jensen huang exit",
+    "micron stocks rise 17 as nvidias supply commitments jump to 390 billion",
+    "nvidia remains committed to neoclouds coreweave stock is down anyway",
+    "why buildabear workshop rallied on wednesday",
+    "samsung stocks rise 231 in seoul as nvidia beat lifts korean chipmakers",
+    "sk hynix stocks climb 419 as nvidias 130 billion guide revives memory trade",
+    "is realty income the easiest way to collect monthly income in 2027",
+    "sending a message nvidia signals more cautious stance on china after huangs departure",
+    "warren buffetts most valuable bear market wisdom every investor should hear",
+    "whats going on with nvidia stock wednesday",
+    "nvidia revamps its growth forecast as the ceo search goes on"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "matched",
+        "quote": "Nvidia raises its outlook under interim CEO Colette Kress.",
+        "article": 4
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Huang resigned last week amid a board investigation and reports of multiple extramarital affairs",
+        "article": 15
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Expects No Revenue From China in Q4",
+        "article": 58
+       },
+       {
+        "id": 2,
+        "status": "matched",
+        "quote": "Nvidia raises its outlook under interim CEO Colette Kress.",
+        "article": 4
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Expects No Revenue From China in Q4",
+       "article": 58
+      }
+     },
+     "error": null,
+     "provider": "River"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "matched",
+        "quote": "Nvidia raises its outlook under interim CEO Colette Kress.",
+        "article": 12
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Nvidia Delivers a Stunning Forecast but Expects No Revenue From China in Q4",
+       "article": 20
+      }
+     },
+     "error": null,
+     "provider": "River"
+    }
+   ],
+   "max_published": 1795031523
+  },
+  "2026-11-11|BRK.B": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1795034400,
+   "headlines": [
+    "final trades berkshire hathaway amazon abbvie and marriott",
+    "what does berkshires climb past its may 2025 peak mean for a 78yearold with 400000 in the stock",
+    "warren buffett makes another massive 547 billion move",
+    "berkshire executives buy 2 million in stock with shares near record",
+    "warren buffett dumped every airline stock in 2020 berkshire now owns 56 billion of one",
+    "george soros cut nvidia holding by 20 before the scandal",
+    "greg abel might have just made a 2 billion mistake warren buffett avoided",
+    "berkshire reveals a 689 million popular tech stock bet",
+    "warren buffetts berkshire has sold 30 of its kroger shares since march the stock is up 21 since september",
+    "warren buffetts successor greg abel has 302 of berkshires 367 billion portfolio in just 2 magnificent artificial intelligence ai stocks heres the one id buy without hesitation",
+    "bank of america stocks move lower as berkshire cuts stake another 57",
+    "berkshires cfo just paid 888869 a share for berkshire stock",
+    "berkshire hathaways stock rally puts its class a shares near the historic 1m mark",
+    "3 investing habits that can build lifechanging wealth according to decades of stock market history",
+    "transcontinental merger of union pacific and norfolk southern divides rail leaders",
+    "berkshire hathaway is up 18 in its first year without buffett as ceo can brkb stock hit 700 by 2027",
+    "berkshires only new stock owns aol and evernote is greg abel rewriting buffetts playbook",
+    "simpson manufacturing pricing power market share gains and improving cash flow support a buy",
+    "warren buffett just gave away 55 billion of berkshire stock he says his confidence in berkshire is as strong as ever",
+    "here are the current berkshire hathaway stock holdings",
+    "warren buffett just gave away 55 billion of berkshire stock without selling a share heres his rule for a 72yearold with 400000 in berkshire who gives 20000 a year to her church",
+    "berkshire hathaway brkb reveals new stake and nearly doubles one holding",
+    "berkshire hathaway is up 18 in 3 months its general counsel just bought 250000 more",
+    "buffett is donating 55b to 4 charities the gates foundation which he gave 47b over the years isnt one of them",
+    "what state street financial select spdr xlf sold berkshire leads on monday",
+    "a 70yearold who bought 1000 berkshire shares at the may 2025 peak waited 17 months to break even",
+    "berkshire hathaway take the money and run",
+    "what does warren buffetts 9010 rule say to a 74yearold with 1 million of cocacola at a record"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "River"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "No article reports Berkshire Q4 operating earnings or insurance underwriting returning to profit.",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Berkshire Hathaway\u2019s third-quarter 13F lists one new stock: 20.7 million shares of Bending Spoons, the owner of AOL and Evernote, worth $689 million at Sept.",
+        "article": 16
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Berkshire Hathaway is rated a Sell, as shares trade at nearly 20x operating earnings, while the model values them at $446, about 25% below $593.",
+        "article": 26
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "No article reports a new negative quantified company event for Berkshire after 2026-11-12 close; fund sales and insider buying are not company events.",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "River"
+    }
+   ],
+   "max_published": 1795008461
+  },
+  "2026-11-11|AAPL": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1795034400,
+   "headlines": [
+    "the tech resale market is booming thats good news for apple",
+    "the cost of ousting a founder is the bank of nvidia at risk",
+    "nvidia earningsfirst without huangoptions market signals 85 stock move",
+    "apple many of our systems back up and running after an internal update caused some outages",
+    "apple confirms outages for some services on its system status page lists issues with applecare apple business apple school manager and schoolwork says icloud account sign in service may be slow or unavailable",
+    "widespread outages hit banks air travel the nsa and apple disrupting seemingly everything",
+    "apple works to restore systems after update caused outage bloomberg",
+    "could your dell shares be worth 906 or 114",
+    "dear apple stock fans mark your calendars for june 2027",
+    "ken fisher portfolio review 5 highestconviction technology stocks for longterm growth",
+    "could bitcoins market value reach 3 trillion by 2030",
+    "cocacola stock ko may struggle to repeat its strong 2026 performance",
+    "warren buffett buys 3 forever stocks the billionaire investor has invested in",
+    "apple pay outage blocks instant crypto purchases",
+    "fund manager lists three reasons he still wont buy tesla stock",
+    "nvidia with a positive q3 despite sec probing nvidia amid huang scandal",
+    "national security outage is just one reason for todays software stock selloff",
+    "a retiree with 400000 in his 401k tries to move money before stocks fall further apples widespread outage raises the stakes of a missed trade",
+    "here are the current berkshire hathaway stock holdings",
+    "broadcom vs micron technology which tech stock is the better buy for 2027",
+    "steve jobs ruined everything with the iphone palmer luckey blames apples simplified design for killing the art of mastering technology",
+    "no jensen no problem nvidia delivers strong outlook rules out huangs return",
+    "okxice tokenized stocks lean on 6 crypto firms will wall street ever follow",
+    "market chatter korea regulator cites customer complaints orders apple google alibaba openai to designate legal representatives by january",
+    "samsung electronics kosea005930 nears rare multi year dram supply deal",
+    "rocy vs xyld jpmorgan fixed the covered call problem",
+    "apples haven status makes it one of priciest stocks in market",
+    "55 etfs add to apple aapl holdings on nov 16",
+    "what spdr sp 500 etf trust spy bought apple leads on monday",
+    "ishares core sp 500 ivv buys 747 million more apple on nov 16",
+    "state street spdr portfolio sp 500 spym adds apple and microsoft on nov 16",
+    "invesco qqq qqq buys 232 million more apple on nov 16",
+    "what proshares trust tqqq bought apple leads on nov 16",
+    "what state street tech select spdr xlk bought apple leads on nov 16",
+    "what invesco nasdaq 100 etf qqqm bought apple leads on nov 16",
+    "what proshares ultra qqq 2x shares qld bought apple leads on nov 16",
+    "apple reveals cause of major outage that disrupted icloud and apple pay",
+    "planes banks and the nsa all went down in one week",
+    "why is snap stock going up",
+    "apple outage adds to a week of us tech failures",
+    "apple is the only magnificent seven stock near a record",
+    "mp materials ndpr production up 41 in q3 will magnet growth follow",
+    "why huangs exit may not sink nvidia stock",
+    "snap stock hinges on ad growth and buybacks",
+    "bill gurley says giving away ai is googles no 1 move against anthropic",
+    "is ai costing alphabet holders their buybacks",
+    "sezzle anywhere launches in canada bringing bnpl everywhere visa is accepted",
+    "tech outages are disrupting everything are humans to blame",
+    "insulet downgraded tandem diabetes upgraded wall streets top analyst calls",
+    "major tech outages raise new cybersecurity concerns",
+    "bitwarden makes passkeys easier to use with new integrations across windows and macos",
+    "aapl stock alert samsung could win a bigger apple memory deal",
+    "should you buy the worstperforming magnificent seven stock of 2026 before 2027",
+    "why does the internet keep breaking its not the end of the world it might be something scarier",
+    "apple stock polishes breakout as nvidialed ai boom gets wakeup call",
+    "mp to become major domestic permanent magnet supplier over next 3 years says needham",
+    "of 4 stocks with 80 roe one investor says only nvidia fits buffetts own criterion",
+    "trump and xi to discuss trade at apec summit what isnt said may matter more"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Its premium price, a memory cost squeeze, and a Fed minutes release could test whether this refuge holds.",
+        "article": 40
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Apple Confirms Outages For Some Services On Its System Status Page; Lists Issues With AppleCare, Apple Business, Apple School Manager And Schoolwork; Says iCloud Account & Sign In Service May Be Slow Or Unavailable",
+        "article": 4
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "The prospective agreement would secure DRAM shipments for future Apple devices as AI hardware demand tightens memory availability.",
+        "article": 24
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "DeepInfra"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    }
+   ],
+   "max_published": 1795029900
+  },
+  "2026-11-11|NFLX": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1795034400,
+   "headlines": [
+    "netflix stock hits new 52week low heres what investors need to know",
+    "the internet was built for netflix streaming down to your couch atts coo says ai agents are flipping it the other way",
+    "gta 6 preorders hit an estimated 15 billion its launch could boost doordash hurt fortnite and mobile streaming",
+    "sp 500 most active stocks for nov 17 2026",
+    "disney stock hits new highs after strong q4 earnings time to buy dis",
+    "ibotta appoints kamelia aryafar to board of directors",
+    "why did asts nflx rcat stocks plunge to 52week lows today",
+    "disneys latest accounting magic 3 billion in cost savings to fund growth",
+    "bill ackman sold over 2 million microsoft shares in q3 months after calling it compellingly cheap whats going on",
+    "disney weighs a free disney tier netflixs 899 ad plan has a big problem",
+    "disney ceo calls netflix licensing deal a smart bet says inhouse ai cuts film rendering compute needs by 30",
+    "netflix just hit a 52week low wheres the bottom",
+    "allspring large cap growth fund q3 2026 portfolio activity",
+    "is ai costing alphabet holders their buybacks",
+    "what does amazons falling multiple really say",
+    "mickey mouse ready to layoff workers",
+    "netflix stock just closed below 60 for the first time since august 2024 id buy it now"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "No article states Netflix raised full-year guidance or reported accelerating subscriber growth.",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "No article states Skydance-WBD merger cost cuts were scaled back or the deal was unwound.",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "No article states Netflix announced a large buyback or initiated a dividend.",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Cohere"
+    }
+   ],
+   "max_published": 1795024682
+  }
+ }
+}
