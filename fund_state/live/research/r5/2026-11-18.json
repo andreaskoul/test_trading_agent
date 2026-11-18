@@ -1,0 +1,3442 @@
+{
+ "records": {
+  "BBWI": {
+   "ticker": "BBWI",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Other Specialty Retail",
+   "last_release": "2026-08-26 11:17:10+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/701985/000070198526000025/ex991bbwi-20262qearningsre.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "U.S./Canada store sales",
+      "last_report": "Q2 store net sales fell 5.4% to $1,131M; total net sales down 2.3% to $1,514M.",
+      "guidance": "Q3 total net sales guided down 5% to 2.5% vs $1,594M."
+     },
+     {
+      "id": "D2",
+      "name": "Direct e-commerce growth",
+      "last_report": "First direct net sales growth since 2021; Q2 Direct up 3.0% to $275M on digital enhancements.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "International and wholesale",
+      "last_report": "Q2 International and Other up 24.9% to $108M; partner-operated stores grew to 596.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Gross margin and tariff refunds",
+      "last_report": "Q2 gross margin 45.7% vs 41.3%, aided by ~$80M tariff refunds; ex-refund adjusted EPS $0.31.",
+      "guidance": "No Q3 gross margin guidance; FY2026 free cash flow ~$650M."
+     },
+     {
+      "id": "D5",
+      "name": "AUR and product innovation",
+      "last_report": "Stronger AUR on new product innovation; Body Care showed sequential improvement; brand discoverability improved.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q3 2026: net sales down 5% to 2.5% vs $1,594M; EPS $0.05-$0.10; adjusted EPS $0.07-$0.12 vs $0.35. FY2026: net sales down 4% to 2.5%; EPS $3.13-$3.33; adjusted EPS $2.60-$2.80; free cash flow ~$650M; no buybacks assumed.",
+    "kill_conditions": [
+     "Q3 net sales decline steeper than 5% or adjusted EPS below $0.07, missing guidance.",
+     "Direct net sales return to decline or U.S./Canada store sales fall worse than 5.4%.",
+     "Gross margin contracts sharply without tariff refund benefit, or transformation costs exceed $9M."
+    ]
+   },
+   "card_provider": "River",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 23,
+    "found": 21,
+    "share": 0.9130434782608695,
+    "missing": [
+     "41.3",
+     "45.7"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 94,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Barington takes new stake, pushing for sale",
+        "date": "2026-09-10",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Expands key partnership ahead of holiday season",
+        "date": "2026-10-21",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Opens first Feel Good concept store in Charlotte",
+        "date": "2026-10-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Launches Season of Wonder holiday campaign with Zooey Deschanel",
+        "date": "2026-10-26",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Expands key partnership ahead of holiday shopping season",
+        "date": "2026-10-21",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Opens first Feel Good concept store in Charlotte",
+        "date": "2026-10-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Launches Season of Wonder holiday campaign with Zooey Deschanel",
+        "date": "2026-10-26",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Launches A Thousand Wishes campaign with Valentina Ferrer",
+        "date": "2026-11-02",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "TSCO"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TSCO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "TSCO's gross margin fell on higher transport/fuel costs and price-value investments, signaling retail cost/promotional pressure on BBWI's gross margin/AUR."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TSCO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "TSCO gross margin fell on higher transportation/fuel costs and price investments, signaling shared cost pressure on BBWI's gross margin."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TSCO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Peer's gross margin fell on higher transportation/fuel costs and price investments, signaling shared cost pressure for BBWI's gross margin."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 1.7888543819998317,
+   "score_peer": -1.414213562373095,
+   "score_combined": 1.0817476008132842,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "",
+   "eps_estimate": 0.1213,
+   "revenue_estimate": 1581967398,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-18",
+   "cutoff": "2026-11-17 22:00:00+00:00",
+   "decided_at": "2026-11-18T02:34:56.556389+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "55387bfd28f43741c9842b0e10726e39cdc4cd2e8cf8361e58fe1045ad671710"
+  },
+  "CPRT": {
+   "ticker": "CPRT",
+   "index": "SP500",
+   "sector": "Industrials",
+   "sub_industry": "Diversified Support Services",
+   "last_release": "2026-09-10 20:16:04+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/900075/000119312526387902/cprt-ex99_1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "US service revenue trend",
+      "last_report": "Q4 US service revenues fell 0.8% to $817.8M; total US revenue rose 0.4% on vehicle sales.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "International segment growth",
+      "last_report": "Q4 international revenue rose 11.7% to $222.1M; operating income up 3.0% to $56.8M.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Facility operations cost",
+      "last_report": "Q4 facility operations rose 7.7%, outpacing 2.4% revenue growth; gross profit fell 5.5%.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Vehicle sales margin",
+      "last_report": "Q4 vehicle sales rose 8.3%, but cost of vehicle sales rose 11.4%, cutting vehicle gross profit.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "G&A expense growth",
+      "last_report": "Q4 G&A rose 16.6% and total operating expenses rose 10.0%, driving operating income down 10.6%.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "US service revenues fall again or decline more than 0.8% year over year.",
+     "Facility operations or G&A growth again outpaces total revenue growth, compressing operating margin.",
+     "International revenue growth decelerates below 11% or international operating income declines."
+    ]
+   },
+   "card_provider": "Cohere",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 13,
+    "found": 8,
+    "share": 0.6153846153846154,
+    "missing": [
+     "11.7",
+     "222.1",
+     "3.0",
+     "56.8",
+     "817.8"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 116,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Copart agrees to acquire ACV Auctions for $1.9B, adding deal costs",
+        "date": "2026-09-10",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Copart to acquire ACV Auctions for $1.9B",
+        "date": "2026-09-11",
+        "driver": "other",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Copart agreed to acquire ACV Auctions for $1.9B cash",
+        "date": "2026-09-11",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "RBA",
+    "LDOS",
+    "KBR",
+    "CACI"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "RBA",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "RBA's 10% service revenue growth and share-gain comments contrast with CPRT's US service revenue decline, implying competitive pressure."
+       },
+       {
+        "peer": "LDOS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Government IT services peer; no read-through to Copart's vehicle auction demand, pricing, or costs."
+       },
+       {
+        "peer": "KBR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Engineering/professional services peer; unrelated to Copart's salvage vehicle auction drivers."
+       },
+       {
+        "peer": "CACI",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Defense IT services peer; no implication for Copart's US service revenue or vehicle sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "RBA",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "RBA service revenue +10% and GTV +20% vs CPRT US service -0.8% signals share loss."
+       },
+       {
+        "peer": "LDOS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Defense/IT services peer; no read-through to Copart's vehicle auction drivers."
+       },
+       {
+        "peer": "KBR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Engineering/government services; unrelated to Copart's vehicle auction business."
+       },
+       {
+        "peer": "CACI",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Government IT services; no relevance to Copart's vehicle auction drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CACI",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Government IT services release unrelated to Copart's vehicle auction drivers."
+       },
+       {
+        "peer": "KBR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Government services and separation news unrelated to Copart's vehicle auction business."
+       },
+       {
+        "peer": "LDOS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Defense/IT services results have no bearing on Copart's auction demand or costs."
+       },
+       {
+        "peer": "RBA",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "RBA's strong GTV and service revenue growth with market share gains suggest Copart may be losing US auction share, pressuring service revenue."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -2.1213203435596424,
+   "score_peer": -1.414213562373095,
+   "score_combined": -2.82842712474619,
+   "overall_votes": [
+    "below",
+    "inline",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "",
+   "eps_estimate": 0.4044,
+   "revenue_estimate": 1213294722,
+   "fiscal": "2027Q1",
+   "report_date": "2026-11-18",
+   "cutoff": "2026-11-17 22:00:00+00:00",
+   "decided_at": "2026-11-18T02:34:36.328961+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "f408fe20d6bf4fdf8f41ddc281f964b8e72db390346b1a755028c29b37b202f5"
+  },
+  "GAP": {
+   "ticker": "GAP",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Apparel Retail",
+   "last_release": "2026-08-27 20:22:34+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/39911/000162828026059262/q22026eprexhibit991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Old Navy comparable sales",
+      "last_report": "Q2 comps down 4%, net sales down 4% on women's seasonal pressure and unanticipated traffic slowdown; targeted actions said driving improved results.",
+      "guidance": "FY26 Old Navy comps now flat to down 1%, lowered from flat to up 1%."
+     },
+     {
+      "id": "D2",
+      "name": "Gap brand comparable sales",
+      "last_report": "Q2 comps up 10%, net sales up 9%, driven by denim, fleece, kids and baby; another double-digit comp quarter.",
+      "guidance": "FY26 Gap brand comps expected high-single to low-double-digit growth, raised from high-single digits."
+     },
+     {
+      "id": "D3",
+      "name": "Athleta comparable sales",
+      "last_report": "Q2 comps down 12%, net sales down 12%; brand focused on disciplined execution to rebuild profitably.",
+      "guidance": "No specific Q3/FY Athleta guidance; balance of portfolio expectations unchanged."
+     },
+     {
+      "id": "D4",
+      "name": "Adjusted gross margin and tariffs",
+      "last_report": "Reported GM 52.8% included 1,140 bps IEEPA benefit; adjusted GM 41.4%, up 20 bps; merchandise margin adjusted up 80 bps.",
+      "guidance": "Q3 gross margin up about 25-75 bps; FY adjusted gross margin up slightly; $15M tariff relief concentrated in Q4."
+     },
+     {
+      "id": "D5",
+      "name": "Operating expense discipline",
+      "last_report": "Q2 operating expense $1.3B, 34.3% of sales; ROD deleveraged 60 bps.",
+      "guidance": "Q3 operating expense % of sales slight leverage; FY adjusted opex about flat year-over-year."
+     }
+    ],
+    "guidance": "Q3 FY26: net sales up 1.5%-2.5% YoY; gross margin up about 25-75 bps; opex slight leverage. FY26: net sales up 1%-1.5%; adjusted operating margin about 7.4%-7.6%; adjusted EPS $2.35-$2.45; reported EPS about $3.77-$3.87.",
+    "kill_conditions": [
+     "Old Navy comparable sales remain negative or worsen in Q3.",
+     "Adjusted gross margin misses Q3 guidance or tariff refunds slip beyond Q3.",
+     "Company lowers FY26 sales or adjusted EPS outlook."
+    ]
+   },
+   "card_provider": "River",
+   "card_log": {
+    "attempts": [
+     {
+      "kind": "schema",
+      "error": "drivers: 1-6 objects with id and name",
+      "raw": "{\"drivers\": [{\"id\": \"D1\", \"name\": \"Gap Brand Performance\", \"last_report\": \"Gap posted strong double-digit comparable sales growth (10%) driven by big ideas and cultural relevance.\", \"guidance\": \"Full-year comparable sales are expected to grow in the high-single to low double-digit range.\"}, {\"id\": \"D2\", \"name\": \"Old Navy Sales Recovery\", \"last_report\": \"Old Navy struggled with comparable sales down 4% due to assortment pressure and traffic slowdown.\", \"guidance\": \"Full-year comparable sales are expected to be flat to down 1%.\"}, {\"id\": \"D3\", \"name\": \"Gross Margin Strength\", \"last_report\": \"Gross margin was strong at 52.8% (reported), aided by tariff recovery and Gap strength.\", \"guidance\": \"Full-year adjusted gross margin is expected to be flat to up slightly year-over-year.\"}, {\"id\": \"D4\", \"name\": \"Tariff Recovery Impact\", \"last_report\": \"The company recorded a $417 million adjustment related to IEEPA tariff recovery.\", \"guidance\": \"The benefit from tariff mitigation is expected to be concentrated in the fourth quarter.\"}, {\"id\": \"D5\", \"name\": \"Overall Sales Growth\", \"last_report\": \"Net sales were down 2% year-over-year, though Gap drove positive momentum.\"}, {\"guidance\": \"The company projects net sales for the third quarter to be up 1.5% to 2.5% year-over-year. Full-year adjusted diluted earnings per share is expected to be approximately $3.77 to $3.87.\"}, {\"kill_conditions\": [\"Old Navy comparable sales continue to decline sharply.\", \"Macroeconomic conditions worsen signifi"
+     }
+    ],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 21,
+    "found": 21,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 117,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "New leadership and strategic bets aimed at reversing Old Navy's slump.",
+        "date": "2026-11-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Gap plans to use the exit of an Athleta leader to rebuild the slumping brand.",
+        "date": "2026-10-08",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "John Demsey departs Gap Inc. amid beauty and accessories strategy revamp.",
+        "date": "2026-10-13",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Gap taps Coach architect Reed Krakoff for a new high-end handbag line.",
+        "date": "2026-09-01",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Gap pilots AI-enabled virtual career guide for seasonal hiring.",
+        "date": "2026-10-22",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Expeditors named Gap's 2025 Strategic Supplier of the Year for operations excellence.",
+        "date": "2026-10-22",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Banana Republic debuts TikTok content series to target younger shoppers.",
+        "date": "2026-10-22",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Old Navy continues shakeup amid ongoing merchandising struggles.",
+        "date": "2026-11-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Old Navy leadership change to fix brand",
+        "date": "2026-08-28",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Gap taps Reed Krakoff for handbag line",
+        "date": "2026-09-01",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Old Navy launches activewear subbrand",
+        "date": "2026-09-15",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Athleta leader exit to rebuild brand",
+        "date": "2026-10-08",
+        "driver": "D3",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "John Demsey departs Gap amid beauty revamp",
+        "date": "2026-10-13",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Banana Republic debuts TikTok content series",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Gap launches AI hiring tool for holidays",
+        "date": "2026-10-29",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Old Navy hires new women's merchandising head",
+        "date": "2026-11-02",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Gap taps Reed Krakoff for new handbag line",
+        "date": "2026-09-01",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Old Navy launches new activewear subbrand",
+        "date": "2026-09-15",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Athleta leader exits amid slumping brand rebuild",
+        "date": "2026-10-08",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Beauty executive John Demsey parts ways with Gap",
+        "date": "2026-10-13",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Gap pilots AI hiring tool for seasonal workers",
+        "date": "2026-10-22",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Banana Republic debuts TikTok content series",
+        "date": "2026-10-22",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Old Navy names new women's merchandising head",
+        "date": "2026-11-02",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 2.5,
+   "score_peer": null,
+   "score_combined": 2.5,
+   "overall_votes": [
+    "above",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "",
+   "eps_estimate": 0.7855,
+   "revenue_estimate": 4056477675,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-18",
+   "cutoff": "2026-11-17 22:00:00+00:00",
+   "decided_at": "2026-11-18T02:33:17.359505+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "d9505df7533a8215a147cc96c17870a74f91efef66b41ae23dc36a530194d1da"
+  },
+  "LOW": {
+   "ticker": "LOW",
+   "index": "SP500",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Home Improvement Retail",
+   "last_release": "2026-08-19 12:45:07+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/60667/000006066726000113/exhibit991-07312026.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Comparable sales and Pro/DIY mix",
+      "last_report": "Q2 comps +0.2%, fifth straight positive; Pro and home services strong, online +15.7%, DIY macro pressures.",
+      "guidance": "FY2026 comp sales expected flat, down from prior flat to up 2%."
+     },
+     {
+      "id": "D2",
+      "name": "Gross margin and tariff impact",
+      "last_report": "Q2 gross margin 33.04%, down from 33.81%; EPS included $0.11 IEEPA tariff refund benefit.",
+      "guidance": "FY2026 operating margin 11.2%, adjusted 11.6%; excludes additional tariff refunds in H2."
+     },
+     {
+      "id": "D3",
+      "name": "SG&A and operating expense leverage",
+      "last_report": "Q2 SG&A 17.17% of sales vs 17.42%; D&A rose on acquisitions; operating margin 13.67% vs 14.48%.",
+      "guidance": "FY2026 operating margin 11.2%; adjusted operating margin 11.6%."
+     },
+     {
+      "id": "D4",
+      "name": "Online and Home Services growth",
+      "last_report": "Online sales +15.7%; Pro and home services drove comps; Total Home strategy cited.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Acquisition integration and interest expense",
+      "last_report": "FBM/ADG added sales and $96M pre-tax costs; net interest $374M vs $313M; long-term debt rose.",
+      "guidance": "FY2026 net interest expense ~$1.6B; sales ~$92.0B; capex up to $2.5B."
+     }
+    ],
+    "guidance": "FY2026: total sales ~$92.0B; comp sales flat; operating margin 11.2%; adjusted operating margin 11.6%; diluted EPS ~$11.75; adjusted diluted EPS ~$12.25; net interest ~$1.6B; tax ~24.5%; capex up to $2.5B. No Q3 guidance.",
+    "kill_conditions": [
+     "Q3 comparable sales turn negative or DIY demand weakens further.",
+     "Q3 gross margin contracts more than Q2's 77 bps decline.",
+     "Lowe's cuts FY2026 EPS or comp-sales guidance again."
+    ]
+   },
+   "card_provider": "Relace",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 19,
+    "found": 19,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 377,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Lowe's partners with Bilt to integrate into 8M member platform",
+        "date": "2026-11-11",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home equity borrowing jumps 14% to $481B, fastest since financial crisis",
+        "date": "2026-11-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Lowe's changes return policy for certain purchases",
+        "date": "2026-11-12",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home sales sink to 16-year low",
+        "date": "2026-11-15",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home Depot Q3 sales +4.9%, beats estimates, lifts outlook",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Lowe's exclusive partnership with Bilt, integrating into 8M member platform",
+        "date": "2026-11-11",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home equity borrowing jumped 14% to $481B, fastest since financial crisis",
+        "date": "2026-11-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home sales sank to 16-year low",
+        "date": "2026-11-15",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home Depot Q3: comps +4.9%, margin thinner, lifted sales guidance",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Lowe's partners with Bilt to integrate rewards/home services into 8M member platform",
+        "date": "2026-11-11",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Lowe's makes major return policy changes throughout 2026",
+        "date": "2026-11-12",
+        "driver": "D2",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home equity borrowing jumped 14% to $481B, fastest since financial crisis",
+        "date": "2026-11-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home sales sank to 16-year low, signaling housing market weakness",
+        "date": "2026-11-15",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home Depot reported Q3 sales +4.9%, raised FY outlook; margin thinner",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "HD",
+    "FND"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HD",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "HD comps +2.2% and explicit share gains imply LOW may be losing share; negative for LOW's comps vs flat guidance."
+       },
+       {
+        "peer": "FND",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Negative comps and 'challenging demand environment' signal weak industry demand, reinforcing LOW's DIY macro pressures and flat comp guidance."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HD",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "HD comps +2.2% and explicit market-share gains suggest LOW may lose share in home improvement."
+       },
+       {
+        "peer": "FND",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "FND comps -1.4% and challenging demand signal weak hard-goods/flooring demand, pressuring LOW comps."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FND",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "FND comps -1.4% and 'challenging demand environment' signal weak home improvement/flooring demand, a negative read for LOW's comps."
+       },
+       {
+        "peer": "HD",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "HD comps +2.2% and market-share gains point to share shift to HD, pressuring LOW's comps/Pro mix."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 1.2247448713915892,
+   "score_peer": -2.3094010767585034,
+   "score_combined": 0.07004433301233748,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 2.9103,
+   "revenue_estimate": 22631671212,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-18",
+   "cutoff": "2026-11-17 22:00:00+00:00",
+   "decided_at": "2026-11-18T02:33:08.328226+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "5d5716395bf899ebd2ccc308f25b6a9a0d4c087658d882f540bb1592c061621b"
+  },
+  "NJR": {
+   "ticker": "NJR",
+   "index": "SP400",
+   "sector": "Utilities",
+   "sub_industry": "Gas Utilities",
+   "last_release": "2026-08-03 20:30:25+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/356309/000114036126030982/ef20079106_ex99-1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "NJNG base rate case outcome",
+      "last_report": "Filed June 1 seeking $157.6M base rate increase; overall ROE 10.10%, 55.50% equity. Q3 NJNG NFE fell to $6.1M on depreciation.",
+      "guidance": "Cannot predict outcome; once all filings implemented, annualized average customer bills nearly flat."
+     },
+     {
+      "id": "D2",
+      "name": "NJNG utility gross margin and BGSS",
+      "last_report": "Q3 NJNG NFE $6.1M vs $10.1M; YTD $238.4M vs $221.5M. BGSS incentives $20.4M YTD vs $14.5M; customers ~595,000.",
+      "guidance": "FY2026 NJNG expected 59-62% of NFE."
+     },
+     {
+      "id": "D3",
+      "name": "Clean Energy Ventures solar capacity",
+      "last_report": "Q3 NFE loss $(0.3)M vs $(6.9)M; YTD $4.1M vs $37.3M on prior-year portfolio sale gain. 537 MW commercial solar in service.",
+      "guidance": "FY2026 CEV expected 10-13% of NFE; capital safe-harbored for tax credits."
+     },
+     {
+      "id": "D4",
+      "name": "Storage and Transportation rates",
+      "last_report": "Q3 NFE $8.8M vs $5.9M; YTD $23.8M vs $13.9M. Higher Adelphia Gateway rate-case settlement and Leaf River firm storage rates.",
+      "guidance": "FY2026 S&T expected 8-11% of NFE."
+     },
+     {
+      "id": "D5",
+      "name": "Energy Services gas volatility margin",
+      "last_report": "Q3 NFE loss $(4.0)M vs $(3.7)M; YTD $84.5M vs $39.4M on higher natural gas price volatility and financial margin.",
+      "guidance": "FY2026 ES expected 21-23% of NFE."
+     }
+    ],
+    "guidance": "FY2026 NFEPS $3.52-$3.62 (tightened from $3.48-$3.63); long-term 7-9% NFEPS growth from FY2025 base $2.83. Expected FY2026 NFE mix: NJNG 59-62%, CEV 10-13%, S&T 8-11%, ES 21-23%, Home Services 0-1%.",
+    "kill_conditions": [
+     "BPU approves NJNG rate increase far below $157.6M or delays order past winter.",
+     "Energy Services financial margin collapses as natural gas price volatility fades.",
+     "NJR cuts FY2026 NFEPS guidance below $3.52 or CEV solar projects slip."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 34,
+    "found": 34,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 33,
+   "news_used": 32,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Subsidiary issues $50M 5.43% senior notes",
+        "date": "2026-10-23",
+        "driver": "other",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Quarterly dividend increased from $0.475 to $0.50 per share",
+        "date": "2026-09-10",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Subsidiary issues $50M 5.43% senior notes",
+        "date": "2026-10-23",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Amends credit agreements, increasing commitments to $650M",
+        "date": "2026-10-29",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Amended credit agreements, increasing commitments to $650 million",
+        "date": "2026-10-29",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Subsidiary issued $50 million of 5.43% senior notes",
+        "date": "2026-10-23",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "SR",
+    "NFG",
+    "ATO",
+    "SWX",
+    "OGS"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Higher off-system sales and new rates aided utility earnings; supports NJNG gross margin/BGSS, though usage soft."
+       },
+       {
+        "peer": "NFG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Pipeline & Storage expansions placed in service signal firm capacity demand, supportive for NJR S&T rates."
+       },
+       {
+        "peer": "ATO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Large annualized regulatory outcomes implemented; supports constructive gas utility rate case environment for NJNG."
+       },
+       {
+        "peer": "SWX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Completed rate cases with $80M revenue increases and recommended ROE support constructive regulatory backdrop for NJNG."
+       },
+       {
+        "peer": "OGS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "New rates and customer growth lifted utility results; supports NJNG gross margin and flat-bill outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Off-system sales up and new rates support NJNG gross margin/BGSS; lower usage is partial offset."
+       },
+       {
+        "peer": "NFG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Pipeline/storage expansions in service and strong gas demand support NJR S&T rates/volumes."
+       },
+       {
+        "peer": "ATO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Large annualized regulatory outcomes signal constructive rate-case environment for NJNG."
+       },
+       {
+        "peer": "SWX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Completed rate cases and recommended Arizona ROE support NJNG rate-case outcome."
+       },
+       {
+        "peer": "OGS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "New rates, raised guidance, and flat customer bills support NJNG rate case."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "OGS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Raised guidance and new rates signal constructive gas utility regulation, supporting NJR's pending NJNG rate case."
+       },
+       {
+        "peer": "SWX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Completed rate cases and recommended 9.75% ROE support constructive regulation for NJR's NJNG rate case."
+       },
+       {
+        "peer": "ATO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Large annualized regulatory outcomes and strong FY27 guidance signal supportive gas utility rate environment for NJR's NJNG case."
+       },
+       {
+        "peer": "NFG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Pipeline expansion projects in service and strong gas demand support NJR's storage/transportation rates."
+       },
+       {
+        "peer": "SR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Peer's utility earnings rose on new rates and off-system sales, supporting NJR's NJNG gross margin/BGSS incentives."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 4.08248290463863,
+   "score_combined": 2.041241452319315,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 0.1313,
+   "revenue_estimate": 343677750,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-18",
+   "cutoff": "2026-11-17 22:00:00+00:00",
+   "decided_at": "2026-11-18T02:33:31.641065+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "6b4a68b07c13fb4b76cab09fa41c775cdd067e15e281c5d7c4fc807a1f23d10b"
+  },
+  "PANW": {
+   "ticker": "PANW",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Systems Software",
+   "last_release": "2026-09-01 20:32:15+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1327567/000132756726000019/ex991q426earningsrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Next-Generation Security ARR growth",
+      "last_report": "Q4 NGS ARR $9.10B, up 63% YoY; net new NGS ARR nearly $1B in quarter.",
+      "guidance": "Q1 FY27 NGS ARR $9.54–$9.56B, +63% YoY; FY27 $11.075–$11.175B, +22–23%."
+     },
+     {
+      "id": "D2",
+      "name": "Total revenue growth",
+      "last_report": "Q4 revenue $3.41B, up 34% YoY; growth driven by Network & AI Security, Cortex, Idira.",
+      "guidance": "Q1 FY27 revenue $3.300–$3.310B, +33–34%; FY27 $14.10–$14.20B, +23–24%."
+     },
+     {
+      "id": "D3",
+      "name": "Remaining performance obligations growth",
+      "last_report": "Q4 RPO $21.2B, up 34% YoY.",
+      "guidance": "Q1 FY27 RPO $20.8–$20.9B, +34–35%; FY27 $25.2–$25.4B, +19–20%."
+     },
+     {
+      "id": "D4",
+      "name": "Non-GAAP EPS and margin",
+      "last_report": "Q4 non-GAAP operating income $1.0B; non-GAAP EPS $1.02.",
+      "guidance": "Q1 FY27 non-GAAP EPS $0.96–$0.98; FY27 operating margin 29.5%, EPS $4.16–$4.19."
+     },
+     {
+      "id": "D5",
+      "name": "Adjusted free cash flow margin",
+      "last_report": "Q4 adjusted FCF $1.3B; FY26 adjusted FCF margin 38.4%.",
+      "guidance": "FY27 adjusted FCF margin 38.0%; no Q1-specific FCF guidance."
+     }
+    ],
+    "guidance": "Q1 FY27: NGS ARR $9.54–$9.56B (+63%), RPO $20.8–$20.9B (+34–35%), revenue $3.300–$3.310B (+33–34%), non-GAAP EPS $0.96–$0.98. FY27: NGS ARR $11.075–$11.175B, RPO $25.2–$25.4B, revenue $14.10–$14.20B, non-GAAP operating margin 29.5%, EPS $4.16–$4.19, adjusted FCF margin 38.0%.",
+    "kill_conditions": [
+     "Q1 NGS ARR growth below 63% or RPO growth below 34%.",
+     "Palo Alto Networks lowers FY27 revenue or NGS ARR guidance.",
+     "FY27 non-GAAP operating margin guidance cut below 29.5%."
+    ]
+   },
+   "card_provider": "Crusoe",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 34,
+    "found": 34,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 641,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "CEO warns companies running older security systems before earnings",
+        "date": "2026-11-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Unit 42 report: AI agent swarms run up $1M bills before detection",
+        "date": "2026-11-13",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Reported talks to acquire AI security startup Clutch Security for ~$500M",
+        "date": "2026-11-13",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "CEO Arora sees AI as durable tailwinds despite software selloff",
+        "date": "2026-11-14",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "CEO says AI tools lower the bar for cyberattacks",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Palo Alto in talks to acquire Clutch Security for ~$500M",
+        "date": "2026-11-13",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Microsoft outage disrupts Outlook and Teams for 12 hours",
+        "date": "2026-11-13",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "CrowdStrike acquires Fiddler AI and Dreadnode for ~$495M",
+        "date": "2026-11-14",
+        "driver": "other",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "IBM buys cybersecurity startup",
+        "date": "2026-11-13",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Nvidia CEO Jensen Huang resigns",
+        "date": "2026-11-13",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PANW AI security tool becomes fastest product ramp",
+        "date": "2026-11-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Palo Alto Networks reported talks to acquire AI security startup Clutch Security for about US$500 million.",
+        "date": "2026-11-13",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "QLYS",
+    "NOW",
+    "FTNT",
+    "GEN",
+    "MSFT"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "QLYS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Cybersecurity demand stable; QLYS raises guidance but 11% growth is below PANW's 33% guide."
+       },
+       {
+        "peer": "NOW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong enterprise AI/software demand and RPO growth support security/risk spending."
+       },
+       {
+        "peer": "FTNT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Direct cybersecurity peer shows strong broad-based demand and raises revenue guidance."
+       },
+       {
+        "peer": "GEN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Consumer cybersecurity demand; not relevant to PANW's enterprise platform."
+       },
+       {
+        "peer": "MSFT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong enterprise cloud/AI spending and RPO growth support security demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "QLYS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Cybersecurity demand stable; QLYS raises guidance, but growth slower than PANW."
+       },
+       {
+        "peer": "NOW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Enterprise software demand healthy; supports PANW revenue, though growth lower."
+       },
+       {
+        "peer": "FTNT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong network security demand and billings support PANW's NGS ARR growth."
+       },
+       {
+        "peer": "GEN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Consumer security demand not relevant to PANW's enterprise drivers."
+       },
+       {
+        "peer": "MSFT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong cloud/AI growth increases security demand, supporting PANW's NGS ARR."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MSFT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong cloud/AI demand and 73% RPO growth signal healthy enterprise IT budgets, supporting PANW revenue and backlog growth."
+       },
+       {
+        "peer": "GEN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Consumer security demand resilient with record customers and raised outlook, a mild positive read for overall security spending."
+       },
+       {
+        "peer": "FTNT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Broad-based network security demand, 37% product growth and raised billings guidance signal a strong firewall/SASE market benefiting PANW."
+       },
+       {
+        "peer": "NOW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Beat-and-raise enterprise software with 22% RPO growth signals durable enterprise IT and AI spend, a supportive backdrop for PANW."
+       },
+       {
+        "peer": "QLYS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "11% growth and raised guidance show stable, if slower, security demand; modest positive for PANW's risk/vulnerability-adjacent portfolio."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 1.6329931618554523,
+   "score_peer": 2.8577380332470415,
+   "score_combined": 3.061862178478973,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 0.9907,
+   "revenue_estimate": 3373089754,
+   "fiscal": "2027Q1",
+   "report_date": "2026-11-18",
+   "cutoff": "2026-11-17 22:00:00+00:00",
+   "decided_at": "2026-11-18T02:33:43.866780+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "52f2168f340b98ae886b75458d7682ec3e24a3b8d76a8950479af0a03009210a"
+  },
+  "ROST": {
+   "ticker": "ROST",
+   "index": "SP500",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Apparel Retail",
+   "last_release": "2026-08-20 20:11:01+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/745732/000074573226000038/q226exhibit991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Comparable store sales",
+      "last_report": "Q2 comps +10%, traffic-driven; first half +13%.",
+      "guidance": "Q3 comps +6-7%; Q4 comps +4-5%."
+     },
+     {
+      "id": "D2",
+      "name": "Operating margin ex-tariff refunds",
+      "last_report": "Q2 operating margin ex-refunds +205 bps, above plan +130-150 bps; reported +610 bps.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "IEEPA tariff refunds",
+      "last_report": "Q2 included ~$253M IEEPA tariff refunds, ~$0.60 EPS benefit.",
+      "guidance": "FY2026 EPS includes ~$0.60 benefit from IEEPA tariff refunds recognized in Q2."
+     },
+     {
+      "id": "D4",
+      "name": "New store openings",
+      "last_report": "Opened 47 new stores in Q2; raising 2026 plan to 115 locations.",
+      "guidance": "115 new stores in 2026: ~90 Ross, 25 dd's DISCOUNTS."
+     },
+     {
+      "id": "D5",
+      "name": "Share repurchases",
+      "last_report": "Repurchased 1.4M shares for $319M in Q2; on track for $1.275B FY2026.",
+      "guidance": "$1.275B buybacks in fiscal 2026."
+     }
+    ],
+    "guidance": "Q3 comps +6-7%, EPS $1.75-$1.83; Q4 comps +4-5%, EPS $2.17-$2.26; FY2026 EPS $8.61-$8.77, including ~$0.60 IEEPA tariff refund benefit recognized in Q2; 115 new stores; $1.275B buybacks.",
+    "kill_conditions": [
+     "Q3 comparable store sales below 6%.",
+     "Q3 EPS below $1.75.",
+     "Company lowers FY2026 EPS guidance below $8.61."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 21,
+    "found": 21,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 241,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.95
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 0.0,
+   "score_peer": null,
+   "score_combined": 0.0,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "",
+   "eps_estimate": 1.9138,
+   "revenue_estimate": 6402829863,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-18",
+   "cutoff": "2026-11-17 22:00:00+00:00",
+   "decided_at": "2026-11-18T02:33:21.298273+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "48294275d8b7a26472af329440d38ad97d2c9bb80866642d9043c0d7ce616bd8"
+  },
+  "TGT": {
+   "ticker": "TGT",
+   "index": "SP500",
+   "sector": "Consumer Staples",
+   "sub_industry": "Consumer Staples Merchandise Retail",
+   "last_release": "2026-08-19 11:51:13+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/27419/000002741926000034/a2026q2ex-99.htm",
+   "release_doc": "type EX-99",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Comparable sales and traffic",
+      "last_report": "Q2 comps +3.8%, traffic +3.6%; store +2.7%, digital +8.7%; broad-based. Full-year net sales growth guided around 5%, raised 1pt.",
+      "guidance": "Full-year net sales growth around 5%, one percentage point higher than prior guidance."
+     },
+     {
+      "id": "D2",
+      "name": "Gross margin excluding tariff refunds",
+      "last_report": "Q2 gross margin 33.7% included 3.7pp tariff refund; ex-refund expanded ~100bps vs prior 29.0% on lower markdowns and ad/non-merch mix.",
+      "guidance": "Full-year operating income margin around 6%, including ~90bps Q2 tariff refund; ex-refund ~50bps above last year's 4.6%."
+     },
+     {
+      "id": "D3",
+      "name": "SG&A expense rate",
+      "last_report": "Q2 SG&A rate 21.6% vs 21.3% prior; higher compensation, field hours, incentive comp and capital projects partly offset by topline leverage.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Non-merchandise and advertising revenue",
+      "last_report": "Non-merch sales +20.1%; advertising revenue $279M, +28.6% YoY; Roundel, Target Circle 360, marketplace drove growth.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Tariff refund benefit anniversary",
+      "last_report": "Q2 operating income included $994M tariff refunds, adding $1.65 EPS and 3.7pp to gross margin; guidance excludes future tariff refunds.",
+      "guidance": "Full-year EPS $9.90-$10.90 includes ~$1.65 Q2 tariff benefit; excludes potential future tariff refunds."
+     }
+    ],
+    "guidance": "Updated 2026: net sales growth around 5%; operating income margin around 6%, including ~90bps Q2 tariff refund, with ex-refund margin ~50bps above last year's 4.6%; GAAP/Adjusted EPS $9.90-$10.90, including ~$1.65 Q2 tariff benefit; excludes future tariff refunds.",
+    "kill_conditions": [
+     "Comparable sales growth decelerates below 1% or traffic turns negative.",
+     "Gross margin excluding tariff refunds contracts year over year or markdowns rise.",
+     "SG&A expense rate rises further without topline leverage; Roundel/ad revenue growth stalls."
+    ]
+   },
+   "card_provider": "Novita",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 21,
+    "found": 20,
+    "share": 0.9523809523809523,
+    "missing": [
+     "28.6"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 708,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Target AI commerce partnerships with OpenAI, Google Gemini",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Target may drop THC drinks from shelves",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Target launches exclusive Dairy Boy by Hanes collection",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Target Black Friday sale includes in-store gift card giveaway",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Walmart expands price rollbacks to 11,000+ items, reinvesting tariff refunds",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Target launches exclusive Dairy Boy by Hanes apparel and food products",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Target may drop THC drinks from shelves",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Target Black Friday sale includes in-store gift card giveaway",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TeacherLists data show back-to-school shopping started earlier and lasted longer",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Target names Sally Grimes as board director",
+        "date": "2026-11-16",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Target launches exclusive Dairy Boy by Hanes intimates and sleepwear",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Target may drop THC drinks from shelves",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Target AI commerce partnerships with OpenAI and Google Gemini drive digital traffic",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Walmart expands price rollbacks to over 11,000 items",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home Depot Q3 earnings meet estimates, sales beat on comps growth",
+        "date": "2026-11-17",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TeacherLists data show back-to-school shopping started earlier and lasted longer",
+        "date": "2026-11-16",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 1.2374368670764582,
+   "score_peer": null,
+   "score_combined": 1.2374368670764582,
+   "overall_votes": [
+    "inline",
+    "below",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 2.0923,
+   "revenue_estimate": 26816116968,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-18",
+   "cutoff": "2026-11-17 22:00:00+00:00",
+   "decided_at": "2026-11-18T02:33:36.176490+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "da9998f0fce503ce9110edb5633907276f2370d0cd2e9a31a65448b9932c09c6"
+  },
+  "TJX": {
+   "ticker": "TJX",
+   "index": "SP500",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Apparel Retail",
+   "last_release": "2026-08-19 13:09:11+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/109198/000010919826000045/tjxq2fy27earningspressrele.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Marmaxx comparable sales recovery",
+      "last_report": "Q2 comp +1%, below expectations; net sales +3%; management said Q3 started strong with improvement at Marmaxx.",
+      "guidance": "Q3 consolidated comps planned +2% to +3%; no division-level guidance."
+     },
+     {
+      "id": "D2",
+      "name": "HomeGoods and international comps",
+      "last_report": "Q2 comps: HomeGoods +7%, TJX Canada +6%, TJX International +7%; offset Marmaxx weakness.",
+      "guidance": "Q3 consolidated comps planned +2% to +3%; no division-level guidance."
+     },
+     {
+      "id": "D3",
+      "name": "Adjusted pretax profit margin",
+      "last_report": "Q2 adjusted pretax margin 11.9%, up 0.5pp; adjusted gross margin 31.4%, up 0.7pp on merchandise margin.",
+      "guidance": "Q3 adjusted pretax margin 12.3%-12.4%; FY27 12.0%-12.1%."
+     },
+     {
+      "id": "D4",
+      "name": "Tariff refund net benefit",
+      "last_report": "Q2 net tariff refund benefit $219M, $.14 EPS, 1.4pp pretax; offset by $112M compensation accruals.",
+      "guidance": "Q3 expected net benefit 0.5pp pretax and $.06 EPS; FY 0.3pp and $.16; timing uncertain."
+     },
+     {
+      "id": "D5",
+      "name": "SG&A and store wage costs",
+      "last_report": "Q2 SG&A 20.3%; adjusted 19.7%, up 0.2pp on incremental store wage and payroll costs.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q3 FY27: comps +2%-3%; pretax margin 12.8%-12.9%; adjusted pretax 12.3%-12.4%; diluted EPS $1.36-$1.38; adjusted EPS $1.30-$1.32. FY27: comps +3%-4%; pretax margin 12.3%-12.4%; adjusted pretax 12.0%-12.1%; diluted EPS $5.31-$5.36; adjusted EPS $5.15-$5.20.",
+    "kill_conditions": [
+     "Q3 consolidated comparable sales miss the planned +2% to +3% range.",
+     "Adjusted pretax margin falls below the guided 12.3% to 12.4%.",
+     "Marmaxx comparable sales remain negative or fail to improve from Q2's +1%."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 21,
+    "found": 21,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 236,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "TJX flags margin pressure from rising diesel and ocean freight costs",
+        "date": "2026-10-30",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.55
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "TJX finalized retirement transition plan for Kenneth Canestrari",
+        "date": "2026-10-30",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Ross Stores plan to win over TJ Maxx shoppers",
+        "date": "2026-10-30",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Marshalls and Lindsay Lohan launch holiday gift guides",
+        "date": "2026-11-10",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TJX/Marshalls retaining tariff refunds for executive bonuses",
+        "date": "2026-11-16",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Freight/diesel cost inflation flagged as margin headwind for coming quarters",
+        "date": "2026-10-30",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Ross Stores reshaping competition for value shoppers, threat to Marmaxx",
+        "date": "2026-10-30",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "TJX finalizes retirement transition plan for Group President Kenneth Canestrari",
+        "date": "2026-10-30",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TJX sets Q3 FY27 earnings release date of Nov 18",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "UBS says Marmaxx sales soft, expects largely in-line Q3",
+        "date": "2026-11-10",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Marshalls launches Lindsay Lohan 'Unwrap the Internet' holiday gift campaign",
+        "date": "2026-11-10",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Report, Senate criticism that TJX keeps tariff refunds for executive bonuses",
+        "date": "2026-11-16",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.5
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "TimeoutError('LLM call exceeded 240 s')"
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": -1.414213562373095,
+   "score_peer": null,
+   "score_combined": -1.414213562373095,
+   "overall_votes": [
+    "below",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 1.3513,
+   "revenue_estimate": 15997206240,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-18",
+   "cutoff": "2026-11-17 22:00:00+00:00",
+   "decided_at": "2026-11-18T02:38:36.014720+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "e2dd179905e5c363afc1616bb31a4ea7d410d9b9db4373e1255beb96c34cf5f6"
+  },
+  "UGI": {
+   "ticker": "UGI",
+   "index": "SP400",
+   "sector": "Utilities",
+   "sub_industry": "Gas Utilities",
+   "last_release": "2026-08-06 12:35:03+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/884614/000088461426000048/ugijun2026ex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "PA Gas Utility rate case",
+      "last_report": "Utilities EBIT $40M, +33%; total margin +$13M on higher PA base rates; core volumes flat despite 6% colder weather.",
+      "guidance": "Settlement would allow two-phase $65M distribution rate increase; first $40M effective Oct 2026, final PA PUC decision expected by Oct 2026."
+     },
+     {
+      "id": "D2",
+      "name": "AmeriGas volume and margin",
+      "last_report": "AmeriGas EBIT loss $(53)M vs $(28)M; retail gallons -10%, weather-adjusted ex-Hawaii -6%; total margin -$26M on lower gallons and fee income.",
+      "guidance": "No numeric segment guidance; company cites improved volume retention and winter-heating-season preparation."
+     },
+     {
+      "id": "D3",
+      "name": "UGI International divestiture impact",
+      "last_report": "International EBIT $41M, -5%; retail gallons -10% on LPG divestitures; total margin -$6M as higher unit margins and FX offset divestitures.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Midstream margin timing",
+      "last_report": "Midstream & Marketing EBIT $30M, +11%; total margin +$13M on capacity-margin timing and pipeline cost recovery; O&A +$8M from new plants.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Interest expense and debt costs",
+      "last_report": "Interest expense $109M vs $101M; debt transactions extend maturities and cut borrowing costs by ~$30M annualized at International, AmeriGas, Energy Services.",
+      "guidance": "No numeric interest guidance; FY2026 adjusted EPS $2.75-$2.90 reaffirmed."
+     }
+    ],
+    "guidance": "Reaffirmed fiscal 2026 adjusted diluted EPS guidance range of $2.75-$2.90 per share; no quarterly guidance given.",
+    "kill_conditions": [
+     "PA PUC delays or rejects the $65M gas rate settlement, or first phase slips past October 2026.",
+     "AmeriGas reports another double-digit retail gallon decline or wider EBIT loss.",
+     "UGI cuts fiscal 2026 adjusted EPS guidance below $2.75 or guides FY2027 below current range."
+    ]
+   },
+   "card_provider": "Cohere",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 15,
+    "found": 15,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 39,
+   "news_used": 39,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "KKR makes $9B unsolicited takeover bid for UGI at $42.50 per share",
+        "date": "2026-08-18",
+        "driver": "other",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PA PUC approves UGI Utilities phased $65M gas rate increase",
+        "date": "2026-10-03",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "BDC report: $11B PA pipeline spending drives 67% gas utility bill increase",
+        "date": "2026-09-10",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "UGI subsidiary amends receivables purchase agreement, extends facility to October 2027",
+        "date": "2026-10-23",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "KKR reports unsolicited $9B takeover bid for UGI at $42.50/share",
+        "date": "2026-08-18",
+        "driver": "other",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PA PUC approves phased $65M gas rate increase with 2029 filing ban",
+        "date": "2026-10-03",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "UGI subsidiary extends receivables purchase facility termination date to October 2027",
+        "date": "2026-10-23",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "KKR reported unsolicited $9B takeover bid for UGI at $42.50 per share",
+        "date": "2026-08-18",
+        "driver": "other",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "PA PUC approved $65M phased gas rate increase; first $40M effective Oct 2026",
+        "date": "2026-10-03",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "UGI subsidiary amended receivables purchase agreement, extending facility termination to Oct 15, 2027",
+        "date": "2026-10-23",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "SR",
+    "NFG",
+    "ATO",
+    "SWX",
+    "OGS"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Spire's gas utilities grew on new rates and off-system sales, supporting constructive rate-case backdrop for UGI's PA utility."
+       },
+       {
+        "peer": "NFG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "NFG's approved PA rate increase signals constructive PA regulation for UGI's pending PA gas utility rate case."
+       },
+       {
+        "peer": "ATO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Atmos reported $395M annualized regulatory outcomes and raised FY27 EPS guidance, indicating supportive gas-utility rate environment."
+       },
+       {
+        "peer": "SWX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Southwest completed Nevada and California rate cases with ~$80M revenue increases, supporting UGI's PA rate case outlook."
+       },
+       {
+        "peer": "OGS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "One Gas raised guidance on new rates and customer growth, a positive read-through for UGI's utility rate case."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "New gas utility rates and 20% adjusted EPS growth support constructive regulatory environment for UGI's PA rate case."
+       },
+       {
+        "peer": "NFG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Approved $10.4M PA rate increase directly supports constructive PA regulatory outcome for UGI's rate case."
+       },
+       {
+        "peer": "ATO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Large annualized regulatory outcomes and strong utility earnings support constructive rate-case environment for UGI's PA utility."
+       },
+       {
+        "peer": "SWX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Completed rate cases with $80M revenue increases support constructive regulatory environment for UGI's PA rate case."
+       },
+       {
+        "peer": "OGS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "New rates and raised guidance support constructive utility rate-case environment for UGI's PA utility."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "OGS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Peer raises guidance on new rates and customer growth, supporting constructive gas utility rate backdrop."
+       },
+       {
+        "peer": "SWX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Completed rate cases and $80M revenue increases show supportive regulation for gas utilities."
+       },
+       {
+        "peer": "ATO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Large annualized regulatory outcomes and FY27 growth support gas utility rate case environment."
+       },
+       {
+        "peer": "NFG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Approved $10.4M PA rate increase supports UGI's PA rate case and regulatory backdrop."
+       },
+       {
+        "peer": "SR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "New rates drove utility earnings growth, but lower near-term guidance tempers signal."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 4.4907311951024935,
+   "score_combined": 2.2453655975512468,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": -0.3487,
+   "revenue_estimate": 1361985000,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-18",
+   "cutoff": "2026-11-17 22:00:00+00:00",
+   "decided_at": "2026-11-18T02:37:30.856042+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "aff78c8a54b7ca261dc90672ff5a19439e38f094a956ab5b1495b046e4c83bdf"
+  },
+  "WWD": {
+   "ticker": "WWD",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Electrical Components & Equipment",
+   "last_release": "2026-07-29 20:00:17+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/108312/000117184326005009/exh_991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Aerospace commercial OEM and services",
+      "last_report": "Q3 Aerospace sales +19%; commercial OEM +34%, services +24%; segment margin 24.0%. Defense OEM -6%.",
+      "guidance": "FY26 Aerospace sales growth 21-23%; segment earnings ~23.5% of sales."
+     },
+     {
+      "id": "D2",
+      "name": "Industrial sales and segment margin",
+      "last_report": "Q3 Industrial sales +26%; transportation +40%, power generation +19%, oil and gas +11%; segment margin 22.1%, earnings +86%.",
+      "guidance": "FY26 Industrial sales growth 19-21%; segment earnings ~19% of sales."
+     },
+     {
+      "id": "D3",
+      "name": "Adjusted EPS and tax rate",
+      "last_report": "Q3 adjusted EPS $2.52, +43%; effective tax rate 24.2% vs 14.5%; 9M adjusted EPS $6.96.",
+      "guidance": "FY26 adjusted EPS $9.30-$9.50; adjusted effective tax rate ~22.5%; implies Q4 adjusted EPS $2.34-$2.54."
+     },
+     {
+      "id": "D4",
+      "name": "Free cash flow and capex",
+      "last_report": "Q3 free cash flow $87M, -12%; capex $60M, +125%; 9M free cash flow $196M, +23%.",
+      "guidance": "FY26 free cash flow $300-$350M; capex ~$290M; implies Q4 FCF $104-$154M."
+     },
+     {
+      "id": "D5",
+      "name": "Nonsegment expense growth",
+      "last_report": "Q3 nonsegment expenses $51M, +41%; adjusted nonsegment expenses $42M, +15%; 9M adjusted $116M, +19%.",
+      "guidance": null
+     }
+    ],
+    "guidance": "FY26 sales growth up 20-23%; adjusted EPS $9.30-$9.50; free cash flow $300-$350M; capex ~$290M; adjusted effective tax rate ~22.5%; Aerospace sales growth 21-23%, margin ~23.5%; Industrial sales growth 19-21%, margin ~19%.",
+    "kill_conditions": [
+     "Aerospace sales growth misses 21-23% FY target or commercial OEM/services decelerate.",
+     "Industrial sales growth falls below 19% or segment margin drops below ~19%.",
+     "FY adjusted EPS below $9.30 or free cash flow below $300M."
+    ]
+   },
+   "card_provider": "CoreWeave",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 38,
+    "found": 35,
+    "share": 0.9210526315789473,
+    "missing": [
+     "104",
+     "2.34",
+     "2.54"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 106,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Woodward announces planned executive leadership succession",
+        "date": "2026-11-16",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "AerCap orders 100 Airbus A320neo aircraft for 2028-2034 deliveries",
+        "date": "2026-09-21",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Woodward announces planned executive leadership succession",
+        "date": "2026-11-16",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.9
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "ENS",
+    "ROK",
+    "EMR",
+    "AME",
+    "RRX"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ENS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong demand for defense and industrial power solutions suggests favorable market conditions for WWD."
+       },
+       {
+        "peer": "ROK",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 3,
+        "driver": "D2",
+        "why": "ROK's moderate organic growth rates suggest industrial demand may be cooling, which is less aggressive than WWD's guidance."
+       },
+       {
+        "peer": "EMR",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 3,
+        "driver": "D2",
+        "why": "Strong underlying orders indicate healthy demand, but the conservative 2027 guidance suggests growth may moderate."
+       },
+       {
+        "peer": "AME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "AME reported record sales and raised guidance, validating strong, broad-based demand in the industrial sector."
+       },
+       {
+        "peer": "RRX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "RRX is lowering its guidance, signaling potential margin pressure or slowing profitability in the industrial sector."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ENS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Defense power demand strong; positive read for Woodward defense OEM, though not commercial aerospace."
+       },
+       {
+        "peer": "ROK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Broad industrial growth and data center strength support Woodward Industrial demand; margin expansion positive."
+       },
+       {
+        "peer": "EMR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Underlying orders +14% and broad-based demand signal strong industrial conditions, positive for Woodward Industrial."
+       },
+       {
+        "peer": "AME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Broad-based organic growth and strong orders indicate healthy industrial demand, positive for Woodward Industrial."
+       },
+       {
+        "peer": "RRX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Data center and energy strength support Woodward power gen/oil & gas; mixed other industrial."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "RRX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Data center and energy demand strong; supports WWD industrial power generation/oil & gas, though some industrial markets mixed."
+       },
+       {
+        "peer": "AME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong EMG organic growth and margin expansion, with aerospace/defense exposure, positive for WWD Aerospace."
+       },
+       {
+        "peer": "EMR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong orders +14% and long-cycle project demand indicate healthy power/oil & gas markets for WWD Industrial."
+       },
+       {
+        "peer": "ROK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Data center and semiconductor strength, plus FY27 organic growth guide, support WWD power generation demand."
+       },
+       {
+        "peer": "ENS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Defense demand strong (soldier power/munitions) and data center growth positive for WWD defense OEM."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 3.6742346141747673,
+   "score_combined": 1.8371173070873836,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 2.5351,
+   "revenue_estimate": 1152631270,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-18",
+   "cutoff": "2026-11-17 22:00:00+00:00",
+   "decided_at": "2026-11-18T02:36:39.430347+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "76f2670e7b5d47c568e89293f9efa899b06b49abddfca63e7cbb665ee7c95093"
+  }
+ },
+ "report_date": "2026-11-18",
+ "cutoff": "2026-11-17 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "55047250c7a4c277c927e1ff71a7989b972be9c6a60e76864b3aed420ac441e9",
+ "runs": [
+  {
+   "at": "2026-11-18T02:38:36.079339+00:00",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "quality": {
+    "counts": {
+     "ok": 11
+    },
+    "attempted": 11,
+    "bad": 0,
+    "bad_share": 0.0,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
