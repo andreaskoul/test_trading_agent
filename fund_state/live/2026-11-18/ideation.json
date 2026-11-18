@@ -1,0 +1,401 @@
+{
+ "asof": "2026-11-18",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "Crusoe",
+  "usage": {
+   "prompt_tokens": 40868,
+   "completion_tokens": 38431,
+   "total_tokens": 79299,
+   "cost": 0.05796892,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 0,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.05796892,
+    "upstream_inference_prompt_cost": 0.01185172,
+    "upstream_inference_completions_cost": 0.0461172
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 37558,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"long_ideas\":[{\"ticker\":\"DIS\",\"hypothesis\":\"Earnings beat, multiple price-target hikes and $3B savings plan create positive catalyst; stock at 52-week high.\"},{\"ticker\":\"PANW\",\"hypothesis\":\"Q1 beat and $4.5B Applied Compute acquisition headline; strong news flow supports cybersecurity leader.\"},{\"ticker\":\"TTWO\",\"hypothesis\":\"GTA VI launch scores 99 and 65M copy forecast; shares fell 6% in week, setting up rebound.\"},{\"ticker\":\"LOW\",\"hypothesis\":\"Earnings and tariff-refund/value push; stock down 3.8% in week despite positive Lowe's commentary.\"},{\"ticker\":\"TJX\",\"hypothesis\":\"Q3 earnings beat on strong comps; off-price read-across supports shares after positive sector update.\"},{\"ticker\":\"ROST\",\"hypothesis\":\"TJX Q3 beat and Jefferies discount-retail call; ROST fell 5.7% in week, potential read-across rebound.\"},{\"ticker\":\"SMCI\",\"hypothesis\":\"Shares down 20% on AI bottleneck fears; PCIe Gen6 shipments and 57% fair-value discount suggest reversal.\"},{\"ticker\":\"FIS\",\"hypothesis\":\"Stock down 11.5% in week and 27% in month; checkout partnership and undervaluation headlines may spark rebound.\"},{\"ticker\":\"MU\",\"hypothesis\":\"Memory supply constraints tighter in 2027, management says cannot meet demand; shares down 13% in week.\"},{\"ticker\":\"AMAT\",\"hypothesis\":\"Chip-tool boom thesis reiterated by Bernstein; shares down 10.8% in week despite positive sector headlines.\"},{\"ticker\":\"PFE\",\"hypothesis\":\"In vivo CAR-T China deal headline adds pipeline catalyst; healthcare weakness may have overshot.\"},{\"ticker\":\"J\",\"hypothesis\":\"Selected as Anglian Water major-projects supply partner; contract news with elevated attention shock.\"}],\"short_ideas\":[{\"ticker\":\"UNH\",\"hypothesis\":\"CMS audits and breakup pressure plus Medicare Advantage selloff; down 13% in week, negative news flow persists.\"},{\"ticker\":\"HUM\",\"hypothesis\":\"Medicare Advantage insurers falling; down 13.6% in week on regulatory overhang, momentum remains negative.\"},{\"ticker\":\"CVS\",\"hypothesis\":\"Medicare Advantage regulatory pressure and UNH read-across; down 9.1% in week, negative catalyst intact.\"},{\"ticker\":\"CI\",\"hypothesis\":\"CMS anti-fraud rule hits health insurers; down 5.3% in week with negative sector headlines.\"},{\"ticker\":\"FCX\",\"hypothesis\":\"Copper plunge and Erste downgrade; down 17% in week, commodity and AI data-center unwind pressure.\"},{\"ticker\":\"NEM\",\"hypothesis\":\"Gold/silver/copper pounded after shock; down 11.8% in week, negative commodity momentum.\"},{\"ticker\":\"LITE\",\"hypothesis\":\"Marvell slide shrinks buyout value and Chinese import curbs; down 15% in week, negative optical AI news.\"},{\"ticker\":\"MRVL\",\"hypothesis\":\"Down 13.8% in week and 40.5% in month; optical/AI unwind and negative read-throughs persist.\"},{\"ticker\":\"CIEN\",\"hypothesis\":\"Warning-signal headline and 26% one-month drop; optical AI volatility supports short continuation.\"},{\"ticker\":\"NKE\",\"hypothesis\":\"Revenue decline outlook and $5B plan scrutiny; worst week since June, negative turnaround narrative.\"},{\"ticker\":\"GPN\",\"hypothesis\":\"Down 14.6% in week; 'Why Is Global Payments Stock Falling?' headline flags unresolved negative catalyst.\"},{\"ticker\":\"VRSN\",\"hypothesis\":\"Berkshire sold a third of one tech stock; VRSN faces negative overhang and elevated attention.\"}],\"themes\":[\"Consumer retail earnings beats and positive read-across\",\"Oversold AI hardware/software with positive fundamental headlines\",\"Medicare Advantage regulatory pressure hits health insurers\",\"Copper/gold selloff and optical AI unwind\",\"Single-stock catalysts: GTA VI launch, cybersecurity M&A, contracts\"]}"
+ },
+ "llm": {
+  "long_ideas": [
+   {
+    "ticker": "DIS",
+    "hypothesis": "Earnings beat, multiple price-target hikes and $3B savings plan create positive catalyst; stock at 52-week high."
+   },
+   {
+    "ticker": "PANW",
+    "hypothesis": "Q1 beat and $4.5B Applied Compute acquisition headline; strong news flow supports cybersecurity leader."
+   },
+   {
+    "ticker": "TTWO",
+    "hypothesis": "GTA VI launch scores 99 and 65M copy forecast; shares fell 6% in week, setting up rebound."
+   },
+   {
+    "ticker": "LOW",
+    "hypothesis": "Earnings and tariff-refund/value push; stock down 3.8% in week despite positive Lowe's commentary."
+   },
+   {
+    "ticker": "TJX",
+    "hypothesis": "Q3 earnings beat on strong comps; off-price read-across supports shares after positive sector update."
+   },
+   {
+    "ticker": "ROST",
+    "hypothesis": "TJX Q3 beat and Jefferies discount-retail call; ROST fell 5.7% in week, potential read-across rebound."
+   },
+   {
+    "ticker": "SMCI",
+    "hypothesis": "Shares down 20% on AI bottleneck fears; PCIe Gen6 shipments and 57% fair-value discount suggest reversal."
+   },
+   {
+    "ticker": "FIS",
+    "hypothesis": "Stock down 11.5% in week and 27% in month; checkout partnership and undervaluation headlines may spark rebound."
+   },
+   {
+    "ticker": "MU",
+    "hypothesis": "Memory supply constraints tighter in 2027, management says cannot meet demand; shares down 13% in week."
+   },
+   {
+    "ticker": "AMAT",
+    "hypothesis": "Chip-tool boom thesis reiterated by Bernstein; shares down 10.8% in week despite positive sector headlines."
+   },
+   {
+    "ticker": "PFE",
+    "hypothesis": "In vivo CAR-T China deal headline adds pipeline catalyst; healthcare weakness may have overshot."
+   },
+   {
+    "ticker": "J",
+    "hypothesis": "Selected as Anglian Water major-projects supply partner; contract news with elevated attention shock."
+   }
+  ],
+  "short_ideas": [
+   {
+    "ticker": "UNH",
+    "hypothesis": "CMS audits and breakup pressure plus Medicare Advantage selloff; down 13% in week, negative news flow persists."
+   },
+   {
+    "ticker": "HUM",
+    "hypothesis": "Medicare Advantage insurers falling; down 13.6% in week on regulatory overhang, momentum remains negative."
+   },
+   {
+    "ticker": "CVS",
+    "hypothesis": "Medicare Advantage regulatory pressure and UNH read-across; down 9.1% in week, negative catalyst intact."
+   },
+   {
+    "ticker": "CI",
+    "hypothesis": "CMS anti-fraud rule hits health insurers; down 5.3% in week with negative sector headlines."
+   },
+   {
+    "ticker": "FCX",
+    "hypothesis": "Copper plunge and Erste downgrade; down 17% in week, commodity and AI data-center unwind pressure."
+   },
+   {
+    "ticker": "NEM",
+    "hypothesis": "Gold/silver/copper pounded after shock; down 11.8% in week, negative commodity momentum."
+   },
+   {
+    "ticker": "LITE",
+    "hypothesis": "Marvell slide shrinks buyout value and Chinese import curbs; down 15% in week, negative optical AI news."
+   },
+   {
+    "ticker": "MRVL",
+    "hypothesis": "Down 13.8% in week and 40.5% in month; optical/AI unwind and negative read-throughs persist."
+   },
+   {
+    "ticker": "CIEN",
+    "hypothesis": "Warning-signal headline and 26% one-month drop; optical AI volatility supports short continuation."
+   },
+   {
+    "ticker": "NKE",
+    "hypothesis": "Revenue decline outlook and $5B plan scrutiny; worst week since June, negative turnaround narrative."
+   },
+   {
+    "ticker": "GPN",
+    "hypothesis": "Down 14.6% in week; 'Why Is Global Payments Stock Falling?' headline flags unresolved negative catalyst."
+   },
+   {
+    "ticker": "VRSN",
+    "hypothesis": "Berkshire sold a third of one tech stock; VRSN faces negative overhang and elevated attention."
+   }
+  ],
+  "themes": [
+   "Consumer retail earnings beats and positive read-across",
+   "Oversold AI hardware/software with positive fundamental headlines",
+   "Medicare Advantage regulatory pressure hits health insurers",
+   "Copper/gold selloff and optical AI unwind",
+   "Single-stock catalysts: GTA VI launch, cybersecurity M&A, contracts"
+  ]
+ },
+ "core": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM"
+ ],
+ "nominated": [
+  "DIS",
+  "PANW",
+  "TTWO",
+  "LOW",
+  "TJX",
+  "ROST",
+  "SMCI",
+  "FIS",
+  "MU",
+  "AMAT",
+  "PFE",
+  "J",
+  "UNH",
+  "HUM",
+  "CVS",
+  "CI",
+  "FCX",
+  "NEM",
+  "LITE",
+  "MRVL",
+  "CIEN",
+  "NKE",
+  "GPN",
+  "VRSN"
+ ],
+ "rule_based": [
+  "CTVA",
+  "SNDK",
+  "COIN",
+  "SMCI",
+  "LITE",
+  "MRNA",
+  "AES",
+  "TSN",
+  "TECH",
+  "DPZ",
+  "TSCO",
+  "FE",
+  "BRK.B",
+  "TSN",
+  "LOW",
+  "TJX",
+  "HD",
+  "TTWO"
+ ],
+ "coverage": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM",
+  "DIS",
+  "PANW",
+  "TTWO",
+  "LOW",
+  "TJX",
+  "ROST",
+  "SMCI",
+  "FIS",
+  "MU",
+  "AMAT",
+  "PFE",
+  "J",
+  "UNH",
+  "HUM",
+  "CVS",
+  "CI",
+  "FCX",
+  "NEM",
+  "LITE",
+  "MRVL",
+  "CIEN",
+  "NKE",
+  "GPN",
+  "VRSN",
+  "CTVA"
+ ],
+ "why": {
+  "NVDA": [
+   "core"
+  ],
+  "AAPL": [
+   "core"
+  ],
+  "MSFT": [
+   "core"
+  ],
+  "GOOGL": [
+   "core"
+  ],
+  "AMZN": [
+   "core"
+  ],
+  "META": [
+   "core"
+  ],
+  "AVGO": [
+   "core"
+  ],
+  "TSLA": [
+   "core"
+  ],
+  "AMD": [
+   "core"
+  ],
+  "INTC": [
+   "core"
+  ],
+  "TSM": [
+   "core"
+  ],
+  "JPM": [
+   "core"
+  ],
+  "LLY": [
+   "core"
+  ],
+  "WMT": [
+   "core"
+  ],
+  "BRK.B": [
+   "core",
+   "rule"
+  ],
+  "ORCL": [
+   "core"
+  ],
+  "CRM": [
+   "core"
+  ],
+  "NFLX": [
+   "core"
+  ],
+  "BA": [
+   "core"
+  ],
+  "XOM": [
+   "core"
+  ],
+  "DIS": [
+   "nominated"
+  ],
+  "PANW": [
+   "nominated"
+  ],
+  "TTWO": [
+   "nominated",
+   "rule"
+  ],
+  "LOW": [
+   "nominated",
+   "rule"
+  ],
+  "TJX": [
+   "nominated",
+   "rule"
+  ],
+  "ROST": [
+   "nominated"
+  ],
+  "SMCI": [
+   "nominated",
+   "rule"
+  ],
+  "FIS": [
+   "nominated"
+  ],
+  "MU": [
+   "nominated"
+  ],
+  "AMAT": [
+   "nominated"
+  ],
+  "PFE": [
+   "nominated"
+  ],
+  "J": [
+   "nominated"
+  ],
+  "UNH": [
+   "nominated"
+  ],
+  "HUM": [
+   "nominated"
+  ],
+  "CVS": [
+   "nominated"
+  ],
+  "CI": [
+   "nominated"
+  ],
+  "FCX": [
+   "nominated"
+  ],
+  "NEM": [
+   "nominated"
+  ],
+  "LITE": [
+   "nominated",
+   "rule"
+  ],
+  "MRVL": [
+   "nominated"
+  ],
+  "CIEN": [
+   "nominated"
+  ],
+  "NKE": [
+   "nominated"
+  ],
+  "GPN": [
+   "nominated"
+  ],
+  "VRSN": [
+   "nominated"
+  ],
+  "CTVA": [
+   "rule"
+  ]
+ },
+ "prompt_chars": 115102
+}
