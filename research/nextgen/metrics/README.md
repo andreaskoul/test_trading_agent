@@ -11,4 +11,4 @@ This module distinguishes the incumbent's **legacy raw-return/volatility ratio**
 
 Run synthetic tests from the **repository root**: `python -m unittest -v research.nextgen.metrics.test_nextgen_metrics` or `python -m pytest -q research/nextgen` (numpy and pytest).
 
-References: Ledoit & Wolf, *Robust Performance Hypothesis Testing with the Sharpe Ratio*, J Empirical Finance 2008, DOI 10.1016/j.jempfin.2008.03.005. Bailey & López de Prado, *Deflated Sharpe Ratio*, JPM 2014, DOI 10.3905/jpm.2014.40.5.094.
+References: Ledoit & Wolf, *Robust Performance Hypothesis Testing with the Sharpe Ratio*, J Empirical Finance 2008, DOI 10.1016/j.jempfin.2008.03.002. Bailey & López de Prado, *Deflated Sharpe Ratio*, JPM 2014, DOI 10.3905/jpm.2014.40.5.094.
