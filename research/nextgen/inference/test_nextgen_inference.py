@@ -48,4 +48,9 @@ class TestInference(unittest.TestCase):
     def test_holm_invalid(self):
         for p in [[],[.01,np.nan],[1.01],[.01,-.1],[[.01,.02]]]:
             with self.assertRaises(ValueError):holm_adjust(p)
+
+    def test_excess_sharpe_requires_nonzero_variance(self):
+        a,b,c=self.sample()
+        with self.assertRaises(ValueError):
+            paired_sharpe_block_ci(np.full(len(a),.015),b,np.zeros_like(c),draws=200)
 if __name__=='__main__':unittest.main()
