@@ -623,3 +623,19 @@ The forward record already carries the reference with hysteresis and the covaria
 turnover law orders the configurations, but its k is not constant (it falls as ρ rises).
 
 The forward-job build and the Q9 agent were stopped by the usage limit on 2026-11-14 and resumed on 2026-11-19.
+
+## Step 32 — disk cleanup (owner: delete obsolete trials), 2026-11-19
+
+Free disk rose from 2.1 to 10 GB. Deleted, all regenerable or belonging to closed branches, with every result already
+recorded in git:
+* `quant-tf/.cache/quant_trials/chronos2_ft_2012..2025` and `softmax_diag_c2ft` (6.8 GB): fine-tuned Chronos-2
+  checkpoints of a trial with no pass. Its scores are kept in `sp500_tf_chronos2.npz`, and the live research job
+  uses its own copies in `~/.fund-runner/cache/spx_models`.
+* `.cache/tree/preds/{Q1_seqnet, Q2_xsattn, Q3_rankgbm, Q5_rl, Q7_features, Q8_neutral, N4_news}` (closed branches).
+* `.cache/tree/r2/{pit,hind}_panel.npz`, `*_dvd.npy`, probe scripts (rebuilt by `R2_pit/r2.py build`).
+* The forward agent's scratch dry-run copy.
+
+Kept:
+* every input to the forward test (`y2026`, `broad`);
+* MASTER and tree scores;
+* the construction leads (Q4, Q6), Q9 and R2 predictions.

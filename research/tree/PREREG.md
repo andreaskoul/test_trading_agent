@@ -561,3 +561,22 @@ the MASTER transformer long/short book; 2020-2025 21.7 %/yr, net Sharpe 0.94), a
 * sequence nets, attention, ranking losses and reinforcement learning;
 * sector neutralisation;
 * longer tree horizons.
+
+### Layer 4 addition (2026-11-19, owner: "an architecture enhancement could need a retrain"; before any Layer 4 result)
+
+**A, MASTER architecture enhancements, with retraining.** Two stages; the candidates count within the round's cap of 10.
+* **Stage 1, development screen (data ≤ 2019 only).** Train ≤ 2017, validate 2018-2019. Three seeds. Base: MASTER as
+  run (lookback 8, grid d_model {64, 256} × β {2, 5}, the paper's selection). Variants, one change each:
+  * A1, longer lookback: 8 → 20 sessions (weekly targets need more temporal context than the paper's daily CSI set);
+  * A2, richer market-guided gate: MASTER's gate input extended with SPY returns at 5/21/63 sessions, SPY 21-session
+    volatility and cross-sectional dispersion;
+  * A3, rank-correlation loss: the negative cross-sectional Pearson correlation of predictions with ranked targets,
+    in place of MSE (ranking losses target IC directly);
+  * A4, multi-horizon heads: a shared encoder with 5-, 10- and 20-day heads trained jointly; the score is the 5-day
+    head.
+  * Gate: the paired weekly IC increment over the base on 2018-2019 has NW t ≥ 1.0 and is positive in both years.
+    At most the two best by mean increment go on; if none passes, stage 2 does not run.
+* **Stage 2, walk-forward 2020-2025.** Annual refits on all data before each test year, 3 seeds. Scored at
+  whole-fund level exactly as B1-B5: paired against B0, Holm, Deflated Sharpe Ratio, forward shadow on a pass.
+* **Compute.** About 1 MPS hour per seed per year. Training runs only outside 15:30-21:15 UTC on weekdays (the
+  fund's trading job) and stops if free disk falls below 6 GB.
