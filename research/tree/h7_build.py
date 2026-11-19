@@ -31,9 +31,9 @@ QT = os.path.join(os.path.dirname(ROOT), "quant-tf")
 QTR = os.path.join(QT, "research", "quant_trials")
 sys.path.insert(0, HERE)
 sys.path.insert(0, QTR)
-Y26 = os.path.join(ROOT, ".cache", "tree", "y2026")
+Y26 = os.environ.get("H7_Y26", os.path.join(ROOT, ".cache", "tree", "y2026"))     # override: forward dry runs, tests
 BROAD = os.path.join(ROOT, ".cache", "tree", "broad")
-OUTD = os.path.join(HERE, "H7_build")
+OUTD = os.environ.get("H7_OUTD", os.path.join(HERE, "H7_build"))
 EXT_PX = os.path.join(Y26, "sp500_close_ext.parquet")
 SP_PANEL = os.path.join(Y26, "sp_panel.npz")
 BR_PANEL = os.path.join(Y26, "broad_panel.npz")
@@ -57,20 +57,62 @@ def checks(key, val):
 
 # ------------------------------------------------------------------------------------------------ data
 def fetch_end():
-    """Exclusive bound on the sessions kept: the day after the `end` in _fetch_*.json. The coordinator set `end` to the
-    last complete session (2026-11-12) after the first attempt (end 2026-11-13, before the US close) was refused (403)
-    with no bar saved; a bar after `end`, if any, is dropped and counted."""
-    ends = [json.load(open(p))["end"] for p in glob.glob(os.path.join(Y26, "_fetch_*.json"))]
-    assert len(set(ends)) == 1, ends
-    return pd.Timestamp(ends[0]) + pd.Timedelta(days=1)
+    """Exclusive bound on the sessions kept: the day after the last complete fetch window's end. The frozen y2026
+    window ends 2026-11-12 (the coordinator set `end` to the last complete session after the first attempt, end
+    2026-11-13, was refused (403) with no bar saved); forward windows (fetch_broad.py fwd/fwdraw, Amendment 9) follow
+    it. The adjusted and the raw fetch must end on the same session; a bar after `end`, if any, is dropped."""
+    import fetch_broad as FB
+    ends = {adj: [w[2] for w in FB.fetch_windows(adj, Y26)] for adj in ("all", "raw")}
+    assert ends["all"] and ends["all"][-1] == ends["raw"][-1], ends
+    return pd.Timestamp(ends["all"][-1]) + pd.Timedelta(days=1)
 
 
-def read_chunks(sub):
-    files = sorted(glob.glob(os.path.join(Y26, sub, "*.parquet")))
-    b = pd.concat([f for f in (pd.read_parquet(p) for p in files) if len(f)])
+def _read_folder(folder):
+    files = sorted(glob.glob(os.path.join(folder, "*.parquet")))
+    fs = [f for f in (pd.read_parquet(p) for p in files) if len(f)]
+    b = pd.concat(fs) if fs else pd.DataFrame({"date": [], "ticker": [], "close": [], "volume": []})
     b["close"], b["volume"] = b["close"].astype(np.float64), b["volume"].astype(np.float64)
     b["date"] = pd.to_datetime(b["date"])
     return b, len(files)
+
+
+LINK = {}                                                    # per forward window: chain-link counts (for the checks)
+
+
+def read_chunks(sub):
+    """Bars of the frozen y2026 fetch, then of each complete forward window (fwd_<end>/<sub>), oldest first.
+
+    A forward window starts ON the previous window's end (one overlap session). Adjusted closes (sub "chunks") of the
+    new window are chain-linked per ticker on that session: scale = earlier close / new close, because adjustment=all
+    is as of the fetch date and a dividend or split inside the new window rescales its bars, not the frozen ones. A
+    ticker without a bar on the overlap session in both keeps scale 1 and is counted. The overlap session's bars are
+    then dropped from the new window, so the earlier, frozen bar always stands (CLAUDE.md rule 4). Raw bars are never
+    rescaled; on the overlap session the earlier bar stands and disagreements are counted.
+    Without forward windows this returns exactly the frozen y2026 bars, as before. Returns (long frame, files read)."""
+    import fetch_broad as FB
+    b, nfiles = _read_folder(os.path.join(Y26, sub))
+    adj = "all" if sub == "chunks" else "raw"
+    for folder, start, end in FB.fetch_windows(adj, Y26)[1:]:
+        n, k = _read_folder(os.path.join(folder, sub))
+        nfiles += k
+        d0 = pd.Timestamp(start)
+        old0 = b[b.date == d0].groupby("ticker")["close"].mean()
+        new0 = n[n.date == d0].groupby("ticker")["close"].mean()
+        n = n[n.date > d0].copy()
+        both = old0.index.intersection(new0.index)
+        info = {"window": [start, end], "tickers_after_overlap": int(n.ticker.nunique())}
+        if sub == "chunks":
+            scale = (old0[both] / new0[both]).replace([np.inf, -np.inf], np.nan).dropna()
+            linked = n.ticker.isin(scale.index)
+            n["close"] = n["close"] * n.ticker.map(scale).fillna(1.0)
+            info["tickers_linked"] = int(n.ticker[linked].nunique())
+            info["tickers_scale_1_no_overlap_bar"] = int(n.ticker[~linked].nunique())
+        else:
+            info["overlap_raw_close_disagreements"] = int(((old0[both] - new0[both]).abs() > 1e-9).sum())
+        LINK[(sub, start)] = info
+        b = pd.concat([b, n], ignore_index=True)
+    LINK[(sub, "duplicate_date_ticker_rows")] = int(b.duplicated(["date", "ticker"]).sum())
+    return b, nfiles
 
 
 def status():
@@ -320,6 +362,7 @@ def broad_panel():
     oldr = read_old("chunks_raw", excl)
     new, _ = read_chunks("chunks")
     newr, _ = read_chunks("chunks_raw")
+    checks("step3_forward_windows", {" ".join(map(str, k)): v for k, v in LINK.items()})
     new, newr = new[~new.ticker.isin(excl) & (new.date < end)], newr[~newr.ticker.isin(excl) & (newr.date < end)]
     c_old = old.pivot_table(index="date", columns="ticker", values="close").reindex(S0)
     c_new = new.pivot_table(index="date", columns="ticker", values="close").reindex(S)
@@ -429,20 +472,20 @@ def trees(year):
             "pred_thursdays": len(rows), "shape": list(p.shape),
             "broad_names_scored_per_thursday": {"min": int(np.isfinite(pb[rows]).sum(1).min()),
                                                 "max": int(np.isfinite(pb[rows]).sum(1).max())}}
-    if year == 2026:
-        np.save(os.path.join(Y26, "trees_2026.npy"), p.astype(np.float32))
+    if year >= 2026:                                   # 2027 on: the January refit (Amendment 9), trees_<year>.npy
+        np.save(os.path.join(Y26, "trees_%d.npy" % year), p.astype(np.float32))
         q = terciles(D, isb, rows)
-        np.savez(os.path.join(Y26, "trees_dv_tercile_2026.npz"), rows=rows, dates=np.asarray(S[rows].values),
+        np.savez(os.path.join(Y26, "trees_dv_tercile_%d.npz" % year), rows=rows, dates=np.asarray(S[rows].values),
                  names=np.array(D["names"]), tercile=q)
         meta["tercile_counts_per_thursday_min"] = {k: int((q == k).sum(1).min()) for k in (1, 2, 3)}
         # agreement of the two 2026 prediction vectors (no outcome involved)
         mh = os.path.join(Y26, "master_h5_2026.npy")
-        if os.path.exists(mh):
+        if year == 2026 and os.path.exists(mh) and np.load(mh, mmap_mode="r").shape[0] == len(S):
             m = np.load(mh)
             spn = len(m[0])
             rc = [pd.Series(p[t][:spn]).corr(pd.Series(m[t]), method="spearman") for t in rows]
             meta["rank_corr_trees_vs_master_on_sp500_names_2026"] = float(np.nanmean(rc))
-        checks("step4_trees_2026", meta)
+        checks("step4_trees_%d" % year, meta)
     else:
         import read3 as R3
         D0, _ = R3.load_panel()

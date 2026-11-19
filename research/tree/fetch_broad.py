@@ -4,6 +4,8 @@ Run through the redacting wrapper (needs the Alpaca keys). Resumable: finished c
     python research/tree/fetch_broad.py symbols    # Alpaca assets (active + inactive) + Nasdaq Trader flags -> symbols.json
     python research/tree/fetch_broad.py bars       # daily bars 2016-01-04 .. 2025-12-31, 50 symbols a request
     python research/tree/fetch_broad.py raw        # the same, unadjusted, for eligibility only (Amendment 4)
+    python research/tree/fetch_broad.py fwd        # forward phase (Amendment 9): new bars since the last window,
+    python research/tree/fetch_broad.py fwdraw     #   adjusted / raw, into .cache/tree/y2026/fwd_<end>/chunks{,_raw}
 """
 import io
 import json
@@ -136,6 +138,71 @@ def y2026(adj):
     bars(adj, "2025-01-02", end, out, extra=sp500_names())
 
 
+Y26 = os.environ.get("H7_Y26", os.path.join(ROOT, ".cache", "tree", "y2026"))
+
+
+def fetch_windows(adj, y26=None):
+    """Complete fetch windows for `adj`, oldest first: the frozen y2026 fetch, then each fwd_<end> folder whose meta
+    says complete. Returns [(folder, start, end)]. Raises if two windows overlap or leave a gap of sessions."""
+    y26 = y26 or Y26
+    out = []
+    m0 = os.path.join(y26, f"_fetch_{adj}.json")
+    if os.path.exists(m0):
+        j = json.load(open(m0))
+        out.append((y26, j["start"], j["end"]))
+    for d in sorted(os.listdir(y26)) if os.path.isdir(y26) else []:
+        p = os.path.join(y26, d, f"_fetch_{adj}.json")
+        if d.startswith("fwd_") and os.path.exists(p):
+            j = json.load(open(p))
+            if j.get("complete"):
+                out.append((os.path.join(y26, d), j["start"], j["end"]))
+    out.sort(key=lambda w: w[2])
+    for (_, _, e0), (f1, s1, _) in zip(out, out[1:]):
+        if s1 != e0:                     # each forward window starts ON the previous end: one overlap session
+            raise SystemExit(f"fetch windows do not chain: {f1} starts {s1}, previous ends {e0}")
+    return out
+
+
+def last_complete_session():
+    """The last complete US session before today (UTC), as y2026() chooses it; FWD_END overrides (tests, catch-up)."""
+    if os.environ.get("FWD_END"):
+        return os.environ["FWD_END"]
+    return str((pd.Timestamp.utcnow().tz_localize(None).normalize() - pd.tseries.offsets.BDay(1)).date())
+
+
+def forward(adj):
+    """Forward phase (PREREG Layer 3, Amendment 9): bars from the last complete window's end (one overlap session, on
+    which h7_build chain-links the adjusted closes: adjustment=all is as of the fetch date, so a dividend or split in
+    the new window rescales its bars, not the frozen ones) to the last complete session, into a NEW folder .cache/tree/y2026/fwd_<end>/chunks{,_raw}. Never touches the frozen y2026
+    chunks or an earlier fwd folder (CLAUDE.md rule 4). Resumable: a half-finished fwd_<end> keeps its chunks and its
+    start; its meta is marked complete only when every chunk succeeded (bars() exits 1 otherwise)."""
+    wins = fetch_windows(adj)
+    if not wins:
+        raise SystemExit(f"no frozen y2026 fetch for {adj}: run y2026 first")
+    prev_end = wins[-1][2]
+    end = last_complete_session()
+    if pd.Timestamp(end) <= pd.Timestamp(prev_end):
+        print(f"{adj}: nothing to fetch (last window ends {prev_end}, last complete session {end})")
+        return
+    start = prev_end
+    folder = os.path.join(Y26, f"fwd_{end}")
+    meta = os.path.join(folder, f"_fetch_{adj}.json")
+    if os.path.exists(meta):
+        j = json.load(open(meta))
+        if j["start"] != start or j["end"] != end:
+            raise SystemExit(f"{meta} has window {j['start']}..{j['end']}, expected {start}..{end}; not touching it")
+        if j.get("complete"):
+            print(f"{adj}: {folder} already complete")
+            return
+    os.makedirs(folder, exist_ok=True)
+    json.dump({"end": end, "start": start, "adj": adj, "complete": False}, open(meta, "w"))
+    bars(adj, start, end, folder, extra=sp500_names())          # exits 1 on any failed chunk: meta stays incomplete
+    json.dump({"end": end, "start": start, "adj": adj, "complete": True,
+               "completed": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, open(meta, "w"))
+    print(f"{adj}: {folder} complete, {start}..{end}")
+
+
 if __name__ == "__main__":
     {"symbols": symbols, "bars": bars, "raw": lambda: bars("raw"),
-     "y2026": lambda: y2026("all"), "y2026raw": lambda: y2026("raw")}[sys.argv[1]]()
+     "y2026": lambda: y2026("all"), "y2026raw": lambda: y2026("raw"),
+     "fwd": lambda: forward("all"), "fwdraw": lambda: forward("raw")}[sys.argv[1]]()

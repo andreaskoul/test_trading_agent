@@ -1,0 +1,24 @@
+{
+ "task": "H9 forward phase (PREREG Layer 3, Amendment 9): h9_forward.py + RUNBOOK (part 1, done); weekly job build, not loaded (part 2, coordinator 2026-11-14)",
+ "rule": "never compute or print any comparison between constructions' net returns or Sharpes; mechanical quantities only; no launchctl load; no data fetch; no git by me (weekly.sh does git when it runs later); never fill the disk (fund machine)",
+ "python": "python3, OMP_NUM_THREADS=3; sp_panel needs ~/.cache/quant-tf-venv/bin/python",
+ "done": [
+  "part 1: h9_forward.py, selftest 16/16, backfill run 1 (364 records) + run 2 (0 appended, 0 drift, file byte-identical), all checks pass incl. H7 reproduction exact and dv reproduction (max rel 6e-8)",
+  "part 2: fetch_broad.py fwd/fwdraw (fwd_<end> folders, one overlap session, complete flag, never rewrites)",
+  "part 2: h7_build.py read_chunks/fetch_end read complete fwd windows, chain-link adjusted closes on the overlap; H7_Y26/H7_OUTD overrides; trees(year>=2026) -> trees_<year>.npy",
+  "part 2: h9_forward.py raw_dollar_volume via h7_build.read_chunks; --no-backfill; panelcheck, treescheck, fwdtest",
+  "part 2: weekly.sh, alert.py, plist template, INSTALL.md, RUNBOOK updated",
+  "fwdtest 2026-11-14 on a synthetic window: sp_panel/broad_panel extended to 2026-11-13 with all H7 equality checks as before; 7419 tickers linked, 0 raw disagreements, 0 duplicates; final JSON printed 4 of 4 pass true (panelcheck, chain-link 1%, treescheck, overall); FWDTEST.json and logs lost to the /private/tmp purge"
+ ],
+ "running": [],
+ "blocked": "disk: 1.0 GB free on 2026-11-19 (100% used). fwdtest and a full weekly run need ~1.5 GB; weekly.sh refuses below MIN_FREE_GB 3. Rerun fwdtest and the full dry run once >= 3 GB is free.",
+ "dry_run_2026_11_19": [
+  "weekly.sh --no-fetch --no-push --no-alert in scratch: stopped at preflight (0 GB free < 3), exit 1, dry alert resolved gh issue + runner.imessage",
+  "step 4 on real data, scratch output (books --through 2026-11-19 --no-backfill): 0 forward records, all 9 checks pass, no input defects"
+ ],
+ "next": [
+  "coordinator: free >= 3 GB, then rerun `H9_SCRATCH=<dir> python3 research/tree/h9_forward.py fwdtest` and the full dry run (scratch dryrun recipe in INSTALL.md section 2)",
+  "coordinator: commit the forward-phase code to research/tree-layer3, create the job worktree, load the plist (INSTALL.md)"
+ ],
+ "updated": "2026-11-19"
+}

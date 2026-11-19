@@ -1,0 +1,82 @@
+{
+ "run": "2026-11-14T14:16:31Z",
+ "through": "2026-11-12",
+ "weeks_simulated": 91,
+ "first_week": "2025-01-02",
+ "last_week": "2026-10-29",
+ "forward_weeks": 0,
+ "dv_reproduction": {
+  "cells_compared": 1801557,
+  "cells_dv_zero": 2495,
+  "nan_pattern_mismatch_cells": 0,
+  "max_rel_diff": 5.950661019493708e-08,
+  "max_abs_where_dv_zero": 0.0,
+  "pass": true
+ },
+ "dollar_neutral_max_abs_net_weight": {
+  "F0": 6.938893903907228e-17,
+  "F1": 1.0408340855860843e-16,
+  "F2": 0.09406404068195148
+ },
+ "beta_exposure_max_abs": {
+  "F0": 0.4820181375381931,
+  "F1": 0.4134715301970466,
+  "F2": 0.08660901775275262
+ },
+ "gross_weight_min_max": {
+  "F0": [
+   0.9999999999999999,
+   1.0000000000000002
+  ],
+  "F1": [
+   0.9999999999999998,
+   1.0
+  ],
+  "F2": [
+   0.9999999999999997,
+   1.0000000000000002
+  ]
+ },
+ "F2_target_max_abs_net_weight": 4.822531263215524e-16,
+ "F2_target_max_abs_beta_exposure": 3.2612801348363973e-16,
+ "F2_target_gross_min_max": [
+  0.9999999999999998,
+  1.0000000000000002
+ ],
+ "adv_fallback_share_of_traded_names": {
+  "F0": 0.00015523731905149997,
+  "F1": 0.00014566036165386935,
+  "F2": 0.0001034875297526648
+ },
+ "appended": {
+  "forward_records": 0,
+  "backfill_records": 0,
+  "forward_weight_lines": 0
+ },
+ "drift_vs_recorded": {
+  "forward": [],
+  "backfill": [],
+  "n_forward": 0,
+  "n_backfill": 0
+ },
+ "input_defects": [],
+ "pass": {
+  "dv_reproduction": true,
+  "F0_dollar_neutral": true,
+  "F1_dollar_neutral": true,
+  "F2_target_dollar_neutral": true,
+  "F2_target_beta_neutral": true,
+  "F2_gross_1": true,
+  "adv_fallback_under_2pct": true,
+  "no_drift": true,
+  "no_input_defect": true,
+  "h7_reproduction": true
+ },
+ "h7_reproduction": {
+  "weeks_compared": 43,
+  "same_dates": true,
+  "max_abs_diff_weekly_net": 0.0,
+  "max_abs_diff_weekly_turnover": 0.0,
+  "pass": true
+ }
+}

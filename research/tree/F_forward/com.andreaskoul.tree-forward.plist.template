@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  H9 forward weekly job (PREREG Layer 3, Amendment 9). TEMPLATE: not loaded by anyone but the coordinator.
+  Replace @JOB_WT@ and @HOME@ (see INSTALL.md), copy to ~/Library/LaunchAgents/com.andreaskoul.tree-forward.plist.
+
+  Schedule: launchd calendar times are LOCAL (this Mac: EET/EEST), and Saturday 14:00 UTC is 16:00 in winter and
+  17:00 in summer. So launchd starts the script every hour, and weekly.sh decides in UTC: it runs from Saturday 14:00
+  UTC through Sunday 23:59 UTC, at most once per ISO week, and otherwise exits 0 at once. A Mac asleep at 14:00 UTC
+  runs it at the next hourly start after waking, within the window.
+-->
+<plist version="1.0"><dict>
+  <key>Label</key><string>com.andreaskoul.tree-forward</string>
+  <key>ProgramArguments</key><array>
+    <string>/bin/bash</string>
+    <string>@JOB_WT@/research/tree/F_forward/weekly.sh</string>
+    <string>--scheduled</string>
+  </array>
+  <key>StartInterval</key><integer>3600</integer>
+  <key>RunAtLoad</key><false/>
+  <key>StandardOutPath</key><string>@HOME@/Library/Logs/fund/tree-forward.log</string>
+  <key>StandardErrorPath</key><string>@HOME@/Library/Logs/fund/tree-forward.log</string>
+  <key>EnvironmentVariables</key><dict>
+    <key>PATH</key><string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>GIT_TERMINAL_PROMPT</key><string>0</string>
+  </dict>
+</dict></plist>
