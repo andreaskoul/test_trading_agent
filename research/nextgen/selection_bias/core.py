@@ -53,6 +53,8 @@ def run(*, n_candidates=162, weeks=302, repetitions=1000,
         fwd=weekly_mu+weekly_sigma*(sqrt_c*rng.standard_normal(weeks)+sqrt_i*rng.standard_normal(weeks))
         best_forward[j]=k*fwd.mean()/fwd.std(ddof=1)
     selected_above=best_insample>threshold
+    optimism=best_insample-best_forward
+    mc_se_optimism=float(optimism.std(ddof=1)/sqrt(repetitions))
     return {
         'method':'synthetic iid normal equal-alpha one-factor correlated family',
         'n_candidates':int(n_candidates),'weeks_per_period':int(weeks),
@@ -61,7 +63,8 @@ def run(*, n_candidates=162, weeks=302, repetitions=1000,
         'seed':int(seed),
         'mean_selected_insample_sharpe':float(best_insample.mean()),
         'mean_selected_forward_sharpe':float(best_forward.mean()),
-        'mean_selection_optimism':float((best_insample-best_forward).mean()),
+        'mean_selection_optimism':float(optimism.mean()),
+        'monte_carlo_se_of_mean_optimism':mc_se_optimism,
         'fraction_selected_insample_above_threshold':float(selected_above.mean()),
         'fraction_selected_insample_above_threshold_but_population_below':
             float(selected_above.mean()) if true_sr<threshold else 0.0,
