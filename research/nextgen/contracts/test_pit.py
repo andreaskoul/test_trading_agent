@@ -36,4 +36,10 @@ class PointInTimeTests(unittest.TestCase):
         with self.assertRaises(ValueError):purged_training_rows([t(1)],[t(2)],t(4),timedelta(days=-1))
     def test_target_overlap_purged_even_if_features_past(self):
         self.assertEqual(purged_training_rows([t(1),t(2)],[t(4),t(6)],t(4)),[False,False])
+
+    def test_rejects_empty_ids_wrong_records_and_impossible_target_end(self):
+        with self.assertRaises(ValueError):
+            PointInTimeRecord("", "v", t(1), t(2), t(3))
+        with self.assertRaises(TypeError): assert_point_in_time(["ticker:NOW"], t(4))
+        with self.assertRaises(ValueError): purged_training_rows([t(4)], [t(3)], t(6))
 if __name__=="__main__":unittest.main()
