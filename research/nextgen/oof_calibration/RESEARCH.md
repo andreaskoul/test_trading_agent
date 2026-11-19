@@ -52,7 +52,7 @@ Compare 12-date rolling ridge (minimum 8 dates) against a one-dimensional scalar
 | Null | **0.00014076097** | 0.00014080703 | **0.00014076097** | -0.0000000461 ±0.0000000216 |
 | Break | **0.00014076097** | 0.00014294858 | 0.00014124008 | -0.0000017085 ±0.0000001236 |
 
-The state-space filter more rapidly suppresses spurious forecasts after a break or under the null, but badly underperforms the rolling baseline in a stable predictive regime. It still loses to zero when the signal disappears. There is no universal winner and no basis for a trading strategy recommendation.
+The state-space filter refuses out-of-sequence delayed historical labels, which require a replay or a separate out-of-sequence measurement algorithm. It more rapidly suppresses spurious forecasts after a break or under the null, but badly underperforms the rolling baseline in a stable predictive regime. It still loses to zero when the signal disappears. There is no universal winner and no basis for a trading strategy recommendation.
 
 ## Reproducibility
 
@@ -62,7 +62,7 @@ Commands from repository root:
     python -m pytest -q research/nextgen
     python -m research.nextgen.oof_calibration.reproduce
 
-Executed locally with Python 3.13, NumPy, SciPy and pytest. **34 new unit tests pass** for data availability, future label perturbation, absence of in-sample decisions, missing issuer outcomes, date-balanced ranking, input permutation invariance, Kalman uncertainty projection and deterministic experiment settings. Package statement coverage in a separate 33-test run: 92% (318 statements / 26 missed). The additional reproduction-contract test was added afterward; all 34 now pass. Branch-specific four previously merged modules plus this lane: **71 passed + 8 subtests**. Local cross-branch compatibility with STILL-UNMERGED PRs #176–#179: **138 passed + 32 subtests**. GitHub source blob hashes of all seven Python files are verified against exact locally tested files.
+Executed locally with Python 3.13, NumPy, SciPy and pytest. **35 new unit tests pass** for data availability, future label perturbation, absence of in-sample decisions, missing issuer outcomes, date-balanced ranking, input permutation invariance, Kalman uncertainty projection, out-of-sequence late-label fail-closed checks, and deterministic experiment settings. Package statement coverage in a separate 33-test run: 92% (318 statements / 26 missed). The additional reproduction-contract test was added afterward; all 35 now pass. Branch-specific four previously merged modules plus this lane: **72 passed + 8 subtests**. Local cross-branch compatibility with STILL-UNMERGED PRs #176–#179: **139 passed + 32 subtests**. GitHub source blob hashes of all seven Python files are verified against exact locally tested files.
 
 ## Next actionable, NOT yet executed
 
