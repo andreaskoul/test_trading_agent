@@ -1,0 +1,2350 @@
+{
+ "records": {
+  "INTU": {
+   "ticker": "INTU",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Application Software",
+   "last_release": "2026-08-25 20:02:29+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/896878/000089687826000029/fy26q4earningspressrelease.htm",
+   "release_doc": "type EX-99.01",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Total revenue growth and Q1 guide",
+      "last_report": "Q4 total revenue rose 14% to $4.4B; FY26 revenue rose 14% to $21.4B.",
+      "guidance": "Q1 FY27 revenue $4.294-$4.313B, +11%; FY27 revenue $23.279-$23.512B, +9-10%."
+     },
+     {
+      "id": "D2",
+      "name": "Global Business Solutions Online Ecosystem",
+      "last_report": "Q4 Global Business Solutions revenue rose 14% to $3.4B; Online Ecosystem rose 17%; QuickBooks Online Accounting rose 20%.",
+      "guidance": "FY27 Global Business Solutions revenue $13.068-$13.158B, +13-14%."
+     },
+     {
+      "id": "D3",
+      "name": "Credit Karma consumer revenue",
+      "last_report": "Q4 Consumer revenue rose 14% to $930M; Credit Karma rose 16% to $743M on personal loans, auto insurance, credit cards.",
+      "guidance": "FY27 Credit Karma revenue $2.919-$2.973B, +11-13%; Consumer revenue $8.955-$9.088B, +4-6%."
+     },
+     {
+      "id": "D4",
+      "name": "Mailchimp separation and drag",
+      "last_report": "Q4 ex-Mailchimp GBS grew 15% and Online Services 21%; Mailchimp will be separate reportable segment in FY27.",
+      "guidance": "FY27 Mailchimp revenue $1.256-$1.266B, -1% to 0%."
+     },
+     {
+      "id": "D5",
+      "name": "Operating income and EPS",
+      "last_report": "Q4 GAAP operating income rose 20%; FY26 non-GAAP operating income rose 18%; non-GAAP EPS rose 20% to $24.27.",
+      "guidance": "Q1 non-GAAP operating income $902-$915M, +26-28%; non-GAAP EPS $2.44-$2.48, +30-33%; now includes SBC."
+     }
+    ],
+    "guidance": "Q1 FY27 revenue $4.294-$4.313B (+11%); non-GAAP operating income $902-$915M; non-GAAP EPS $2.44-$2.48. FY27 revenue $23.279-$23.512B (+9-10%); non-GAAP operating income $8.063-$8.145B; non-GAAP EPS $22.88-$23.12. Non-GAAP now includes share-based compensation.",
+    "kill_conditions": [
+     "Q1 revenue below $4.294B or FY27 revenue guidance cut below $23.279B.",
+     "Credit Karma growth below 11% or Mailchimp revenue declines more than 1%.",
+     "Q1 non-GAAP EPS below $2.44 or non-GAAP operating income below $902M."
+    ]
+   },
+   "card_provider": "Novita",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 40,
+    "found": 26,
+    "share": 0.65,
+    "missing": [
+     "1.256",
+     "1.266",
+     "13.068",
+     "13.158",
+     "2.919",
+     "2.973",
+     "23.279",
+     "23.512",
+     "4.294",
+     "4.313"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 370,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Intuit unveils new AI-driven features across platform for businesses and accountants",
+        "date": "2026-11-05",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SmartVault enhances client intake integration with Intuit ProConnect and Lacerte",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "OpenAI GPT-6.2 Astra targets slides, spreadsheets, sales documents, threatening software pricing",
+        "date": "2026-11-18",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Intuit unveils AI tools for accounting workflows",
+        "date": "2026-11-05",
+        "driver": "D2",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SmartVault enhances AI client intake integration with Intuit ProConnect/Lacerte",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "OpenAI GPT-6.2 Astra targets spreadsheets/sales docs, threatening software",
+        "date": "2026-11-18",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Intuit unveils new AI-driven features across platform for businesses and accountants",
+        "date": "2026-11-05",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SmartVault enhances AI client intake integration with Intuit ProConnect and Lacerte",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "DLB",
+    "DBX",
+    "BILL",
+    "BSY",
+    "FICO"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "DLB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dolby audio licensing unrelated to Intuit's financial software drivers."
+       },
+       {
+        "peer": "DBX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dropbox storage/AI results not relevant to Intuit's tax, accounting, or Credit Karma."
+       },
+       {
+        "peer": "BILL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "BILL's 14% core SMB finance growth signals healthy SMB software demand, supporting Intuit GBS outlook."
+       },
+       {
+        "peer": "BSY",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Bentley infrastructure engineering software unrelated to Intuit's SMB/consumer finance drivers."
+       },
+       {
+        "peer": "FICO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "FICO B2C +3% and weak mortgage originations signal softer consumer credit demand, a risk to Credit Karma."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Parasail",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "DLB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dolby's audio licensing results have no direct read on Intuit's SMB accounting or consumer finance drivers."
+       },
+       {
+        "peer": "DBX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dropbox's slow growth reflects its mature file-storage business, not Intuit's SMB accounting or consumer finance demand."
+       },
+       {
+        "peer": "BILL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "BILL's 14% core growth and margin beat signal healthy SMB finance software demand, supporting Intuit's GBS guidance."
+       },
+       {
+        "peer": "BSY",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Bentley's infrastructure software demand is not a direct read on Intuit's SMB accounting or consumer finance drivers."
+       },
+       {
+        "peer": "FICO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D3",
+        "why": "FICO's weak B2C +3% and soft mortgage originations suggest muted consumer credit demand, a modest headwind for Credit Karma."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FICO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "FICO B2C scores +3% and weak mortgage originations signal soft consumer credit demand, pressuring Credit Karma."
+       },
+       {
+        "peer": "BSY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Strong software margin and EPS expansion support Intuit's guided operating leverage."
+       },
+       {
+        "peer": "BILL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "SMB finance platform core revenue +14% and margin beat support Intuit's GBS/QuickBooks demand and operating leverage."
+       },
+       {
+        "peer": "DBX",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Storage/content results have no read-through to Intuit's SMB fintech or consumer finance drivers."
+       },
+       {
+        "peer": "DLB",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Media licensing results unrelated to Intuit's accounting, Credit Karma, or Mailchimp drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.5,
+   "score_peer": 0.5,
+   "score_combined": 0.75,
+   "overall_votes": [
+    "inline",
+    "below",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 2.7497,
+   "revenue_estimate": 4391554665,
+   "fiscal": "2027Q1",
+   "report_date": "2026-11-19",
+   "cutoff": "2026-11-18 22:00:00+00:00",
+   "decided_at": "2026-11-19T02:34:46.898675+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "509261c99ea7cb9f1b1ce87a2dec96f2b997ac36d9336962dfcd00bf25de6740"
+  },
+  "KEYS": {
+   "ticker": "KEYS",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Electronic Equipment & Instruments",
+   "last_release": "2026-08-18 20:09:53+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1601046/000160104626000029/exhibit991-q326pressrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Commercial communications revenue",
+      "last_report": "CSG revenue $1,345M, up 43%; commercial communications up 56%, driving record orders over $2B.",
+      "guidance": "Q4 total revenue $1.930-$1.950B, ~37% y/y growth at midpoint; no segment-specific guidance."
+     },
+     {
+      "id": "D2",
+      "name": "Aerospace, defense & government",
+      "last_report": "ADG revenue $339M, up 14% y/y, within CSG; slower than commercial communications.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Electronic Industrial revenue",
+      "last_report": "EISG revenue $501M, up 21% y/y, with growth across semiconductor, general electronics, automotive and energy.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Margins and EPS",
+      "last_report": "CSG gross margin 71%, operating margin 34%; EISG gross 64%, operating 31%; non-GAAP EPS $3.07.",
+      "guidance": "Q4 non-GAAP EPS $3.34-$3.40 on ~172M diluted shares; no margin guidance."
+     },
+     {
+      "id": "D5",
+      "name": "Orders and backlog",
+      "last_report": "Orders $2,091M, second consecutive record quarter over $2B; nine-month orders $5,787M.",
+      "guidance": "No explicit orders guidance; Q4 revenue outlook implies continued growth."
+     }
+    ],
+    "guidance": "Q4 FY2026 revenue $1.930-$1.950B, midpoint ~37% y/y growth; non-GAAP EPS $3.34-$3.40 on ~172M diluted shares. Full-year outlook improved; no full-year figures given.",
+    "kill_conditions": [
+     "Q4 revenue below $1.930B or FY2027 guidance cut.",
+     "Commercial communications growth falls sharply or CSG revenue misses.",
+     "Non-GAAP EPS below $3.34 or orders drop below $2B."
+    ]
+   },
+   "card_provider": "Wafer",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 19,
+    "found": 19,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 229,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Showcased AI, aerospace, semiconductor solutions at electronica 2026",
+        "date": "2026-11-02",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Appointed Jason Kary CFO effective Dec 18, succeeding Neil Dougherty",
+        "date": "2026-11-02",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Launched XR3 14-bit oscilloscope and agentic AI solutions at electronica",
+        "date": "2026-11-03",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ServiceNow CPQ helps Keysight generate quotes 40% faster",
+        "date": "2026-11-05",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Certified ADS Photonic Designer for Tower Semiconductor PH18 platform",
+        "date": "2026-11-09",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Expanded high-power automated test equipment portfolio",
+        "date": "2026-11-10",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Survey: fewer than half grid operators see network ready as power demand surges",
+        "date": "2026-11-12",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Announced multi-UAV 6G sensing collaboration with Cohere Technologies",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Keysight appoints Jason Kary CFO effective Dec 18, succeeding Neil Dougherty",
+        "date": "2026-11-02",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Keysight introduces XR3 14-bit low-profile oscilloscope for high-channel density testing",
+        "date": "2026-11-03",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ServiceNow CPQ helps Keysight generate quotes 40% faster",
+        "date": "2026-11-05",
+        "driver": "D5",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Keysight certifies ADS Photonic Designer for Tower Semiconductor PH18 silicon photonics",
+        "date": "2026-11-09",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Keysight expands high-power automated test portfolio for power validation",
+        "date": "2026-11-10",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Keysight survey finds fewer than half of grid operators believe network is ready",
+        "date": "2026-11-12",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Keysight partners with Cohere Technologies for multi-UAV 6G sensing emulation",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Keysight unveils AI infrastructure, high-speed, power test products at electronica 2026",
+        "date": "2026-11-02",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Keysight introduces XR3 14-bit low-profile oscilloscope for high-channel density",
+        "date": "2026-11-03",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Keysight certifies ADS Photonic Designer for Tower Semiconductor PH18 silicon photonics",
+        "date": "2026-11-09",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Keysight expands high-power automated test equipment portfolio",
+        "date": "2026-11-10",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Keysight brings multi-UAV 6G sensing into lab with Cohere Technologies",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Keysight appoints Jason Kary CFO effective Dec 18, succeeding Neil Dougherty",
+        "date": "2026-11-02",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ServiceNow CPQ helps Keysight accelerate sales, generating quotes 40% faster",
+        "date": "2026-11-05",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Keysight survey finds fewer than half of grid operators believe network ready",
+        "date": "2026-11-12",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Keysight to report Q4 FY2026 results on November 19, 2026",
+        "date": "2026-10-29",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.9
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "NOVT",
+    "VNT",
+    "CGNX",
+    "CXT",
+    "ZBRA"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NOVT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Bookings +29% and backlog expansion suggest improving industrial automation orders, supportive for Keysight's order momentum."
+       },
+       {
+        "peer": "VNT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Mobility/convenience retail focus; no clear read on Keysight's communications, industrial, or ADG demand."
+       },
+       {
+        "peer": "CGNX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record revenue, broad-based industrial and semiconductor strength, AI automation demand; positive read for EISG."
+       },
+       {
+        "peer": "CXT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Authentication/traceability organic growth weak/mixed; not indicative of Keysight's test and measurement markets."
+       },
+       {
+        "peer": "ZBRA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong automation demand, raised outlook positive for industrial test demand; memory cost/pricing mixed for margins."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "StreamLake",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NOVT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong bookings and organic growth in automation/medical tech suggest healthy industrial demand, supporting EISG."
+       },
+       {
+        "peer": "VNT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Mobility/fueling retail demand not relevant to Keysight's communications, defense, or electronic industrial test markets."
+       },
+       {
+        "peer": "CGNX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Record revenue, broad-based industrial and semiconductor strength, and raised guidance support continued EISG demand."
+       },
+       {
+        "peer": "CXT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Authentication/traceability demand mixed and not tied to Keysight's test and measurement end markets."
+       },
+       {
+        "peer": "ZBRA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong automation demand and raised outlook support EISG; memory cost pressure noted but managed."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Makora",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ZBRA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D3",
+        "why": "Broad automation demand and raised outlook support EISG, but memory cost inflation may pressure margins; net modest positive."
+       },
+       {
+        "peer": "CXT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Authentication/traceability demand mixed; no clear read-through to Keysight's communications, industrial, or margin drivers."
+       },
+       {
+        "peer": "CGNX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record revenue, broad-based industrial strength, semiconductor/automation demand, and raised guidance support Keysight's EISG growth outlook."
+       },
+       {
+        "peer": "VNT",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Mobility/fueling/retail trends not relevant to Keysight's test and measurement drivers; no clear read-through."
+       },
+       {
+        "peer": "NOVT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong automation enabling tech growth, bookings, and backlog support industrial demand for Keysight's EISG; positive read-through."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 3.0,
+   "score_combined": 1.5,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 3.4385,
+   "revenue_estimate": 1984841460,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-19",
+   "cutoff": "2026-11-18 22:00:00+00:00",
+   "decided_at": "2026-11-19T02:33:30.696753+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "0c1d2cfc1972e3fdf6f0ba85fc6851e2fe0f5de56da213f04a90deca9013e946"
+  },
+  "MMS": {
+   "ticker": "MMS",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Data Processing & Outsourced Services",
+   "status": "already_reported",
+   "last_release": "2026-10-20 11:25:29+00:00",
+   "hour": "bmo",
+   "eps_estimate": 1.8685,
+   "revenue_estimate": 1309639225,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-19",
+   "cutoff": "2026-11-18 22:00:00+00:00",
+   "decided_at": "2026-11-19T02:30:46.891064+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "e164597f74ff84c1e5f25c8f1236848ab09609bb566f6db11680c7427f4906f3"
+  },
+  "POST": {
+   "ticker": "POST",
+   "index": "SP400",
+   "sector": "Consumer Staples",
+   "sub_industry": "Packaged Foods & Meats",
+   "last_release": "2026-08-06 20:22:23+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1530950/000153095026000076/ex99-1q32026er.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Post Consumer Brands volumes",
+      "last_report": "Q3 net sales +6.6% incl $141.8M 8th Avenue; ex-8th Avenue volumes fell 7.1%, pet food -7.8%, cereal/granola -5.5%.",
+      "guidance": "No segment guidance; FY27 commentary cites continued volume softness in certain categories."
+     },
+     {
+      "id": "D2",
+      "name": "Foodservice egg pricing normalization",
+      "last_report": "Q3 net sales -6.5%, volumes +4.3%; profit -18.6%, Adj EBITDA -11.4%, lapping prior-year avian influenza pricing.",
+      "guidance": "FY26 includes ~$60M Foodservice earnings above $500M normalized run rate; FY27 growth off run rate expected."
+     },
+     {
+      "id": "D3",
+      "name": "Refrigerated Retail divestiture impact",
+      "last_report": "Q3 net sales -21.1%, segment profit -61.2%, Adj EBITDA -41.3%; Crystal Farms sale and avian flu pricing lapping drove declines.",
+      "guidance": "FY26 guidance excludes ~$20M contributions from fiscal 2026 divestitures for FY27 comparison."
+     },
+     {
+      "id": "D4",
+      "name": "Weetabix volume and margin",
+      "last_report": "Q3 net sales -0.6%, volumes -3.8% on private label; segment profit +35.2%, Adj EBITDA +13.7%.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Inflation versus pricing and productivity",
+      "last_report": "Q3 gross margin 29.1% vs 30.0%; SG&A rose 4.5%; Adjusted EBITDA -5.0% to $377.3M.",
+      "guidance": "FY27 outlook expects pricing actions and productivity to largely offset inflationary pressures and continued volume softness."
+     }
+    ],
+    "guidance": "Narrowed FY26 Adjusted EBITDA to $1,560-$1,570M; excludes ~$60M Foodservice above $500M run rate and ~$20M FY26 divestiture contributions, implying ~$1.48B entering FY27. Preliminary FY27 Adjusted EBITDA generally flat vs that level; FY26 capex $370-$390M.",
+    "kill_conditions": [
+     "Post cuts FY26 Adjusted EBITDA guidance below $1,560M or FY27 outlook below flat.",
+     "Post Consumer Brands pet food or value cereal volumes decline faster than Q3's 7.8% and 5.5%.",
+     "Foodservice earnings fall below $500M normalized run rate on weaker egg pricing."
+    ]
+   },
+   "card_provider": "InferenceNet",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 28,
+    "found": 28,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 50,
+   "news_used": 49,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Ukraine war disrupts Black Sea grain exports, raising input cost risk",
+        "date": "2026-08-13",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Post Consumer Brands extends Numerator partnership through 2029",
+        "date": "2026-09-08",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "U.S. July payrolls fell 23,000, weakening consumer demand outlook",
+        "date": "2026-08-07",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Ukraine war disrupts Black Sea grain exports, raising input cost inflation",
+        "date": "2026-08-13",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Post Consumer Brands extends Numerator partnership through 2029 for consumer data",
+        "date": "2026-09-08",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Flowers Foods misses Q3 earnings and revenue estimates, signaling weak packaged food demand",
+        "date": "2026-11-12",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Ukraine war disrupts Black Sea grain exports, pressuring food input costs",
+        "date": "2026-08-13",
+        "driver": "D5",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Post Consumer Brands extends Numerator data partnership through 2029",
+        "date": "2026-09-08",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Premium cereal brands gaining share despite category pressure",
+        "date": "2026-09-08",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Pet e-commerce growth outpaces brick-and-mortar; brand relaunches and cost savings",
+        "date": "2026-10-20",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "TSN",
+    "KHC",
+    "MZTI",
+    "MDLZ",
+    "HSY"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TSN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Tyson's beef/pork-driven profit decline is not relevant to Post's cereal, pet, egg, or Weetabix drivers."
+       },
+       {
+        "peer": "KHC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Packaged food volumes still soft but improving; supports Post volume stabilization."
+       },
+       {
+        "peer": "MZTI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Higher diesel/freight costs signal persistent inflation, a headwind to Post's margin offset."
+       },
+       {
+        "peer": "MDLZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad-based volume growth in packaged snacks suggests resilient consumer demand, positive for Post volumes."
+       },
+       {
+        "peer": "HSY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Hershey's margin recovery suggests pricing/productivity can offset inflation, positive for Post's margin outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TSN",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Protein/meat results not directly relevant to Post's egg, cereal, or pet drivers."
+       },
+       {
+        "peer": "KHC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "North America volume/mix -2.4% and organic -3.2% signal continued packaged-food volume softness for Post Consumer Brands."
+       },
+       {
+        "peer": "MZTI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Higher diesel/freight and lower production volumes pressured gross margin, signaling continued cost inflation for Post."
+       },
+       {
+        "peer": "MDLZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "North America organic +1.6% and global volume/mix +1.8% suggest packaged-food demand is holding up better than Post's last volume trend."
+       },
+       {
+        "peer": "HSY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Margin recovery and pricing/productivity offsetting inflation support Post's FY27 outlook for offsetting cost pressures."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HSY",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Cautious consumers and soft organic growth signal continued packaged-food demand pressure for Post's cereal/pet volumes."
+       },
+       {
+        "peer": "MDLZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Broad-based volume growth and North America stabilization signal resilient packaged-food demand, easing Post's volume softness concerns."
+       },
+       {
+        "peer": "MZTI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Higher freight/diesel and lower production volumes pressure margins, echoing Post's inflation concerns."
+       },
+       {
+        "peer": "KHC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "North America volume/mix declines and weak organic sales reinforce continued packaged-food volume softness for Post."
+       },
+       {
+        "peer": "TSN",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Chicken resilience suggests protein supply normalizing, consistent with continued egg pricing normalization pressuring Post Foodservice."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -1.1547005383792517,
+   "score_peer": -0.4472135954999579,
+   "score_combined": -1.3783073361292306,
+   "overall_votes": [
+    "inline",
+    "below",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 1.8192,
+   "revenue_estimate": 2038759853,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-19",
+   "cutoff": "2026-11-18 22:00:00+00:00",
+   "decided_at": "2026-11-19T02:33:57.516287+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "10a36ce41df69a780e027f65218be8eac4f36e73e732bd58d4023c61d37d15b3"
+  },
+  "VVV": {
+   "ticker": "VVV",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Automotive Retail",
+   "last_release": "2026-08-05 11:00:55+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1674910/000167491026000062/q32026earningsrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "System-wide same-store sales growth",
+      "last_report": "Q3 system-wide SSS grew 8.0%, helped by pricing actions; FY SSS guidance raised to 7.5-8%.",
+      "guidance": "FY2026 system-wide SSS growth 7.5-8%."
+     },
+     {
+      "id": "D2",
+      "name": "Finished lubricant cost inflation",
+      "last_report": "Cost of sales rose 26%, gross margin fell to 39.5%; management cites higher finished lubricant costs, mitigating with pricing.",
+      "guidance": "No explicit margin guidance; FY adjusted EBITDA $550-560M."
+     },
+     {
+      "id": "D3",
+      "name": "Store additions and network growth",
+      "last_report": "Q3 net store additions 47 (25 franchise, 22 company); system-wide stores 2,456.",
+      "guidance": "FY2026 store additions 330-360, unchanged from prior outlook."
+     },
+     {
+      "id": "D4",
+      "name": "Adjusted EBITDA and EPS growth",
+      "last_report": "Q3 adjusted EBITDA $162M +25%, adjusted EPS $0.57 +21%; SG&A leverage improved.",
+      "guidance": "FY2026 adjusted EBITDA $550-560M; adjusted EPS $1.70-1.75."
+     },
+     {
+      "id": "D5",
+      "name": "Breeze acquisition integration and leverage",
+      "last_report": "Goodwill rose to $1.28B, total debt $1.6B; net interest expense $27.9M vs $18.6M.",
+      "guidance": "No specific guidance; FY capex $240-260M."
+     }
+    ],
+    "guidance": "FY2026: system-wide SSS growth 7.5-8%; store additions 330-360; net revenues $2.05-2.1B; adjusted EBITDA $550-560M; adjusted EPS $1.70-1.75; capex $240-260M.",
+    "kill_conditions": [
+     "Q4 system-wide same-store sales growth falls below 7.5% or decelerates from 8.0%.",
+     "Gross margin contracts further as finished lubricant cost inflation outpaces pricing actions.",
+     "FY2026 adjusted EBITDA or EPS guidance is cut, or store additions miss 330-360."
+    ]
+   },
+   "card_provider": "Relace",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 25,
+    "found": 22,
+    "share": 0.88,
+    "missing": [
+     "1.28",
+     "26",
+     "39.5"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 58,
+   "news_used": 58,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Senior notes offering priced at $600M due 2034, upsized from $500M",
+        "date": "2026-08-13",
+        "driver": "D5",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Increased share repurchase authorization by $175M to $500M total",
+        "date": "2026-09-29",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Valpak sweepstakes with Valvoline for car giveaway",
+        "date": "2026-09-29",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "_Cut('answer cut at max_tokens 24000')",
+     "provider": null,
+     "log": {
+      "attempts": [
+       {
+        "kind": "transport",
+        "error": "_Cut('answer cut at max_tokens 24000')"
+       }
+      ],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Priced and upsized $600M senior notes due 2034 for refinancing",
+        "date": "2026-08-13",
+        "driver": "D5",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Board increased share repurchase authorization by $175M to $500M total",
+        "date": "2026-09-29",
+        "driver": "D4",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "AN",
+    "ORLY",
+    "MUSA",
+    "CVNA",
+    "PAG"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "AN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "After-sales customer pay +6% signals healthy maintenance demand, supporting VVV's SSS growth."
+       },
+       {
+        "peer": "ORLY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Q3 comps +7.2% and raised aftermarket guidance indicate strong demand, supportive for VVV's SSS."
+       },
+       {
+        "peer": "MUSA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Fuel/convenience results not relevant to quick-lube demand or lubricant costs."
+       },
+       {
+        "peer": "CVNA",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Notes rapid interest-rate increases, a headwind for VVV's Breeze-related leverage and interest expense."
+       },
+       {
+        "peer": "PAG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Dealership new/used unit trends not a direct read on quick-lube demand or costs."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "AN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "After-sales customer pay +6% signals resilient maintenance demand, supporting VVV's same-store sales growth."
+       },
+       {
+        "peer": "ORLY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Aftermarket comps +7.2% and raised FY comps indicate strong demand, positive for VVV's same-store sales."
+       },
+       {
+        "peer": "MUSA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Fuel/convenience results not relevant to Valvoline's quick-lube demand, costs, or store growth."
+       },
+       {
+        "peer": "CVNA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Used car share gains with flat industry don't signal quick-lube demand or pricing."
+       },
+       {
+        "peer": "PAG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Auto dealer results mixed, no clear read on Valvoline's service demand or costs."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PAG",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Auto dealer unit trends and gross profit per unit do not directly signal Valvoline quick-lube demand or costs."
+       },
+       {
+        "peer": "CVNA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Used-car retail share gains and flat industry units are not a direct read on Valvoline's quick-lube business."
+       },
+       {
+        "peer": "MUSA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Fuel/convenience results and fuel margin volatility say little about quick-lube demand, lubricant costs, or VVV guidance."
+       },
+       {
+        "peer": "ORLY",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong aftermarket comps and raised outlook signal healthy vehicle maintenance demand and pricing for VVV."
+       },
+       {
+        "peer": "AN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Record after-sales and 6% customer-pay growth suggest healthy service demand, modestly positive for VVV SSS."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 1.5580127018922194,
+   "score_peer": 1.7320508075688774,
+   "score_combined": 2.424038105676658,
+   "overall_votes": [
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.4253,
+   "revenue_estimate": 567059813,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-19",
+   "cutoff": "2026-11-18 22:00:00+00:00",
+   "decided_at": "2026-11-19T02:35:08.699840+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "7ec8a1024658b9d99386cca2a194053d8a767f26f771a3bed68b600f60526af8"
+  },
+  "WMG": {
+   "ticker": "WMG",
+   "index": "SP400",
+   "sector": "Communication Services",
+   "sub_industry": "Movies & Entertainment",
+   "last_release": "2026-08-05 20:03:12+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1319161/000131916126000031/q32026ex991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Recorded Music subscription streaming",
+      "last_report": "Subscription revenue +12.5% (+10.8% cc); adjusted for BMG +13.5% (+11.8% cc), driven by market share, subscriber growth, improved deal economics.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Recorded Music ad-supported streaming",
+      "last_report": "Ad-supported revenue +10.0% (+8.0% cc); adjusted for BMG +12.0% (+10.0% cc), reflecting strong performance and improved deal economics.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Artist services, expanded rights, physical",
+      "last_report": "Artist services/expanded-rights +14.9% on Japan concert promotion and merchandising; physical +15.1% (+17.1% cc) on strong releases and catalog.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Music Publishing revenue and streaming",
+      "last_report": "Publishing revenue +12%; streaming +14.4% (+13.8% cc); operating income +18%; Adjusted OIBDA +14%.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Adjusted OIBDA margin and cost savings",
+      "last_report": "Total Adjusted OIBDA +16.1%; margin 23.2%, up 1.1pp; excluding items +19.3%, margin +1.4pp; restructuring savings, FX headwind $16M.",
+      "guidance": "Expect high end of 150-200 bps FY2026 margin expansion; 50-60% operating cash flow conversion."
+     }
+    ],
+    "guidance": "Continue to expect high end of 150-200 bps FY2026 Adjusted OIBDA margin expansion; reiterate 50-60% FY2026 operating cash flow conversion. No revenue, EPS, or Q4-specific guidance provided.",
+    "kill_conditions": [
+     "Recorded Music subscription streaming growth falls below double digits or misses improved DSP terms.",
+     "Adjusted OIBDA margin expansion comes in below high end of 150-200 bps FY2026 guidance.",
+     "Operating cash flow conversion misses 50-60% target or Music Publishing growth turns negative."
+    ]
+   },
+   "card_provider": "Relace",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 25,
+    "found": 25,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 39,
+   "news_used": 39,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Sony and Warner sue Anthropic over AI music training",
+        "date": "2026-08-31",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Suno launched v6 AI models; WMG AI truce may add revenue line",
+        "date": "2026-09-09",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Sony Music Publishing and Warner Chappell sue Anthropic over AI music training",
+        "date": "2026-08-31",
+        "driver": "D4",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Suno launches v6 AI models under WMG truce, potential new revenue line",
+        "date": "2026-09-09",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "WMG AI truce with Suno; Suno launched new models, potential new revenue line",
+        "date": "2026-09-20",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Sony and Warner sue Anthropic over AI music training, alleging copyright infringement",
+        "date": "2026-08-31",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "DIS",
+    "LYV",
+    "TKO",
+    "ROKU",
+    "NFLX"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "DIS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Broad entertainment strength not specific to music; no clear read-through to WMG drivers."
+       },
+       {
+        "peer": "LYV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record live music attendance/ticket demand supports artist services, concert promotion, merch, and physical."
+       },
+       {
+        "peer": "TKO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D3",
+        "why": "Strong live events/experiences demand, but sports skew; modest positive for artist services/merch."
+       },
+       {
+        "peer": "ROKU",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Roku ad revenue +23% signals healthy streaming ad demand, supportive for WMG ad-supported streaming."
+       },
+       {
+        "peer": "NFLX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Netflix subscription growth and price-hike acceptance signal healthy streaming demand/pricing, supportive for music subscription."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "DIS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Disney-specific media/parks strength; no clear read on music streaming, publishing, or ad demand."
+       },
+       {
+        "peer": "LYV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record live attendance, ticket sales, and sponsorship signal strong live music demand, supporting artist services and merchandising."
+       },
+       {
+        "peer": "TKO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D3",
+        "why": "Live events and experiences demand strong, but sports-focused; modest positive read for live music/merchandising."
+       },
+       {
+        "peer": "ROKU",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Roku advertising revenue +23% signals strong streaming ad demand, positive for WMG ad-supported streaming."
+       },
+       {
+        "peer": "NFLX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Netflix price increases accepted, churn improved, revenue +12% signal healthy subscription streaming demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NFLX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Netflix subscription growth and pricing power signal healthy streaming demand, positive for WMG subscription streaming."
+       },
+       {
+        "peer": "ROKU",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Roku ad revenue +23% signals strong ad-supported streaming demand, positive for WMG ad-supported revenue."
+       },
+       {
+        "peer": "TKO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "TKO live-event strength and raised guidance support demand for concert promotion/merchandising, positive for WMG artist services."
+       },
+       {
+        "peer": "LYV",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Live Nation's record attendance and ticket sales signal robust live music demand, positive for WMG artist services/merchandising."
+       },
+       {
+        "peer": "DIS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Disney's results are broad entertainment; no clear read-through to WMG's music-specific drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.5773502691896258,
+   "score_peer": 3.1304951684997055,
+   "score_combined": 2.1425978534394785,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.3677,
+   "revenue_estimate": 1925343880,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-19",
+   "cutoff": "2026-11-18 22:00:00+00:00",
+   "decided_at": "2026-11-19T02:33:14.783827+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "a1955b7be48f49f976c73745623eeef5364b09b7f6bf9c1d66329511fc08f949"
+  },
+  "WMT": {
+   "ticker": "WMT",
+   "index": "SP500",
+   "sector": "Consumer Staples",
+   "sub_industry": "Consumer Staples Merchandise Retail",
+   "last_release": "2026-08-20 10:59:01+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/104169/000010416926000145/earningsreleasefy27q2.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Walmart U.S. comp sales",
+      "last_report": "Comp sales +2.6%, transactions +1.5%, ticket +1.1%; 80bps health & wellness headwind from pharmacy deflation.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Global eCommerce growth",
+      "last_report": "Global eCommerce +23%; U.S. +24%, International +19%, Sam's Club +26%, led by store-fulfilled pickup & delivery.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Advertising and membership fees",
+      "last_report": "Global advertising +38%, Walmart U.S. +38%, Walmart Connect +43%; membership fee revenue +17% globally.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Gross profit and tariff refunds",
+      "last_report": "Gross profit rate +96bps on tariff refunds and mix; remaining refunds being reinvested into price in H2.",
+      "guidance": "Q3 adjusted operating income +2.0-4.0% cc; FY27 +7.0-8.5% cc."
+     },
+     {
+      "id": "D5",
+      "name": "Flipkart Big Billion Days timing",
+      "last_report": "International net sales +7.9% cc, eCommerce +19%, Flipkart Ads led advertising growth.",
+      "guidance": "Q3 net sales growth headwind of over 100bps from Big Billion Days shift between Q3 and Q4."
+     }
+    ],
+    "guidance": "Q3 FY27: net sales +3.0-3.75% cc, adjusted operating income +2.0-4.0% cc, adjusted EPS $0.62-0.64. FY27: net sales +4.0-5.0%, adjusted operating income +7.0-8.5%, adjusted EPS $2.80-2.87, capex ~4.0% of net sales.",
+    "kill_conditions": [
+     "Q3 Walmart U.S. comp sales below ~2%, or health & wellness headwind worse than the 80bps drag seen in Q2.",
+     "Q3 adjusted operating income growth below the 2.0% cc guidance floor, or gross margin down as tariff refunds fade.",
+     "Global eCommerce growth decelerating below ~15%, or advertising growth falling below ~20%."
+    ]
+   },
+   "card_provider": "Cohere",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 25,
+    "found": 25,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 736,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Digital ad growth slowed to 16.1% in Q3 from 20.2%",
+        "date": "2026-11-18",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Walmart and Sam's Club introduced bundle to compete with Costco",
+        "date": "2026-11-18",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TikTok Shop launched new strategy to compete with Amazon and Walmart",
+        "date": "2026-11-18",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Target reported strong Q3 earnings and raised guidance",
+        "date": "2026-11-18",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Digital ad growth slowed to 16.1% in Q3 2026",
+        "date": "2026-11-18",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Target reported strong Q3 and raised guidance",
+        "date": "2026-11-18",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Walmart/Sam's Club introduced bundle to compete with Costco",
+        "date": "2026-11-18",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TikTok Shop launched new strategy competing with Walmart e-commerce",
+        "date": "2026-11-18",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Target reports strong Q3 results and raises guidance, signaling resilient consumer",
+        "date": "2026-11-18",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Home Depot raises full-year forecast, indicating consumer demand holds up",
+        "date": "2026-11-18",
+        "driver": "other",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Digital ad growth slows to 16.1% in Q3 from 20.2%, pressuring advertising",
+        "date": "2026-11-18",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Walmart and Sam's Club introduce new bundle to compete with Costco membership",
+        "date": "2026-11-18",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TikTok Shop launches new strategy to compete with Amazon and Walmart e-commerce",
+        "date": "2026-11-18",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "TGT"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TGT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong Q3 comps/traffic and broad category demand signal resilient retail conditions, supportive for Walmart U.S. comps."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TGT",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Target's 5.6% comps and 5.0% traffic suggest share gains, a competitive headwind for Walmart's U.S. comp sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TGT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong Target comps/traffic signal healthy U.S. retail demand, supportive of Walmart U.S. comp sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": -0.8944271909999159,
+   "score_peer": 1.414213562373095,
+   "score_combined": -0.1873204098133684,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.6421,
+   "revenue_estimate": 189143823120,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-19",
+   "cutoff": "2026-11-18 22:00:00+00:00",
+   "decided_at": "2026-11-19T02:33:02.593121+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "sha256": "d52fd46fa799216878d03a63b32c5c001e563cefeeaece29b9e6dc675c158467"
+  }
+ },
+ "report_date": "2026-11-19",
+ "cutoff": "2026-11-18 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "bde0e4588af267cc7c72257ed56929db2f2e83bbd3fb1bf993fffb63a6b3fcb1",
+ "runs": [
+  {
+   "at": "2026-11-19T02:35:08.740196+00:00",
+   "version": "r5-v2",
+   "code": "b92219774a01410cac6ae427c9998b582a79eb95",
+   "quality": {
+    "counts": {
+     "ok": 6,
+     "already_reported": 1
+    },
+    "attempted": 6,
+    "bad": 0,
+    "bad_share": 0.0,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
