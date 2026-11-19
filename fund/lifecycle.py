@@ -98,7 +98,7 @@ Z_HI, ID_HI, TO_LO, EXT_MAX, EXT_TOTAL, SAMPLES, REVERT_N = 1.5, 0.1, 1.0, 2, 40
 LABELS = ("CONFIRMING", "CONTRADICTING", "STALE", "NONE")
 
 # ---- Protocol 7B (owner, 2026-10-27): R1-R3 and their constants live in fund/lifecycle_rules.py (contract-tested)
-from lifecycle_rules import (P10, hedge_beta, P7B, P7B_ASOF, A7B1, P7B2, P7B2_ASOF, A7B2_FIX_ASOF, A7B3, soft_view, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
+from lifecycle_rules import (P10, hedge_beta, navs_match, P7B, P7B_ASOF, A7B1, P7B2, P7B2_ASOF, A7B2_FIX_ASOF, A7B3, soft_view, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
                              may_increase, checkpoint_exit, slots, structural_h, structural_mean)
 DESK_SAMPLES, DESK_DRAWS = 5, 8
 
@@ -1419,7 +1419,7 @@ def daily():
         print("lifecycle: no cohort with a desk output yet; nothing to do"); return
     again = run(fetch_news=False)                       # determinism: a second rebuild from the logged inputs
     ck = checks(st)
-    if [r["nav"] for r in again["rows"]] != [r["nav"] for r in st["rows"]]:
+    if not navs_match(st, again):
         ck["fails"].append("rebuild from the logged inputs does not reproduce the NAV")
         import ops_stats
         ck["rebuild_diff"] = ops_stats.rebuild_diff(st, again)       # where the two runs part (diagnosis, #140)
@@ -1452,7 +1452,7 @@ def control():
     st = run(variant="control", fetch_news=False)
     again = run(variant="control", fetch_news=False)
     ck = checks(st)
-    if [r["nav"] for r in again["rows"]] != [r["nav"] for r in st["rows"]]:
+    if not navs_match(st, again):
         ck["fails"].append("control: a rebuild from the logged inputs does not reproduce the NAV")
         import ops_stats
         ck["rebuild_diff"] = ops_stats.rebuild_diff(st, again)

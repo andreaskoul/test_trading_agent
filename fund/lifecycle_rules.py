@@ -111,3 +111,11 @@ def soft_view(info, d, active=True):
     """7B A3: a desk view the live book does not act on from session A7B3 (info: the cohort's record of the name)."""
     o = info.get("out") or {}
     return bool(active and d >= A7B3 and o.get("event_type") in SOFT and not o.get("hard"))
+
+
+def navs_match(first, second, tol=0.005):
+    """The determinism check: the same dates, and every NAV equal to within half a cent (the tolerance the
+    'recorded days never change' check uses). Exact float equality failed on 2026-11-18/19 (#169, #170) on a
+    1.5e-11 dollar difference with identical events: summation order, not a different book."""
+    a, b = first["rows"], second["rows"]
+    return len(a) == len(b) and all(x["date"] == y["date"] and abs(x["nav"] - y["nav"]) <= tol for x, y in zip(a, b))
