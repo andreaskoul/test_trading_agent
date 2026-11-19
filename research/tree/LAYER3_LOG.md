@@ -639,3 +639,14 @@ Kept:
 * every input to the forward test (`y2026`, `broad`);
 * MASTER and tree scores;
 * the construction leads (Q4, Q6), Q9 and R2 predictions.
+
+## Step 33 — Layer 4 exploit: the fund's stock book cannot be improved by construction (2026-11-19)
+
+On 2020-2025, whole fund, no candidate passes (Holm, smallest p 0.175). The incumbent stays.
+* Construction changes cut cost but lower the Sharpe: hysteresis −0.02, covariance book −0.09, MASTER horizon
+  ensemble −0.07, MASTER + trees −0.10.
+* Unlike the broad book, MASTER's S&P 500 book costs only 2 %/yr, so cost is not its binding constraint. The trees
+  add a weaker, correlated signal (score correlation 0.41).
+* A bigger book (×2) is the only positive arm: +0.05 Sharpe, p 0.18, not significant, and worse in 2026.
+* Sizing by the pre-2020 rule would have dropped the book entirely (MASTER's development book Sharpe was −0.16).
+  The book's 2020-2025 value was not predictable before 2020: a caution for the forward record.
