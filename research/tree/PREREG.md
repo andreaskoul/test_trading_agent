@@ -502,3 +502,62 @@ scarce.
   error. A pass makes it a candidate for the forward record via a later amendment.
 
 **Order:** R2 first. Q9 and Q10 start after Protocol 11 is merged (usage budget).
+
+## Layer 4 (2026-11-19, owner's brief; registered before any quantity below is computed): exploit the fund, explore diversifiers
+
+**Owner's brief.** Exploit the best out-of-sample model, the fund (the S&P 500 200-day trend core at 1.3×/0.7× plus
+the MASTER transformer long/short book; 2020-2025 21.7 %/yr, net Sharpe 0.94), and always train and test on
+2020-2025.
+
+**Evaluation protocol.**
+* **Walk-forward on 2020-2025.** Each test year y is predicted by a model trained only on data before y, including
+  the earlier test years, with annual refits. This is how the saved scores were made (MASTER at 5, 10 and 20 days;
+  `holdout_pred_finalists/D_hgb_mh.npy`). Weekly, at whole-fund level, with the fund's own simulator
+  (`research/sharpe/construct.py`, S0 path, gross cap 1.9, margin cost, 5 bp).
+* **The window is reused, not sealed.** 2020-2025 has been looked at before. So:
+  1. Each candidate is a paired difference against the incumbent fund B0, on the same weeks: weekly return
+     differences at matched volatility, HAC (Ledoit-Wolf 2008) test of the Sharpe difference, Holm across the
+     round's candidates at α 0.05.
+  2. The Deflated Sharpe Ratio (Bailey and López de Prado 2014) is reported with N = every configuration ever scored
+     on 2020-2025 S&P 500 data (counted from the logs; floor 20). Its probability must exceed 0.95.
+  3. **A pass earns only a forward shadow** from the first full week of December 2026, read at 52 weeks as a paired
+     difference against B0. 2026 (already read) is reported, not tested.
+* At most 10 configurations in this round, all listed here; nothing is added after the first result.
+
+**Exploit: the fund's stock book (saved scores; no retraining).**
+* **B0, the incumbent:** reproduce 2020-2025 21.7 %/yr and Sharpe 0.94 first; any difference stops the round.
+* **B1, rank hysteresis on the MASTER book:** enter at the 10% tails, exit outside 30% (the cost lead from the broad
+  universe).
+* **B2, covariance book with a no-trade region:** Ledoit-Wolf 2020 shrinkage, L1 no-trade k 2, as in the forward
+  test, on MASTER's scores.
+* **B3, MASTER horizon ensemble:** equal-weight rank average of MASTER at 5, 10 and 20 days, with fixed weights.
+  Longer horizons raise score persistence; this tests whether MASTER, unlike the trees, keeps its IC.
+* **B4, MASTER plus boosted trees:** equal-weight rank average of MASTER 5-day and D_hgb_mh. Their 2020-2025 ICs are
+  .033 and .019; the gain depends on their correlation, reported first.
+* **B5, book scale:** the overlay at 2/3 and at the full 0.6 of gross, against the incumbent 1/3. Mathematical
+  basis: with core Sharpe S_c, book Sharpe S_b and correlation ρ, the best combined Sharpe is
+  √(S_c² + (S_b − ρS_c)²/(1 − ρ²)), and the optimal book weight rises with S_b/S_c. The scale for each arm is fixed
+  from pre-2020 information only (MASTER's development Sharpe, haircut 50%, the rule of the 2026-11-21 sizing study),
+  and its 2020-2025 result is reported. Exposure is owner policy (CLAUDE.md rule 17): a pass is a proposal.
+
+**Explore: diversifiers with a mathematical case.**
+* **X1, cross-asset trend sleeve** (time-series momentum; Moskowitz-Ooi-Pedersen 2012, Hurst-Ooi-Pedersen 2017).
+  * Instruments: long and short ETFs on Treasuries (IEF, TLT), gold (GLD), broad commodities (DBC) and the dollar
+    (UUP).
+  * Signal: the sign of the 12-month return; equal risk at a 10% target, with volatility from 63 sessions.
+  * Development data: from each ETF's first listing to 2019. Test: 2020-2025 at whole-fund level, sleeve weight
+    fixed by the same Sharpe-combination formula from development numbers only.
+  * Why it can help: a sleeve with Sharpe 0.4-0.5 and low correlation to equities raises a 0.94 fund towards
+    √(0.94² + 0.45²) ≈ 1.04.
+  * Instruments are owner policy: tested once, a pass is a proposal.
+* **X2, overnight-intraday decomposition on S&P 500 names** (Lou, Polk and Skouras 2019).
+  * Signal: the 21-session overnight return minus the intraday return, as an extra book.
+  * Survivorship contract first. Development data ≤ 2019 for the gate (t ≥ 2 on IC, paired against MASTER), then the
+    2020-2025 whole-fund increment.
+
+**Not repeated (closed with evidence):**
+* volatility targeting, adaptive exposure rules and liquidity timing;
+* news headlines;
+* sequence nets, attention, ranking losses and reinforcement learning;
+* sector neutralisation;
+* longer tree horizons.
