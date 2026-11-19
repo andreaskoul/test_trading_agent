@@ -1,0 +1,150 @@
+{
+ "branch": "Q9_horizon",
+ "label": "development data 2013-2019 (S&P 500, harness.load()), not out of sample",
+ "weeks_book": 352,
+ "cost_inputs": {
+  "fallback_name_weeks": 63
+ },
+ "selection_rule": "highest net Sharpe at 14 bp flat with hysteresis 10/30, among configurations with IC_y5 >= reference IC - 0.005",
+ "reference_ic_y5": 0.023568388085769547,
+ "eligible": [
+  "ref_mh_3_5_10_20",
+  "mix_5_21_63"
+ ],
+ "selected": "ref_mh_3_5_10_20__hysteresis_10_30",
+ "selected_net_sharpe_flat14": 0.16187124818760312,
+ "selected_net_sharpe_flat14_lo_se": 0.3844014722979284,
+ "selected_is_reference": true,
+ "grinold_kahn_fit": {
+  "deciles": {
+   "k_pooled": 0.6383112871510046,
+   "r2_uncentred": 0.9905100322006982,
+   "r2_centred": 0.749947044307433,
+   "max_abs_rel_error": 0.16844547838816057,
+   "implied_k": {
+    "ref_mh_3_5_10_20": 0.7051201605656472,
+    "h21": 0.5924396223148924,
+    "h63": 0.5462910327930217,
+    "mix_5_21_63": 0.668689953250153
+   }
+  },
+  "hysteresis_10_30": {
+   "k_pooled": 0.2451622431768825,
+   "r2_uncentred": 0.9940310822128547,
+   "r2_centred": 0.8318541336158536,
+   "max_abs_rel_error": 0.12347143614161722,
+   "implied_k": {
+    "ref_mh_3_5_10_20": 0.2683869951936661,
+    "h21": 0.2449016041829223,
+    "h63": 0.21821849251357292,
+    "mix_5_21_63": 0.2324225626474009
+   }
+  }
+ },
+ "frontier": [
+  {
+   "name": "ref_mh_3_5_10_20__deciles",
+   "ic_lost_vs_ref": 0.0,
+   "turnover_saved_vs_ref_same_construction": 0.0,
+   "turnover_saved_vs_ref_deciles": 0.0,
+   "net_sharpe_flat14": -0.46183663363564686,
+   "net_sharpe_sqrt_sp": 0.16097362747096167,
+   "pareto": false
+  },
+  {
+   "name": "h21__deciles",
+   "ic_lost_vs_ref": 0.005841973439786478,
+   "turnover_saved_vs_ref_same_construction": 0.12645168935806517,
+   "turnover_saved_vs_ref_deciles": 0.12645168935806517,
+   "net_sharpe_flat14": -0.5157770161760978,
+   "net_sharpe_sqrt_sp": 0.03420719064524857,
+   "paired_vs_ref_flat14_pct_per_year": 0.2853073550683182,
+   "paired_vs_ref_flat14_nw_t": 0.20530622363374113,
+   "paired_vs_ref_sqrt_pct_per_year": -0.9231915253655235,
+   "paired_vs_ref_sqrt_nw_t": -0.6673284569299759,
+   "ic_diff_nw_t": -1.9700532359643252,
+   "pareto": false
+  },
+  {
+   "name": "h63__deciles",
+   "ic_lost_vs_ref": 0.00892272412624986,
+   "turnover_saved_vs_ref_same_construction": 0.18679729332807277,
+   "turnover_saved_vs_ref_deciles": 0.18679729332807277,
+   "net_sharpe_flat14": -0.11648857627186468,
+   "net_sharpe_sqrt_sp": 0.38579286450800354,
+   "paired_vs_ref_flat14_pct_per_year": 2.6200924796203493,
+   "paired_vs_ref_flat14_nw_t": 1.2317986013525055,
+   "paired_vs_ref_sqrt_pct_per_year": 0.8099324323743422,
+   "paired_vs_ref_sqrt_nw_t": 0.3778206845416498,
+   "ic_diff_nw_t": -1.5122927596992242,
+   "pareto": false
+  },
+  {
+   "name": "mix_5_21_63__deciles",
+   "ic_lost_vs_ref": 0.003441380175248313,
+   "turnover_saved_vs_ref_same_construction": 0.11517785372355988,
+   "turnover_saved_vs_ref_deciles": 0.11517785372355988,
+   "net_sharpe_flat14": -0.35034795767633614,
+   "net_sharpe_sqrt_sp": 0.2000372715621381,
+   "paired_vs_ref_flat14_pct_per_year": 1.1501178408645039,
+   "paired_vs_ref_flat14_nw_t": 0.970789299396232,
+   "paired_vs_ref_sqrt_pct_per_year": 0.05501879846708603,
+   "paired_vs_ref_sqrt_nw_t": 0.04692000221687389,
+   "ic_diff_nw_t": -1.3297114378139656,
+   "pareto": false
+  },
+  {
+   "name": "ref_mh_3_5_10_20__hysteresis_10_30",
+   "ic_lost_vs_ref": 0.0,
+   "turnover_saved_vs_ref_same_construction": 0.0,
+   "turnover_saved_vs_ref_deciles": 0.27704515280925496,
+   "net_sharpe_flat14": 0.16187124818760312,
+   "net_sharpe_sqrt_sp": 0.45364430624257074,
+   "pareto": true
+  },
+  {
+   "name": "h21__hysteresis_10_30",
+   "ic_lost_vs_ref": 0.005841973439786478,
+   "turnover_saved_vs_ref_same_construction": 0.03762232537299082,
+   "turnover_saved_vs_ref_deciles": 0.3146674781822458,
+   "net_sharpe_flat14": -0.07164293498094988,
+   "net_sharpe_sqrt_sp": 0.20073851559173425,
+   "paired_vs_ref_flat14_pct_per_year": -1.3374839454003222,
+   "paired_vs_ref_flat14_nw_t": -1.469071594534424,
+   "paired_vs_ref_sqrt_pct_per_year": -1.7185823432867604,
+   "paired_vs_ref_sqrt_nw_t": -1.8906976427594149,
+   "ic_diff_nw_t": -1.9700532359643252,
+   "pareto": false
+  },
+  {
+   "name": "h63__hysteresis_10_30",
+   "ic_lost_vs_ref": 0.00892272412624986,
+   "turnover_saved_vs_ref_same_construction": 0.06619497441880519,
+   "turnover_saved_vs_ref_deciles": 0.34324012722806013,
+   "net_sharpe_flat14": 0.14351579805010792,
+   "net_sharpe_sqrt_sp": 0.4014240229237943,
+   "paired_vs_ref_flat14_pct_per_year": -0.3756495524068795,
+   "paired_vs_ref_flat14_nw_t": -0.22068407823578742,
+   "paired_vs_ref_sqrt_pct_per_year": -1.057015199611,
+   "paired_vs_ref_sqrt_nw_t": -0.6175503811620452,
+   "ic_diff_nw_t": -1.5122927596992242,
+   "pareto": true
+  },
+  {
+   "name": "mix_5_21_63__hysteresis_10_30",
+   "ic_lost_vs_ref": 0.003441380175248313,
+   "turnover_saved_vs_ref_same_construction": 0.05481524540099998,
+   "turnover_saved_vs_ref_deciles": 0.3318603982102549,
+   "net_sharpe_flat14": 0.07898996771492305,
+   "net_sharpe_sqrt_sp": 0.3093158225959977,
+   "paired_vs_ref_flat14_pct_per_year": -0.5610764933027614,
+   "paired_vs_ref_flat14_nw_t": -0.7002170007068493,
+   "paired_vs_ref_sqrt_pct_per_year": -1.111969265776711,
+   "paired_vs_ref_sqrt_nw_t": -1.388595811103232,
+   "ic_diff_nw_t": -1.3297114378139656,
+   "pareto": true
+  }
+ ],
+ "survivorship_contract": "does not apply: no new inputs (same D features, same panel; only the target horizon changes)",
+ "at": "2026-11-19T13:57:30Z"
+}

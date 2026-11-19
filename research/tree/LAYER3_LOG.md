@@ -610,3 +610,16 @@ The only constructions that can rescue it are those that trade far less. In the 
 backfill (cost only, not returns) over 2025-2026, the covariance book with a no-trade region costs 0.6 %/yr against
 13.9 %/yr for deciles, and hysteresis 6.1. Delistings are also still missing in 2016-2017 and 2023-2024 (Alpaca),
 so a residual survivor bias remains in those years.
+
+## Step 31 — longer horizons (Q9): hysteresis is the cheaper way to cut turnover (2026-11-19)
+
+Development data. Longer targets (21 and 63 sessions, and the {5,21,63} mix) raise the score's week-on-week rank
+correlation (0.80 → 0.89) and cut decile turnover from 45% to 26-33% a week. But they lose IC (0.0236 → 0.0146 at 63
+sessions). Rank hysteresis alone cuts turnover to 17% at no IC cost. Stacked on hysteresis, longer horizons save only
+4-7 more points and every one trails the reference, paired. The registered rule selects the reference with
+hysteresis (net Sharpe 0.16 at 14 bp, 0.45 under S&P square-root costs). Nothing new is nominated.
+
+The forward record already carries the reference with hysteresis and the covariance book. Grinold-Kahn's
+turnover law orders the configurations, but its k is not constant (it falls as ρ rises).
+
+The forward-job build and the Q9 agent were stopped by the usage limit on 2026-11-14 and resumed on 2026-11-19.

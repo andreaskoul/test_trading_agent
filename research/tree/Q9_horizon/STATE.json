@@ -1,0 +1,31 @@
+{
+ "branch": "Q9_horizon",
+ "task": "PREREG.md Layer 3 Amendment 10, Q9_horizon: horizon/turnover frontier on S&P 500 dev panel 2013-2019, annual refits, seeds 0-2. Development results only.",
+ "plan": [
+  "Configs (fixed by PREREG): h21 = D hgb on 21-session hedged target; h63 = D hgb on 63-session target; mix_5_21_63 = rank mix (one group, equal weight, as D_hgb_mh); ref = D_hgb_mh {3,5,10,20}.",
+  "Targets: y21, y63 built exactly as dev y5 is built (research/quant_trials/sp500_test.py resid(h)): sum of r over rows t+2..t+1+h minus beta[t] x sum of rm over the same rows, NaN unless eligible at t and valid close at t and t+1+h, cross-sectionally demeaned; verified: resid(5) reproduces D['y5'] to 1.3e-7 (dev has 1 extra NaN row, 2761). Training rows only t <= te+5-h (target ends <= te+6 < first session of validation year), so rows crossing into the year are not used. Learner = X1_combine/lib.py hgb() unchanged (D trees, rank target, tree count by IC on last 104 Thursdays with D's 8-row gap, unchanged code; noted). Reference members h 3/5/10/20 use X1 lib.target unchanged.",
+  "Member cache: own dir .cache/tree/preds/Q9_horizon/members; existing X1_combine/cache members (h 3,5,10,20) read-only reused, same key; new h21/h63 computed. Reference reproduction check: IC must equal 0.023568 (VERIFY.json).",
+  "Per config: walk_forward pred saved to .cache/tree/preds/Q9_horizon/<cfg>.npy (checkpoint), then two books: deciles (Q6 build C0 = M1 aim_decile) and hysteresis 10/30 (Q6 build T1).",
+  "Rows: common scored Thursdays (>=50 masked names for every config); first week dropped from book stats (Q6 convention).",
+  "Measures: weekly IC on y5 (harness.weekly_ic, NW t 4 lags), by year; rho = week-on-week Spearman autocorr of score (M1 autocorr); weekly one-way turnover sum|dw|/2; GK fit: implied k = turnover/sqrt(2(1-rho)) per config, pooled k (LS through origin) and R2 across configs per construction; net Sharpe +- Lo(2002) iid SE under Q6 sqrt model (HS 2.3bp, K 0.5, AUM $10M, sigma 60d, ADV 20d) and flat 14 bp x sum|dw|; gross; %/yr; by year.",
+  "Selection (registered): among hysteresis books, IC_y5 >= IC_ref - 0.005 (IC lost <= 0.005), highest net Sharpe at 14bp flat. Frontier: IC lost vs turnover saved (vs ref deciles and vs ref hysteresis), Pareto marking.",
+  "Survivorship contract: no new inputs, does not apply.",
+  "Outputs: RESULTS.jsonl (one row per config x construction), RESULT.json (selection, frontier, GK fit), REPORT.md (if allowed)."
+ ],
+ "done": [
+  "read PREREG/harness/D/X1/Q6/M1; verified y5 construction",
+  "preds ref_mh_3_5_10_20 saved (IC 0.02357, 0s)",
+  "reference reproduced from X1 cache: IC 0.023568388 = VERIFY.json",
+  "preds h21 saved (IC 0.01773, 29s)",
+  "preds h63 saved (IC 0.01465, 26s)",
+  "preds mix_5_21_63 saved (IC 0.02013, 0s)",
+  "resumed 2026-11-19; leakage check: every h21/h63 training target ends before the validation year (all 7 years)",
+  "books stage: RESULTS.jsonl, RESULT.json written",
+  "books stage done: RESULTS.jsonl (8 rows), RESULT.json; selected = reference hysteresis (net Sharpe 14bp 0.162 +- 0.384); cross-check: ref hysteresis sqrt net Sharpe 0.4536 = Q6 T1_trees 0.4536",
+  "REPORT.md write refused by harness; full report returned in final message"
+ ],
+ "running": null,
+ "next": "none: branch complete (coordinator saves REPORT.md)",
+ "updated": "2026-11-19T13:58:23Z",
+ "status": "done"
+}
