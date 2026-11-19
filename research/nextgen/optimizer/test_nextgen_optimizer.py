@@ -68,4 +68,13 @@ class OptimizerTests(unittest.TestCase):
         import research.nextgen.optimizer.core as mod
         with patch.object(mod,"minimize",return_value=types.SimpleNamespace(x=np.zeros(4),success=False,message="injected failure")):
             with self.assertRaises(RuntimeError):solve(**self.case())
+
+    def test_rejects_nonfinite_inputs_invalid_config_and_infeasible_start(self):
+        q=self.case()
+        q["mu"][0]=float("nan")
+        with self.assertRaises(ValueError): solve(**q)
+        q=self.case()
+        with self.assertRaises(ValueError): solve(**q,cfg=Config(gamma=0))
+        q=self.case();q["previous"][0]=.1
+        with self.assertRaises(ValueError): solve(**q,cfg=Config(gross=.4,name_limit=.2))
 if __name__=="__main__":unittest.main()
