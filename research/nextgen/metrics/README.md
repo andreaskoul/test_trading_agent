@@ -9,6 +9,6 @@ This module distinguishes the incumbent's **legacy raw-return/volatility ratio**
 
 **Gates before empirical use:** reproduce original B0 score unchanged; reconcile H7 versus Layer 4 2026 calendar and annualisation differences; validate financing, borrow, risk-free vintage, execution price and benchmark; preserve legacy scoreboard; no new sealed sample claims for 2020–2026.
 
-Run synthetic tests from the directory: `python -m unittest -v test_core.py` (numpy).
+Run synthetic tests from the **repository root**: `python -m unittest -v research.nextgen.metrics.test_nextgen_metrics` or `python -m pytest -q research/nextgen` (numpy and pytest).
 
 References: Ledoit & Wolf, *Robust Performance Hypothesis Testing with the Sharpe Ratio*, J Empirical Finance 2008, DOI 10.1016/j.jempfin.2008.03.005. Bailey & López de Prado, *Deflated Sharpe Ratio*, JPM 2014, DOI 10.3905/jpm.2014.40.5.094.
