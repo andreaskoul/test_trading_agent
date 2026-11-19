@@ -75,6 +75,8 @@ def state_space_walk_forward(records, *, first_decision_at: datetime,
                 continue
             if not _date_label_matured(grouped[dt],cutoff):
                 continue
+            if prior_date is not None and dt < prior_date:
+                raise ValueError('out-of-sequence late label arrival: replay state history required')
             processed.add(dt)
             b_r=_cross_section_slope(grouped[dt])
             if b_r is None:
