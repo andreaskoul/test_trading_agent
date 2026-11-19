@@ -1,0 +1,64 @@
+{
+  "study": "GROSS-01 synthetic exact-cap fund allocation, not historical backtest",
+  "date": "2026-11-19",
+  "stage_A": {
+    "seed": 20261119,
+    "trials_per_core": 120,
+    "1.3": {
+      "fraction_stock_only_exceeds_cap": 0.55,
+      "joint_minus_uniform_predicted_utility_mean": 0.0002862787574476382,
+      "mc_se": 0.000046388294514135834,
+      "mean_uniform_haircut": 0.05202759676551419,
+      "max_joint_cap_violation": 2.220446049250313e-15
+    },
+    "0.7": {
+      "fraction_stock_only_exceeds_cap": 0,
+      "joint_minus_uniform_predicted_utility_mean": -9.249026168035856e-9,
+      "mc_se": 6.515756842888714e-9,
+      "mean_uniform_haircut": 0,
+      "max_joint_cap_violation": -0.3588447995320245
+    }
+  },
+  "stage_B": {
+    "seed": 20261201,
+    "trials_per_core_noise": 240,
+    "true_mu_only_used_in_scoring": true,
+    "1.3": {
+      "0": {
+        "true_gain": 0.00018342506089492138,
+        "mc_se": 0.00001821740967613614,
+        "predicted_gain": 0.0001834250608949213
+      },
+      "0.012": {
+        "true_gain": 0.00022320908158950347,
+        "mc_se": 0.00004169111201160386,
+        "predicted_gain": 0.0002914675684444427
+      },
+      "0.04": {
+        "true_gain": 0.00002375956683766203,
+        "mc_se": 0.00005244379541669771,
+        "predicted_gain": 0.000621471167819817
+      }
+    },
+    "0.7": {
+      "0": {
+        "true_gain": -2.903132233073115e-8,
+        "mc_se": 1.3784589384402716e-8,
+        "predicted_gain": -2.9031322330723925e-8
+      },
+      "0.012": {
+        "true_gain": -0.000001361349453873301,
+        "mc_se": 0.0000012717763288028392,
+        "predicted_gain": -9.008251105554049e-9
+      },
+      "0.04": {
+        "true_gain": 2.600582886508041e-7,
+        "mc_se": 5.173363661978916e-7,
+        "predicted_gain": -1.8948310479037846e-9
+      }
+    }
+  },
+  "interpretation": "Optimiser is exact-cap feasible; synthetic true utility advantage is inconclusive with high prediction noise; no real net Sharpe tested",
+  "code_scope": "research/nextgen/fund_aware/",
+  "pre_registration_status": "exploratory synthetic research, not an untouched historical holdout"
+}
