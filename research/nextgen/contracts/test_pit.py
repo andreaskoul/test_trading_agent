@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime,timedelta,timezone
-from pit import PointInTimeRecord,assert_point_in_time,purged_training_rows
+from research.nextgen.contracts.pit import PointInTimeRecord,assert_point_in_time,purged_training_rows
 def t(day,h=0):return datetime(2025,1,day,h,tzinfo=timezone.utc)
 
 class PointInTimeTests(unittest.TestCase):
@@ -24,4 +24,16 @@ class PointInTimeTests(unittest.TestCase):
         decisions=[t(1),t(2),t(3)]; ends=[t(2),t(5),t(8)]
         self.assertEqual(purged_training_rows(decisions,ends,t(6)),[True,True,False])
         self.assertEqual(purged_training_rows(decisions,ends,t(6),timedelta(days=2)),[True,False,False])
+
+    def test_timezone_normalisation(self):
+        from datetime import timezone
+        eastern=timezone(timedelta(hours=-5))
+        r=PointInTimeRecord("issuer","v1",t(1),t(2),datetime(2025,1,2,20,tzinfo=eastern))
+        assert_point_in_time([r],t(4))
+    def test_negative_latency_and_embargo(self):
+        r=PointInTimeRecord("issuer","v1",t(1),t(2),t(3))
+        with self.assertRaises(ValueError):assert_point_in_time([r],t(4),timedelta(days=-1))
+        with self.assertRaises(ValueError):purged_training_rows([t(1)],[t(2)],t(4),timedelta(days=-1))
+    def test_target_overlap_purged_even_if_features_past(self):
+        self.assertEqual(purged_training_rows([t(1),t(2)],[t(4),t(6)],t(4)),[False,False])
 if __name__=="__main__":unittest.main()
