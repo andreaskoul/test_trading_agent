@@ -104,3 +104,12 @@ def test_filter_uncertainty_propagates_without_new_outcomes():
     assert a.fitted_train_dates==b.fitted_train_dates
     assert b.slope_standard_error > a.slope_standard_error
     assert a.slope==b.slope
+
+
+def test_late_out_of_sequence_label_requires_replay():
+    rows,first=make_panel(scenario='stable',seed=101)
+    late_date=first-timedelta(weeks=1)
+    altered=[replace(r,target_available_at=r.decision_at+timedelta(days=42))
+             if r.decision_at==late_date else r for r in rows]
+    with pytest.raises(ValueError,match='out-of-sequence'):
+        state_space_walk_forward(altered,first_decision_at=first)
