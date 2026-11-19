@@ -7,6 +7,7 @@ class SelectionBiasTests(unittest.TestCase):
         a=run(n_candidates=12,repetitions=120,seed=102)
         b=run(n_candidates=12,repetitions=120,seed=102)
         self.assertEqual(a,b)
+        self.assertGreater(a['monte_carlo_se_of_mean_optimism'],0)
     def test_no_search_has_nearly_zero_optimism(self):
         a=run(n_candidates=1,repetitions=600,seed=102)
         self.assertLess(abs(a['mean_selection_optimism']),.06)
