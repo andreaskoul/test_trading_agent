@@ -1,0 +1,177 @@
+{
+ "label": "development, 2013-2019",
+ "run_start": "2026-11-19T14:48:18+00:00",
+ "events": {
+  "events_sha256": "357390fd292cf26a3bef5b910a367f7234574e5023547ab87ffbfa4766623d79",
+  "rows": 40321,
+  "sp500_with_sue": 22028,
+  "t0_rule_mismatch": 0,
+  "t0_not_a_panel_session": 0,
+  "ticker_not_in_panel": 0,
+  "unclassified_lt_500_prior": 501,
+  "first_classified_t0": "2012-05-23",
+  "decay_overlap": {
+   "decay_sp500_rows": 14543,
+   "matched_share": 1.0,
+   "sue_differs_share": 0.0008251392422471292,
+   "sha256": "a7831d1d55328788a885d6e5e3b41c05470a5e800037f36cd272e9d2cb94eed0"
+  },
+  "used_events": 22028
+ },
+ "survivorship_contract": {
+  "by_name_primary": {
+   "ic": 0.0029836694382036335,
+   "nw_t": 1.183497017457772,
+   "weeks": 353,
+   "coverage": 0.9709481103221366
+  },
+  "time_varying_disclosed": {
+   "ic": 0.0011401266018990933,
+   "nw_t": 0.471032185369262,
+   "weeks": 353,
+   "coverage": 0.9233099743692498
+  },
+  "dev_panel": "2009-01-02..2019-12-31, Thursdays 2013-2019"
+ },
+ "survivorship_pass": true,
+ "B0_identical_to_construct_run_2013_2019": true,
+ "book_alone_dev": {
+  "pct_per_year_arith": 0.4608065262778377,
+  "sharpe": 0.21705200022348373,
+  "vol_pct": 2.1230236339834527,
+  "nw_t": 0.5692471153302644,
+  "weeks": 353,
+  "weeks_with_book_share": 0.7308781869688386,
+  "turnover_x_per_year": 20.650767625120526,
+  "cost_pct_per_year": 1.0325383812560265,
+  "by_year": {
+   "2013": {
+    "pct": 1.35,
+    "sharpe": 0.647
+   },
+   "2014": {
+    "pct": -1.61,
+    "sharpe": -1.458
+   },
+   "2015": {
+    "pct": 4.55,
+    "sharpe": 2.544
+   },
+   "2016": {
+    "pct": -1.47,
+    "sharpe": -0.467
+   },
+   "2017": {
+    "pct": 1.87,
+    "sharpe": 1.036
+   },
+   "2018": {
+    "pct": 0.62,
+    "sharpe": 0.293
+   },
+   "2019": {
+    "pct": -2.22,
+    "sharpe": -0.994
+   }
+  },
+  "mean_long_names": 22.48725212464589,
+  "mean_short_names": 23.39660056657224,
+  "min_long": 1,
+  "min_short": 0
+ },
+ "whole_fund_dev": {
+  "B0": {
+   "pct_per_year": 14.25007564503835,
+   "sharpe": 0.9571413893798197,
+   "vol_pct": 14.371371967583112,
+   "worst_fall_pct": -18.996395587030946,
+   "weeks": 353,
+   "book_pct_per_year_arith": -0.6233536808837726,
+   "book_sharpe": -0.16063790165122782,
+   "book_turnover_x_per_year": 33.930605084445425,
+   "book_cost_pct_per_year": 1.6965302542222715,
+   "core_cost_pct_per_year": 0.06880690737833596,
+   "mean_gross": 1.8669798583402137,
+   "mean_overlay_scale": 0.0,
+   "by_year_pct": {
+    "2013": 37.33,
+    "2014": 15.84,
+    "2015": -7.16,
+    "2016": 12.27,
+    "2017": 23.71,
+    "2018": -7.43,
+    "2019": 33.38
+   },
+   "by_year_sharpe": {
+    "2013": 2.565,
+    "2014": 0.917,
+    "2015": -0.394,
+    "2016": 1.143,
+    "2017": 2.477,
+    "2018": -0.257,
+    "2019": 2.222
+   }
+  },
+  "F1": {
+   "pct_per_year": 14.126819676077362,
+   "sharpe": 0.9480618985231918,
+   "vol_pct": 14.408606194322852,
+   "worst_fall_pct": -19.09497202896232,
+   "weeks": 353,
+   "book_pct_per_year_arith": -0.7189288427945046,
+   "book_sharpe": -0.17724225796182394,
+   "book_turnover_x_per_year": 36.98757985020246,
+   "book_cost_pct_per_year": 1.8493789925101227,
+   "core_cost_pct_per_year": 0.06880690737833596,
+   "mean_gross": 1.9172873234814996,
+   "mean_overlay_scale": 0.09453172706935409,
+   "by_year_pct": {
+    "2013": 37.45,
+    "2014": 15.3,
+    "2015": -5.62,
+    "2016": 10.87,
+    "2017": 23.83,
+    "2018": -6.84,
+    "2019": 31.4
+   },
+   "by_year_sharpe": {
+    "2013": 2.572,
+    "2014": 0.885,
+    "2015": -0.283,
+    "2016": 1.038,
+    "2017": 2.487,
+    "2018": -0.221,
+    "2019": 2.117
+   }
+  }
+ },
+ "F1_scaling_dev": {
+  "mean_k_weeks_with_book": 0.12933992114527904,
+  "mean_k_core_up_1.3": 0.022333288642701666,
+  "mean_k_core_down_0.7": 0.9743233295277003,
+  "share_weeks_core_up": 0.8923512747875354,
+  "share_weeks_k_below_0.05": 0.7364341085271318
+ },
+ "increment_dev": {
+  "mean_pct_per_year": -0.09518438868394728,
+  "nw_t": -0.24135571834128652,
+  "weeks": 353,
+  "by_year_pct": {
+   "2013": 0.099,
+   "2014": -0.504,
+   "2015": 1.697,
+   "2016": -1.252,
+   "2017": 0.104,
+   "2018": 0.723,
+   "2019": -1.512
+  },
+  "years_positive": 4,
+  "years": 7
+ },
+ "increment_corr_with_B0": 0.012850552599621787,
+ "development_gate": {
+  "rule": "NW t >= 2.0 and yearly increment > 0 in >= 2/3 of years",
+  "pass": false
+ },
+ "run_end": "2026-11-19T14:48:28+00:00"
+}

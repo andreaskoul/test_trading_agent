@@ -662,3 +662,12 @@ On 2020-2025, whole fund, no candidate passes (Holm, smallest p 0.175). The incu
   * It points to the capital-efficient core question already scheduled for 2026-11-21: the same exposure financed
     more cheaply (2× daily-reset fund or futures-like financing) against margin.
   * It is not grounds to change the exposure; exposure is owner policy.
+
+## Step 35 — Layer 5: post-earnings drift fails its development gate (2026-11-19)
+
+* **The drift book alone** earns +0.46 %/yr net (Sharpe 0.22) on 2013-2019. Its whole-fund increment is −0.10 %/yr
+  (t −0.24). No read.
+* **A structural finding for every additive book:** with the core at 1.3×, the fund sits at the 1.9 gross cap, so an
+  extra book gets about 2% of its size in up-trend weeks. New signals can enter only *inside* the existing stock
+  book (ranked with MASTER), or after the gross used by the core is freed (the capital-efficient core study,
+  2026-11-21).

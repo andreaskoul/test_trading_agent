@@ -1,0 +1,32 @@
+{
+ "branch": "L5_pead (PREREG.md Layer 5, branch P: post-earnings-announcement drift, Bernard and Thomas 1989)",
+ "plan_written": "2026-11-19, before any statistic of this branch was computed",
+ "plan": {
+  "inputs": [
+   "Events: .cache/p8/events.parquet (P8 events, research/p8/events.py): universe == 'sp500' (point-in-time member at t0), sue finite. Fields used: ticker, t0, sue, accepted_et (to re-check the t0 rule). sha256 recorded at run time.",
+   "Why not decay_earnings_events.parquet as the event list: it ends 2021-12-23 (no 2022-2025) and keeps only events with 121 sessions of future residuals and a valid t0-1..t0+1 path, a filter that conditions on the future. Its outcome columns (car, d1..d120, resid) are never read. It is used only to check that ticker/t0/sue agree with events.parquet on the overlap.",
+   "Panel: quant-tf sp500_test.build() via research/sharpe/construct.py (the whole-fund panel of L4_exploit): S, names, r, rm, spy, elig, beta (the panel's shrunk Welch 252-day beta). MASTER 5-day scores sp500_tf_master_h5.npz (the incumbent B0 book)."
+  ],
+  "t0_rule": "t0 is the reaction session: 8-K item 2.02 accepted before 16:00 ET on a session -> that session; after 16:00 or non-session -> next session. Re-checked from accepted_et; events whose t0 is not a panel session are dropped and counted.",
+  "classification": "Per event at its t0 (index i0): quintile breakpoints = 20th and 80th percentiles (numpy linear) of sue over S&P 500 events with t0 in sessions i0-252 .. i0-1 (strictly before; causal). Top if sue >= q80, bottom if sue <= q20. Needs >= 500 prior events, else unclassified (only 2012 affected; development starts 2013).",
+  "book": "Thursday decision t (strategies.periods: trade at close t+1, hold to the next decision's close+1). Held events: t0 index in [t-19, t] (t0 fell in the last 20 sessions; first return earned is after close t+1 >= t0+1, so the t0 reaction is never earned; each event is held about 4 weekly periods = 20 sessions). Long top-quintile names, short bottom-quintile names, name must be elig[t]. Equal weight within side: +0.3/|L| and -0.3/|S| (the stock book's gross 0.6 = 2 x 0.3). A side with fewer than 5 names -> no PEAD book that week. A name in both sides nets. Beta hedge: SPY weight -sum(w * beta[t]) as in the simulator.",
+  "whole_fund_F1": "B0 (the 200-day trend core 1.3x/0.7x plus the MASTER decile book at 0.3 a side, beta-hedged; L4_exploit sim) plus k * PEAD weights. k in [0, 1] each week = largest with gross |s + w_spy| + sum|w| <= max(1.9, gross of B0 that week) (bisection; gross is convex in k so the feasible set is an interval from 0). Only the added book is scaled. Cost 5 bp on |delta w| + |delta w_spy| of the combined (net) stock and SPY-hedge weights, core switching cost and margin financing exactly as L4_exploit sim.",
+  "book_alone": "PEAD weights at full scale (k = 1) through the same simulator; the 'book' column = beta-hedged book return net of 5 bp on its own turnover. Reported: %/yr (52 x mean weekly), annualised Sharpe, by year, turnover, mean names per side, share of weeks with a book.",
+  "survivorship_contract": "Like A1 (research/tree/A1_audit/a1.py ind_ic): Spearman of a 0/1 indicator with y5 (harness dev.npz) over eligible names with a target, development Thursdays 2013-2019, NW t with 4 lags. Primary (gating, 'by name'): name has any S&P 500 P8 event with finite sue in events.parquet. Disclosed, not gating: time-varying indicator (an S&P 500 event with finite sue with t0 in the last 252 sessions up to t). Gate |t| < 2, else stop.",
+  "B0_check": "sim(B0) on 2013-2019 identical to construct.run S0 at gross side 0.3; on 2020-2025 (only if read) identical to recorded OOS_RETURNS MASTER|gross 0.6|5bp (21.69 %/yr, Sharpe 0.937).",
+  "development_gate": "Years 2013-2019. x = weekly whole-fund return of F1 minus B0 (weekly-normalised, total*7/days). Pass iff NW t (4 lags, L4 nw) >= 2.0 AND the yearly sum of x > 0 in >= 5 of 7 years (>= 2/3). Also reported: F1 and B0 summaries, mean k, k by core state.",
+  "read": "Only on a pass: create READ_L5P.lock first, then one run of F1 vs B0 on 2020-2025: Ledoit-Wolf 2008 HAC test (L4 lw_hac_test, one-sided p), block bootstrap as in L4, Holm across Layer 5's read candidates (this branch reports its own p; the coordinator applies Holm across branches), Deflated Sharpe Ratio with N = 162 + Layer 4/5 configurations counted at read time and listed. No other 2020-2025 statistic is computed before or outside the lock.",
+  "disclosure_vs_EAP": "The earnings-announcement premium (research/eventrisk/PREREG.md Amendment 2, 2026-11-10, failed in development: AP1 t -0.89) held announcers vs non-announcers in the 5 sessions BEFORE/through the report, unsigned by news. This test holds names AFTER the report (t0+1 onward), signed by the size of the earnings surprise (SUE): a different effect (underreaction to news, not a risk premium for scheduled news)."
+ },
+ "done": [
+  "events loaded: 22028 S&P 500 events in panel; t0 rule mismatches 0",
+  "survivorship: by-name IC +0.0030 (t +1.18); time-varying IC +0.0011 (t +0.47)",
+  "development: book alone 0.46 %/yr, Sharpe 0.217; whole-fund increment -0.095 %/yr, NW t -0.24, positive 4/7 years; gate FAIL",
+  "No read: READ_L5P.lock not created; 2020-2025 not touched by this branch. Report returned to coordinator."
+ ],
+ "running": [],
+ "next": [
+  "coordinator review"
+ ],
+ "updated": "2026-11-19T14:48:28+00:00"
+}
