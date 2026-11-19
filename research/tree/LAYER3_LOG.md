@@ -650,3 +650,15 @@ On 2020-2025, whole fund, no candidate passes (Holm, smallest p 0.175). The incu
 * A bigger book (×2) is the only positive arm: +0.05 Sharpe, p 0.18, not significant, and worse in 2026.
 * Sizing by the pre-2020 rule would have dropped the book entirely (MASTER's development book Sharpe was −0.16).
   The book's 2020-2025 value was not predictable before 2020: a caution for the forward record.
+
+## Step 34 — Layer 4 explore: no diversifier passes; the margin cost of the leveraged core is a lead (2026-11-19)
+
+* **Cross-asset trend sleeve:** failed its one read (ΔSharpe +0.115, p 0.154; DSR 0.62). The sleeve alone earned a
+  Sharpe of 0.13 in 2020-2025.
+* **Overnight-intraday:** rejected, because its only data source carries a survivorship leak (availability t 3.52).
+* **Descriptive, after the read:** the fund scaled to 0.707 with no sleeve has Sharpe 0.998, against 0.937. Margin
+  financing of the 1.3× core at rf + 2.43% costs Sharpe.
+  * This is a reused window, not a test.
+  * It points to the capital-efficient core question already scheduled for 2026-11-21: the same exposure financed
+    more cheaply (2× daily-reset fund or futures-like financing) against margin.
+  * It is not grounds to change the exposure; exposure is owner policy.

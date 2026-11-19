@@ -1,0 +1,90 @@
+{
+ "fred_sha256": {
+  "DCOILWTICO.csv": "3f7803bbab43cded6f125932f4a0b13b6017eb4a569d86b2e5ca335ce31615d4",
+  "DGS10.csv": "43e33d3ac0f45398cf447c120793b586dfa9e28485a9756ace67228ca0d10538",
+  "DGS20.csv": "984d04a56ecbfc7a5cc2422c1ca5f63c0cab1ba18cec911068c624587c07a99e",
+  "DTWEXBGS.csv": "1569a280c509d0e2e702c0c5fb410415e2c137748a689f430a0116dcb24bc5ed"
+ },
+ "IEF": {
+  "series": "DGS10",
+  "corr_daily": -0.9610226701000174,
+  "expected_sign": -1,
+  "n": 5849,
+  "spot": {
+   "2013-06-20": {
+    "etf_ret_pct": -0.454,
+    "fred_change": 0.08
+   },
+   "2016-06-24": {
+    "etf_ret_pct": 1.382,
+    "fred_change": -0.17
+   },
+   "2019-08-05": {
+    "etf_ret_pct": 0.864,
+    "fred_change": -0.11
+   }
+  }
+ },
+ "TLT": {
+  "series": "DGS20",
+  "corr_daily": -0.9445287402405159,
+  "expected_sign": -1,
+  "n": 5849,
+  "spot": {
+   "2013-06-20": {
+    "etf_ret_pct": -1.641,
+    "fred_change": 0.09
+   },
+   "2016-06-24": {
+    "etf_ret_pct": 2.685,
+    "fred_change": -0.16
+   },
+   "2019-08-05": {
+    "etf_ret_pct": 1.729,
+    "fred_change": -0.09
+   }
+  }
+ },
+ "UUP": {
+  "series": "DTWEXBGS",
+  "corr_daily": 0.6741478318746403,
+  "expected_sign": 1,
+  "n": 4677,
+  "spot": {
+   "2013-06-20": {
+    "etf_ret_pct": 0.589,
+    "fred_change": 1.784
+   },
+   "2016-06-24": {
+    "etf_ret_pct": 2.609,
+    "fred_change": 1.699
+   },
+   "2019-08-05": {
+    "etf_ret_pct": -0.489,
+    "fred_change": 0.343
+   }
+  }
+ },
+ "DBC": {
+  "series": "DCOILWTICO",
+  "corr_daily": 0.39706931792310457,
+  "expected_sign": 1,
+  "n": 4887,
+  "spot": {
+   "2013-06-20": {
+    "etf_ret_pct": -3.251,
+    "fred_change": -3.41
+   },
+   "2016-06-24": {
+    "etf_ret_pct": -2.023,
+    "fred_change": -5.351
+   },
+   "2019-08-05": {
+    "etf_ret_pct": -0.859,
+    "fred_change": -1.868
+   }
+  }
+ },
+ "GLD": "not checked against an independent source (none reachable); passes the internal contract only",
+ "pass": true
+}

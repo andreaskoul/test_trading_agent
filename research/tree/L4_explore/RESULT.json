@@ -1,0 +1,312 @@
+{
+ "X1": {
+  "verdict": "fail: Ledoit-Wolf HAC p 0.154 > 0.05 and DSR 0.62 < 0.95; no sleeve, no forward shadow",
+  "data": {
+   "contract_defects": [],
+   "sha256": {
+    "IEF": "45b485d1ccb119987b1596ea1dbb47f2ebe1e0f7c0357e393d630fde120886ea",
+    "TLT": "c2201b4136323155f373f6378366bd7f7adf58a76ed4c1e231b1aa8eef3ea0a9",
+    "GLD": "56f91cef116bd864922f0d1d13422f88edd6989915b2ea125cdc233ecee8b69b",
+    "DBC": "e7399d08af279282bae34d72dc1e3cf2012acde8ac852cbebbb9adeca52f888f",
+    "UUP": "811c56b32b919abe562d897b2e5ac5e8763622611d135bfb000decbc48bd8550",
+    "SPY": "9bf5fe464981e6fb5d6f647920b3d5adb5fdf078f69ad0497dd7c927e4b586c8"
+   },
+   "spot": {
+    "IEF": -0.9610226701000174,
+    "TLT": -0.9445287402405159,
+    "UUP": 0.6741478318746403,
+    "DBC": 0.39706931792310457,
+    "GLD": "not checked against an independent source (none reachable); passes the internal contract only",
+    "pass": true
+   }
+  },
+  "development": {
+   "label": "development, first sleeve week .. 2019-12-31",
+   "first_week": "2003-07-31",
+   "last_week": "2019-12-19",
+   "sleeve_excess": {
+    "sharpe": 0.1940328102129706,
+    "pct_per_year": 1.6734545006313217,
+    "vol_pct": 12.7014428034911,
+    "worst_fall_pct": -34.67472598768266,
+    "weeks": 831
+   },
+   "core_excess": {
+    "sharpe": 0.5109622129915233,
+    "pct_per_year": 8.517195900425211,
+    "vol_pct": 16.453562857723586,
+    "worst_fall_pct": -49.26710392046342,
+    "weeks": 831
+   },
+   "spy_excess": {
+    "sharpe": 0.49347132622117634,
+    "pct_per_year": 8.25624295380225,
+    "vol_pct": 16.012805506505625,
+    "worst_fall_pct": -55.6103916721995,
+    "weeks": 831
+   },
+   "sleeve_by_year": {
+    "2003": {
+     "pct": 11.29,
+     "sharpe": 1.87
+    },
+    "2004": {
+     "pct": -6.67,
+     "sharpe": -0.63
+    },
+    "2005": {
+     "pct": 1.43,
+     "sharpe": 0.11
+    },
+    "2006": {
+     "pct": -11.73,
+     "sharpe": -1.39
+    },
+    "2007": {
+     "pct": 32.19,
+     "sharpe": 2.48
+    },
+    "2008": {
+     "pct": 11.82,
+     "sharpe": 0.84
+    },
+    "2009": {
+     "pct": -4.49,
+     "sharpe": -0.08
+    },
+    "2010": {
+     "pct": -13.52,
+     "sharpe": -1.22
+    },
+    "2011": {
+     "pct": 16.05,
+     "sharpe": 1.24
+    },
+    "2012": {
+     "pct": -7.0,
+     "sharpe": -0.45
+    },
+    "2013": {
+     "pct": 17.2,
+     "sharpe": 1.97
+    },
+    "2014": {
+     "pct": 6.3,
+     "sharpe": 0.24
+    },
+    "2015": {
+     "pct": 12.81,
+     "sharpe": 1.06
+    },
+    "2016": {
+     "pct": -17.01,
+     "sharpe": -1.2
+    },
+    "2017": {
+     "pct": -7.16,
+     "sharpe": -1.05
+    },
+    "2018": {
+     "pct": -11.52,
+     "sharpe": -1.44
+    },
+    "2019": {
+     "pct": 11.83,
+     "sharpe": 1.43
+    }
+   },
+   "corr_sleeve_spy": -0.19942750459239536,
+   "corr_sleeve_core": -0.19423984847916068,
+   "avg_gross": 1.9971002769995254,
+   "max_gross": 2.0000000000000004,
+   "contribution_pct_per_year": {
+    "IEF": 1.171575351102289,
+    "TLT": 0.2735226083796903,
+    "GLD": 1.6754344082646315,
+    "DBC": 1.3177139628096795,
+    "UUP": -1.3344585491550096
+   },
+   "standalone_sharpe_per_etf": {
+    "IEF": 0.20463813919878265,
+    "TLT": 0.034882466611845506,
+    "GLD": 0.4729817390588872,
+    "DBC": 0.31069132255194637,
+    "UUP": -0.31173957090394694
+   },
+   "core_code_check_2013_2019": {
+    "weeks": 353,
+    "corr": 0.9999999998034067,
+    "max_abs_diff": 1.1885852169261912e-06
+   },
+   "weight": {
+    "S_c": 0.5109622129915233,
+    "S_x": 0.1940328102129706,
+    "S_x_haircut": 0.0970164051064853,
+    "rho": -0.19423984847916068,
+    "sigma_c": 0.16453562857723586,
+    "sigma_x": 0.127014428034911,
+    "w_sleeve_per_core_unit": 0.4798811916671646,
+    "predicted_combined_sharpe_core_plus_sleeve": 0.548737547266769,
+    "formula": "w = (sigma_c/sigma_x)(S_x' - rho S_c)/(S_c - rho S_x'), S_x' = 0.5 S_x"
+   }
+  },
+  "test_2020_2025": {
+   "label": "2020-2025 test, read once (READ_X1.lock)",
+   "w_sleeve": 0.4798811916671646,
+   "B0": {
+    "sharpe": 0.9369462404420277,
+    "pct_per_year": 21.691326537386058,
+    "vol_pct": 22.37378782545176,
+    "worst_fall_pct": -29.98544666122883,
+    "weeks": 302,
+    "by_year": {
+     "2020": 40.0,
+     "2021": 26.4,
+     "2022": -16.3,
+     "2023": 25.7,
+     "2024": 38.2,
+     "2025": 25.3
+    }
+   },
+   "with_sleeve": {
+    "sharpe": 1.0522325800022407,
+    "pct_per_year": 17.277438086845763,
+    "vol_pct": 15.71471619422856,
+    "worst_fall_pct": -19.504809907966923,
+    "weeks": 302,
+    "by_year": {
+     "2020": 35.3,
+     "2021": 17.3,
+     "2022": -6.0,
+     "2023": 17.4,
+     "2024": 25.7,
+     "2025": 17.5
+    }
+   },
+   "with_sleeve_uncapped_descriptive": {
+    "sharpe": 0.9854438518595716,
+    "pct_per_year": 22.042009661341755,
+    "vol_pct": 21.460093241287083,
+    "worst_fall_pct": -25.20908716864022,
+    "weeks": 302,
+    "by_year": {
+     "2020": 47.2,
+     "2021": 25.6,
+     "2022": -10.5,
+     "2023": 21.7,
+     "2024": 35.3,
+     "2025": 20.3
+    }
+   },
+   "sleeve_alone_excess": {
+    "sharpe": 0.1317680489281314,
+    "pct_per_year": 0.7326583935135078,
+    "vol_pct": 11.225931533997342,
+    "worst_fall_pct": -31.154239613983957,
+    "weeks": 302,
+    "by_year": {
+     "2020": 10.6,
+     "2021": -1.8,
+     "2022": 13.0,
+     "2023": -7.0,
+     "2024": -2.0,
+     "2025": -6.5
+    }
+   },
+   "sleeve_contribution_pct_per_year_by_etf": {
+    "IEF": 1.0852917025468607,
+    "TLT": -0.5107393792647485,
+    "GLD": 2.437747952278483,
+    "DBC": -1.1143076932978355,
+    "UUP": 0.12214467845246481
+   },
+   "corr_sleeve_vs_B0": -0.2880087142306805,
+   "corr_sleeve_vs_spy": -0.27034552630793446,
+   "avg_gross_cap_scale_c": 0.7066599908067293,
+   "share_weeks_scaled": 1.0,
+   "avg_sleeve_gross_in_fund": 0.9597623833343291,
+   "lw2008_test": {
+    "sharpe_diff_annual": 0.11547768631355965,
+    "se_annual": 0.1134587263626742,
+    "z": 1.0177946643295799,
+    "p_one_sided": 0.15438777412096993,
+    "lags": 5,
+    "weeks": 302
+   },
+   "dsr": {
+    "44": {
+     "N": 44,
+     "sharpe_annual": 1.0522325800022407,
+     "sr0_annual": 0.9255873560002457,
+     "skew": -0.0810123873613484,
+     "kurtosis": 6.859143314859501,
+     "dsr": 0.6172820240191172
+    },
+    "100": {
+     "N": 100,
+     "sharpe_annual": 1.0522325800022407,
+     "sr0_annual": 1.0518224212514966,
+     "skew": -0.0810123873613484,
+     "kurtosis": 6.859143314859501,
+     "dsr": 0.5003854778124371
+    },
+    "200": {
+     "N": 200,
+     "sharpe_annual": 1.0522325800022407,
+     "sr0_annual": 1.1494652350295935,
+     "skew": -0.0810123873613484,
+     "kurtosis": 6.859143314859501,
+     "dsr": 0.40941108086471534
+    }
+   },
+   "pass_X1": false,
+   "consequence": "pass -> forward shadow from the first full week of December 2026 (proposal, instruments are owner policy); fail -> no sleeve"
+  },
+  "descriptive_after_read": {
+   "label": "2020-2025, descriptive after the read",
+   "B0_scaled_by_c_t_no_sleeve": {
+    "sharpe": 0.9685575196747865,
+    "pct_per_year": 16.60625782737304,
+    "vol_pct": 16.49916966992639,
+    "worst_fall_pct": -23.60673714629137,
+    "weeks": 302
+   },
+   "B0_scaled_by_mean_c_no_sleeve": {
+    "sharpe": 0.997629992538445,
+    "pct_per_year": 16.593552043533364,
+    "vol_pct": 15.80902462798852,
+    "worst_fall_pct": -21.84562587100709,
+    "weeks": 302,
+    "mean_c": 0.7066599908067293
+   },
+   "lw2008_B0_scaled_vs_B0": {
+    "sharpe_diff_annual": 0.031663746122361294,
+    "se_annual": 0.046656024797459845,
+    "z": 0.6786636079652719,
+    "p_one_sided": 0.24867551486772466,
+    "lags": 5,
+    "weeks": 302
+   }
+  }
+ },
+ "X2": {
+  "verdict": "rejected at the survivorship contract (availability IC t 3.52 >= 2); no gate, no read, READ_X2.lock not created",
+  "development": {
+   "label": "development (2016-2019 source window)",
+   "source_note": "Log returns per session and name: index 0 = overnight (previous 15:30 bar close to 09:30 open), 1..13 = the 13 regular 30-minute bars. From the owner's Stock2Vec 30-minute bars (current S&P 500 constituents only: survivorship), 2016-01-04 .. 2019-12-31; NaN elsewhere.",
+   "open_prices_dev_panel": "dev.npz: none. extra_intraday.npz: overnight + 13 half-hour bars, 2016-01-04 .. 2019-12-31, current constituents only. 2020-2025: no open prices on disk in any panel found.",
+   "survivorship_contract": {
+    "availability_ic_mean": 0.024359784345069285,
+    "nw_t": 3.5176916499613755,
+    "weeks": 198,
+    "share_eligible_names_available": 0.5675982580839886,
+    "pass": false
+   }
+  }
+ },
+ "holm_branch": {
+  "X1_p": 0.15438777412096993,
+  "X1_holm_pass": false,
+  "X2": "not tested"
+ }
+}

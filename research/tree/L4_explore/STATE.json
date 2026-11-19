@@ -1,0 +1,118 @@
+{
+ "branch": "L4_explore",
+ "written": "2026-11-19, before any quantity of X1 or X2 is computed",
+ "status": "done: X1 read once, fails; X2 rejected at survivorship contract",
+ "steps_done": [
+  {
+   "step": 1,
+   "what": "X1 data frozen (.cache/tree/l4x, MANIFEST.json sha256); contract passed, 0 defects (X1_DATA_CHECK.json): full session coverage vs SPY calendar, all dividends consistent with Adj Close/Close. Spot check (X1_SPOT.json): SPY = fund panel SPY on 2013-06-24, 2016-06-24, 2019-12-31 (Adj Close to 4 dp); stooq blocked (JS wall), so ETFs checked against FRED (DGS10, DGS20, DTWEXBGS, DCOILWTICO; sha256 in X1_SPOT.json): daily corr IEF -0.96, TLT -0.94, UUP +0.67, DBC +0.40; 3 spot dates consistent in sign except UUP 2019-08-05 (yuan-driven broad index vs euro-heavy UUP). GLD has no independent check."
+  },
+  {
+   "step": 2,
+   "what": "X1 development (X1_DEV.json), 2003-07-31..2019-12-19, 831 weeks: sleeve excess Sharpe 0.194, 1.67 %/yr, vol 12.7%, worst fall -34.7%; corr with SPY -0.199, with core -0.194; gross cap 2 binds almost always (avg 1.997). Core dev Sharpe 0.511 (code check vs construct.py 2013-2019 corr 0.9999999998). Weight w = 0.480 per core unit (S_x haircut 0.097); predicted core+sleeve Sharpe 0.549 vs 0.511."
+  },
+  {
+   "step": 3,
+   "what": "READ_X1.lock 2026-11-19T14:32:08Z; X1 2020-2025 test (X1_TEST.json): B0 reproduced 21.69 %/yr, Sharpe 0.937; with sleeve (w 0.480, cap scale c mean 0.707, every week scaled) 17.28 %/yr, Sharpe 1.052, worst fall -19.5%; LW2008 HAC Sharpe diff +0.115 (se 0.113, z 1.02, p 0.154); DSR N=44 0.617 (N=100 0.500, N=200 0.409). FAIL."
+  },
+  {
+   "step": 4,
+   "what": "Descriptive after read (X1_DECOMP.json): B0 scaled by the same c_t without sleeve Sharpe 0.969 (constant mean c: 0.998), so about a third or more of the +0.115 is deleveraging (less margin cost at rf+2.43%), not the sleeve."
+  },
+  {
+   "step": 5,
+   "what": "X2 (X2_DEV.json): no open prices in dev.npz; extra_intraday 2016-2019 current constituents only; availability-indicator IC +0.0244, NW t 3.52 (198 weeks) -> rejected by the survivorship contract; stopped. No download."
+  }
+ ],
+ "plan": {
+  "X1": {
+   "data": {
+    "tickers": [
+     "IEF",
+     "TLT",
+     "GLD",
+     "DBC",
+     "UUP",
+     "SPY"
+    ],
+    "note_spy": "SPY is added only to build the development core (1.3x/0.7x 200-day rule) before 2009, where the fund's S&P panel starts, and for the correlation with SPY.",
+    "source": "yfinance download, auto_adjust=False, actions=True, first listing .. 2025-12-31; frozen once to .cache/tree/l4x/<T>.csv, sha256 in .cache/tree/l4x/MANIFEST.json; never re-downloaded once frozen",
+    "contract": [
+     "first date within 10 calendar days of the known listing month (IEF/TLT 2002-07, GLD 2004-11, DBC 2006-02, UUP 2007-02, SPY 1993-01)",
+     "sessions on the SPY calendar from first date to 2025-12-31 all present (coverage against the expected calendar, not against zero)",
+     "no NaN or non-positive Close/Adj Close",
+     "|daily Adj Close return| < 25%",
+     "second field: the ratio Adj Close/Close changes (|log change| > 1e-4) only on days with a Dividends entry or on the following session, and on each dividend day the implied dividend Close_{t-1}*(1 - ratio_{t-1}/ratio_t) is within 5% (or 1 cent) of the Dividends field; at least 95% of dividend events pass",
+     "spot check of 3 dates (2008-10-10, 2013-06-24, 2019-12-31) against an independent source: SPY against the fund panel's SPY (sp500 panel, 2009+ only for the first date not possible, so 2013-06-24, 2019-12-31 and 2016-06-24); ETF Close against stooq daily CSV if reachable, else stated as not done"
+    ],
+    "failure": "a failed contract stops X1 with a typed defect"
+   },
+   "rule": "Decision every Thursday close t (the fund's calendar: research/quant_trials/strategies.periods). For each ETF with >= 253 sessions of history: sign = +1 if AdjClose_t/AdjClose_{t-252} - 1 > 0 else -1; sigma = std of the last 63 daily Adj Close returns * sqrt(252); x = sign * 0.10 / sigma. If sum|x| > 2, scale all x down to sum|x| = 2. Held from close(t+1) to close(t2+1) as the fund. Cost 5 bp * sum|x_t - x_{t-1}|. No parameter search.",
+   "standalone_returns": "excess of cash: sum x_i (R_i - rf_period) - cost, rf = FRED DTB3 frozen in quant-tf cache, rf_period = rf * days/360",
+   "development": "first sleeve week .. 2019-12-31. Reported: Sharpe (excess, annualised from weekly), %/yr, vol, by year, correlation with SPY weekly excess return and with the development core's weekly excess return; also average gross and per-ETF contribution.",
+   "core_development": "the 1.3x/0.7x 200-day S&P rule on yfinance SPY Adj Close: s = 1.3 if AdjClose_t > its 200-session mean else 0.7; weekly return s*Rm - 5bp*|ds| - max(s-1,0)*(rf+2.43%)*days/360; excess = minus rf_period. Code check: on 2013-2019 weeks its raw return must correlate > 0.99 with research/sharpe/construct.py's core-only path (zero book) on the same weeks, else stop.",
+   "weight": "S_c, S_x (annualised excess Sharpe), rho, sigma_c, sigma_x on the common development weeks. Haircut S_x' = 0.5*S_x. Mean-variance optimum with the core at one unit: w = (sigma_c/sigma_x) * (S_x' - rho*S_c) / (S_c - rho*S_x'). This w maximises sqrt(S_c^2 + (S_x' - rho S_c)^2/(1 - rho^2)). If w <= 0 the sleeve gets weight 0 and X1 fails without a read. Reported: the combined Sharpe that formula predicts.",
+   "gross_cap": "Fund gross at t G_f = |s + w_spy| + sum|w_book| (about 1.9 when the core is at 1.3). Combined position = c_t * (fund + w * sleeve) with c_t = min(1, 1.9 / (G_f + w*sum|x|)) decided at t. Margin: the simulator's rule on the combined net long, max(c_t*(s + sum w_book + w_spy + w*sum x) - 1, 0) * (rf + 2.43%) * days/360; costs scale with c_t. The fund without the sleeve is B0 untouched. Combined raw weekly return measured as B0 is (raw, not excess), so B0 reproduces 21.7 %/yr and Sharpe 0.94.",
+   "test_2020_2025": {
+    "lock": "research/tree/L4_explore/READ_X1.lock, created before the first 2020-2025 sleeve return is computed",
+    "B0_check": "my re-implementation of the S0 path (GROSS_SIDE 0.3, 5 bp, years 2020-2025) must give 21.7 %/yr and Sharpe 0.94 (OOS_RETURNS.json MASTER|gross 0.6|5bp) to 0.1 and 0.01, else stop before the read",
+    "test": "paired weekly, with-sleeve scaled to B0's volatility; Ledoit-Wolf (2008) delta-method HAC test of the Sharpe difference, H1: Sharpe(with) > Sharpe(B0), one-sided; HAC = Bartlett kernel, lag floor(4(T/100)^(2/9)); (the paper's prewhitened QS kernel is not used; stated as a deviation). Holm across this branch's tested candidates (X1, and X2 only if it reaches a read) at alpha 0.05; the round-wide Holm is the coordinator's.",
+    "dsr": "Deflated Sharpe Ratio (Bailey and Lopez de Prado 2014) of the with-sleeve fund: SR0 = sqrt(V)*((1-g)*Z^-1(1-1/N) + g*Z^-1(1-1/(N e))), g = 0.5772; V = 1/(T-1), the sampling variance of a zero-skill weekly Sharpe (trial Sharpes are not all on file); DSR = Phi((SR - SR0) sqrt(T-1) / sqrt(1 - skew*SR + (kurt-1)/4 SR^2)), weekly units. Must exceed 0.95. Sensitivity at N = 100 and 200 reported.",
+    "N": {
+     "value": 44,
+     "list": {
+      "this round (Layer 4 candidates)": [
+       "B1",
+       "B2",
+       "B3",
+       "B4",
+       "B5 2/3",
+       "B5 full",
+       "X1",
+       "X2"
+      ],
+      "research/exposure": [
+       "P1",
+       "P2",
+       "P3"
+      ],
+      "research/sharpe adaptive core, policy and wide bands": [
+       "TSM",
+       "VOL",
+       "PANIC",
+       "ENS",
+       "FS"
+      ],
+      "research/sharpe exploratory FS settings x 2 bands": 12,
+      "research/sharpe neural exposure": [
+       "MLP",
+       "CNN"
+      ],
+      "research/sharpe construct.py overlays": [
+       "C1",
+       "C2",
+       "C3",
+       "C4 panic",
+       "C5 vol target",
+       "C6 drawdown"
+      ],
+      "Layer 3 Q10 liquidity timing": [
+       "dispersion rule",
+       "SPY-vol rule",
+       "Moreira-Muir"
+      ]
+     },
+     "count": "8 + 3 + 10 + 12 + 2 + 6 + 3 = 44 (>= floor 20)"
+    },
+    "pass": "Holm pass AND DSR > 0.95. A pass earns only a forward shadow from the first full week of December 2026 (instruments are owner policy: a proposal). Reported, not tested: %/yr, Sharpe, worst fall, by year, sleeve alone 2020-2025, the uncapped variant (descriptive)."
+   }
+  },
+  "X2": {
+   "step1_data": "Check open prices for the development panel: dev.npz has none; .cache/tree/extra_intraday.npz has an overnight bar and 13 intraday bars, 2016-01-04 .. 2019-12-31, current S&P 500 constituents only (stated survivorship). No open prices exist for 2020-2025 in any panel found; any download is reported with its size first and not made.",
+   "step2_survivorship": "Availability indicator a_it = 1 if all 21 overnight returns over sessions t-20..t are finite, else 0; weekly cross-sectional IC (harness.weekly_ic, Spearman as defined there) of a with y5 over eligible names with a target, Thursdays 2016-02 .. 2019 (where the source exists); NW t, 4 lags. If |t| >= 2: X2 is rejected (no point-in-time gate exists: the source has current constituents only), and stops.",
+   "step3_gate": "Only if step 2 passes: signal = sum over 21 sessions of overnight log return minus sum of intraday log returns (bars 1..13); weekly IC on y5 (NW t), and the paired increment IC(rank-average of MASTER 5-day dev reference and signal, equal weights) - IC(MASTER) by week, NW t >= 2 to pass, development Thursdays 2016-2019 with a full 21-session window.",
+   "step4_test": "Only if step 3 passes: the 2020-2025 test needs open prices for the S&P 500 panel 2020-2025, which are not on disk; report the download size and stop for the coordinator (READ_X2.lock not created)."
+  },
+  "labels": "every number is labelled development (<= 2019) or 2020-2025 test"
+ }
+}
