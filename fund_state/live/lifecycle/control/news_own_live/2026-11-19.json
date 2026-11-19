@@ -1,0 +1,964 @@
+{
+ "day": "2026-11-19",
+ "close_ts": 1795120800,
+ "checked_at": "2026-11-19T20:51:01+00:00",
+ "lots": {
+  "2026-11-04|IDXX": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1795120800,
+   "headlines": [
+    "heres how much 100 invested in idexx laboratories 20 years ago would be worth today",
+    "top stock reports for merck caterpillar union pacific",
+    "illumina stock surges 748 in a year whats fueling the drive",
+    "is this the right time to retain omnicell stock in your portfolio",
+    "heres how much youd have if you invested 1000 in idexx laboratories a decade ago"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    }
+   ],
+   "max_published": 1795091402
+  },
+  "2026-11-11|TRGP": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1795120800,
+   "headlines": [
+    "do wall street analysts like targa resources stock"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "No article mentions FY2026 EBITDA guidance or any cut below $6 billion.",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "No article mentions ExxonMobil Permian processing or pipeline pact.",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "No article mentions Targa cancelling or walking back a 20% 2027 dividend increase.",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "Article only says Wall Street analysts remain firmly bullish and does not report a new quantified company event.",
+       "article": 0
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Crusoe"
+    }
+   ],
+   "max_published": 1795092215
+  },
+  "2026-11-11|LLY": {
+   "status": "checked",
+   "verdict": "increase",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 3,
+   "news_until": 1795120800,
+   "headlines": [
+    "growth leads sectors in wednesday trading as cyclicals trail",
+    "alpha tau medical the rubber meets the road in h1 2027",
+    "lilly buying spree surpasses 32b",
+    "eli lilly everyone losing weight but lilly keeps gaining initiating with a buy",
+    "gold silver and crude slide hard as volatility jumps on the week",
+    "what state street health care spdr xlv sold eli lilly leads on nov 17",
+    "should biogen stock holders look at amgen instead",
+    "which dates could move bristol myers squibb stock most",
+    "eli lilly lly expands its oncology research platform",
+    "is immunology emerging as eli lillys next growth driver",
+    "can new products and acquisitions revive pfizers growth story",
+    "amgen amgn has advanced maritide into phase 3 trials",
+    "eli lilly stopped touting dose counts should you worry",
+    "sector rotation dragged eli lilly lly down in q3 despite intact momentum",
+    "general medicine brings its glp1 weight management care to lillydirect",
+    "pfe inks 26b licensing deal with chinese biotech for cart therapies",
+    "1000 invested in eli lilly 10 years ago would be worth a fortune today",
+    "eli lilly lly the only healthcare name in ken fishers fastestgrowing top positions"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Eli Lilly agreed to buy closely held Calytrix Bio in a deal that could be worth up to $1.5 billion, the latest in the drugmaker's $32 billion wave of acquisitions in 2026 as it builds out its cancer and immunology businesses.",
+       "article": 2
+      }
+     },
+     "error": null,
+     "provider": "Alibaba"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Eli Lilly agreed to buy closely held Calytrix Bio in a deal that could be worth up to $1.5 billion, the latest in the drugmaker's $32 billion wave of acquisitions in 2026 as it builds out its cancer and immunology businesses.",
+       "article": 2
+      }
+     },
+     "error": null,
+     "provider": "Alibaba"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": true,
+       "quote": "Eli Lilly agreed to buy closely held Calytrix Bio in a deal that could be worth up to $1.5 billion, the latest in the drugmaker's $32 billion wave of acquisitions in 2026 as it builds out its cancer and immunology businesses.",
+       "article": 11
+      }
+     },
+     "error": null,
+     "provider": "River"
+    }
+   ],
+   "max_published": 1795112278
+  },
+  "2026-11-11|TSLA": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1795120800,
+   "headlines": [
+    "trump enters china talks facing an ai supplychain bottleneck",
+    "teslas semi megacharger network hits 7 sites far short of 37 goal electrek report",
+    "growth leads sectors in wednesday trading as cyclicals trail",
+    "nvidiawall street is missing chinalinked margin riskbuybacks support stock",
+    "as tesla plans to roll out the cybercab for individual use tsla stock is a tough nut to crack",
+    "waymo ordered off california freeways for an imminent hazard to public safety tesla has more at stake",
+    "tesla scores legal win against manitoba in ev rebate case bloomberg",
+    "elon musk more areas of overlap between spacex and tesla than before",
+    "elon musk on his compensation if tesla were to merge with spacex",
+    "should you trim or add to your rivian position now",
+    "coinbase ai blocks 47 million deepfake elon musk crypto scam",
+    "skydances ellison welcomes musk investment while committing to airing documentary critical of tesla ceo",
+    "will apollos 40 billion for spacex to rent gpus pay off",
+    "jim cramer calls himself jensen huangs biggest defender but says just because someone is brilliant doesnt mean he can do what he wants",
+    "tesla wins manitoba court order on ev rebate ban as canadian pm carney notes brands fading cachet",
+    "elon musk says nvidia ousting jensen huang is like kicking michael jordan off a winning team",
+    "i feel pretty foolish elon musk wishes he could rewind the clock after 500 million bet on republicans in midterms",
+    "zohran mamdani isnt an addict but he admits spending too much time on elon musks x",
+    "elon musk says nvidia made a mistake by parting ways with jensen huang calls exceo michael jordan perhaps at his peak level",
+    "tesla and spacex better together musk leans yes but says performance must drive his tsla pay",
+    "exclusive tesla still rules leveraged etfs but anthropic ipo and microns rise signal whats next",
+    "cathie wood doubles down on highest conviction names nvidia tesla and amd as cyclical tech stocks get slaughtered amid market pullback",
+    "elon musk doubles down on autonomy tesla plans wheelless pedalless model y to sit alongside twoseat cybercab",
+    "alex padilla vows to make elon musks worst nightmare come true in next congress targets billionaire election spending and citizens united",
+    "elon musk says spacex tesla would be better together but decision lies with shareholders so many areas of convergence",
+    "david ellison calls elon musks 1 billion investment an honor and a privilege open to future starlink collaboration",
+    "tesla to continue increasing china production state media reports",
+    "satya nadella once told bill gates founders also die says jensen huang built nvidias institutional strength to thrive beyond him",
+    "andreas halvorsens viking global reverses tesla cut boosts stake 327 exits microsoft spacex and qualcomm in q3",
+    "campaign urges ripple to burn 30b in xrp as analyst cites tesla in 70 xrp call",
+    "tesla nowhere near as expensive as it seems",
+    "market chatter tesla to continue boosting production at china factory",
+    "elon musk reportedly says tesla will continue to increase production in china tsla stock rises premarket",
+    "what state street consumer discretionary spdr xly sold amazon leads on nov 17",
+    "elon musk says nvidia may struggle to replace jensen huang as ceo",
+    "energy transition today levelten energy ventures into asiapacific clean energy market",
+    "teslas china business sends investors two very different signals",
+    "4 stocks analysts and hedge funds surprisingly prefer over tesla",
+    "are you sure you understand general motors stocks risk",
+    "robotaxis exchange switches and exits the auto sectors busy week",
+    "elon musks latest calls for teslaspacex merger explains pay package",
+    "pony ai results show just how big teslas robotaxi fleet needs to get",
+    "at what price will anthropic shares open yf takes a guess",
+    "why gm stocks gains under barra outran its profit",
+    "like kicking michael jordan off your team elon musk blasts nvidia boards actions",
+    "elon musk on his 500m in political spending i feel pretty foolish",
+    "174yearold american banks bitcoin exposure nears tesla and spacex",
+    "elon musk says tesla and spacex would probably be better together",
+    "tesla stock could be worth much more in 2027 heres the number im watching",
+    "a 78 billion hedge fund just bought these 3 stocks",
+    "elon musk says he shouldnt get a tesla payday just for merging with spacex odds of a 2026 announcement slide to 16",
+    "prediction spacex will be the largest company in the world by 2040",
+    "tsll 2x tesla etf is down 50 in 2026 can it double to 20 from here",
+    "anthropic stock is now trading should you buy ant today",
+    "elon musk wants more teslas from shanghai as china sales fall",
+    "tesla stock rises as musk doubles down on china",
+    "anthropic debuted at a 15 trillion valuation heres what it would have to be worth to match techs greatest runs",
+    "can teslas cash cover 20 billion of spending",
+    "tesla stocks rise as musk pledges more output from shanghai plant",
+    "trumps new filing reveals nvidia spacex and tesla purchases white house says he didnt direct trades"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "Elon Musk says a SpaceX-Tesla merger is possible as AI and robotics converge, but it would require shareholder approval.",
+        "article": 24
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Elon Musk doubled down on his vision for autonomous vehicles on Wednesday, saying the automaker will release the Model Y without a steering wheel and pedals in the future.",
+        "article": 22
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "No article mentions Cybertruck production restart.",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "No article reports a new material quantified company event after the 2026-11-12 close in Tesla's favour; the China reports pledge higher output but do not quantify a new event.",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Relace"
+    }
+   ],
+   "max_published": 1795115037
+  },
+  "2026-11-11|BRK.B": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1795120800,
+   "headlines": [
+    "is american financial group afg stock outpacing its finance peers this year",
+    "if youd invested 1000 in berkshire hathaway brkb stock 20 years ago heres how much youd have today",
+    "billionaire charlie munger called robinhood a gambling parlor masquerading as a respectable business and now they hold 70 million trump accounts",
+    "warren buffetts successor greg abel is doubling down on his 2 billion bet that the american dream is not dead",
+    "the 5 best stocks in berkshire hathaways portfolio",
+    "heres why berkshire hathaway b brkb is a great momentum stock to buy",
+    "why berkshire hathaway wants to raise your electricity bill by 120 a month",
+    "berkshire reveals new 689 million stake in major tech stock",
+    "berkshires class a shares near 1 million holding a 17x book multiple gets them there by 2027",
+    "of 4 stocks with 80 roe one investor says only nvidia fits buffetts own criterion",
+    "buffetts berkshire cuts bofa stake adds to americas mostawarded airline",
+    "16 billion loss billionaire bill ackman says he was a little bit surprised by berkshires 10 billion alphabet bet they got it at a 6 discount but so what",
+    "alphabet vs apple which warren buffett stock is the better buy",
+    "berkshire might give up on this highyielding dividend stock you maybe should too",
+    "3 investments to give a child this holiday season and leave alone until 2040",
+    "warren buffett expects berkshire hathaway brka brkb stock to drop about 50 again someday heres what he says to do then",
+    "berkshires stake in this stock was worth 30b now its 8b",
+    "berkshire hathaway brka stock may be 25 undervalued following 96 billion buybacks",
+    "warren buffett paid 13 billion for cocacola heres what it now pays berkshire hathaway in yearly dividends",
+    "what berkshire hathaways thirdquarter report says about its insurance business",
+    "what state street financial spdr etf xlf sold berkshire leads on tuesday"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "What Berkshire Hathaway's Third-Quarter Report Says About Its Insurance Business :: Even if investors saw it coming, a headwind is still a headwind regardless of the reason.",
+        "article": 19
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Berkshire Hathaway (BRK.A) Stock May Be 25% Undervalued Following $9.6 Billion Buybacks",
+        "article": 17
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "Here's Why Berkshire Hathaway B (BRK.B) is a Great Momentum Stock to Buy",
+        "article": 5
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    }
+   ],
+   "max_published": 1795086375
+  },
+  "2026-11-11|AAPL": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1795120800,
+   "headlines": [
+    "apple stock near alltime highs former chairman files to cash out 32 million",
+    "apple short interest climbs after fourthquarter earnings",
+    "trump enters china talks facing an ai supplychain bottleneck",
+    "growth leads sectors in wednesday trading as cyclicals trail",
+    "why mike khouw says a put spread could be the right strategy for apple",
+    "is apple the safe haven investors think it isheres a way to trade it with less risk",
+    "mp materials stock in focus as needham reinstates buy rating",
+    "nvidiawall street is missing chinalinked margin riskbuybacks support stock",
+    "apple stock shows strength now and a key catalyst is brewing in june 2027",
+    "could qualcomm actually climb 85 or is baird totally wrong",
+    "which funds with semiconductor exposure best capture the china ai chip curbs",
+    "stock market today dow sp 500 nasdaq 100 futures rise as wall street awaits anthropics listing panw ntes sls in focus updated",
+    "invesco qqq qqq sells apple and microsoft on nov 17",
+    "spdr sp 500 etf spy adds apple and nvidia on nov 17",
+    "what ishares core sp 500 etf ivv bought apple leads on nov 17",
+    "direxion daily tech bull 3x tecl sells 565 million of apple on nov 17",
+    "what state street technology spdr xlk sold apple leads on nov 17",
+    "what proshares trust tqqq bought apple leads on nov 17",
+    "ishares russell 1000 growth iwf buys 267 million more nvidia on nov 17",
+    "jpmorgan nasdaq equity premium income jepq adds apple and microsoft on nov 17",
+    "ishares russell 3000 etf iwv buys 105 million more apple on nov 17",
+    "can apple grow cash flow 17 a year thats what its record price implies",
+    "what are netflix stock bears missing",
+    "how investors may respond to apple aapl service outages",
+    "anthropic stock to 500 in 5 years",
+    "futures trading suggests 25 leap in opening day",
+    "anthropic futures trading suggests 25 leap in opening day",
+    "almost every fed official discussed the risk of an ai bust minutes show",
+    "cocacola stock could lose its fizz its valuation is the highest in 25 years",
+    "3 tech dividend stocks to buy in december as ai spending accelerates",
+    "apple became a top buffett holding for a reason id buy it with 1000 now",
+    "has nvidia peaked thetechtalk podcast episode 3",
+    "why microsofts stickier revenue gives it the edge over apple heading into 2027",
+    "jamf brings apple device management and security apps to crowdstrike falcon foundry",
+    "wireless health and fitness devices global strategic business report capitalize on 114 cagr to 9186m units by 2030 as apple abbott adidas bosch and asus battle for market control",
+    "anthropic goes public as ai bug hunters push cybersecurity stocks higher chart of the day",
+    "if apple reaches 400 your 5000 investment would be worth this much",
+    "some fed officials wanted to hike in october a halfpoint hike is on the table",
+    "connected health devices global strategic business report 2026 capitalize on 213 cagr and 116b revenue opportunity by 2032 with apple medtronic microsoft roche and epic systems",
+    "why anthropic wont be the next apple or amazon",
+    "samsung electronics kosea005930 stock still looks undervalued on earnings",
+    "services franchise and installed base anchor apples aapl durable earnings growth",
+    "britain forced to admit secret apple backdoor demand",
+    "visa mastercard jpmorgan hit by reported data leak payment information not affected",
+    "prediction spacex will be the largest company in the world by 2040",
+    "apples longestserving director just cashed out 32 million",
+    "do nvidia alphabet meta drops hurt your index fund",
+    "spotifys 93 arpu rise signals stronger premium monetization",
+    "is snap stock ready for shrinking ad sales",
+    "citi ceos tech warning raises the stakes for the next outage",
+    "are you overpaying for alphabet stock versus its tech rivals",
+    "top 5 stocks to buy according to billionaire ken fisher",
+    "apple marks a big moment for its free radio bet",
+    "why alphabets cheap pe may mislead investors",
+    "appalachian wireless among first regional carriers to launch rcs for business with clearsky",
+    "why netflixs fall could pay off at tax time",
+    "apples head of iphone camera software retires after eight years bloomberg",
+    "roundtable 100 analysts lift apple on record rd spend",
+    "apple aapl faces uk backdoor admission and french obsolescence trial",
+    "walmart costco see some panicbuying after tech outages"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Wafer"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "One company faces memory costs and the other faces a massive spending bill",
+        "article": 32
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "Services Franchise and Installed Base Anchor Apple\u2019s (AAPL) Durable Earnings Growth",
+        "article": 41
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "One company faces memory costs and the other faces a massive spending bill",
+        "article": 32
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "InferenceNet"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "Baidu"
+    }
+   ],
+   "max_published": 1795115962
+  },
+  "2026-11-11|NFLX": {
+   "status": "checked",
+   "verdict": "hold",
+   "passes_ok": 3,
+   "matched": 0,
+   "partial": 0,
+   "hard": 0,
+   "news_until": 1795120800,
+   "headlines": [
+    "heres how much 1000 invested in netflix 15 years ago would be worth today",
+    "trade tracker josh browns latest portfolio moves",
+    "as netflix stock hovers near its 52week low analyst sentiment remains mixed heres why",
+    "this is a dream entry point for netflix stock rating upgrade",
+    "rep byron donalds sells netflix stock for loss heres what hes buying instead",
+    "sp 500 most active stocks on nov 18 aes leads volume freeportmcmoran drops 645",
+    "disney rises 5 as 10 analysts raise targets on earnings beat and 3 billion savings plan",
+    "josh brown says netflix trades at 16 times next years earnings after a 50 drop is it a buy",
+    "gta 6 vs sam bankmanfried netflix drops ftx series on same day as taketwos blockbuster launch",
+    "netflix is 48 below its high while guiding to record revenue of 511 billion up 13 for 2026",
+    "what are netflix stock bears missing",
+    "gta vi why the 13year wait could be worth 8 billion",
+    "a billionaires bet on hollywood puts media and space stocks in focus",
+    "with netflix stock down nearly 46 in the last year michael burry reveals the price hed think about buying",
+    "netflix nflx down 8 since last earnings report can it rebound",
+    "netflix just dropped 15 in a month is there more pain ahead or is it time to load up",
+    "with alibaba stock down 45 in the last year michael burry reveals the price hed buy",
+    "are you overpaying for alphabet stock versus its tech rivals",
+    "amazon beat qqq but the ride was much harder",
+    "why alphabets cheap pe may mislead investors",
+    "why netflixs fall could pay off at tax time",
+    "fixing netflixs growing subscriber satisfaction problem"
+   ],
+   "passes": [
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "AtlasCloud"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "a cut to its 2026 ad revenue forecast, to about $2.7 billion from about $3 billion",
+        "article": 15
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "CoreWeave"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "conditions": [
+       {
+        "id": 0,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 1,
+        "status": "not",
+        "quote": "",
+        "article": null
+       },
+       {
+        "id": 2,
+        "status": "not",
+        "quote": "",
+        "article": null
+       }
+      ],
+      "hard_news_same_direction": {
+       "present": false,
+       "quote": "",
+       "article": null
+      }
+     },
+     "error": null,
+     "provider": "DigitalOcean"
+    }
+   ],
+   "max_published": 1795115833
+  }
+ }
+}
