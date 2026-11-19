@@ -32,4 +32,10 @@ class TestMetrics(unittest.TestCase):
         with self.assertRaises(ValueError): excess_sharpe([.01,.02,.03],[0.,0.,0.],float("nan"))
     def test_hac_rejects_degenerate_series(self):
         with self.assertRaises(ValueError): paired_hac_mean_test([1.,1.,1.,1.],lags=0)
+
+    def test_bankrupt_nav_and_positive_hac_lag(self):
+        with self.assertRaises(ValueError): compound_return([-.999, -1.0])
+        with self.assertRaises(ValueError): max_drawdown([-.2, -1.0])
+        r=paired_hac_mean_test([.02,-.01,.025,-.015,.018,.009,-.012,.004],lags=2)
+        self.assertTrue(0 <= r["one_sided_p"] <= 1)
 if __name__=="__main__": unittest.main()
