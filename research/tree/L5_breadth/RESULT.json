@@ -1,0 +1,494 @@
+{
+ "label": "development, Thursdays 2014-2019",
+ "run_start": "2026-11-19T14:58:07+00:00",
+ "inputs": {
+  "holdings.parquet_sha256": "b4335a688c7928ef04f3d2b5a66b4cf32eec1cd993dff4dd78a504e849fdc6e5",
+  "holdings_rows": 9272128,
+  "zips": {
+   "2013q3": "aa20c79d552722cb7bae8cefe3e63cd61a0929a4d5234c0b5d9ce1c75309a616",
+   "2013q4": "9186266a699c04b06918697e73251c027df10ab5e674abf9ff64a5a291306f14",
+   "2014q1": "1eed2271b257a12de95d5cdf3d74d87c7752c044070f9556c67a1c1d0d56fe47",
+   "2014q2": "68d1d5056f34f8466b3061d685849f9b632e883bbd8735aba8641196db6cda58",
+   "2014q3": "32959be32cc31c2aba9a7420976463efa6d620fef0369335d29a4635c5c0d417",
+   "2014q4": "2e51b1f7e9b7d3678524faa3e4e10c2645468712e5bb5808b124951781027c13",
+   "2015q1": "96ab4cb60063beb98317ce3e2558b3539546e54485fdb1c68adcd33b5634a6ee",
+   "2015q2": "6a92f5971dd489d5c48abb7d54a3a050ebed658a3138e670b7b798edd80d26d8",
+   "2015q3": "803906334ee70310962eb8a119f7fd30eb53606dfd57e5a09f1df54a6a21d09f",
+   "2015q4": "6594076b6d8b02bbb0d71e4ef9a8d843bca9d4397b3b57a7f7c52e9e555619f7",
+   "2016q1": "c9be070b3dd907eed28ac5bcc419bbc61d2aae44d276d69880febb57ae3271b1",
+   "2016q2": "bf17a0f9fa963e8393fcf52666dd6ffe4b3bb5c0e01ed5d7641c0791c8b2e9a4",
+   "2016q3": "6fcce363037d2ffc15cde5b7c1a23c1d5117b9f0f2624002c43ce8424ab3f491",
+   "2016q4": "40dea4a7e1e7d7ba118ffed32ab1941e365a2835d748e7ae682af8b1dc8f1be4",
+   "2017q1": "edeb7e682ca82cf49a1cded13ae82177126f3284a0464d46d7b58849e652c587",
+   "2017q2": "39298fa803677758b6d1854af89be0825c7a82baf596b872505066a267e60c5b",
+   "2017q3": "1de344c8412737f99a9f5cc413d1c821afca32fde6c342d00937f212362452f9",
+   "2017q4": "c036cda331f08bad711bc7ba2046fa7a4ede6efc261d9c13b5dc9c6c68a23d7b",
+   "2018q1": "a233fd802ed028f47743af5a82974adea2e44223ac02978bb6db4ef6e2af6cff",
+   "2018q2": "050fa0c1c7737fe00827bfda83ae14f54f6a840a2c29642f450935d3b64662ce",
+   "2018q3": "9c957e53225dfb3a496c50c7016580567e037ae7a5d3c14a3ac7a97a7916f6d0",
+   "2018q4": "6d8609212b0171ea18e4bcfebf320de308d60c44988c1ac48e7c321015d97991",
+   "2019q1": "ddc49b87210a9f12efac87468c293809b49f4ccd8d7c022cdfff5321e423f5c8",
+   "2019q2": "4d45846cdec0fe86e2c2db2347fd6028beb110f26c4022b96f0a393175773e02",
+   "2019q3": "4a5934848f8015baf94da053c48de4d7b498cb1730224e8ed31d6677bdb528cb",
+   "2019q4": "385b4cff8585524fc596da42e7460543697d7b26eea158fae767656ca40e57bd"
+  }
+ },
+ "coverage": {
+  "filers_per_period": {
+   "2013-06-30": 3442,
+   "2013-09-30": 3452,
+   "2013-12-31": 3789,
+   "2014-03-31": 3793,
+   "2014-06-30": 3814,
+   "2014-09-30": 3805,
+   "2014-12-31": 4141,
+   "2015-03-31": 4136,
+   "2015-06-30": 4141,
+   "2015-09-30": 4119,
+   "2015-12-31": 4313,
+   "2016-03-31": 4260,
+   "2016-06-30": 4257,
+   "2016-09-30": 4226,
+   "2016-12-31": 4435,
+   "2017-03-31": 4405,
+   "2017-06-30": 4398,
+   "2017-09-30": 4382,
+   "2017-12-31": 4781,
+   "2018-03-31": 4752,
+   "2018-06-30": 4740,
+   "2018-09-30": 4738,
+   "2018-12-31": 5087,
+   "2019-03-31": 5051,
+   "2019-06-30": 5014,
+   "2019-09-30": 4989
+  },
+  "filer_count_defects": [],
+  "per_file": {
+   "2013q3": {
+    "reports_kept": 3443,
+    "summarypage_rows_agree_share": 0.9227417949462677,
+    "cusips_mapped": 670,
+    "panel_ciks_mapped": 512,
+    "panel_ciks_valid_name": 539,
+    "cusip_bad_length_rows": 2982,
+    "non_equity_issue_rows": 2397
+   },
+   "2013q4": {
+    "reports_kept": 3451,
+    "summarypage_rows_agree_share": 0.9287163141118516,
+    "cusips_mapped": 678,
+    "panel_ciks_mapped": 513,
+    "panel_ciks_valid_name": 542,
+    "cusip_bad_length_rows": 2743,
+    "non_equity_issue_rows": 3353
+   },
+   "2014q1": {
+    "reports_kept": 3774,
+    "summarypage_rows_agree_share": 0.9356120826709062,
+    "cusips_mapped": 677,
+    "panel_ciks_mapped": 516,
+    "panel_ciks_valid_name": 544,
+    "cusip_bad_length_rows": 2279,
+    "non_equity_issue_rows": 2887
+   },
+   "2014q2": {
+    "reports_kept": 3808,
+    "summarypage_rows_agree_share": 0.9348739495798319,
+    "cusips_mapped": 669,
+    "panel_ciks_mapped": 517,
+    "panel_ciks_valid_name": 545,
+    "cusip_bad_length_rows": 2082,
+    "non_equity_issue_rows": 2869
+   },
+   "2014q3": {
+    "reports_kept": 3840,
+    "summarypage_rows_agree_share": 0.9343579057046105,
+    "cusips_mapped": 679,
+    "panel_ciks_mapped": 522,
+    "panel_ciks_valid_name": 545,
+    "cusip_bad_length_rows": 2299,
+    "non_equity_issue_rows": 3012
+   },
+   "2014q4": {
+    "reports_kept": 3812,
+    "summarypage_rows_agree_share": 0.9362539349422875,
+    "cusips_mapped": 685,
+    "panel_ciks_mapped": 525,
+    "panel_ciks_valid_name": 547,
+    "cusip_bad_length_rows": 2252,
+    "non_equity_issue_rows": 3310
+   },
+   "2015q1": {
+    "reports_kept": 4142,
+    "summarypage_rows_agree_share": 0.938676967648479,
+    "cusips_mapped": 697,
+    "panel_ciks_mapped": 526,
+    "panel_ciks_valid_name": 550,
+    "cusip_bad_length_rows": 2827,
+    "non_equity_issue_rows": 3682
+   },
+   "2015q2": {
+    "reports_kept": 4089,
+    "summarypage_rows_agree_share": 0.9395940327708486,
+    "cusips_mapped": 697,
+    "panel_ciks_mapped": 527,
+    "panel_ciks_valid_name": 551,
+    "cusip_bad_length_rows": 2651,
+    "non_equity_issue_rows": 2913
+   },
+   "2015q3": {
+    "reports_kept": 4190,
+    "summarypage_rows_agree_share": 0.9298329355608592,
+    "cusips_mapped": 694,
+    "panel_ciks_mapped": 530,
+    "panel_ciks_valid_name": 552,
+    "cusip_bad_length_rows": 2950,
+    "non_equity_issue_rows": 2583
+   },
+   "2015q4": {
+    "reports_kept": 4138,
+    "summarypage_rows_agree_share": 0.9366843885935234,
+    "cusips_mapped": 701,
+    "panel_ciks_mapped": 531,
+    "panel_ciks_valid_name": 555,
+    "cusip_bad_length_rows": 2564,
+    "non_equity_issue_rows": 2290
+   },
+   "2016q1": {
+    "reports_kept": 4268,
+    "summarypage_rows_agree_share": 0.9425960637300843,
+    "cusips_mapped": 691,
+    "panel_ciks_mapped": 534,
+    "panel_ciks_valid_name": 557,
+    "cusip_bad_length_rows": 1837,
+    "non_equity_issue_rows": 2685
+   },
+   "2016q2": {
+    "reports_kept": 4238,
+    "summarypage_rows_agree_share": 0.9400519235308001,
+    "cusips_mapped": 703,
+    "panel_ciks_mapped": 535,
+    "panel_ciks_valid_name": 562,
+    "cusip_bad_length_rows": 1971,
+    "non_equity_issue_rows": 3526
+   },
+   "2016q3": {
+    "reports_kept": 4272,
+    "summarypage_rows_agree_share": 0.9379536408335285,
+    "cusips_mapped": 706,
+    "panel_ciks_mapped": 537,
+    "panel_ciks_valid_name": 563,
+    "cusip_bad_length_rows": 1595,
+    "non_equity_issue_rows": 3474
+   },
+   "2016q4": {
+    "reports_kept": 4252,
+    "summarypage_rows_agree_share": 0.9357949200376293,
+    "cusips_mapped": 686,
+    "panel_ciks_mapped": 536,
+    "panel_ciks_valid_name": 568,
+    "cusip_bad_length_rows": 1454,
+    "non_equity_issue_rows": 3678
+   },
+   "2017q1": {
+    "reports_kept": 4419,
+    "summarypage_rows_agree_share": 0.9490835030549898,
+    "cusips_mapped": 699,
+    "panel_ciks_mapped": 543,
+    "panel_ciks_valid_name": 571,
+    "cusip_bad_length_rows": 0,
+    "non_equity_issue_rows": 4200
+   },
+   "2017q2": {
+    "reports_kept": 4435,
+    "summarypage_rows_agree_share": 0.9406989853438557,
+    "cusips_mapped": 657,
+    "panel_ciks_mapped": 544,
+    "panel_ciks_valid_name": 571,
+    "cusip_bad_length_rows": 0,
+    "non_equity_issue_rows": 3209
+   },
+   "2017q3": {
+    "reports_kept": 4401,
+    "summarypage_rows_agree_share": 0.9381958645762327,
+    "cusips_mapped": 659,
+    "panel_ciks_mapped": 548,
+    "panel_ciks_valid_name": 572,
+    "cusip_bad_length_rows": 0,
+    "non_equity_issue_rows": 3909
+   },
+   "2017q4": {
+    "reports_kept": 4367,
+    "summarypage_rows_agree_share": 0.9379436684222578,
+    "cusips_mapped": 676,
+    "panel_ciks_mapped": 548,
+    "panel_ciks_valid_name": 572,
+    "cusip_bad_length_rows": 0,
+    "non_equity_issue_rows": 3430
+   },
+   "2018q1": {
+    "reports_kept": 4713,
+    "summarypage_rows_agree_share": 0.9439728353140917,
+    "cusips_mapped": 670,
+    "panel_ciks_mapped": 552,
+    "panel_ciks_valid_name": 577,
+    "cusip_bad_length_rows": 0,
+    "non_equity_issue_rows": 3428
+   },
+   "2018q2": {
+    "reports_kept": 4801,
+    "summarypage_rows_agree_share": 0.9389710476983961,
+    "cusips_mapped": 674,
+    "panel_ciks_mapped": 555,
+    "panel_ciks_valid_name": 582,
+    "cusip_bad_length_rows": 0,
+    "non_equity_issue_rows": 3712
+   },
+   "2018q3": {
+    "reports_kept": 4819,
+    "summarypage_rows_agree_share": 0.9458393857646815,
+    "cusips_mapped": 675,
+    "panel_ciks_mapped": 555,
+    "panel_ciks_valid_name": 582,
+    "cusip_bad_length_rows": 0,
+    "non_equity_issue_rows": 3379
+   },
+   "2018q4": {
+    "reports_kept": 4844,
+    "summarypage_rows_agree_share": 0.9426094137076796,
+    "cusips_mapped": 688,
+    "panel_ciks_mapped": 559,
+    "panel_ciks_valid_name": 584,
+    "cusip_bad_length_rows": 0,
+    "non_equity_issue_rows": 3577
+   },
+   "2019q1": {
+    "reports_kept": 5082,
+    "summarypage_rows_agree_share": 0.9450895493013186,
+    "cusips_mapped": 685,
+    "panel_ciks_mapped": 562,
+    "panel_ciks_valid_name": 588,
+    "cusip_bad_length_rows": 0,
+    "non_equity_issue_rows": 3631
+   },
+   "2019q2": {
+    "reports_kept": 5168,
+    "summarypage_rows_agree_share": 0.9469814241486069,
+    "cusips_mapped": 694,
+    "panel_ciks_mapped": 561,
+    "panel_ciks_valid_name": 591,
+    "cusip_bad_length_rows": 0,
+    "non_equity_issue_rows": 3945
+   },
+   "2019q3": {
+    "reports_kept": 5057,
+    "summarypage_rows_agree_share": 0.9462131698635554,
+    "cusips_mapped": 702,
+    "panel_ciks_mapped": 568,
+    "panel_ciks_valid_name": 591,
+    "cusip_bad_length_rows": 0,
+    "non_equity_issue_rows": 4349
+   },
+   "2019q4": {
+    "reports_kept": 5102,
+    "summarypage_rows_agree_share": 0.9429635437083497,
+    "cusips_mapped": 703,
+    "panel_ciks_mapped": 569,
+    "panel_ciks_valid_name": 592,
+    "cusip_bad_length_rows": 0,
+    "non_equity_issue_rows": 4504
+   }
+  },
+  "panel": {
+   "tickers": 850,
+   "with_cik": 648,
+   "ciks": 626
+  },
+  "by_year": {
+   "2014": {
+    "eligible_name_weeks_scored": 0.7186621697582912,
+    "eligible_with_cik": 0.7859953424877539,
+    "eligible_scored_and_master": 0.9574564125712351
+   },
+   "2015": {
+    "eligible_name_weeks_scored": 0.7364174076540405,
+    "eligible_with_cik": 0.801363155626934,
+    "eligible_scored_and_master": 0.958632515271675
+   },
+   "2016": {
+    "eligible_name_weeks_scored": 0.7726990532360701,
+    "eligible_with_cik": 0.8305913394381499,
+    "eligible_scored_and_master": 0.9640773718145532
+   },
+   "2017": {
+    "eligible_name_weeks_scored": 0.8045651836924508,
+    "eligible_with_cik": 0.8545574329561308,
+    "eligible_scored_and_master": 0.9673731724070258
+   },
+   "2018": {
+    "eligible_name_weeks_scored": 0.8273615635179153,
+    "eligible_with_cik": 0.8687761749651001,
+    "eligible_scored_and_master": 0.9741540228784761
+   },
+   "2019": {
+    "eligible_name_weeks_scored": 0.854970297029703,
+    "eligible_with_cik": 0.8890693069306931,
+    "eligible_scored_and_master": 0.9774325351577346
+   }
+  },
+  "thursdays_without_score": 0,
+  "period_used_counts": {
+   "2013-09-30": 6,
+   "2013-12-31": 13,
+   "2014-03-31": 13,
+   "2014-06-30": 13,
+   "2014-09-30": 10,
+   "2014-12-31": 13,
+   "2015-03-31": 13,
+   "2015-06-30": 14,
+   "2015-09-30": 12,
+   "2015-12-31": 13,
+   "2016-03-31": 12,
+   "2016-06-30": 14,
+   "2016-09-30": 12,
+   "2016-12-31": 13,
+   "2017-03-31": 13,
+   "2017-06-30": 13,
+   "2017-09-30": 12,
+   "2017-12-31": 13,
+   "2018-03-31": 13,
+   "2018-06-30": 13,
+   "2018-09-30": 12,
+   "2018-12-31": 13,
+   "2019-03-31": 12,
+   "2019-06-30": 13,
+   "2019-09-30": 6
+  },
+  "share_weeks_on_latest_quarter_note": "see period_used_counts",
+  "priced_eligible_name_weeks_scored_by_year": {
+   "2014": 0.9549,
+   "2015": 0.956,
+   "2016": 0.9617,
+   "2017": 0.9653,
+   "2018": 0.9739,
+   "2019": 0.9736
+  }
+ },
+ "spot_check": {
+  "AAPL": {
+   "cik": 320193,
+   "filers_holding_2016-06-30": 2321,
+   "filers_2016-06-30": 4257
+  },
+  "JPM": {
+   "cik": 19617,
+   "filers_holding_2016-06-30": 1967,
+   "filers_2016-06-30": 4257
+  },
+  "XOM": {
+   "cik": 2115436,
+   "filers_holding_2016-06-30": 0,
+   "filers_2016-06-30": 4257
+  },
+  "MSFT": {
+   "cik": 789019,
+   "filers_holding_2016-06-30": 2244,
+   "filers_2016-06-30": 4257
+  },
+  "WMT": {
+   "cik": 104169,
+   "filers_holding_2016-06-30": 1479,
+   "filers_2016-06-30": 4257
+  }
+ },
+ "survivorship_contract": {
+  "indicator": "breadth score finite (1) vs not (0), eligible names",
+  "ic": 0.004310954265297887,
+  "nw_t": 1.3307785718302152,
+  "weeks": 303,
+  "ic_by_year": {
+   "2014": 0.0032736473162615454,
+   "2015": 0.001041044948269591,
+   "2016": 0.004502115974378279,
+   "2017": -0.003306106457989381,
+   "2018": 0.013529457901495325,
+   "2019": 0.006907033589761992
+  },
+  "pass": true,
+  "descriptive_cik_available_indicator": {
+   "ic": null,
+   "nw_t": null,
+   "note": "undefined: every eligible name with a finite y5 has a CIK (the indicator is constant on the IC universe); the CIK gap sits entirely in unpriced eligible names"
+  }
+ },
+ "gate": {
+  "C1_rank_average": {
+   "name": "C1_rank_average",
+   "note": "L5 breadth dev gate",
+   "ic": 0.01015646442414321,
+   "base_ic": 0.00894591582650376,
+   "increment": 0.0012105485976394545,
+   "increment_t": 0.2717454659724819,
+   "weeks": 303,
+   "increment_by_year": {
+    "2014": -0.005228901136123423,
+    "2015": 0.007441584827600151,
+    "2016": 0.005329314516535215,
+    "2017": 0.00783393395716789,
+    "2018": 0.004592128236122223,
+    "2019": -0.013404158296281091
+   },
+   "years_increment_positive": 4,
+   "corr_with_base": 0.7552648186017651,
+   "at": "2026-11-19T16:58:09",
+   "decile_net_pct_per_year": -0.1830106899782269,
+   "decile_net_sharpe": -0.028457408604858937,
+   "pass": false
+  },
+  "C2_sign_overlay": {
+   "name": "C2_sign_overlay",
+   "note": "L5 breadth dev gate",
+   "ic": 0.009106243511023229,
+   "base_ic": 0.00894591582650376,
+   "increment": 0.00016032768451947172,
+   "increment_t": 0.10171294910349017,
+   "weeks": 303,
+   "increment_by_year": {
+    "2014": -0.0027168751183497953,
+    "2015": 0.0029819594528912867,
+    "2016": 0.001411073947186725,
+    "2017": 0.0017085733248398672,
+    "2018": 0.0017617658007852124,
+    "2019": -0.00442059090783608
+   },
+   "years_increment_positive": 4,
+   "corr_with_base": 0.9581354972113328,
+   "at": "2026-11-19T16:58:10",
+   "decile_net_pct_per_year": 0.04725371094198258,
+   "decile_net_sharpe": 0.007051591707163837,
+   "pass": false
+  }
+ },
+ "breadth_alone_descriptive": {
+  "name": "breadth change alone (descriptive)",
+  "note": "",
+  "ic": 0.006997958230066807,
+  "ic_t": 0.8759841849956593,
+  "weeks": 303,
+  "ic_by_year": {
+   "2014": -0.0033968805533208706,
+   "2015": 0.03361249588646601,
+   "2016": -0.013394417175025191,
+   "2017": 0.014292843250511531,
+   "2018": 0.015155330699682121,
+   "2019": -0.004954153354430041
+  },
+  "min_year_ic": -0.013394417175025191,
+  "share_weeks_positive": 0.5379537953795379,
+  "decile_net_pct_per_year": 1.1471830607784266,
+  "decile_net_sharpe": 0.20172015819898026,
+  "at": "2026-11-19T16:58:10"
+ },
+ "gate_passers": [],
+ "run_end": "2026-11-19T14:58:10+00:00"
+}

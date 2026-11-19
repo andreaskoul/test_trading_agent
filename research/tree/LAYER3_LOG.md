@@ -683,3 +683,11 @@ On 2020-2025, whole fund, no candidate passes (Holm, smallest p 0.175). The incu
     depends on it.
   * The verified map is in `L5_insider/cik_map_dev.json` (checked against the typed issuer trading symbol); future
     branches should use it.
+
+## Step 37 — Layer 5: ownership breadth fails its development gate (2026-11-19)
+
+The 13F breadth change adds +0.0012 IC to MASTER (t 0.27) on 2014-2019; alone its IC is +0.007 (t 0.88). No read.
+
+Layer 5's three new-data branches (insider trading, ownership breadth, post-earnings drift) all fail at the
+development gate. On these large caps, MASTER already absorbs what free, dated corporate-filing signals offer at a
+weekly horizon. The MASTER architecture branch (retraining) is still running.

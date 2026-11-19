@@ -1,0 +1,60 @@
+{
+ "branch": "L5_breadth (PREREG.md Layer 5, branch B: ownership breadth, Chen, Hong and Stein 2002)",
+ "written": "2026-11-19, before any breadth quantity, availability indicator or IC is computed",
+ "status": "done: contract passed, development gate failed for both combinations; no 2020-2025 read, no READ_L5B.lock",
+ "plan": {
+  "data": {
+   "source": "SEC DERA Form 13F data sets, https://www.sec.gov/data-research/sec-markets-data/form-13f-data-sets (reached from https://www.sec.gov/dera/data); files /files/structureddata/data/form-13f-data-sets/<YYYYqN>_form13f.zip, organised by FILING quarter. Development: 2013q3 .. 2019q4 (26 files; filings dated <= 2019-12-31). The 2020-2025 files (2020q1..2023q4, then 01jan2024-29feb2024 .. 01dec2025-28feb2026 windows) are downloaded only if a combination passes the development gate.",
+   "fetch": "User-Agent 'research-script admin@example.com', <= 10 requests/s, one file at a time; df -h /System/Volumes/Data before each, stop if free < 4 GB; zip to .cache/tree/l5breadth/raw/, sha256 of each zip recorded in .cache/tree/l5breadth/MANIFEST.json, zip deleted after parsing.",
+   "tables": "SUBMISSION (ACCESSION_NUMBER, FILING_DATE, SUBMISSIONTYPE, CIK, PERIODOFREPORT), COVERPAGE (REPORTTYPE, ISAMENDMENT), INFOTABLE (NAMEOFISSUER, TITLEOFCLASS, CUSIP, VALUE, SSHPRNAMT, SSHPRNAMTTYPE, PUTCALL). Column names checked against the file header; a missing column is a typed defect that stops the build.",
+   "reports_kept": "SUBMISSIONTYPE == '13F-HR' (originals; 13F-HR/A amendments and 13F-NT notices ignored, disclosed), REPORTTYPE '13F HOLDINGS REPORT' or '13F COMBINATION REPORT', PERIODOFREPORT a calendar quarter end. One report per (filer CIK, period): the earliest FILING_DATE (then lowest accession).",
+   "holdings_kept": "SSHPRNAMTTYPE == 'SH', PUTCALL empty, SSHPRNAMT > 0; CUSIP stripped and upper-cased, length 8 or 9 (the probe file 2016q3 shows 8-character CUSIPs without check digit), keyed by its first 8 characters (issuer 6 + issue 2); the issue number (characters 7-8) must be two digits (CUSIP equity issue numbers; fixed income issues are alphanumeric). Shorter CUSIPs are defects (dropped, counted).",
+   "filing_date_semantics": "FILING_DATE is the EDGAR filing date (no time). A report is public for decision Thursday t only if FILING_DATE < date(t) (strictly before, since acceptance time is not in the data set)."
+  },
+  "cusip_map": {
+   "rule": "typed chain, exact. (1) panel ticker -> issuer CIK: .cache/p8/edgar/ciks.json typed 'cik' field (SEC company_tickers.json plus the Alpaca same-CUSIP alias, built for P8); the 49 panel tickers absent from ciks.json are looked up once in https://www.sec.gov/files/company_tickers.json (typed 'ticker'/'cik_str'); no other ticker source (aliases.json chains are not used directly: FB -> METV shows a recycled symbol). (2) CIK -> SEC names with validity windows: .cache/p8/edgar/submissions/<cik>.json 'formerNames' [from, to] and 'name' valid from the latest former 'to' (or the CIK's earliest filing) to today; every window padded by 180 days. (3) per 13F data-set file: for each kept CUSIP, every NAMEOFISSUER string used by >= 2 distinct filers in that file; normalise (upper case; '&' -> ' AND '; SEC '/XX/' and '\\\\XX\\\\' segments removed; characters other than A-Z, 0-9 and space -> space; collapse spaces; drop a leading 'THE'; repeatedly drop a trailing token in {INC, INCORPORATED, CORP, CORPORATION, CO, COMPANY, LTD, LIMITED, PLC, LLC, LP, NV, SA, AG, THE, DEL, NEW, DE, MD}). The CUSIP is mapped to panel CIK c in that file iff some such string equals a normalised SEC name of c valid at the file's quarter, and no other panel CIK matches the CUSIP in that file. A CUSIP matching 2+ panel CIKs, or a normalised name shared by 2+ panel CIKs, is a typed defect (unmapped). Mapping applies to that file's rows only (no carry across files).",
+   "issuer_level": "breadth is counted per issuer CIK (a filer holds the issuer if it holds any mapped CUSIP of it); panel tickers that share a CIK (e.g. GOOG/GOOGL) get the same score (disclosed). Panel tickers without a CIK, or whose CIK has no mapped CUSIP in the relevant periods, have no score (typed defect, counted missing).",
+   "report": "match rate: share of panel CIKs with >= 1 mapped CUSIP per file; share of eligible panel name-weeks with a score per year; defect counts by type."
+  },
+  "signal": {
+   "definition": "Chen-Hong-Stein change in breadth: for period p (quarter end) and its predecessor p-1, F = filers with a kept report for both p and p-1; dB_c = (number of F holding c at p - number of F holding c at p-1) / |F|. Higher dB -> expected outperformance (sign registered from the paper).",
+   "weekly_recompute": "at each Thursday row t: F_t(p) uses only reports with FILING_DATE < date(t). p* = the latest quarter end p < date(t) with |F_t(p)| >= 0.5 x (number of filers with a p-1 report filed before t); otherwise the quarter before. The score at t is dB_c(p*) from F_t(p*); it updates weekly as late filers arrive until the next quarter takes over. Missing if c not mapped in p* or p*-1 files, or held by no filer in either.",
+   "frozen_input": ".cache/tree/l5breadth/holdings.parquet: one row per (period, filer, filing_date, issuer CIK) for mapped panel issuers, plus one row with issuer -1 per kept (period, filer) report so filers without panel holdings count in F; sha256 in MANIFEST.json. Weekly score panel aligned to dev.npz rows/columns: .cache/tree/l5breadth/score_dev.npy (derived)."
+  },
+  "coverage_checks": "filers per period against expectations (13F filer counts were about 4,000-5,500 a quarter in 2013-2019; a period below 3,000 or a >20% quarter-on-quarter drop is a defect to investigate before any IC); rows parsed vs SUMMARYPAGE TABLEENTRYTOTAL (share agreeing); share of panel CIKs mapped per file; share of eligible name-weeks scored per year. Spot check: 3 issuer-periods (AAPL, JPM, XOM; 2016-06-30) breadth printed beside their CUSIP strings.",
+  "survivorship_contract": "availability indicator a = 1 if the breadth score is finite at Thursday t for the name (0 otherwise), weekly Spearman IC of a with y5 over eligible names (harness.weekly_ic), Thursdays 2014-2019, NW t with 4 lags (harness formula). |t| >= 2 -> branch rejected and stopped (no gate, no read).",
+  "development_gate": {
+   "window": "Thursdays 2014-2019 (6 years; shorter than the 2013-2019 harness window because 13F data sets start 2013Q2 and the first complete dB is for 2013-09-30). Base = dev.npz master_h5_ref (MASTER 5-day, the October read walk-forward scores; they exist for <= 2019, so the trees fallback is not used).",
+   "C1_rank_average": "for ok = finite MASTER & elig: equal-weight mean of cross-sectional percentile ranks of MASTER and dB (L4_exploit.rank_avg; a name without dB gets its MASTER rank alone).",
+   "C2_sign_overlay": "percentile rank of MASTER on ok + 0.1 x sign(dB) (0 if dB missing or zero): a name moves at most one decile, by the sign only.",
+   "test": "harness.increment(pred, base=master_h5_ref, years=2014..2019): paired weekly IC difference, NW t (4 lags). Pass: increment_t >= 2.0 and increment positive in >= 4 of the 6 years. Reported also: IC of dB alone (descriptive), decile spreads.",
+   "count": "2 configurations, nothing added after the first result."
+  },
+  "read": "only if C1 or C2 passes: create research/tree/L5_breadth/READ_L5B.lock (UTC time) first, then download 2020-2025 13F files, build the same score on the K.T.build() panel, and run the 2020-2025 walk-forward at whole-fund level with the L4_exploit simulator (B0 = MASTER h5 deciles, gross 0.3 a side, 5 bp, core 1.3/0.7, margin cost; B0 must reproduce 21.69 %/yr, Sharpe 0.937); the passer's score replaces MASTER in the decile book; Ledoit-Wolf 2008 HAC test (one-sided p), Deflated Sharpe with N = 162 + Layer 4/5 configurations; Holm across Layer 5 read candidates is applied by the coordinator (p reported). Read once.",
+  "outputs": "research/tree/L5_breadth/{plan in STATE.json, fetch_parse.py, build.py, dev.py, RESULT.json}; data .cache/tree/l5breadth/."
+ },
+ "done": [
+  "panel_names.json: 850 tickers, 648 with CIK (639 ciks.json + 9 of 49 absent found in SEC current tickers), 626 CIKs; probe 2016q3 parse: 4,272 originals kept, 4,204 for period 2016-06-30, SUMMARYPAGE row agreement 93.8%, 530 of 563 name-valid panel CIKs mapped (before the suffix amendment); probe files deleted",
+  "26 development files 2013q3..2019q4 downloaded, sha256 in MANIFEST.json, parsed, zips deleted: originals kept 3,443 (2013q3) .. 5,102 (2019q4); SUMMARYPAGE row agreement 92-95%; panel CIKs mapped 512 -> 569 per file (of 539 -> 592 with a valid name)",
+  "survivorship contract: availability IC +0.0043, NW t 1.33 (303 weeks) -> pass",
+  "gate: C1_rank_average increment +0.0012 t 0.27, 4/6 years -> fail; C2_sign_overlay increment +0.0002 t 0.10, 4/6 years -> fail",
+  "holdings.parquet frozen: 9,272,128 rows, sha256 b4335a688c7928ef04f3d2b5a66b4cf32eec1cd993dff4dd78a504e849fdc6e5; score_dev.npy: 316 of 316 Thursdays scored (2013-10..2019)",
+  "coverage: filers per period 3,442 (2013-06-30) .. 5,087 (2018-12-31), no defect; priced eligible name-weeks scored 95.5% (2014) .. 97.4% (2019); spot 2016-06-30: AAPL 2,321, JPM 1,967, MSFT 2,244, WMT 1,479 of 4,257 filers; XOM 0 (current-ticker CIK 2115436, typed defect)",
+  "descriptive: breadth change alone IC +0.0070 (t 0.88, 303 weeks), decile net 1.15 %/yr; C1 IC 0.0102 vs MASTER 0.0089; C2 0.0091"
+ ],
+ "running": [],
+ "next": [
+  "coordinator: commit; branch B closed at the development gate"
+ ],
+ "amendments": [
+  {
+   "at": "2026-11-19, after opening the 2016q3 file's headers and first rows only, before any breadth or IC",
+   "what": "CUSIP key = first 8 characters, length 8 or 9 accepted (was: exactly 9)."
+  },
+  {
+   "at": "2026-11-19, after the 2016q3 probe's mapping counts only (no breadth, no IC)",
+   "what": "normalisation also removes SEC state suffixes written with one slash ('CORNING INC /NY', 'WELLS FARGO & CO/MN'): regex [/\\\\]\\s*[A-Z]{2,3}(\\s*[/\\\\]|\\b) -> space. Observed defects kept as defects: current-ticker CIKs that are new holding companies (XOM -> CIK 2115436, names valid only from 2026) and abbreviations ('ROBERT HALF INTL' vs 'HALF ROBERT INTERNATIONAL'). Issuer-level counting includes any mapped CUSIP of the issuer (e.g. JPM-issued ETNs named 'JPMORGAN CHASE & CO'; leading-zero-dropped CUSIPs such as 37833100 for AAPL), disclosed as noise."
+  }
+ ],
+ "updated": "2026-11-19T14:58:10+00:00"
+}
