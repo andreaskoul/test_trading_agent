@@ -629,3 +629,7 @@ horizon ensemble, tree blend or diversifier improved it on 2020-2025. What remai
 * Research runs independently of the live fund (owner).
 * GPU training runs at low priority (`nice -n 10`) with no time-of-day pause.
 * Every branch stops if free disk falls below 4 GB and deletes raw downloads once parsed.
+
+**Layer 4 addition, compute amendment (2026-11-19 18:58 UTC; owner, in this session: "train and test independently of
+what happens in the live").** The trading-window pause is removed from the architecture runner and fit loop. Training
+runs continuously at nice 15 with 3 workers; the disk stop is 4 GB. Nothing statistical changes.

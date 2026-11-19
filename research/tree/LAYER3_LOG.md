@@ -691,3 +691,12 @@ The 13F breadth change adds +0.0012 IC to MASTER (t 0.27) on 2014-2019; alone it
 Layer 5's three new-data branches (insider trading, ownership breadth, post-earnings drift) all fail at the
 development gate. On these large caps, MASTER already absorbs what free, dated corporate-filing signals offer at a
 weekly horizon. The MASTER architecture branch (retraining) is still running.
+
+## Step 38 — the architecture branch was idle; restarted (2026-11-19 18:58 UTC)
+
+From 16:30 to 18:50 UTC the three architecture workers slept through the trading-window pause. Its removal had been
+relayed to the agent but not applied, so each 2-hour relaunch did no work. The pause is removed from both `run.py` and
+`arch.fit`, and three workers run continuously at nice 15.
+
+Stage 1 progress: 2 of 15 fits done (A1 and A2, seed 0). Checkpoints: base, A3 and A4 seed 0. Estimate: about 6 MPS
+hours for stage 1, about 21 for stage 2 if two variants pass.
