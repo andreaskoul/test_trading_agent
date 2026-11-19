@@ -30,4 +30,4 @@
 - Ledoit and Wolf (2008), *Robust Performance Hypothesis Testing with the Sharpe Ratio*, J Empirical Finance, DOI 10.1016/j.jempfin.2008.03.005.
 - Bailey and López de Prado (2014), *The Deflated Sharpe Ratio*, JPM, DOI 10.3905/jpm.2014.40.5.094.
 
-Run tests in this directory: `python -m unittest -v test_pit.py`.
+Run tests from the repository root: `python -m unittest -v research.nextgen.contracts.test_pit` or `python -m pytest -q research/nextgen`.
