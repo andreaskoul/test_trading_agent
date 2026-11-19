@@ -10,6 +10,6 @@ Constraints: gross <= 0.6 by default, per-name bound, optional dollar neutrality
 
 This is a **static mathematical prototype**, not a reproduction of the full dynamic optimisation literature or a portfolio candidate validated on market data. Financing, borrow, hedges, core exposure, capital and margin usage, forced liquidation, settlement, actual fills and realistic historical issuer identity remain outside scope and must be included in any later fund-level test.
 
-Ablations for a later pre-registered investigation: identical calibrated MASTER alpha input, risk-only, cost-aware, original B0 deciles, Q4 and hysteresis at the **same risk, capacity, beta and financing**. Never choose on the repeatedly inspected 2020–2026 sample. Unit tests are synthetic: `python -m unittest -v test_core.py`.
+Ablations for a later pre-registered investigation: identical calibrated MASTER alpha input, risk-only, cost-aware, original B0 deciles, Q4 and hysteresis at the **same risk, capacity, beta and financing**. Never choose on the repeatedly inspected 2020–2026 sample. Unit tests are synthetic; run from the repository root: `python -m unittest -v research.nextgen.optimizer.test_nextgen_optimizer` or `python -m pytest -q research/nextgen`.
 
 Academic basis: Gârleanu & Pedersen (2013), DOI 10.1111/jofi.12080; Jensen, Kelly, Malamud & Pedersen (2026), *Machine Learning and the Implementable Efficient Frontier*, DOI 10.1093/rfs/hhag022. Neither paper's empirical outperformance has been reproduced here.
