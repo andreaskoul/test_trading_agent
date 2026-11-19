@@ -580,3 +580,52 @@ the MASTER transformer long/short book; 2020-2025 21.7 %/yr, net Sharpe 0.94), a
   whole-fund level exactly as B1-B5: paired against B0, Holm, Deflated Sharpe Ratio, forward shadow on a pass.
 * **Compute.** About 1 MPS hour per seed per year. Training runs only outside 15:30-21:15 UTC on weekdays (the
   fund's trading job) and stops if free disk falls below 6 GB.
+
+## Layer 5 (2026-11-19, owner: continue exploring and exploiting with more agents; registered before any result)
+
+**State.** The fund (the 200-day trend core plus the MASTER book) is the best out-of-sample model. No construction,
+horizon ensemble, tree blend or diversifier improved it on 2020-2025. What remains:
+* signal quality inside MASTER (architecture, running);
+* information MASTER does not see, i.e. new, free, point-in-time data with documented effects in the literature.
+
+**Common protocol for every branch below.**
+1. Inputs must be typed, frozen with sha256 and dated by when the information became public (an EDGAR acceptance
+   time, a filing date).
+2. Survivorship contract: availability indicator |t| < 2 on development data.
+3. Development gate (≤ 2019): the paired weekly IC increment over MASTER 5-day (or, for event books, the paired
+   whole-fund increment) has NW t ≥ 2.0 and is positive in ≥ 2/3 of years.
+4. Only gate passers are read once on the 2020-2025 walk-forward at whole-fund level, paired against the incumbent:
+   Ledoit-Wolf HAC test, Holm across Layer 5's read candidates, Deflated Sharpe Ratio with N = 162 + Layer 4/5
+   configurations.
+5. A pass earns a forward shadow.
+
+**Exploration branches.**
+* **I, opportunistic insider trading** (Cohen, Malloy and Pomorski 2012).
+  * Data: SEC Form 3/4/5 structured data sets (DERA), open-market purchases and sales (codes P and S).
+  * Signal: "routine" insiders are those who traded in the same calendar month in each of the 3 prior years; their
+    trades are dropped. The score is the 1- and 3-month net opportunistic purchase count (and value), dated by filing
+    acceptance.
+  * Combination: an extra input ranked with MASTER, equal-weight rank average, plus a sign-only overlay. Two
+    configurations.
+* **B, ownership breadth** (Chen, Hong and Stein 2002).
+  * Data: SEC 13F structured data sets (2013Q2 on). Breadth change = Δ(number of 13F filers holding the stock) /
+    the number of filers, dated by the filing date (45-day lag).
+  * Weekly score is the latest quarter's breadth change; development 2014-2019.
+  * Same two combinations as I.
+* **P, post-earnings-announcement drift** (Bernard and Thomas 1989).
+  * Data: the P8 events (point-in-time S&P 500; SUE from first-filed XBRL, reaction session t0).
+  * Book: event-time long top-quintile SUE, short bottom-quintile, held 20 sessions from t0+1, beta-hedged, at the
+    stock book's gross, net 5 bp; added at whole-fund level beside the MASTER book.
+  * One configuration. The earlier failure (the earnings-announcement premium) was a different effect; disclosed.
+
+**Exploitation branch.**
+* **E, MASTER ensembling, run after the architecture branch's stage 1 on the same GPU.** The current pipeline picks
+  one grid configuration per year (d_model {64, 256} × β {2, 5}) and averages 5 seeds. Selection on a short
+  validation window is noisy; averaging every grid configuration's 5-seed ensemble (20 models) reduces that noise.
+  * Development gate on 2018-2019 as in the architecture branch, then the 2020-2025 walk-forward.
+  * Combined with the best architecture variant if one passes.
+
+**Compute and disk.**
+* Research runs independently of the live fund (owner).
+* GPU training runs at low priority (`nice -n 10`) with no time-of-day pause.
+* Every branch stops if free disk falls below 4 GB and deletes raw downloads once parsed.
