@@ -17,7 +17,7 @@ def excess_sharpe(returns, risk_free, periods_per_year=52):
     """Annualised excess-return Sharpe (NOT the historical raw-return ratio)."""
     a = _series(returns, "returns", 3)
     b = _series(risk_free, "risk_free", 3)
-    if a.size != b.size or periods_per_year <= 0:
+    if a.size != b.size or not np.isfinite(periods_per_year) or periods_per_year <= 0:
         raise ValueError("returns and cash must align and K must be positive")
     d = a - b
     sd = d.std(ddof=1)
@@ -48,7 +48,7 @@ def ledger_residual(net, core_gross, book_gross, funding_cost, trading_cost,
     comps = [_series(v, "ledger component", 1) for v in
              (core_gross, book_gross, funding_cost, trading_cost)]
     other = np.zeros_like(net) if other_cost is None else _series(other_cost,"other",1)
-    if tolerance < 0 or any(len(v) != len(net) for v in comps+[other]):
+    if not np.isfinite(tolerance) or tolerance < 0 or any(len(v) != len(net) for v in comps+[other]):
         raise ValueError("unaligned ledger or invalid tolerance")
     error = float(np.max(np.abs(net - (comps[0]+comps[1]-comps[2]-comps[3]-other))))
     if error > tolerance:
