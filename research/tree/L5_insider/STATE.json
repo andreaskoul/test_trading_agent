@@ -1,0 +1,34 @@
+{
+ "task": "Layer 5 branch I (PREREG.md 'Layer 5'): opportunistic insider trading (Cohen, Malloy and Pomorski 2012) from SEC DERA Form 3/4/5 data sets; survivorship contract; development gate (<= 2019) of two combinations with MASTER 5-day; a gate passer read once on 2020-2025 at whole-fund level vs B0.",
+ "plan": {
+  "written": "2026-11-19, before any insider signal was computed",
+  "data": "DERA Insider Transactions Data Sets 2006Q1-2025Q4, one quarterly zip at a time (generic User-Agent, < 10 req/s, df check >= 4 GB before each). Tables: SUBMISSION (ACCESSION_NUMBER, FILING_DATE, PERIOD_OF_REPORT, DOCUMENT_TYPE, ISSUERCIK, ISSUERTRADINGSYMBOL), REPORTINGOWNER (ACCESSION_NUMBER, RPTOWNERCIK), NONDERIV_TRANS (ACCESSION_NUMBER, TRANS_DATE, TRANS_CODE, TRANS_SHARES, TRANS_PRICEPERSHARE, TRANS_ACQUIRED_DISP_CD). Keep DOCUMENT_TYPE 4 and 5 (amendments 4/A, 5/A dropped as possible duplicates; Form 3 has no transactions), codes P and S only, issuer CIKs of the panel map. Zip sha256 recorded in MANIFEST before deletion (freeze at first use); one parquet with its sha256. A per-year table of all Form 4/5 filings (all issuers) and panel filings is kept for the coverage check.",
+  "cik_map": "Primary: .cache/p8/edgar/ciks.json (typed ticker->CIK map). Verified against the typed DERA field ISSUERTRADINGSYMBOL: for each panel name, the share of its CIK's filings during the name's eligible span whose symbol equals the ticker (normalised: upper, '.'/'-'/'/' removed). If the mapped CIK has no filings in the span or symbol-match share < 0.5, the CIK whose filings in the span carry the ticker is used when it holds >= 0.8 of the ticker's filings there; otherwise the name is a typed defect (no insider input, NaN). Every decision saved in cik_map.json. Rename case (ticker changed, e.g. FB->META): mapped CIK kept if it has filings in the span and no other CIK holds >= 0.8 of the ticker's filings there; listed for inspection. No filings in the span: defect.",
+  "dating": "DERA gives FILING_DATE, not the acceptance time. Conservative 16:00 rule: every filing is treated as public after the close of its filing date, i.e. public session = first panel session strictly after FILING_DATE. A filing is usable at prediction row t if public session <= t (the harness enters at the close of t+1). Acceptance datetime is not in the DERA data sets (readme: SUBMISSION has FILING_DATE only), so the conservative rule is used for every filing.",
+  "insider_key": "the minimum RPTOWNERCIK of the accession (joint filings counted once).",
+  "routine": "an insider is routine for a trade in year Y, month m if that insider has a P or S trade (in the same issuer: insider-issuer pair) with TRANS_DATE in month m of each of Y-1, Y-2, Y-3, from filings public before the current filing's public session. Routine trades are dropped; all other P/S trades are opportunistic (PREREG literal; CMP's further requirement of 3 years of trading for classification is not applied, disclosed).",
+  "components": "per name and Thursday row t, over filings public in the last 21 sessions (1 month) and 63 sessions (3 months): net count = sum over (accession) of sign(P value - S value) of the opportunistic trades in the accession [count uses shares when price missing]; net value = sum P shares*price - sum S shares*price (dollars, raw). Names with a verified CIK and no trades get 0 (ties).",
+  "insider_score": "equal-weight mean of the cross-sectional percentile ranks of the four components (count 1m, count 3m, value 1m, value 3m) among ok names (finite MASTER & elig).",
+  "C1_rank_average": "pred = equal-weight mean of percentile ranks of MASTER 5-day and insider_score among ok names (L4_exploit.rank_avg; a missing insider score leaves MASTER alone).",
+  "C2_sign_overlay": "pred = pct rank(MASTER 5-day) + 0.1 * sign(net count 3m; if 0, sign of net value 3m). 0.1 = one decile shift, fixed now.",
+  "survivorship_contract": "availability indicators, Spearman IC with y5 among elig names with finite y5, weekly Thursdays 2013-2019, NW t (4 lags): (a) verified CIK present; (b) any Form 4/5 of the issuer public before t in the data. Reject the input if |t| >= 2 for either (constant indicator = undefined, reported, passes).",
+  "gate": "harness.increment(pred, base=D['master_h5_ref']) on VAL_YEARS 2013-2019: increment NW t >= 2.0 and positive in >= 5 of 7 years (>= 2/3). Reported also: the insider score's own IC.",
+  "read": "only for gate passers: create READ_L5I.lock first; signal rebuilt on the K.T.build() panel; 2020-2025 whole-fund sim with L4_exploit.sim/book_decile (S0, 5 bp, gross per side 0.3); B0 reproduced first (21.69 %/yr, Sharpe 0.937 within 0.1 %/yr else stop); Ledoit-Wolf HAC test vs B0, Holm across this branch's read candidates (coordinator applies Layer 5-wide Holm), Deflated Sharpe with N = L4 N_used + Layer 4/5 configurations (L4 count_trials + this branch's 2).",
+  "coverage_contract": "Expected, fixed before parsing results: every quarter 2006Q1-2025Q4 present; all-issuer Form 4/5 filings per year within 0.5x-2x of the 2006-2025 median year; among eligible panel name-years with a verified CIK, share with any Form 4/5 filing in the year >= 0.90 and with any P or S trade >= 0.80. A failure is a typed defect: stop before any signal.",
+  "test_signal": "The 2020-2025 signal is computed only after the gate, on the K.T.build() calendar; the dev gate uses harness.load() rows only."
+ },
+ "done": [
+  "plan written (before any signal)",
+  "DERA page: 83 quarterly zips listed (2006Q1-2026Q3); readme: no acceptance time",
+  "CIK map {'verified': 464, \"switched to ticker's CIK\": 212, 'never eligible': 112, 'defect: no filings in span': 36, 'kept, symbol differs (rename?)': 26}; coverage contract passed",
+  "survivorship contract passed",
+  "gate: C1_rank_average inc -0.0087 t -1.65 yrs+ 1 pass False; C2_sign_overlay inc -0.0011 t -1.24 yrs+ 1 pass False",
+  "content inspection: JPM 2016-02-11 Dimon purchase 500,000 sh at ~$53 present as code P (matches public record); CIK switches inspected (ciks.json 'sec_current' maps old tickers to new owners, e.g. XOM, APA, BBT->Berkshire Hills, COG->Alpha Metallurgical; the typed-symbol rule moved them to the historical issuer)",
+  "no gate passer: READ_L5I.lock not created, 2020-2025 not read"
+ ],
+ "running": [],
+ "next": [
+  "coordinator review and commit"
+ ],
+ "updated": "2026-11-19T14:54:36+00:00"
+}

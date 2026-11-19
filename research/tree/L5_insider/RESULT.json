@@ -1,0 +1,240 @@
+{
+ "development": {
+  "label": "development (data <= 2019)",
+  "run_start": "2026-11-19T14:53:22+00:00",
+  "inputs": {
+   "filings": 982484,
+   "trades": 872871,
+   "duplicate_accessions_dropped": 0,
+   "filings_sha256": "52b73855d07e03edf4482e9289381365641f83708a11898a9a789724d2ce2297",
+   "trades_sha256": "d3808bc4fa6b8461edeb70dcf076506abe297f7129309d66393a7c5c5d723213"
+  },
+  "cik_map": {
+   "decisions": {
+    "verified": 464,
+    "switched to ticker's CIK": 212,
+    "never eligible": 112,
+    "defect: no filings in span": 36,
+    "kept, symbol differs (rename?)": 26
+   },
+   "eligible_priced_name_weeks_with_cik_share_2013_2019": 0.9997355799246402,
+   "eligible_name_weeks_with_cik_share_2013_2019": 0.9798930854023913
+  },
+  "coverage": {
+   "quarters_missing": [],
+   "all_issuer_4_5_filings_by_year": {
+    "2006": 235479,
+    "2007": 241237,
+    "2008": 223437,
+    "2009": 191223,
+    "2010": 199519,
+    "2011": 194570,
+    "2012": 196771,
+    "2013": 197162,
+    "2014": 197779,
+    "2015": 195359,
+    "2016": 185418,
+    "2017": 183880,
+    "2018": 183500,
+    "2019": 178021,
+    "2020": 183216,
+    "2021": 196843,
+    "2022": 184796,
+    "2023": 183505,
+    "2024": 179273,
+    "2025": 170774
+   },
+   "median_year": 192896.5,
+   "panel_by_year": {
+    "2009": {
+     "eligible_names_with_cik": 501,
+     "share_with_any_4_5": 0.9680638722554891,
+     "share_with_any_P_or_S": 0.9161676646706587,
+     "all_issuer_4_5_filings": 191223
+    },
+    "2010": {
+     "eligible_names_with_cik": 496,
+     "share_with_any_4_5": 0.967741935483871,
+     "share_with_any_P_or_S": 0.9254032258064516,
+     "all_issuer_4_5_filings": 199519
+    },
+    "2011": {
+     "eligible_names_with_cik": 498,
+     "share_with_any_4_5": 0.9678714859437751,
+     "share_with_any_P_or_S": 0.9437751004016064,
+     "all_issuer_4_5_filings": 194570
+    },
+    "2012": {
+     "eligible_names_with_cik": 499,
+     "share_with_any_4_5": 0.9719438877755511,
+     "share_with_any_P_or_S": 0.9519038076152304,
+     "all_issuer_4_5_filings": 196771
+    },
+    "2013": {
+     "eligible_names_with_cik": 502,
+     "share_with_any_4_5": 0.9741035856573705,
+     "share_with_any_P_or_S": 0.9621513944223108,
+     "all_issuer_4_5_filings": 197162
+    },
+    "2014": {
+     "eligible_names_with_cik": 499,
+     "share_with_any_4_5": 0.9739478957915831,
+     "share_with_any_P_or_S": 0.9539078156312625,
+     "all_issuer_4_5_filings": 197779
+    },
+    "2015": {
+     "eligible_names_with_cik": 516,
+     "share_with_any_4_5": 0.9806201550387597,
+     "share_with_any_P_or_S": 0.9515503875968992,
+     "all_issuer_4_5_filings": 195359
+    },
+    "2016": {
+     "eligible_names_with_cik": 521,
+     "share_with_any_4_5": 0.982725527831094,
+     "share_with_any_P_or_S": 0.9558541266794626,
+     "all_issuer_4_5_filings": 185418
+    },
+    "2017": {
+     "eligible_names_with_cik": 524,
+     "share_with_any_4_5": 0.9885496183206107,
+     "share_with_any_P_or_S": 0.9656488549618321,
+     "all_issuer_4_5_filings": 183880
+    },
+    "2018": {
+     "eligible_names_with_cik": 521,
+     "share_with_any_4_5": 0.9942418426103646,
+     "share_with_any_P_or_S": 0.9673704414587332,
+     "all_issuer_4_5_filings": 183500
+    },
+    "2019": {
+     "eligible_names_with_cik": 518,
+     "share_with_any_4_5": 0.9980694980694981,
+     "share_with_any_P_or_S": 0.9652509652509652,
+     "all_issuer_4_5_filings": 178021
+    }
+   },
+   "pass": true
+  },
+  "survivorship_contract": {
+   "a_verified_cik": {
+    "ic": -0.00926867537683495,
+    "nw_t": -1.361660586377707,
+    "weeks_defined": 32,
+    "share_name_weeks_indicator_1": 0.9798930854023913,
+    "pass": true
+   },
+   "b_any_4_5_public_before_t": {
+    "ic": -0.00330753740708382,
+    "nw_t": -1.148385138677249,
+    "weeks_defined": 328,
+    "share_name_weeks_indicator_1": 0.9629396455292047,
+    "pass": true
+   },
+   "pass": true
+  },
+  "signal_stats": {
+   "PS_transactions_2009_2019": 304000,
+   "routine_share": 0.09724013157894737,
+   "P_share_of_opportunistic": 0.06715882217906347,
+   "opportunistic_accessions": 178963,
+   "share_ok_name_weeks_nonzero_cnt3": 0.7888129920522603,
+   "share_ok_name_weeks_positive_cnt3": 0.0678169410627783
+  },
+  "insider_score_alone": {
+   "name": "insider score alone",
+   "note": "dev",
+   "ic": -0.009178147265931155,
+   "ic_t": -1.469088944052507,
+   "weeks": 353,
+   "ic_by_year": {
+    "2013": -0.004791406480874187,
+    "2014": -0.012655450478441561,
+    "2015": -0.016116475533853078,
+    "2016": 0.030396306983960626,
+    "2017": -0.029276695569284986,
+    "2018": -0.023701615188789826,
+    "2019": -0.008039197800032233
+   },
+   "min_year_ic": -0.029276695569284986,
+   "share_weeks_positive": 0.44192634560906513,
+   "decile_net_pct_per_year": -2.6064087803911726,
+   "decile_net_sharpe": -0.5301931817592695,
+   "at": "2026-11-19T16:53:42"
+  },
+  "insider_vs_master_increment": {
+   "name": "insider score vs MASTER",
+   "note": "dev",
+   "ic": -0.009178147265931155,
+   "base_ic": 0.012531601006085063,
+   "increment": -0.021709748272016216,
+   "increment_t": -1.899728235897442,
+   "weeks": 353,
+   "increment_by_year": {
+    "2013": -0.03905225967522197,
+    "2014": -0.019542831205394507,
+    "2015": -0.04454148758322186,
+    "2016": 0.06137428078514773,
+    "2017": -0.029111229831565465,
+    "2018": -0.05176310078246283,
+    "2019": -0.029952411999462802
+   },
+   "years_increment_positive": 1,
+   "corr_with_base": -0.0381606476214994,
+   "at": "2026-11-19T16:53:42",
+   "decile_net_pct_per_year": -2.6064087803911726,
+   "decile_net_sharpe": -0.5301931817592695
+  },
+  "gate": {
+   "C1_rank_average": {
+    "name": "C1_rank_average",
+    "note": "dev gate vs MASTER 5-day",
+    "ic": 0.0038132141573992374,
+    "base_ic": 0.012531601006085063,
+    "increment": -0.008718386848685825,
+    "increment_t": -1.6513432444514247,
+    "weeks": 353,
+    "increment_by_year": {
+     "2013": -0.01241426582466905,
+     "2014": -0.011541241923622143,
+     "2015": -0.015945085018011926,
+     "2016": 0.030519786764548664,
+     "2017": -0.01889109705756386,
+     "2018": -0.02389396474650359,
+     "2019": -0.009001771576274905
+    },
+    "years_increment_positive": 1,
+    "corr_with_base": 0.6831006684998769,
+    "at": "2026-11-19T16:53:43",
+    "decile_net_pct_per_year": -2.0300445519241475,
+    "decile_net_sharpe": -0.399645438269268,
+    "gate_pass": false
+   },
+   "C2_sign_overlay": {
+    "name": "C2_sign_overlay",
+    "note": "dev gate vs MASTER 5-day",
+    "ic": 0.011430341109685774,
+    "base_ic": 0.012531601006085063,
+    "increment": -0.0011012598963992912,
+    "increment_t": -1.2383266025759994,
+    "weeks": 353,
+    "increment_by_year": {
+     "2013": -6.148421129846524e-05,
+     "2014": -0.0015192382269291584,
+     "2015": -0.0017504736004943437,
+     "2016": 0.0028901769534623823,
+     "2017": -0.003424556946366649,
+     "2018": -0.0033635706982731994,
+     "2019": -0.0004416118906593144
+    },
+    "years_increment_positive": 1,
+    "corr_with_base": 0.9805485468973255,
+    "at": "2026-11-19T16:53:44",
+    "decile_net_pct_per_year": -1.2455461154295622,
+    "decile_net_sharpe": -0.2120682562657176,
+    "gate_pass": false
+   }
+  },
+  "gate_passers": [],
+  "run_end": "2026-11-19T14:53:44+00:00"
+ }
+}

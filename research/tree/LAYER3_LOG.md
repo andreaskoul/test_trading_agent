@@ -671,3 +671,15 @@ On 2020-2025, whole fund, no candidate passes (Holm, smallest p 0.175). The incu
   extra book gets about 2% of its size in up-trend weeks. New signals can enter only *inside* the existing stock
   book (ranked with MASTER), or after the gross used by the core is freed (the capital-efficient core study,
   2026-11-21).
+
+## Step 36 — Layer 5: insider trading fails its development gate; a CIK-map defect found (2026-11-19)
+
+* **Opportunistic insider trading** adds nothing to MASTER on 2013-2019. Both combinations are negative, positive in
+  1 of 7 years. No read.
+* **Data-integrity finding:** `ciks.json` maps some reused tickers to their *current* owner, not the historical
+  issuer, e.g. XOM, APA, BBT→Berkshire Hills, COG→Alpha Metallurgical, BBBY→Overstock.
+  * Earlier users of that map: N1 fundamentals (failed), R2's rename grouping, and parts of P8.
+  * Their CIK-keyed inputs may be wrong for those names. None of them produced a pass, so no claimed result
+    depends on it.
+  * The verified map is in `L5_insider/cik_map_dev.json` (checked against the typed issuer trading symbol); future
+    branches should use it.
