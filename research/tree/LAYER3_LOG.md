@@ -700,3 +700,24 @@ relayed to the agent but not applied, so each 2-hour relaunch did no work. The p
 
 Stage 1 progress: 2 of 15 fits done (A1 and A2, seed 0). Checkpoints: base, A3 and A4 seed 0. Estimate: about 6 MPS
 hours for stage 1, about 21 for stage 2 if two variants pass.
+
+## Step 39 — MASTER architecture screen: no variant passes; seed noise dominates (2026-11-20)
+
+Development: train ≤ 2017, score 2018-2019 (99 weeks), 3 seeds each. The gate needs a paired IC increment over the
+base with NW t ≥ 1.0 and positive in both years.
+
+| Variant | IC 2018-19 | Increment (t) | 2018 / 2019 | Gate |
+|---|---:|---|---|---|
+| base MASTER | .0147 | n/a | .0133 / .0161 | n/a |
+| A1 lookback 20 | .0122 | −.0025 (−0.25) | −.0063 / +.0014 | fail |
+| A2 richer market gate | .0141 | −.0006 (−0.07) | +.0075 / −.0089 | fail |
+| A3 rank-correlation loss | .0230 | +.0083 (0.52) | +.0115 / +.0049 | fail (t) |
+| A4 multi-horizon heads | .0228 | +.0081 (0.40) | +.0197 / −.0038 | fail |
+
+* Stage 2 does not run.
+* The decisive observation is seed noise. The base's three seeds score .019, .003 and .008 on the same weeks, a spread
+  larger than any variant's increment. 99 weeks cannot separate architecture changes of +.008.
+* This is exactly the case for ensembling (Layer 5, E), which now gets the GPU. As registered, E uses the base
+  architecture (no variant passed).
+* Base reproduction: its weekly correlation with the as-run 2018 MASTER is 0.89. The as-run 5-seed panel scores .021
+  in 2018, against .013 for the 3-seed base, again pointing to seed count.

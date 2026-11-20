@@ -31,32 +31,19 @@
   "base_s0_y2018",
   "A3_s0_y2018",
   "base_s1_y2018",
-  "A4_s0_y2018"
- ],
- "running": {
-  "A2_s1_y2018": {
-   "pid": 58642,
-   "since": "2026-11-19T21:43:46"
-  },
-  "A1_s1_y2018": {
-   "pid": 58151,
-   "since": "2026-11-19T21:27:13"
-  },
-  "A3_s1_y2018": {
-   "pid": 58134,
-   "since": "2026-11-19T21:04:30"
-  },
-  "A4_s1_y2018": {
-   "pid": 58166,
-   "since": "2026-11-19T22:01:29"
-  }
- },
- "next": [
-  "A1_s1_y2018",
+  "A4_s0_y2018",
   "A2_s1_y2018",
+  "A1_s1_y2018",
   "A3_s1_y2018",
-  "A4_s1_y2018"
+  "base_s2_y2018",
+  "A4_s1_y2018",
+  "A2_s2_y2018",
+  "A1_s2_y2018",
+  "A4_s2_y2018",
+  "A3_s2_y2018"
  ],
+ "running": {},
+ "next": [],
  "fits": {
   "A2_s0_y2018": {
    "epochs": 24,
@@ -99,6 +86,69 @@
    "val_ic": 0.028768106034704984,
    "train_sec": 4296.3,
    "stopped_by_rule": true
+  },
+  "A2_s1_y2018": {
+   "epochs": 30,
+   "best_epoch": 14,
+   "val_ic": 0.019728593928698062,
+   "train_sec": 3203.3,
+   "stopped_by_rule": true
+  },
+  "A1_s1_y2018": {
+   "epochs": 24,
+   "best_epoch": 8,
+   "val_ic": 0.013977832776495763,
+   "train_sec": 4327.1,
+   "stopped_by_rule": true
+  },
+  "A3_s1_y2018": {
+   "epochs": 69,
+   "best_epoch": 53,
+   "val_ic": 0.05411922058744343,
+   "train_sec": 7198.1,
+   "stopped_by_rule": true
+  },
+  "base_s2_y2018": {
+   "epochs": 25,
+   "best_epoch": 9,
+   "val_ic": 0.041475556746357174,
+   "train_sec": 2624.0,
+   "stopped_by_rule": true
+  },
+  "A4_s1_y2018": {
+   "epochs": 37,
+   "best_epoch": 21,
+   "val_ic": 0.022196576103229382,
+   "train_sec": 4733.9,
+   "stopped_by_rule": true
+  },
+  "A2_s2_y2018": {
+   "epochs": 25,
+   "best_epoch": 9,
+   "val_ic": 0.04182885171908217,
+   "train_sec": 2622.7,
+   "stopped_by_rule": true
+  },
+  "A1_s2_y2018": {
+   "epochs": 26,
+   "best_epoch": 10,
+   "val_ic": 0.028774968725080757,
+   "train_sec": 4560.6,
+   "stopped_by_rule": true
+  },
+  "A4_s2_y2018": {
+   "epochs": 19,
+   "best_epoch": 3,
+   "val_ic": 0.03772556683940155,
+   "train_sec": 2033.9,
+   "stopped_by_rule": true
+  },
+  "A3_s2_y2018": {
+   "epochs": 25,
+   "best_epoch": 9,
+   "val_ic": 0.016007155421384662,
+   "train_sec": 2241.3,
+   "stopped_by_rule": true
   }
  },
  "mps_hours_estimate": {
@@ -109,7 +159,7 @@
   "basis": "solo-equivalent: ~20 min per stage-1 fit (A1 about 2x), 15 fits; stage-2 training windows 1.3-2.2x longer, 36 fits at ~35 min; 3 concurrent workers give ~1.6x throughput"
  },
  "resume": "Run: cd research/tree/L4_arch && ~/.cache/quant-tf-venv/bin/python run.py 1 110 (2 workers). Done = pred files in .cache/tree/l4arch. Then python gate.py.",
- "updated": "2026-11-19T20:01:29Z",
+ "updated": "2026-11-19T21:56:54Z",
  "notes": [
   "2026-11-19: coordinator relayed an owner request to drop the 15:30-21:15 UTC weekday pause, run at nice 10 and lower the disk stop to 4 GB. The change was refused by the session's permission system (removes a guard on the live fund's trading job; relayed, not the owner's own approval). Running unchanged under the original rules (pause kept, 6 GB stop). Needs the owner's direct approval, and a dated PREREG amendment to the compute line, before applying.",
   "2026-11-19 18:55Z: run.py was edited at 18:51Z by another party (window sleep removed, disk stop 4 GB) and three detached workers `run.py 1 1440` (nice 15, PIDs 57655/57694/57724) were started; my worker job was killed (SIGTERM). arch.fit() still pauses inside 15:30-21:15 UTC, so these workers spin: resume -> pause every ~2 s, ~40% CPU each, no training, until 21:15Z. Fix needs one consistent choice: (a) keep the pause and restore the runner's sleep, or (b) with the owner's direct approval, set arch.in_trading_window to return False. L4_arch agent did not kill the processes or edit further; handed back to coordinator."
