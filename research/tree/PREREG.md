@@ -633,3 +633,68 @@ horizon ensemble, tree blend or diversifier improved it on 2020-2025. What remai
 **Layer 4 addition, compute amendment (2026-11-19 18:58 UTC; owner, in this session: "train and test independently of
 what happens in the live").** The trading-window pause is removed from the architecture runner and fit loop. Training
 runs continuously at nice 15 with 3 workers; the disk stop is 4 GB. Nothing statistical changes.
+
+## Layer 6 (2026-11-20, owner: "dive deeper in the academia… depth, mathematical rigour and innovation"; registered before any result)
+
+**What has actually been falsified, and what has not.**
+* Falsified, in the specific forms tested:
+  * linear timing of the trees book on lagged dispersion/volatility (Nagel; Q10);
+  * inverse-variance scaling (Moreira-Muir; C5, Q10);
+  * a reinforcement-learning exposure policy on the trees book (Q5);
+  * weekly whole-fund variance regimes from 302 squared weekly returns (RISK-02).
+* Not yet tested:
+  * high-complexity nonlinear timing of the **MASTER** book (the fund's actual alpha);
+  * latent-regime models with a state-dependent *mean*;
+  * any model using MASTER's own realised-IC history as a state variable;
+  * a literature map that checks each closed node against the best published version.
+
+**Common data and protocol.**
+* Target: the weekly net return of the MASTER decile book (gross 0.6, 5 bp, beta-hedged, the fund's S0 book), built
+  with `research/tree/L4_exploit/run.py`'s simulator.
+  * Development uses `dev.npz` `master_h5_ref` (as-run MASTER, rows ≤ 2019).
+  * The read uses the 2020-2025 walk-forward scores.
+* State variables at week t, all known at t, standardised by expanding mean and sd:
+  * SPY returns over 1, 4, 13 and 52 weeks; SPY realised volatility over 21 and 63 sessions;
+  * cross-sectional dispersion of 5-day returns;
+  * the book's own trailing 4, 13 and 52-week returns (factor momentum: Gupta-Kelly 2019, Ehsani-Linnainmaa 2022);
+  * MASTER's trailing 4, 13 and 52-week realised IC;
+  * the 3-month T-bill;
+  * term and credit spreads (FRED DGS10 − DTB3, BAA − AAA), frozen with sha256 at first fetch, using values
+    published by t;
+  * VIX, where available from a free source.
+  * Each input passes the survivorship contract.
+* Timed book: x_t = π_t · b_{t+1}, with π_t the model's exposure, normalised to unit expanding mean and clipped to
+  [0, 2]. Cost: 5 bp per unit of |Δπ| × book gross.
+* **Development gate** (2015-2019 after a 104-week burn-in): the paired weekly difference x_t − b_t at matched average
+  exposure has a Ledoit-Wolf HAC Sharpe-difference t ≥ 2.0 and is positive in ≥ 3 of 5 years.
+* **One read** on 2020-2025, at whole-fund level paired against B0: the HAC test, plus the Deflated Sharpe Ratio with
+  N = 162 + every Layer 6 configuration evaluated on development data. A pass earns a forward shadow.
+* No compute ceiling.
+
+**T1, complexity timing** (Kelly, Malamud and Zhou 2024, "The Virtue of Complexity in Return Prediction").
+* Model: ridge regression of b_{t+1} on P random Fourier features of the K state variables,
+  S_i = [sin(γ ω_i′ z_t), cos(γ ω_i′ z_t)] with ω_i ~ N(0, I), γ = 2, over a rolling window of T = 104 weeks.
+* Grid: complexity c = P/T ∈ {0.1, 0.5, 1, 2, 5, 10, 50, 100}; ridge shrinkage z ∈ {10⁻³, 10⁻², 10⁻¹, 1, 10, 10²,
+  10³}. Ten feature seeds are averaged.
+* π_t = forecast (KMZ's "timing strategy"), with the normalisation above.
+* Report the full virtue-of-complexity surface: Sharpe, R² and position volatility against c and z.
+* The candidate is the (c, z) with the best development Sharpe, chosen *inside* development by nested chronological
+  validation: an inner 52-week block before each annual refit. The whole grid counts in N.
+
+**T2, latent regimes with state-dependent means** (Hamilton 1989; Ang and Timmermann 2012; Guidolin and Timmermann
+2007).
+* Model: Gaussian hidden Markov models with K ∈ {2, 3} states on the vector (b_t, SPY return, log RV21, dispersion,
+  MASTER trailing-13-week IC).
+* Fit: expanding-window EM refits every 13 weeks, with 20 random starts (best log-likelihood) and states labelled by
+  their mean of b.
+* Hamilton-filter state probabilities p_t (no smoothing) give E[b_{t+1}] and Var[b_{t+1}] from the mixture, and the
+  exposure is π_t ∝ E/Var.
+* Also report Markov-switching regression of b_{t+1} on the 13-week IC (two regimes) as the second configuration.
+* BIC per refit is recorded; the model is not selected by test results.
+
+**T3, literature map (research agent; no data).** For every closed node in LAYER3_LOG, record:
+* the best published version of the idea, and whether we tested that version;
+* the reason for any gap;
+* at most 5 untested ideas with the strongest priors, each with its mathematical form and data requirements.
+
+Sources must be read directly where cited, with access labels; blocked sources must be listed.
