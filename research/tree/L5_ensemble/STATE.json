@@ -1,0 +1,222 @@
+{
+ "branch": "L5_ensemble",
+ "task": "PREREG Layer 5, exploitation branch E: MASTER ensembling over the full grid d_model {64,256} x beta {2,5} x seeds 0-4 (20 models), base architecture (no Layer 4 A variant passed, LAYER3_LOG step 39).",
+ "plan": {
+  "stage1": [
+   "m256_b5_s3_y2018",
+   "m256_b5_s4_y2018",
+   "m64_b2_s0_y2018",
+   "m64_b5_s0_y2018",
+   "m256_b2_s0_y2018",
+   "m64_b2_s1_y2018",
+   "m64_b5_s1_y2018",
+   "m256_b2_s1_y2018",
+   "m64_b2_s2_y2018",
+   "m64_b5_s2_y2018",
+   "m256_b2_s2_y2018",
+   "m64_b2_s3_y2018",
+   "m64_b5_s3_y2018",
+   "m256_b2_s3_y2018",
+   "m64_b2_s4_y2018",
+   "m64_b5_s4_y2018",
+   "m256_b2_s4_y2018"
+  ],
+  "stage1_reused": {
+   "m256_b5_s0_y2018": "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/tree-search/.cache/tree/l4arch/pred_base_s0_y2018.npz",
+   "m256_b5_s1_y2018": "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/tree-search/.cache/tree/l4arch/pred_base_s1_y2018.npz",
+   "m256_b5_s2_y2018": "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/tree-search/.cache/tree/l4arch/pred_base_s2_y2018.npz"
+  },
+  "stage2": "only on a stage-1 pass: 20 models x refit years 2020-2025 (120 fits), each trained on all data before its test year; panel .cache/tree/l5ens/sp500_tf_master_ens_h5.npz aligned like quant-tf sp500_tf_master_h5.npz; whole-fund read with research/tree/L4_exploit/run.py simulator vs B0 (Ledoit-Wolf HAC Sharpe-difference test, DSR with N = 162 + this round's configurations); READ_L5E.lock created before the read."
+ },
+ "definitions": {
+  "data": "ens.build('2019-12-31'): nothing after 2019-12-31 is read. Fit = refit before 2018 (windows(S, 2018, 5): training targets end before 2018-01-01, last 20% early-stopping validation), scoring every Thursday of 2018 and 2019 (one fit scores both years, as in L4_arch stage 1).",
+  "model": "MASTER base (look 8, 15-value market gate, MSE, 5-day head), as-run training (Adam 1e-5, max 100 epochs, stop at mean loss < 0.95 or 15 epochs without validation IC gain, best-validation-epoch weights).",
+  "E": "for each Thursday, each of the 20 models' scores converted to cross-sectional percentile ranks over the names it scores; E = equal-weight mean of the available ranks (nanmean).",
+  "C": "as-run rule: the configuration the pipeline chooses for the 5-day horizon (d_model 256, beta 5; sp500_transformers.FINAL) averaged over seeds 0-4 by the as-run nanmean of raw scores (sp500_transformers: preds = nanmean(runs)). Sensitivity, descriptive only: C with rank averaging.",
+  "gate": "weekly Spearman IC vs y5 on Thursdays of 2018 and 2019 whose 5-day target ends inside the year (L4_arch gate.week_ic); increment = IC(E) - IC(C) paired by week; pass = NW t (4 lags) >= 1.0 on the pooled increments AND mean increment > 0 in 2018 AND in 2019.",
+  "descriptive": "each configuration's 5-seed (score-average) IC 2018-19 and per-seed ICs; variance-reduction curve: IC of the k-seed average for k = 1..5, mean (and range) over all C(5,k) seed subsets, per configuration and for the 4-configuration rank ensemble.",
+  "note_on_prereg_gate": "PREREG Layer 5 common protocol item 3 (NW t >= 2.0, positive in >= 2/3 years) is written for the exploration branches' IC increment over MASTER; branch E says 'development gate on 2018-2019 as in the architecture branch' (NW t >= 1.0, positive in both years), which the coordinator's instruction repeats. E uses the architecture-branch gate. The t >= 2.0 result is also reported."
+ },
+ "compute": {
+  "workers": 4,
+  "nice": 10,
+  "launch": "nohup, detached; logs/worker<k>.log, flushed",
+  "pause": "none",
+  "disk_stop_gb": 4,
+  "checkpoints": "deleted once the prediction is saved"
+ },
+ "done": [
+  "m256_b5_s0_y2018",
+  "m256_b5_s1_y2018",
+  "m256_b5_s2_y2018",
+  "m64_b2_s0_y2018",
+  "m64_b5_s0_y2018",
+  "m256_b5_s4_y2018",
+  "m64_b2_s1_y2018",
+  "m64_b5_s1_y2018",
+  "m256_b2_s0_y2018",
+  "m256_b5_s3_y2018",
+  "m64_b2_s2_y2018",
+  "m256_b2_s2_y2018",
+  "m256_b2_s1_y2018",
+  "m64_b5_s2_y2018",
+  "m256_b2_s3_y2018",
+  "m64_b2_s3_y2018",
+  "m64_b5_s3_y2018",
+  "m64_b2_s4_y2018",
+  "m256_b2_s4_y2018",
+  "m64_b5_s4_y2018"
+ ],
+ "running": {},
+ "next": [],
+ "fits": {
+  "m64_b2_s0_y2018": {
+   "epochs": 16,
+   "best_epoch": 0,
+   "val_ic": 0.013950377344601736,
+   "train_sec": 990.2,
+   "stopped_by_rule": true,
+   "session_sec": 992.8
+  },
+  "m64_b5_s0_y2018": {
+   "epochs": 16,
+   "best_epoch": 0,
+   "val_ic": 0.017819473015865735,
+   "train_sec": 1008.9,
+   "stopped_by_rule": true,
+   "session_sec": 1011.8
+  },
+  "m256_b5_s4_y2018": {
+   "epochs": 25,
+   "best_epoch": 9,
+   "val_ic": 0.03460451562860551,
+   "train_sec": 1899.0,
+   "stopped_by_rule": true,
+   "session_sec": 1903.2
+  },
+  "m64_b2_s1_y2018": {
+   "epochs": 22,
+   "best_epoch": 6,
+   "val_ic": 0.00475853845463953,
+   "train_sec": 1370.0,
+   "stopped_by_rule": true,
+   "session_sec": 1373.8
+  },
+  "m64_b5_s1_y2018": {
+   "epochs": 22,
+   "best_epoch": 6,
+   "val_ic": 0.009602986640884083,
+   "train_sec": 1407.5,
+   "stopped_by_rule": true,
+   "session_sec": 1411.5
+  },
+  "m256_b2_s0_y2018": {
+   "epochs": 31,
+   "best_epoch": 15,
+   "val_ic": 0.025003734119700763,
+   "train_sec": 2532.3,
+   "stopped_by_rule": true,
+   "session_sec": 2537.1
+  },
+  "m256_b5_s3_y2018": {
+   "epochs": 59,
+   "best_epoch": 43,
+   "val_ic": 0.04193992351391535,
+   "train_sec": 4477.3,
+   "stopped_by_rule": true,
+   "session_sec": 4483.9
+  },
+  "m64_b2_s2_y2018": {
+   "epochs": 29,
+   "best_epoch": 13,
+   "val_ic": 0.0217003354169027,
+   "train_sec": 1856.9,
+   "stopped_by_rule": true,
+   "session_sec": 1860.9
+  },
+  "m256_b2_s2_y2018": {
+   "epochs": 16,
+   "best_epoch": 0,
+   "val_ic": 0.04562103111201966,
+   "train_sec": 1130.8,
+   "stopped_by_rule": true,
+   "session_sec": 1133.3
+  },
+  "m256_b2_s1_y2018": {
+   "epochs": 46,
+   "best_epoch": 30,
+   "val_ic": 0.0075214687363805285,
+   "train_sec": 3412.5,
+   "stopped_by_rule": true,
+   "session_sec": 3417.2
+  },
+  "m64_b5_s2_y2018": {
+   "epochs": 57,
+   "best_epoch": 41,
+   "val_ic": 0.028666544183600387,
+   "train_sec": 3526.0,
+   "stopped_by_rule": true,
+   "session_sec": 3531.3
+  },
+  "m256_b2_s3_y2018": {
+   "epochs": 28,
+   "best_epoch": 12,
+   "val_ic": 0.016034842989452274,
+   "train_sec": 1680.9,
+   "stopped_by_rule": true,
+   "session_sec": 1683.2
+  },
+  "m64_b2_s3_y2018": {
+   "epochs": 59,
+   "best_epoch": 43,
+   "val_ic": 0.01698511633557036,
+   "train_sec": 3355.5,
+   "stopped_by_rule": true,
+   "session_sec": 3358.8
+  },
+  "m64_b5_s3_y2018": {
+   "epochs": 59,
+   "best_epoch": 43,
+   "val_ic": 0.02483844672917091,
+   "train_sec": 3330.4,
+   "stopped_by_rule": true,
+   "session_sec": 3333.6
+  },
+  "m64_b2_s4_y2018": {
+   "epochs": 45,
+   "best_epoch": 29,
+   "val_ic": 0.0026290978251528817,
+   "train_sec": 2412.3,
+   "stopped_by_rule": true,
+   "session_sec": 2414.6
+  },
+  "m256_b2_s4_y2018": {
+   "epochs": 25,
+   "best_epoch": 9,
+   "val_ic": 0.01739007314799728,
+   "train_sec": 1271.1,
+   "stopped_by_rule": true,
+   "session_sec": 1272.7
+  },
+  "m64_b5_s4_y2018": {
+   "epochs": 45,
+   "best_epoch": 29,
+   "val_ic": 0.006284574411992388,
+   "train_sec": 2285.9,
+   "stopped_by_rule": true,
+   "session_sec": 2287.8
+  }
+ },
+ "notes": [
+  "2026-11-20 13:34Z: m64_b2_s0 best validation epoch 0, stopped by patience-15 at epoch 16 (as-run rule, unchanged)."
+ ],
+ "updated": "2026-11-20T16:01:58Z",
+ "mps_hours_estimate": {
+  "preliminary_from_first_epochs": "50-70 s/epoch per worker with 4 concurrent workers (d_model 64 about as slow as 256: overhead-bound); L4 base fits took 24-43 epochs",
+  "stage1_wall_hours": "~3.5-4.5 (17 fits, ~45-60 min each, 4 at a time)",
+  "stage2_wall_hours_if_pass": "not needed (gate failed); would have been ~35-50 h wall",
+  "after_first_fit": "m64_b2_s0_y2018: 16 epochs, 16.5 min train at 4 concurrent workers (~62 s/epoch); best epoch 0 (patience rule stopped it)",
+  "actual_stage1": "10.5 worker-hours of training over 17 fits, 4 concurrent workers, wall 13:16Z-16:01Z (2.75 h)"
+ },
+ "stage1_status": "complete 2026-11-20 16:01Z: 17 new fits + 3 reused; gate.py run; RESULT.json stage1 written. GATE FAIL (E-C increment -0.0029, NW t -0.33; 2018 +0.0031, 2019 -0.0090). Stage 2 not run; READ_L5E.lock not created; no 2020-2025 data read."
+}

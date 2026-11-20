@@ -721,3 +721,15 @@ base with NW t ≥ 1.0 and positive in both years.
   architecture (no variant passed).
 * Base reproduction: its weekly correlation with the as-run 2018 MASTER is 0.89. The as-run 5-seed panel scores .021
   in 2018, against .013 for the 3-seed base, again pointing to seed count.
+
+## Step 40 — MASTER grid ensembling fails its development gate; MASTER exploitation closed on development data (2026-11-20)
+
+The 20-model grid ensemble scores .0111 against .0140 for the as-run 5-seed d256 β5 (increment −.0029, t −0.33). The
+d_model 64 configurations have no 2019 signal and dilute it. No stage 2; 2020-2025 was not read.
+
+**Coordinator's extrapolation (descriptive).** Fitting IC(k) ≈ IC∞ − a/k to the as-run seed curve (.0065 at 1 seed,
+.0140 at 5) gives IC∞ ≈ .0159. So 10 seeds would add about +.001 over today's 5, which 99 development weeks cannot
+detect (t ≈ 0.1). A 10-seed run is not registered.
+
+With the architecture screen (step 39), every registered way to improve MASTER itself has now failed on development
+data: lookback, market gate, rank loss, multi-horizon heads, grid ensembling. MASTER stays as it is.
