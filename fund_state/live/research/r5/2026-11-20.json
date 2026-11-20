@@ -1,0 +1,963 @@
+{
+ "records": {
+  "BJ": {
+   "ticker": "BJ",
+   "index": "SP400",
+   "sector": "Consumer Staples",
+   "sub_industry": "Consumer Staples Merchandise Retail",
+   "last_release": "2026-08-21 11:03:32+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1531152/000153115226000053/bj-2026080126x8kex991.htm",
+   "release_doc": "type EX-99",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Comparable club sales ex-gas",
+      "last_report": "Q2 ex-gas comp +3.1%; 1H +2.3%; total comp +11.9% on gasoline.",
+      "guidance": "FY2026 ex-gas comp sales +2.0% to +3.0%."
+     },
+     {
+      "id": "D2",
+      "name": "Membership fee income growth",
+      "last_report": "Q2 membership fee income +9.9% to $135.6M; record 8.5M members; higher-tier penetration.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Merchandise gross margin rate",
+      "last_report": "Q2 merchandise gross margin rate ex-gas and membership fell ~20 bps on pricing investments, partly offset by tariff refunds.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "SG&A expense growth",
+      "last_report": "Q2 SG&A +8.2% to $851.2M on labor, occupancy, new clubs, depreciation; sale-leaseback gain partly offset.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Gasoline sales and margins",
+      "last_report": "Q2 total comp +11.9% vs ex-gas +3.1%; gas outperformed and helped profitability.",
+      "guidance": null
+     }
+    ],
+    "guidance": "FY2026: comparable club sales excluding gasoline +2.0% to +3.0%; adjusted EPS $4.60-$4.80; capital expenditures ~$800M.",
+    "kill_conditions": [
+     "Q3 ex-gas comparable sales growth falls below 2.0% or decelerates from 3.1%.",
+     "Q3 merchandise gross margin rate declines more than 20 bps or tariff refund benefit reverses.",
+     "Q3 membership fee income growth falls below 9.9% or member count drops from 8.5M."
+    ]
+   },
+   "card_provider": "Cohere",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 14,
+    "found": 13,
+    "share": 0.9285714285714286,
+    "missing": [
+     "8.2"
+    ]
+   },
+   "peer_defects": {
+    "WMT": "no filing index"
+   },
+   "news_raw": 187,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "New club openings in Mesquite, TX and Ocala, FL",
+        "date": "2026-10-31",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Frankfort, KY new club grand opening",
+        "date": "2026-11-13",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Opened new club in Mesquite, Texas",
+        "date": "2026-10-31",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Opened new club in Ocala, Florida",
+        "date": "2026-10-31",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Opened new club in Frankfort, Kentucky",
+        "date": "2026-11-13",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "New club opened in Mesquite, Texas",
+        "date": "2026-10-31",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "New club opened in Ocala, Florida",
+        "date": "2026-10-31",
+        "driver": "D4",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Ionstream",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "TGT"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TGT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong traffic and food/bev comps signal resilient consumer demand, supportive for BJ's ex-gas comps."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Parasail",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TGT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Target's 5.6% comps, 5% traffic, and 7% food/bev growth signal healthy retail demand, supportive for BJ's ex-gas comps; tariff refunds also aid margin."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TGT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "TGT shows strong sales growth (5.6% comp) and significant non-merchandise growth (20%), which is positive for BJ's membership model."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 1.414213562373095,
+   "score_combined": 0.7071067811865475,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 1.2924,
+   "revenue_estimate": 6138873799,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-20",
+   "cutoff": "2026-11-19 22:00:00+00:00",
+   "decided_at": "2026-11-20T02:34:07.503088+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "31cc49b4f1958b6fd28e4c3f80c65ea911715b60",
+   "sha256": "847c81fd180940c214424cb985dedfb7533f6261b292e77e2301392e462a93ae"
+  },
+  "IESC": {
+   "ticker": "IESC",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Construction & Engineering",
+   "last_release": "2026-07-31 11:49:54+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1048268/000104826826000131/q32026pressrelease-june.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Communications segment data center demand",
+      "last_report": "Q3 revenue $453.1M, up 51% YoY, driven by data center demand; operating income $83.6M vs $47.8M.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Infrastructure Solutions capacity ramp",
+      "last_report": "Q3 revenue $224.1M, up 73% YoY; Gulf Island added $51.7M; operating income $53.4M; margin down on acquisition investments.",
+      "guidance": "New Abilene, Manitowoc, Gulf Island capacity expected to contribute meaningfully beginning fiscal 2027."
+     },
+     {
+      "id": "D3",
+      "name": "Commercial & Industrial data center projects",
+      "last_report": "Q3 revenue $241.4M, up 109% YoY; operating income $54.2M vs $12.9M; benefited from large quick-turn jobs at favorable margins.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Residential housing starts and margins",
+      "last_report": "Q3 revenue $324.1M, down 6% YoY; operating income $16.3M vs $33.4M; housing softness limited pricing recovery.",
+      "guidance": "Multi-family backlog growth should benefit fiscal 2027; no numeric guidance."
+     },
+     {
+      "id": "D5",
+      "name": "Backlog and remaining performance obligations",
+      "last_report": "Backlog ~$4.5B at June 30, up 91% since fiscal 2025 end; remaining performance obligations ~$2.8B.",
+      "guidance": null
+     }
+    ],
+    "guidance": null,
+    "kill_conditions": [
+     "Communications segment revenue growth decelerates or data center demand weakens.",
+     "Infrastructure Solutions margins decline further or new capacity ramp slips past fiscal 2027.",
+     "Commercial & Industrial margins normalize as large quick-turn favorable jobs do not repeat."
+    ]
+   },
+   "card_provider": "Parasail",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 19,
+    "found": 19,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 53,
+   "news_used": 53,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "IES Holdings completes acquisition of DBM Global from INNOVATE Corp.",
+        "date": "2026-10-05",
+        "driver": "D2",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AI data center demand continues to drive strong revenue growth for IESC.",
+        "date": "2026-08-03",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Broader market focus on data center construction and infrastructure spending.",
+        "date": "2026-10-07",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "_Cut('answer cut at max_tokens 24000')",
+     "provider": null,
+     "log": {
+      "attempts": [
+       {
+        "kind": "transport",
+        "error": "_Cut('answer cut at max_tokens 24000')"
+       }
+      ],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "IES Holdings to acquire DBM Global from INNOVATE for $650M cash and stock",
+        "date": "2026-08-10",
+        "driver": "D2",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "INNOVATE completes sale of DBM Global to IES Holdings",
+        "date": "2026-10-05",
+        "driver": "D2",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Ionstream",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "ACM",
+    "TTEK",
+    "FLR",
+    "MTZ",
+    "EME"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ACM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Record backlog and strong infrastructure end markets modestly support demand for IESC's infrastructure/backlog."
+       },
+       {
+        "peer": "TTEK",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Water/environmental and government services focus has little read-through to IESC's data center/electrical drivers."
+       },
+       {
+        "peer": "FLR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Record new awards and 21% backlog growth signal broad industrial capex strength, modestly supportive."
+       },
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Record backlog and large-load infrastructure demand support IESC's backlog, though Communications deferrals are a partial offset."
+       },
+       {
+        "peer": "EME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record RPO growth in network/communications mission-critical data centers signals strong shared demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "ACM",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Infrastructure design/consulting trends not tied to IESC's data center, communications, or residential drivers."
+       },
+       {
+        "peer": "TTEK",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Water/environmental and government services unrelated to IESC's data center and electrical drivers."
+       },
+       {
+        "peer": "FLR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Energy/mining E&C demand and backlog not relevant to IESC's data center and electrical drivers."
+       },
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Communications customer deferrals in 2H26 signal softer near-term comms spending, a negative for IESC's Communications segment."
+       },
+       {
+        "peer": "EME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record RPO growth in network/comms mission-critical data centers signals strong shared data center demand for IESC."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "EME",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record Network & Communications RPO growth on mission-critical data center electrical/cooling demand supports IESC communications data center strength."
+       },
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Communications customer spending deferrals signal near-term weakness in communications/data center demand, though long-term AI need remains."
+       },
+       {
+        "peer": "FLR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Energy, urban, and mission solutions awards not relevant to IESC's data center, infrastructure, or residential drivers."
+       },
+       {
+        "peer": "TTEK",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Water/environmental and government services demand unrelated to IESC's electrical, data center, and residential drivers."
+       },
+       {
+        "peer": "ACM",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Infrastructure design backlog and margins do not directly signal IESC's data center, infrastructure, or residential demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 4.723076211353316,
+   "score_peer": 0.5773502691896258,
+   "score_combined": 5.011751345948129,
+   "overall_votes": [
+    "above",
+    "inline"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 2.8662,
+   "revenue_estimate": 1170960000,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-20",
+   "cutoff": "2026-11-19 22:00:00+00:00",
+   "decided_at": "2026-11-20T02:35:37.553754+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "31cc49b4f1958b6fd28e4c3f80c65ea911715b60",
+   "sha256": "ab94b0832d3b9d4242241a2a98fb024204d42c68905fcd5b1ae0dd2f158ab951"
+  },
+  "MOG.A": {
+   "ticker": "MOG.A",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Aerospace & Defense",
+   "last_release": "2026-07-31 12:44:50+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/67887/000162828026051250/ex991-73126.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Segment sales and backlog",
+      "last_report": "Q3 sales rose 15% to $1.117B; all four segments grew; twelve-month backlog rose 23% to $3.3B.",
+      "guidance": "FY2026 net sales guidance $4.4B, raised from $4.3B."
+     },
+     {
+      "id": "D2",
+      "name": "Adjusted operating margin and tariffs",
+      "last_report": "Adj. operating margin 16.4%, up 280 bps; $30M IEEPA tariff claims added 270 bps.",
+      "guidance": "FY2026 adjusted operating margin guidance 14.1%, raised from 13.4%."
+     },
+     {
+      "id": "D3",
+      "name": "Industrial data center cooling pumps",
+      "last_report": "Industrial sales +18%; operating margin +770 bps to 17.4%, adjusted 19.9%, driven by data center cooling pumps and tariff refund.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Defense and military aircraft programs",
+      "last_report": "Space & Defense +17% on missile controls/space vehicles; Military Aircraft +9% on aftermarket and MV-75; investments offset margins.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Tax rate and discrete benefits",
+      "last_report": "Q3 effective tax rate (10.6)%; $35M prior-year research credits and $8M simplification tax benefits aided GAAP EPS.",
+      "guidance": "FY2026 adjusted diluted EPS guidance $11.65 +/- $0.10, raised from $10.60."
+     }
+    ],
+    "guidance": "FY2026: net sales $4.4B, adjusted operating margin 14.1%, adjusted diluted EPS $11.65 +/- $0.10, free cash flow conversion 70%. Raised from $4.3B, 13.4%, $10.60, 60%.",
+    "kill_conditions": [
+     "Moog lowers FY2026 guidance for sales, adjusted operating margin, or adjusted EPS.",
+     "Industrial segment sales or margin declines, especially data center cooling pumps.",
+     "Adjusted operating margin falls below 14.1% or free cash flow conversion below 70%."
+    ]
+   },
+   "card_provider": "InferenceNet",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 25,
+    "found": 24,
+    "share": 0.96,
+    "missing": [
+     "1.117"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 46,
+   "news_used": 44,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Moog races to meet rising missile defense demand amid global tensions",
+        "date": "2026-07-31",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Mercury Systems Q1 earnings and revenue beat, signaling strong defense electronics demand",
+        "date": "2026-11-10",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Elbit Systems Q3 earnings beat, indicating strong defense demand",
+        "date": "2026-11-17",
+        "driver": "D4",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.95
+     },
+     "error": null,
+     "provider": "Ionstream",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "TDG",
+    "SARO",
+    "AXON",
+    "KTOS",
+    "CW"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TDG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong aerospace demand and organic growth support Moog's overall segment sales and backlog."
+       },
+       {
+        "peer": "SARO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D4",
+        "why": "Military/helicopter and business aviation aftermarket growth supports Moog's military aircraft aftermarket demand."
+       },
+       {
+        "peer": "AXON",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Public safety and drone demand unrelated to Moog's aerospace/defense components; no read on drivers."
+       },
+       {
+        "peer": "KTOS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "Very strong defense, space, and rocket systems demand signals upside for Moog's Space & Defense programs."
+       },
+       {
+        "peer": "CW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Broad A&D strength, fighter/helicopter demand, and raised guidance support Moog's defense and military aircraft programs."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TDG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Strong aerospace aftermarket and defense demand supports Moog Military Aircraft and Space & Defense growth."
+       },
+       {
+        "peer": "SARO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Military/helicopter and business aviation aftermarket growth supports Moog Military Aircraft aftermarket; commercial aerospace remains modest."
+       },
+       {
+        "peer": "AXON",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Public safety drone and software demand is not relevant to Moog's aerospace, defense, or industrial drivers."
+       },
+       {
+        "peer": "KTOS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D4",
+        "why": "Very strong defense, missile, space, and turbine demand supports Moog Space & Defense and Military Aircraft programs."
+       },
+       {
+        "peer": "CW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Aerospace/defense growth in fighter, helicopter, and defense electronics supports Moog Military Aircraft and Space & Defense."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "CoreWeave",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad A&D/commercial growth, orders +15%, backlog +12% support Moog sales/backlog; raised guidance positive."
+       },
+       {
+        "peer": "KTOS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Strong defense/space bookings and missile/rocket growth support Moog's Space & Defense programs."
+       },
+       {
+        "peer": "AXON",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Public safety/drone demand and federal Dedrone delays not tied to Moog's aerospace, defense, or industrial drivers."
+       },
+       {
+        "peer": "SARO",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Military/helicopter and business aviation aftermarket growth supports Moog Military Aircraft aftermarket; margin gains positive."
+       },
+       {
+        "peer": "TDG",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Strong aerospace/defense organic growth and aftermarket demand support Moog's military aircraft and defense sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 3.5777087639996634,
+   "score_combined": 1.7888543819998317,
+   "overall_votes": [
+    "above",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 2.7724,
+   "revenue_estimate": 1154024360,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-20",
+   "cutoff": "2026-11-19 22:00:00+00:00",
+   "decided_at": "2026-11-20T02:35:22.352565+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "31cc49b4f1958b6fd28e4c3f80c65ea911715b60",
+   "sha256": "1bef4def8c932ccdb0ae16e3a8c7ddc530206dea51b3f696c028d2384d764194"
+  }
+ },
+ "report_date": "2026-11-20",
+ "cutoff": "2026-11-19 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "180d8d834cdc674ae0621c4c14aa10e8b2a1ba3a659b2ac9a207564f2ec58d08",
+ "runs": [
+  {
+   "at": "2026-11-20T02:35:37.577385+00:00",
+   "version": "r5-v2",
+   "code": "31cc49b4f1958b6fd28e4c3f80c65ea911715b60",
+   "quality": {
+    "counts": {
+     "ok": 3
+    },
+    "attempted": 3,
+    "bad": 0,
+    "bad_share": 0.0,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
