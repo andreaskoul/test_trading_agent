@@ -733,3 +733,23 @@ detect (t ≈ 0.1). A 10-seed run is not registered.
 
 With the architecture screen (step 39), every registered way to improve MASTER itself has now failed on development
 data: lookback, market gate, rank loss, multi-horizon heads, grid ensembling. MASTER stays as it is.
+
+## Step 41 — intraday beta (B1) as MASTER's hedge: no improvement; corrected package reproduces it (2026-11-20)
+
+The comparison was built by the parallel research session (its HEDGE-01 package) and run here on the local caches. It
+covers the reused window 2020-2025 and is descriptive.
+
+| | Return | Excess Sharpe |
+|---|---|---|
+| MASTER + B1 hedge | 21.24 %/yr | 0.809 |
+| MASTER + incumbent hedge | 21.69 %/yr | 0.814 |
+
+* The difference is −0.44 %/yr (HAC SE 0.36), and the 95% bootstrap interval of the Sharpe difference is −0.033 to
+  +0.023.
+* MASTER's decile book is already near beta-neutral (mean beta about 0, weekly hedge correlation 0.98).
+* B1 coverage was below 90% in 167 weeks, because the intraday data holds current members only.
+* Decision: no change to MASTER's hedge. B1's live use on the 7B book (Protocol 10) is a different book and test.
+
+The first package needed three fixes: the date index, the `panel` module clash, and a negative T-bill rate on
+2020-03-26. The corrected package (31 tests) was rerun end-to-end here, and it reproduces the first run bit for bit:
+`RESULT.json` metrics equal and `WEEKLY.csv` identical.
