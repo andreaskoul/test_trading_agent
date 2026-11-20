@@ -1,0 +1,171 @@
+{
+ "agent": "L6_lit",
+ "spec": "PREREG.md Layer 6, T3 literature map (no data work, no git)",
+ "updated": "2026-11-20",
+ "phase": "3: map and proposals drafted; handback next",
+ "repo_read": [
+  "LAYER3_LOG.md steps 1-42",
+  "PREREG.md L3 Am.1 - Layer 6",
+  "L1_lit, L2_practice, L3_lit REPORT.md",
+  "Q1, Q2, Q5, Q10, N4, L4_exploit, L4_explore, L5_breadth, L5_insider, L5_pead, L5_ensemble REPORT.md heads",
+  "memory: adaptive-core, regime-edge, instruments",
+  "research/sharpe/GREEDY.md"
+ ],
+ "lit_plan": [
+  "MASTER (2312.15235)",
+  "Kelly-Kuznetsov-Malamud-Xu AIPM transformer",
+  "Jiang-Kelly-Xiu image CNN",
+  "Poh et al LTR",
+  "AlphaPortfolio / RL",
+  "Martineau PEAD",
+  "Lou-Polk-Skouras",
+  "Huang et al TSMOM critique",
+  "Cederburg vol-managed",
+  "Nagel 2012",
+  "KMZ virtue of complexity + Nagel critique",
+  "Ke-Kelly-Xiu / Chen-Kelly-Xiu news",
+  "Cohen-Malloy-Pomorski",
+  "Chen-Hong-Stein",
+  "Lazy Prices",
+  "return seasonality",
+  "connected-firm momentum",
+  "Ledoit-Wolf / JKMP",
+  "realized beta",
+  "futures financing / embedded leverage"
+ ],
+ "sources_read": [
+  {
+   "src": "Li et al. MASTER AAAI 2024 arXiv 2312.15235",
+   "access": "read-directly",
+   "note": "CSI300/800, Alpha158, lookback 8, d=5, MSE, D=256, beta 5/2, 5 seeds; gate ablation (MA)STER IC .064 vs .064 CSI300"
+  },
+  {
+   "src": "Guo-Huang-Li-Yu arXiv 2608.23761 (benign overfitting)",
+   "access": "read-directly",
+   "note": "KMZ RFF timing = historical-average managed portfolio; centered predictors -> gains vanish; 1975-2020 RFF SR ~0.35 = History 0.35"
+  },
+  {
+   "src": "Nagel 2025 NBER w34104",
+   "access": "search-summary",
+   "note": "RFF timing = volatility-timed momentum"
+  },
+  {
+   "src": "Kelly-Kuznetsov-Malamud-Xu AIPM NBER w33351 (rev. June 2026)",
+   "access": "read-directly (pypdf text, selected pages)",
+   "note": "monthly, 132 JKP chars, SDF objective; linear attn 3.6->3.9; nonlinear transformer 4.6 vs DKKM 3.9; gross, no costs; SR rises mega->micro; transformer's relative gain largest in mega/large"
+  },
+  {
+   "src": "Martineau CFR 2022",
+   "access": "read-directly (abstract + grep)",
+   "note": "PEAD non-existent for large stocks since 2006"
+  },
+  {
+   "src": "Cohen-Malloy-Pomorski NBER w16454 / JF 2012",
+   "access": "read-directly (pypdf)",
+   "note": "monthly; VW opp buy-sell 5-factor alpha 82 bp/mo t 2.15; EW 180 bp; holds in top-half size; 1986-2007"
+  },
+  {
+   "src": "Huang-Li-Wang-Zhou JFE 2020 TSMOM",
+   "access": "abstract-only",
+   "note": "TSM ~ historical sample-mean strategy; weak asset-by-asset"
+  },
+  {
+   "src": "Lou-Polk-Skouras JFE 2019 (LSE accepted PDF)",
+   "access": "read-directly (pypdf)",
+   "note": "1993-2013 ex-microcap VW deciles: overnight-sorted overnight alpha +3.47%/mo, intraday -3.02%/mo; close-to-close nets small; needs open/close execution"
+  },
+  {
+   "src": "Chen-Hong-Stein JFE 2002; Nagel 2005",
+   "access": "search-summary",
+   "note": "Nagel 2005 longer sample: no relation of mutual-fund breadth change and returns on average"
+  },
+  {
+   "src": "Keloharju-Linnainmaa-Nyberg NBER w20815 / JF 2016",
+   "access": "read-directly (pypdf)",
+   "note": "same-calendar-month 20y avg demeaned, >=5y history; 13%/yr 1963-2011; all-but-microcaps non-Jan meta-strategy 1.03% t 5.74; daily same-weekday VW 0.11%/day t 13.3"
+  },
+  {
+   "src": "Cohen-Malloy-Nguyen Lazy Prices JF 2020",
+   "access": "search-summary (Harvard PDF 403)",
+   "note": "up to 188 bp/mo alpha, 1995-2014, 10-K/10-Q similarity"
+  },
+  {
+   "src": "Cederburg et al JFE 2020",
+   "access": "search-summary",
+   "note": "103 strategies; real-time vol-managed not better; structural instability"
+  },
+  {
+   "src": "D.E. Shaw 'Imbalance Sheet' 2025",
+   "access": "read-directly",
+   "note": "S&P futures financing spread avg 0.3% 2021-23, peak >1.4% Dec 2024"
+  },
+  {
+   "src": "Heston-Sadka JFQA 2010",
+   "access": "search-summary",
+   "note": "international seasonality, 14 markets"
+  },
+  {
+   "src": "Jensen-Kelly-Pedersen JF 2023 (CBS publisher PDF)",
+   "access": "read-directly (pypdf, grep)",
+   "note": "Heston-Sadka seasonality factors raised tangency SR 0.65->0.74; replication >50% in 11/13 themes"
+  },
+  {
+   "src": "JKP seasonality theme <75% replication",
+   "access": "search-summary"
+  },
+  {
+   "src": "Huang-Fan-Hu-Ye arXiv 2604.19476",
+   "access": "read-directly",
+   "note": "S&P 500 2011-19, 10-K embedding peer network pair reversal, daily rebal, gross LS SR 0.742 / 0.820 LLM-filtered; SIC network 0.792; turnover ~22x/yr; monthly rebal 0.502"
+  },
+  {
+   "src": "Ali-Hirshleifer JFE 2020",
+   "access": "search-summary",
+   "note": "CS momentum 1.68%/mo t 9.67; subsumes industry/customer/tech momentum; needs IBES"
+  },
+  {
+   "src": "Nagel RFS 2012",
+   "access": "abstract-only (via search listing)",
+   "note": "reversal returns predictable with VIX"
+  },
+  {
+   "src": "Blitz et al JFDS 2023",
+   "access": "search-summary (Robeco)",
+   "note": "3-12m ML targets net positive post-2004"
+  },
+  {
+   "src": "AlphaPortfolio NBER w35195",
+   "access": "search-summary",
+   "note": "SR>2 monthly (earlier version), follow-up ~1.2"
+  },
+  {
+   "src": "Ke-Kelly-Xiu NBER w26186",
+   "access": "search-summary",
+   "note": "SESTM on Dow Jones Newswires full articles"
+  },
+  {
+   "src": "Hollstein-Prokopczuk-Wese Simen JFM 2019",
+   "access": "search-summary",
+   "note": "daily EWMA beta + shrinkage best historical; HF betas better (other paper)"
+  }
+ ],
+ "blocked": [
+  "CME 'funding the US equity market' article: timeout",
+  "Harvard DASH Lazy Prices PDF: 403",
+  "nber w33351 / w16454 / w20815 via WebFetch: binary, extracted locally with pypdf (OK)",
+  "Elicit search_papers: api_access_denied (plan lacks API)",
+  "alphaXiv: 'Expected Returns and Large Language Models' not indexed",
+  "Lazy Prices post-2014 replication: none found (search cut at one query)"
+ ],
+ "closed_node_map": {
+  "status": "in final message",
+  "nodes": 21
+ },
+ "proposals": [
+  "P1 capital-efficient core financing (+freed gross for book)",
+  "P2 same-calendar-month return seasonality ranked with MASTER",
+  "P3 Lazy Prices 10-K/10-Q similarity ranked with MASTER",
+  "P4 text-network (TNIC) connected-firm momentum/reversal"
+ ],
+ "note_for_T1": "Include intercept / centred features; benchmark T1 against historical-average and vol-timed book-momentum exposure rules (Guo et al. 2608.23761; Nagel w34104)"
+}
