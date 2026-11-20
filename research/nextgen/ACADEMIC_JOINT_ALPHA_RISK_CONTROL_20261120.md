@@ -1,0 +1,55 @@
+# Research memo — rigorous conditional alpha, latent regimes and dynamic portfolio control (20 Nov 2026)
+
+**Purpose:** replace the overly narrow policy of stopping advanced research when a simple weekly proxy fails. This document specifies new hypotheses; it does not claim to have trained these models or improved live performance. Existing allocation draft PR #186. No main, fund, account, forward-ledger or broker changes.
+
+## Why the previous inference was wrong
+
+RISK-02 tested 247 overlapping origins of noisy, weekly whole-fund squared returns. Its weak results (state variance ratio 1.166, t=0.84; EWMA QLIKE gain t=1.54) do not reject conditional latent states, factor stochastic volatility, nonlinearity, cross-asset correlations or conditional MASTER efficacy. Failure of a proxy and failure of an economic hypothesis are different statements. Existing intraday riskfield research found strong per-stock HAR volatility predictability and approximately 33% lower B1 beta forecast MSE; however, B1 applied to an already beta-neutral MASTER book lost -0.442 pp/year (and failed held coverage). Both results are real and book-dependent.
+
+Academic complexity evidence is not a free licence for overfitting: Didisheim et al. (2025) and The Virtue of Complexity in Return Prediction (2024) offer conditions under which model dimensionality plus appropriate shrinkage improves OOS asset-pricing performance; those SDF/forecast endpoints are not our net whole-fund NAV. Deep conditional asset pricing by Chen/Pelger/Zhu (2024) and Gu/Kelly/Xiu (2021) gives model templates, not a guaranteed MASTER increment.
+
+## Formal project: predict a full conditional distribution, not a hard regime label
+
+At a decision timestamp t, information I_t includes only prices, factor returns, intraday bars, maturities, member eligibility and signal scores then available. All post-t stock returns, realized betas and later macro data are excluded. Let z_t represent latent market/risk states, theta_t the evolving efficacy of MASTER, and Sigma_t the conditional covariance.
+
+1. **Dynamic factor covariance:** for stock excess returns r_(t+1) = B_t f_(t+1) + eps_(t+1), model Sigma_t = B_t H_t B_t' + D_t. H_t is a time-varying factor volatility/correlation matrix, D_t a positive definite sparse residual covariance. Candidate factor-stochastic-volatility latent log variances follow h_(j,t) = mu_j + phi_j(h_(j,t-1)-mu_j) + eta_(j,t). Alternative observation-driven H_t can use HEAVY/realized GARCH, GAS, or small-factor DCC; D_t can be POET-regularised. Compare all against shrunk historical factor risk and pooled HAR. Include posterior uncertainty, leverage, heavy tails, factor-beta instability and the actual SPY core/hedge covariance. Do not rebuild 300x300 full multivariate GARCH without structural shrinkage.
+2. **Probabilistic risk regimes:** a filtered hidden-state model maintains pi_(t|t)(k)=Pr(z_t=k | I_t), with prediction pi_(t|t-1)(k)=sum_j P_(jk,t-1)*pi_(t-1|t-1)(j) and posterior proportional to p(x_t|z_t=k)*pi_(t|t-1)(k). Compare HMM, hidden semi-Markov for state durations and Bayesian online change-point filtering. Never use retrospective smoothed states or future VIX/rate revisions for a historical strategy decision. A distinct state must improve held-out predictive distributions, not simply re-label high-vol periods.
+3. **Conditional MASTER alpha strength:** freeze all original MASTER ranks and investor-eligible stock names. For completed next-five-session residual returns y_(i,t+5), model y_(i,t+5) = a_t + theta_t*g(score_(i,t)) + B_(i,t)*f_(t+1:t+5) + eps, where theta_t = theta_bar + A*pi_t + C*q_t + u_t; u_t follows an AR1/Kalman or hierarchical stochastic process with heavy-tailed innovation. q_t comprises lagged sector/market dispersion, factor correlation, liquidity and measured signal persistence. Start with Bayesian partial pooling against constant theta, then genuinely nonlinear mixture-of-experts gated on filtered state and an economically regularized conditional autoencoder. One admitted alpha remains MASTER. **No automatic turnoff on negative trailing IC**: the signal was weak pre-2020 yet successful in a later already-viewed period.
+4. **Joint posterior-predictive allocator:** estimate scenarios of returns, covariance, capital/rates and alpha coefficients, then solve a robust receding-horizon portfolio policy. Illustrative objective:
+       max expected sum_h {mu_h' w_h - C_h(Delta w_h) - Funding_h(w_h)}
+         - lambda * CVaR_95%(negative net fund returns)
+         - kappa * posterior_parameter_uncertainty_penalty
+   with identical approved whole-fund gross, SPY hedge/core, borrower/short, beta, liquidity, concentration, turnover and cash constraints across champion and challenger. The gross is |s_h - beta_h' w_h| + ||w_h||_1. A hard 1.9 cap and historical soft max(1.9, baseline gross) are different exposure policies and must never be compared as if they are alpha. Include segregated short-proceeds finance and the actual settled-account live contract once independently verified. Predictive score normalization must map to **holding-period expected-return units** with uncertainty before optimization. See Garleanu/Pedersen dynamic targets; Boyd et al. multi-period MPC; Mohajerin Esfahani/Kuhn robust optimisation.
+
+## Research experiments: substantial compute deliberately allowed
+
+**R-A: conditional factor risk, entire portfolio, target 5/21-session risk.** Assemble PIT 30-minute and daily factor/stock data, benchmark static shrunk factor covariance and pooled HAR, then fit (a) HEAVY/realized GARCH factor covariance, (b) POET residual covariance, (c) Bayesian factor SV with MCMC or state-space variational inference. Use expensive fitting, multiple restarts and posterior diagnostics when scientifically useful. Test predictive QLIKE, log predictive likelihood and calibrated tail coverage using next-session intraday realized covariance/portfolio returns; compare by years, crisis periods, portfolio exposures and factor concentration. A cheap weekly NAV EWMA test is NOT a veto on this programme.
+
+**R-B: whether latent states change MASTER predictive strength.** Reuse PIT MASTER weekly scores and matured residual targets with all alpha calibration done chronologically. Fit Bayesian dynamic coefficient/Kalman, HSMM softly gated coefficient model, and a regularized neural conditional mixture-of-experts as three structurally different research arms; compare against constant MASTER alpha scale, not against zero-only or an unrealistically weak control. Cross-sectional stock rows have shared time shocks: estimate uncertainty clustered by decision week, block-bootstrap across time and purge overlapped targets. Require risk-state identification, posterior calibration, confidence intervals and multi-year sign stability. A higher predictive IC alone is NOT a trading result.
+
+**R-C: measured decision value.** Only then compare constant champion, risk-informed weights, alpha-strength-informed weights and joint risk+alpha posterior/robust-MPC policy in the **same** trading simulator. Ablate cost, state, alpha and uncertainty separately; do not cherry-pick the best variant. Evaluate exact NAV with hedge turnover, impact/ADV, broker interest, short proceeds, constraints and matched capital. Main outcomes: cash-adjusted whole-fund Sharpe difference, net annual return at matched ex-ante risk, drawdown/ES/tail, annual time clusters, HAC/blocked-bootstrap uncertainty and DSR trial log. Material research target +0.15 excess Sharpe or +2pp matched-risk net annual return, not an observed improvement. Genuine promotion needs separately pre-registered Protocol 9 forward shadow; existing H9 104-week broad-book read is NOT a valid replacement.
+
+## Causal evaluation and data limitations
+
+Only 2013–2019 has existing development MASTER score labels before the reused 2020–2026 period; extend earlier *market risk* factor pretraining if data permit, but do not pretend pre-2013 alpha scores exist. Nested purged rolling-origin development folds, 5/21-session maturity embargoes, timestamp-qualified macro features, frozen issuance/earnings calendars, ticker/delisting adjustment and verified historical CIK identity. The current 30-minute riskfield cache contains current S&P members and is survivor-biased; first identify PIT coverage by date before relying on historical covariance/alpha labels. A panel of 300 stocks across 353 development weeks is not 100k independent time samples. Document all trials including historic >=162 and compute uncertainty accordingly. Previously read 2020–2026 results are *descriptive*, regardless of model sophistication. Strong nested development alone does not equal independently forward proof.
+
+**Crucial distinction:** if the cheap model fails, it does not veto scientifically distinct advanced models. The development research programme only stops after the relevant *advanced methods* fail on their stated, properly measured target or prove economically unusable. Computational cost is not the criterion; expected information and economic value is. Synthetic code-regression fixtures may be used, but synthetic portfolio utility must never count as live alpha.
+
+## Academic anchors and exact references
+
+- Didisheim, Ke, Kelly, Malamud (2025), APT or AIPT? https://www.nber.org/papers/w33012
+- The Virtue of Complexity in Return Prediction, Journal of Finance (2024), https://onlinelibrary.wiley.com/doi/10.1111/jofi.13298
+- Chen, Pelger, Zhu (2024), Deep Learning in Asset Pricing, https://pubsonline.informs.org/doi/10.1287/mnsc.2023.4695
+- Gu, Kelly, Xiu (2021), Autoencoder Asset Pricing Models, https://doi.org/10.1016/j.jeconom.2020.07.009
+- Kastner (2019), Sparse Bayesian Time-Varying Covariance Estimation in Many Dimensions, https://ideas.repec.org/a/eee/econom/v210y2019i1p98-115.html
+- Fan, Liao, Mincheva (2013), POET, https://rss.onlinelibrary.wiley.com/doi/10.1111/rssb.12016
+- Shephard/Sheppard (2010), HEAVY, https://onlinelibrary.wiley.com/doi/10.1002/jae.1158
+- Hansen/Huang/Shek (2012), Realized GARCH, https://economics.ucr.edu/wp-content/uploads/2019/10/Hansen-paper-for-1-10-11-seminar.pdf
+- Guidolin/Timmermann (2007), regime-switching allocation, https://www.sciencedirect.com/science/article/pii/S0165188906002272
+- Adams/MacKay (2007), Bayesian Online Changepoint Detection, https://arxiv.org/abs/0710.3742
+- Garleanu/Pedersen (2013), Dynamic Trading with Predictable Returns and Transaction Costs, https://www.nber.org/papers/w15205
+- Boyd et al. (2017), Multi-Period Trading via Convex Optimization, https://stanford.edu/~boyd/papers/cvx_portfolio.html
+- Mohajerin Esfahani/Kuhn (2018), Wasserstein DRO, https://link.springer.com/article/10.1007/s10107-017-1172-1
+- Patton (2011), Volatility Forecast Comparison Using Imperfect Volatility Proxies, https://www.sciencedirect.com/science/article/pii/S030440761000076X
+
+**Research outcome:** literature-guided model architecture defined; no claim of newly measured fund performance. Main live fund and locked forward logs unchanged.
