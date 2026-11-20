@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 import numpy as np
 import pytest
-from research.nextgen.joint_state import contracts as C, risk as R, regimes as G, alpha as A, control as O, runner as M
+from research.nextgen.joint_state import contracts as C, risk as R, regimes as G, alpha as A, control as O, runner as M, compare as E
 
 
 @pytest.fixture(scope='module')
@@ -252,3 +252,20 @@ def test_no_network_imports():
         source=inspect.getsource(module)
         for banned in ('requests.get','urllib.request','http.client','alpaca_trade_api','subprocess.run(["curl"'):
             assert banned not in source
+
+
+def test_comparison_hac_no_false_inference_on_two_smoke_origins():
+    r=E.paired_hac([.1,-.1])
+    assert r['n']==2 and r['t'] is None and r['hac_se'] is None
+
+def test_comparison_hac_positive_paired_mean():
+    r=E.paired_hac([.02+(.001 if i%2==0 else -.001) for i in range(50)])
+    assert r['t'] is not None and r['t']>0 and r['mean']==pytest.approx(.02)
+
+def test_comparison_refuses_mismatched_origin_keys():
+    with pytest.raises(ValueError,match='origin mismatch'):
+        E._equal_keys({('2020-01-01',):1},{('2020-01-02',):2})
+
+def test_comparison_refuses_duplicate_rows():
+    with pytest.raises(ValueError,match='duplicate'):
+        E._key_map([{'date':'2020-01-01'},{'date':'2020-01-01'}],('date',))

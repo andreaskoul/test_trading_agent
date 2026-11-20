@@ -60,3 +60,7 @@ No arbitrary computational cap. Method selection and hyperparameters must use on
 ## Primary mathematical literature
 
 Fan, Liao, Mincheva (2013) POET; Shephard/Sheppard (2010) HEAVY; Hansen/Huang/Shek (2012) realized GARCH; Kastner (2019) Bayesian factor stochastic volatility; Guidolin/Timmermann (2007) regime portfolio allocation; Adams/MacKay (2007) Bayesian online changepoint detection; Chen/Pelger/Zhu (2024) nonlinear conditional asset pricing; Gu/Kelly/Xiu (2021) conditional autoencoder; Gârleanu/Pedersen (2013) dynamic trading with costs; Boyd et al. (2017) multi-period convex portfolio optimisation; Mohajerin Esfahani/Kuhn (2018) Wasserstein ambiguity.
+
+## F. Paired model comparison governance
+
+The evaluation CLI `compare pairs forecasts only on identical dates and target labels. For each fixed-date loss difference d_t=loss_(benchmark,t)-loss_(challenger,t) it reports mean gain and a Newey-West HAC standard error with four weekly lags. A pilot with <8 matched origins reports `INSUFFICIENT_TIME_ORIGINS_FOR_INFERENCE and **no t-statistic**, never a success. It also reports per-calendar-year gains, discloses the historical 162+ trial family, and performs **no automatic winner selection**. The HMM and HSMM are scored on the same multivariate filtered predictive log density; BOCPD uses a different univariate risk target and is not compared numerically to those models. A candidate is not admitted to trading from either mean QLIKE improvements or alpha slope MSE alone.

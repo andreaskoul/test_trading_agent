@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 import numpy as np
 from .contracts import load_risk,load_alpha,sha256,safe_new_dir,write_json
-from . import risk,regimes,alpha,control
+from . import risk,regimes,alpha,control,compare
 
 
 def load_dev_market(path):
@@ -145,8 +145,11 @@ def make_and_solve(d,h,market,args):
 
 def main(argv=None):
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('command',choices=['check','risk','regimes','alpha','optimize'])
+    p.add_argument('command',choices=['check','risk','regimes','alpha','optimize','compare'])
     p.add_argument('--hf-cache',type=Path)
+    p.add_argument('--risk-results',type=Path)
+    p.add_argument('--alpha-results',type=Path)
+    p.add_argument('--regime-results',type=Path)
     p.add_argument('--alpha-cache',type=Path)
     p.add_argument('--out',type=Path)
     p.add_argument('--models',nargs='+')
@@ -184,6 +187,13 @@ def main(argv=None):
     h=load_risk(a.hf_cache,n_names=a.max_names) if a.hf_cache else None
     d=load_alpha(a.alpha_cache) if a.alpha_cache else None
     market=load_dev_market(a.alpha_cache) if d is not None else None
+    if a.command=='compare':
+        if a.out is None:p.error('--out required')
+        out=safe_new_dir(a.out,tuple(x for x in (a.risk_results,a.alpha_results,a.regime_results) if x is not None))
+        result=compare.compare_all(a.risk_results,a.alpha_results,a.regime_results)
+        write_json(out,'PAIRED_COMPARISON.json',result)
+        print(json.dumps(dict(status=result['status'],economic_performance=result['economic_performance'],output=str(out)),indent=2))
+        return 0
     if a.command=='check':
         print(json.dumps(dict(status='CONTRACT_CHECK_ONLY',risk=dict(sessions=len(h.dates),names=len(h.names),first=str(h.dates[0]),last=str(h.dates[-1]),sha256=h.sha256),
                 alpha=None if d is None else dict(sessions=len(d.dates),names=len(d.names),decision_origins=len(d.decision_ix),sha256=d.sha256),

@@ -128,3 +128,17 @@ python -m research.nextgen.joint_state.runner alpha --alpha-cache "$DEV" \
 ```
 
 The full programme uses the defaults (400 MoE epochs and three seeds, 13-week rolling refits) and the Bayesian PyMC methods in the main commands above. The smoke settings must not be promoted to model-selection conclusions.
+
+### Compare models statistically on identical development origins
+
+After the separate full model runs finish, perform an exact-date paired comparison (HAC and by-year gains; **no automatic model selection**):
+
+```sh
+python -m research.nextgen.joint_state.runner compare \
+  --risk-results "$HOME/ResearchData/joint_state/risk_a_20261120" \
+  --regime-results "$HOME/ResearchData/joint_state/regimes_b_20261120" \
+  --alpha-results "$HOME/ResearchData/joint_state/master_c_20261120" \
+  --out "$HOME/ResearchData/joint_state/paired_20261120"
+```
+
+The comparison fails if models were scored on different dates or actual labels. Positive development QLIKE, predictive density, or alpha efficacy improvements do **not** prove net whole-fund Sharpe; further research requires a separately registered causal fund-level decision test. If the expensive PyMC model has not finished yet, run comparisons only on completed model files with the required baseline; do not alter hyperparameters using repeated 2020–26 reads.
