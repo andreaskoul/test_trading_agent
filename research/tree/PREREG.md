@@ -698,3 +698,20 @@ runs continuously at nice 15 with 3 workers; the disk stop is 4 GB. Nothing stat
 * at most 5 untested ideas with the strongest priors, each with its mathematical form and data requirements.
 
 Sources must be read directly where cited, with access labels; blocked sources must be listed.
+
+### Layer 6 amendment (2026-11-20 18:00 UTC; from the T3 literature map; before any T1 result is computed)
+
+Guo, Huang, Li and Yu (arXiv 2608.23761, read directly by T3) find that Kelly-Malamud-Zhou random-feature timing has a
+Sharpe equal to timing by the historical mean. Its gain vanishes once the predictors are centred, and it does not beat a
+block-bootstrap null. Nagel (NBER w34104) reads the method as volatility-timed momentum. So for T1:
+* the features include an intercept, and the inputs are centred by their expanding means (as registered) before the
+  random-feature map;
+* **T1 must beat, not only constant exposure, two benchmark exposure rules** on the same weeks:
+  * B_m: π ∝ the book's trailing 52-week mean return (factor momentum);
+  * B_mv: π ∝ trailing 52-week mean / trailing 52-week variance;
+  * both normalised and clipped as T1;
+* the development gate is applied to T1 − max(B_m, B_mv), by paired HAC t ≥ 2.0 and positive in ≥ 3 of 5 years;
+* a block-bootstrap null (stationary bootstrap of b, mean block 4 weeks, 1,000 draws, rerunning the full T1
+  pipeline at the selected (c, z)) is reported.
+
+T2 had already finished its development gate (no pass) before this amendment and is not affected.
