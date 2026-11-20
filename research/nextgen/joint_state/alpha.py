@@ -207,7 +207,7 @@ def train_moe(features,targets,noise,n_experts=3,hidden=32,epochs=400,
             design=torch.cat((torch.ones((len(x),1),device=x.device),x),1)
             vals=design@self.experts.T
             return (gate*vals).sum(1)
-    nets=[];hist=[]
+    nets=[];hist=[];validation_variances=[]
     for seed in seeds:
         torch.manual_seed(seed)
         net=Net().to(device);opt=torch.optim.AdamW(net.parameters(),lr=learning_rate,weight_decay=.03)
@@ -224,19 +224,27 @@ def train_moe(features,targets,noise,n_experts=3,hidden=32,epochs=400,
             else:stalled+=1
             if stalled>=patience:break
         net.load_state_dict(best_dict)
-        nets.append(net.cpu().eval());hist.append(dict(seed=seed,best_validation_loss=best,epochs=epoch+1))
+        net=net.cpu().eval()
+        with torch.no_grad():
+            holdout_pred=net(Xt[split:].cpu()).numpy()*std+loc
+        # Distribution-free conservative epistemic floor from *past*
+        # development-only validation errors, including single-seed pilots.
+        val_var=max(float(np.mean((y[split:]-holdout_pred)**2)),1e-8)
+        nets.append(net);validation_variances.append(val_var)
+        hist.append(dict(seed=seed,best_validation_loss=best,epochs=epoch+1,development_validation_variance=val_var))
     def predict(new_features):
         z=(np.atleast_2d(np.asarray(new_features,float))-center)/scale
         if z.shape[1]!=X.shape[1] or not np.isfinite(z).all():raise ValueError('MoE features invalid')
         inputs=torch.tensor(z,dtype=torch.float32)
         with torch.no_grad():pred=np.asarray([net(inputs).numpy()*std+loc for net in nets])
-        return pred.mean(0),np.maximum(pred.var(0,ddof=1),1e-10)
+        ensemble_var=(pred.var(0,ddof=1) if len(nets)>1 else np.zeros(len(z)))
+        return pred.mean(0),np.maximum(ensemble_var+np.mean(validation_variances),1e-10)
     return dict(predict=predict,diagnostics=hist,n_experts=n_experts,
                 n_seeds=len(seeds),train_n=split,validation_n=len(X)-split)
 
 
 def alpha_trial(w:WeeklySlope,train_end='2016-12-31',eval_end='2019-12-31',
-                method='kalman',refit_every=13,draws=250,device='cpu'):
+                method='kalman',refit_every=13,draws=250,device='cpu',moe_epochs=400,moe_seeds=(11,17,23)):
     """Out-of-time development forecast of weekly MASTER-strength slope.
 
     Week t can train only on *already matured* previous labels. Refitting
@@ -258,7 +266,7 @@ def alpha_trial(w:WeeklySlope,train_end='2016-12-31',eval_end='2019-12-31',
             if method=='kalman':cached=kalman_slope(y,v)
             elif method=='bayesian':cached=bayesian_dynamic_slope(y,v,draws=draws,tune=draws)
             elif method=='state_regression':cached=bayesian_linear_state(y,v,f)
-            elif method=='moe':cached=train_moe(f,y,v,device=device)
+            elif method=='moe':cached=train_moe(f,y,v,device=device,epochs=moe_epochs,seeds=moe_seeds)
             elif method=='constant':cached=dict(mean=float(np.average(y,weights=1/v)),variance=float(np.var(y)))
             else:raise ValueError('unknown alpha method')
             cached_n=len(indices)

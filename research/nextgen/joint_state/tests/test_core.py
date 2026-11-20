@@ -206,6 +206,13 @@ def test_moe_small_ensemble():
     z=A.train_moe(x,y,np.ones(86)*.0001,epochs=25,seeds=(3,7),patience=7,hidden=6)
     p,v=z['predict'](x[:2]);assert p.shape==(2,) and np.all(v>0)
 
+def test_moe_single_seed_pilot_has_finite_uncertainty():
+    rng=np.random.default_rng(25);x=rng.normal(size=(86,3));y=rng.normal(0,.01,86)
+    z=A.train_moe(x,y,np.ones(86)*.0001,epochs=12,seeds=(11,),patience=5,hidden=5)
+    p,v=z['predict'](x[:2])
+    assert np.isfinite(p).all() and np.isfinite(v).all() and (v>0).all()
+
+
 def test_moe_rejects_short_time_series():
     with pytest.raises(ValueError):A.train_moe(np.ones((20,3)),np.ones(20),np.ones(20))
 

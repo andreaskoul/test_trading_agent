@@ -110,3 +110,21 @@ This executable **integrates** a causal MASTER efficacy posterior, factor covari
 ## Outputs and interpretation
 
 Each run produces a `MANIFEST.json` and model-specific JSON in a new external directory. Files include source SHA-256 hashes. **Risk:** QLIKE versus proper daily realized variance proxies. **Regimes:** filtered state vectors and log predictive density. **Alpha:** prediction error vs frozen MASTER slope baseline. **MPC:** model-predicted utility and feasible first-step targets (never an order). These four output families are distinct and should not be collapsed into a single "Sharpe improvement" until the independent economic experiment.
+
+### Dedicated smoke profile (engineering only)
+
+Use a short, **different** output directory for each command. These are readiness checks, not an investment experiment:
+
+```sh
+python -m research.nextgen.joint_state.runner risk --hf-cache "$HF" \
+  --models poet heavy realized_garch --factors 2 --step 105 --max-origins 2 \
+  --max-names 80 --out "$HOME/ResearchData/joint_state/smoke_risk"
+python -m research.nextgen.joint_state.runner regimes --hf-cache "$HF" \
+  --models hmm hsmm bocpd --max-names 80 \
+  --out "$HOME/ResearchData/joint_state/smoke_regimes"
+python -m research.nextgen.joint_state.runner alpha --alpha-cache "$DEV" \
+  --models constant kalman state_regression moe --moe-epochs 25 \
+  --moe-seeds 11 --refit-every 52 --out "$HOME/ResearchData/joint_state/smoke_alpha"
+```
+
+The full programme uses the defaults (400 MoE epochs and three seeds, 13-week rolling refits) and the Bayesian PyMC methods in the main commands above. The smoke settings must not be promoted to model-selection conclusions.

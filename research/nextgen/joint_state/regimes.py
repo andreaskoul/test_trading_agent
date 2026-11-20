@@ -219,7 +219,7 @@ def regime_trial(x,train_end,pred_start,pred_end,method='hmm',seed=11):
     if method=='hmm':m=gaussian_hmm(x[:train_end],seed=seed)
     elif method=='hsmm':m=gaussian_hsmm(x[:train_end],seed=seed)
     elif method=='bocpd':
-        prior=float(np.mean(x[:train_end,0]));return bocpd(x[:pred_end,0],prior_mu=prior)[pred_start:pred_end]
+        prior=float(np.mean(x[:train_end,1]));return bocpd(x[:pred_end,1],prior_mu=prior)[pred_start:pred_end]
     else:raise ValueError('bad regime model')
     _,last=m.filter(x[:train_end])
     # Between train_end and pred_start, pass causal observations but no fitting.

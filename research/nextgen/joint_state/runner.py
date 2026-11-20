@@ -162,6 +162,8 @@ def main(argv=None):
     p.add_argument('--draws',type=int,default=250)
     p.add_argument('--seed',type=int,default=20261120)
     p.add_argument('--device',default='cpu')
+    p.add_argument('--moe-epochs',type=int,default=400)
+    p.add_argument('--moe-seeds',type=int,nargs='+',default=[11,17,23])
     p.add_argument('--refit-every',type=int,default=13)
     p.add_argument('--origin',default='2019-11-01')
     p.add_argument('--forecaster',choices=['poet','heavy','realized_garch','bayes_sv'],default='heavy')
@@ -222,7 +224,7 @@ def main(argv=None):
         for method in (a.models or a.alpha_methods or ['constant','kalman','state_regression','moe','bayesian']):
             print(f'Fitting frozen-MASTER efficacy model {method}',file=sys.stderr,flush=True)
             rows=alpha.alpha_trial(w,method=method,refit_every=a.refit_every,
-                                   draws=a.draws,device=a.device)
+                                   draws=a.draws,device=a.device,moe_epochs=a.moe_epochs,moe_seeds=tuple(a.moe_seeds))
             write_json(out,'alpha_'+method+'.json',dict(rows=rows,summary=_alpha_summary(rows,d)))
             summary[method]=_alpha_summary(rows,d)
     elif a.command=='optimize':
