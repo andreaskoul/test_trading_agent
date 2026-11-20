@@ -753,3 +753,16 @@ covers the reused window 2020-2025 and is descriptive.
 The first package needed three fixes: the date index, the `panel` module clash, and a negative T-bill rate on
 2020-03-26. The corrected package (31 tests) was rerun end-to-end here, and it reproduces the first run bit for bit:
 `RESULT.json` metrics equal and `WEEKLY.csv` identical.
+
+## Step 42 — whole-fund variance regimes (RISK-02): fails; reproduced here (2026-11-20)
+
+This is the parallel session's registered test on the committed weekly ledger (reused 2020-2025), rerun here: 24
+tests pass and every number matches.
+* 247 origins, January 2021 to November 2025.
+* High/low state ratio of next-4-week variance 1.166 (HAC t 0.84; the gate needs ≥ 1.40 and t ≥ 2).
+* EWMA vs trailing-52 QLIKE: 0.3538 vs 0.3801 (t 1.54; the gate needs t ≥ 2).
+* The EWMA gain is concentrated in 2021 (+0.144) and 2025 (+0.043); it is negative in 2022-2024.
+
+Coordinator's note: the target is the mean of four squared *weekly* returns, a very noisy proxy, so this test had low
+power by construction. A daily whole-fund series (5 observations a week) would be the cheap way to reach power before
+any component-level model.
