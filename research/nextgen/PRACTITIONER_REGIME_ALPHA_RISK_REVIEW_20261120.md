@@ -59,3 +59,17 @@ The fixed core alpha is accounted for consistently in whole-fund expected return
 **Status:** financial improvement **NOT YET ESTABLISHED**. E1 incumbent reproduction complete; E2 funding/cost sensitivities complete but live economics pending; P9 shadow registration and genuinely new return comparison not yet achieved. No code beyond this research memorandum, no new synthetic experiments, no automation changes, no new strategy/alpha admission.
 
 **How to use this memo:** A source-guided *decision hierarchy*, NOT a claim that the quoted institutions publicly disclose their complete proprietary live trading systems or have demonstrated performance on this fund.
+
+
+## Compute-allocation amendment — owner directive, 2026-11-20
+
+**Computational expense is not a methodological exclusion criterion.** Earlier language advising against HMM/GMM or more expensive models is a prohibition against *uncontrolled model-family fishing on reused returns*, not a blanket preference for cheap models. The research must seek the **best economically justified method**, including intensive GPU/CPU training when evidence warrants it.
+
+**Required two-stage progression:**
+
+1. **Test the economic hypothesis first** on a modest, fixed, causally constructed development experiment. Establish whether point-in-time state features predict *future* risk, signal decay or incremental net alpha, relative to a prespecified baseline. Verify label maturity, cross-sectional ID integrity, leakage resistance, regime stability, usable signal horizon and sampling uncertainty. A synthetic experiment may verify software and algorithmic behavior, but cannot substantiate investable alpha.
+2. **If positive, enhance the methodology without an arbitrary compute ceiling:** richer HAR/GARCH/realised-volatility methods, switching state-space/HMM and probabilistic mixtures, ML forecasting, factor risk, ensembles or nonlinear models can be compared with nested walk-forward validation on development data. Invest in repeated fits, careful hyperparameter search, model calibration, stability and robustness testing. Track *all* trials and tuning decisions. The outcome must beat simple methods on held-back development origins and show a plausible route to fund-level performance **after** financing, turnover, market impact and binding gross constraints.
+3. Separate (a) forecasting improvement (e.g., QLIKE, conditional calibration, 5-day risk error) from (b) **economic decision improvement** (paired net whole-fund cash-excess Sharpe/return under matched approved capital/risk policy). Progress on (a) permits further computational investment; it does **not** authorize trading changes.
+4. Keep 2020–2026 previously reused performance windows descriptive; no fresh model selection against them. Use explicitly registered, unseen forward periods for final investment claims. Stop investment promotion if forecast evidence disappears, costs dominate or capital comparability fails.
+
+**Resource policy:** allow significant computation when justified by pre-test expected value of information. Never constrain research to an inferior cheap heuristic for budget optics. Never use unlimited compute as a substitute for a valid hypothesis, a clean validation protocol or access to trustworthy data. Existing owner financing and MASTER workstreams remain separate and are not to be duplicated.
