@@ -1,0 +1,57 @@
+{
+ "task": "Layer 6 T1 (PREREG.md 'Layer 6'): complexity timing of the MASTER decile book (Kelly, Malamud and Zhou 2024), random Fourier features + ridge (dual), rolling T = 104, grid c x z, 10 seeds, nested chronological selection, development gate 2015-2019, one 2020-2025 read only on a pass.",
+ "plan": {
+  "0_written_before_results": "This plan was written before any timing result was computed. Only build checks (book reproduction, data fetch) precede it.",
+  "1_book": {
+   "simulator": "research/tree/L4_exploit/run.py: K.T.build() panel, K.GROSS_SIDE = 0.3 (gross 0.6), book_decile, the sim() loop (beta hedge in SPY, 5 bp on |dw| + |dw_spy|). A local copy of sim() (lib.py: sim_book) additionally returns each week's book gross sum|w| + |w_spy|; it is asserted identical to L4 sim() book and total.",
+   "development": "dev.npz master_h5_ref inserted on the panel rows <= 2019 (NaN elsewhere); sim years 2013-2019 (decisions are Thursdays; the last 2019 decision holds to Fri 2019-12-27, so no 2020 data).",
+   "2020_2025": "quant-tf sp500_tf_master_h5.npz h5, sim years 2020-2025 (prev weights None at the start, as B0).",
+   "checks": "2020-2025 book must equal weekly_b0_ledger.csv book_net_return exactly (atol 1e-12), dates and days identical, else STOP. Development book Sharpe (x 7/days, annualised sqrt 52) about -0.16.",
+   "b_t": "b(t) = the book's net return over the holding period of decision t: close(t+1) to close(t_next+1). It is known only from session end(t) = t_next + 1."
+  },
+  "2_states": {
+   "list": "K = 15 (14 if VIX fails, 13 if BAA/AAA cannot be fetched): SPY return over 1, 4, 13, 52 weeks (5, 20, 65, 260 sessions to close t); SPY realised vol over 21 and 63 sessions (daily rm to t); cross-sectional sd of 5-session returns over eligible names ending t; book trailing mean return over the last 4, 13, 52 completed book periods (end(s) <= t); MASTER trailing mean weekly Spearman IC over the last 4, 13, 52 completed targets (5-day beta-hedged residual of decision s completes at row s+6; used only when s+6 <= t; the residual recomputed from r, rm, beta and asserted equal to the panel y5); DTB3; DGS10 - DTB3; BAA - AAA; VIX close.",
+   "timing_of_macro": "DTB3 and DGS10 (daily): last observation dated <= S[t] - 1 day (the simulator's rf convention: published the next business day). BAA and AAA are FRED monthly averages dated the 1st of the month: month m is used only from the 1st of month m+1 plus 7 days. VIX: yfinance ^VIX close of session t (published at the close).",
+   "freeze": "FRED fetched from fred.stlouisfed.org/graph/fredgraph.csv with a generic User-Agent; files frozen under .cache/tree/l6/raw with sha256 at first fetch and never re-fetched. Fallback if FRED is unreachable: DTB3 from quant-tf/.cache/quant_trials/dtb3.csv (the simulator's own frozen file) and DGS10 from .cache/tree/l4x/fred/DGS10.csv (frozen 2026-11-19), both sha256-recorded; if BAA/AAA cannot be fetched the credit spread is dropped and this is reported.",
+   "survivorship": "The contract (availability indicator |t| < 2) applies to stock-level inputs; every state here is market-level or computed on the point-in-time membership (elig) as the simulator, so it does not apply; stated in RESULT.",
+   "standardisation": "For each variable, z_t = (x_t - expanding mean)/expanding sd over weekly decisions from its first finite value (Thursdays from 2010) through t inclusive; the first 26 observations and remaining NaN set to 0."
+  },
+  "3_model": {
+   "features": "S(z_t) = [sin(2 w_i'z_t), cos(2 w_i'z_t)], i = 1..P/2, w_i ~ N(0, I_K); P = 2*round(c*104/2) (c = 0.1 -> P = 10); features nested in P within a seed (first P/2 frequencies); seeds 0..9 (np.random.default_rng(20261120 + seed)). No intercept, no further normalisation (as registered).",
+   "ridge": "beta(z) = (z I + S'S/T)^-1 S'R/T solved in the dual: f_t = k_t'(SS' + z T I)^-1 R, eigendecomposition of the T x T Gram matrix once per week and seed, all 7 z at once. R = raw b(s).",
+   "window": "Forecast at decision t uses the last T = 104 decisions s with end(s) <= t. Where fewer exist (2014 only, the inner block for the 2015 selection, and the first two 2015 weeks), the available ones are used with a minimum of 52; P stays c*104. Forced by the development data starting in 2013; disclosed.",
+   "refits": "Ridge coefficients re-estimated every week on the rolling window (KMZ re-estimate every period); (c, z) re-selected annually.",
+   "seeds": "Forecasts averaged over 10 seeds before the position.",
+   "position": "pi_t = clip(f_t / m_t, 0, 2) with m_t the expanding mean of |f_s| over the configuration's forecasts s <= t (since its first forecast). The literal 'unit expanding mean' of f is undefined when that mean is <= 0; dividing by the mean absolute forecast gives a unit mean when forecasts are positive and keeps the sign; negative forecasts go to 0 by the clip.",
+   "timed_book": "x_t = pi_t b(t) - 5e-4 |pi_t - pi_{t-1}| G_t, G_t the book gross of week t (sum|w| + |w_spy|). Tests use x 7/days and b 7/days (L4 wk convention)."
+  },
+  "4_selection": "At the first decision of each year Y >= 2015, choose (c, z) with the best Sharpe of x over the 52 latest decisions whose x is complete (end(s) <= first decision of Y). Each configuration's pi series is computed independently and the candidate's pi for year Y is that configuration's pi; switching costs counted through |dpi|.",
+  "5_surface": "For every (c, z) on 2015-2019 (development): Sharpe of x (net), Sharpe of the KMZ timing return f b (unnormalised, gross), out-of-sample R2 = 1 - sum(b - f)^2 / sum b^2, sd of pi, sd of f, mean pi, |dpi| turnover. Ridgeless check: at z = 1e-3, Spearman of Sharpe on c and whether Sharpe rises with c (also at every z). Single-seed vs 10-seed average reported for the Sharpe.",
+  "6_gate": "Development (decisions 2015-2019): candidate x (nested selection) vs b: L4 lw_hac_test(x, b) z >= 2.0 AND yearly mean of (x / pibar - b) > 0 in >= 3 of 5 years, pibar the mean pi over 2015-2019 (matched average exposure; the Sharpe test is scale invariant). Both required.",
+  "7_leakage": "test_timing.py: for three cut rows t* (2016-06-02, 2018-11-15, 2019-09-12), perturb every value dated after t* (r, rm, spy, scores, VIX, FRED observations) and recompute the book, states, forecasts, selection and pi on a reduced grid (c {0.5, 10}, z {0.1, 10}, 2 seeds) through the same code; every pi_t, f_t and state at decisions <= t* must be unchanged and something after t* must change.",
+  "8_read": "Only on a gate pass: create READ_L6T1.lock, run the same pipeline on 2020-2025 (selection continues annually), whole fund through the L4 sim with the book weights scaled by pi_t (the sim's mult, so its gross cap applies as for B5), compare total vs B0: lw_hac_test, Deflated Sharpe with N = 162 + 56 (this grid) + the T2 configurations, var of Sharpes as L4 RESULT dsr_inputs. On a fail: no 2020-2025 timing result is computed.",
+  "N_layer6_T1": "56 configurations (8 c x 7 z), every one evaluated on development data.",
+  "9_amendment_2026_11_20_1800": {
+   "source": "PREREG.md 'Layer 6 amendment (2026-11-20 18:00 UTC)', applied before any T1 score was computed (only the book reproduction and data freeze had run).",
+   "intercept": "Unpenalised intercept in the ridge: within each training window the features and R are centred (kernel form: centred Gram H G H, centred test kernel), f = mean(R) + ridge part. Inputs are already centred and scaled by their expanding mean and sd before the random-feature map (2_states.standardisation).",
+   "benchmarks": "B_m: raw signal = mean of the last 52 completed b (end <= t); B_mv: that mean / variance of the same 52 (ddof 1). Both through positions() (divide by expanding mean |signal|, clip [0, 2]) and timed() exactly as T1, same weeks, available from the first decision with 52 completed periods.",
+   "gate": "Replaces 6_gate. Benchmark B* = the one of B_m, B_mv with the higher development Sharpe of x over 2015-2019 (the 'max'); the paired test is also required against the other, so 'T1 - max(B_m, B_mv)' holds whichever max is meant. For each benchmark: L4 lw_hac_test(x_T1, x_B) z >= 2.0 AND yearly mean of (x_T1/pibar_T1 - x_B/pibar_B) > 0 in >= 3 of 5 years. Pass only if both hold against both benchmarks. T1 vs constant exposure (b) reported with the same statistics, not part of the gate.",
+   "bootstrap_null": "Stationary bootstrap (Politis-Romano 1994) of the development b series (2013-2019 decisions, mean block 4, geometric lengths, circular), 1,000 draws, seed 20261121. Each draw reruns the full T1 pipeline with the annual (c, z) choices held at those selected on the real data: book-derived states (book_4/13/52) recomputed from the resampled b, expanding standardisation, random features (same 10 seeds), ridge, positions, timed returns, and the two benchmarks. Statistics: T1 Sharpe, T1 - constant Sharpe, T1 - B* Sharpe (2015-2019); p = share of draws >= observed. Book gross and days stay at their calendar positions."
+  }
+ },
+ "done": [
+  "build.py book: 2020-2025 book reproduces weekly_b0_ledger book_net_return (max diff 1e-16, 302 weeks); development book Sharpe -0.161 (353 weeks 2013-01-03..2019-12-19)",
+  "build.py macro: FRED DTB3, DGS10, BAA, AAA fetched (curl default user agent; a browser-style UA was refused by FRED) and frozen with sha256 in .cache/tree/l6/MANIFEST.json; VIX from yfinance ^VIX frozen; fresh DTB3 and DGS10 equal the earlier frozen copies on every overlapping date",
+  "amendment 2026-11-20 18:00 UTC read and added to the plan before any score",
+  "dev grid + surface + gate written: gate pass False",
+  "bootstrap null written",
+  "test_timing.py PASS (3 cuts); planted leaks caught",
+  "bootstrap null 1000 draws written",
+  "gate FAILED (T1 vs B_m z -0.50, vs B_mv z -0.50, vs constant z -0.89): no read"
+ ],
+ "running": [],
+ "next": [
+  "coordinator review; T1 closed on development data"
+ ],
+ "updated": "2026-11-20T19:20:31+00:00"
+}

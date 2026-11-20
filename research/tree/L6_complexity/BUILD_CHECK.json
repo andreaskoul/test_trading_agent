@@ -1,0 +1,29 @@
+{
+ "book": {
+  "simulator": "L4_exploit sim() with book_decile (identical book and total asserted), K.GROSS_SIDE 0.3",
+  "reproduces_B0_ledger_book_net_return": true,
+  "ledger_weeks": 302,
+  "max_abs_diff": 9.974659986866641e-17,
+  "same_dates": true,
+  "same_days": true,
+  "dev_2013_2019": {
+   "weeks": 353,
+   "first": "2013-01-03",
+   "last": "2019-12-19",
+   "last_end_session": "2019-12-27",
+   "book_sharpe": -0.16063790165122782,
+   "book_pct_per_year_arith": -0.6233536808837726,
+   "mean_book_gross": 0.653309644864099
+  },
+  "y2020_2025": {
+   "weeks": 302,
+   "book_sharpe": 0.7682450907963505,
+   "book_pct_per_year_arith": 5.085978501077976,
+   "mean_book_gross": 0.672733148317555
+  },
+  "dev_scores_vs_quant_tf_rows_le_2019": {
+   "same_mask": true,
+   "max_abs_diff": 1.4901161193847656e-08
+  }
+ }
+}

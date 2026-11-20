@@ -781,3 +781,17 @@ any component-level model.
   * proposals: a capital-efficient core, calendar-month seasonality, Lazy Prices, and text-network peers.
 * **T1** was amended before any score: centred features, plus factor-momentum and mean-variance benchmarks
   (Guo-Huang-Li-Yu).
+
+## Step 44 — Layer 6 T1: complexity timing fails clearly (2026-11-20)
+
+The Kelly-Malamud-Zhou random-feature ridge timing of the MASTER book loses on development data to constant exposure
+(z −0.89) and to factor-momentum timing (z −0.50). The bootstrap null gives p 0.58-0.68. The ridgeless "virtue of
+complexity" does not appear: validation picked low complexity every year. No read.
+
+**Layer 6 overall:** none of the three timing families (complexity ridge, HMM regimes, Markov-switching on IC)
+passes. The HMMs are the only ones pointing the right way (z ≈ 1.3, 5 of 5 years). A structural reason they all
+struggle: the development MASTER book has a negative mean (Sharpe −0.16), so a long-only exposure clip at 0 spends
+half its weeks out of the market. Development data are a poor training ground for timing a book whose edge appeared
+only after 2019. Timing MASTER will have to be learned forward, on new weeks.
+
+N for any future Layer 6 DSR: 162 + 56 + 3 = 221.
