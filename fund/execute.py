@@ -37,15 +37,23 @@ import broker
 from broker import ET, api
 from common import MODE, P7_START, STATE, week_dir
 
+def sip_close_query(syms, day):
+    """Daily-bar request for the session `day` only. Alpaca reads a date-only `end` as the whole of that day, so an
+    end of day + 1 reached into the future and was refused (403 "recent SIP data"): end is the session's own date."""
+    d = pd.Timestamp(day).date()
+    return f"/v2/stocks/bars?symbols={','.join(syms)}&timeframe=1Day&feed=sip&adjustment=raw&start={d}&end={d}"
+
+
 def alpaca_closes(syms, day):
     """Unadjusted SIP daily-bar closes of `day` from Alpaca, beside the yfinance close used for slippage, so a gap
     between close sources shows up in reconciliation (2026-10-31, operational). Empty on any failure."""
     out = {}
     try:
         for i in range(0, len(syms), 100):
-            q = (f"/v2/stocks/bars?symbols={','.join(syms[i:i + 100])}&timeframe=1Day&feed=sip&adjustment=raw"
-                 f"&start={pd.Timestamp(day).date()}&end={(pd.Timestamp(day) + pd.Timedelta(days=1)).date()}")
+            q = sip_close_query(syms[i:i + 100], day)
             s_, r = api("GET", q, base=broker.DATA)
+            if s_ != 200:                       # 2026-11-20: a 403 here left every close_alpaca empty, silently
+                print(f"reconcile: Alpaca closes unavailable (HTTP {s_}: {str(r)[:120]})")
             for k, bars in ((r or {}).get("bars") or {}).items():
                 for b in bars:
                     if str(pd.Timestamp(b["t"]).tz_convert("America/New_York").date()) == str(pd.Timestamp(day).date()):
