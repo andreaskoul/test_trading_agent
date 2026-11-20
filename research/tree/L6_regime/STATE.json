@@ -1,0 +1,40 @@
+{
+ "task": "Layer 6 T2 (PREREG.md 'Layer 6'): latent regimes with state-dependent means. Gaussian HMM K=2,3 on (b_t, SPY ret, log RV21, dispersion, MASTER trailing-13w IC); Markov-switching regression of b_{t+1} on 13w IC; development gate 2015-2019; read 2020-2025 only for a passer.",
+ "plan": {
+  "inputs": "Reuse L6_complexity frozen weekly series (.cache/tree/l6/) if present and its checks pass; else build after ~30 min wait from dev.npz master_h5_ref with L4_exploit/run.py's simulator (S0 book: MASTER deciles, gross 0.6, 5 bp, beta-hedged), checked vs L4_exploit/b0_audit_runner/weekly_b0_ledger.csv book_net_return 2020-2025.",
+  "state_vector": "y_t = (b_t, SPY weekly return, log RV21, cross-sectional dispersion of 5-day returns, MASTER trailing 13-week IC), each standardised by expanding mean and sd known at t (b standardised for fitting; E/Var mapped back to raw b units).",
+  "hmm": "Own EM (no hmmlearn/statsmodels installed; nothing pip-installed). Full covariance, K in {2,3}. Expanding window from the first usable week; refit every 13 weeks using rows < t only; 20 random starts (seeded k-means++-style random means from data rows, covariances = sample cov, uniform-ish transition 0.9 diag), up to 500 EM iterations, tol 1e-6; best log-likelihood kept; states relabelled by ascending mean of b. Covariance floor 1e-4 I.",
+  "filter": "Hamilton forward filter only (never smoother), run with the current refit's parameters on data up to t: p_t = P(s_t | y_1..y_t). Predictive P(s_{t+1}|F_t) = p_t' A. E[b_{t+1}] = sum q_k mu_k^b; Var = sum q_k (sigma_k^bb + mu_k^b^2) - E^2 (in raw b units via the expanding standardisation at t).",
+  "exposure": "raw_t = E/Var; pi_t = raw_t / expanding mean of raw up to t (unit expanding mean), clipped to [0,2]. Negative raw -> clipped to 0. If expanding mean of raw <= 0 then pi_t = 1 (fallback recorded).",
+  "msr": "Two-regime Markov-switching regression b_{t+1} = c_s + beta_s IC13_t + e, sigma_s (switching variance), own EM with Hamilton filter/Kim smoother inside estimation only (estimation on in-sample rows < t is allowed); the trading signal uses filtered probabilities only. Same expanding refit every 13 weeks, 20 starts. E/Var from the predictive mixture; same pi mapping.",
+  "records": "BIC, transition diagonal, share of time in each state (filtered argmax over the fit window), log-likelihood per refit, for every configuration.",
+  "leakage_test": "For sample dates t, perturb all inputs at rows > t (random noise, both b and states) and rerun the full pipeline; every pi_s for s <= t must be identical (exact equality).",
+  "timed_book": "x_t = pi_t * b_{t+1} - 5bp * |pi_t - pi_{t-1}| * 0.6 (book gross).",
+  "gate": "2015-2019 after a 104-week burn-in (burn-in from start of data; weeks evaluated must have >=104 weeks of history and lie in 2015-2019). Paired weekly difference x_t - b_t at matched average exposure (x scaled so its mean exposure over the gate window equals 1, i.e. divide by mean pi in-window). Ledoit-Wolf HAC Sharpe-difference t >= 2.0 and diff positive in >= 3 of 5 years. Three configurations: HMM2, HMM3, MSR2.",
+  "read": "Only a passer: create READ_L6T2.lock first, compute 2020-2025 series (walk-forward MASTER scores, same simulator), whole-fund level paired against B0 via L4_exploit simulator, HAC test, DSR with N = 162 + all Layer 6 configurations evaluated on development data (from L6_complexity's count plus 3).",
+  "outputs": "research/tree/L6_regime/run.py -> RESULT.json, run.log; cache .cache/tree/l6r/",
+  "amendment_before_gate": "2026-11-20 ~18:00 UTC, before any gate statistic was computed: align with L6_complexity's registered plan so the Layer 6 configurations share conventions: timing cost uses the week's actual book gross G_t = sum|w| + |w_spy| (not the nominal 0.6), and gate statistics use returns x 7/days (L4 wk convention). Exposure normalisation stays as this plan (raw mean, fallback 1). The dev series is my own build from the identical simulator (L6_complexity had produced no series file at ~30 min); its b definition is identical by plan."
+ },
+ "done": [
+  "dev weekly series built: 557 weeks, first b 2013-01-03, sha256 5476e6187b615a5540bede23d73f33d29a96a0cf84c614997a57995f0111f79a",
+  "ledger check 2020-2025 book vs book_net_return: {'weeks_sim': 302, 'weeks_ledger': 302, 'weeks_matched': 302, 'max_abs_diff': 9.974659986866641e-17, 'mean_book_sim': 0.001044525315579217, 'mean_book_ledger': 0.0010445253155792144}",
+  "hmm2 development walk-forward: 249 weeks, 20 refits",
+  "msr2 development walk-forward: 249 weeks, 20 refits",
+  "hmm3 development walk-forward: 249 weeks, 20 refits",
+  "development walk-forwards hmm2, hmm3, msr2 written (outcomes not yet examined)",
+  "comparison inputs: own series built per the fallback; checked exact vs ledger (max |diff| 1e-16)",
+  "dev weekly series built: 557 weeks, first b 2013-01-03, sha256 c649d5297b14bb374b21a94d2324bf81ed5c26586b9d1a02c9c3e76d4be97b34",
+  "hmm2 development walk-forward: 249 weeks, 20 refits",
+  "msr2 development walk-forward: 249 weeks, 20 refits",
+  "hmm3 development walk-forward: 249 weeks, 20 refits",
+  "development gate: any pass False; hmm2: z 1.35, years+ 5; hmm3: z 1.30, years+ 5; msr2: z -0.96, years+ 2",
+  "rebuilt with G_t and days; models and leakage tests rerun: future perturbation leaves pi and raw exactly unchanged (all 3 configs, both cutoffs); past perturbation changes raw in all 6 cases",
+  "gate: no pass (hmm2 z 1.35, hmm3 z 1.30, msr2 z -0.96); no read; READ_L6T2.lock not created",
+  "L6_complexity frozen book_dev.parquet (appeared after the gate was computed) agrees with this branch's dev series: 353 weeks, max |b diff| 2.7e-10, max |book gross diff| 5.4e-9; both reproduce the B0 ledger 2020-2025 exactly"
+ ],
+ "running": [],
+ "next": [
+  "coordinator: commit; T2 closed on development data; N contribution 3"
+ ],
+ "updated": "2026-11-20T17:58:49+00:00"
+}

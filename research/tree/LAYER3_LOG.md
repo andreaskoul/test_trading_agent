@@ -766,3 +766,18 @@ tests pass and every number matches.
 Coordinator's note: the target is the mean of four squared *weekly* returns, a very noisy proxy, so this test had low
 power by construction. A daily whole-fund series (5 observations a week) would be the cheap way to reach power before
 any component-level model.
+
+## Step 43 — Layer 6: regime models fail narrowly; literature map; T1 amended before scoring (2026-11-20)
+
+* **T2 (development, 2015-2019):** the Gaussian HMMs time the MASTER book in the right direction every year (+1.5 and
+  +1.7 %/yr), but with Sharpe-difference z 1.35 and 1.30 against 2.0. The Markov-switching regression loses. No read.
+  * This is a near miss, not a pass. Respecifying it on the same development data would be a forking path.
+  * A clean way to test it is a forward-only registration, where no historical read is spent: proposed to the owner,
+    not registered.
+* **T3, the literature map:**
+  * most closed nodes tested the best published version, or the gap cannot flip the result;
+  * the open ones are AIPM-style transformers (they need monthly characteristic data we lack), the MASTER rank loss
+    (power), and the covariance book at equal *risk* (forward only);
+  * proposals: a capital-efficient core, calendar-month seasonality, Lazy Prices, and text-network peers.
+* **T1** was amended before any score: centred features, plus factor-momentum and mean-variance benchmarks
+  (Guo-Huang-Li-Yu).
