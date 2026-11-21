@@ -133,15 +133,22 @@ def run_risk(hf,models=('ewma','poet','heavy','garch'),stride=21,lookback=252,
         output.append({'date':str(p.dates[t].date()),'n_train_days':n_good,
                        'future_target_SPY':float(target[0,0]),'forecasts':forecast})
     if len(output)<4:raise ValueError('Coverage insufficient for >=4 held-out risk evaluations')
+    from .evaluation import paired_losses
     agg={name:{metric:float(np.mean([o['forecasts'][name][metric] for o in output])) for metric in ('gaussian_logscore','spy_variance_qlike')}
          for name in models}
+    comparator='ewma' if 'ewma' in models else models[0]
+    paired={name:{metric:paired_losses([o['date'] for o in output],
+                        [o['forecasts'][comparator][metric] for o in output],
+                        [o['forecasts'][name][metric] for o in output],lags=3)
+                   for metric in ('gaussian_logscore','spy_variance_qlike')}
+            for name in models if name!=comparator}
     return safe({'status':'DEVELOPMENT_ONLY_RISK_NOT_TRADING','schema':'hf.npz 14-return array',
            'source_sha256':p.source_sha256,'max_read_date':str(p.dates[-1].date()),
            'origins':len(output),'models':list(models),'pca_factor_calibration_end':factor['factor_train_end'],
            'factor_count':factor_count,'n_stocks_in_basis':len(factor['selected_names']),
            'mean_name_coverage':float(np.mean(factor['coverage'])),
            'pca_explained_early':factor['pca_explained'],
-           'score_mean':agg,'period_results':output,
+           'score_mean':agg,'paired_vs':comparator,'paired_forecast_loss':paired,'period_results':output,
            'warning':'Already-seen 2018-2019 development outcomes, not new OOS; fixed PCA basis has survivor limitations; no investment gains measured.'})
 
 
@@ -219,7 +226,11 @@ def run_alpha(dev,models=('constant','kalman','gated','moe'),
             if len(slope)==valid.sum():pred['moe']=np.array(slope)
             model_train.append({'year':year,'moe_training':ans})
         targets=y[valid]
-        vals.append({'year':year,'n_valid_weeks':len(targets),
+        from .evaluation import paired_losses
+        base_loss=(pred['constant']-targets)**2
+        paired={name:paired_losses([rows[i]['date'] for i in np.flatnonzero(valid)],
+                          base_loss,(p-targets)**2,lags=4) for name,p in pred.items() if name!='constant'}
+        vals.append({'year':year,'n_valid_weeks':len(targets),'paired_vs_constant':paired,
                      'models':{name:{'mse':float(np.mean((p-targets)**2)),
                                       'corr':float(np.corrcoef(p,targets)[0,1]) if np.std(p)>1e-12 else None,
                                       'mean_forecast':float(p.mean())} for name,p in pred.items()}})
@@ -243,13 +254,41 @@ def run_regimes(hf,n_states=3,max_duration=20,end='2019-12-31'):
     H=GaussianHMM(n_states).fit(xx[:cutoff]); S=HiddenSemiMarkov(n_states,max_duration).fit(xx[:cutoff]);B=BOCPD().filter(xx[:,0])
     h=H.filter(xx);s=S.filter(xx)
     selected=np.where((dates>pd.Timestamp('2017-12-29'))&(dates<=pd.Timestamp(end)))[0]
-    return safe({'status':'DEVELOPMENT_REGIME_FILTERS_ONLY','source_sha256':p.source_sha256,
+    # Training target next 5 SESSIONS, formed only where completed before
+    # the start of evaluation. Fit state-conditional risk, NOT future states.
+    RV=np.maximum(p.realized_var[:,spy],1e-9)
+    train_origin=np.arange(63,cutoff-5)
+    next_rv=np.array([RV[t+1:t+6].mean() for t in train_origin])
+    state_h=np.sum(h[train_origin]*next_rv[:,None],axis=0)/np.maximum(h[train_origin].sum(0),1e-10)
+    state_s=np.sum(s[train_origin]*next_rv[:,None],axis=0)/np.maximum(s[train_origin].sum(0),1e-10)
+    records=[]
+    for t in selected:
+        if t+5>=len(dates):continue
+        realised=float(np.mean(RV[t+1:t+6]))
+        base=float(np.mean(RV[t-63:t])) if t>=63 else None
+        fh=float(h[t]@state_h);fs=float(s[t]@state_s)
+        if base is None:continue
+        def loss(f):
+            ratio=realised/max(f,1e-9)
+            return float(ratio-np.log(ratio)-1)
+        records.append({'date':str(dates[t].date()),'hmm_filtered':h[t],
+                        'hsmm_filtered':s[t],
+                        'bocpd_changepoint':B['changepoint_probability'][t],
+                        'realized_next5_spy_rv':realised,'pred_base':base,
+                        'pred_hmm':fh,'pred_hsmm':fs,
+                        'qlike_base':loss(base),'qlike_hmm':loss(fh),'qlike_hsmm':loss(fs)})
+    from .evaluation import paired_losses
+    paired={name:paired_losses([q['date'] for q in records],
+                  [q['qlike_base'] for q in records],
+                  [q['qlike_'+name] for q in records],lags=8)
+            for name in ('hmm','hsmm')}
+    return safe({'status':'DEVELOPMENT_REGIME_FILTERS_AND_PREDICTIVE_LOSS_ONLY','source_sha256':p.source_sha256,
                  'n_states':n_states,'hmm_train_loglik':H.loglik,
                  'hsmm_duration_mean':S.duration_mean,
-                 'validation':[{'date':str(dates[t].date()),'hmm_filtered':h[t],
-                                'hsmm_filtered':s[t],
-                                'bocpd_changepoint':B['changepoint_probability'][t]} for t in selected],
-                 'warning':'Filtered probabilities are diagnostics; no regime trading rule or newly established alpha.'})
+                 'train_state_expected_next5_RV_hmm':state_h,
+                 'train_state_expected_next5_RV_hsmm':state_s,
+                 'paired_next5_spy_qlike':paired,'validation':records,
+                 'warning':'Filtered probabilities predict risk only; no regime trading rule or newly established alpha.'})
 
 
 def main():
