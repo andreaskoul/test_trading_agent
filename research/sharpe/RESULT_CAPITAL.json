@@ -1,0 +1,548 @@
+{
+ "prereg": "research/sharpe/PREREG_CAPITAL.md",
+ "assumptions": {
+  "ER2x": 0.0089,
+  "s_financing": 0.005,
+  "ER1x": 0.000945,
+  "margin_spread": 0.0243,
+  "switch_cost": 0.0002
+ },
+ "item1_a_1927_2026": {
+  "M_R": {
+   "pct_per_year_arith": 12.61342355956844,
+   "cagr_pct": 11.770775760755114,
+   "excess_sharpe": 0.5578007678095542,
+   "vol_pct": 17.203408447434228,
+   "worst_12m_pct": -50.47683676598651,
+   "days": 26138,
+   "avg_gross": 1.1352054480067337,
+   "avg_gross_in_1.3_weeks": 1.3000000000000003,
+   "gross_freed_vs_M_in_1.3": 0.0
+  },
+  "E1_R": {
+   "pct_per_year_arith": 12.460507307368585,
+   "cagr_pct": 11.600007626398433,
+   "excess_sharpe": 0.5489052800222688,
+   "vol_pct": 17.20365723411592,
+   "worst_12m_pct": -50.68518174494192,
+   "days": 26138,
+   "avg_gross": 0.5676027240033669,
+   "avg_gross_in_1.3_weeks": 0.6500000000000001,
+   "gross_freed_vs_M_in_1.3": 0.6500000000000001,
+   "tracking_vs_M": {
+    "mean_pct_per_year": -0.15291625219985358,
+    "hac_se_pct_per_year": 0.0022027057544195257,
+    "sd_pct_per_year": 0.0103668905020307
+   }
+  },
+  "E2_R": {
+   "pct_per_year_arith": 12.880857307368581,
+   "cagr_pct": 12.069924338817994,
+   "excess_sharpe": 0.5733356940983455,
+   "vol_pct": 17.20365723411592,
+   "worst_12m_pct": -50.47683676598662,
+   "days": 26138,
+   "avg_gross": 0.9176027240033667,
+   "avg_gross_in_1.3_weeks": 1.0,
+   "gross_freed_vs_M_in_1.3": 0.29999999999999993,
+   "tracking_vs_M": {
+    "mean_pct_per_year": 0.2674337478001409,
+    "hac_se_pct_per_year": 0.0022027057544195387,
+    "sd_pct_per_year": 0.010366890502030747
+   }
+  },
+  "M_S": {
+   "pct_per_year_arith": 12.35944712678858,
+   "cagr_pct": 11.48724954398308,
+   "excess_sharpe": 0.5430113178464936,
+   "vol_pct": 17.20408722062268,
+   "worst_12m_pct": -50.62092350652715,
+   "days": 26138,
+   "avg_gross": 1.1352054480067337,
+   "avg_gross_in_1.3_weeks": 1.3000000000000003,
+   "gross_freed_vs_M_in_1.3": 0.0
+  },
+  "E1_S": {
+   "pct_per_year_arith": 11.150918126865102,
+   "cagr_pct": 10.14831854384246,
+   "excess_sharpe": 0.4727288236973612,
+   "vol_pct": 17.20500138963987,
+   "worst_12m_pct": -50.99553936249607,
+   "days": 26138,
+   "avg_gross": 0.5676027240033669,
+   "avg_gross_in_1.3_weeks": 0.6500000000000001,
+   "gross_freed_vs_M_in_1.3": 0.6500000000000001,
+   "tracking_vs_M": {
+    "mean_pct_per_year": -1.2085289999234763,
+    "hac_se_pct_per_year": 0.015136200049460242,
+    "sd_pct_per_year": 0.0691211761528121
+   }
+  },
+  "E2_S": {
+   "pct_per_year_arith": 12.626880874588721,
+   "cagr_pct": 11.785639279101435,
+   "excess_sharpe": 0.5585451409729648,
+   "vol_pct": 17.204351664551883,
+   "worst_12m_pct": -50.62092350652705,
+   "days": 26138,
+   "avg_gross": 0.9176027240033667,
+   "avg_gross_in_1.3_weeks": 1.0,
+   "gross_freed_vs_M_in_1.3": 0.29999999999999993,
+   "tracking_vs_M": {
+    "mean_pct_per_year": 0.2674337478001409,
+    "hac_se_pct_per_year": 0.0022027057544195387,
+    "sd_pct_per_year": 0.010366890502030747
+   }
+  },
+  "share_days_at_1.3": 0.7253424133445558,
+  "period": [
+   "1927-03-04",
+   "2026-09-30"
+  ],
+  "note": "French daily market (CRSP value-weighted), synthetic 2x fund; not the S&P 500"
+ },
+ "item1_b_real_2006_2026": {
+  "M_R": {
+   "pct_per_year_arith": 12.648794835049685,
+   "cagr_pct": 11.487659699829432,
+   "excess_sharpe": 0.587237237044973,
+   "vol_pct": 18.798798416559826,
+   "worst_12m_pct": -37.87509033201144,
+   "days": 5054,
+   "avg_gross": 1.1765334388603086,
+   "avg_gross_in_1.3_weeks": 1.3000000000000005,
+   "gross_freed_vs_M_in_1.3": 0.0
+  },
+  "E1_R": {
+   "pct_per_year_arith": 12.270833936723063,
+   "cagr_pct": 11.105814673178283,
+   "excess_sharpe": 0.5729211609084985,
+   "vol_pct": 18.60881884738872,
+   "worst_12m_pct": -38.65681468623872,
+   "days": 5054,
+   "avg_gross": 0.5882667194301543,
+   "avg_gross_in_1.3_weeks": 0.6500000000000002,
+   "gross_freed_vs_M_in_1.3": 0.6500000000000002,
+   "tracking_vs_M": {
+    "mean_pct_per_year": -0.3779608983266205,
+    "hac_se_pct_per_year": 0.15200869784459814,
+    "sd_pct_per_year": 1.4953928479188194
+   }
+  },
+  "E2_R": {
+   "pct_per_year_arith": 12.883988801175018,
+   "cagr_pct": 11.755551086775506,
+   "excess_sharpe": 0.6005813788089872,
+   "vol_pct": 18.7726817243118,
+   "worst_12m_pct": -37.95758218873097,
+   "days": 5054,
+   "avg_gross": 0.9382667194301544,
+   "avg_gross_in_1.3_weeks": 1.0,
+   "gross_freed_vs_M_in_1.3": 0.2999999999999999,
+   "tracking_vs_M": {
+    "mean_pct_per_year": 0.23519396612533744,
+    "hac_se_pct_per_year": 0.04671073222865351,
+    "sd_pct_per_year": 0.43489087834794476
+   }
+  },
+  "M_S": {
+   "pct_per_year_arith": 12.56433361621312,
+   "cagr_pct": 11.393554266869854,
+   "excess_sharpe": 0.5827417901941019,
+   "vol_pct": 18.798865348663096,
+   "worst_12m_pct": -38.16556449234444,
+   "days": 5054,
+   "avg_gross": 1.1765334388603086,
+   "avg_gross_in_1.3_weeks": 1.3000000000000005,
+   "gross_freed_vs_M_in_1.3": 0.0
+  },
+  "E1_S": {
+   "pct_per_year_arith": 11.623268839770153,
+   "cagr_pct": 10.388836093064846,
+   "excess_sharpe": 0.538105829251581,
+   "vol_pct": 18.60917190158529,
+   "worst_12m_pct": -39.351246935995086,
+   "days": 5054,
+   "avg_gross": 0.5882667194301543,
+   "avg_gross_in_1.3_weeks": 0.6500000000000002,
+   "gross_freed_vs_M_in_1.3": 0.6500000000000002,
+   "tracking_vs_M": {
+    "mean_pct_per_year": -0.9410647764429642,
+    "hac_se_pct_per_year": 0.1536994516770208,
+    "sd_pct_per_year": 1.4960789779300103
+   }
+  },
+  "E2_S": {
+   "pct_per_year_arith": 12.799527582338456,
+   "cagr_pct": 11.661219529821265,
+   "excess_sharpe": 0.596079482222788,
+   "vol_pct": 18.772752949451014,
+   "worst_12m_pct": -38.24767064624469,
+   "days": 5054,
+   "avg_gross": 0.9382667194301544,
+   "avg_gross_in_1.3_weeks": 1.0,
+   "gross_freed_vs_M_in_1.3": 0.2999999999999999,
+   "tracking_vs_M": {
+    "mean_pct_per_year": 0.23519396612533744,
+    "hac_se_pct_per_year": 0.04671073222865351,
+    "sd_pct_per_year": 0.43489087834794476
+   }
+  },
+  "share_days_at_1.3": 0.7942223981005144,
+  "period": [
+   "2006-10-19",
+   "2026-11-20"
+  ],
+  "model_check": {
+   "implied_annual_drag_pct": 1.7518710412913092,
+   "assumed_drag_pct": 1.39,
+   "assumed_less_2x_spy_er_pct": 1.201,
+   "tracking_sd_pct_per_year": 3.6204600168356573,
+   "implied_by_year_pct": {
+    "2006": 0.8111111504366562,
+    "2007": 2.144718790435612,
+    "2008": 7.954286733186892,
+    "2009": 1.014926138034766,
+    "2010": 0.9466491011424678,
+    "2011": 1.2943552066823365,
+    "2012": 0.9165849988870453,
+    "2013": 1.4113156467802672,
+    "2014": 1.1989079553918642,
+    "2015": 1.2186533069455279,
+    "2016": 1.3845322682677619,
+    "2017": 1.2440523127389171,
+    "2018": 1.6156720543445469,
+    "2019": 1.5890626410681432,
+    "2020": 1.2159784344306719,
+    "2021": 1.4391799946851767,
+    "2022": 1.4668076475642982,
+    "2023": 1.5153391017180349,
+    "2024": 1.7962022594832143,
+    "2025": 2.2814508234945006,
+    "2026": 1.5208134642813957
+   },
+   "note": "SPY returns are already net of SPY's 0.0945% fee; SSO tracks the index, so the comparable assumption is ER2 + s - 2 x ER1"
+  },
+  "E1_R_modelled_on_same_days": {
+   "pct_per_year_arith": 12.521274633229352,
+   "cagr_pct": 11.345615462168745,
+   "excess_sharpe": 0.5804529224100187,
+   "vol_pct": 18.798842538897436,
+   "worst_12m_pct": -38.109791871181656,
+   "days": 5054
+  }
+ },
+ "item1_a_sensitivity_implied_drag": {
+  "M_R": {
+   "pct_per_year_arith": 12.61342355956844,
+   "cagr_pct": 11.770775760755114,
+   "excess_sharpe": 0.5578007678095542,
+   "vol_pct": 17.203408447434228,
+   "worst_12m_pct": -50.47683676598651,
+   "days": 26138,
+   "avg_gross": 1.1352054480067337,
+   "avg_gross_in_1.3_weeks": 1.3000000000000003,
+   "gross_freed_vs_M_in_1.3": 0.0
+  },
+  "E1_R": {
+   "pct_per_year_arith": 12.147831403757072,
+   "cagr_pct": 11.25175656419839,
+   "excess_sharpe": 0.5307362849069288,
+   "vol_pct": 17.203544949124947,
+   "worst_12m_pct": -50.78045250726375,
+   "days": 26138,
+   "avg_gross": 0.5676027240033669,
+   "avg_gross_in_1.3_weeks": 0.6500000000000001,
+   "gross_freed_vs_M_in_1.3": 0.6500000000000001,
+   "tracking_vs_M": {
+    "mean_pct_per_year": -0.4655921558113711,
+    "hac_se_pct_per_year": 0.00121539345775931,
+    "sd_pct_per_year": 0.005720169781276862
+   }
+  },
+  "E2_R": {
+   "pct_per_year_arith": 12.760986268209022,
+   "cagr_pct": 11.935739514855847,
+   "excess_sharpe": 0.5663726012592294,
+   "vol_pct": 17.203544949124947,
+   "worst_12m_pct": -50.47683676598651,
+   "days": 26138,
+   "avg_gross": 0.9176027240033667,
+   "avg_gross_in_1.3_weeks": 1.0,
+   "gross_freed_vs_M_in_1.3": 0.29999999999999993,
+   "tracking_vs_M": {
+    "mean_pct_per_year": 0.14756270864058152,
+    "hac_se_pct_per_year": 0.0012153934577593028,
+    "sd_pct_per_year": 0.005720169781276829
+   }
+  },
+  "M_S": {
+   "pct_per_year_arith": 12.35944712678858,
+   "cagr_pct": 11.48724954398308,
+   "excess_sharpe": 0.5430113178464936,
+   "vol_pct": 17.20408722062268,
+   "worst_12m_pct": -50.62092350652715,
+   "days": 26138,
+   "avg_gross": 1.1352054480067337,
+   "avg_gross_in_1.3_weeks": 1.3000000000000003,
+   "gross_freed_vs_M_in_1.3": 0.0
+  },
+  "E1_S": {
+   "pct_per_year_arith": 10.838242223253587,
+   "cagr_pct": 9.804581056944217,
+   "excess_sharpe": 0.45456198541480924,
+   "vol_pct": 17.204881848281914,
+   "worst_12m_pct": -51.09021291452315,
+   "days": 26138,
+   "avg_gross": 0.5676027240033669,
+   "avg_gross_in_1.3_weeks": 0.6500000000000001,
+   "gross_freed_vs_M_in_1.3": 0.6500000000000001,
+   "tracking_vs_M": {
+    "mean_pct_per_year": -1.521204903534994,
+    "hac_se_pct_per_year": 0.015010848152426925,
+    "sd_pct_per_year": 0.06851733174960094
+   }
+  },
+  "E2_S": {
+   "pct_per_year_arith": 12.507009835429162,
+   "cagr_pct": 11.651794838528629,
+   "excess_sharpe": 0.5515825454206847,
+   "vol_pct": 17.204232361647698,
+   "worst_12m_pct": -50.62092350652711,
+   "days": 26138,
+   "avg_gross": 0.9176027240033667,
+   "avg_gross_in_1.3_weeks": 1.0,
+   "gross_freed_vs_M_in_1.3": 0.29999999999999993,
+   "tracking_vs_M": {
+    "mean_pct_per_year": 0.14756270864058152,
+    "hac_se_pct_per_year": 0.0012153934577593028,
+    "sd_pct_per_year": 0.005720169781276829
+   }
+  }
+ },
+ "item1_c_fund_2020_2025": {
+  "weeks": 302,
+  "spy_check_share_within_5bp": 1.0,
+  "spy_check_max_gap_bp": 0.006061957448615096,
+  "B0_identity_max_abs_error": 1.1102230246251565e-16,
+  "M_net_R": {
+   "pct_per_year_arith": 21.149707191800307,
+   "cagr_pct": 21.91604415718298,
+   "excess_sharpe": 0.8219968261026875,
+   "legacy_ratio": 0.9451380907967455,
+   "vol_pct": 22.377372574171922,
+   "worst_52w_pct": -19.912561846762355,
+   "avg_gross": 1.76847562902441,
+   "avg_gross_in_1.3_weeks": 1.9261394006219834,
+   "weeks_gross_above_1.9": 159
+  },
+  "E1_net_R": {
+   "pct_per_year_arith": 20.82133784545706,
+   "cagr_pct": 21.57177177045504,
+   "excess_sharpe": 0.8074771505011279,
+   "legacy_ratio": 0.9306419208490888,
+   "vol_pct": 22.373092570835745,
+   "worst_52w_pct": -20.436758870949966,
+   "avg_gross": 1.2561768569268263,
+   "avg_gross_in_1.3_weeks": 1.3129473119736246,
+   "weeks_gross_above_1.9": 0,
+   "vs_M_same_conventions": {
+    "mean_pct_per_year": -0.3283693463432468,
+    "hac_se_pct_per_year": 0.19015054758509525,
+    "sd_pct_per_year": 0.5572069400944176
+   }
+  },
+  "E2_net_R": {
+   "pct_per_year_arith": 21.402751869847474,
+   "cagr_pct": 22.248969151506003,
+   "excess_sharpe": 0.8338545555945684,
+   "legacy_ratio": 0.9570857521921803,
+   "vol_pct": 22.362418227233057,
+   "worst_52w_pct": -19.882313905635407,
+   "avg_gross": 1.5350319204151386,
+   "avg_gross_in_1.3_weeks": 1.6261394006219834,
+   "weeks_gross_above_1.9": 0,
+   "vs_M_same_conventions": {
+    "mean_pct_per_year": 0.25304467804716824,
+    "hac_se_pct_per_year": 0.08264033636149744,
+    "sd_pct_per_year": 0.2107575778381991
+   }
+  },
+  "M_net_S": {
+   "pct_per_year_arith": 20.9630363875044,
+   "cagr_pct": 21.691326537385702,
+   "excess_sharpe": 0.8137815400633692,
+   "legacy_ratio": 0.9369462404420178,
+   "vol_pct": 22.37378782545174,
+   "worst_52w_pct": -20.505358420972176,
+   "avg_gross": 1.76847562902441,
+   "avg_gross_in_1.3_weeks": 1.9261394006219834,
+   "weeks_gross_above_1.9": 159
+  },
+  "E1_net_S": {
+   "pct_per_year_arith": 19.73711469305723,
+   "cagr_pct": 20.250060335922313,
+   "excess_sharpe": 0.7590875643239224,
+   "legacy_ratio": 0.8823196694663293,
+   "vol_pct": 22.36957349595891,
+   "worst_52w_pct": -21.57957534168833,
+   "avg_gross": 1.2561768569268263,
+   "avg_gross_in_1.3_weeks": 1.3129473119736246,
+   "weeks_gross_above_1.9": 0,
+   "vs_M_same_conventions": {
+    "mean_pct_per_year": -1.2259216944471667,
+    "hac_se_pct_per_year": 0.21498986299651726,
+    "sd_pct_per_year": 0.5674979840468195
+   }
+  },
+  "E2_net_S": {
+   "pct_per_year_arith": 21.17536113350795,
+   "cagr_pct": 21.969173271885346,
+   "excess_sharpe": 0.8237958593225293,
+   "legacy_ratio": 0.947050146932463,
+   "vol_pct": 22.35928182060461,
+   "worst_52w_pct": -20.486899719361475,
+   "avg_gross": 1.5350319204151386,
+   "avg_gross_in_1.3_weeks": 1.6261394006219834,
+   "weeks_gross_above_1.9": 0,
+   "vs_M_same_conventions": {
+    "mean_pct_per_year": 0.21232474600354997,
+    "hac_se_pct_per_year": 0.08479910201349497,
+    "sd_pct_per_year": 0.2121081817150861
+   }
+  },
+  "M_seg_R": {
+   "pct_per_year_arith": 19.74344162785194,
+   "cagr_pct": 20.202712914116372,
+   "excess_sharpe": 0.7590834194805295,
+   "legacy_ratio": 0.8822641357737478,
+   "vol_pct": 22.37815278588525,
+   "worst_52w_pct": -20.51191599651179,
+   "avg_gross": 1.76847562902441,
+   "avg_gross_in_1.3_weeks": 1.9261394006219834,
+   "weeks_gross_above_1.9": 159
+  },
+  "E1_seg_R": {
+   "pct_per_year_arith": 19.878144865045225,
+   "cagr_pct": 20.420237981480227,
+   "excess_sharpe": 0.7652956706394927,
+   "legacy_ratio": 0.8885092617466102,
+   "vol_pct": 22.37246781870258,
+   "worst_52w_pct": -21.07413920068122,
+   "avg_gross": 1.2561768569268263,
+   "avg_gross_in_1.3_weeks": 1.3129473119736246,
+   "weeks_gross_above_1.9": 0,
+   "vs_M_same_conventions": {
+    "mean_pct_per_year": 0.13470323719328592,
+    "hac_se_pct_per_year": 0.20558987485600086,
+    "sd_pct_per_year": 0.5667038855271718
+   }
+  },
+  "E2_seg_R": {
+   "pct_per_year_arith": 20.031672901884004,
+   "cagr_pct": 20.575642557469976,
+   "excess_sharpe": 0.7724775697018555,
+   "legacy_ratio": 0.8957493827164947,
+   "vol_pct": 22.363032884415663,
+   "worst_52w_pct": -20.461774570161705,
+   "avg_gross": 1.5350319204151386,
+   "avg_gross_in_1.3_weeks": 1.6261394006219834,
+   "weeks_gross_above_1.9": 0,
+   "vs_M_same_conventions": {
+    "mean_pct_per_year": 0.2882312740320719,
+    "hac_se_pct_per_year": 0.08214802072244594,
+    "sd_pct_per_year": 0.2108626199526723
+   }
+  },
+  "M_seg_S": {
+   "pct_per_year_arith": 19.699580611951138,
+   "cagr_pct": 20.15125771753592,
+   "excess_sharpe": 0.7571497094605066,
+   "legacy_ratio": 0.8803352835858168,
+   "vol_pct": 22.37736119323767,
+   "worst_52w_pct": -20.667572592525772,
+   "avg_gross": 1.76847562902441,
+   "avg_gross_in_1.3_weeks": 1.9261394006219834,
+   "weeks_gross_above_1.9": 159
+  },
+  "E1_seg_S": {
+   "pct_per_year_arith": 19.661288415187194,
+   "cagr_pct": 20.15878601139709,
+   "excess_sharpe": 0.7556979273479086,
+   "legacy_ratio": 0.8789333183204568,
+   "vol_pct": 22.369488111746307,
+   "worst_52w_pct": -21.581862923096693,
+   "avg_gross": 1.2561768569268263,
+   "avg_gross_in_1.3_weeks": 1.3129473119736246,
+   "weeks_gross_above_1.9": 0,
+   "vs_M_same_conventions": {
+    "mean_pct_per_year": -0.03829219676394807,
+    "hac_se_pct_per_year": 0.21754816093177096,
+    "sd_pct_per_year": 0.5727743756095163
+   }
+  },
+  "E2_seg_S": {
+   "pct_per_year_arith": 19.987811885983213,
+   "cagr_pct": 20.524027720831086,
+   "excess_sharpe": 0.7705426736038336,
+   "legacy_ratio": 0.8938192891262557,
+   "vol_pct": 22.36225166445233,
+   "worst_52w_pct": -20.61752935502804,
+   "avg_gross": 1.5350319204151386,
+   "avg_gross_in_1.3_weeks": 1.6261394006219834,
+   "weeks_gross_above_1.9": 0,
+   "vs_M_same_conventions": {
+    "mean_pct_per_year": 0.2882312740320719,
+    "hac_se_pct_per_year": 0.08214802072244594,
+    "sd_pct_per_year": 0.2108626199526723
+   }
+  },
+  "share_weeks_at_1.3": 0.7781456953642384
+ },
+ "item4_descriptive_not_a_test": {
+  "a_core_1927_2026": {
+   "with_scale": {
+    "pct_per_year_arith": 12.086258132574326,
+    "cagr_pct": 11.318663361041391,
+    "excess_sharpe": 0.5502898861323215,
+    "vol_pct": 16.47103413864719,
+    "worst_12m_pct": -42.5619126263643,
+    "days": 25886
+   },
+   "without_scale": {
+    "pct_per_year_arith": 12.435227196167808,
+    "cagr_pct": 11.562292357164727,
+    "excess_sharpe": 0.545585596249831,
+    "vol_pct": 17.25316901407671,
+    "worst_12m_pct": -50.476836765986555,
+    "days": 25886
+   },
+   "avg_w": 1.1372195252844604,
+   "share_w_at_bounds": 0.29560380128254654,
+   "period": [
+    "1928-01-04",
+    "2026-09-30"
+   ]
+  },
+  "c_fund_2020_2025": {
+   "with_scale": {
+    "pct_per_year_arith": 18.02683574085676,
+    "excess_sharpe": 0.6192033147240509,
+    "vol_pct": 23.876019866572765,
+    "worst_52w_pct": -25.99363820838214,
+    "cagr_pct": 18.181796281854833
+   },
+   "without_scale": {
+    "pct_per_year_arith": 17.559743808605237,
+    "excess_sharpe": 0.7759494365508769,
+    "vol_pct": 18.459454894956444,
+    "worst_52w_pct": -20.505358420972165,
+    "cagr_pct": 18.365327796353203
+   },
+   "avg_w": 1.2954618459800473,
+   "weeks": 250,
+   "first_week": "2021-01-07"
+  }
+ },
+ "run": "2026-11-21T08:05:39+00:00"
+}

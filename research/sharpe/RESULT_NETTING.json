@@ -1,0 +1,50 @@
+{
+ "defect": "no forward F2 short-volume book record exists on fund-data, research-data or any branch (searched 2026-11-21); overlap with the 7B book cannot be counted",
+ "7B_open_lots_2026_11_20": 20,
+ "7B_long_short": [
+  10,
+  10
+ ],
+ "7B_model_gross_sum_abs_w0": 0.7627234633838293,
+ "7B_names_in_target_weights_since_2026_11_12": [
+  "AMD",
+  "BA",
+  "BIIB",
+  "BSX",
+  "CRM",
+  "CVS",
+  "DIS",
+  "EL",
+  "EQIX",
+  "FIS",
+  "FOX",
+  "GOOGL",
+  "HAS",
+  "INTC",
+  "LLY",
+  "META",
+  "MSFT",
+  "NKE",
+  "ORCL",
+  "PANW",
+  "TJX",
+  "TTD",
+  "TTWO",
+  "UNH",
+  "VLO",
+  "WMT",
+  "XOM",
+  "ZBRA"
+ ],
+ "sessions_read": [
+  "2026-11-12",
+  "2026-11-13",
+  "2026-11-16",
+  "2026-11-17",
+  "2026-11-18",
+  "2026-11-19",
+  "2026-11-20"
+ ],
+ "netting_formula": "for two books a, b over the same names: gross(a+b) = sum|a| + sum|b| - 2 * sum over names held on opposite sides of min(|a_i|, |b_i|); same-side overlap saves no gross, it concentrates",
+ "record_needed": "the F2 forward book (weekly weights), as Protocol 10's 'forward paper book from 2026-11-12' announced"
+}
