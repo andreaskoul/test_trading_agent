@@ -1,6 +1,6 @@
 # Decision ledger: what followed each decision
 
-Updated 2026-11-20T01:15:35+00:00. Reporting only. y = the position side x the stock's residual return after the decision's close; for exits, y > 0 means the stock kept moving the position's way after we left. t is clustered by week. Small samples: read n before the mean.
+Updated 2026-11-21T01:12:26+00:00. Reporting only. y = the position side x the stock's residual return after the decision's close; for exits, y > 0 means the stock kept moving the position's way after we left. t is clustered by week. Small samples: read n before the mean.
 
 ## 5 sessions after the decision
 
@@ -23,11 +23,12 @@ Updated 2026-11-20T01:15:35+00:00. Reporting only. y = the position side x the s
 | control | news_exit | hard | 3 | 3 | -372 | -362 |  | 0% |
 | control | news_exit | other | 2 | 2 | -537 | -537 |  | 0% |
 | control | news_exit | soft | 1 | 1 | +40 | +40 |  | 100% |
-| control | news_increase | hard | 21 | 4 | +7 | +86 |  | 57% |
+| control | news_increase | hard | 23 | 5 | +1 | +85 | +0.02 | 57% |
 | control | news_increase | other | 3 | 2 | +191 | +29 |  | 67% |
 | control | news_increase | soft | 3 | 2 | +516 | +766 |  | 67% |
 | control | news_reduce | hard | 8 | 4 | -442 | -323 |  | 25% |
 | control | news_reduce | other | 1 | 1 | +639 | +639 |  | 100% |
+| control | news_reduce | soft | 1 | 1 | +263 | +263 |  | 100% |
 | control | stop | other | 1 | 1 | +529 | +529 |  | 100% |
 | live | capacity | hard | 9 | 4 | +427 | -65 |  | 44% |
 | live | capacity | other | 4 | 2 | +305 | +276 |  | 75% |
@@ -44,7 +45,7 @@ Updated 2026-11-20T01:15:35+00:00. Reporting only. y = the position side x the s
 | live | news_exit | hard | 3 | 3 | -372 | -362 |  | 0% |
 | live | news_exit | other | 2 | 2 | -537 | -537 |  | 0% |
 | live | news_exit | soft | 1 | 1 | +40 | +40 |  | 100% |
-| live | news_increase | hard | 15 | 4 | -16 | +86 |  | 53% |
+| live | news_increase | hard | 17 | 5 | -59 | -175 | -0.55 | 47% |
 | live | news_increase | other | 3 | 2 | +191 | +29 |  | 67% |
 | live | news_increase | soft | 3 | 2 | +516 | +766 |  | 67% |
 | live | news_reduce | hard | 7 | 4 | -332 | -261 |  | 29% |
@@ -76,10 +77,10 @@ Updated 2026-11-20T01:15:35+00:00. Reporting only. y = the position side x the s
 | control | news_exit | hard | 2 | 2 | -422 | -422 |  | 0% |
 | control | news_exit | other | 2 | 2 | -434 | -434 |  | 0% |
 | control | news_exit | soft | 1 | 1 | +435 | +435 |  | 100% |
-| control | news_increase | hard | 15 | 4 | -726 | -599 |  | 20% |
+| control | news_increase | hard | 21 | 4 | -440 | -221 |  | 29% |
 | control | news_increase | other | 3 | 2 | +121 | +6 |  | 67% |
 | control | news_increase | soft | 3 | 2 | +500 | +243 |  | 67% |
-| control | news_reduce | hard | 6 | 3 | -383 | +73 |  | 67% |
+| control | news_reduce | hard | 7 | 3 | -523 | +33 |  | 57% |
 | control | news_reduce | other | 1 | 1 | +1189 | +1189 |  | 100% |
 | control | stop | other | 1 | 1 | +589 | +589 |  | 100% |
 | live | capacity | hard | 7 | 3 | -12 | -277 |  | 43% |
@@ -96,10 +97,10 @@ Updated 2026-11-20T01:15:35+00:00. Reporting only. y = the position side x the s
 | live | news_exit | hard | 2 | 2 | -422 | -422 |  | 0% |
 | live | news_exit | other | 2 | 2 | -434 | -434 |  | 0% |
 | live | news_exit | soft | 1 | 1 | +435 | +435 |  | 100% |
-| live | news_increase | hard | 12 | 4 | -953 | -751 |  | 8% |
+| live | news_increase | hard | 15 | 4 | -635 | -599 |  | 27% |
 | live | news_increase | other | 3 | 2 | +121 | +6 |  | 67% |
 | live | news_increase | soft | 3 | 2 | +500 | +243 |  | 67% |
-| live | news_reduce | hard | 5 | 3 | -65 | +112 |  | 80% |
+| live | news_reduce | hard | 6 | 3 | -282 | +73 |  | 67% |
 | live | news_reduce | other | 1 | 1 | +1189 | +1189 |  | 100% |
 | live | stop | other | 1 | 1 | +589 | +589 |  | 100% |
 | not_entered | not_entered | hard | 8 | 2 | -321 | -338 |  | 38% |
@@ -136,27 +137,30 @@ Per unit of position, side x (r - beta x r_SPY), bp per lot-session. 'before ent
 | control | before entry | all | 103 | 103 | 7 | -11.5 | -0.29 |
 | control | before entry | long | 49 | 49 | 7 | -9.8 | -0.17 |
 | control | before entry | short | 54 | 54 | 7 | -13.0 | -0.36 |
-| control | 1-3 | all | 254 | 87 | 7 | +8.0 | +0.69 |
-| control | 1-3 | long | 121 | 41 | 7 | +11.0 | +0.38 |
-| control | 1-3 | short | 133 | 46 | 7 | +5.2 | +0.42 |
-| control | 4-15 | all | 229 | 61 | 6 | -36.7 | -1.54 |
+| control | 1-3 | all | 270 | 103 | 7 | +8.3 | +0.77 |
+| control | 1-3 | long | 129 | 49 | 7 | +16.8 | +0.64 |
+| control | 1-3 | short | 141 | 54 | 7 | +0.6 | +0.07 |
+| control | 4-15 | all | 231 | 61 | 6 | -36.5 | -1.54 |
 | control | 4-15 | earnings | 3 | 3 | 2 | +372.7 |  |
-| control | 4-15 | other | 226 | 60 | 6 | -42.2 | -1.74 |
+| control | 4-15 | other | 228 | 60 | 6 | -41.9 | -1.74 |
 | control | 4-15 | long | 123 | 28 | 6 | -37.9 | -1.14 |
-| control | 4-15 | short | 106 | 33 | 6 | -35.5 | -1.23 |
+| control | 4-15 | short | 108 | 33 | 6 | -35.0 | -1.22 |
+| control | 16+ | all | 2 | 2 | 1 | -65.1 |  |
+| control | 16+ | long | 2 | 2 | 1 | -65.1 |  |
 | live | before entry | all | 84 | 84 | 7 | -19.1 | -0.41 |
 | live | before entry | long | 39 | 39 | 7 | -13.6 | -0.19 |
 | live | before entry | short | 45 | 45 | 7 | -23.9 | -0.73 |
-| live | 1-3 | all | 218 | 75 | 7 | +4.3 | +0.38 |
-| live | 1-3 | long | 103 | 35 | 7 | +2.6 | +0.09 |
-| live | 1-3 | short | 115 | 40 | 7 | +5.8 | +0.42 |
-| live | 4-15 | all | 264 | 54 | 6 | -31.4 | -1.38 |
+| live | 1-3 | all | 227 | 84 | 7 | +3.3 | +0.31 |
+| live | 1-3 | long | 107 | 39 | 7 | +7.7 | +0.29 |
+| live | 1-3 | short | 120 | 45 | 7 | -0.6 | -0.08 |
+| live | 4-15 | all | 270 | 54 | 6 | -32.3 | -1.49 |
 | live | 4-15 | earnings | 2 | 2 | 2 | +436.9 |  |
-| live | 4-15 | other | 262 | 54 | 6 | -35.0 | -1.50 |
-| live | 4-15 | long | 133 | 23 | 6 | -38.3 | -1.22 |
-| live | 4-15 | short | 131 | 31 | 6 | -24.4 | -0.69 |
-| live | 16+ | all | 5 | 1 | 2 | -8.7 |  |
-| live | 16+ | long | 5 | 1 | 2 | -8.7 |  |
+| live | 4-15 | other | 268 | 54 | 6 | -35.8 | -1.61 |
+| live | 4-15 | long | 136 | 23 | 6 | -41.1 | -1.33 |
+| live | 4-15 | short | 134 | 31 | 6 | -23.4 | -0.66 |
+| live | 16+ | all | 10 | 6 | 2 | +23.9 |  |
+| live | 16+ | long | 8 | 4 | 2 | +18.5 |  |
+| live | 16+ | short | 2 | 2 | 1 | +45.5 |  |
 
 ## Entries by structural label and 'priced in' at entry
 
