@@ -795,3 +795,30 @@ half its weeks out of the market. Development data are a poor training ground fo
 only after 2019. Timing MASTER will have to be learned forward, on new weeks.
 
 N for any future Layer 6 DSR: 162 + 56 + 3 = 221.
+
+## Step 45 — the money question: a policy ceiling, and MASTER's survivorship gap (2026-11-22)
+
+**Self-critique, recorded.**
+* The traded account holds the trend core plus the 7B news book, not MASTER.
+* B0's own Deflated Sharpe probability (0.937) is below the 0.95 gate it imposes on challengers.
+* MASTER's only clean out-of-sample year (2026) has IC 0.003.
+* Most negatives were underpowered and should carry minimum detectable effects.
+
+**Frontier** (descriptive, 2020-2025 reused, real-money net-debit financing; the book scaled by k, shrunk weekly to fit
+the 1.9 gross cap). Fund excess Sharpe at k = 1/2/3/4:
+* margin core: 0.82, 0.88, 0.88, 0.88;
+* E2 (2× fund for the excess): 0.83, 0.90, 0.90, 0.90;
+* E1 (all in the 2× fund): 0.81, 0.88, 0.90, 0.89.
+
+With segregated short proceeds the plateau is ≈ 0.82. The cap binds every week from k = 3. Theory for uncorrelated
+sleeves at book Sharpe 0.77 and core 0.75: at most ≈ 1.05 under the cap. **Sharpe > 1 is unreachable under the
+current core/cap policy even if MASTER is real.** It needs a smaller core relative to the book (owner policy; not to
+be tuned on 2020-2025), or a second validated uncorrelated book.
+
+**MASTER panel gap.**
+* 79 names, 11,589 eligible name-weeks (7.6%) without targets in 2020-2025.
+* 15 names have no prices at all, mostly 2024-26 takeovers or delistings (ANSS, DFS, HES, JNPR, K, MRO, IPG, WBA,
+  QRVO), plus BK, MMC, EA, AVB, EQR and HOLX. The price vendor drops delisted tickers.
+* Alpaca bars cover 46 names and 60% of the gap.
+* R3 launched: MASTER retrained, original against repaired panel, the same seeds, a survivorship bound (about 30 MPS
+  hours).
