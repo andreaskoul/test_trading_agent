@@ -1,6 +1,6 @@
 # Coupled dynamic factor covariance and tail-risk research
 
-**Separate stacked research branch:** `research/coupled-factor-tail-risk-20261122` (base: PR #188). No changes to `main`, `fund/`, broker, cache, or any locked forward experiment. This package extends (does not duplicate) the open model suites in PR #188 and PR #189.
+**Combined, stacked research branch:** `research/coupled-factor-tail-risk-20261122` (base: PR #189, which itself is stacked on PR #188). No changes to `main`, `fund/`, broker, cache, or any locked forward experiment. One checkout now includes the full model suites from PR #188, geometry from PR #189 and this complementary coupled-risk extension; the PR #191 diff itself adds only `coupled_risk`.
 
 ## Implemented executable research methods
 
