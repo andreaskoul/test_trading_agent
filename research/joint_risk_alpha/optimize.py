@@ -18,6 +18,7 @@ class TradingPolicy:
     gross_limit:float=1.9
     name_limit:float=.08
     alpha_cvar:float=.95
+    funding_mode:str='segregated'  # or 'net_debit', fixed for both comparison arms
     wasserstein_radius:float=0.0005  # 1-Wasserstein linear-payoff penalty, L2 transport norm
     cvar_scenario_weights:tuple|None=None
 
@@ -50,6 +51,7 @@ def solve_mpc(mu,scenario_returns,previous,core_spy,stock_beta,prev_hedge,
     if not np.isfinite(S).all() or not np.isfinite(m).all() or not np.isfinite(prev).all() or not np.isfinite(beta).all():
         raise ValueError('STOP: non-finite predictive inputs')
     if not .5<policy.alpha_cvar<1:raise ValueError('CVaR confidence invalid')
+    if policy.funding_mode not in ('segregated','net_debit'):raise ValueError('funding_mode must be segregated or net_debit')
     std=np.zeros_like(m) if prediction_std is None else np.asarray(prediction_std,float)
     if std.shape!=m.shape or np.any(std<0):raise ValueError('uncertainty shape')
     spread=np.full(N,policy.transaction_bps) if half_spread_bps is None else np.asarray(half_spread_bps,float)
@@ -71,7 +73,10 @@ def solve_mpc(mu,scenario_returns,previous,core_spy,stock_beta,prev_hedge,
         if adv_capacity is not None:constraints += [cp.abs(dw)<=capacity]
         # Equity book dollar-neutral; SPY book hedge beta-neutral if feasible.
         constraints += [ht+beta@wt==0]
-        funding_debit=cp.pos(core_spy+cp.sum(cp.pos(wt))+cp.pos(ht)-1)
+        if policy.funding_mode=='segregated':
+            funding_debit=cp.pos(core_spy+cp.sum(cp.pos(wt))+cp.pos(ht)-1)
+        else:
+            funding_debit=cp.pos(core_spy+cp.sum(wt)+ht-1)
         spread_cost=cp.sum(cp.multiply(spread*1e-4,cp.abs(dw)))+hedge_spy_cost_bps*1e-4*cp.abs(dh)
         impact=policy.impact_coefficient*(cp.sum_squares(dw)+cp.square(dh))
         uncertainty=policy.uncertainty_aversion*cp.sum(cp.multiply(std[t],cp.abs(wt)))
