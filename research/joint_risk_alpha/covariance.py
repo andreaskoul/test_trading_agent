@@ -224,7 +224,9 @@ class ParticleSV:
             # gives a valid pseudo-marginal likelihood for MH.
             h=h[rng.choice(self.particles,size=self.particles,p=w)]
         next_h=mu+rho*(h-mu)+.5*sigma*sigma
-        return ll,float(np.mean(np.exp(np.clip(next_h,-25,10))))
+        # Student-t innovation has variance nu/(nu-2) times sigma_t**2.
+        # Forecast the variance, not merely the Student-t scale parameter.
+        return ll,float(np.mean(np.exp(np.clip(next_h,-25,10)))*self.nu/(self.nu-2))
     def _prior(self,p,center):
         mu,lr,ls=p
         return -.5*((mu-center)/2)**2-.5*((lr-2.7)/1.0)**2-.5*((ls+1.4)/.7)**2
