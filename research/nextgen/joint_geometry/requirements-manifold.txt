@@ -1,0 +1,10 @@
+# Additional requirements for PR #189 geometry models. Pin these in an isolated venv.
+# Base requirements and PyTorch/CVXPY are already specified by the stacked PR #188.
+# No extra mandatory manifold library: eigen/geodesic algorithms are implemented
+# in NumPy/SciPy, and tests verify invariance, SPD constraints, Mercer kernels.
+numpy>=1.26
+scipy>=1.11
+pytest>=8
+# Optional:
+# torch>=2.3 (SPDNet and manifold MoE)
+# cvxpy>=1.5 (robust geodesic MPC)
