@@ -61,8 +61,11 @@ def _portfolio_specs(d,win,t,alpha=None):
     equal=np.ones(n);equal[pi]=0;equal/=max(np.abs(equal).sum(),1)
     out={'market_spy':market,'equal_stock':equal}
     if alpha is None:return out,{}
-    ixs=np.flatnonzero(alpha.dates==d.dates[t])
-    if len(ixs)!=1:return out,{'master':'DATE_UNALIGNED'}
+    # Decision origin t forecasts the next session using returns through t-1.
+    # MASTER signals must obey that same as-of cutoff, not use day t.
+    if t<1:return out,{'master':'NO_PRIOR_SESSION'}
+    ixs=np.flatnonzero(alpha.dates==d.dates[t-1])
+    if len(ixs)!=1:return out,{'master':'PRIOR_DATE_UNALIGNED'}
     ix=int(ixs[0]);inames={name:i for i,name in enumerate(alpha.names)}
     # Require PIT master score and membership, and >=90% coverage against all
     # original eligible score names, otherwise no misleading partial-book result.
@@ -79,12 +82,15 @@ def _portfolio_specs(d,win,t,alpha=None):
     top=eligible[p>.9];bottom=eligible[p<=.1]
     if not len(top) or not len(bottom):return out,{'master':'EMPTY_DECILE'}
     w=np.zeros(n);w[top]=.3/len(top);w[bottom]=-.3/len(bottom)
-    # Whole-fund proxy: compute trend core causally on intraday SPY log returns;
-    # use 200-session rolling average of indexed levels ending at t close.
+    # The forecast at t is formed before the t close: use exactly the
+    # 200 completed SPY sessions t-200..t-1, never the t observation.
     spying=int(np.where(d.names=='SPY')[0][0])
     if t<200:return out,{'master':'NO_TREND_WARMUP'}
-    logprice=np.cumsum(np.nan_to_num(d.daily[t-199:t+1,spying],nan=0))
-    spy_core=1.3 if np.exp(logprice[-1])>np.exp(logprice).mean() else .7
+    spy_history=d.daily[t-200:t,spying]
+    if not np.isfinite(spy_history).all():
+        return out,{'master':'INCOMPLETE_TREND_HISTORY'}
+    logprice=np.cumsum(spy_history)
+    spy_core=1.3 if logprice[-1]>np.log(np.exp(logprice-np.max(logprice)).mean())+np.max(logprice) else .7
     # Beta values from source dev.npz (point-in-time provenance NOT certified).
     # This trial intentionally does not use a post-2019 issuer CIK.
     return out | {'master_unhedged':w+market*spy_core},dict(master='PROXY_SPY_CORE_NO_BOOK_BETA_HEDGE',coverage=coverage,spy_core=spy_core)
