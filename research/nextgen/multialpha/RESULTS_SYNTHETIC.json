@@ -1,0 +1,44 @@
+{
+  "title": "MULTI-01 factor-aware and financing-constrained multi-alpha admission falsification",
+  "date": "2026-11-19",
+  "research_status": "synthetic controlled experiment; not historical fund backtest or Sharpe",
+  "source": "research/nextgen/multialpha/study.py",
+  "design": {
+    "seed": 20261119,
+    "repetitions": 100,
+    "assets": 6,
+    "SPY_core": 1.3,
+    "gross_cap": 1.9,
+    "book_cap": 0.6,
+    "segregated_debit_cap": 0.5,
+    "annual_margin_assumption": 0.06,
+    "model_family": "known-latent Gaussian residual-alpha components"
+  },
+  "paired_results": {
+    "genuine_incremental": {
+      "mean_true_net_quadratic_utility_delta": 0.0013706815528821026,
+      "monte_carlo_standard_error": 0.00018088030994862304,
+      "mean_predicted_utility_delta": 0.002101034143291049,
+      "share_of_scenarios_true_better": 0.81
+    },
+    "spurious_misapproved_incremental": {
+      "mean_true_net_quadratic_utility_delta": -0.002984194427108979,
+      "monte_carlo_standard_error": 0.00024185724345405097,
+      "mean_predicted_utility_delta": 0.005627985388889221,
+      "share_of_scenarios_true_better": 0.07
+    }
+  },
+  "nonclaims": [
+    "No historical realized NAV or portfolio Sharpe",
+    "No broker-verified funding/borrow rate",
+    "No empirical approval of any new alpha",
+    "No 2020-2026 holdout read"
+  ],
+  "tests": {
+    "full_local_multialpha": 40,
+    "local_all_workstreams": 205,
+    "other_subtests": 32,
+    "github_review_test_module": 14,
+    "coverage_local_multialpha_percent": 95
+  }
+}
