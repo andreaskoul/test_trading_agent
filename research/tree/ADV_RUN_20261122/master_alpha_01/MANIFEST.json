@@ -1,0 +1,72 @@
+{
+  "alpha_source": "b37cb6914da9139c05cb6aaffaed1a156574c9a02a84d7668b8208fc1d7aa9c9",
+  "bayesian": {
+    "by_year_mse": {
+      "2017": 0.00014940932262416597,
+      "2018": 0.00028730304474942415,
+      "2019": 0.000412614905198105
+    },
+    "gaussian_nll": -2.6712358510671654,
+    "mse": 0.0002813937820580148,
+    "n": 151,
+    "not_independent_time_observations": "per-stock weekly slopes are aggregated by decision week",
+    "scope": "DEVELOPMENT_FROZEN_MASTER_EFFICACY_DIAGNOSTIC",
+    "source_sha256": "b37cb6914da9139c05cb6aaffaed1a156574c9a02a84d7668b8208fc1d7aa9c9"
+  },
+  "command": "alpha",
+  "constant": {
+    "by_year_mse": {
+      "2017": 0.0001451748587216122,
+      "2018": 0.00028765901843927404,
+      "2019": 0.000399630469034824
+    },
+    "gaussian_nll": -2.6769280894541607,
+    "mse": 0.00027587033588020906,
+    "n": 151,
+    "not_independent_time_observations": "per-stock weekly slopes are aggregated by decision week",
+    "scope": "DEVELOPMENT_FROZEN_MASTER_EFFICACY_DIAGNOSTIC",
+    "source_sha256": "b37cb6914da9139c05cb6aaffaed1a156574c9a02a84d7668b8208fc1d7aa9c9"
+  },
+  "cutoff": "2019-12-31",
+  "kalman": {
+    "by_year_mse": {
+      "2017": 0.00014430129228857415,
+      "2018": 0.000290724694110627,
+      "2019": 0.00040137947722626967
+    },
+    "gaussian_nll": -2.68262788548236,
+    "mse": 0.00027717827609567204,
+    "n": 151,
+    "not_independent_time_observations": "per-stock weekly slopes are aggregated by decision week",
+    "scope": "DEVELOPMENT_FROZEN_MASTER_EFFICACY_DIAGNOSTIC",
+    "source_sha256": "b37cb6914da9139c05cb6aaffaed1a156574c9a02a84d7668b8208fc1d7aa9c9"
+  },
+  "moe": {
+    "by_year_mse": {
+      "2017": 0.00014586604872291245,
+      "2018": 0.0002891562931457405,
+      "2019": 0.0003956801996532676
+    },
+    "gaussian_nll": -2.6677377580119033,
+    "mse": 0.00027532761071729413,
+    "n": 151,
+    "not_independent_time_observations": "per-stock weekly slopes are aggregated by decision week",
+    "scope": "DEVELOPMENT_FROZEN_MASTER_EFFICACY_DIAGNOSTIC",
+    "source_sha256": "b37cb6914da9139c05cb6aaffaed1a156574c9a02a84d7668b8208fc1d7aa9c9"
+  },
+  "risk_source": null,
+  "state_regression": {
+    "by_year_mse": {
+      "2017": 0.00015569908225573575,
+      "2018": 0.0002806683379879955,
+      "2019": 0.000395056782829514
+    },
+    "gaussian_nll": 0.21619644618943723,
+    "mse": 0.0002755796078879237,
+    "n": 151,
+    "not_independent_time_observations": "per-stock weekly slopes are aggregated by decision week",
+    "scope": "DEVELOPMENT_FROZEN_MASTER_EFFICACY_DIAGNOSTIC",
+    "source_sha256": "b37cb6914da9139c05cb6aaffaed1a156574c9a02a84d7668b8208fc1d7aa9c9"
+  },
+  "status": "DEVELOPMENT_RESEARCH_NO_LIVE_SIGNAL"
+}

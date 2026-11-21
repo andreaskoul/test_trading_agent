@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/adv-audit/research/nextgen/joint_geometry/runner.py", line 283, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/adv-audit/research/nextgen/joint_geometry/runner.py", line 264, in main
+    result=make_control(h,d,tape,a.alpha_cache,a.origin,a.metric,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/adv-audit/research/nextgen/joint_geometry/runner.py", line 145, in make_control
+    if not len(cur):raise ValueError('no matched point-in-time current risk state for MASTER')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: no matched point-in-time current risk state for MASTER
+EXIT 1

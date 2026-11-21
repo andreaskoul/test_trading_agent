@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/adv-audit/research/nextgen/joint_state/runner.py", line 251, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/adv-audit/research/nextgen/joint_state/runner.py", line 241, in main
+    result=make_and_solve(d,h,market,a)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/adv-audit/research/nextgen/joint_state/runner.py", line 129, in make_and_solve
+    value=control.solve_mpc(scenarios[:,:,:-1],scenarios[:,:,-1],policy,baseline,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/adv-audit/research/nextgen/joint_state/control.py", line 152, in solve_mpc
+    raise RuntimeError('solver returned constraint violation')
+RuntimeError: solver returned constraint violation
+EXIT 1

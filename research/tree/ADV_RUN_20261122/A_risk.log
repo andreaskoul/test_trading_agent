@@ -1,0 +1,15 @@
+Fitting factor-risk model poet
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/adv-audit/research/nextgen/joint_state/runner.py", line 251, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/adv-audit/research/nextgen/joint_state/runner.py", line 217, in main
+    rows=risk.risk_trial(h,model=model,step=a.step,lookback=a.lookback,
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/adv-audit/research/nextgen/joint_state/risk.py", line 257, in risk_trial
+    if ok.mean()<.9:raise ValueError(f'missing forward risk labels at {d.dates[t]}')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: missing forward risk labels at 2018-05-03
+EXIT 1
