@@ -259,7 +259,7 @@ def main():
     q=sub.add_parser('alpha');q.add_argument('--dev',required=True);q.add_argument('--models',default='constant,kalman,gated,moe');q.add_argument('--moe-epochs',type=int,default=250);q.add_argument('--moe-hidden',type=int,default=64);q.add_argument('--moe-experts',type=int,default=3);q.add_argument('--device',default='cpu')
     q=sub.add_parser('regimes');q.add_argument('--hf',required=True);q.add_argument('--states',type=int,default=3);q.add_argument('--max-duration',type=int,default=20)
     q=sub.add_parser('scenario');q.add_argument('--forecast-npz',required=True);q.add_argument('--draws',type=int,default=1024);q.add_argument('--df',type=float,default=6.)
-    q=sub.add_parser('mpc');q.add_argument('--scenario-npz',required=True);q.add_argument('--gross',type=float,default=1.9);q.add_argument('--wasserstein-radius',type=float,default=0.0005)
+    q=sub.add_parser('mpc');q.add_argument('--scenario-npz',required=True);q.add_argument('--gross',type=float,default=1.9);q.add_argument('--wasserstein-radius',type=float,default=0.0005);q.add_argument('--funding-mode',choices=['segregated','net_debit'],default='segregated')
     for q in sub.choices.values():q.add_argument('--out',required=True)
     a=ap.parse_args()
     if Path(a.out).exists():ap.error('output exists; no overwrite')
@@ -279,7 +279,7 @@ def main():
             cap=z['adv_max_weight_change'] if 'adv_max_weight_change' in z.files else None
             std=z['alpha_posterior_std'] if 'alpha_posterior_std' in z.files else None
         z=solve_mpc(source['mu'],source['scenarios'],source['previous'],float(source['core']),source['beta'],float(source['hedge_prev']),
-            policy=TradingPolicy(gross_limit=a.gross,wasserstein_radius=a.wasserstein_radius),
+            policy=TradingPolicy(gross_limit=a.gross,wasserstein_radius=a.wasserstein_radius,funding_mode=a.funding_mode),
             adv_capacity=cap,prediction_std=std,half_spread_bps=spread)
         res={'status':'RESEARCH_SCENARIO_MPC_NOT_EXECUTABLE','scenario_sha256':__import__('hashlib').sha256(Path(a.scenario_npz).read_bytes()).hexdigest(),
             'first_stock_weights':z['first_stock_weights'],'first_spy_hedge':z['first_spy_hedge'],'gross_by_step':z['gross_by_step'],
