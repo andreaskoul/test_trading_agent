@@ -186,3 +186,65 @@ def test_reject_out_inside_input(tmp_path):
 
 def test_report_no_strategy_sharpe_fixture():
     assert U.MODELS==('poet','matrix_heavy','dcc','t_score','particle_sv')
+
+
+def test_particle_covariance_integrates_joint_volatility():
+    """Conditional covariance averages products of standard deviations."""
+    corr=np.array([[1.,.65],[.65,1.]])
+    states=np.array([[np.log(.01),np.log(.16)],
+                     [np.log(.16),np.log(.01)]])
+    sigma=np.exp(.5*states)
+    correctly_integrated=np.einsum('pi,pj,ij->ij',sigma,sigma,corr)/len(states)
+    shortcut=np.sqrt(np.outer(np.mean(sigma*sigma,axis=0),
+                              np.mean(sigma*sigma,axis=0)))*corr
+    assert correctly_integrated[0,1]<shortcut[0,1]
+    assert np.linalg.eigvalsh(correctly_integrated).min()>0
+    # Keep implementation contract visible to guard against old shortcut.
+    import inspect
+    assert "einsum('pi,pj,ij->ij'" in inspect.getsource(M.joint_particle_sv)
+
+
+def test_proxy_cannot_read_unclosed_session():
+    """Mutating data/signal exactly at origin t cannot change its weights."""
+    from types import SimpleNamespace
+    rng=np.random.default_rng(20261122)
+    T,N=230,44
+    dates=np.arange(np.datetime64('2018-01-01'),np.datetime64('2018-01-01')+
+                    np.timedelta64(T,'D'))
+    names=np.array(['SPY']+[f'A{i:03d}' for i in range(N-1)])
+    daily=np.zeros((T,N))
+    daily[:,0]=.0002
+    d=SimpleNamespace(dates=dates,names=names,daily=daily)
+    win=SimpleNamespace(stocks=np.arange(N))
+    alpha=SimpleNamespace(dates=dates,names=names,score=np.tile(
+        np.arange(N,dtype=float),(T,1)),eligible=np.ones((T,N),bool))
+    t=210
+    before,note=U._portfolio_specs(d,win,t,alpha)
+    assert 'master_unhedged' in before
+    d2=SimpleNamespace(dates=dates,names=names,daily=daily.copy())
+    d2.daily[t,0]=-40
+    a2=SimpleNamespace(dates=dates,names=names,score=alpha.score.copy(),
+                       eligible=alpha.eligible.copy())
+    a2.score[t,:]*=-1
+    after,_=U._portfolio_specs(d2,win,t,a2)
+    assert np.array_equal(before['master_unhedged'],after['master_unhedged'])
+    # A legitimate prior-session update must alter the ranked book.
+    a2.score[t-1,:]*=-1
+    prior,_=U._portfolio_specs(d2,win,t,a2)
+    assert not np.array_equal(before['master_unhedged'],prior['master_unhedged'])
+
+
+def test_proxy_missing_trend_history_fails_closed():
+    from types import SimpleNamespace
+    T,N=230,44
+    dates=np.arange(np.datetime64('2018-01-01'),np.datetime64('2018-01-01')+
+                    np.timedelta64(T,'D'))
+    names=np.array(['SPY']+[f'A{i:03d}' for i in range(N-1)])
+    daily=np.zeros((T,N));daily[90,0]=np.nan
+    d=SimpleNamespace(dates=dates,names=names,daily=daily)
+    win=SimpleNamespace(stocks=np.arange(N))
+    a=SimpleNamespace(dates=dates,names=names,score=np.tile(
+        np.arange(N,dtype=float),(T,1)),eligible=np.ones((T,N),bool))
+    weights,note=U._portfolio_specs(d,win,210,a)
+    assert 'master_unhedged' not in weights
+    assert note['master']=='INCOMPLETE_TREND_HISTORY'
