@@ -198,8 +198,11 @@ def joint_particle_sv(x,rv,*,particles=400,seed=20261122,
             ess_min=min(ess_min,ess);ess_total+=ess
             states=states[systematic_resampling(w,rng)]
         next_states=mu+phi*(states-mu)
-        var=np.exp(np.clip(next_states,-28,6)).mean(0)
-        cov=pdmat(np.sqrt(var)[:,None]*corr0*np.sqrt(var)[None,:])
+        # E[ D(exp(h/2)) R0 D(exp(h/2)) | observations ].
+        # Using sqrt(E[variance_i] E[variance_j]) for off-diagonals
+        # overstates conditional correlation under stochastic log volatility.
+        sigma=np.exp(.5*np.clip(next_states,-28,6))
+        cov=pdmat(np.einsum('pi,pj,ij->ij',sigma,sigma,corr0,optimize=True)/particles)
         model.append(dict(phi=float(phi),qscale=float(qscale),log_evidence=ll,
                           covariance=cov,ess_mean=ess_total/n,ess_min=ess_min))
     logw=np.array([m['log_evidence'] for m in model]); weights=np.exp(logw-logsumexp(logw))
