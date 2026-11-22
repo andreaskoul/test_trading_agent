@@ -822,3 +822,13 @@ be tuned on 2020-2025), or a second validated uncorrelated book.
 * Alpaca bars cover 46 names and 60% of the gap.
 * R3 launched: MASTER retrained, original against repaired panel, the same seeds, a survivorship bound (about 30 MPS
   hours).
+
+## Step 46 — MASTER survivorship bound (R3): the book holds up, slightly weaker (2026-11-23)
+
+Repairing 96% of the missing name-weeks moves MASTER's IC from 0.034 to 0.029 (t 2.61; paired −0.005, t −0.97), the
+book's Sharpe from 0.81 to 0.71 (−1.2 %/yr, t −0.86), and the fund from 22.1 to 20.1 %/yr (Sharpe 0.949 → 0.909,
+p 0.52). This is within retraining and seed noise, and is not driven by the delisted names themselves.
+* **Planning figures from now on:** MASTER book Sharpe ≈ 0.70, survivorship-corrected, before the 2026 shrinkage
+  (2026 IC 0.003).
+* Combined with step 45, the fund ceiling under the current core/cap policy falls from about 0.90 to about 0.88
+  excess Sharpe, and lower with segregated short proceeds.

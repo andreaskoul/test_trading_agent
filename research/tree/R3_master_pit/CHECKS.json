@@ -1,0 +1,3730 @@
+{
+ "P4a_copy_equals_original_build": {
+  "Z": true,
+  "frozen": true,
+  "y20": true,
+  "y5": true,
+  "y10": true,
+  "elig": true,
+  "e": true,
+  "spy": true,
+  "rm": true,
+  "r": true,
+  "beta": true,
+  "valid": true,
+  "S": true,
+  "names": true
+ },
+ "P2_missing_set": {
+  "eligible_name_weeks_2020_2025": 152654,
+  "missing_name_weeks": 11589,
+  "missing_names": 79,
+  "coordinator_expected": [
+   79,
+   11589,
+   152654
+  ]
+ },
+ "source_alpaca_vs_yfinance_2016_2025": {
+  "names_compared_broad_vs_yf": 602,
+  "quantiles": {
+   "0": 0.19481334070141265,
+   "0.01": 0.8811972440139096,
+   "0.05": 0.9886170304598413,
+   "0.1": 0.9953428670323665,
+   "0.25": 0.999375901104272,
+   "0.5": 0.9999715826824744
+  },
+  "share_above_0.999": 0.7790697674418605,
+  "below_0.99": {
+   "SW": 0.1948,
+   "KG": 0.2612,
+   "DHR": 0.8174,
+   "RTX": 0.8264,
+   "APTV": 0.852,
+   "CNX": 0.8759,
+   "SMCI": 0.8811,
+   "MTW": 0.8954,
+   "UA": 0.9292,
+   "YUM": 0.9358,
+   "AIV": 0.9373,
+   "CCEP": 0.9399,
+   "PCG": 0.9418,
+   "EQT": 0.9424,
+   "PNR": 0.9428,
+   "DOW": 0.9617,
+   "SJM": 0.9683,
+   "JCI": 0.9712,
+   "MAC": 0.972,
+   "FOX": 0.9731,
+   "HLT": 0.9737,
+   "FOXA": 0.9759,
+   "TRV": 0.976,
+   "LH": 0.9765,
+   "OXY": 0.9839,
+   "UNM": 0.9848,
+   "UAA": 0.9859,
+   "RSG": 0.9876,
+   "CCL": 0.9881,
+   "HON": 0.9882,
+   "RRC": 0.9886,
+   "FTV": 0.9888,
+   "KR": 0.9896,
+   "XRX": 0.9897
+  }
+ },
+ "P3_per_name": {
+  "ABC": {
+   "missing_weeks": 188,
+   "eligible": [
+    "2009-01-02",
+    "2023-08-29"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "ABMD": {
+   "missing_weeks": 152,
+   "eligible": [
+    "2018-05-31",
+    "2022-12-21"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "ADS": {
+   "missing_weeks": 25,
+   "eligible": [
+    "2013-12-23",
+    "2020-06-19"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "AGN": {
+   "missing_weeks": 19,
+   "eligible": [
+    "2009-01-02",
+    "2020-05-11"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-05-08",
+    1095
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -1,
+   "cells_filled": 1095,
+   "filled_span": [
+    "2016-01-04",
+    "2020-05-08"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 18,
+   "weeks_now_scoreable_and_y5": 18
+  },
+  "ALXN": {
+   "missing_weeks": 80,
+   "eligible": [
+    "2012-05-25",
+    "2021-07-20"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-07-20",
+    1396
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1396,
+   "filled_span": [
+    "2016-01-04",
+    "2021-07-20"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 79,
+   "weeks_now_scoreable_and_y5": 79
+  },
+  "ANSS": {
+   "missing_weeks": 282,
+   "eligible": [
+    "2017-06-19",
+    "2025-07-17"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-07-16",
+    133
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -1,
+   "cells_filled": 133,
+   "filled_span": [
+    "2025-01-02",
+    "2025-07-16"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 25,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "ANTM": {
+   "missing_weeks": 128,
+   "eligible": [
+    "2009-01-02",
+    "2022-06-27"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "ARNC": {
+   "missing_weeks": 14,
+   "eligible": [
+    "2009-01-02",
+    "2020-04-03"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "ATVI": {
+   "missing_weeks": 195,
+   "eligible": [
+    "2015-08-31",
+    "2023-10-17"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "AVB": {
+   "missing_weeks": 303,
+   "eligible": [
+    "2009-01-02",
+    "2025-12-31"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 250,
+   "filled_span": [
+    "2025-01-02",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 48,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "BK": {
+   "missing_weeks": 303,
+   "eligible": [
+    "2009-01-02",
+    "2025-12-31"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 250,
+   "filled_span": [
+    "2025-01-02",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 48,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "BLL": {
+   "missing_weeks": 121,
+   "eligible": [
+    "2009-01-02",
+    "2022-05-09"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "CDAY": {
+   "missing_weeks": 120,
+   "eligible": [
+    "2021-09-20",
+    "2024-01-31"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "CERN": {
+   "missing_weeks": 125,
+   "eligible": [
+    "2010-04-30",
+    "2022-06-07"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-06-07",
+    1619
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1619,
+   "filled_span": [
+    "2016-01-04",
+    "2022-06-07"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 124,
+   "weeks_now_scoreable_and_y5": 124
+  },
+  "CMA": {
+   "missing_weeks": 230,
+   "eligible": [
+    "2009-01-02",
+    "2024-06-21"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "status": "Alpaca bars only after last eligible session + 10",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "COG": {
+   "missing_weeks": 91,
+   "eligible": [
+    "2009-01-02",
+    "2021-10-01"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "CTL": {
+   "missing_weeks": 38,
+   "eligible": [
+    "2009-01-02",
+    "2020-09-17"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "CTLT": {
+   "missing_weeks": 216,
+   "eligible": [
+    "2020-09-21",
+    "2024-12-20"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "CTRA": {
+   "missing_weeks": 212,
+   "eligible": [
+    "2021-10-04",
+    "2025-12-31"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 250,
+   "filled_span": [
+    "2025-01-02",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 48,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "CTXS": {
+   "missing_weeks": 142,
+   "eligible": [
+    "2009-01-02",
+    "2022-09-30"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "CXO": {
+   "missing_weeks": 54,
+   "eligible": [
+    "2016-02-22",
+    "2021-01-20"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-01-15",
+    1269
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -2,
+   "cells_filled": 1269,
+   "filled_span": [
+    "2016-01-04",
+    "2021-01-15"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 53,
+   "weeks_now_scoreable_and_y5": 53
+  },
+  "DAY": {
+   "missing_weeks": 94,
+   "eligible": [
+    "2024-02-01",
+    "2025-12-31"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 250,
+   "filled_span": [
+    "2025-01-02",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 48,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "DFS": {
+   "missing_weeks": 274,
+   "eligible": [
+    "2009-01-02",
+    "2025-05-16"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-05-16",
+    93
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 93,
+   "filled_span": [
+    "2025-01-02",
+    "2025-05-16"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 18,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "DISCA": {
+   "missing_weeks": 117,
+   "eligible": [
+    "2010-03-01",
+    "2022-04-08"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "DISCK": {
+   "missing_weeks": 117,
+   "eligible": [
+    "2014-08-07",
+    "2022-04-08"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-04-08",
+    1579
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1579,
+   "filled_span": [
+    "2016-01-04",
+    "2022-04-08"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 116,
+   "weeks_now_scoreable_and_y5": 116
+  },
+  "DISH": {
+   "missing_weeks": 178,
+   "eligible": [
+    "2017-03-13",
+    "2023-06-16"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "DRE": {
+   "missing_weeks": 142,
+   "eligible": [
+    "2017-07-26",
+    "2022-09-30"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "EA": {
+   "missing_weeks": 303,
+   "eligible": [
+    "2009-01-02",
+    "2025-12-31"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 250,
+   "filled_span": [
+    "2025-01-02",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 48,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "EQR": {
+   "missing_weeks": 303,
+   "eligible": [
+    "2009-01-02",
+    "2025-12-31"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 250,
+   "filled_span": [
+    "2025-01-02",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 48,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "ETFC": {
+   "missing_weeks": 40,
+   "eligible": [
+    "2009-01-02",
+    "2020-10-06"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-10-01",
+    1196
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -3,
+   "cells_filled": 1196,
+   "filled_span": [
+    "2016-01-04",
+    "2020-10-01"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 38,
+   "weeks_now_scoreable_and_y5": 38
+  },
+  "FB": {
+   "missing_weeks": 125,
+   "eligible": [
+    "2013-12-23",
+    "2022-06-08"
+   ],
+   "alpaca_span": [
+    "2025-06-26",
+    "2025-12-31",
+    131
+   ],
+   "bars_off_yf_calendar": 0,
+   "yf_overlap_uncapped_ret_corr": [
+    0.9994882505091807,
+    130
+   ],
+   "yf_overlap_uncapped_span": [
+    "2025-06-26",
+    "2025-12-31"
+   ],
+   "status": "Alpaca bars only after last eligible session + 10",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "FBHS": {
+   "missing_weeks": 152,
+   "eligible": [
+    "2016-06-24",
+    "2022-12-16"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "FI": {
+   "missing_weeks": 122,
+   "eligible": [
+    "2023-06-07",
+    "2025-11-10"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-11-10",
+    215
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 215,
+   "filled_span": [
+    "2025-01-02",
+    "2025-11-10"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 42,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "FLIR": {
+   "missing_weeks": 71,
+   "eligible": [
+    "2009-01-02",
+    "2021-05-13"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-05-13",
+    1350
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1350,
+   "filled_span": [
+    "2016-01-04",
+    "2021-05-13"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 69,
+   "weeks_now_scoreable_and_y5": 69
+  },
+  "FLT": {
+   "missing_weeks": 217,
+   "eligible": [
+    "2018-06-20",
+    "2024-03-22"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "FRC": {
+   "missing_weeks": 171,
+   "eligible": [
+    "2019-01-02",
+    "2023-05-03"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "GPS": {
+   "missing_weeks": 107,
+   "eligible": [
+    "2009-01-02",
+    "2022-02-01"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "HBI": {
+   "missing_weeks": 101,
+   "eligible": [
+    "2015-03-23",
+    "2021-12-17"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-11-28",
+    228
+   ],
+   "bars_off_yf_calendar": 0,
+   "status": "Alpaca bars only after last eligible session + 10",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "HES": {
+   "missing_weeks": 282,
+   "eligible": [
+    "2009-01-02",
+    "2025-07-22"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-07-17",
+    134
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -3,
+   "cells_filled": 134,
+   "filled_span": [
+    "2025-01-02",
+    "2025-07-17"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 25,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "HFC": {
+   "missing_weeks": 74,
+   "eligible": [
+    "2018-06-18",
+    "2021-06-03"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "HOLX": {
+   "missing_weeks": 303,
+   "eligible": [
+    "2016-03-30",
+    "2025-12-31"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 250,
+   "filled_span": [
+    "2025-01-02",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 48,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "INFO": {
+   "missing_weeks": 111,
+   "eligible": [
+    "2017-06-02",
+    "2022-03-01"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "yf_overlap_uncapped_ret_corr": [
+    0.9998671659749695,
+    249
+   ],
+   "yf_overlap_uncapped_span": [
+    "2025-01-02",
+    "2025-12-31"
+   ],
+   "status": "Alpaca bars only after last eligible session + 10",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "IPG": {
+   "missing_weeks": 300,
+   "eligible": [
+    "2009-01-02",
+    "2025-11-26"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-11-26",
+    227
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 227,
+   "filled_span": [
+    "2025-01-02",
+    "2025-11-26"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 44,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "JNPR": {
+   "missing_weeks": 280,
+   "eligible": [
+    "2009-01-02",
+    "2025-07-08"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-07-01",
+    123
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -4,
+   "cells_filled": 123,
+   "filled_span": [
+    "2025-01-02",
+    "2025-07-01"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 23,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "JWN": {
+   "missing_weeks": 25,
+   "eligible": [
+    "2009-01-02",
+    "2020-06-19"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-05-20",
+    95
+   ],
+   "bars_off_yf_calendar": 0,
+   "status": "Alpaca bars only after last eligible session + 10",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "K": {
+   "missing_weeks": 301,
+   "eligible": [
+    "2009-01-02",
+    "2025-12-10"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-10",
+    236
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 236,
+   "filled_span": [
+    "2025-01-02",
+    "2025-12-10"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 45,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "KSU": {
+   "missing_weeks": 100,
+   "eligible": [
+    "2013-05-24",
+    "2021-12-13"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-12-13",
+    1498
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1498,
+   "filled_span": [
+    "2016-01-04",
+    "2021-12-13"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 99,
+   "weeks_now_scoreable_and_y5": 99
+  },
+  "LB": {
+   "missing_weeks": 82,
+   "eligible": [
+    "2009-01-02",
+    "2021-08-02"
+   ],
+   "broad_vs_y26_ret_corr": [
+    1.0,
+    249
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-12-31",
+    2514
+   ],
+   "bars_off_yf_calendar": 0,
+   "yf_overlap_uncapped_ret_corr": [
+    0.9999980383903081,
+    378
+   ],
+   "yf_overlap_uncapped_span": [
+    "2024-06-28",
+    "2025-12-31"
+   ],
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 1415,
+   "filled_span": [
+    "2016-01-04",
+    "2021-08-16"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 82,
+   "weeks_now_scoreable_and_y5": 82
+  },
+  "LEG": {
+   "missing_weeks": 101,
+   "eligible": [
+    "2009-01-02",
+    "2021-12-17"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "status": "Alpaca bars only after last eligible session + 10",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "MMC": {
+   "missing_weeks": 303,
+   "eligible": [
+    "2009-01-02",
+    "2025-12-31"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 250,
+   "filled_span": [
+    "2025-01-02",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 48,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "MRO": {
+   "missing_weeks": 251,
+   "eligible": [
+    "2009-01-02",
+    "2024-11-25"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "MXIM": {
+   "missing_weeks": 86,
+   "eligible": [
+    "2018-12-03",
+    "2021-08-27"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-08-25",
+    1422
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -2,
+   "cells_filled": 1422,
+   "filled_span": [
+    "2016-01-04",
+    "2021-08-25"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 84,
+   "weeks_now_scoreable_and_y5": 84
+  },
+  "MYL": {
+   "missing_weeks": 46,
+   "eligible": [
+    "2009-01-02",
+    "2020-11-16"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-11-16",
+    1228
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1228,
+   "filled_span": [
+    "2016-01-04",
+    "2020-11-16"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 45,
+   "weeks_now_scoreable_and_y5": 45
+  },
+  "NBL": {
+   "missing_weeks": 41,
+   "eligible": [
+    "2009-01-02",
+    "2020-10-09"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-10-02",
+    1197
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -5,
+   "cells_filled": 1197,
+   "filled_span": [
+    "2016-01-04",
+    "2020-10-02"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 39,
+   "weeks_now_scoreable_and_y5": 39
+  },
+  "NLOK": {
+   "missing_weeks": 147,
+   "eligible": [
+    "2019-11-05",
+    "2022-11-07"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "NLSN": {
+   "missing_weeks": 143,
+   "eligible": [
+    "2013-07-09",
+    "2022-10-11"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "PBCT": {
+   "missing_weeks": 116,
+   "eligible": [
+    "2009-01-02",
+    "2022-04-01"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-04-01",
+    1574
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1574,
+   "filled_span": [
+    "2016-01-04",
+    "2022-04-01"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 115,
+   "weeks_now_scoreable_and_y5": 115
+  },
+  "PEAK": {
+   "missing_weeks": 214,
+   "eligible": [
+    "2019-11-05",
+    "2024-03-01"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "PKI": {
+   "missing_weeks": 173,
+   "eligible": [
+    "2009-01-02",
+    "2023-05-15"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "PSKY": {
+   "missing_weeks": 18,
+   "eligible": [
+    "2025-08-08",
+    "2025-12-31"
+   ],
+   "alpaca_span": [
+    "2025-08-07",
+    "2025-12-31",
+    102
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 102,
+   "filled_span": [
+    "2025-08-07",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 18,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "PXD": {
+   "missing_weeks": 223,
+   "eligible": [
+    "2009-01-02",
+    "2024-05-07"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "QRVO": {
+   "missing_weeks": 254,
+   "eligible": [
+    "2015-06-12",
+    "2024-12-20"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 4,
+   "filled_span": [
+    "2025-01-02",
+    "2025-01-07"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "RE": {
+   "missing_weeks": 181,
+   "eligible": [
+    "2017-06-19",
+    "2023-07-07"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "RTN": {
+   "missing_weeks": 14,
+   "eligible": [
+    "2009-01-02",
+    "2020-04-03"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-04-02",
+    1070
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -1,
+   "cells_filled": 1070,
+   "filled_span": [
+    "2016-01-04",
+    "2020-04-02"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 12,
+   "weeks_now_scoreable_and_y5": 12
+  },
+  "SBNY": {
+   "missing_weeks": 63,
+   "eligible": [
+    "2021-12-20",
+    "2023-03-14"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-03-21",
+    54
+   ],
+   "bars_off_yf_calendar": 0,
+   "yf_overlap_uncapped_ret_corr": [
+    NaN,
+    53
+   ],
+   "yf_overlap_uncapped_span": [
+    "2025-01-02",
+    "2025-03-21"
+   ],
+   "status": "Alpaca bars only after last eligible session + 10",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "SEE": {
+   "missing_weeks": 203,
+   "eligible": [
+    "2009-01-02",
+    "2023-12-15"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "status": "Alpaca bars only after last eligible session + 10",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "SIVB": {
+   "missing_weeks": 164,
+   "eligible": [
+    "2018-03-19",
+    "2023-03-14"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "TIF": {
+   "missing_weeks": 52,
+   "eligible": [
+    "2009-01-02",
+    "2021-01-06"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-01-06",
+    1262
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1262,
+   "filled_span": [
+    "2016-01-04",
+    "2021-01-06"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 51,
+   "weeks_now_scoreable_and_y5": 51
+  },
+  "TWTR": {
+   "missing_weeks": 146,
+   "eligible": [
+    "2018-06-07",
+    "2022-10-31"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "UTX": {
+   "missing_weeks": 14,
+   "eligible": [
+    "2009-01-02",
+    "2020-04-02"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "VAR": {
+   "missing_weeks": 67,
+   "eligible": [
+    "2009-01-02",
+    "2021-04-19"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-04-14",
+    1329
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -3,
+   "cells_filled": 1329,
+   "filled_span": [
+    "2016-01-04",
+    "2021-04-14"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 65,
+   "weeks_now_scoreable_and_y5": 65
+  },
+  "VIAC": {
+   "missing_weeks": 109,
+   "eligible": [
+    "2019-12-05",
+    "2022-02-16"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "WBA": {
+   "missing_weeks": 287,
+   "eligible": [
+    "2009-01-02",
+    "2025-08-27"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-08-27",
+    163
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 163,
+   "filled_span": [
+    "2025-01-02",
+    "2025-08-27"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 31,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "WBD": {
+   "missing_weeks": 186,
+   "eligible": [
+    "2022-04-11",
+    "2025-12-31"
+   ],
+   "alpaca_span": [
+    "2025-01-02",
+    "2025-12-31",
+    250
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 250,
+   "filled_span": [
+    "2025-01-02",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 48,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "WCG": {
+   "missing_weeks": 4,
+   "eligible": [
+    "2018-09-17",
+    "2020-01-27"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-01-23",
+    1021
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -2,
+   "cells_filled": 1021,
+   "filled_span": [
+    "2016-01-04",
+    "2020-01-23"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 2,
+   "weeks_now_scoreable_and_y5": 2
+  },
+  "WLTW": {
+   "missing_weeks": 104,
+   "eligible": [
+    "2016-01-05",
+    "2022-01-07"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "WRK": {
+   "missing_weeks": 231,
+   "eligible": [
+    "2015-07-02",
+    "2024-07-05"
+   ],
+   "status": "no Alpaca bars",
+   "weeks_now_with_y5": 0,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "XEC": {
+   "missing_weeks": 9,
+   "eligible": [
+    "2014-06-20",
+    "2020-03-02"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-09-30",
+    1447
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 1057,
+   "filled_span": [
+    "2016-01-04",
+    "2020-03-16"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 9,
+   "weeks_now_scoreable_and_y5": 9
+  },
+  "XLNX": {
+   "missing_weeks": 109,
+   "eligible": [
+    "2009-01-02",
+    "2022-02-14"
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-02-11",
+    1540
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -1,
+   "cells_filled": 1540,
+   "filled_span": [
+    "2016-01-04",
+    "2022-02-11"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 108,
+   "weeks_now_scoreable_and_y5": 108
+  }
+ },
+ "P4b_per_name_fields_equal_unfilled": {
+  "r": true,
+  "beta": true,
+  "e": true,
+  "valid": true,
+  "elig": true,
+  "Zraw": true,
+  "y5_before_demean": true,
+  "spy_rm": true
+ },
+ "P4c_cross_sectional_fields_unfilled_names": {
+  "Z": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 1.1392090320587158,
+   "mean_abs_diff": 0.006584251075696621
+  },
+  "y5": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 0.0022099117878361246,
+   "mean_abs_diff": 0.0001504206015347927
+  }
+ },
+ "P4d_coverage_vs_expected": {
+  "missing_name_weeks": 11589,
+  "now_with_y5": 1911,
+  "now_scoreable_by_master_and_y5": 1208,
+  "names_filled": 38,
+  "names_flagged": {},
+  "names_no_alpaca": [
+   "ABC",
+   "ABMD",
+   "ADS",
+   "ANTM",
+   "ARNC",
+   "ATVI",
+   "BLL",
+   "CDAY",
+   "COG",
+   "CTL",
+   "CTLT",
+   "CTXS",
+   "DISCA",
+   "DISH",
+   "DRE",
+   "FBHS",
+   "FLT",
+   "FRC",
+   "GPS",
+   "HFC",
+   "MRO",
+   "NLOK",
+   "NLSN",
+   "PEAK",
+   "PKI",
+   "PXD",
+   "RE",
+   "SIVB",
+   "TWTR",
+   "UTX",
+   "VIAC",
+   "WLTW",
+   "WRK"
+  ],
+  "remaining_missing_name_weeks": 9678,
+  "eligible_2020_2025_name_weeks_with_y5_orig": 141065,
+  "eligible_2020_2025_name_weeks_with_y5_repaired": 142976,
+  "share_of_missing_weeks_filled_with_y5": 0.16489774786435413,
+  "share_of_missing_weeks_scoreable": 0.10423677625334368
+ },
+ "v2_extra_fetch_checks": {
+  "sha256_ok": true,
+  "tickers": 59,
+  "requested": 60,
+  "returned": 59,
+  "missing": [
+   "PSKY"
+  ],
+  "zero_volume_bars_dropped": {
+   "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/tree-search/.cache/tree/broad/chunks": 5640,
+   "/Users/apollogodofthesun/test_trading_agent/.claude/worktrees/tree-search/.cache/tree/y2026/chunks": 126,
+   "alpaca_extra": {
+    "rows": 1706,
+    "by_ticker": {
+     "INFO": 662,
+     "SBNY": 455,
+     "FI": 421,
+     "CTRA": 167,
+     "ATVI": 1
+    }
+   }
+  },
+  "per_ticker_counts_match_json": true,
+  "overlap_with_broad": [],
+  "rename_identity_ret_corr_vs_successor_yf": {
+   "FB->META": [
+    0.9999824191593887,
+    1619,
+    "2013-12-23",
+    "2022-06-08"
+   ],
+   "ANTM->ELV": [
+    0.9989667903911132,
+    1631,
+    "2009-01-02",
+    "2022-06-27"
+   ],
+   "ABC->COR": [
+    0.9983426124655342,
+    1926,
+    "2009-01-02",
+    "2023-08-29"
+   ],
+   "PKI->RVTY": [
+    0.9999878281627901,
+    1853,
+    "2009-01-02",
+    "2023-05-15"
+   ],
+   "WLTW->WTW": [
+    0.9945356008353633,
+    1514,
+    "2016-01-05",
+    "2022-01-07"
+   ],
+   "COG->CTRA": [
+    null,
+    0,
+    "2009-01-02",
+    "2021-10-01"
+   ],
+   "BLL->BALL": [
+    0.9988284160265639,
+    1598,
+    "2009-01-02",
+    "2022-05-09"
+   ],
+   "NLOK->GEN": [
+    0.9994063025800164,
+    757,
+    "2019-11-05",
+    "2022-11-07"
+   ],
+   "CDAY->DAY": [
+    null,
+    0,
+    "2021-09-20",
+    "2024-01-31"
+   ],
+   "FLT->CPAY": [
+    0.9999990108330478,
+    1448,
+    "2018-06-20",
+    "2024-03-22"
+   ],
+   "PEAK->DOC": [
+    0.9986561577777234,
+    1086,
+    "2019-11-05",
+    "2024-03-01"
+   ],
+   "RE->EG": [
+    0.999936572704548,
+    1522,
+    "2017-06-19",
+    "2023-07-07"
+   ],
+   "DISCA->WBD": [
+    null,
+    0,
+    "2010-03-01",
+    "2022-04-08"
+   ],
+   "VIAC->PARA": [
+    0.045525112207705214,
+    255,
+    "2019-12-05",
+    "2022-02-16"
+   ],
+   "CTL->LUMN": [
+    0.9898526037651383,
+    1185,
+    "2009-01-02",
+    "2020-09-17"
+   ],
+   "ARNC->HWM": [
+    0.5671064480380476,
+    860,
+    "2009-01-02",
+    "2020-04-03"
+   ],
+   "UTX->RTX": [
+    0.9999582393691512,
+    1069,
+    "2009-01-02",
+    "2020-04-02"
+   ]
+  }
+ },
+ "v2_P4a_copy_equals_original_build": {
+  "Z": true,
+  "frozen": true,
+  "y20": true,
+  "y5": true,
+  "y10": true,
+  "elig": true,
+  "e": true,
+  "spy": true,
+  "rm": true,
+  "r": true,
+  "beta": true,
+  "valid": true,
+  "S": true,
+  "names": true
+ },
+ "v2_P2_missing_set": {
+  "eligible_name_weeks_2020_2025": 152654,
+  "missing_name_weeks": 11589,
+  "missing_names": 79,
+  "coordinator_expected": [
+   79,
+   11589,
+   152654
+  ]
+ },
+ "v2_source_alpaca_vs_yfinance_2016_2025": {
+  "names_compared_broad_vs_yf": 602,
+  "quantiles": {
+   "0": 0.19481334070141265,
+   "0.01": 0.8957869195326372,
+   "0.05": 0.9888390270947433,
+   "0.1": 0.9956084605468574,
+   "0.25": 0.9994036468445157,
+   "0.5": 0.9999719647002129
+  },
+  "share_above_0.999": 0.7807308970099668,
+  "below_0.99": {
+   "SW": 0.1948,
+   "KG": 0.2612,
+   "DHR": 0.8174,
+   "RTX": 0.8264,
+   "APTV": 0.852,
+   "CNX": 0.8759,
+   "MTW": 0.8954,
+   "UA": 0.9292,
+   "YUM": 0.9358,
+   "AIV": 0.9373,
+   "CCEP": 0.9399,
+   "PCG": 0.9418,
+   "EQT": 0.9424,
+   "PNR": 0.9428,
+   "SJM": 0.9683,
+   "JCI": 0.9712,
+   "MAC": 0.972,
+   "FOX": 0.9731,
+   "HLT": 0.9737,
+   "FOXA": 0.9759,
+   "TRV": 0.976,
+   "LH": 0.9765,
+   "OXY": 0.9839,
+   "UNM": 0.9848,
+   "DOW": 0.9855,
+   "UAA": 0.9859,
+   "RSG": 0.9876,
+   "CCL": 0.9881,
+   "HON": 0.9882,
+   "RRC": 0.9886,
+   "FTV": 0.9888,
+   "KR": 0.9896,
+   "XRX": 0.9897
+  }
+ },
+ "v2_P3_per_name": {
+  "ABC": {
+   "missing_weeks": 188,
+   "eligible": [
+    "2009-01-02",
+    "2023-08-29"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2023-08-29",
+    1927
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1927,
+   "filled_span": [
+    "2016-01-04",
+    "2023-08-29"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 187,
+   "weeks_now_scoreable_and_y5": 187
+  },
+  "ABMD": {
+   "missing_weeks": 152,
+   "eligible": [
+    "2018-05-31",
+    "2022-12-21"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-12-21",
+    1756
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1756,
+   "filled_span": [
+    "2016-01-04",
+    "2022-12-21"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 151,
+   "weeks_now_scoreable_and_y5": 151
+  },
+  "ADS": {
+   "missing_weeks": 25,
+   "eligible": [
+    "2013-12-23",
+    "2020-06-19"
+   ],
+   "bars_after_cap_dropped": 440,
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-07-06",
+    1134
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 1134,
+   "filled_span": [
+    "2016-01-04",
+    "2020-07-06"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 25,
+   "weeks_now_scoreable_and_y5": 25
+  },
+  "AGN": {
+   "missing_weeks": 19,
+   "eligible": [
+    "2009-01-02",
+    "2020-05-11"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-05-08",
+    1095
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -1,
+   "cells_filled": 1095,
+   "filled_span": [
+    "2016-01-04",
+    "2020-05-08"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 18,
+   "weeks_now_scoreable_and_y5": 18
+  },
+  "ALXN": {
+   "missing_weeks": 80,
+   "eligible": [
+    "2012-05-25",
+    "2021-07-20"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-07-20",
+    1396
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1396,
+   "filled_span": [
+    "2016-01-04",
+    "2021-07-20"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 79,
+   "weeks_now_scoreable_and_y5": 79
+  },
+  "ANSS": {
+   "missing_weeks": 282,
+   "eligible": [
+    "2017-06-19",
+    "2025-07-17"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    -0.0037648593365546823
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-07-16",
+    2397
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -1,
+   "cells_filled": 2397,
+   "filled_span": [
+    "2016-01-04",
+    "2025-07-16"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 280,
+   "weeks_now_scoreable_and_y5": 280
+  },
+  "ANTM": {
+   "missing_weeks": 128,
+   "eligible": [
+    "2009-01-02",
+    "2022-06-27"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-06-27",
+    1632
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1632,
+   "filled_span": [
+    "2016-01-04",
+    "2022-06-27"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 127,
+   "weeks_now_scoreable_and_y5": 127
+  },
+  "ARNC": {
+   "missing_weeks": 14,
+   "eligible": [
+    "2009-01-02",
+    "2020-04-03"
+   ],
+   "bars_after_cap_dropped": 838,
+   "alpaca_span": [
+    "2016-11-01",
+    "2020-04-20",
+    871
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 871,
+   "filled_span": [
+    "2016-11-01",
+    "2020-04-20"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 14,
+   "weeks_now_scoreable_and_y5": 14
+  },
+  "ATVI": {
+   "missing_weeks": 195,
+   "eligible": [
+    "2015-08-31",
+    "2023-10-17"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2023-10-12",
+    1958
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -3,
+   "cells_filled": 1958,
+   "filled_span": [
+    "2016-01-04",
+    "2023-10-12"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 193,
+   "weeks_now_scoreable_and_y5": 193
+  },
+  "AVB": {
+   "missing_weeks": 303,
+   "eligible": [
+    "2009-01-02",
+    "2025-12-31"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    -0.013218611805422054
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-12-31",
+    2514
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 2514,
+   "filled_span": [
+    "2016-01-04",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 303,
+   "weeks_now_scoreable_and_y5": 303
+  },
+  "BK": {
+   "missing_weeks": 303,
+   "eligible": [
+    "2009-01-02",
+    "2025-12-31"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    0.007512744834987872
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-12-31",
+    2514
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 2514,
+   "filled_span": [
+    "2016-01-04",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 303,
+   "weeks_now_scoreable_and_y5": 303
+  },
+  "BLL": {
+   "missing_weeks": 121,
+   "eligible": [
+    "2009-01-02",
+    "2022-05-09"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-05-09",
+    1599
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1599,
+   "filled_span": [
+    "2016-01-04",
+    "2022-05-09"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 120,
+   "weeks_now_scoreable_and_y5": 120
+  },
+  "CDAY": {
+   "missing_weeks": 120,
+   "eligible": [
+    "2021-09-20",
+    "2024-01-31"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2018-04-26",
+    "2024-01-31",
+    1451
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1451,
+   "filled_span": [
+    "2018-04-26",
+    "2024-01-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 119,
+   "weeks_now_scoreable_and_y5": 118
+  },
+  "CERN": {
+   "missing_weeks": 125,
+   "eligible": [
+    "2010-04-30",
+    "2022-06-07"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-06-07",
+    1619
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1619,
+   "filled_span": [
+    "2016-01-04",
+    "2022-06-07"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 124,
+   "weeks_now_scoreable_and_y5": 124
+  },
+  "CMA": {
+   "missing_weeks": 230,
+   "eligible": [
+    "2009-01-02",
+    "2024-06-21"
+   ],
+   "bars_after_cap_dropped": 373,
+   "alpaca_span": [
+    "2016-01-04",
+    "2024-07-08",
+    2141
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 2141,
+   "filled_span": [
+    "2016-01-04",
+    "2024-07-08"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 230,
+   "weeks_now_scoreable_and_y5": 230
+  },
+  "COG": {
+   "missing_weeks": 91,
+   "eligible": [
+    "2009-01-02",
+    "2021-10-01"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-10-01",
+    1448
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1448,
+   "filled_span": [
+    "2016-01-04",
+    "2021-10-01"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 90,
+   "weeks_now_scoreable_and_y5": 90
+  },
+  "CTL": {
+   "missing_weeks": 38,
+   "eligible": [
+    "2009-01-02",
+    "2020-09-17"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-09-17",
+    1186
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1186,
+   "filled_span": [
+    "2016-01-04",
+    "2020-09-17"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 36,
+   "weeks_now_scoreable_and_y5": 36
+  },
+  "CTLT": {
+   "missing_weeks": 216,
+   "eligible": [
+    "2020-09-21",
+    "2024-12-20"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2024-12-17",
+    2255
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -3,
+   "cells_filled": 2255,
+   "filled_span": [
+    "2016-01-04",
+    "2024-12-17"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 214,
+   "weeks_now_scoreable_and_y5": 213
+  },
+  "CTRA": {
+   "missing_weeks": 212,
+   "eligible": [
+    "2021-10-04",
+    "2025-12-31"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    0.023683135973866953
+   ],
+   "alpaca_span": [
+    "2018-11-09",
+    "2025-12-31",
+    1627
+   ],
+   "bars_off_yf_calendar": 0,
+   "earlier_fragments_dropped": {
+    "bars": 561,
+    "run_starts": "2021-10-04"
+   },
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1066,
+   "filled_span": [
+    "2021-10-04",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 212,
+   "weeks_now_scoreable_and_y5": 160
+  },
+  "CTXS": {
+   "missing_weeks": 142,
+   "eligible": [
+    "2009-01-02",
+    "2022-09-30"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-09-29",
+    1698
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -1,
+   "cells_filled": 1698,
+   "filled_span": [
+    "2016-01-04",
+    "2022-09-29"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 140,
+   "weeks_now_scoreable_and_y5": 140
+  },
+  "CXO": {
+   "missing_weeks": 54,
+   "eligible": [
+    "2016-02-22",
+    "2021-01-20"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-01-15",
+    1269
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -2,
+   "cells_filled": 1269,
+   "filled_span": [
+    "2016-01-04",
+    "2021-01-15"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 53,
+   "weeks_now_scoreable_and_y5": 53
+  },
+  "DAY": {
+   "missing_weeks": 94,
+   "eligible": [
+    "2024-02-01",
+    "2025-12-31"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    -0.017208149779735726
+   ],
+   "alpaca_span": [
+    "2024-02-01",
+    "2025-12-31",
+    481
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 481,
+   "filled_span": [
+    "2024-02-01",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 94,
+   "weeks_now_scoreable_and_y5": 43
+  },
+  "DFS": {
+   "missing_weeks": 274,
+   "eligible": [
+    "2009-01-02",
+    "2025-05-16"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    0.005618953831894702
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-05-16",
+    2357
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 2357,
+   "filled_span": [
+    "2016-01-04",
+    "2025-05-16"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 273,
+   "weeks_now_scoreable_and_y5": 273
+  },
+  "DISCA": {
+   "missing_weeks": 117,
+   "eligible": [
+    "2010-03-01",
+    "2022-04-08"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-04-08",
+    1579
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1579,
+   "filled_span": [
+    "2016-01-04",
+    "2022-04-08"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 116,
+   "weeks_now_scoreable_and_y5": 116
+  },
+  "DISCK": {
+   "missing_weeks": 117,
+   "eligible": [
+    "2014-08-07",
+    "2022-04-08"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-04-08",
+    1579
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1579,
+   "filled_span": [
+    "2016-01-04",
+    "2022-04-08"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 116,
+   "weeks_now_scoreable_and_y5": 116
+  },
+  "DISH": {
+   "missing_weeks": 178,
+   "eligible": [
+    "2017-03-13",
+    "2023-06-16"
+   ],
+   "bars_after_cap_dropped": 125,
+   "alpaca_span": [
+    "2016-01-04",
+    "2023-07-03",
+    1887
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 1887,
+   "filled_span": [
+    "2016-01-04",
+    "2023-07-03"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 178,
+   "weeks_now_scoreable_and_y5": 178
+  },
+  "DRE": {
+   "missing_weeks": 142,
+   "eligible": [
+    "2017-07-26",
+    "2022-09-30"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-09-30",
+    1699
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1699,
+   "filled_span": [
+    "2016-01-04",
+    "2022-09-30"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 141,
+   "weeks_now_scoreable_and_y5": 141
+  },
+  "EA": {
+   "missing_weeks": 303,
+   "eligible": [
+    "2009-01-02",
+    "2025-12-31"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    -0.00275235670542906
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-12-31",
+    2514
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 2514,
+   "filled_span": [
+    "2016-01-04",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 303,
+   "weeks_now_scoreable_and_y5": 303
+  },
+  "EQR": {
+   "missing_weeks": 303,
+   "eligible": [
+    "2009-01-02",
+    "2025-12-31"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    -0.014247150569886013
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-12-31",
+    2514
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 2514,
+   "filled_span": [
+    "2016-01-04",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 303,
+   "weeks_now_scoreable_and_y5": 303
+  },
+  "ETFC": {
+   "missing_weeks": 40,
+   "eligible": [
+    "2009-01-02",
+    "2020-10-06"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-10-01",
+    1196
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -3,
+   "cells_filled": 1196,
+   "filled_span": [
+    "2016-01-04",
+    "2020-10-01"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 38,
+   "weeks_now_scoreable_and_y5": 38
+  },
+  "FB": {
+   "missing_weeks": 125,
+   "eligible": [
+    "2013-12-23",
+    "2022-06-08"
+   ],
+   "bars_after_cap_dropped": 131,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-06-08",
+    1620
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1620,
+   "filled_span": [
+    "2016-01-04",
+    "2022-06-08"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 124,
+   "weeks_now_scoreable_and_y5": 124
+  },
+  "FBHS": {
+   "missing_weeks": 152,
+   "eligible": [
+    "2016-06-24",
+    "2022-12-16"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-12-14",
+    1751
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -2,
+   "cells_filled": 1751,
+   "filled_span": [
+    "2016-01-04",
+    "2022-12-14"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 150,
+   "weeks_now_scoreable_and_y5": 150
+  },
+  "FI": {
+   "missing_weeks": 122,
+   "eligible": [
+    "2023-06-07",
+    "2025-11-10"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    0.002726122091325056
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-11-10",
+    2058
+   ],
+   "bars_off_yf_calendar": 0,
+   "earlier_fragments_dropped": {
+    "bars": 1448,
+    "run_starts": "2023-06-07"
+   },
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 610,
+   "filled_span": [
+    "2023-06-07",
+    "2025-11-10"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 121,
+   "weeks_now_scoreable_and_y5": 68
+  },
+  "FLIR": {
+   "missing_weeks": 71,
+   "eligible": [
+    "2009-01-02",
+    "2021-05-13"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-05-13",
+    1350
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1350,
+   "filled_span": [
+    "2016-01-04",
+    "2021-05-13"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 69,
+   "weeks_now_scoreable_and_y5": 69
+  },
+  "FLT": {
+   "missing_weeks": 217,
+   "eligible": [
+    "2018-06-20",
+    "2024-03-22"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2024-03-22",
+    2069
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 2069,
+   "filled_span": [
+    "2016-01-04",
+    "2024-03-22"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 216,
+   "weeks_now_scoreable_and_y5": 216
+  },
+  "FRC": {
+   "missing_weeks": 171,
+   "eligible": [
+    "2019-01-02",
+    "2023-05-03"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2023-04-28",
+    1843
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -3,
+   "cells_filled": 1843,
+   "filled_span": [
+    "2016-01-04",
+    "2023-04-28"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 170,
+   "weeks_now_scoreable_and_y5": 170
+  },
+  "GPS": {
+   "missing_weeks": 107,
+   "eligible": [
+    "2009-01-02",
+    "2022-02-01"
+   ],
+   "bars_after_cap_dropped": 631,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-02-15",
+    1542
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 1542,
+   "filled_span": [
+    "2016-01-04",
+    "2022-02-15"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 107,
+   "weeks_now_scoreable_and_y5": 107
+  },
+  "HBI": {
+   "missing_weeks": 101,
+   "eligible": [
+    "2015-03-23",
+    "2021-12-17"
+   ],
+   "bars_after_cap_dropped": 980,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-01-03",
+    1512
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 1512,
+   "filled_span": [
+    "2016-01-04",
+    "2022-01-03"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 101,
+   "weeks_now_scoreable_and_y5": 101
+  },
+  "HES": {
+   "missing_weeks": 282,
+   "eligible": [
+    "2009-01-02",
+    "2025-07-22"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    0.018092354277063016
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-07-17",
+    2398
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -3,
+   "cells_filled": 2398,
+   "filled_span": [
+    "2016-01-04",
+    "2025-07-17"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 280,
+   "weeks_now_scoreable_and_y5": 280
+  },
+  "HFC": {
+   "missing_weeks": 74,
+   "eligible": [
+    "2018-06-18",
+    "2021-06-03"
+   ],
+   "bars_after_cap_dropped": 186,
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-06-17",
+    1374
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 1374,
+   "filled_span": [
+    "2016-01-04",
+    "2021-06-17"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 74,
+   "weeks_now_scoreable_and_y5": 74
+  },
+  "HOLX": {
+   "missing_weeks": 303,
+   "eligible": [
+    "2016-03-30",
+    "2025-12-31"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    -0.004855042308225976
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-12-31",
+    2514
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 2514,
+   "filled_span": [
+    "2016-01-04",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 303,
+   "weeks_now_scoreable_and_y5": 303
+  },
+  "INFO": {
+   "missing_weeks": 111,
+   "eligible": [
+    "2017-06-02",
+    "2022-03-01"
+   ],
+   "bars_after_cap_dropped": 303,
+   "alpaca_span": [
+    "2016-07-13",
+    "2022-02-25",
+    1417
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -2,
+   "cells_filled": 1417,
+   "filled_span": [
+    "2016-07-13",
+    "2022-02-25"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 109,
+   "weeks_now_scoreable_and_y5": 109
+  },
+  "IPG": {
+   "missing_weeks": 300,
+   "eligible": [
+    "2009-01-02",
+    "2025-11-26"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    0.0037078235076011268
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-11-26",
+    2491
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 2491,
+   "filled_span": [
+    "2016-01-04",
+    "2025-11-26"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 299,
+   "weeks_now_scoreable_and_y5": 299
+  },
+  "JNPR": {
+   "missing_weeks": 280,
+   "eligible": [
+    "2009-01-02",
+    "2025-07-08"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    0.008921330089213253
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-07-01",
+    2387
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -4,
+   "cells_filled": 2387,
+   "filled_span": [
+    "2016-01-04",
+    "2025-07-01"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 278,
+   "weeks_now_scoreable_and_y5": 278
+  },
+  "JWN": {
+   "missing_weeks": 25,
+   "eligible": [
+    "2009-01-02",
+    "2020-06-19"
+   ],
+   "bars_after_cap_dropped": 1225,
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-07-06",
+    1134
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 1134,
+   "filled_span": [
+    "2016-01-04",
+    "2020-07-06"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 25,
+   "weeks_now_scoreable_and_y5": 25
+  },
+  "K": {
+   "missing_weeks": 301,
+   "eligible": [
+    "2009-01-02",
+    "2025-12-10"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    0.001016131080909366
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-12-10",
+    2500
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 2500,
+   "filled_span": [
+    "2016-01-04",
+    "2025-12-10"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 300,
+   "weeks_now_scoreable_and_y5": 300
+  },
+  "KSU": {
+   "missing_weeks": 100,
+   "eligible": [
+    "2013-05-24",
+    "2021-12-13"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-12-13",
+    1498
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1498,
+   "filled_span": [
+    "2016-01-04",
+    "2021-12-13"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 99,
+   "weeks_now_scoreable_and_y5": 99
+  },
+  "LB": {
+   "missing_weeks": 82,
+   "eligible": [
+    "2009-01-02",
+    "2021-08-02"
+   ],
+   "bars_after_cap_dropped": 629,
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-08-02",
+    1405
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1405,
+   "filled_span": [
+    "2016-01-04",
+    "2021-08-02"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 81,
+   "weeks_now_scoreable_and_y5": 81
+  },
+  "LEG": {
+   "missing_weeks": 101,
+   "eligible": [
+    "2009-01-02",
+    "2021-12-17"
+   ],
+   "bars_after_cap_dropped": 1002,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-01-03",
+    1512
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 1512,
+   "filled_span": [
+    "2016-01-04",
+    "2022-01-03"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 101,
+   "weeks_now_scoreable_and_y5": 101
+  },
+  "MMC": {
+   "missing_weeks": 303,
+   "eligible": [
+    "2009-01-02",
+    "2025-12-31"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    -0.005022241354570189
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-12-31",
+    2514
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 2514,
+   "filled_span": [
+    "2016-01-04",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 303,
+   "weeks_now_scoreable_and_y5": 303
+  },
+  "MRO": {
+   "missing_weeks": 251,
+   "eligible": [
+    "2009-01-02",
+    "2024-11-25"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2024-11-21",
+    2238
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -2,
+   "cells_filled": 2238,
+   "filled_span": [
+    "2016-01-04",
+    "2024-11-21"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 249,
+   "weeks_now_scoreable_and_y5": 249
+  },
+  "MXIM": {
+   "missing_weeks": 86,
+   "eligible": [
+    "2018-12-03",
+    "2021-08-27"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-08-25",
+    1422
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -2,
+   "cells_filled": 1422,
+   "filled_span": [
+    "2016-01-04",
+    "2021-08-25"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 84,
+   "weeks_now_scoreable_and_y5": 84
+  },
+  "MYL": {
+   "missing_weeks": 46,
+   "eligible": [
+    "2009-01-02",
+    "2020-11-16"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-11-16",
+    1228
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1228,
+   "filled_span": [
+    "2016-01-04",
+    "2020-11-16"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 45,
+   "weeks_now_scoreable_and_y5": 45
+  },
+  "NBL": {
+   "missing_weeks": 41,
+   "eligible": [
+    "2009-01-02",
+    "2020-10-09"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-10-02",
+    1197
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -5,
+   "cells_filled": 1197,
+   "filled_span": [
+    "2016-01-04",
+    "2020-10-02"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 39,
+   "weeks_now_scoreable_and_y5": 39
+  },
+  "NLOK": {
+   "missing_weeks": 147,
+   "eligible": [
+    "2019-11-05",
+    "2022-11-07"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2019-11-05",
+    "2022-11-07",
+    758
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 758,
+   "filled_span": [
+    "2019-11-05",
+    "2022-11-07"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 146,
+   "weeks_now_scoreable_and_y5": 100
+  },
+  "NLSN": {
+   "missing_weeks": 143,
+   "eligible": [
+    "2013-07-09",
+    "2022-10-11"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-10-11",
+    1706
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1706,
+   "filled_span": [
+    "2016-01-04",
+    "2022-10-11"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 142,
+   "weeks_now_scoreable_and_y5": 142
+  },
+  "PBCT": {
+   "missing_weeks": 116,
+   "eligible": [
+    "2009-01-02",
+    "2022-04-01"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-04-01",
+    1574
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1574,
+   "filled_span": [
+    "2016-01-04",
+    "2022-04-01"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 115,
+   "weeks_now_scoreable_and_y5": 115
+  },
+  "PEAK": {
+   "missing_weeks": 214,
+   "eligible": [
+    "2019-11-05",
+    "2024-03-01"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2019-11-05",
+    "2024-03-01",
+    1087
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1087,
+   "filled_span": [
+    "2019-11-05",
+    "2024-03-01"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 213,
+   "weeks_now_scoreable_and_y5": 167
+  },
+  "PKI": {
+   "missing_weeks": 173,
+   "eligible": [
+    "2009-01-02",
+    "2023-05-15"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2023-05-15",
+    1854
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1854,
+   "filled_span": [
+    "2016-01-04",
+    "2023-05-15"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 172,
+   "weeks_now_scoreable_and_y5": 172
+  },
+  "PSKY": {
+   "missing_weeks": 18,
+   "eligible": [
+    "2025-08-08",
+    "2025-12-31"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2025-08-07",
+    "2025-12-31",
+    102
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 102,
+   "filled_span": [
+    "2025-08-07",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 18,
+   "weeks_now_scoreable_and_y5": 0
+  },
+  "PXD": {
+   "missing_weeks": 223,
+   "eligible": [
+    "2009-01-02",
+    "2024-05-07"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2024-05-02",
+    2097
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -3,
+   "cells_filled": 2097,
+   "filled_span": [
+    "2016-01-04",
+    "2024-05-02"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 221,
+   "weeks_now_scoreable_and_y5": 221
+  },
+  "QRVO": {
+   "missing_weeks": 254,
+   "eligible": [
+    "2015-06-12",
+    "2024-12-20"
+   ],
+   "bars_after_cap_dropped": 246,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    -0.0024310024310024714
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-01-07",
+    2268
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 2268,
+   "filled_span": [
+    "2016-01-04",
+    "2025-01-07"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 254,
+   "weeks_now_scoreable_and_y5": 254
+  },
+  "RE": {
+   "missing_weeks": 181,
+   "eligible": [
+    "2017-06-19",
+    "2023-07-07"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2023-07-07",
+    1890
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1890,
+   "filled_span": [
+    "2016-01-04",
+    "2023-07-07"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 179,
+   "weeks_now_scoreable_and_y5": 179
+  },
+  "RTN": {
+   "missing_weeks": 14,
+   "eligible": [
+    "2009-01-02",
+    "2020-04-03"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-04-02",
+    1070
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -1,
+   "cells_filled": 1070,
+   "filled_span": [
+    "2016-01-04",
+    "2020-04-02"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 12,
+   "weeks_now_scoreable_and_y5": 12
+  },
+  "SBNY": {
+   "missing_weeks": 63,
+   "eligible": [
+    "2021-12-20",
+    "2023-03-14"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2023-03-10",
+    1809
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -2,
+   "cells_filled": 1809,
+   "filled_span": [
+    "2016-01-04",
+    "2023-03-10"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 62,
+   "weeks_now_scoreable_and_y5": 61
+  },
+  "SEE": {
+   "missing_weeks": 203,
+   "eligible": [
+    "2009-01-02",
+    "2023-12-15"
+   ],
+   "bars_after_cap_dropped": 501,
+   "alpaca_span": [
+    "2016-01-04",
+    "2024-01-02",
+    2013
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 2013,
+   "filled_span": [
+    "2016-01-04",
+    "2024-01-02"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 203,
+   "weeks_now_scoreable_and_y5": 203
+  },
+  "SIVB": {
+   "missing_weeks": 164,
+   "eligible": [
+    "2018-03-19",
+    "2023-03-14"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2023-03-09",
+    1808
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -3,
+   "cells_filled": 1808,
+   "filled_span": [
+    "2016-01-04",
+    "2023-03-09"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 162,
+   "weeks_now_scoreable_and_y5": 162
+  },
+  "TIF": {
+   "missing_weeks": 52,
+   "eligible": [
+    "2009-01-02",
+    "2021-01-06"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-01-06",
+    1262
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1262,
+   "filled_span": [
+    "2016-01-04",
+    "2021-01-06"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 51,
+   "weeks_now_scoreable_and_y5": 51
+  },
+  "TWTR": {
+   "missing_weeks": 146,
+   "eligible": [
+    "2018-06-07",
+    "2022-10-31"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-10-27",
+    1718
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -2,
+   "cells_filled": 1718,
+   "filled_span": [
+    "2016-01-04",
+    "2022-10-27"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 144,
+   "weeks_now_scoreable_and_y5": 144
+  },
+  "UTX": {
+   "missing_weeks": 14,
+   "eligible": [
+    "2009-01-02",
+    "2020-04-02"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-04-02",
+    1070
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1070,
+   "filled_span": [
+    "2016-01-04",
+    "2020-04-02"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 12,
+   "weeks_now_scoreable_and_y5": 12
+  },
+  "VAR": {
+   "missing_weeks": 67,
+   "eligible": [
+    "2009-01-02",
+    "2021-04-19"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2021-04-14",
+    1329
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -3,
+   "cells_filled": 1329,
+   "filled_span": [
+    "2016-01-04",
+    "2021-04-14"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 65,
+   "weeks_now_scoreable_and_y5": 65
+  },
+  "VIAC": {
+   "missing_weeks": 109,
+   "eligible": [
+    "2019-12-05",
+    "2022-02-16"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2019-12-05",
+    "2022-02-16",
+    555
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 555,
+   "filled_span": [
+    "2019-12-05",
+    "2022-02-16"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 108,
+   "weeks_now_scoreable_and_y5": 59
+  },
+  "WBA": {
+   "missing_weeks": 287,
+   "eligible": [
+    "2009-01-02",
+    "2025-08-27"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    -0.015005359056806111
+   ],
+   "alpaca_span": [
+    "2016-01-04",
+    "2025-08-27",
+    2427
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 2427,
+   "filled_span": [
+    "2016-01-04",
+    "2025-08-27"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 286,
+   "weeks_now_scoreable_and_y5": 286
+  },
+  "WBD": {
+   "missing_weeks": 186,
+   "eligible": [
+    "2022-04-11",
+    "2025-12-31"
+   ],
+   "bars_after_cap_dropped": 0,
+   "junction_return_alpaca_extra_to_y26": [
+    "2024-12-31",
+    0.008514664143803197
+   ],
+   "alpaca_span": [
+    "2022-04-11",
+    "2025-12-31",
+    935
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 935,
+   "filled_span": [
+    "2022-04-11",
+    "2025-12-31"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 186,
+   "weeks_now_scoreable_and_y5": 133
+  },
+  "WCG": {
+   "missing_weeks": 4,
+   "eligible": [
+    "2018-09-17",
+    "2020-01-27"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-01-23",
+    1021
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -2,
+   "cells_filled": 1021,
+   "filled_span": [
+    "2016-01-04",
+    "2020-01-23"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 2,
+   "weeks_now_scoreable_and_y5": 2
+  },
+  "WLTW": {
+   "missing_weeks": 104,
+   "eligible": [
+    "2016-01-05",
+    "2022-01-07"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-05",
+    "2022-01-07",
+    1515
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 1515,
+   "filled_span": [
+    "2016-01-05",
+    "2022-01-07"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 103,
+   "weeks_now_scoreable_and_y5": 103
+  },
+  "WRK": {
+   "missing_weeks": 231,
+   "eligible": [
+    "2015-07-02",
+    "2024-07-05"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2024-07-05",
+    2140
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 0,
+   "cells_filled": 2140,
+   "filled_span": [
+    "2016-01-04",
+    "2024-07-05"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 230,
+   "weeks_now_scoreable_and_y5": 230
+  },
+  "XEC": {
+   "missing_weeks": 9,
+   "eligible": [
+    "2014-06-20",
+    "2020-03-02"
+   ],
+   "bars_after_cap_dropped": 390,
+   "alpaca_span": [
+    "2016-01-04",
+    "2020-03-16",
+    1057
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": 10,
+   "cells_filled": 1057,
+   "filled_span": [
+    "2016-01-04",
+    "2020-03-16"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 9,
+   "weeks_now_scoreable_and_y5": 9
+  },
+  "XLNX": {
+   "missing_weeks": 109,
+   "eligible": [
+    "2009-01-02",
+    "2022-02-14"
+   ],
+   "bars_after_cap_dropped": 0,
+   "alpaca_span": [
+    "2016-01-04",
+    "2022-02-11",
+    1540
+   ],
+   "bars_off_yf_calendar": 0,
+   "max_gap_sessions": 1,
+   "last_bar_vs_last_eligible_sessions": -1,
+   "cells_filled": 1540,
+   "filled_span": [
+    "2016-01-04",
+    "2022-02-11"
+   ],
+   "status": "filled",
+   "weeks_now_with_y5": 108,
+   "weeks_now_scoreable_and_y5": 108
+  }
+ },
+ "v2_P4b_per_name_fields_equal_unfilled": {
+  "r": true,
+  "beta": true,
+  "e": true,
+  "valid": true,
+  "elig": true,
+  "Zraw": true,
+  "y5_before_demean": true,
+  "spy_rm": true
+ },
+ "v2_P4c_cross_sectional_fields_unfilled_names": {
+  "Z": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 4.752467155456543,
+   "mean_abs_diff": 0.020083449675053423
+  },
+  "y5": {
+   "nan_pattern_equal": true,
+   "max_abs_diff": 0.004909100521106019,
+   "mean_abs_diff": 0.00036996676394959575
+  }
+ },
+ "v2_P4d_coverage_vs_expected": {
+  "missing_name_weeks": 11589,
+  "now_with_y5": 11510,
+  "now_scoreable_by_master_and_y5": 11139,
+  "names_filled": 79,
+  "names_flagged": {},
+  "names_no_alpaca": [],
+  "remaining_missing_name_weeks": 79,
+  "eligible_2020_2025_name_weeks_with_y5_orig": 141065,
+  "eligible_2020_2025_name_weeks_with_y5_repaired": 152575,
+  "share_of_missing_weeks_filled_with_y5": 0.993183190956942,
+  "share_of_missing_weeks_scoreable": 0.9611700750711882
+ }
+}

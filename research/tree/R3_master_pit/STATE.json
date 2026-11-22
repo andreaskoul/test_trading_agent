@@ -1,0 +1,588 @@
+{
+ "branch": "R3_master_pit",
+ "label": "reused 2020-2025 window; survivorship bound (descriptive, not a test)",
+ "task": "Bound the survivorship bias in MASTER h5's 2020-2025 book: repair the S&P 500 panel's missing (delisted / no-price) names from Alpaca daily bars, retrain MASTER as run (ORIG and REPAIRED arms, seeds 0-4, annual walk-forward 2020-2025), report paired IC, decile book and whole fund.",
+ "status": "complete: RESULT.json written; awaiting coordinator review",
+ "plan": {
+  "P1_inputs": "Original price file quant-tf/.cache/quant_trials/sp500_close.parquet (yfinance, 2009-01-02..2025-12-31), membership quant-tf/data/raw/stocks/sp500_membership.csv, as in sp500_test.build. Alpaca adjusted daily bars (adjustment=all, SIP) .cache/tree/broad/chunks (2016-01-04..2025-12-31) and .cache/tree/y2026/chunks (2025-01-02..); rows after 2025-12-31 never used.",
+  "P2_missing_set": "Names with point-in-time-eligible Thursdays 2020-2025 and no y5 target in the original build (coordinator: 79 names, 11,589 of 152,654 name-weeks). Recomputed and asserted.",
+  "P3_fill_rule": "Per missing name: Alpaca closes (broad chunks; y2026 chunks chain-linked onto broad on their first common session, scale = broad/y26, returns corr > 0.999 on the overlap else flag) are written only into panel cells that are NaN on yfinance sessions (never overwrite a yfinance close), only for sessions <= min(2025-12-31, last eligible session + 10 sessions) (so a later re-use of the ticker by another security is not read). Where yfinance has closes for the name on overlapping sessions: daily-return correlation > 0.999 required, else the name is flagged and NOT filled (typed defect). Content contract per filled name: sessions on the yfinance calendar only, no gap > 5 sessions inside the filled span, positive closes, last bar within 10 sessions of the last eligible session or a stated reason. Source check: Alpaca vs yfinance daily-return correlation 2016-2025 on all panel names present in both (quantiles reported).",
+  "P4_rebuild": "A copy of sp500_test.build that takes a price frame (code identical otherwise). Assert ORIG copy == T.build() exactly (every array). REPAIRED = same copy on the repaired prices. Per-name fields (r, beta, e, valid, elig, raw signals) asserted array_equal for names not filled. Cross-sectionally standardised / demeaned fields (Z, y5/y10/y20, frozen) cannot be identical (the filled names enter each session's mean and std): reported as max abs diff and rank-corr, not asserted. Coverage against expected: filled name-weeks with finite y5 and finite MASTER input (8 rows of Z) vs the missing set; per-name table.",
+  "P5_fit": "research/tree/L4_arch/arch.py fit(d, 'base', seed, year, Thursdays of year, ckpt) (= quant-tf master_fit_predict with checkpoints; as-run cfg d_model 256, beta 5; windows(S, year, 5); lr 1e-5; stop loss<0.95 or patience 15; max 100 epochs), imported read-only. 60 fits: arms ORIG, REPAIRED x years 2020-2025 x seeds 0-4. Scores = mean over seeds. 4 workers, nice 10, nohup, no time-of-day pause, stop below 4 GB free disk; checkpoints deleted after prediction. Predictions .cache/tree/r3/pred_<arm>_y<year>_s<seed>.npz.",
+  "P6_fidelity": "ORIG retrain vs saved quant-tf sp500_tf_master_h5.npz (h5): weekly Spearman of scores (mean, min), IC of each and their difference, corr of weekly ICs.",
+  "P7_report": "Paired ORIG vs REPAIRED (each scored on its own panel; also both on the REPAIRED panel's y5 and returns): weekly IC 2020-2025 (harness.weekly_ic on y5, Thursdays with target window inside the year, NW t 4 lags) and by year; MASTER decile book gross 0.6 beta-hedged 5 bp (L4_exploit/run.py sim + book_decile, K.GROSS_SIDE 0.3, rf dtb3): book %/yr arith, book Sharpe, by year; whole fund B0 (trend core 1.3/0.7 on 200-session mean + book): %/yr compounded, Sharpe, by year; paired diff with NW t; count of repaired names held (name-weeks, distinct names, share of book gross) and their contribution to book return (sum w*R over repaired names, %/yr). Saved-h5 B0 on ORIG panel reproduces 21.69 %/yr, Sharpe 0.937 as a sim check. Every number labelled 'reused 2020-2025 window; survivorship bound'.",
+  "deviations_stated_upfront": [
+   "Z and y are cross-sectional (standardised / demeaned per session over eligible names): identical-for-unrepaired names is asserted on per-name fields only.",
+   "Alpaca has no bars before 2016; names delisted before Alpaca's broad fetch list (not in Alpaca's asset list) or renamed tickers stay missing; counted.",
+   "A held name's return after its last bar is 0 (as in the simulator for any NaN return)."
+  ],
+  "P8_delisting_v2": {
+   "declared": "2026-11-22 by the coordinator, before any result; implemented before any REPAIRED fit or any book run",
+   "event": "a name whose last bar (last valid close <= last eligible session + 10, i.e. the run used) is <= its last eligible session and before 2025-12-31. Applied to the book only: in the holding period whose rows (t+2..t2+1) contain the first session after the last bar (t+1 <= L <= t2), R_name = (1+R)(1+dl)-1. y5 / IC unchanged (the last week has no y5 in either arm).",
+   "FDIC_minus_100": [
+    "SIVB",
+    "FRC",
+    "SBNY"
+   ],
+   "takeover_or_merger_0": [
+    "ABMD",
+    "AGN",
+    "ALXN",
+    "ANSS",
+    "ATVI",
+    "CERN",
+    "CTLT",
+    "CTXS",
+    "CXO",
+    "DFS",
+    "DRE",
+    "ETFC",
+    "FLIR",
+    "HES",
+    "INFO",
+    "IPG",
+    "JNPR",
+    "K",
+    "KSU",
+    "MRO",
+    "MXIM",
+    "MYL",
+    "NBL",
+    "NLSN",
+    "PBCT",
+    "PXD",
+    "RTN",
+    "TIF",
+    "TWTR",
+    "VAR",
+    "WBA",
+    "WCG",
+    "WRK",
+    "XLNX",
+    "DISCK"
+   ],
+   "rename_or_successor_listing_0": [
+    "ABC",
+    "ANTM",
+    "BLL",
+    "CDAY",
+    "COG",
+    "CTL",
+    "DISCA",
+    "FB",
+    "FBHS",
+    "FI",
+    "FLT",
+    "LB",
+    "NLOK",
+    "PEAK",
+    "PKI",
+    "RE",
+    "UTX",
+    "VIAC",
+    "WLTW"
+   ],
+   "note_renames": "the security continues under the new ticker; no delisting return; the return after the last old-ticker bar inside that holding period is 0 (simulator convention), counted",
+   "unexplained_default": -0.3,
+   "unexplained_sensitivity": 0.0,
+   "counts": "reported: events by class in the panel and events while held by the book"
+  }
+ },
+ "done": [
+  "P1-P4 build: copy==T.build (all arrays); missing set 79 names / 11,589 of 152,654 confirmed; 38 names filled, 0 flagged, 33 no Alpaca bars; per-name fields equal for unfilled names; coverage: 1,911 missing name-weeks now with y5 (16.5%), 1,208 scoreable by MASTER (10.4%) -> CHECKS.json",
+  "coordinator told of the coverage shortfall (cached y2026 chunks start 2025; renames) and offered a targeted fetch / rename map",
+  "v2 build (2026-11-22, before any REPAIRED fit and before any result): alpaca_extra sha256 verified, 59/60 tickers (PSKY none; PSKY filled from y2026 chunks); zero-volume Alpaca bars dropped (not trades; SBNY stale 70.0 after halt, INFO/FI/CTRA stale pre-listing bars); Alpaca series capped at last eligible session + 10 before chaining; only the last contiguous run (gaps <= 5 sessions) before the cap kept. 79/79 names filled, 0 flagged; per-name fields equal for every untouched name (asserted); missing name-weeks with y5 11,510 of 11,589 (99.3%), scoreable by MASTER 11,139 (96.1%). Rename identity (old ticker Alpaca vs successor yfinance, old ticker S&P span): FB/META 0.99998, PKI/RVTY, FLT/CPAY, RE/EG, UTX/RTX >= 0.9999; ANTM, ABC, BLL, NLOK, PEAK 0.998-0.9995; WLTW 0.9945, CTL 0.990; ARNC/HWM 0.567 overall but 0.9999 on 2017-01..2020-03 (difference is 2016 adjustment); VIAC/PARA 0.046: the yfinance PARA column is corrupt in 2020-22 (closes ~80,000, vol 6.6%), Alpaca VIAC plausible.",
+  "report.py written and dry-run on the saved h5 only (code paths; no R3 result): sim copy identical to L4 sim (21.69 %/yr, Sharpe 0.937 = recorded B0); delisting events in the REPAIRED panel: 57 (35 takeover/merger, 19 rename, 3 FDIC, 0 unexplained), so the 0 % sensitivity equals the default by construction; ORIG panel: 0 events",
+  "60 fits done (95.6 MPS wall-hours summed over fits, 4 concurrent, ~24 h elapsed); checkpoints deleted; report -> RESULT.json, weekly series .cache/tree/r3/weekly_2020_2025.parquet"
+ ],
+ "running": [],
+ "next": [
+  "coordinator review / commit"
+ ],
+ "resume": "cd worktree; bash research/tree/R3_master_pit/workers.sh 4 (skips finished preds, resumes checkpoints)",
+ "running_fits": {},
+ "updated": "2026-11-22T23:23:00Z",
+ "fits": {
+  "ORIG_y2020_s2": {
+   "epochs": 26,
+   "best_epoch": 10,
+   "val_ic": 0.03894128294069453,
+   "train_sec": 3354.0,
+   "session_sec": 3359.5,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2020_s0": {
+   "epochs": 28,
+   "best_epoch": 12,
+   "val_ic": 0.03684891182051164,
+   "train_sec": 3523.3,
+   "session_sec": 3528.9,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2020_s3": {
+   "epochs": 30,
+   "best_epoch": 14,
+   "val_ic": 0.035393988316799,
+   "train_sec": 3874.6,
+   "session_sec": 3880.8,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2020_s1": {
+   "epochs": 32,
+   "best_epoch": 16,
+   "val_ic": 0.033922848537442776,
+   "train_sec": 4085.7,
+   "session_sec": 4092.4,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2021_s1": {
+   "epochs": 30,
+   "best_epoch": 14,
+   "val_ic": 0.043040931466457426,
+   "train_sec": 4307.9,
+   "session_sec": 4314.5,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2021_s2": {
+   "epochs": 29,
+   "best_epoch": 13,
+   "val_ic": 0.027659209460729087,
+   "train_sec": 4177.2,
+   "session_sec": 4182.9,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2020_s4": {
+   "epochs": 39,
+   "best_epoch": 23,
+   "val_ic": 0.030615653806144283,
+   "train_sec": 5045.0,
+   "session_sec": 5052.6,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2021_s3": {
+   "epochs": 33,
+   "best_epoch": 17,
+   "val_ic": 0.04921710600396547,
+   "train_sec": 4753.2,
+   "session_sec": 4760.5,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2022_s0": {
+   "epochs": 32,
+   "best_epoch": 16,
+   "val_ic": 0.054209506992448156,
+   "train_sec": 5103.0,
+   "session_sec": 5109.7,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2021_s0": {
+   "epochs": 75,
+   "best_epoch": 59,
+   "val_ic": 0.039954030730258314,
+   "train_sec": 10769.2,
+   "session_sec": 10783.2,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2021_s4": {
+   "epochs": 51,
+   "best_epoch": 35,
+   "val_ic": 0.026529679138643864,
+   "train_sec": 7339.6,
+   "session_sec": 7349.7,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2022_s3": {
+   "epochs": 21,
+   "best_epoch": 5,
+   "val_ic": 0.04744123031758561,
+   "train_sec": 3377.8,
+   "session_sec": 3382.7,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2022_s2": {
+   "epochs": 37,
+   "best_epoch": 21,
+   "val_ic": 0.03368915938981259,
+   "train_sec": 5953.8,
+   "session_sec": 5961.5,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2022_s1": {
+   "epochs": 48,
+   "best_epoch": 32,
+   "val_ic": 0.04415203782623034,
+   "train_sec": 7685.3,
+   "session_sec": 7695.6,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2023_s0": {
+   "epochs": 21,
+   "best_epoch": 5,
+   "val_ic": 0.04836072874214571,
+   "train_sec": 3710.3,
+   "session_sec": 3715.1,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2022_s4": {
+   "epochs": 38,
+   "best_epoch": 22,
+   "val_ic": 0.06531645758677908,
+   "train_sec": 6120.8,
+   "session_sec": 6128.9,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2023_s1": {
+   "epochs": 23,
+   "best_epoch": 7,
+   "val_ic": 0.03532880186606664,
+   "train_sec": 4093.3,
+   "session_sec": 4098.4,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2023_s4": {
+   "epochs": 29,
+   "best_epoch": 13,
+   "val_ic": 0.0379818631527505,
+   "train_sec": 5150.5,
+   "session_sec": 5156.6,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2024_s0": {
+   "epochs": 17,
+   "best_epoch": 1,
+   "val_ic": 0.03386903486042577,
+   "train_sec": 3260.9,
+   "session_sec": 3264.7,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2023_s2": {
+   "epochs": 42,
+   "best_epoch": 26,
+   "val_ic": 0.035331782912283685,
+   "train_sec": 7448.1,
+   "session_sec": 7456.7,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2023_s3": {
+   "epochs": 54,
+   "best_epoch": 38,
+   "val_ic": 0.05274640179784747,
+   "train_sec": 9594.8,
+   "session_sec": 9605.9,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2024_s1": {
+   "epochs": 22,
+   "best_epoch": 6,
+   "val_ic": 0.035300186050492226,
+   "train_sec": 4286.1,
+   "session_sec": 4291.2,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2024_s2": {
+   "epochs": 34,
+   "best_epoch": 18,
+   "val_ic": 0.023470725671254314,
+   "train_sec": 6653.8,
+   "session_sec": 6661.7,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2025_s0": {
+   "epochs": 19,
+   "best_epoch": 3,
+   "val_ic": 0.022346509814361995,
+   "train_sec": 4070.8,
+   "session_sec": 4075.5,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2024_s4": {
+   "epochs": 36,
+   "best_epoch": 20,
+   "val_ic": 0.058338432996585754,
+   "train_sec": 7086.9,
+   "session_sec": 7094.8,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2024_s3": {
+   "epochs": 51,
+   "best_epoch": 35,
+   "val_ic": 0.041723078795692536,
+   "train_sec": 10027.7,
+   "session_sec": 10038.7,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2025_s1": {
+   "epochs": 24,
+   "best_epoch": 8,
+   "val_ic": 0.04037322433716545,
+   "train_sec": 5135.2,
+   "session_sec": 5140.7,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2025_s2": {
+   "epochs": 18,
+   "best_epoch": 2,
+   "val_ic": 0.02811558976273607,
+   "train_sec": 3848.9,
+   "session_sec": 3853.2,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2020_s0": {
+   "epochs": 19,
+   "best_epoch": 3,
+   "val_ic": 0.023465372864637266,
+   "train_sec": 2608.0,
+   "session_sec": 2612.9,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2020_s1": {
+   "epochs": 28,
+   "best_epoch": 12,
+   "val_ic": 0.03742875039680528,
+   "train_sec": 3848.3,
+   "session_sec": 3854.8,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2025_s4": {
+   "epochs": 24,
+   "best_epoch": 8,
+   "val_ic": 0.050865777822640665,
+   "train_sec": 5101.7,
+   "session_sec": 5107.7,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2020_s2": {
+   "epochs": 26,
+   "best_epoch": 10,
+   "val_ic": 0.03450951871372702,
+   "train_sec": 3555.8,
+   "session_sec": 3562.1,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2020_s3": {
+   "epochs": 20,
+   "best_epoch": 4,
+   "val_ic": 0.021319387876024706,
+   "train_sec": 2726.9,
+   "session_sec": 2731.8,
+   "stopped_by_rule": true
+  },
+  "ORIG_y2025_s3": {
+   "epochs": 37,
+   "best_epoch": 21,
+   "val_ic": 0.02852987518476685,
+   "train_sec": 7840.5,
+   "session_sec": 7848.5,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2020_s4": {
+   "epochs": 30,
+   "best_epoch": 14,
+   "val_ic": 0.027849429579393986,
+   "train_sec": 4088.9,
+   "session_sec": 4095.7,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2021_s1": {
+   "epochs": 30,
+   "best_epoch": 14,
+   "val_ic": 0.05351520209022248,
+   "train_sec": 4622.6,
+   "session_sec": 4629.3,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2021_s2": {
+   "epochs": 29,
+   "best_epoch": 13,
+   "val_ic": 0.03268182328109484,
+   "train_sec": 4486.0,
+   "session_sec": 4492.4,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2021_s3": {
+   "epochs": 33,
+   "best_epoch": 17,
+   "val_ic": 0.04247375205933408,
+   "train_sec": 5120.6,
+   "session_sec": 5128.2,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2021_s0": {
+   "epochs": 52,
+   "best_epoch": 36,
+   "val_ic": 0.039711249810682574,
+   "train_sec": 8024.9,
+   "session_sec": 8036.5,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2021_s4": {
+   "epochs": 35,
+   "best_epoch": 19,
+   "val_ic": 0.03142492114355872,
+   "train_sec": 5471.5,
+   "session_sec": 5479.7,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2022_s0": {
+   "epochs": 44,
+   "best_epoch": 28,
+   "val_ic": 0.052060600927060476,
+   "train_sec": 7675.6,
+   "session_sec": 7685.4,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2022_s2": {
+   "epochs": 37,
+   "best_epoch": 21,
+   "val_ic": 0.029864174438077658,
+   "train_sec": 6489.5,
+   "session_sec": 6498.1,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2022_s1": {
+   "epochs": 48,
+   "best_epoch": 32,
+   "val_ic": 0.047190930947534813,
+   "train_sec": 8406.9,
+   "session_sec": 8417.7,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2022_s3": {
+   "epochs": 30,
+   "best_epoch": 14,
+   "val_ic": 0.04431738389252929,
+   "train_sec": 5265.1,
+   "session_sec": 5272.3,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2023_s0": {
+   "epochs": 21,
+   "best_epoch": 5,
+   "val_ic": 0.045340901638078114,
+   "train_sec": 4102.1,
+   "session_sec": 4107.6,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2022_s4": {
+   "epochs": 38,
+   "best_epoch": 22,
+   "val_ic": 0.060993980825500796,
+   "train_sec": 6710.6,
+   "session_sec": 6719.5,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2023_s1": {
+   "epochs": 30,
+   "best_epoch": 14,
+   "val_ic": 0.03259544856112011,
+   "train_sec": 5885.5,
+   "session_sec": 5893.0,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2023_s2": {
+   "epochs": 37,
+   "best_epoch": 21,
+   "val_ic": 0.03264786727586998,
+   "train_sec": 7258.5,
+   "session_sec": 7267.2,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2024_s0": {
+   "epochs": 17,
+   "best_epoch": 1,
+   "val_ic": 0.029333799855285697,
+   "train_sec": 3680.0,
+   "session_sec": 3684.6,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2023_s4": {
+   "epochs": 42,
+   "best_epoch": 26,
+   "val_ic": 0.04250344074402459,
+   "train_sec": 8299.5,
+   "session_sec": 8309.5,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2024_s1": {
+   "epochs": 27,
+   "best_epoch": 11,
+   "val_ic": 0.036520857563032916,
+   "train_sec": 5850.0,
+   "session_sec": 5856.7,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2023_s3": {
+   "epochs": 65,
+   "best_epoch": 49,
+   "val_ic": 0.050808507034510314,
+   "train_sec": 12854.5,
+   "session_sec": 12869.5,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2024_s2": {
+   "epochs": 34,
+   "best_epoch": 18,
+   "val_ic": 0.02035100476131935,
+   "train_sec": 7395.5,
+   "session_sec": 7403.3,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2024_s3": {
+   "epochs": 32,
+   "best_epoch": 16,
+   "val_ic": 0.0318486124793031,
+   "train_sec": 6997.7,
+   "session_sec": 7005.4,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2025_s0": {
+   "epochs": 19,
+   "best_epoch": 3,
+   "val_ic": 0.022011523893078564,
+   "train_sec": 4532.9,
+   "session_sec": 4538.4,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2024_s4": {
+   "epochs": 36,
+   "best_epoch": 20,
+   "val_ic": 0.0636489193039421,
+   "train_sec": 7858.5,
+   "session_sec": 7867.3,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2025_s1": {
+   "epochs": 24,
+   "best_epoch": 8,
+   "val_ic": 0.04218932090153571,
+   "train_sec": 5729.8,
+   "session_sec": 5736.3,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2025_s2": {
+   "epochs": 18,
+   "best_epoch": 2,
+   "val_ic": 0.028746921338944974,
+   "train_sec": 4125.2,
+   "session_sec": 4129.5,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2025_s4": {
+   "epochs": 41,
+   "best_epoch": 25,
+   "val_ic": 0.04712536230067148,
+   "train_sec": 5984.6,
+   "session_sec": 5988.3,
+   "stopped_by_rule": true
+  },
+  "REPAIRED_y2025_s3": {
+   "epochs": 48,
+   "best_epoch": 32,
+   "val_ic": 0.03379441844932037,
+   "train_sec": 7364.3,
+   "session_sec": 7369.0,
+   "stopped_by_rule": true
+  }
+ },
+ "fits_done": 60
+}
