@@ -1,0 +1,2562 @@
+{
+ "records": {
+  "A": {
+   "ticker": "A",
+   "index": "SP500",
+   "sector": "Health Care",
+   "sub_industry": "Life Sciences Tools & Services",
+   "last_release": "2026-08-26 20:06:25+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1090872/000109087226000062/exhibit991-q326pressrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Life Sciences & Diagnostics growth",
+      "last_report": "Q3 LDG revenue $746M, +11% reported, +10% core; operating margin 23.5%.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "CrossLab revenue and margin",
+      "last_report": "Q3 ACG revenue $786M, +6% reported, +5% core; operating margin 34.3%.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Applied Markets revenue",
+      "last_report": "Q3 AMG revenue $346M, +7% reported, +7% core; operating margin 24.9%.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Non-GAAP operating margin",
+      "last_report": "Q3 non-GAAP operating margin 28.3%, up 320bp y/y, including ~110bp tariff refund benefit.",
+      "guidance": "FY26 expansion over 130bp at midpoint, including ~30bp net tariff refund benefit."
+     },
+     {
+      "id": "D5",
+      "name": "Non-GAAP EPS and tariff refunds",
+      "last_report": "Q3 non-GAAP EPS $1.62, +18% y/y, including $0.06 tariff refund benefit.",
+      "guidance": "Q4 non-GAAP EPS $1.71-$1.74; FY26 $6.18-$6.21; Q4 excludes future tariff refunds."
+     }
+    ],
+    "guidance": "Q4 FY26 revenue $1.98B-$2.0B, up 6.4%-7.4% reported and 5.2%-6.2% core; non-GAAP EPS $1.71-$1.74, excluding any future tariff refund benefit. FY26 revenue $7.49B-$7.51B, non-GAAP EPS $6.18-$6.21, non-GAAP operating margin expansion over 130bp.",
+    "kill_conditions": [
+     "Q4 core revenue growth below 5.2% or reported revenue under $1.98B.",
+     "Q4 non-GAAP EPS below $1.71, or FY26 EPS guidance cut below $6.18.",
+     "LDG core growth falling to mid-single digits or lower, or margin contracting excluding tariff refunds."
+    ]
+   },
+   "card_provider": "River",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 27,
+    "found": 27,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 168,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Agilent and University of Chicago announce energy materials research center",
+        "date": "2026-10-29",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "DigitalOcean",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Agilent and University of Chicago open Energy Materials Research Center",
+        "date": "2026-10-29",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Agilent launches 5987A MSD with GC Assist",
+        "date": "2026-11-02",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Agilent completes acquisition of Proscia",
+        "date": "2026-11-04",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Agilent launches SureSelect Cancer Research Pan Heme",
+        "date": "2026-11-10",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "MTD",
+    "BIO",
+    "CRL",
+    "WAT",
+    "AVTR"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MTD",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad-based 6% local growth and improving demand, strong Asia; supports Agilent life-science/analytical instrument demand."
+       },
+       {
+        "peer": "BIO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Life Science sales fell 2.4% cc on academic research weakness; signals softer life-science demand for Agilent LDG."
+       },
+       {
+        "peer": "CRL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Organic growth 4.7%, margin expansion, raised guidance; improving biopharma research demand supports Agilent LDG."
+       },
+       {
+        "peer": "WAT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Organic +10%, LC-MS double-digit, raised guidance; strong analytical instrument demand supports Agilent LDG/AMG."
+       },
+       {
+        "peer": "AVTR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Organic +5.2%, VWR distribution +5.8%, raised guidance; improving lab consumables/distribution demand supports Agilent CrossLab."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MTD",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Broad lab demand and Asia strength imply improving conditions for Agilent's life sciences/diagnostics."
+       },
+       {
+        "peer": "BIO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Weak life science and academic research, soft process chromatography suggest headwinds for Agilent LDG."
+       },
+       {
+        "peer": "CRL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Return to organic growth and raised guidance signal improving biopharma R&D demand for Agilent LDG."
+       },
+       {
+        "peer": "WAT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Strong LC-MS/instrument growth and raised guidance indicate robust analytical demand for Agilent Applied Markets."
+       },
+       {
+        "peer": "AVTR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Accelerating lab distribution and consumables demand supports Agilent CrossLab revenue and margin."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "DeepInfra",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "AVTR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "VWR distribution/services organic +5.8% and bioscience return to growth signal improving lab demand."
+       },
+       {
+        "peer": "WAT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong LC-MS and consumables growth, raised guidance, improving end markets signal robust analytical demand."
+       },
+       {
+        "peer": "CRL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Return to organic growth, DSA outperformance, raised guidance signal improving life-science research demand."
+       },
+       {
+        "peer": "BIO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Life Science sales declined on academic research and process chromatography weakness, a negative read for Agilent's life-science demand."
+       },
+       {
+        "peer": "MTD",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Broad-based 6% local growth, strong Asia, improving demand positive for lab instrument demand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Nebius",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 2.8577380332470415,
+   "score_combined": 1.4288690166235207,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 1.7605,
+   "revenue_estimate": 2027654878,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-23",
+   "cutoff": "2026-11-20 22:00:00+00:00",
+   "decided_at": "2026-11-23T02:35:11.528728+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "c97b18872951fa8468865c919df8d2b3730786352aa879defa716bf8fa485bb9"
+  },
+  "ANF": {
+   "ticker": "ANF",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Apparel Retail",
+   "last_release": "2026-08-26 11:38:00+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1018840/000101884026000041/q22026pressrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ledger_failed",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Hollister brand sales",
+      "last_report": "Net sales +2% to $670M, comps -3%; largest brand at ~53% of revenue and lagging Abercrombie.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Abercrombie brand sales",
+      "last_report": "Net sales +8% to $597M, comps +4%; led growth, best-ever second quarter for both brands.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Comparable sales and regional mix",
+      "last_report": "Total comps flat; Americas +1%, APAC +13%, EMEA -4%; 5% growth driven by new space.",
+      "guidance": "Q3 net sales growth of 5%-6%; no comparable sales guidance given."
+     },
+     {
+      "id": "D4",
+      "name": "Underlying operating margin",
+      "last_report": "Reported 19.9% including ~790bps IEEPA refund benefit; underlying margin roughly 12%.",
+      "guidance": "Q3 operating margin 13.0%-14.0%, including ~160bps refund benefit."
+     },
+     {
+      "id": "D5",
+      "name": "Tariff refunds and tariff cost",
+      "last_report": "~$100M IEEPA refunds in Q2, $1.75 EPS benefit; effective tariff rate cut to 10%-12.5%.",
+      "guidance": "$20M Q3 and $120M full-year refunds; ~$0.35 Q3 EPS benefit including interest."
+     },
+     {
+      "id": "D6",
+      "name": "Share repurchases and share count",
+      "last_report": "$177M repurchased in Q2, $282M year-to-date, 7% of shares; $568M authorization remaining.",
+      "guidance": "At least $500M full-year and $100M in Q3 buybacks; ~43M diluted shares."
+     }
+    ],
+    "guidance": "Q3: net sales growth 5%-6%, operating margin 13.0%-14.0%, EPS $2.90-$3.20, IEEPA refund favorability ~160bps, buybacks at least $100M. FY2026: net sales growth ~5%, operating margin 14.5%-15.0%, EPS $13.10-$13.60, buybacks at least $500M.",
+    "kill_conditions": [
+     "Q3 comparable sales turn negative or Hollister comps decline further, with total sales growth below 5%",
+     "Operating margin below the 13.0%-14.0% Q3 guide, or IEEPA refunds smaller than the ~$20M assumed",
+     "Tariff rate above 12.5% or full-year IEEPA refunds short of $120M, pressuring gross margin and EPS"
+    ]
+   },
+   "card_provider": "InferenceNet",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 28,
+    "found": 24,
+    "share": 0.8571428571428571,
+    "missing": [
+     "12",
+     "53",
+     "597",
+     "670"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 201,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Abercrombie & Fitch and CeeDee Lamb launch co-designed collection",
+        "date": "2026-11-04",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Hollister expands in UK with new stores ahead of Christmas",
+        "date": "2026-11-19",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Ionstream",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "_Cut('answer cut at max_tokens 24000')",
+     "provider": null,
+     "log": {
+      "attempts": [
+       {
+        "kind": "transport",
+        "error": "_Cut('answer cut at max_tokens 24000')"
+       }
+      ],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "_Cut('answer cut at max_tokens 24000')",
+     "provider": null,
+     "log": {
+      "attempts": [
+       {
+        "kind": "transport",
+        "error": "_Cut('answer cut at max_tokens 24000')"
+       }
+      ],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "GAP",
+    "ROST",
+    "TJX"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GAP",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Gap comps flat and October demand softened on warm weather; signals softer apparel demand, pressuring ANF Q3 comps."
+       },
+       {
+        "peer": "ROST",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Ross's 8% comps and traffic growth suggest trade-down to off-price, taking share from ANF's full-price brands."
+       },
+       {
+        "peer": "TJX",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 1,
+        "driver": "D3",
+        "why": "TJX comps +4 and off-price momentum suggest value-channel share gains, while warm weather softness pressures ANF sales."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GAP",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Flat comps and October demand softness suggest ANF sales guidance may be at risk; margin readthrough mixed."
+       },
+       {
+        "peer": "ROST",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Off-price traffic +8% signals value-seeking consumers and share shift from full-price apparel; negative for ANF comps."
+       },
+       {
+        "peer": "TJX",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Off-price comps +4 and warm-weather demand softness suggest trade-down and seasonal apparel pressure for ANF."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TJX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Warm weather holding back demand and ample off-price merchandise signal industry headwinds for ANF comps."
+       },
+       {
+        "peer": "ROST",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Ross's 8% traffic-driven comps indicate significant off-price share gains, pressuring ANF's Hollister brand."
+       },
+       {
+        "peer": "GAP",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Gap's market share gains and Old Navy improvement suggest competitive pressure on ANF's Hollister brand."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": null,
+   "score_peer": -3.0,
+   "score_combined": null,
+   "overall_votes": [
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "",
+   "eps_estimate": 3.1326,
+   "revenue_estimate": 1381786969,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-23",
+   "cutoff": "2026-11-20 22:00:00+00:00",
+   "decided_at": "2026-11-23T02:41:19.093699+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "01f8f735b1a985e931d671d762b9ae69f26c8553e1dfc3872fe5909e222796be"
+  },
+  "BURL": {
+   "ticker": "BURL",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Apparel Retail",
+   "last_release": "2026-08-27 10:48:28+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1579298/000119312526369502/burl-ex99_1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Comparable store sales",
+      "last_report": "Q2 comps +2% on top of +5%; two-year stack +7%.",
+      "guidance": "Q3 comps +1% to +3%; FY comps +3% to +4%."
+     },
+     {
+      "id": "D2",
+      "name": "Gross and merchandise margin",
+      "last_report": "Q2 gross margin 46.2%, +250 bps; ex-tariff refunds merch margin +70 bps, freight +10 bps.",
+      "guidance": "No separate gross margin guide; Q3 adj EBIT margin -80 to -60 bps."
+     },
+     {
+      "id": "D3",
+      "name": "Tariff refund reinvestment",
+      "last_report": "$55M refunds received; ~40% reinvested in Q3, ~60% in Q4; neutral to FY earnings.",
+      "guidance": "Q3 adj EBIT margin -80 to -60 bps; FY adj EPS $11.77-$11.97."
+     },
+     {
+      "id": "D4",
+      "name": "Adjusted EPS and EBIT margin",
+      "last_report": "Q2 adj EPS $2.37, +38%; adj EBIT margin +100 bps.",
+      "guidance": "Q3 adj EPS $1.60-$1.70 vs $1.80; FY adj EPS $11.77-$11.97, +16-18%."
+     },
+     {
+      "id": "D5",
+      "name": "Total sales and store growth",
+      "last_report": "Q2 total sales +11%; inventory +9% driven by 149 net new stores and comp inventory +11%.",
+      "guidance": "Q3 total sales +9-11%; FY total sales +10-11%; ~115 net new stores."
+     }
+    ],
+    "guidance": "Q3 FY26: total sales +9-11%, comps +1-3%, adj EBIT margin -80 to -60 bps, adj EPS $1.60-$1.70 vs $1.80. FY26: total sales +10-11%, comps +3-4%, adj EBIT margin +20-40 bps, adj EPS $11.77-$11.97.",
+    "kill_conditions": [
+     "Q3 comparable store sales below 1% or negative, missing guided +1% to +3% range.",
+     "Q3 adjusted EPS below $1.60 or adjusted EBIT margin decline worse than 80 bps.",
+     "Full-year adjusted EPS guidance cut below $11.77 or comp guidance lowered below 3%."
+    ]
+   },
+   "card_provider": "Fireworks",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 22,
+    "found": 22,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 101,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "TJX Q3 comps +4%, earnings beat, holiday momentum accelerating",
+        "date": "2026-11-18",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Ross Stores and Target winning shoppers from rivals, new traffic data",
+        "date": "2026-09-18",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "TJX Q3 comps +4%, earnings beat, holiday momentum accelerating",
+        "date": "2026-11-18",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "TJX Q3 comps +4%, earnings beat, holiday momentum accelerating",
+        "date": "2026-11-18",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Ionstream",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "GAP",
+    "ROST",
+    "TJX"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GAP",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Flat comps and October demand softness amid warm weather; Old Navy promos suggest tougher apparel backdrop for BURL comps."
+       },
+       {
+        "peer": "ROST",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Off-price comps +8, traffic-led, op margin up; implies BURL comps could exceed +1-3% guidance."
+       },
+       {
+        "peer": "TJX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Consolidated comps +4, above plan; healthy off-price demand supports BURL comps despite weather headwinds."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GAP",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Soft October demand and Old Navy/Athleta promotions suggest industry traffic/pricing pressure, modest risk to BURL's +1-3% comp guide."
+       },
+       {
+        "peer": "ROST",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Off-price demand strong; ROST comps +8% and traffic gains suggest BURL comps could exceed +1-3% guide."
+       },
+       {
+        "peer": "TJX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Solid off-price comps and above-plan profit support BURL's Q3 comps and margin outlook."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TJX",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D1",
+        "why": "Marmaxx comp +2 in line with BURL's Q3 guide; no clear read-through."
+       },
+       {
+        "peer": "ROST",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "ROST comps +8 on traffic suggests share gains, negative for BURL's +1-3% comp guide."
+       },
+       {
+        "peer": "GAP",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Warm weather softened October apparel demand, a headwind to BURL's Q3 comps."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.1213203435596424,
+   "score_peer": 2.0,
+   "score_combined": 3.1213203435596424,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "",
+   "eps_estimate": 1.7598,
+   "revenue_estimate": 3041297790,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-23",
+   "cutoff": "2026-11-20 22:00:00+00:00",
+   "decided_at": "2026-11-23T02:36:54.176623+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "ff9d42be8c2bea74366192aad28b98d6bccf2def454e577d208528eacfc9a4db"
+  },
+  "DKS": {
+   "ticker": "DKS",
+   "index": "SP400",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Specialty Stores",
+   "last_release": "2026-08-25 11:01:39+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1089063/000108906326000033/dks-2026801xex991earningsr.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "DICK'S comparable sales growth",
+      "last_report": "Q2 DICK'S comps +4.9%, broad-based growth, World Cup, higher average ticket and transactions.",
+      "guidance": "FY26 DICK'S comp sales +2.5% to +4.0%; no quarterly guidance."
+     },
+     {
+      "id": "D2",
+      "name": "Foot Locker proforma comparable sales",
+      "last_report": "Q2 Foot Locker proforma comps -3.6%, hurt by promotional athletic footwear, fewer launches, legacy silhouettes.",
+      "guidance": "FY26 Foot Locker proforma comps -2.0% to 0.0%; no quarterly guidance."
+     },
+     {
+      "id": "D3",
+      "name": "Foot Locker segment profitability",
+      "last_report": "Q2 Foot Locker segment loss $(31.9)M; gross profit $445.8M; inventory write-downs and liquidation charges.",
+      "guidance": "FY26 Foot Locker segment profit $(80)M to $(40)M; margin (1.1%) to (0.5%)."
+     },
+     {
+      "id": "D4",
+      "name": "DICK'S segment profit margin",
+      "last_report": "Q2 DICK'S segment profit $485.2M on $3.85B sales; margin about 12.6%.",
+      "guidance": "FY26 DICK'S segment profit $1.54B-$1.60B; margin 10.6%-10.9%."
+     },
+     {
+      "id": "D5",
+      "name": "Consolidated operating margin and EPS",
+      "last_report": "Q2 non-GAAP operating margin 8.1%, down 491 bps; non-GAAP EPS $3.53, down 19%.",
+      "guidance": "FY26 operating income $1.45B-$1.55B GAAP/$1.46B-$1.56B non-GAAP; EPS $10.94-$11.94 GAAP/$11.00-$12.00 non-GAAP."
+     }
+    ],
+    "guidance": "FY26 net sales $21.9B-$22.2B; operating income $1.45B-$1.55B GAAP/$1.46B-$1.56B non-GAAP; EPS $10.94-$11.94 GAAP/$11.00-$12.00 non-GAAP; ~90M diluted shares; ~29% tax rate; capex ~$1.6B gross/$1.4B net.",
+    "kill_conditions": [
+     "DICK'S comparable sales growth falls below +2.5% or turns negative in a quarterly report.",
+     "Foot Locker proforma comparable sales decline worse than -2.0% or segment loss exceeds $(80)M annual outlook.",
+     "Consolidated operating margin or EPS misses the low end of FY26 guidance due to deeper promotions."
+    ]
+   },
+   "card_provider": "Fireworks",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 35,
+    "found": 30,
+    "share": 0.8571428571428571,
+    "missing": [
+     "12.6",
+     "3.85",
+     "31.9",
+     "445.8",
+     "485.2"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 175,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Nike Investor Day warns sales to fall through fiscal 2028",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Analyst flags Nike cutting Jordan allocations to Foot Locker by up to 50%",
+        "date": "2026-11-19",
+        "driver": "D2",
+        "direction": -1,
+        "size": 3,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Securities fraud lawsuit filed against DKS over past statements",
+        "date": "2026-11-01",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "On Holding reports slowing U.S. growth, signaling athletic footwear softness",
+        "date": "2026-11-10",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "_Cut('answer cut at max_tokens 24000')",
+     "provider": null,
+     "log": {
+      "attempts": [
+       {
+        "kind": "transport",
+        "error": "_Cut('answer cut at max_tokens 24000')"
+       }
+      ],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Nike Investor Day warns fiscal 2028 challenging, sales falling through fiscal 2028",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Analyst flags Nike plans to cut Jordan allocations to Foot Locker by up to 50%",
+        "date": "2026-11-19",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Securities fraud lawsuit filed against DICK'S Sporting Goods",
+        "date": "2026-11-01",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "below",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Ionstream",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": -2.9270509831248424,
+   "score_peer": null,
+   "score_combined": -2.9270509831248424,
+   "overall_votes": [
+    "below",
+    "below"
+   ],
+   "overall": "below",
+   "hour": "",
+   "eps_estimate": 1.4181,
+   "revenue_estimate": 5142594931,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-23",
+   "cutoff": "2026-11-20 22:00:00+00:00",
+   "decided_at": "2026-11-23T02:37:12.913460+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "a6a3b5ee2f8c6bf6668fb70bc217884a7e8629dd63e3bc5fdb5fce47cebb61e0"
+  },
+  "HPE": {
+   "ticker": "HPE",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Technology Hardware, Storage & Peripherals",
+   "last_release": "2026-09-02 20:06:52+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1645590/000164559026000078/ex-991x922026x8k.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Cloud & AI / Server demand",
+      "last_report": "Cloud & AI revenue $9.0B, up 25.4%; Server $6.8B, up 35.3%; segment operating margin 17.0% vs 7.0%.",
+      "guidance": "Q4 total revenue $13.9B-$14.8B; FY26 revenue growth 34%-37%."
+     },
+     {
+      "id": "D2",
+      "name": "Networking growth and margin",
+      "last_report": "Networking revenue $2.9B, up 74.9%; operating margin 22.0% vs 22.1%; Routing up 270%, Data Center Networking up 112.2%.",
+      "guidance": "FY26 Networking revenue growth raised to 73%-74%."
+     },
+     {
+      "id": "D3",
+      "name": "Gross and operating margin expansion",
+      "last_report": "GAAP gross margin 40.1%, non-GAAP 40.4%; non-GAAP operating margin 16.2%, up 770 bps year-over-year.",
+      "guidance": "FY26 non-GAAP operating profit growth 100%-105%; FY27 non-GAAP operating margin 14%-15%."
+     },
+     {
+      "id": "D4",
+      "name": "Free cash flow and capital returns",
+      "last_report": "Q3 cash from operations $1.6B; free cash flow $1.0B; returned $324M via dividends and buybacks.",
+      "guidance": "FY26 FCF at least $3.75B; FY27 FCF at least $5.0B; Q4 return at least 75% FCF."
+     },
+     {
+      "id": "D5",
+      "name": "Other and Financial Services drag",
+      "last_report": "Corporate Investments and Other operating margin -24.1% vs -7.0%; Financial Services revenue $0.9B, down 0.3%.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q4 FY26: revenue $13.9B-$14.8B; GAAP EPS $1.12-$1.22; non-GAAP EPS $1.20-$1.30. FY26: revenue growth 34%-37%; non-GAAP EPS $3.75-$3.85; FCF at least $3.75B. FY27: revenue growth 13%-17%; non-GAAP EPS growth 16%-20%; non-GAAP operating margin 14%-15%; FCF at least $5.0B.",
+    "kill_conditions": [
+     "HPE cuts FY26 revenue growth below 34% or Q4 revenue guidance below $13.9B.",
+     "Networking revenue growth falls below 73% or segment operating margin drops below 22%.",
+     "Cloud & AI operating margin falls below 17% or free cash flow guidance is cut below $3.75B."
+    ]
+   },
+   "card_provider": "River",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 42,
+    "found": 41,
+    "share": 0.9761904761904762,
+    "missing": [
+     "270"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 691,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "U.S. tightens AI chip export curbs",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "HPE, AMD win DOE Genesis Mission AI supercomputer contract",
+        "date": "2026-11-18",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "FAA halts Juniper router installations after flight outage",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TD SYNNEX expands HPE portfolio distribution to 37+ countries",
+        "date": "2026-11-19",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "US export curbs tighten AI chip shipments",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "FAA halts Juniper router installations after flight outage",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "HPE and AMD co-design Lux AI supercomputer for DOE Genesis Mission",
+        "date": "2026-11-18",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Nvidia reports blowout quarter",
+        "date": "2026-11-18",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Cisco posts record quarter",
+        "date": "2026-11-18",
+        "driver": "D2",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TD SYNNEX extends full HPE portfolio across 37+ countries",
+        "date": "2026-11-19",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Nebius",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "HPE and AMD co-designed Lux AI supercomputer for DOE Genesis Mission",
+        "date": "2026-11-18",
+        "driver": "D1",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TD SYNNEX extends full HPE portfolio to partners across 37+ countries",
+        "date": "2026-11-19",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "FAA halts Juniper router installations after flight outage",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "New U.S. export curbs on AI chip shipments",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "SMCI",
+    "AAPL",
+    "SNDK",
+    "STX",
+    "WDC"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SMCI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "AI server demand remains extremely strong; supports HPE Cloud & AI/Server revenue growth."
+       },
+       {
+        "peer": "AAPL",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Consumer hardware results have no read-through to HPE enterprise IT demand."
+       },
+       {
+        "peer": "SNDK",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record NAND gross margins signal rising memory costs, a headwind to HPE gross margin expansion."
+       },
+       {
+        "peer": "STX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record HDD margins and pricing indicate higher storage component costs for HPE."
+       },
+       {
+        "peer": "WDC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong HDD pricing and margins signal rising component costs, pressuring HPE margins."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SMCI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record AI server revenue and strong FY27 outlook signal robust industry demand, supporting HPE Cloud & AI/Server."
+       },
+       {
+        "peer": "AAPL",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Consumer hardware strength has no clear read-through to HPE enterprise servers, networking, or margins."
+       },
+       {
+        "peer": "SNDK",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D3",
+        "why": "NAND gross margin at 85% signals severe memory cost inflation, a headwind to HPE's gross margin expansion."
+       },
+       {
+        "peer": "STX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record HDD margins and value-based pricing indicate rising storage component costs, pressuring HPE margin expansion."
+       },
+       {
+        "peer": "WDC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong HDD pricing and 60%+ gross margin outlook signal higher storage costs for HPE, a margin headwind."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "WDC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Robust data center storage demand and pricing signal strong AI/server demand for HPE."
+       },
+       {
+        "peer": "STX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record storage demand and multi-year growth visibility support HPE's AI/server demand outlook."
+       },
+       {
+        "peer": "SNDK",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "NAND pricing surge signals component cost inflation, pressuring HPE's gross margin expansion."
+       },
+       {
+        "peer": "AAPL",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Consumer tech demand not relevant to HPE's enterprise IT drivers."
+       },
+       {
+        "peer": "SMCI",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 3,
+        "driver": "D1",
+        "why": "SMCI's record AI server revenue and low margins signal share gains and pricing pressure for HPE."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Makora",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.6708203932499369,
+   "score_peer": -1.3416407864998738,
+   "score_combined": 0.0,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 1.2998,
+   "revenue_estimate": 14641233901,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-23",
+   "cutoff": "2026-11-20 22:00:00+00:00",
+   "decided_at": "2026-11-23T02:36:46.744796+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "461ec8222dee153c378c481edd62168a7fa62f3c97e01378e20cd62a2459405d"
+  },
+  "J": {
+   "ticker": "J",
+   "index": "SP500",
+   "sector": "Industrials",
+   "sub_industry": "Construction & Engineering",
+   "last_release": "2026-08-04 20:10:15+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/52988/000162828026052563/jfy2026q3earningsrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "I&AF organic revenue growth",
+      "last_report": "Q3 I&AF gross revenue +39% y/y, adjusted net revenue +10% all organic; broad-based led by data centers, semiconductors, energy/power, transportation, water.",
+      "guidance": "FY26 adjusted net revenue growth 9.5%-10.0% y/y; no separate Q4 guide."
+     },
+     {
+      "id": "D2",
+      "name": "Backlog and book-to-bill",
+      "last_report": "Record backlog $28.9B, up 27.3% y/y; Q3 book-to-bill 1.5x, adjusted net revenue book-to-bill 1.1x; TTM 1.4x/1.2x.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Adjusted EBITDA margin",
+      "last_report": "Q3 adjusted EBITDA $366.8M, +16.7% y/y; margin improved q/q; FY26 margin guided 14.7%-14.8%.",
+      "guidance": "FY26 adjusted EBITDA margin 14.7%-14.8%."
+     },
+     {
+      "id": "D4",
+      "name": "PA Consulting integration and tax",
+      "last_report": "PA acquisition caused temporarily higher GAAP tax rate (43.4%); adjusted tax 26.4%; rising PA pipeline cited; FY26 adjusted EPS $7.20-$7.30.",
+      "guidance": "FY26 adjusted EPS $7.20-$7.30; no Q4 tax rate guide."
+     },
+     {
+      "id": "D5",
+      "name": "Free cash flow and leverage",
+      "last_report": "Q3 cash from operations $456M; strong FCF; net leverage below year-end target; $614M shares repurchased YTD.",
+      "guidance": "FY26 adjusted free cash flow margin approximately 8%."
+     }
+    ],
+    "guidance": "FY26: adjusted net revenue growth 9.5%-10.0% y/y; adjusted EBITDA margin 14.7%-14.8%; adjusted EPS $7.20-$7.30; adjusted FCF margin ~8%. No separate Q4 guidance.",
+    "kill_conditions": [
+     "I&AF organic adjusted net revenue growth falls below Q3's 10% or backlog/book-to-bill drops below 1.0x.",
+     "FY26 adjusted EPS guidance cut below $7.20 or adjusted EBITDA margin guided below 14.7%.",
+     "Adjusted free cash flow margin guided below ~8% or PA-related tax drag persists into Q4."
+    ]
+   },
+   "card_provider": "Cohere",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 20,
+    "found": 20,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 121,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Selected for Strawberry High Line Canal water infrastructure program in Utah.",
+        "date": "2026-08-11",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected for consenting/regulatory work on UK MESH energy storage project.",
+        "date": "2026-09-08",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM/Jacobs JV appointed program delivery partner for Ireland MetroLink.",
+        "date": "2026-09-10",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Reappointed to National Grid UK asset health intervention programme.",
+        "date": "2026-09-23",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "JV selected as design-build contractor for $1B San Francisco wastewater nutrient reduction project.",
+        "date": "2026-10-28",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected by AEP for integrated program delivery on five-year $37B transmission investment.",
+        "date": "2026-10-29",
+        "driver": "D2",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected to design/project deliver ~$2.1B Northland Corridor Highway section in New Zealand.",
+        "date": "2026-11-05",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected to develop 25-year master plan for Cochin International Airport.",
+        "date": "2026-11-11",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM/Jacobs JV appointed to Irish Rail multi-disciplinary consultancy framework.",
+        "date": "2026-11-13",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected for multi-year Washington DC area airport modernization program.",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected as key supply partner for Anglian Water AMP8/9 major projects framework.",
+        "date": "2026-11-18",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected by Sanofi as EPCM partner for new insulin manufacturing facility in Frankfurt.",
+        "date": "2026-11-19",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Jacobs selected for Utah Strawberry High Line Canal water program",
+        "date": "2026-08-11",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Jacobs selected by EnergyPathways for UK MESH energy storage project",
+        "date": "2026-09-08",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM-Jacobs JV appointed program delivery partner for Ireland MetroLink",
+        "date": "2026-09-10",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Jacobs expands role on National Grid Asset Health Intervention Programme",
+        "date": "2026-09-23",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Jacobs-PCL JV selected for $1B San Francisco wastewater project",
+        "date": "2026-10-28",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Jacobs selected for AEP $37B five-year transmission program",
+        "date": "2026-10-29",
+        "driver": "D2",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Jacobs selected for New Zealand ~$2.1B Northland Corridor highway",
+        "date": "2026-11-05",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Jacobs selected for 25-year Cochin Airport master plan",
+        "date": "2026-11-11",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Jacobs-AECOM JV appointed to Irish Rail consultancy framework",
+        "date": "2026-11-13",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Jacobs selected for Dulles and Reagan airport modernization program",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Jacobs selected for Anglian Water Major Projects Framework",
+        "date": "2026-11-18",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Jacobs selected by Sanofi for new insulin manufacturing facility",
+        "date": "2026-11-19",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.75
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Selected for Central Utah water infrastructure program",
+        "date": "2026-08-11",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected by Energypathways for UK MESH energy storage consenting work",
+        "date": "2026-09-08",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM/Jacobs JV appointed MetroLink program delivery partner",
+        "date": "2026-09-10",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Reappointed to National Grid Asset Health Intervention Programme",
+        "date": "2026-09-23",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected as JV design-build contractor for $1B San Francisco wastewater upgrade",
+        "date": "2026-10-28",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected by AEP for five-year $37B transmission program delivery",
+        "date": "2026-10-29",
+        "driver": "D2",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected for ~$2.1B New Zealand Northland Corridor highway design",
+        "date": "2026-11-05",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected for 25-year Cochin International Airport master plan",
+        "date": "2026-11-11",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "AECOM/Jacobs JV appointed to Irish Rail consultancy framework",
+        "date": "2026-11-13",
+        "driver": "D2",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected for multi-year Washington DC airports modernization program",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected as key supply partner for Anglian Water AMP8/9 framework",
+        "date": "2026-11-18",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Selected by Sanofi as EPCM partner for German insulin facility",
+        "date": "2026-11-19",
+        "driver": "D2",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.64
+     },
+     "error": null,
+     "provider": "Crusoe",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "IESC",
+    "ACM",
+    "TTEK",
+    "FLR",
+    "MTZ"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "IESC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong data center/infrastructure demand and record backlog support Jacobs' I&AF organic growth outlook."
+       },
+       {
+        "peer": "ACM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Design growth, record backlog and margins signal healthy infrastructure demand for Jacobs' I&AF segment."
+       },
+       {
+        "peer": "TTEK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D3",
+        "why": "Water/environment demand and 90bps margin expansion support Jacobs' margin trajectory."
+       },
+       {
+        "peer": "FLR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Record new awards and 21% backlog growth indicate robust capex, supporting Jacobs' backlog/book-to-bill."
+       },
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Record backlog and 74% power delivery growth signal strong utility/energy demand for Jacobs."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "IESC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong electrical/industrial demand and record backlog support J's I&AF data-center, power and infrastructure growth."
+       },
+       {
+        "peer": "ACM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "Direct peer's record wins, 13% backlog growth and record margins signal strong infrastructure demand for Jacobs."
+       },
+       {
+        "peer": "TTEK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Water/environment demand and 13% backlog growth support J's I&AF water and infrastructure design revenue."
+       },
+       {
+        "peer": "FLR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Record new awards and 21% backlog growth signal strong energy/power and infrastructure demand for J's backlog."
+       },
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Power Delivery strength and 46% backlog growth support J's energy/power markets, though communications deferrals are a mild offset."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MTZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Power/utility and large-load demand strong; record backlog supports I&AF organic growth."
+       },
+       {
+        "peer": "FLR",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Record awards and 21% backlog growth signal strong energy/infrastructure demand, supporting bookings."
+       },
+       {
+        "peer": "TTEK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D3",
+        "why": "Water/environment margin expansion supports adjusted EBITDA margin outlook."
+       },
+       {
+        "peer": "ACM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Design growth accelerated to 6%; record backlog supports I&AF organic revenue growth."
+       },
+       {
+        "peer": "IESC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong electrical/communications/infrastructure demand supports I&AF organic growth, especially data centers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 8.320502943378438,
+   "score_peer": 3.6742346141747673,
+   "score_combined": 10.157620250465822,
+   "overall_votes": [
+    "above",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "amc",
+   "eps_estimate": 2.1671,
+   "revenue_estimate": 2606261955,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-23",
+   "cutoff": "2026-11-20 22:00:00+00:00",
+   "decided_at": "2026-11-23T02:35:00.916875+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "70f8db3f1f95bed19f96b04c38ab4252f9659e39a9866cbc6f52f7c33d26c9a2"
+  },
+  "SMTC": {
+   "ticker": "SMTC",
+   "index": "SP400",
+   "sector": "Information Technology",
+   "sub_industry": "Semiconductors",
+   "last_release": "2026-08-25 20:06:08+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/88941/000008894126000028/smtc-07262026x8k991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Net sales growth and bookings",
+      "last_report": "Record net sales $341.9M, up 17% sequentially and 33% year-over-year; accelerating bookings and record backlog cited.",
+      "guidance": "Q3 net sales $410.0M +/- $5.0M, implying roughly 20% sequential growth."
+     },
+     {
+      "id": "D2",
+      "name": "Adjusted gross margin expansion",
+      "last_report": "Non-GAAP adjusted gross margin 54.5%, up from 53.0% in Q1'27 and 53.2% in Q2'26.",
+      "guidance": "Q3 adjusted gross margin 58.3% +/- 100bps; 63.9% +/- 100bps excluding business held for sale."
+     },
+     {
+      "id": "D3",
+      "name": "AI data center networking demand",
+      "last_report": "Record revenue across key focus areas; AI data center networking and connected IoT named as core markets.",
+      "guidance": "New revenue drivers and visibility expected to extend well into next fiscal year; no separate segment guidance."
+     },
+     {
+      "id": "D4",
+      "name": "Operating expense and margin leverage",
+      "last_report": "Adjusted opex $102.8M; adjusted operating margin 24.4% vs 20.4% sequentially, with earnings leverage outpacing revenue growth.",
+      "guidance": "Q3 adjusted opex $112.0M +/- $3.0M; adjusted operating margin 31.0% +/- 60bps."
+     },
+     {
+      "id": "D5",
+      "name": "Cellular module divestiture",
+      "last_report": "Cellular module business classified as held for sale; portfolio optimization progress cited as margin driver.",
+      "guidance": "Q3 adjusted gross margin excluding business held for sale guided at 63.9% +/- 100bps."
+     }
+    ],
+    "guidance": "Q3 FY27: net sales $410.0M +/- $5.0M; adjusted gross margin 58.3% +/- 100bps (63.9% excluding held-for-sale business); adjusted operating margin 31.0% +/- 60bps; adjusted EPS $1.05 +/- $0.03; adjusted EBITDA $134.3M +/- $4.0M; normalized tax rate 18%.",
+    "kill_conditions": [
+     "Q3 revenue below $405M or Q4 outlook cut, showing bookings and backlog strength failed to convert.",
+     "Adjusted gross margin below 58.3%, or below 63.9% excluding the held-for-sale business.",
+     "Adjusted EPS below $1.02 or adjusted opex above $115M, breaking the margin-leverage story."
+    ]
+   },
+   "card_provider": "River",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 25,
+    "found": 24,
+    "share": 0.96,
+    "missing": [
+     "20"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 233,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Semtech expands AirLink 5G networking features for in-vehicle routers and public safety",
+        "date": "2026-10-31",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Semtech launches SGP.32 multi-profile eSIM for global IoT deployments",
+        "date": "2026-11-09",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Nebius",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Semtech expands AirLink 5G features for in-vehicle routers and public safety fleets",
+        "date": "2026-10-31",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Semtech launches SGP.32 multi-profile eSIM for global IoT deployments",
+        "date": "2026-11-09",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Semtech holds Analyst Day; stock selloff raises questions",
+        "date": "2026-11-01",
+        "driver": "D3",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Semtech expanded AirLink 5G portfolio with new public safety and in-vehicle router features",
+        "date": "2026-10-31",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Semtech launched SGP.32 multi-profile eSIM for global IoT deployments",
+        "date": "2026-11-09",
+        "driver": "D3",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "StreamLake",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "NVDA",
+    "SLAB",
+    "MCHP",
+    "SYNA",
+    "MTSI"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NVDA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Nvidia Data Center up 110% YoY and strong outlook signal robust AI infrastructure demand, supporting Semtech's AI data center networking."
+       },
+       {
+        "peer": "SLAB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Silicon Labs' strong IoT growth, healthy bookings, and low channel inventory signal positive connected IoT demand for Semtech."
+       },
+       {
+        "peer": "MCHP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Microchip's above-guidance sales and robust book-to-bill indicate healthy semiconductor demand, supporting Semtech's bookings and growth."
+       },
+       {
+        "peer": "SYNA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Synaptics's smartphone and supply constraints are not clearly relevant to Semtech's AI data center and IoT drivers."
+       },
+       {
+        "peer": "MTSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "MACOM's strong data center growth and gross margin expansion signal favorable AI networking demand and pricing for Semtech."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "NVDA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Nvidia's data center revenue up 110% and Vera Rubin ramp signal robust AI networking demand, supporting Semtech's AI data center growth."
+       },
+       {
+        "peer": "SLAB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Silicon Labs' broad-based IoT growth, healthy bookings and low inventory signal improving IoT demand, supporting Semtech's sales and bookings."
+       },
+       {
+        "peer": "MCHP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Microchip's robust bookings, broad-based growth and data center design wins indicate healthy semiconductor demand, supporting Semtech's sales and bookings."
+       },
+       {
+        "peer": "SYNA",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Synaptics cites supply constraints and smartphone softness, signaling selective IoT/consumer weakness that could modestly pressure Semtech's sales."
+       },
+       {
+        "peer": "MTSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "MACOM's strong revenue growth and expanding gross margins signal favorable semiconductor demand and pricing, supporting Semtech's sales and margin expansion."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Nebius",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MTSI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong q/q growth and margin expansion signal robust semiconductor demand, supporting SMTC's growth and margin guidance."
+       },
+       {
+        "peer": "SYNA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Smartphone softness and supply constraints are not directly relevant to SMTC's AI data center and industrial IoT drivers."
+       },
+       {
+        "peer": "MCHP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Robust bookings and data center design wins support SMTC's AI networking and sales growth outlook."
+       },
+       {
+        "peer": "SLAB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong IoT demand, record medical, and low inventory support SMTC's connected IoT growth and bookings outlook."
+       },
+       {
+        "peer": "NVDA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D3",
+        "why": "Massive data center growth and strong guidance signal robust AI infrastructure demand, supporting SMTC's AI networking driver."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Parasail",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 1.5,
+   "score_peer": 4.47213595499958,
+   "score_combined": 3.73606797749979,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 1.149,
+   "revenue_estimate": 423926718,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-23",
+   "cutoff": "2026-11-20 22:00:00+00:00",
+   "decided_at": "2026-11-23T02:36:09.774250+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "8071ed35b12e75dcc73095077e54b147aafac78db4738db4f9bbf874e2410a47"
+  }
+ },
+ "report_date": "2026-11-23",
+ "cutoff": "2026-11-20 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "37fb37c9e1bf41f08a25b6ce6bb9d2593188a54e235c5de137798d1e316373c6",
+ "runs": [
+  {
+   "at": "2026-11-23T02:41:19.147790+00:00",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "quality": {
+    "counts": {
+     "ok": 6,
+     "ledger_failed": 1
+    },
+    "attempted": 7,
+    "bad": 1,
+    "bad_share": 0.143,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
