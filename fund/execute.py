@@ -69,6 +69,26 @@ def alpaca_closes(syms, day):
     return out
 
 
+def session_equity(cash, qty, closes):
+    """Equity at the official close of a session: cash + signed shares x the session's close. None if any held name
+    has no close (then the halt falls back to the broker's own history and says so)."""
+    held = {k: v for k, v in qty.items() if v}
+    if any(k not in closes for k in held):
+        return None
+    return float(cash) + sum(v * float(closes[k]) for k, v in held.items())
+
+
+def halt_series(hist, session, eq_session):
+    """The equity series the risk halts read: the broker's daily history [(New York date, equity)] plus the session
+    just closed when the broker does not serve it yet. At the 01:10 UTC reconcile the broker's history ends at the
+    session before (2026-11-21: it ended at 11-19, so the halt that tripped on 11-20 was written only after 11-23 and
+    the account went flat a session late, at the 11-24 close)."""
+    out = [(d, float(e)) for d, e in hist if e and e > 0]
+    if eq_session is not None and session is not None and (not out or out[-1][0] < session):
+        out.append((session, float(eq_session)))
+    return out
+
+
 mode = sys.argv[1]
 assert mode in ("plan", "trade", "reconcile", "filltest"), mode
 GROSS_MAX, NAME_MAX, BOOK_GROSS_MAX = 1.8, 0.12, 3.0
@@ -210,14 +230,31 @@ if mode == "reconcile":
         N = pd.DataFrame({"date": pd.to_datetime(ph["timestamp"], unit="s").date, "equity": ph["equity"]}).dropna()
         N = N[N["equity"] > 0]
         N.to_csv(os.path.join(EXEC, "nav.csv"), index=False)
-        if len(N) > 1:
-            e = N["equity"].to_numpy()
+        # the session just closed (calendar), valued at its official close, if the broker has not served it yet
+        now_et = datetime.now(ET)
+        s_c, cal = api("GET", f"/v2/calendar?start={(now_et - timedelta(days=10)).date()}&end={now_et.date()}")
+        closed = [pd.Timestamp(c["date"]).date() for c in (cal or []) if s_c == 200 and datetime.combine(
+            pd.Timestamp(c["date"]).date(), datetime.strptime(c["close"], "%H:%M").time(), ET) + timedelta(minutes=45) <= now_et]
+        session = closed[-1] if closed else None
+        hist = list(zip(pd.to_datetime(ph["timestamp"], unit="s", utc=True).tz_convert("America/New_York").date, ph["equity"]))
+        eq_s, src = None, "broker history"
+        if session is not None and (not hist or hist[-1][0] < session):
+            qty = broker.positions()
+            eq_s = session_equity(broker.account()["cash"], qty, alpaca_closes(sorted(k for k, v in qty.items() if v), session))
+            src = "broker history + session close" if eq_s is not None else "broker history (session close unavailable)"
+            if eq_s is None:
+                problems.append(f"halt: equity at the {session} close unavailable (a held name has no SIP close); "
+                                "the halt read the broker history, which ends a session earlier")
+        H = halt_series(hist, session, eq_s)
+        if len(H) > 1:
+            e = np.array([x for _, x in H])
             dd = 1 - e[-1] / e.max()
             wk = e[-1] / e[max(0, len(e) - 6)] - 1                     # ~5 trading days
-            print(f"broker NAV {e[-1]:,.0f}, drawdown from peak {dd:.1%}, last 5 sessions {wk:+.1%}")
+            print(f"halt series to {H[-1][0]} ({src}): NAV {e[-1]:,.0f}, drawdown from peak {dd:.1%}, last 5 sessions {wk:+.1%}")
             if (dd >= HALT_DD or wk <= -HALT_WEEK) and not os.path.exists(HALT):
                 open(HALT, "w").write(json.dumps({"at": datetime.utcnow().isoformat(timespec="seconds"),
-                                                  "drawdown": dd, "week": wk}) + "\n")
+                                                  "drawdown": dd, "week": wk, "session": str(H[-1][0]),
+                                                  "source": src}) + "\n")
                 problems.append(f"HALT: drawdown {dd:.1%}, week {wk:+.1%}. The next execution goes flat until resumed.")
     print("reconcile:", done or "nothing to reconcile")
     if problems:
