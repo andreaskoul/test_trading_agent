@@ -849,3 +849,17 @@ runbook requires before the first forward fetch.
 * Steps: a job worktree `.claude/worktrees/tree-forward-job` (detached at `origin/research/tree-layer3`); one manual
   run `weekly.sh --no-push --no-alert`, whose output is inspected for content; then the launchd agent from the
   template. The job's commits touch only `F_forward/{RECORDS,WEIGHTS}.jsonl` and `CHECKS.json`.
+
+## Step 48 — Forward job installed (2026-11-24/25)
+
+* Manual run (`weekly.sh --no-push --no-alert`) found two job defects, both fixed on this branch before loading:
+  * the default Python (`/usr/local/bin/python3`) had no pandas; the job now uses the research venv and checks its
+    packages first (the check fails on the system Python);
+  * the 2025 scores were never refit on the extended panel, so a panel that gains names (4,780 → 4,784 on 11-24)
+    stopped `books` with an input defect. The job now refits them weekly and checks them by name against the
+    previous file; the refit reproduced every 2025 score exactly (max diff 0.0), as did the 2026 refit.
+* The first forward fetch window is `fwd_2026-11-23` (sessions 11-23..11-23 after the overlap). Panel checks pass:
+  frozen fields equal, no previously finite target turned NaN.
+* `books --through 2026-11-24` passed its quality gate with 0 forward records, as expected before 2026-12-05.
+* The launchd agent `com.andreaskoul.tree-forward` is loaded (hourly; runs Sat 14:00 UTC → Sun 23:59 UTC, once per
+  ISO week). First scheduled run: Sat 2026-11-28. First forward record: Sat 2026-12-05.
