@@ -1,0 +1,102 @@
+{
+ "revisions": {
+  "main": "e6d31de",
+  "tree": "7c13fd7"
+ },
+ "core": {
+  "S_c": 0.5578007678095542,
+  "sigma_c_pct": 17.203408447434228,
+  "sigma_unit_pct": 11.033758544871658
+ },
+ "samples": [
+  {
+   "label": "development 2013-2019 (walk-forward)",
+   "sharpe": -0.161,
+   "years": 7
+  },
+  {
+   "label": "2020-2025 (walk-forward, reused, survivorship-repaired)",
+   "sharpe": 0.7046520749970069,
+   "years": 6.0
+  },
+  {
+   "label": "2026 to the sealed test's last week",
+   "sharpe": -0.43872724023118886,
+   "years": 0.8269230769230769
+  }
+ ],
+ "note_2026": "2026 Sharpe = pct_2026 / (pct_2020_2025 / S_hat_2020_2025_unrepaired): the 2020-25 book vol is used",
+ "pooled": {
+  "S": 0.19802806129224618,
+  "years": 13.826923076923077,
+  "se_lo2002": 0.2715524649552642
+ },
+ "posterior_prior_sd_0.5": {
+  "all_evidence": {
+   "mean": 0.1529217951870851,
+   "sd": 0.2386300187290024
+  },
+  "2020_2025_only": {
+   "mean": 0.3845980057057337,
+   "sd": 0.33697238631379395
+  }
+ },
+ "tangency_gross": {
+  "S_implied_by_gross_0.6": 0.21465417182741703,
+  "posterior_all": 0.4274460464994874,
+  "posterior_2020_2025_only": 1.0750259427008548,
+  "S_0.70": 1.9566356266193696
+ },
+ "combined_sharpe": {
+  "true_0.0": {
+   "gross_0.0": 0.558,
+   "gross_0.43": 0.538,
+   "gross_0.6": 0.521,
+   "gross_0.9": 0.483,
+   "gross_1.2": 0.442,
+   "gross_1.96": 0.347
+  },
+  "true_0.2": {
+   "gross_0.0": 0.558,
+   "gross_0.43": 0.591,
+   "gross_0.6": 0.592,
+   "gross_0.9": 0.583,
+   "gross_1.2": 0.564,
+   "gross_1.96": 0.504
+  },
+  "true_0.4": {
+   "gross_0.0": 0.558,
+   "gross_0.43": 0.644,
+   "gross_0.6": 0.664,
+   "gross_0.9": 0.683,
+   "gross_1.2": 0.686,
+   "gross_1.96": 0.66
+  },
+  "true_0.7": {
+   "gross_0.0": 0.558,
+   "gross_0.43": 0.724,
+   "gross_0.6": 0.772,
+   "gross_0.9": 0.833,
+   "gross_1.2": 0.869,
+   "gross_1.96": 0.895
+  }
+ },
+ "sharpe_needed_for_1": {
+  "one_book": 0.8299748812048903,
+  "two_equal_independent_books": 0.5868808667144771
+ },
+ "power_one_sided_0.05_vs_S_implied": {
+  "52w_S0.4": 0.071,
+  "52w_S0.7": 0.113,
+  "104w_S0.4": 0.082,
+  "104w_S0.7": 0.152,
+  "156w_S0.4": 0.091,
+  "156w_S0.7": 0.186,
+  "260w_S0.4": 0.106,
+  "260w_S0.7": 0.251
+ },
+ "posterior_prior_sd_1.0_all_evidence": {
+  "mean": 0.1844281898688494,
+  "sd": 0.26206198927825586
+ }
+}
