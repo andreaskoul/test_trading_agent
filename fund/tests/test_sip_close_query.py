@@ -4,7 +4,7 @@ the reconcile's own time, 01:10 UTC (20:10 or 21:10 New York) after the session.
 History.
 * 2026-11-20: end = day + 1 was refused with 403 "subscription does not permit querying recent SIP data"; all 258
   priced fills since 2026-10-01 had an empty close_alpaca. PR #187 changed the end to the session's date.
-* 2026-11-21..24: still 403 at every reconcile. The PR #187 check used a past date (end 2026-11-19 asked on
+* 2026-11-21 and 11-24 01:10 UTC (sessions 11-20 and 11-23, both reconciles since): still 403. The PR #187 check used a past date (end 2026-11-19 asked on
   2026-11-20), so it could not fail. Alpaca reads a date-only end as the end of that day in New York; at 01:10 UTC
   that is still about four hours ahead, inside the 15-minute recent-data limit.
 
