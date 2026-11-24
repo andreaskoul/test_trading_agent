@@ -832,3 +832,20 @@ p 0.52). This is within retraining and seed noise, and is not driven by the deli
   (2026 IC 0.003).
 * Combined with step 45, the fund ceiling under the current core/cap policy falls from about 0.90 to about 0.88
   excess Sharpe, and lower with segregated short proceeds.
+
+## Step 47 — Forward job: operational note before the first forward fetch (2026-11-24)
+
+Owner's instruction (2026-11-19, repeated 2026-11-24): install the weekly forward job. This is the dated note the
+runbook requires before the first forward fetch.
+* **No forward fetch has happened yet.** `.cache/tree/y2026/` holds no `fwd_*` window. The job was not loaded on
+  2026-11-21, its first gate window.
+* **Consequence for the 2026-11-19 book.** Its weights are first computed after the fact, at the first fetch
+  (2026-11-24/25), from bars up to then. The book uses only data up to 2026-11-19, and the code and models were frozen
+  before 2026-11-19 (Amendment 9). So the book is unchanged in content, but its weights are written late; the record
+  says so through `CHECKS.json`'s run stamp. The first forward *record* (with its 5-session target) is still due on
+  2026-12-05.
+* `h9_forward.py fwdtest` passed again on 2026-11-24 (synthetic window; 0 overlap close disagreements, no duplicate
+  rows).
+* Steps: a job worktree `.claude/worktrees/tree-forward-job` (detached at `origin/research/tree-layer3`); one manual
+  run `weekly.sh --no-push --no-alert`, whose output is inspected for content; then the launchd agent from the
+  template. The job's commits touch only `F_forward/{RECORDS,WEIGHTS}.jsonl` and `CHECKS.json`.
