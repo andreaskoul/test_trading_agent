@@ -78,6 +78,16 @@ def session_equity(cash, qty, closes):
     return float(cash) + sum(v * float(closes[k]) for k, v in held.items())
 
 
+HALT_FALLBACK_HAIRCUT = 0.01   # > the largest gap seen between the 01:10 UTC live mark and the close equity (+0.92%)
+
+
+def halt_fallback_equity(account_equity, haircut=HALT_FALLBACK_HAIRCUT):
+    """Session equity when a close is missing: the account's live (after-hours) equity less a haircut larger than its
+    worst observed overstatement of the close equity (+91.8 bp on 2026-11-18, research/exec_recon), so the halt can
+    trip early but never late. Never the stale history: that is a session old."""
+    return float(account_equity) * (1 - haircut)
+
+
 def halt_series(hist, session, eq_session):
     """The equity series the risk halts read: the broker's daily history [(New York date, equity)] plus the session
     just closed when the broker does not serve it yet. At the 01:10 UTC reconcile the broker's history ends at the
@@ -240,11 +250,14 @@ if mode == "reconcile":
         eq_s, src = None, "broker history"
         if session is not None and (not hist or hist[-1][0] < session):
             qty = broker.positions()
-            eq_s = session_equity(broker.account()["cash"], qty, alpaca_closes(sorted(k for k, v in qty.items() if v), session))
-            src = "broker history + session close" if eq_s is not None else "broker history (session close unavailable)"
-            if eq_s is None:
+            acct = broker.account()
+            eq_s = session_equity(acct["cash"], qty, alpaca_closes(sorted(k for k, v in qty.items() if v), session))
+            src = "broker history + session close"
+            if eq_s is None:                       # conservative: the live mark less more than its worst observed gap
+                eq_s = halt_fallback_equity(acct["equity"])
+                src = f"broker history + account equity less {HALT_FALLBACK_HAIRCUT:.0%} (session close unavailable)"
                 problems.append(f"halt: equity at the {session} close unavailable (a held name has no SIP close); "
-                                "the halt read the broker history, which ends a session earlier")
+                                f"the halt used the account's live equity less {HALT_FALLBACK_HAIRCUT:.0%}")
         H = halt_series(hist, session, eq_s)
         if len(H) > 1:
             e = np.array([x for _, x in H])

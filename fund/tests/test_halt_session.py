@@ -33,10 +33,22 @@ HIST = [(date.fromisoformat(d), e) for d, e in HIST]
 
 def load():
     tree = ast.parse(open(SRC).read())
-    fns = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in ("session_equity", "halt_series")]
+    fns = [n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name in ("session_equity", "halt_series", "halt_fallback_equity")]
+    consts = [n for n in tree.body if isinstance(n, ast.Assign) and any(getattr(x, "id", "") == "HALT_FALLBACK_HAIRCUT" for x in n.targets)]
     ns = {}
+    exec(compile(ast.Module(consts, []), SRC, "exec"), ns)
     exec(compile(ast.Module(fns, []), SRC, "exec"), ns)
     return ns["session_equity"], ns["halt_series"]
+
+
+def load_fallback():
+    load()
+    tree = ast.parse(open(SRC).read())
+    nodes = [n for n in tree.body if (isinstance(n, ast.Assign) and any(getattr(x, "id", "") == "HALT_FALLBACK_HAIRCUT" for x in n.targets))
+             or (isinstance(n, ast.FunctionDef) and n.name == "halt_fallback_equity")]
+    ns = {}
+    exec(compile(ast.Module(nodes, []), SRC, "exec"), ns)
+    return ns["halt_fallback_equity"], ns["HALT_FALLBACK_HAIRCUT"]
 
 
 def stats(series):
@@ -74,10 +86,24 @@ def test_session_equity_is_cash_plus_shares_at_the_close():
     assert session_equity("27955.13", {}, {}) == 27955.13                                # flat account: the cash
 
 
+def test_missing_close_falls_back_conservatively_not_to_stale_history():
+    """Real fixture: the live equity read at the 11-21 01:11 UTC reconcile was 87,752.49 (close equity 87,702.83).
+    Live marks overstated the close by up to +91.8 bp (11-18: 95,453.69 against 94,585.40), so the haircut must exceed
+    that: the fallback is then below the close equity on every reconcile observed, and the 11-20 halt still trips."""
+    fallback, haircut = load_fallback()
+    _, halt_series = load()
+    assert haircut > 0.0092
+    observed = [(87752.49, 87702.83), (95453.69, 94585.40), (92078.56, 92149.55), (90540.79, 90285.19)]  # live, close
+    assert all(fallback(live) <= close for live, close in observed)
+    before = [h for h in HIST if h[0] <= date(2026, 11, 19)]
+    assert trips(halt_series(before, date(2026, 11, 20), fallback(87752.49)))
+
+
 def test_reconcile_uses_the_session_series():
     src = open(SRC).read()
-    assert "H = halt_series(hist, session, eq_s)" in src and "session_equity(broker.account()[\"cash\"]" in src
+    assert "H = halt_series(hist, session, eq_s)" in src and "session_equity(acct[\"cash\"]" in src
     assert "tz_convert(\"America/New_York\").date" in src         # sessions by New York date, not UTC
+    assert "eq_s = halt_fallback_equity(acct[\"equity\"])" in src    # a missing close never leaves the stale history
 
 
 if __name__ == "__main__":
