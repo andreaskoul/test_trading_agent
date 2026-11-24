@@ -380,3 +380,347 @@ fixed effects and a DK t (5 lags).
 * development: sessions 2016-02-01 .. 2019-12-31; gate t ≥ 1.5 and a positive slope;
 * OOS: 2020-01-02 .. 2025-12-31, one read (`OOS5_READ.lock`);
 * Holm across the finalists; pass = Holm p < 0.05 with a positive slope.
+
+### Amendment 9 (2026-11-07, after round 5's OOS read and before any statistic of round 6): a tradeable earnings-drift book with a fundamental field
+
+**Owner (2026-11-07):** "don't stop the research until you find something tradeable … investigate with other
+available data". Tradeable means at the fund's speed: decisions on Thursdays, entry at the close of t+1, 5 bp a
+side.
+
+**Prior evidence:** P8's descriptive decay curves (`reports/research/p8/decay_earnings.md`, fit sample 2012–2021)
+put earnings information in the S&P 500 at about 20 sessions. The SUE top-minus-bottom quintile earns +57 bp
+over t0+2..t0+21; then it fades. **2022–2025 has never been read for earnings drift.** This round's OOS is
+therefore **2022-01-01 .. 2025-12-31**. Development is 2012–2021, which P8 has already seen descriptively
+(disclosed).
+
+**Events:** P8 `events.parquet` (S&P 500 point in time). Each event carries:
+* SUE: seasonal random walk, winsorised at ±10;
+* CAR = Σ e over t0−1..t0+1.
+
+**Decision t (Thursday):**
+* **Events:** those with t0+1 ≤ t and t0 ≥ t−5. The whole reaction is known at the close of t.
+* **Composite:** z(SUE) + z(CAR), z-scored across the week's events.
+* **Field F:** the cosine-weighted mean SUE of the name's text neighbours (§3 kernel, built at the month's first
+  session) whose reaction session t0_j lies in [t−62, t]. Weights are renormalised over neighbours with an event;
+  F is missing when there is none.
+* **Target D20:** Σ e over sessions t+2..t+21, the 20 sessions after entry at close t+1.
+
+| Test | Statistic (predicted sign) | Idea |
+|---|---|---|
+| E1 | pooled slope of D20 on the week's z(composite), week fixed effects, DK t (5 lags) (+) | earnings drift (Bernard & Thomas 1989; Chan, Jegadeesh & Lakonishok 1996) |
+| E2 | in the pooled regression of D20 on [z(composite), z(F)], the coefficient on z(F), DK t (+) | McKean–Vlasov fundamental field: peers' surprises this season carry information about the name that the market prices slowly |
+| E4 | mean residual return of the reaction session, e_{i,t0} (+) | the earnings-announcement premium (Frazzini & Lamont 2007; Savor & Wilson 2016). Trade: buy at close t0−1, sell at close t0 |
+
+**Rows:**
+* E1 and E2: events with z-scores, in weeks with ≥ 10 events. E2 also needs F.
+* E4: every event in the period. Its DK t clusters by week.
+
+**Book (E1, reported with the test; also E2's book on z(composite) + z(F)):**
+* each week, a cohort goes long the top third of events by signal and short the bottom third, equal weight, 50% a
+  side, beta-hedged with SPY using the fund's beta;
+* each cohort is held 20 sessions; four overlapping cohorts are averaged, each at 1/4 weight;
+* costs: 5 bp a side at entry and at exit;
+* reported: net % a year and Sharpe.
+
+**Verdicts:**
+* E1, E2: pass = Holm p < 0.05 with the book's net mean > 0.
+* E4: pass = Holm p < 0.05 with mean e_{t0} > 10 bp, the round trip.
+
+**Gates (development 2012–2021):** t ≥ 1.5 in the predicted direction, and for E1/E2 a net book mean > 0.
+
+**OOS:** 2022–2025, one read (`OOS6_READ.lock`), Holm across round 6's finalists.
+
+**Replication, if anything passes:** the S&P 400 (P8 events and closes, current list, survivorship disclosed),
+2022–2025, one read (`REP6_READ.lock`).
+
+### Amendment 10 (2026-11-07, after round 6's development and before any statistic that uses insider data): insider trading and its field
+
+**Round 6** (`DEV6_RESULT.md`, development 2012–2021): no finalists.
+* E1, earnings drift at the Thursday cadence: 13 bp per sd, t 1.22; book +0.16% a year.
+* E2, the field: −1.1 bp, t −0.07.
+* E4, announcement premium: −1 bp.
+
+So the OOS6 read is not spent. In large caps, price and earnings information is priced within days.
+
+**Round 7 uses information the market is known to price slowly:** insiders' open-market trades, from the SEC
+Insider Transactions Data Sets 2010–2025 (`insider.py`).
+* Typed fields only: TRANS_CODE P (purchase) or S (sale), from Forms 4 and 5. Amendments are dropped.
+* The signal date is FILING_DATE; a filing counts at decision t if FILING_DATE ≤ the session before t.
+* Issuer CIK → ticker via P8's `ciks.json`. A ticker without a CIK has no insider data, and its signals are 0.
+
+**Signals at Thursday t,** over filings in the last 63 sessions:
+
+| Test | Signal (predicted sign +) | Idea |
+|---|---|---|
+| N1 | (insiders with purchases − insiders with sales) / (insiders with purchases + insiders with sales); 0 if none | net purchase ratio (Lakonishok & Lee 2001) |
+| N2 | opportunistic insiders with purchases − opportunistic insiders with sales | opportunistic trades (Cohen, Malloy & Pomorski 2012) |
+| N3 | text field of N1 (§3 kernel; neighbours without trades count as 0) | McKean–Vlasov: peer insiders' information about the industry |
+
+**Opportunistic insiders (N2):** an insider is classified at the start of each calendar year y. The insider needs
+at least one P or S trade in each of y−3, y−2 and y−1.
+* **Routine:** traded in the same calendar month in all three years.
+* **Opportunistic:** every other classified insider.
+* **Unclassified insiders** are not counted, as in Cohen, Malloy & Pomorski.
+
+**Target and statistic:** as round 6. D20 = Σ e over t+2..t+21. The pooled slope on the week's cross-sectional
+z-score of the signal, with week fixed effects and a DK t (5 lags).
+* Reported: the same slope for D60 (t+2..t+61).
+
+**Rows:** point-in-time S&P 500 members at t with closes at t and t+1. N3 also needs a text vector.
+
+**Book:**
+* N1, N2: long names with a positive signal, short names with a negative signal, equal weight, 50% a side;
+* N3: top and bottom deciles;
+* all books are beta-hedged with SPY, held 20 sessions in four overlapping cohorts, at 5 bp a side.
+
+**Splits:**
+* development: decisions 2013-01 .. 2019-12 (N2 needs three years of history);
+* OOS: 2020-01 .. 2025-12, one read (`OOS7_READ.lock`); 2020–2025 has been read by rounds 1–5 for other signals.
+
+**Gates:** t ≥ 1.5 and a positive net book mean. **Verdict:** Holm p < 0.05 with a positive net book.
+
+**Replication, if anything passes:** the S&P 400 current list 2020–2025 (P8 closes; survivorship disclosed), one
+read (`REP7_READ.lock`).
+
+### Amendment 11 (2026-11-07, after round 7's development and before any statistic of round 8): mean-field statistical arbitrage
+
+**Round 7** (`DEV7_RESULT.md`, development 2013–2019): no finalists. Insider net purchases, opportunistic insiders
+and their text field: |t| ≤ 0.84 at 20 sessions; every book lost money. In S&P 500 names, insider purchases
+are rare: about 25 net-buying names a week.
+
+**The force that keeps appearing** is the pull of a stock toward its neighbours. A3's weekly gap convergence had a
+gross slope of t 3.33 in development, but its book traded every name every week. **Round 8** models the residual
+against the neighbour basket as a locally stationary OU process. It trades only far excursions of fast-reverting
+residuals: the statistical arbitrage of Avellaneda & Lee (2010), with their parameters unchanged (paper §§4–5
+and Appendix). Here the factor is the **mean field of the 10-K text neighbours** instead of a sector ETF.
+
+**The rules, decided daily at close t, for point-in-time S&P 500 members:**
+1. **Basket return** r_B,i: the §3 text-kernel weighted mean of the neighbours' daily returns. The kernel is built
+   at the month's first session; weights are renormalised over neighbours with a return that day.
+2. **Regression:** over sessions t−59..t, regress r_i = β0 + β·r_B,i + ε. Then X_k = Σ_{j ≤ k} ε_j.
+3. **OU fit:** the AR(1) X_{n+1} = a + b·X_n + ζ gives κ = −252·ln b, m = a/(1−b), σ_eq = √(Var ζ/(1−b²)).
+4. **Filter:** only names with **κ > 252/30** (b < 0.9672) and 0 < b may open a position. This is the local
+   stationarity regime: fast mean reversion.
+5. **s-score:** s = −(m − ⟨m⟩)/σ_eq, where ⟨m⟩ is the mean of m over the names that pass the filter that day.
+6. **Signals:**
+   * open long if s < −1.25 and open short if s > +1.25;
+   * close a short when s < +0.75 and close a long when s > −0.50.
+7. **Position:** $1 of the stock against β (fixed at entry) dollars of the basket.
+8. **Costs:** 5 bp a side on the stock and on the basket notional, at entry and at exit.
+9. **Book:** the daily return is the mean over open positions of the position's net P&L, on committed capital.
+
+| Test | Basket | Execution |
+|---|---|---|
+| S1 | text neighbours | signal at close t, trade at close t+1 (the research books' convention) |
+| S2 | text neighbours | trade at close t. The fund sends orders at T−60 s, using prices a minute before the close; this approximates that |
+| S3 | co-movement neighbours (§3, residual correlation) | close t+1 |
+
+**Statistic:** the mean daily net book return, with a Newey–West t (10 lags) (+).
+
+**Reported:**
+* net % a year;
+* Sharpe;
+* trades a year;
+* the average holding period;
+* positions open on an average day.
+
+**Splits:**
+* development: sessions 2011-06-01 .. 2019-12-31; gate t ≥ 1.5 with a positive net mean;
+* OOS: 2020-01-02 .. 2025-12-30, one read (`OOS8_READ.lock`); Holm across round 8's finalists;
+* pass = Holm p < 0.05 with a positive net mean.
+
+**Replication, if anything passes:** the S&P 400 current list (P8 closes, 2016–2025; survivorship disclosed), one
+read (`REP8_READ.lock`).
+
+### Amendment 12 (2026-11-07, after round 8's development at 5 bp and before any OOS read of round 8): the measured cost level
+
+**Round 8 at 5 bp a side** (`DEV8_RESULT.md`): no finalists. S1 nets −0.72 bp a day per position, with about
+2,840 trades a year held about 11 days. The costs come to about 1.8 bp a day per position, so the strategy is
+positive before costs.
+
+The neighbour-reversion signals have repeatedly been positive gross and negative net at 5 bp a side (A2, A3, A3B,
+S1–S3). The fund's **measured** costs are 0.8 bp slippage and 0.08 bp fees per side (118 Alpaca paper fills,
+1–22 October 2026; `fund/CHANGELOG.md`, 2026-10-23). Easy-to-borrow shorts cost nothing.
+
+**Pre-registered cost level: 2 bp a side,** about twice the measured cost, to allow for live slippage. The level
+comes from the fund's fills, not from these results.
+
+**Disclosed:** the development results at 5 bp are known, so a development gate at 2 bp is predictable and is
+not evidence. **The only test is the one OOS read.**
+
+| Test | Strategy, at 2 bp a side on every traded notional (stock and basket legs) |
+|---|---|
+| S1c | S1 (text basket, trade at close t+1) |
+| S2c | S2 (text basket, trade at close t) |
+| S3c | S3 (co-movement basket, close t+1) |
+| A3c | A3 (weekly co-movement gap, decile book, §6; never read OOS) |
+
+**OOS:** 2020–2025 (`OOS8_READ.lock`), one read, Holm across the four. Pass = Holm p < 0.05 with a positive net
+mean. Reported: the gross mean, the net at 5 bp, and returns by year.
+
+**Replication, for a pass:**
+* **S-tests:** the S&P 400 current list (P8 daily closes 2016–2025; survivorship disclosed); kernels and the same
+  rules at 2 bp; one read (`REP8_READ.lock`).
+* **A3c:** that replication is not possible (the bar universe is S&P 500 only); it is reported as such.
+
+**Before any money:** a pass is a paper candidate, recorded forward like the beta records.
+
+### Amendment 13 (2026-11-07, after Amendment 12's OOS read; before any statistic of round 9): news-filtered stat-arb, and a data defect
+
+**Amendment 12's read** (`OOS8_RESULT.md`): no pass. At 2 bp a side, S1c–S3c and A3c were positive but not
+significant: S3c +1.9% a year, Sharpe 0.46, t 0.96. 2020 was the strong year (+14%) and 2022 lost 6%.
+
+**Data defect found** (descriptive; rule 3). The close panel of `research/regime` and of this study covers only
+part of the point-in-time S&P 500 member-days:
+* 68.6% in 2012, 76.6% in 2016, 87.2% in 2020 and 97.1% in 2025;
+* the missing names are mostly companies later acquired or delisted.
+
+P8's Alpaca closes cover 98–100% from 2016 (`reports/research/p8/D1_coverage.md`). Results here carry this
+survivorship. It tends to flatter reversal strategies, so the nulls stand. Future work should use the Alpaca panel.
+
+**Round 9 logic:** a residual's excursion from its peer basket mixes transient liquidity pressure, which reverts,
+with information, which does not (Chan 2003). The news calendar of Amendment 6 marks where the information is.
+
+| Test | Rule (otherwise S3: co-movement basket, close t+1, 2 bp a side) |
+|---|---|
+| S4 | no position may **open** at t if the name had a news day (earnings or unscheduled 8-K) in t−4..t |
+| S5 | S4, and no position may open if any of its basket neighbours had an earnings day in t−4..t |
+
+**Development:** 2011-06 .. 2019 at 2 bp a side. Reported with S3 at 2 bp on the same days.
+
+**Gate:**
+* t ≥ 1.5;
+* a positive net mean;
+* a mean above S3's.
+
+**Confirmation:** 2020–2025 has been read for S3, so it cannot confirm S4 or S5. A confirmation needs data not yet
+read:
+* 2026-01-02 .. 2026-10-30 (P8's sealed window, already spent by P8's own read), **only with the owner's agreement**;
+* or forward paper records.
+
+Until one of these exists, nothing here is a result.
+
+### Amendment 14 (2026-11-08, before any statistic that uses options or short-volume data): round 10, free options and short-sale data
+
+**Round 9** (`DEV9_RESULT.md`): no finalists. S4 nets 0.55 bp a day against S3's 0.45, t 1.17.
+
+**Owner (2026-11-08):** "can we access free options data … information transfer … what other data sources … combine
+(… a CNN head and transformer) … always test and verify".
+
+Two free data families were found and checked to be accessible:
+* **Options** (`options.py`): Alpaca's historical daily bars of expired equity option contracts, from 2024-02,
+  through the fund's keys.
+  * Contracts come from the typed contract list (underlying, type, strike, expiry).
+  * Kept: monthly expiries, strikes within ±15% of spot 45 days before expiry, bars from 75 days before expiry.
+  * The underlying is Alpaca's daily SIP bars, with the VWAP.
+* **Short-sale volume** (`finra.py`): FINRA Reg SHO daily files.
+  * Consolidated from 2018-08; before that, the sum of the TRF/ORF facility files, from 2012.
+
+**Implied volatility** (daily, per contract): Black–Scholes on the contract's daily VWAP against the underlying's
+daily VWAP, which keeps both prices synchronous.
+* Inputs: r = DTB3, continuous; T = calendar days to expiry / 365; no dividend yield.
+* Kept: contracts with 10–60 days to expiry, moneyness K/S in [0.85, 1.15], volume ≥ 1, and a price above the
+  intrinsic value. The IV is solved in [0.01, 5].
+* American early exercise biases put IVs up a little, by about the same amount across names.
+
+| Test | Signal at Thursday t (mean of the daily values over t−4..t, ≥ 3 days) | Sign |
+|---|---|---|
+| O1 | IV spread: over call–put pairs with the same strike and expiry, K/S in [0.9, 1.1], the mean of IV_call − IV_put weighted by min(volume_call, volume_put) (Cremers & Weinbaum 2010) | + |
+| O2 | smirk: IV of the put nearest K/S = 0.90 (in [0.85, 0.95]) minus the mean IV of calls with K/S in [0.95, 1.05] (Xing, Zhang & Zhao 2010) | − |
+| O3 | O/S: 100 × the summed option volume of the kept contracts over the stock's volume (Johnson & So 2012) | − |
+| O4 | text field (§3 kernel) of O1: information transfer from neighbours' option markets | + |
+| F1 | abnormal short-volume ratio: short/total over t−4..t minus the same over t−64..t−5 | two-sided |
+| F2 | short-volume ratio over t−19..t | two-sided |
+
+**F1 and F2 are two-sided** because the sign is ambiguous. Market makers short to fill retail buys, which would
+make a high ratio predict positive returns. Informed short sellers would make it predict negative returns. The
+development sign fixes the OOS direction (disclosed).
+
+**Target:** next week's residual Σ e over t+2..t+6, point-in-time S&P 500 members (`research/regime` panel).
+
+**Statistic:** the pooled slope on the week's cross-sectional z, with week fixed effects and a DK t (5 lags).
+
+**Book:** weekly decile book, beta-hedged, at **2 bp a side** (Amendment 12); 5 bp is reported.
+
+**Gate:** |t| ≥ 1.5 in the registered direction (either direction for F), with a positive net book at 2 bp.
+
+**Splits:**
+* options: development decisions 2024-03-07 .. 2024-12-31, OOS 2025-01-01 .. 2025-12-24, about 40 and 50 weeks.
+  Power is low: only a strong effect can pass;
+* FINRA: development 2012–2019, OOS 2020–2025;
+* one read (`OOS10_READ.lock`), Holm across all round-10 finalists.
+
+**Combination** (the owner's ML idea, registered now in its simplest honest form):
+* if two or more of O1–O4, F1 and F2 reach |t| ≥ 1.0 in development, a ridge combination of their weekly z-scores
+  (signed as in development, L2 penalty 1, fitted on development only) is read once OOS as one more test;
+* a CNN or transformer head is **not** registered: with two years of options data it would fit noise; it waits
+  for longer forward data.
+
+**2026:** the owner's sealed window. It is not downloaded and serves no read here. It can confirm a pass only with
+the owner's agreement.
+
+### Amendment 15 (2026-11-08, after round 10's OOS read; before any of the checks below): verifying F2
+
+**Round 10 OOS** (`OOS10_RESULT.md`): **F2 passes.**
+* The slope is −3.4 bp per sd of the 20-session off-exchange short-volume ratio (DK t −1.88, one-sided p 0.030).
+* The weekly decile book nets +2.08% a year at 2 bp (Sharpe 0.49), and +1.31% at 5 bp.
+* Development gave −2.4 bp, t −1.94.
+
+The options signals failed development: O2's smirk was significant, but with the opposite sign to the one
+registered.
+
+Before F2 is called robust, three checks are registered:
+
+1. **Replication, one read** (`REP10_READ.lock`): the S&P 400 current list (survivorship disclosed), 2016-02 ..
+   2025-12, with P8's Alpaca daily closes (`.cache/p8/alpaca_bars.parquet`).
+   * Residuals: against SPY, with the fund's 252-session shrunk beta (as `research/regime`).
+   * F2 and the target are as round 10; z-scores are taken within the S&P 400 cross-section.
+   * Pass = one-sided p < 0.05 for a negative slope, with a positive net book at 2 bp.
+2. **Controls** (OOS sample, one regression, read with check 1): the pooled week-fixed-effects regression of next
+   week's residual on z(F2) together with:
+   * z(own residual over t−4..t), for short-term reversal;
+   * z(log 20-session realised volatility);
+   * z(log 20-session dollar turnover = mean close × volume).
+
+   F2 is robust if its DK t stays ≤ −1.65 with the controls. Volume comes from FINRA's TotalVolume (off-exchange)
+   over the same 20 sessions, as a turnover proxy.
+3. **Stability** (descriptive): F2's slope by year 2012–2025, and separately before and after FINRA's 2018-08 switch
+   to the consolidated file.
+
+**Then:** if checks 1 and 2 pass, F2 becomes a paper candidate, recorded forward like the beta records, with the
+owner's decision before any use.
+
+### Amendment 16 (2026-11-08): forward paper book for F2 (never traded)
+
+**Verification** (`VERIFY10.md`):
+* **Replication:** the S&P 400 has the same sign and size (−2.7 bp per sd, t −1.61, p 0.054). By the registered
+  rule it **narrowly fails**. Its book nets +2.35% a year at 2 bp.
+* **Controls:** F2 survives short-term reversal, volatility and volume (t −2.38).
+* **Stability:** the slope is negative in 10 of 14 years, and the same before and after FINRA's 2018 switch.
+
+All three samples agree in sign, but the evidence is modest: about +2% a year at a Sharpe near 0.5. F2 is
+therefore a **paper candidate**, not a result.
+
+**From Thursday 2026-11-12,** `forward_f2.py` records the F2 decile book in the Friday S&P job:
+* long the lowest 20-session short-volume ratios and short the highest;
+* point-in-time members, beta-hedged with the fund's beta;
+* the free FINRA consolidated files, cached per day;
+* the forward S&P books' booking arithmetic: entry at close t+1, 5 bp a side, frozen at first computation.
+
+Below 90% coverage the job fails loudly, after saving. **No verdict before 52 booked weeks;** using F2 in any book is
+the owner's decision under a protocol.
+
+### Amendment 17 (2026-11-24): the forward F2 book never ran; the gap is recorded, not reconstructed
+
+* **What happened.** The round 6-10 commits of this branch, including Amendments 14-16 and `forward_f2.py`, were pushed
+  on 2026-11-08 after PR #157 had merged (2026-11-07 15:47 UTC). No later PR carried them, so the Friday job never
+  had the F2 steps. PROTOCOL_fund.md and PROPOSAL_protocol10.md announce "a forward paper book from 2026-11-12", but no
+  record exists for as-of 2026-11-12 or 2026-11-19 on `research-data` or any branch (searched 2026-11-21 and
+  2026-11-24).
+* **Rule.** The missed weeks are a gap. They are not back-filled, although FINRA's files would allow it: a
+  reconstruction made now is not a forward record (CLAUDE.md rules 4 and 14). The first record is the first Friday
+  job after this branch reaches `main`; the "52 booked weeks" of the adoption rule count from that record.
+* **Unchanged:** the signal, the book, the costs, the 90% coverage gate and the adoption rule of Amendment 16.
+* **Check before merge:** the contract tests pass, and a dry run for as-of 2026-11-19 on live data covered 503
+  members at 99.0%, with 50 long and 50 short names; three names' ratios (AAPL, COF, DVA) recomputed from the raw
+  FINRA files match the record to five decimals. The dry-run file was deleted.
