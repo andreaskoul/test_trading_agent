@@ -1,0 +1,3273 @@
+{
+ "records": {
+  "ADI": {
+   "ticker": "ADI",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Semiconductors",
+   "last_release": "2026-08-19 11:03:13+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/6281/000000628126000072/adi3q26exhibit991earnings.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Data Center revenue growth",
+      "last_report": "Co-led the 40% YoY revenue increase to $4.02B; no standalone segment figure given, but demand strengthened through the quarter.",
+      "guidance": "No segment-specific Q4 guide; total company revenue guided to $4.3B +/-$100M."
+     },
+     {
+      "id": "D2",
+      "name": "Industrial demand breadth",
+      "last_report": "Named alongside Data Center as growth leader; broad-based demand across portfolio and regions improved sequentially.",
+      "guidance": "CFO calls Q4 outlook a record, implying roughly 7% sequential revenue growth at the $4.3B midpoint."
+     },
+     {
+      "id": "D3",
+      "name": "Adjusted gross margin",
+      "last_report": "Adjusted gross margin 72.5%, up 330 bps YoY; GAAP gross margin 67.3%, up 520 bps, on $4.02B revenue.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Operating margin leverage",
+      "last_report": "Adjusted operating margin 50.0%, up 780 bps YoY; GAAP operating margin 40.1%, up 1,170 bps.",
+      "guidance": "Q4 adjusted operating margin ~52.0% +/-100 bps; reported operating margin ~42.6% +/-150 bps."
+     },
+     {
+      "id": "D5",
+      "name": "Cash flow and capital returns",
+      "last_report": "TTM operating cash flow $5.5B (40% of revenue), free cash flow $4.9B (36%); $1.7B returned via dividends and buybacks in Q3.",
+      "guidance": "Quarterly dividend of $1.10 per share declared, payable September 15, 2026; no cash flow guidance given."
+     }
+    ],
+    "guidance": "Q4 FY26: revenue $4.3B +/-$100M; reported operating margin ~42.6% +/-150 bps; adjusted operating margin ~52.0% +/-100 bps; reported EPS $3.14 +/-$0.15; adjusted EPS $3.86 +/-$0.15. Management expects to finish the year strongly and carry momentum into fiscal 2027.",
+    "kill_conditions": [
+     "Q4 revenue comes in below $4.2B or forward guidance is cut on weakening orders.",
+     "Adjusted operating margin drops below 51% or adjusted gross margin falls under 72%.",
+     "Headlines flag softening Data Center or Industrial demand, or rising distributor channel inventory."
+    ]
+   },
+   "card_provider": "Alibaba",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 24,
+    "found": 24,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 363,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "TimeoutError('LLM call exceeded 240 s')"
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Applied Materials Q4 earnings beat on record semiconductor systems sales, AI-driven demand",
+        "date": "2026-11-13",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Semtech Q3 earnings and revenues surpass estimates",
+        "date": "2026-11-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Fed raises rates 50 bps and increases federal funds rate projections",
+        "date": "2026-11-18",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.95
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "SMTC",
+    "NVDA",
+    "SLAB",
+    "MCHP",
+    "SYNA"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SMTC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record data center sales and backlog signal strong AI infrastructure demand, supporting ADI's data center growth."
+       },
+       {
+        "peer": "NVDA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Blowout data center revenue and Q4 guide signal robust AI infrastructure demand, positive for ADI's data center growth."
+       },
+       {
+        "peer": "SLAB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Broad-based industrial/IoT growth, healthy bookings and low channel inventory support ADI's industrial demand breadth."
+       },
+       {
+        "peer": "MCHP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Broad-based industrial/data center growth and robust bookings support ADI demand, though December guide shows normal seasonality."
+       },
+       {
+        "peer": "SYNA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Smartphone and memory-related weakness not relevant to ADI's data center/industrial drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SMTC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record data center sales and strong Q4 guide signal robust AI networking demand, supporting ADI's data center growth."
+       },
+       {
+        "peer": "NVDA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Blowout data center revenue and Q4 outlook confirm accelerating AI infrastructure demand, positive for ADI's data center revenue."
+       },
+       {
+        "peer": "SLAB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Broad-based industrial and commercial growth, low inventories, healthy bookings indicate improving industrial demand for ADI."
+       },
+       {
+        "peer": "MCHP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Broad-based industrial and data center growth, robust bookings support ADI's industrial demand, though Dec guide shows normal seasonality."
+       },
+       {
+        "peer": "SYNA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Smartphone softness and supply constraints in consumer/edge markets are not relevant to ADI's industrial and data center drivers."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Parasail",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "SYNA",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Smartphone/consumer weakness and supply constraints not relevant to ADI's data center/industrial drivers."
+       },
+       {
+        "peer": "MCHP",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D2",
+        "why": "Broad-based industrial and data center growth, robust bookings support ADI's record Q4."
+       },
+       {
+        "peer": "SLAB",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Broad industrial/IoT growth and low inventories signal continued demand for ADI's industrial segment."
+       },
+       {
+        "peer": "NVDA",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Data Center revenue up 110% YoY, strong AI demand supports ADI's data center growth."
+       },
+       {
+        "peer": "SMTC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record data center networking sales and backlog support ADI's data center momentum."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Reka",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 4.47213595499958,
+   "score_combined": 2.23606797749979,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 3.9221,
+   "revenue_estimate": 4364793608,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-24",
+   "cutoff": "2026-11-23 22:00:00+00:00",
+   "decided_at": "2026-11-24T02:38:07.877049+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "23120dcd1d76118016e6d8b2276553e8aa9b4e7e3cd6245e66404a3a8686a6e0"
+  },
+  "ADSK": {
+   "ticker": "ADSK",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Application Software",
+   "last_release": "2026-08-27 20:05:06+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/769397/000076939726000059/q227pressrelease.htm",
+   "release_doc": "type EX-99.1",
+   "status": "card_ungrounded",
+   "error": "card numbers not in the release: {'numbers': 25, 'found': 14, 'share': 0.56, 'missing': ['1.854', '2.046', '2.125', '2.140', '2.725', '2.750', '7.433', '8.295', '8.345', '8.575']}",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Revenue growth and product mix",
+      "last_report": "Q2 revenue $2.046B, up 16% reported and 14% constant currency; AECO +17%, AutoCAD +14%, MFG +15%, M&E +15%.",
+      "guidance": "Q3 revenue $2.125-$2.140B; FY27 revenue $8.295-$8.345B, including MaintainX."
+     },
+     {
+      "id": "D2",
+      "name": "Billings growth",
+      "last_report": "Q2 billings $1.854B, up 10% year over year; FY27 billings guidance was raised.",
+      "guidance": "FY27 billings $8.575-$8.650B, including incremental MaintainX contribution."
+     },
+     {
+      "id": "D3",
+      "name": "Margin and EPS execution",
+      "last_report": "Q2 GAAP operating margin 29%, up 4 ppt; non-GAAP 41%, up 2 ppt; non-GAAP EPS $3.30.",
+      "guidance": "Q3 non-GAAP EPS $3.04-$3.09; FY27 non-GAAP operating margin ~39%, GAAP 25%-27%."
+     },
+     {
+      "id": "D4",
+      "name": "MaintainX integration and dilution",
+      "last_report": "FY27 guidance includes MaintainX; margin dilution and ~$45M transaction expenses weigh on FCF and profitability.",
+      "guidance": "FY27 outlook includes MaintainX; FCF includes ~$45M transaction expenses and operating/net financing costs."
+     },
+     {
+      "id": "D5",
+      "name": "RPO and multi-year discounting",
+      "last_report": "RPO $7.433B, up 2%; unbilled deferred revenue down 8% on reduced multi-year discounts and Maintenance-to-Subscription wind-down.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q3 FY27 revenue $2.125-$2.140B; non-GAAP EPS $3.04-$3.09. FY27 billings $8.575-$8.650B; revenue $8.295-$8.345B; non-GAAP operating margin ~39%; free cash flow $2.725-$2.750B. Includes MaintainX.",
+    "kill_conditions": [
+     "Autodesk cuts fiscal 2027 revenue or billings guidance",
+     "MaintainX integration costs exceed plan and dilute margins more",
+     "Q3 billings growth falls below 10%"
+    ]
+   },
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 25,
+    "found": 14,
+    "share": 0.56,
+    "missing": [
+     "1.854",
+     "2.046",
+     "2.125",
+     "2.140",
+     "2.725",
+     "2.750",
+     "7.433",
+     "8.295",
+     "8.345",
+     "8.575"
+    ]
+   },
+   "hour": "amc",
+   "eps_estimate": 3.1296,
+   "revenue_estimate": 2176420430,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-24",
+   "cutoff": "2026-11-23 22:00:00+00:00",
+   "decided_at": "2026-11-24T02:32:19.701336+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "e922c2a2a257bec9fffdfb660b7b374fdea51a50c6c10da54baab20a5a1cb4a3"
+  },
+  "BBY": {
+   "ticker": "BBY",
+   "index": "SP500",
+   "sector": "Consumer Discretionary",
+   "sub_industry": "Computer & Electronics Retail",
+   "last_release": "2026-08-27 11:00:56+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/764478/000076447826000037/bby-fy27q2xexx99.htm",
+   "release_doc": "type EX-99",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Domestic comparable sales growth",
+      "last_report": "Domestic comps +4.5%; growth in computing, home theater, AI glasses, trading cards, partly offset by traditional gaming decline. Online comps +5.1%.",
+      "guidance": "Q3 FY27 comps 1.0%-3.0%; FY27 comps raised to 1.9%-3.0% from (1.0%)-1.0%."
+     },
+     {
+      "id": "D2",
+      "name": "Domestic gross profit rate",
+      "last_report": "Domestic gross margin 24.0% vs 23.4%, helped by Marketplace, Best Buy Ads and ~$34M IEEPA tariff refunds, offset by lower product margin rates.",
+      "guidance": "No separate gross margin guidance; FY27 adjusted operating income rate guided 4.4%-4.5%."
+     },
+     {
+      "id": "D3",
+      "name": "SG&A and operating income rate",
+      "last_report": "Domestic adjusted SG&A 19.6% of revenue vs 19.3% on higher compensation, incentive comp, Marketplace/Ads and advertising costs; Best Buy Health expense lower.",
+      "guidance": "Q3 FY27 adjusted operating income rate 4.1%-4.2%; FY27 4.4%-4.5%."
+     },
+     {
+      "id": "D4",
+      "name": "Ads and Marketplace margin mix",
+      "last_report": "Continued strong performance in Best Buy Ads and Marketplace, the primary drivers of domestic gross profit rate expansion, though they also raise SG&A.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "International segment",
+      "last_report": "International revenue -4.2%, comps -1.8% on FX pressure; gross margin 22.3% vs 21.8% on better product margin; SG&A 20.5% of revenue.",
+      "guidance": null
+     }
+    ],
+    "guidance": "FY27 revenue $42.3-$42.8B (raised from $41.2-$42.1B); comps +1.9% to +3.0%; adjusted operating income rate 4.4%-4.5%; adjusted tax ~25.5%; adjusted diluted EPS $6.70-$6.90 (raised from $6.30-$6.60); capex ~$750M; ~$300M buybacks. Q3 FY27: comps 1.0%-3.0%, adjusted operating income rate 4.1%-4.2%.",
+    "kill_conditions": [
+     "Q3 comparable sales land below 1.0% or turn negative, especially if traditional gaming weakness spreads to computing or home theater.",
+     "Q3 adjusted operating income rate falls below 4.1% as gross margin normalizes without the $34M tariff refund.",
+     "Best Buy Ads, Marketplace or emerging categories stop offsetting core product margin declines, or International comps worsen further."
+    ]
+   },
+   "card_provider": "InferenceNet",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 28,
+    "found": 28,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 221,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "TCS closes takeover of Best Buy's Indian capability centre",
+        "date": "2026-10-15",
+        "driver": "D3",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Jason Bonfig becomes Best Buy CEO in late October",
+        "date": "2026-10-31",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Best Buy Canada partners with Uber Eats for on-demand delivery across ~300 stores",
+        "date": "2026-11-16",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Best Buy joins Circana's Gateway Program for supplier insights",
+        "date": "2026-11-16",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Best Buy announces Black Friday sale starting Nov 19",
+        "date": "2026-11-19",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Ionstream",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Best Buy Canada partners with Uber Eats for on-demand electronics delivery across ~300 stores",
+        "date": "2026-11-16",
+        "driver": "D5 International",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Best Buy joins Circana's Gateway Program for supplier performance insights",
+        "date": "2026-11-16",
+        "driver": "D4 Ads and Marketplace margin mix",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TCS closes takeover of Best Buy's Indian capability centre",
+        "date": "2026-10-15",
+        "driver": "D3 SG&A and operating income rate",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Jason Bonfig becomes Best Buy CEO in late October",
+        "date": "2026-10-31",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Hot US inflation data reported",
+        "date": "2026-11-10",
+        "driver": "D1 Domestic comparable sales growth",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Best Buy Canada, Uber Eats exclusive delivery partnership across Canada",
+        "date": "2026-11-16",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Best Buy joins Circana Gateway Program for supplier insights",
+        "date": "2026-11-16",
+        "driver": "D4",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Best Buy Black Friday sale begins Nov 19",
+        "date": "2026-11-19",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "TCS closed takeover of Best Buy's Indian capability centre",
+        "date": "2026-10-15",
+        "driver": "D3",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "New CEO Jason Bonfig stepped into role",
+        "date": "2026-10-31",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Best Buy, Target, Kohl’s try to change holiday shopping",
+        "date": "2026-11-21",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [],
+   "peer_passes": [],
+   "score_own": 1.2247448713915892,
+   "score_peer": null,
+   "score_combined": 1.2247448713915892,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 1.5022,
+   "revenue_estimate": 9995843144,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-24",
+   "cutoff": "2026-11-23 22:00:00+00:00",
+   "decided_at": "2026-11-24T02:34:56.533799+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "c7dde588660be9f4477936cbe89ec22eb6411d04c35828d3ae75383dd0b9755e"
+  },
+  "DELL": {
+   "ticker": "DELL",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Technology Hardware, Storage & Peripherals",
+   "last_release": "2026-09-01 20:10:14+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1571996/000157199626000039/exhibit991earnings8kq2fy27.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "AI-optimized server revenue",
+      "last_report": "Record $16.4B revenue, up 100% Y/Y; record $60.9B orders and $95B backlog.",
+      "guidance": "FY27 AI-optimized servers revenue raised to $74.0B, up 200% Y/Y."
+     },
+     {
+      "id": "D2",
+      "name": "Traditional servers and networking",
+      "last_report": "Record $10.5B revenue, up 122% Y/Y, within ISG.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Storage revenue",
+      "last_report": "Record Q2 storage revenue $4.9B, up 26% Y/Y.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Client Solutions Group",
+      "last_report": "Revenue $15.0B, up 20%; commercial $13.2B, up 22%; operating income $1.1B, up 42%.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Margins and EPS",
+      "last_report": "Gross margin 20.9%; ISG operating margin 15.0%; CSG 7.6%; non-GAAP EPS $7.04.",
+      "guidance": "Q3 non-GAAP diluted EPS $6.50; FY27 non-GAAP EPS $25.50."
+     }
+    ],
+    "guidance": "Q3 FY27 revenue $49.0B (+81% Y/Y), GAAP diluted EPS $6.10, non-GAAP diluted EPS $6.50. FY27 revenue $192.0B (+69%), AI-optimized servers revenue $74.0B (+200%), GAAP EPS $24.37, non-GAAP EPS $25.50.",
+    "kill_conditions": [
+     "Q3 AI-optimized server revenue or orders decline sequentially, or backlog falls below $95B.",
+     "Q3 revenue misses $49.0B guidance or Dell cuts FY27 revenue/AI server outlook.",
+     "ISG operating margin drops below 15% or non-GAAP EPS misses $6.50."
+    ]
+   },
+   "card_provider": "Parasail",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 27,
+    "found": 27,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 739,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Dell and peers seek up to 45% higher prices on signed AI server deals",
+        "date": "2026-11-22",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.5
+     },
+     "error": null,
+     "provider": "Nebius",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Reports Dell and peers seeking 25-45% higher prices on signed AI server deals",
+        "date": "2026-11-22",
+        "driver": "D1",
+        "direction": 0,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "HPE guided Cloud & AI revenue growth to 60-72% in Q4, up from 25% in Q3",
+        "date": "2026-11-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Nvidia reinstated Jensen Huang as CEO after his resignation",
+        "date": "2026-11-23",
+        "driver": "other",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Reka",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Report: Dell and peers seek up to 45% more for AI servers already under contract",
+        "date": "2026-11-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Nvidia reinstates Jensen Huang as CEO after resignation",
+        "date": "2026-11-23",
+        "driver": "other",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Nvidia beat estimates, signaling strong AI demand",
+        "date": "2026-11-22",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "HPE guides Cloud & AI revenue growth to 60-72% in Q4",
+        "date": "2026-11-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Supermicro posts biggest quarter in its history",
+        "date": "2026-11-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Applied Digital signs $5.4B hyperscaler lease",
+        "date": "2026-11-23",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "SEC reportedly probes Nvidia accounting",
+        "date": "2026-11-22",
+        "driver": "other",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "HPE",
+    "SMCI",
+    "AAPL",
+    "SNDK",
+    "STX"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HPE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "HPE's AI server and storage growth plus raised FY27 outlook signal strong shared AI infrastructure demand for Dell."
+       },
+       {
+        "peer": "SMCI",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 2,
+        "driver": "D1",
+        "why": "SMCI's record AI server revenue confirms demand but low 12.7% gross margin signals pricing pressure; mixed for Dell."
+       },
+       {
+        "peer": "AAPL",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Apple's iPhone and Services results say little about Dell's commercial PC demand."
+       },
+       {
+        "peer": "SNDK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Sandisk's strong datacenter storage demand and Q2 guide support Dell's storage revenue growth."
+       },
+       {
+        "peer": "STX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Seagate's strengthening storage demand and multi-year growth outlook support Dell's storage revenue."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HPE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "HPE AI server revenue +95% Y/Y and storage +34% signal strong industry AI/storage demand, supporting Dell's D1 AI server growth."
+       },
+       {
+        "peer": "SMCI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record AI server revenue and FY27 guide $72-82B confirm robust AI infrastructure demand, positive for Dell's D1 AI server revenue."
+       },
+       {
+        "peer": "AAPL",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Apple's results focus on iPhone and Services; no clear read-through to Dell's commercial PC, server, or storage drivers."
+       },
+       {
+        "peer": "SNDK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Sandisk datacenter storage +61% Q/Q and 378% Y/Y signals strong storage demand, positive for Dell's D3 storage revenue."
+       },
+       {
+        "peer": "STX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Seagate's 61% Y/Y revenue growth and multi-year storage demand outlook support Dell's D3 storage revenue."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "STX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Seagate sees strengthening storage demand and pricing, positive read-through for Dell's storage revenue and margins."
+       },
+       {
+        "peer": "SNDK",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Sandisk's datacenter storage surge signals robust storage demand, positive for Dell's storage business."
+       },
+       {
+        "peer": "AAPL",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "D4",
+        "why": "Apple's release focuses on iPhone and Services, with no Mac/PC data, little read-through to Dell's CSG."
+       },
+       {
+        "peer": "SMCI",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Supermicro's record AI server revenue and strong guidance signal robust industry AI infrastructure demand for Dell."
+       },
+       {
+        "peer": "HPE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "HPE's strong AI/server and storage growth with raised guidance signals robust industry demand, positive for Dell."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 1.5,
+   "score_peer": 4.47213595499958,
+   "score_combined": 3.73606797749979,
+   "overall_votes": [
+    "inline",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "amc",
+   "eps_estimate": 6.745,
+   "revenue_estimate": 50304742255,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-24",
+   "cutoff": "2026-11-23 22:00:00+00:00",
+   "decided_at": "2026-11-24T02:35:38.785853+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "f6f25e30abe923499b8286db2a0105854336707b2085be3b33a0ef2460b60d59"
+  },
+  "DLTR": {
+   "ticker": "DLTR",
+   "index": "SP500",
+   "sector": "Consumer Staples",
+   "sub_industry": "Consumer Staples Merchandise Retail",
+   "last_release": "2026-08-27 10:31:24+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/935703/000093570326000108/ex991q2-26earningspressrel.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Comparable store sales growth",
+      "last_report": "Q2 comps +3.7% (ticket +3.3%, traffic +0.4%); YTD +3.6% with traffic -0.3%.",
+      "guidance": "Q3 comps guided 3.0%-4.0%; FY26 comps 3%-4%."
+     },
+     {
+      "id": "D2",
+      "name": "Gross margin and tariff refunds",
+      "last_report": "Q2 gross margin 42.9%, +850bps, with 680bps from net tariff refunds; ex-refund gains from lower tariffs, shrink, occupancy.",
+      "guidance": "No Q3 gross margin number; Q3 EPS includes ~$0.50 tariff refund reinvestment impact."
+     },
+     {
+      "id": "D3",
+      "name": "Tariff refund benefit roll-off",
+      "last_report": "Q2 EPS $2.70 included $1.31 net tariff refund benefit; YTD $1.29 benefit.",
+      "guidance": "FY26 adjusted EPS $7.70-$8.05 includes ~$0.60 net tariff refund benefit; Q3 has $0.50 reinvestment drag."
+     },
+     {
+      "id": "D4",
+      "name": "Multi-price store conversion",
+      "last_report": "Converted/added ~710 stores to multi-price format, ending with ~6,600 multi-price stores; 75 new stores opened.",
+      "guidance": "FY26 ~400 new openings and 75 closings; no multi-price count target given."
+     },
+     {
+      "id": "D5",
+      "name": "SG&A and payroll leverage",
+      "last_report": "Q2 SG&A 29.2% of revenue, -40bps; adjusted -50bps on lower payroll, offset by marketing and depreciation.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q3 FY26: net sales $5.0-$5.1B, comps +3.0%-4.0%, diluted EPS $0.80-$0.95 including ~$0.50 tariff refund reinvestment impact. FY26: net sales $20.5-$20.7B, comps +3%-4%, adjusted EPS $7.70-$8.05 including ~$0.60 net tariff refund benefit; ~400 openings, 75 closings.",
+    "kill_conditions": [
+     "Q3 comparable store sales growth reported below 3.0%",
+     "Q3 diluted EPS below $0.80 or tariff reinvestment drag exceeding $0.50",
+     "Traffic turns negative or gross margin falls excluding tariff refund effects"
+    ]
+   },
+   "card_provider": "Together",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 28,
+    "found": 28,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {
+    "WMT": "no filing index"
+   },
+   "news_raw": 189,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Dollar Tree debuts exclusive Haribo candy line",
+        "date": "2026-11-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Dollar Tree debuts exclusive Haribo candy line",
+        "date": "2026-11-12",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Five Below raises 2026 outlook on strong traffic and margins",
+        "date": "2026-09-18",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Ross Stores beats Q3 earnings and revenue estimates",
+        "date": "2026-11-19",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "StreamLake",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "BJ",
+    "TGT"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BJ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong ex-gas comps and traffic growth suggest resilient value retail demand, supporting DLTR comps at/above guidance."
+       },
+       {
+        "peer": "TGT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Peer's $0.50 tariff refund benefit signals industry refunds continue, potentially offsetting DLTR's Q3 reinvestment drag."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "BJ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Strong ex-gas comps and traffic suggest healthy value retail demand, supporting DLTR comps; promotional gross margin pressure is a risk."
+       },
+       {
+        "peer": "TGT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong comps and traffic indicate resilient consumer, supporting DLTR comps; tariff refund benefit confirms industry refunds but DLTR already guided reinvestment."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Ionstream",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "TGT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Strong comps and traffic indicate healthy consumer demand, supporting DLTR's Q3 comps guidance."
+       },
+       {
+        "peer": "BJ",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Heavy promotions and 170bps merchandise margin decline signal industry pricing pressure, risking DLTR's gross margin."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 1.0606601717798212,
+   "score_peer": 1.7320508075688774,
+   "score_combined": 1.9266855755642598,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "above"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 0.9247,
+   "revenue_estimate": 5138517025,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-24",
+   "cutoff": "2026-11-23 22:00:00+00:00",
+   "decided_at": "2026-11-24T02:36:59.179990+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "c06e37eaa980ba6a3232f460084b81a50768b6531c3a03376ff4ca4a110d25e3"
+  },
+  "DY": {
+   "ticker": "DY",
+   "index": "SP400",
+   "sector": "Industrials",
+   "sub_industry": "Construction & Engineering",
+   "last_release": "2026-08-26 11:05:58+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/67215/000006721526000039/dyfy2027q2earningsreleasee.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Communications organic revenue growth",
+      "last_report": "Q2 Communications revenue $1.608B, up 16.7% organically on fiber-to-the-home, long-haul/middle-mile fiber, and maintenance/operations services.",
+      "guidance": "FY27 Communications revenue $5.90B-$6.01B; ~$150M wireless program revenue deferred to FY28; Q3 total revenue $1.90B-$1.98B."
+     },
+     {
+      "id": "D2",
+      "name": "Communications segment margin",
+      "last_report": "Q2 Communications Adjusted EBITDA margin 13.6%, down 134 bps on scaling investments, deferred wireless operating leverage, and higher fuel costs.",
+      "guidance": "FY27 Communications Adjusted EBITDA margin expected slightly below prior year; Q3 consolidated Adjusted EBITDA $281M-$302M."
+     },
+     {
+      "id": "D3",
+      "name": "Building Systems revenue growth",
+      "last_report": "Q2 Building Systems revenue $397.5M exceeded expectations, with rapid growth and strong execution; acquisition NTI contributed about $22.9M.",
+      "guidance": "FY27 Building Systems revenue raised to $1.58B-$1.65B on Power Solutions and NTI; Q3 total revenue $1.90B-$1.98B."
+     },
+     {
+      "id": "D4",
+      "name": "Building Systems margin",
+      "last_report": "Q2 Building Systems Adjusted EBITDA margin 24.5%, driven by operational execution, operating leverage, and favorable cost estimate changes.",
+      "guidance": "Remainder FY27 Building Systems Adjusted EBITDA margin expected high-teens to low-twenties percent of segment revenue."
+     },
+     {
+      "id": "D5",
+      "name": "Backlog conversion and awards",
+      "last_report": "Total backlog $12.242B, up 53.2%, with significant new awards; management cites generational digital infrastructure demand into next decade.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q3 FY27: contract revenues $1.90B-$1.98B; Non-GAAP Adjusted EBITDA $281M-$302M; Non-GAAP Adjusted Diluted EPS excluding amortization $4.33-$4.79. FY27 revenue $7.48B-$7.66B.",
+    "kill_conditions": [
+     "Q3 contract revenues miss the low end of $1.90B-$1.98B guidance.",
+     "Communications Adjusted EBITDA margin falls more than the expected slight annual decline.",
+     "Building Systems Adjusted EBITDA margin drops below high-teens percent of segment revenue."
+    ]
+   },
+   "card_provider": "Novita",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 22,
+    "found": 22,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 115,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Ionstream",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "New $150M stock repurchase program authorized",
+        "date": "2026-08-26",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Announced participation in institutional investor conference",
+        "date": "2026-09-10",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Announced Q3 FY27 earnings call for Nov 24",
+        "date": "2026-11-13",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Announced participation in upcoming institutional investor conferences",
+        "date": "2026-11-16",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.9
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Relace",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "J",
+    "IESC",
+    "ACM",
+    "TTEK",
+    "FLR"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "J",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "AI/data center capital investment and strong infrastructure demand support Dycom's Building Systems revenue growth."
+       },
+       {
+        "peer": "IESC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Strong Communications organic growth and record backlog signal robust industry demand, supporting Dycom's Communications revenue growth and backlog conversion."
+       },
+       {
+        "peer": "ACM",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No clear read-through to Dycom's communications or building systems demand."
+       },
+       {
+        "peer": "TTEK",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Water/environmental services focus unrelated to Dycom's telecom and building systems drivers."
+       },
+       {
+        "peer": "FLR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Energy, mining, and urban solutions demand not relevant to Dycom's communications or building systems."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "River",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "J",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "AI/data-center capex and 24% backlog growth signal strong digital infrastructure demand, supporting Dycom's communications growth."
+       },
+       {
+        "peer": "IESC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Record communications backlog and 55% revenue growth signal robust industry demand, supporting Dycom's communications growth and backlog conversion."
+       },
+       {
+        "peer": "ACM",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Infrastructure design strength not specific to Dycom's communications or building systems end markets."
+       },
+       {
+        "peer": "TTEK",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Water and environmental consulting demand unrelated to Dycom's communications and building systems drivers."
+       },
+       {
+        "peer": "FLR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Energy, mining, and urban EPC awards do not signal conditions for Dycom's communications or building systems."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Ionstream",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FLR",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Energy/mining/urban backlog strength does not speak to Dycom's telecom or building systems demand."
+       },
+       {
+        "peer": "TTEK",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Water/environmental government services backlog is not relevant to Dycom's communications or building systems drivers."
+       },
+       {
+        "peer": "ACM",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Record infrastructure backlog and strong end-market trends modestly support Dycom's project awards and backlog conversion."
+       },
+       {
+        "peer": "IESC",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 3,
+        "driver": "D1",
+        "why": "Direct communications/electrical peer reports 55% revenue growth, record backlog, and continued fiscal 2027 organic growth; supports Dycom communications demand."
+       },
+       {
+        "peer": "J",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Data-center/AI-driven infrastructure demand and 24% backlog growth support Dycom's fiber/communications growth and project awards."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": 2.886751345948129,
+   "score_combined": 1.4433756729740645,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 4.6997,
+   "revenue_estimate": 1999861111,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-24",
+   "cutoff": "2026-11-23 22:00:00+00:00",
+   "decided_at": "2026-11-24T02:34:46.704609+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "d55e4702e4f594b32c8abd98a173f26134a24d55d0bf6161faa7f89f3774db4b"
+  },
+  "HPQ": {
+   "ticker": "HPQ",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Technology Hardware, Storage & Peripherals",
+   "last_release": "2026-08-26 20:17:31+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/47217/000004721726000048/hp73126exhibit991q326.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Personal Systems revenue/margin",
+      "last_report": "Q3 PS revenue $11.8B, up 18% y/y, 4.6% operating margin; units down 16% as pricing/mix offset volume declines.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Printing revenue and supplies",
+      "last_report": "Q3 Printing revenue $3.9B, down 2% y/y, 18.1% margin; Supplies down 3%, hardware units down 7%.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Tariff refunds and cost pressure",
+      "last_report": "Q3 non-GAAP EPS included $0.11 tariff refund benefit; release cites challenging cost environment and memory/storage costs.",
+      "guidance": "Q4 EPS includes $0.08 tariff refunds; FY26 includes $0.19."
+     },
+     {
+      "id": "D4",
+      "name": "Q4 EPS profitability",
+      "last_report": "Q3 non-GAAP EPS $0.83, up 11%, above guidance; GAAP EPS $0.71, down 11%, hurt by prior-year tax/litigation benefits.",
+      "guidance": "Q4 non-GAAP EPS $0.69-$0.79; GAAP $0.74-$0.84, both include $0.08 tariff refunds."
+     },
+     {
+      "id": "D5",
+      "name": "Free cash flow and capital returns",
+      "last_report": "Q3 FCF $1.57B; returned $0.6B via buybacks/dividends; gross cash $4.2B.",
+      "guidance": "FY26 FCF raised to $3.0-$3.2B."
+     }
+    ],
+    "guidance": "Q4 GAAP EPS $0.74-$0.84; non-GAAP $0.69-$0.79 incl $0.08 tariff refunds. FY26 GAAP $2.52-$2.62; non-GAAP $3.19-$3.29; FCF $3.0-$3.2B.",
+    "kill_conditions": [
+     "HP lowers Q4 or FY26 EPS guidance or free cash flow outlook below current ranges.",
+     "Personal Systems revenue growth turns negative or its operating margin drops below 4.6%.",
+     "Printing supplies revenue decline steepens or Printing margin falls below 18.1%."
+    ]
+   },
+   "card_provider": "InferenceNet",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 23,
+    "found": 23,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 307,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "HP names Emma Walmsley CEO effective Jan 4; Broussard board chair",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "HP Workforce Experience Platform recognized; supports 5,000+ organizations",
+        "date": "2026-11-05",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "HP amends bylaws to expand board from 12 to 13 seats",
+        "date": "2026-11-12",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "HP and Xometry integrate build-planning software for Multi Jet Fusion",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [],
+      "overall": "inline",
+      "confidence": 0.9
+     },
+     "error": null,
+     "provider": "Makora",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Emma Walmsley named CEO effective Jan 4, 2027; Bruce Broussard becomes board chair",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": 0,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "HP amended bylaws to expand board from 12 to 13 seats",
+        "date": "2026-11-12",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "HP Workforce Experience Platform earns recognition; supports 5,000+ organizations",
+        "date": "2026-11-05",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Xometry and HP collaborate on Multi Jet Fusion parts integration",
+        "date": "2026-11-17",
+        "driver": "D2",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Reka",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "HPE",
+    "SMCI",
+    "AAPL",
+    "SNDK",
+    "STX"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HPE",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong server/storage demand and sequential gross-margin decline signal tighter memory/storage costs for HPQ."
+       },
+       {
+        "peer": "SMCI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record AI-server demand and sequential margin drop point to tighter memory/storage supply and costs."
+       },
+       {
+        "peer": "AAPL",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D3",
+        "why": "Tariff refunds materialized for Apple, supporting HPQ's already-guided $0.08 benefit; no incremental upside."
+       },
+       {
+        "peer": "SNDK",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D3",
+        "why": "NAND pricing and margins surging; HPQ faces sharply higher memory/storage input costs."
+       },
+       {
+        "peer": "STX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record HDD margins and value-based pricing signal higher storage costs for HPQ."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "HPE",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong server/storage demand and sequential gross-margin decline signal tighter memory/storage costs for HPQ."
+       },
+       {
+        "peer": "SMCI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record AI-server demand and sequential margin drop point to tighter memory/storage supply and costs."
+       },
+       {
+        "peer": "AAPL",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D3",
+        "why": "Tariff refunds materialized for Apple, supporting HPQ's already-guided $0.08 benefit; no incremental upside."
+       },
+       {
+        "peer": "SNDK",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D3",
+        "why": "NAND pricing and margins surging; HPQ faces sharply higher memory/storage input costs."
+       },
+       {
+        "peer": "STX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record HDD margins and value-based pricing signal higher storage costs for HPQ."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "STX",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Record storage pricing/margins signal continued memory/storage cost pressure, weighing on HPQ margins."
+       },
+       {
+        "peer": "SNDK",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 3,
+        "driver": "D3",
+        "why": "NAND pricing/margins at record highs signal severe memory/storage cost inflation for HPQ PCs."
+       },
+       {
+        "peer": "AAPL",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D3",
+        "why": "Apple's tariff refund benefit corroborates HPQ's expected Q4 tariff refunds, modest EPS support."
+       },
+       {
+        "peer": "SMCI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "AI server demand surge implies continued memory/storage cost inflation, pressuring HPQ PC margins."
+       },
+       {
+        "peer": "HPE",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Strong server/storage demand and sequential margin decline signal memory/storage cost pressure for HPQ."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": -3.6742346141747673,
+   "score_combined": -1.8371173070873836,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 0.7559,
+   "revenue_estimate": 15615902395,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-24",
+   "cutoff": "2026-11-23 22:00:00+00:00",
+   "decided_at": "2026-11-24T02:35:50.699692+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "68205962f69667a1b18a52657c9a2cb083e2282cd2e99a540f736e2169666a4b"
+  },
+  "MDT": {
+   "ticker": "MDT",
+   "index": "SP500",
+   "sector": "Health Care",
+   "sub_industry": "Health Care Equipment",
+   "last_release": "2026-09-01 10:47:19+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026059697/exhibit991-fy27q1earningsr.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Cardiovascular and EP ablation growth",
+      "last_report": "Cardiovascular organic +18.9%; EP Therapies +29.1%, Cardiac Ablation Solutions +88%, CRM +15%; Affera CE Mark expanded.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Neuroscience and Cranial/Spinal growth",
+      "last_report": "Neuroscience organic +9.3%; Cranial & Spinal +12.9%, Specialty Therapies +7.4%, Neuromodulation +3.3%; Altaviva contributed to Pelvic Health +15%.",
+      "guidance": null
+     },
+     {
+      "id": "D3",
+      "name": "Medical Surgical and surgical robotics",
+      "last_report": "Medical Surgical organic +10.2%; Surgical & Endoscopy +9.0%, Acute Care & Monitoring +14.2%; Touch Surgery Aide FDA cleared; Cornerstone Robotics partnership.",
+      "guidance": null
+     },
+     {
+      "id": "D4",
+      "name": "Diabetes growth and separation",
+      "last_report": "Diabetes organic +14.9%; separation via capital markets transactions, split-off preferred but final structure undecided; MiniMed IPO carve-out caveat.",
+      "guidance": null
+     },
+     {
+      "id": "D5",
+      "name": "Margins, EPS, extra fiscal week",
+      "last_report": "Non-GAAP operating margin 23.7%, +10 bps; non-GAAP EPS $1.45, +15.1%; Q1 had extra fiscal week adding ~$570M organic revenue.",
+      "guidance": "FY27 non-GAAP EPS $5.94-$6.00; FX neutral to 1% accretive."
+     }
+    ],
+    "guidance": "FY27 organic revenue growth raised to 7.25%-7.75% from 6.75%-7.25%; FY27 non-GAAP diluted EPS raised to $5.94-$6.00 from $5.90-$6.00; FX neutral to 1% accretive. No Q2 guidance.",
+    "kill_conditions": [
+     "Q2 organic revenue growth below 7.25% or FY27 organic guidance cut.",
+     "Cardiovascular/EP growth slows materially, especially Cardiac Ablation Solutions or CRM.",
+     "Non-GAAP EPS misses, FY27 EPS guidance lowered, or Diabetes separation delayed."
+    ]
+   },
+   "card_provider": "Relace",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 23,
+    "found": 23,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 471,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "FDA clears Hugo RAS for general surgery, expanding US addressable market.",
+        "date": "2026-11-17",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Medtronic plans to acquire Contego Medical, carotid artery device specialist.",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "J&J signs first US hospital for Ottava robot, intensifying surgical robotics competition.",
+        "date": "2026-11-20",
+        "driver": "D3",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "MiniMed spinoff completed; first earnings without Diabetes segment.",
+        "date": "2026-11-21",
+        "driver": "D4",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "FDA clears Hugo RAS for general surgery procedures",
+        "date": "2026-11-17",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Medtronic to acquire Contego Medical carotid device specialist",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "MiniMed spin-off completed; first earnings since separation",
+        "date": "2026-11-21",
+        "driver": "D4",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "J&J installs first Ottava robot in US hospital",
+        "date": "2026-11-20",
+        "driver": "D3",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Boston Scientific EP and WATCHMAN sales fell in Q3",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "FDA clears Hugo RAS for general surgery, expanding US addressable market to 3.5M annual cases",
+        "date": "2026-11-17",
+        "driver": "D3",
+        "direction": 1,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Medtronic to acquire Contego Medical, adding carotid artery disease devices to cardiovascular portfolio",
+        "date": "2026-11-17",
+        "driver": "D1",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Medtronic completes MiniMed spin-off; first earnings without Diabetes segment",
+        "date": "2026-11-21",
+        "driver": "D4",
+        "direction": 0,
+        "size": 3,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "J&J installs first Ottava robot in US hospital, intensifying surgical robotics competition",
+        "date": "2026-11-20",
+        "driver": "D3",
+        "direction": -1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "GMED",
+    "BDX",
+    "STE",
+    "EW",
+    "PODD"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GMED",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 1,
+        "driver": "D2",
+        "why": "GMED's U.S. Spine share gains and robotics momentum imply competitive pressure on Medtronic's Cranial & Spinal."
+       },
+       {
+        "peer": "BDX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D3",
+        "why": "BDX's broad medtech growth and stable hospital demand support Medtronic's Medical Surgical procedure volumes."
+       },
+       {
+        "peer": "STE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Steris' strong healthcare consumables and service growth signals healthy hospital procedure volumes, supporting MedSurg demand."
+       },
+       {
+        "peer": "EW",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Edwards' TAVR share gains and stable pricing imply competitive pressure on Medtronic's TAVR, though EP/ablation unaffected."
+       },
+       {
+        "peer": "PODD",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Insulet's strong Omnipod growth and U.S. sales force expansion signal share gains, pressuring Medtronic's Diabetes."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Fireworks",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "GMED",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "GMED U.S. Spine +2% but claims share gains; suggests MDT Cranial & Spinal growth may face share pressure."
+       },
+       {
+        "peer": "BDX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D3",
+        "why": "BDX Q4 +5.6% FXN and broad-based medtech demand support stable procedure volumes for MDT MedSurg."
+       },
+       {
+        "peer": "STE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D3",
+        "why": "Steris organic +8% with strong consumables/service indicates healthy procedure volumes for MDT MedSurg."
+       },
+       {
+        "peer": "EW",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 1,
+        "driver": "D1",
+        "why": "Edwards TAVR share gains and stable ASPs suggest competitive pressure on MDT's TAVR within Cardiovascular."
+       },
+       {
+        "peer": "PODD",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Insulet's 19.6% cc growth and U.S. sales force expansion suggest share gains against MDT Diabetes."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Parasail",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "PODD",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D4",
+        "why": "Insulet's strong Omnipod growth and Type 2 expansion imply share pressure on Medtronic Diabetes."
+       },
+       {
+        "peer": "EW",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Edwards cites modest TAVR share gains; competitive pressure on Medtronic cardiovascular/structural heart."
+       },
+       {
+        "peer": "STE",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Steris sees solid hospital demand and procedure volumes, supporting Medtronic Medical Surgical growth."
+       },
+       {
+        "peer": "BDX",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "other",
+        "why": "Broad medtech demand stable; supports overall Medtronic, but no specific driver."
+       },
+       {
+        "peer": "GMED",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Globus cites spine share gains; implies competitive pressure on Medtronic Cranial & Spinal."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Parasail",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 2.23606797749979,
+   "score_peer": -1.2247448713915892,
+   "score_combined": 1.6236955418039951,
+   "overall_votes": [
+    "inline",
+    "above",
+    "above"
+   ],
+   "overall": "above",
+   "hour": "bmo",
+   "eps_estimate": 1.3447,
+   "revenue_estimate": 9576144582,
+   "fiscal": "2027Q2",
+   "report_date": "2026-11-24",
+   "cutoff": "2026-11-23 22:00:00+00:00",
+   "decided_at": "2026-11-24T02:36:13.115421+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "5accfae07458eec1e74621f50a1286eb7ffab4a91610a8cf0459a21f7cfc26a0"
+  },
+  "NTNX": {
+   "ticker": "NTNX",
+   "index": "SP400",
+   "sector": "Information Technology",
+   "sub_industry": "Systems Software",
+   "last_release": "2026-08-26 20:01:18+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/1618732/000117184326005752/exh_991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "ARR growth and customers",
+      "last_report": "Q4 ARR $2.55B, up 16% YoY; FY26 added over 3,000 new customers.",
+      "guidance": null
+     },
+     {
+      "id": "D2",
+      "name": "Revenue growth",
+      "last_report": "Q4 revenue $757.1M, up 16% YoY; FY26 revenue $2.85B, up 12%.",
+      "guidance": "Q1 FY27 revenue $755-$765M; FY27 revenue $3.180-$3.230B."
+     },
+     {
+      "id": "D3",
+      "name": "Non-GAAP operating margin",
+      "last_report": "Q4 non-GAAP operating margin 26.2%, up 790 bps; FY26 23.7%.",
+      "guidance": "Q1 FY27 26%-28%; FY27 24%-25%."
+     },
+     {
+      "id": "D4",
+      "name": "Free cash flow",
+      "last_report": "Q4 FCF $277.6M; FY26 FCF $840.7M, up from $750.2M.",
+      "guidance": "FY27 FCF $850-$950M."
+     },
+     {
+      "id": "D5",
+      "name": "AI and partnership ramp",
+      "last_report": "Launched MCP server, Dell PowerStore availability, NAI 2.8 GA, NKP 2.19 upcoming; partnerships with AMD, Lenovo, NetApp, NVIDIA, ChronoScale.",
+      "guidance": null
+     }
+    ],
+    "guidance": "Q1 FY27: revenue $755-$765M, non-GAAP operating margin 26%-28%, diluted shares ~294M. FY27: revenue $3.180-$3.230B, non-GAAP operating margin 24%-25%, free cash flow $850-$950M.",
+    "kill_conditions": [
+     "Q1 FY27 revenue below $755M or FY27 revenue guidance cut below $3.180B.",
+     "Non-GAAP operating margin below 26% or FY27 margin guide cut below 24%.",
+     "ARR growth decelerates below 16% or FY27 free cash flow guide cut below $850M."
+    ]
+   },
+   "card_provider": "Reka",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 25,
+    "found": 25,
+    "share": 1.0,
+    "missing": []
+   },
+   "peer_defects": {},
+   "news_raw": 154,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Nutanix announced AI infrastructure partnerships with Super Micro and Netris",
+        "date": "2026-10-26",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Expedient expanded partnership with Nutanix for multitenant cloud and governed AI",
+        "date": "2026-11-05",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ChronoScale announced new AI compute partnership, $7.5B contract, up to $750M raise",
+        "date": "2026-11-18",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Traefik Hub now runs on Nutanix Cloud Platform via Service Provider Central",
+        "date": "2026-11-20",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Nutanix received Micron Global Supplier Award for IT & Professional Services",
+        "date": "2026-10-27",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Simplyblock and Red Hat released blueprint for VMware and Nutanix migrations to OpenShift",
+        "date": "2026-11-04",
+        "driver": "other",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Nutanix announces AI infrastructure partnerships with Super Micro and Netris",
+        "date": "2026-10-26",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Expedient expands partnership with Nutanix for multitenant cloud and governed AI",
+        "date": "2026-11-05",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Traefik Hub expands onto Nutanix Cloud Platform via Service Provider Central",
+        "date": "2026-11-20",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "above",
+      "confidence": 0.6
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Nutanix announced AI infrastructure partnerships with Super Micro and Netris.",
+        "date": "2026-10-26",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Simplyblock and Red Hat launched blueprint for Nutanix migrations to OpenShift.",
+        "date": "2026-11-04",
+        "driver": "D1",
+        "direction": -1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Expedient expanded Nutanix partnership with multitenant cloud for governed AI.",
+        "date": "2026-11-05",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "ChronoScale announced AI compute partnership and $7.5B six-year deployment.",
+        "date": "2026-11-18",
+        "driver": "D5",
+        "direction": 1,
+        "size": 2,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Traefik Hub expanded onto Nutanix Cloud Platform via Service Provider Central.",
+        "date": "2026-11-20",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.65
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "CRWD",
+    "PANW",
+    "QLYS",
+    "NOW",
+    "FTNT"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CRWD",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record net new ARR, accelerating 27% growth and raised outlook signal strong enterprise software/AI demand, supportive for NTNX ARR."
+       },
+       {
+        "peer": "PANW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "NGS ARR +66%, revenue +39%, materially raised guidance show robust enterprise security/AI demand, positive read-through for NTNX growth."
+       },
+       {
+        "peer": "QLYS",
+        "channel": "contagion",
+        "direction": 0,
+        "size": 1,
+        "driver": "D2",
+        "why": "Modest 11% revenue growth with stable margins and slight guidance raise; no clear signal for NTNX demand."
+       },
+       {
+        "peer": "NOW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Beat-and-raise, 21% subscription growth, AI ACV target lifted to $1.7B; healthy enterprise AI/software spend supports NTNX."
+       },
+       {
+        "peer": "FTNT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Revenue +20%, billings +29%, third guidance raise; broad enterprise IT/AI security demand positive for NTNX."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "CRWD",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Record net new ARR and AI security demand signal strong enterprise software budgets, supportive for Nutanix ARR growth."
+       },
+       {
+        "peer": "PANW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Blowout NGS ARR and AI acquisition indicate robust enterprise AI/IT spending, positive for Nutanix AI ramp."
+       },
+       {
+        "peer": "QLYS",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Moderate revenue growth and raised guidance suggest stable enterprise IT demand, mildly positive for Nutanix revenue."
+       },
+       {
+        "peer": "NOW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Strong AI ACV and subscription growth signal healthy enterprise software demand, supportive for Nutanix AI/revenue."
+       },
+       {
+        "peer": "FTNT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Strong product revenue and billings growth indicate healthy enterprise IT spend, positive for Nutanix revenue."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Venice",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "FTNT",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Strong AI security demand signals healthy enterprise AI infrastructure spending, mildly positive for Nutanix AI partnerships."
+       },
+       {
+        "peer": "NOW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Accelerating enterprise AI adoption and strong subscription growth support demand for Nutanix AI infrastructure and partnerships."
+       },
+       {
+        "peer": "QLYS",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Cybersecurity risk management results have no direct read-through to Nutanix's infrastructure software demand."
+       },
+       {
+        "peer": "PANW",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Very strong AI security demand and raised guidance indicate robust enterprise AI spending, positive for Nutanix AI infrastructure."
+       },
+       {
+        "peer": "CRWD",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Record AI security ARR and raised outlook signal strong enterprise AI adoption, supportive for Nutanix AI partnerships."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 3.6742346141747673,
+   "score_peer": 3.1304951684997055,
+   "score_combined": 5.23948219842462,
+   "overall_votes": [
+    "inline",
+    "above",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "amc",
+   "eps_estimate": 0.6175,
+   "revenue_estimate": 777737352,
+   "fiscal": "2027Q1",
+   "report_date": "2026-11-24",
+   "cutoff": "2026-11-23 22:00:00+00:00",
+   "decided_at": "2026-11-24T02:35:26.837854+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "ec5fe4671ea75922635488b4442d0d665523055e70e0b7e46e6c74bd7eb7fcfb"
+  },
+  "SJM": {
+   "ticker": "SJM",
+   "index": "SP500",
+   "sector": "Consumer Staples",
+   "sub_industry": "Packaged Foods & Meats",
+   "last_release": "2026-08-26 11:02:27+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/91419/000009141926000079/sjm20260826exhibit991.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "U.S. Retail Coffee pricing and volume",
+      "last_report": "Q1 net sales +13%; net price +10 pts, volume/mix +2 pts; segment profit +124% on tariff refunds and higher pricing.",
+      "guidance": "FY27 net sales expected -1% to -2% on lower net price realization and neutral volume/mix."
+     },
+     {
+      "id": "D2",
+      "name": "Uncrustables and Frozen Handheld",
+      "last_report": "Q1 net sales +3%; volume/mix +1 pt on Uncrustables, offset by peanut butter and fruit spreads; segment profit +13%.",
+      "guidance": "FY27 volume/mix expected neutral overall; no segment-specific guidance."
+     },
+     {
+      "id": "D3",
+      "name": "Sweet Baked Snacks turnaround",
+      "last_report": "Q1 net sales -7%; volume/mix -8 pts on snack cakes and breakfast; segment profit -13%; margin 12.6%.",
+      "guidance": "No segment guidance; FY27 outlook cites ongoing Sweet Baked Snacks optimization initiatives and related execution risk."
+     },
+     {
+      "id": "D4",
+      "name": "Tariff refunds and gross margin",
+      "last_report": "Q1 included ~$115M tariff refunds and $0.84 EPS benefit; gross profit rose 106%.",
+      "guidance": "FY27 adjusted gross margin ~38.75% includes ~$115M tariff refunds; EPS net benefit ~$0.60; excludes new/changed tariffs."
+     },
+     {
+      "id": "D5",
+      "name": "SD&A expenses and cost inflation",
+      "last_report": "Q1 SD&A increased, partly offsetting gross profit; adjusted operating income +46%.",
+      "guidance": "FY27 SD&A expenses expected +~8% vs prior year; adjusted gross margin ~38.75%; interest ~$335M."
+     }
+    ],
+    "guidance": "FY27: net sales -1% to -2%; adj EPS $10.50-$11.00; FCF ~$1.1B; capex $325M; adj gross margin ~38.75% incl. ~$115M tariff refunds; SD&A +~8%; interest ~$335M; tax 24.2%; shares 107.1M.",
+    "kill_conditions": [
+     "Company cuts FY27 adjusted EPS guidance below $10.50 or net sales decline steeper than 2%.",
+     "Coffee segment net sales decline or coffee volume/mix turns negative.",
+     "Gross margin misses as tariff refunds lapse or SD&A growth exceeds 8%."
+    ]
+   },
+   "card_provider": "Reka",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 17,
+    "found": 14,
+    "share": 0.8235294117647058,
+    "missing": [
+     "115",
+     "325",
+     "335"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 188,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Reached targeted debt level ahead of schedule",
+        "date": "2026-11-17",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Meow Mix launched multichannel cat meme campaign",
+        "date": "2026-11-16",
+        "driver": "other",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Reached targeted debt level ahead of schedule",
+        "date": "2026-11-17",
+        "driver": "D5",
+        "direction": 1,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.85
+     },
+     "error": null,
+     "provider": "Cohere",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "failed",
+     "out": null,
+     "error": "_Cut('answer cut at max_tokens 24000')",
+     "provider": null,
+     "log": {
+      "attempts": [
+       {
+        "kind": "transport",
+        "error": "_Cut('answer cut at max_tokens 24000')"
+       }
+      ],
+      "repaired": false
+     },
+     "rerun": true,
+     "first_error": "_Cut('answer cut at max_tokens 24000')"
+    }
+   ],
+   "peers": [
+    "POST",
+    "TSN",
+    "KHC",
+    "MZTI",
+    "MDLZ"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "POST",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "No overlap with SJM's coffee, peanut butter, frozen handheld, or sweet baked snacks."
+       },
+       {
+        "peer": "TSN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Prepared foods growth suggests resilient frozen handheld demand, supportive for SJM's Uncrustables."
+       },
+       {
+        "peer": "KHC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "North America price/volume declines signal weaker coffee pricing, pressuring SJM's coffee net price realization."
+       },
+       {
+        "peer": "MZTI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D5",
+        "why": "Higher diesel/freight costs signal continued cost inflation, a headwind to SJM's SD&A/gross margin."
+       },
+       {
+        "peer": "MDLZ",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D3",
+        "why": "Resilient snack demand and pricing power suggest a supportive category backdrop for SJM's Sweet Baked Snacks turnaround."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Ionstream",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "POST",
+        "channel": "none",
+        "direction": 0,
+        "size": 1,
+        "driver": "other",
+        "why": "Cereal, pet, and foodservice trends do not read across to Smucker's coffee, frozen handheld, or snacks."
+       },
+       {
+        "peer": "TSN",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D2",
+        "why": "Tyson's prepared foods growth suggests share gains in frozen/breakfast, a competitive headwind for Uncrustables."
+       },
+       {
+        "peer": "KHC",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "KHC North America price -0.8% and volume -2.4% signal coffee/packaged-food pricing pressure and soft demand."
+       },
+       {
+        "peer": "MZTI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Higher diesel/freight and SG&A costs signal persistent food cost inflation; negative for Smucker's SD&A outlook."
+       },
+       {
+        "peer": "MDLZ",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "MDLZ's robust snack share gains and volume growth suggest competitive pressure on Smucker's Sweet Baked Snacks."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "MDLZ",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D3",
+        "why": "Robust snack share gains and reinvestment signal competitive pressure on SJM's Sweet Baked Snacks turnaround."
+       },
+       {
+        "peer": "MZTI",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D5",
+        "why": "Higher diesel/freight and SG&A inflation signal persistent cost pressure on SJM's SD&A outlook."
+       },
+       {
+        "peer": "KHC",
+        "channel": "competitive",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "KHC's improving U.S. share trends signal competitive pressure on SJM's retail coffee volume and pricing."
+       },
+       {
+        "peer": "TSN",
+        "channel": "contagion",
+        "direction": 1,
+        "size": 1,
+        "driver": "D2",
+        "why": "Prepared Foods growth suggests resilient frozen handheld demand, supportive for SJM's Uncrustables."
+       },
+       {
+        "peer": "POST",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 1,
+        "driver": "D3",
+        "why": "Weak value cereal volumes suggest soft breakfast/center-store demand, a headwind for SJM's Sweet Baked Snacks."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.9633427877821299,
+   "score_peer": -2.4494897427831783,
+   "score_combined": -0.26140208360945927,
+   "overall_votes": [
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 2.5875,
+   "revenue_estimate": 2293681720,
+   "fiscal": "2027Q2",
+   "report_date": "2026-11-24",
+   "cutoff": "2026-11-23 22:00:00+00:00",
+   "decided_at": "2026-11-24T02:40:53.511772+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "3bb883555a11c9ec28b9e03750187da751b554ac76ae06101abd5160932e79a2"
+  },
+  "WDAY": {
+   "ticker": "WDAY",
+   "index": "SP500",
+   "sector": "Information Technology",
+   "sub_industry": "Application Software",
+   "last_release": "2026-09-29 20:01:40+00:00",
+   "release_url": null,
+   "release_doc": "no EX-99 exhibit in the filing",
+   "status": "input_defect",
+   "error": "no EX-99 exhibit in the filing",
+   "hour": "amc",
+   "eps_estimate": 2.7951,
+   "revenue_estimate": 2745429297,
+   "fiscal": "2027Q3",
+   "report_date": "2026-11-24",
+   "cutoff": "2026-11-23 22:00:00+00:00",
+   "decided_at": "2026-11-24T02:34:56.991570+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "3ec10afafec2f087ff68b6f2375d1a03a66c281a62bc445f33cfc8cd3c19b54f"
+  }
+ },
+ "report_date": "2026-11-24",
+ "cutoff": "2026-11-23 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "49bbe4339f10ad59b169c379027157468b860a04a9222002491bdf8379246b3e",
+ "runs": [
+  {
+   "at": "2026-11-24T02:40:53.565554+00:00",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "quality": {
+    "counts": {
+     "ok": 9,
+     "card_ungrounded": 1,
+     "input_defect": 1
+    },
+    "attempted": 11,
+    "bad": 2,
+    "bad_share": 0.182,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
