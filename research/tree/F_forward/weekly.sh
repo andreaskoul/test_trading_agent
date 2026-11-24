@@ -134,6 +134,13 @@ run "$PY" research/tree/h9_forward.py panelcheck --old "$Y26/prev/broad_panel.np
 # ---- step 3: predict with the frozen models (deterministic refits: same code, seeds 0-2, targets before the year)
 STEP="3 trees"
 year_now=$(date -u +%Y)
+# the 2025 scores (books are carried from January 2025) are refit on the extended panel too: a panel that gains names
+# no longer matches the saved file's columns (2026-11-24: 4,780 -> 4,784 names). Same model, targets before 2025.
+if [ -f "$Y26/prev/trees_2025_refit.npy" ]; then
+  run "$PY" research/tree/h7_build.py trees 2025
+  run "$PY" research/tree/h9_forward.py treescheck --old "$Y26/prev/trees_2025_refit.npy" --new "$Y26/trees_2025_refit.npy" \
+      --old-panel "$Y26/prev/broad_panel.npz" --new-panel "$Y26/broad_panel.npz"
+fi
 for y in $(seq 2026 "$year_now"); do
   if [ -f "$Y26/prev/trees_$y.npy" ]; then
     run "$PY" research/tree/h7_build.py trees "$y"
