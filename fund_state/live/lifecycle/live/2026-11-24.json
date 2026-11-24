@@ -1,0 +1,2834 @@
+{
+ "day": "2026-11-24",
+ "asof": "2026-11-18",
+ "close_et": "16:00",
+ "news_ts": 1795552800,
+ "decided_at": "2026-11-24T20:57:06+00:00",
+ "style": "preclose",
+ "nav_model": 95840.99411560444,
+ "hedge_w": -0.28664452790374817,
+ "actions": [
+  {
+   "day": "2026-11-24",
+   "id": "2026-11-18|TTWO",
+   "ticker": "TTWO",
+   "action": "horizon_extend",
+   "from": 7471.09,
+   "to": 7471.09,
+   "R": 0.051207,
+   "W": 0.041506,
+   "days_held": 3,
+   "stop_R": -0.031805706651714935,
+   "target_R": 0.1757258408924541,
+   "new_H": 5
+  },
+  {
+   "day": "2026-11-24",
+   "id": "2026-11-18|TJX",
+   "ticker": "TJX",
+   "action": "horizon",
+   "from": 2443.3,
+   "to": 0.0,
+   "R": 0.027461,
+   "W": 0.03771,
+   "days_held": 3
+  },
+  {
+   "day": "2026-11-24",
+   "id": "2026-11-18|LLY",
+   "ticker": "LLY",
+   "action": "horizon",
+   "from": -3026.71,
+   "to": 0.0,
+   "R": -0.040024,
+   "W": 0.035068,
+   "days_held": 3
+  }
+ ],
+ "cool": {
+  "BA|1": {
+   "until": "2026-10-27",
+   "kind": "stop",
+   "score": 1,
+   "first_reported": "2026-10-20"
+  }
+ },
+ "lots_after": [
+  {
+   "id": "2026-10-28|EQIX",
+   "ticker": "EQIX",
+   "side": 1,
+   "w0": 0.06359506993989697,
+   "beta": 0.7932288333,
+   "sigma_e": 0.014876331742039213,
+   "H": 22,
+   "W": 0.06977618085122227,
+   "kill_conditions": [
+    "Equinix cuts FY 2026 guidance or withdraws outlook",
+    "Q3 FFO beat is revised lower or restated",
+    "Major AI data center customer cancels or delays leases"
+   ],
+   "first_reported": "2026-10-28",
+   "score": 2,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793302800,
+   "driving_event": "Q3 2026 FFO beat, EPS beat, record bookings, raised 2026 guidance",
+   "news_session": "2026-10-28",
+   "R": 0.008701119884559395,
+   "days": 18,
+   "e": [
+    -0.00809431,
+    -0.0159399,
+    0.01846847,
+    0.02602439,
+    -0.01885357,
+    0.01292265,
+    0.02249444,
+    -0.00134824,
+    0.00673884,
+    0.00721818,
+    -0.01481136,
+    0.0049805,
+    0.0001605,
+    0.0090591,
+    -0.00223336,
+    -0.0200704,
+    -0.0051461,
+    -0.01286872
+   ],
+   "news_until": 1795552800,
+   "increased": true,
+   "w": 0.09162969442560226
+  },
+  {
+   "id": "2026-10-28|MSFT",
+   "ticker": "MSFT",
+   "side": 1,
+   "w0": 0.05632706194676588,
+   "beta": 0.9533507742,
+   "sigma_e": 0.01501942418059176,
+   "H": 25,
+   "W": 0.07509712090295881,
+   "kill_conditions": [
+    "Microsoft reports Azure growth decelerating below prior quarter",
+    "Microsoft cuts FY27 guidance or issues weak cloud outlook",
+    "Analysts downgrade MSFT or cut price targets on Azure concerns"
+   ],
+   "first_reported": "2026-10-28",
+   "score": 2,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793302800,
+   "driving_event": "Microsoft Q1 FY27 earnings beat with Azure growth accelerating",
+   "news_session": "2026-10-28",
+   "R": 0.00261723306108802,
+   "days": 18,
+   "e": [
+    0.00137778,
+    -0.02377154,
+    0.02449846,
+    0.0510681,
+    0.00628464,
+    -0.01290508,
+    0.00489874,
+    -0.01853931,
+    -0.03514582,
+    0.00697319,
+    0.00514535,
+    0.00698054,
+    -0.01300796,
+    0.00696507,
+    0.00094894,
+    0.00705105,
+    -0.02841902,
+    0.01221411
+   ],
+   "news_until": 1795552800,
+   "increased": true,
+   "w": 0.08109032817491338
+  },
+  {
+   "id": "2026-10-28|BIIB",
+   "ticker": "BIIB",
+   "side": 1,
+   "w0": 0.054510059948483104,
+   "beta": 0.6102588062,
+   "sigma_e": 0.02079515211660678,
+   "H": 37,
+   "W": 0.12649197210674742,
+   "kill_conditions": [
+    "Biogen cuts or withdraws its FY2026 EPS guidance",
+    "Leqembi quarterly sales decline or growth-product growth stalls",
+    "Q4 results miss estimates, reversing the post-earnings drift"
+   ],
+   "first_reported": "2026-10-28",
+   "score": 2,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793302800,
+   "driving_event": "Q3 2026 earnings beat, revenue +10.6%, FY profit guidance floor raised",
+   "report_session": "2027-02-05",
+   "news_session": "2026-10-28",
+   "R": 0.1186189516070013,
+   "days": 18,
+   "e": [
+    0.02672155,
+    -0.01525358,
+    -0.00214694,
+    0.01213511,
+    -0.01447437,
+    0.01621341,
+    0.01181203,
+    -0.00411035,
+    -0.00745584,
+    -0.00936275,
+    0.01387419,
+    0.0047592,
+    0.00277628,
+    0.00433852,
+    -0.0050478,
+    0.03216968,
+    -0.00020751,
+    0.05187811
+   ],
+   "news_until": 1795552800,
+   "increased": true,
+   "w": 0.08836800643113167
+  },
+  {
+   "id": "2026-10-28|BSX",
+   "ticker": "BSX",
+   "side": -1,
+   "w0": -0.06,
+   "beta": 0.4237163959,
+   "sigma_e": 0.02276843865272232,
+   "H": 63,
+   "W": 0.18071887924900135,
+   "kill_conditions": [
+    "Boston Scientific raises or restores its FY2026 guidance",
+    "Company reports cyberattack impact resolved with no Q4 revenue hit",
+    "Q4 organic revenue grows instead of declining 1% to 3%"
+   ],
+   "first_reported": "2026-10-28",
+   "score": -2,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793302800,
+   "driving_event": "Boston Scientific cuts FY26 guidance a third time after cyberattack, Q4 outlook below consensus",
+   "structural": true,
+   "report_session": "2027-02-03",
+   "news_session": "2026-10-28",
+   "R": -0.0669754997897131,
+   "days": 18,
+   "e": [
+    0.00911945,
+    -0.05777049,
+    0.0197694,
+    -0.04633458,
+    0.00707055,
+    0.04366246,
+    -0.01968072,
+    -0.01700686,
+    -0.00403168,
+    0.01910703,
+    -0.00470644,
+    0.00655999,
+    0.01080599,
+    -0.015472,
+    0.00657926,
+    0.00806918,
+    0.01161356,
+    -0.04432961
+   ],
+   "news_until": 1795552800,
+   "increased": true,
+   "w": -0.0968571127519658
+  },
+  {
+   "id": "2026-10-28|VLO",
+   "ticker": "VLO",
+   "side": -1,
+   "w0": -0.0275,
+   "beta": 0.3188022476,
+   "sigma_e": 0.028308971754577812,
+   "H": 21,
+   "W": 0.12972800591171965,
+   "kill_conditions": [
+    "US blocks or reverses the Russian diesel import plan",
+    "Valero reports Q4 refining margins above Q3 levels"
+   ],
+   "first_reported": "2026-10-28",
+   "score": -1,
+   "cohort": "2026-10-28",
+   "entry_day": "2026-10-29",
+   "entry_close_ts": 1793302800,
+   "driving_event": "US Energy Secretary opens door to more Russian diesel imports, shrinking refining margins and pressuring refiners.",
+   "news_session": "2026-10-28",
+   "R": 0.13584461063973155,
+   "days": 18,
+   "e": [
+    -0.04489068,
+    0.0440116,
+    -0.01527339,
+    0.06281774,
+    0.02456501,
+    0.0146053,
+    -0.02218594,
+    0.01575739,
+    -0.03286328,
+    -0.03203242,
+    -0.01417302,
+    0.02049685,
+    0.01288424,
+    0.05419724,
+    0.00898944,
+    0.00104007,
+    0.02931461,
+    0.00858385
+   ],
+   "news_until": 1795552800,
+   "w": -0.023933381581213418
+  },
+  {
+   "id": "2026-11-04|AMD",
+   "ticker": "AMD",
+   "side": 1,
+   "w0": 0.031,
+   "beta": 1.9574529482,
+   "sigma_e": 0.03461766546030086,
+   "H": 19,
+   "W": 0.15089490540274988,
+   "kill_conditions": [
+    "AMD cuts or withdraws its Q4 revenue guidance",
+    "A major AI customer cancels or delays chip orders from AMD",
+    "AMD data center revenue misses expectations or declines sequentially"
+   ],
+   "first_reported": "2026-11-04",
+   "score": 1,
+   "cohort": "2026-11-04",
+   "entry_day": "2026-11-05",
+   "entry_close_ts": 1793911200,
+   "driving_event": "AMD Q3 2026 earnings beat with data center sales nearly doubling and Q4 revenue guidance above consensus",
+   "news_session": "2026-11-04",
+   "R": 0.09985266056265486,
+   "days": 13,
+   "e": [
+    0.10427039,
+    0.08627255,
+    0.02023999,
+    0.0473396,
+    0.06553019,
+    -0.08043502,
+    -0.01834425,
+    0.01814161,
+    0.05908429,
+    -0.0388292,
+    -0.0612062,
+    -0.0236692,
+    -0.0785421
+   ],
+   "news_until": 1795552800,
+   "increased": true,
+   "w": 0.04309590165728374
+  },
+  {
+   "id": "2026-11-04|XOM",
+   "ticker": "XOM",
+   "side": 1,
+   "w0": 0.041885684525968345,
+   "beta": -0.0198556456,
+   "sigma_e": 0.018475729025817077,
+   "H": 48,
+   "W": 0.09051221747836073,
+   "kill_conditions": [
+    "Uaru production halted or Guyana capacity guidance cut",
+    "Longtail FID cancelled or regulatory approval denied",
+    "Exxon suspends buyback or cuts dividend"
+   ],
+   "first_reported": "2026-11-16",
+   "score": 1,
+   "cohort": "2026-11-04",
+   "entry_day": "2026-11-05",
+   "entry_close_ts": 1793911200,
+   "driving_event": "Q3 earnings beat on record refining margins and dividend hike",
+   "news_session": "2026-11-02",
+   "R": -0.03569167245015338,
+   "days": 13,
+   "e": [
+    0.00351031,
+    -0.00640299,
+    -0.00165141,
+    0.01388136,
+    0.01834492,
+    0.00469876,
+    -0.01601192,
+    0.00183599,
+    -0.03971146,
+    -0.01066491,
+    0.00594679,
+    -0.0183788,
+    0.00891169
+   ],
+   "news_until": 1795552800,
+   "increased": true,
+   "w": 0.04202819656553361
+  },
+  {
+   "id": "2026-11-04|ORCL",
+   "ticker": "ORCL",
+   "side": -1,
+   "w0": -0.031,
+   "beta": 1.60431049,
+   "sigma_e": 0.037097818230356024,
+   "H": 19,
+   "W": 0.16170564069196283,
+   "kill_conditions": [
+    "Oracle reinstates or replaces the $7B Tencent chip deal",
+    "US regulatory pressure eases and the Tencent deal is approved",
+    "Oracle secures alternative financing without dilution or high-cost debt"
+   ],
+   "first_reported": "2026-11-04",
+   "score": -1,
+   "cohort": "2026-11-04",
+   "entry_day": "2026-11-05",
+   "entry_close_ts": 1793911200,
+   "driving_event": "Oracle cancels $7B Tencent AI chip deal under US pressure, removing revenue amid $20B financing overhang",
+   "structural": true,
+   "report_session": "2026-12-08",
+   "news_session": "2026-11-04",
+   "R": 0.005926268115594168,
+   "days": 13,
+   "e": [
+    -0.00315045,
+    0.00618167,
+    0.0092057,
+    -0.06699277,
+    0.00421267,
+    0.00801912,
+    0.01927331,
+    0.01806109,
+    0.00474576,
+    -0.00233327,
+    0.02643101,
+    -0.04789152,
+    0.03016396
+   ],
+   "news_until": 1795552800,
+   "increased": true,
+   "reduced": true,
+   "w": -0.022102281366302094
+  },
+  {
+   "id": "2026-11-04|FIS",
+   "ticker": "FIS",
+   "side": -1,
+   "w0": -0.031,
+   "beta": 0.5104780509,
+   "sigma_e": 0.05048146623249938,
+   "H": 40,
+   "W": 0.3192728258391544,
+   "kill_conditions": [
+    "FIS raises FY2026 EPS and sales guidance or issues FY2027 outlook above current expectations",
+    "CFO Kehoe remains in role or FIS appoints a permanent CFO without disruption",
+    "FIS reports 2027 revenue softness smaller than feared, with nonrecurring decline offset by banking growth"
+   ],
+   "first_reported": "2026-11-04",
+   "score": -1,
+   "cohort": "2026-11-04",
+   "entry_day": "2026-11-05",
+   "entry_close_ts": 1793911200,
+   "driving_event": "FIS cut FY26 EPS and sales guidance after Q3 beat, with CFO exit compounding the selloff.",
+   "structural": true,
+   "news_session": "2026-11-04",
+   "R": 0.06289379189006175,
+   "days": 13,
+   "e": [
+    0.02405143,
+    0.02565468,
+    -0.00082005,
+    -0.06038187,
+    0.05943073,
+    -0.04346205,
+    0.03221905,
+    0.02414761,
+    0.0253773,
+    0.0195368,
+    -0.01434251,
+    -0.01080713,
+    -0.01771018
+   ],
+   "news_until": 1795552800,
+   "increased": true,
+   "w": -0.044239632827458936
+  },
+  {
+   "id": "2026-11-11|FOX",
+   "ticker": "FOX",
+   "side": 1,
+   "w0": 0.0425,
+   "beta": 0.5518797876,
+   "sigma_e": 0.021407948557162323,
+   "H": 55,
+   "W": 0.158765595701449,
+   "kill_conditions": [
+    "Fox announces Roku acquisition integration failure or write-down",
+    "Fox reports Q1 miss or cuts FY guidance",
+    "Fox advertising revenue declines"
+   ],
+   "first_reported": "2026-11-06",
+   "score": 1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794516000,
+   "driving_event": "Completion of $22B Roku acquisition and Q1 earnings beat",
+   "structural": true,
+   "report_session": "2027-02-02",
+   "news_session": "2026-11-06",
+   "R": 0.02521091697791199,
+   "days": 8,
+   "e": [
+    0.04288343,
+    0.00465833,
+    -0.01151813,
+    -0.01556224,
+    -0.01814018,
+    0.00534821,
+    -0.00478849,
+    0.02233
+   ],
+   "news_until": 1795552800,
+   "w": 0.04257227068851553
+  },
+  {
+   "id": "2026-11-11|CRM",
+   "ticker": "CRM",
+   "side": -1,
+   "w0": -0.03,
+   "beta": 0.5792998647,
+   "sigma_e": 0.028021960837719625,
+   "H": 11,
+   "W": 0.09293832998874907,
+   "kill_conditions": [
+    "S&P upgrades Salesforce's credit rating or revises its outlook to stable/positive",
+    "Salesforce terminates or walks away from the Braze or Cresta acquisition",
+    "Salesforce cuts its buyback or announces debt reduction that eases leverage concerns"
+   ],
+   "first_reported": "2026-11-06",
+   "score": -1,
+   "cohort": "2026-11-11",
+   "entry_day": "2026-11-12",
+   "entry_close_ts": 1794516000,
+   "driving_event": "S&P cuts Salesforce rating to A on Braze/Cresta deals and $25B buyback",
+   "news_session": "2026-11-06",
+   "R": 0.08193285695250863,
+   "days": 8,
+   "e": [
+    -0.0033451,
+    0.002744,
+    0.08866036,
+    0.01940869,
+    0.02586877,
+    -0.00641381,
+    0.00047999,
+    -0.04547004
+   ],
+   "news_until": 1795552800,
+   "w": -0.02682424794206697
+  },
+  {
+   "id": "2026-11-18|PANW",
+   "ticker": "PANW",
+   "side": 1,
+   "w0": 0.0490598060867183,
+   "beta": 1.2127581344,
+   "sigma_e": 0.03660209621368321,
+   "H": 37,
+   "W": 0.22264185937896255,
+   "kill_conditions": [
+    "Palo Alto Networks cuts FY27 guidance or lowers its 2027 outlook",
+    "Applied Compute acquisition is terminated or blocked by regulators",
+    "PANW Q1 FY27 revenue, billings or EPS reported below estimates"
+   ],
+   "first_reported": "2026-11-15",
+   "score": 2,
+   "cohort": "2026-11-18",
+   "entry_day": "2026-11-19",
+   "entry_close_ts": 1795120800,
+   "driving_event": "Q1 FY27 earnings beat with raised FY27 guidance and higher 2027 outlook; $4.5B Applied Compute acquisition",
+   "structural": true,
+   "report_session": "2027-02-16",
+   "news_session": "2026-11-16",
+   "R": -0.02845839486006043,
+   "days": 3,
+   "e": [
+    -0.00674597,
+    -0.02765549,
+    0.00594306
+   ],
+   "news_until": 1795552800,
+   "w": 0.04832163737938478
+  },
+  {
+   "id": "2026-11-18|TTWO",
+   "ticker": "TTWO",
+   "side": 1,
+   "w0": 0.0490598060867183,
+   "beta": 0.7077765563,
+   "sigma_e": 0.031121763020270487,
+   "H": 5,
+   "W": 0.053904474772226714,
+   "kill_conditions": [
+    "GTA VI launch delayed or cancelled",
+    "Initial sales data significantly miss expectations",
+    "Metacritic score drops below 90 or reviews turn negative"
+   ],
+   "first_reported": "2026-11-13",
+   "score": 2,
+   "cohort": "2026-11-18",
+   "entry_day": "2026-11-19",
+   "entry_close_ts": 1795120800,
+   "driving_event": "GTA VI global launch on Nov 19 with 99 Metacritic and >$1.5B preorders",
+   "news_session": "2026-11-13",
+   "R": 0.05120691236595268,
+   "days": 3,
+   "e": [
+    0.03223554,
+    -0.03637358,
+    0.05534496
+   ],
+   "news_until": 1795552800,
+   "increased": true,
+   "H0": 3,
+   "ext": 1,
+   "stop_R": -0.031805706651714935,
+   "target_R": 0.1757258408924541,
+   "ext_pnl": 0.0,
+   "w": 0.07795299336529321
+  },
+  {
+   "id": "2026-11-18|DIS",
+   "ticker": "DIS",
+   "side": 1,
+   "w0": 0.020756071805919277,
+   "beta": 0.7333008756,
+   "sigma_e": 0.016170770296214953,
+   "H": 49,
+   "W": 0.11319539207350467,
+   "kill_conditions": [
+    "Disney cuts or withdraws its double-digit FY27 EPS guidance",
+    "Disney cancels or reduces its $9B buyback plan",
+    "Disney streaming segment returns to a loss"
+   ],
+   "first_reported": "2026-11-17",
+   "score": 1,
+   "cohort": "2026-11-18",
+   "entry_day": "2026-11-19",
+   "entry_close_ts": 1795120800,
+   "driving_event": "Disney Q4 FY26 earnings beat with dividend hike, $9B buybacks, $3B cost savings, double-digit FY27 EPS guidance",
+   "structural": true,
+   "report_session": "2027-02-01",
+   "news_session": "2026-11-17",
+   "R": 0.016349371473757725,
+   "days": 3,
+   "e": [
+    0.0078172,
+    -0.01511772,
+    0.02364989
+   ],
+   "news_until": 1795552800,
+   "increased": true,
+   "w": 0.03270216374028912
+  },
+  {
+   "id": "2026-11-18|NKE",
+   "ticker": "NKE",
+   "side": -1,
+   "w0": -0.035,
+   "beta": 0.8446189402,
+   "sigma_e": 0.02203565639967087,
+   "H": 20,
+   "W": 0.09854645127698468,
+   "kill_conditions": [
+    "Nike reports FY27 revenue growth instead of the guided decline.",
+    "Nike forecasts FY28 adjusted EPS growth, reversing its 'challenging' FY28 guidance."
+   ],
+   "first_reported": "2026-11-17",
+   "score": -1,
+   "cohort": "2026-11-18",
+   "entry_day": "2026-11-19",
+   "entry_close_ts": 1795120800,
+   "driving_event": "Nike investor day guides FY27 revenue decline and 'challenging' FY28, overshadowing $5B 2031 growth target",
+   "structural": true,
+   "report_session": "2026-12-17",
+   "news_session": "2026-11-17",
+   "R": -0.03757762318228888,
+   "days": 3,
+   "e": [
+    0.01032507,
+    0.01425284,
+    -0.06215553
+   ],
+   "news_until": 1795552800,
+   "w": -0.036717422558202775
+  },
+  {
+   "id": "2026-11-18|CVS",
+   "ticker": "CVS",
+   "side": -1,
+   "w0": -0.03,
+   "beta": 0.4306498342,
+   "sigma_e": 0.029164590082087907,
+   "H": 55,
+   "W": 0.2162903888435455,
+   "kill_conditions": [
+    "CMS final rule drops retroactive Medicare Advantage audit clawbacks or limits lookback",
+    "Aetna not named in CMS audit rule; overpayment exposure deemed immaterial",
+    "CVS abandons breakup plan and raises dividend, removing regulatory overhang"
+   ],
+   "first_reported": "2026-11-17",
+   "score": -1,
+   "cohort": "2026-11-18",
+   "entry_day": "2026-11-19",
+   "entry_close_ts": 1795120800,
+   "driving_event": "CMS proposed Medicare Advantage audit rule with retroactive overpayment clawbacks to 2018",
+   "structural": true,
+   "report_session": "2027-02-09",
+   "news_session": "2026-11-17",
+   "R": -0.0076171299355238045,
+   "days": 3,
+   "e": [
+    -0.02567206,
+    0.03499777,
+    -0.01694284
+   ],
+   "news_until": 1795552800,
+   "increased": true,
+   "w": -0.045631963621481565
+  },
+  {
+   "id": "2026-11-18|INTC",
+   "ticker": "INTC",
+   "side": -1,
+   "w0": -0.0275,
+   "beta": 1.8350632566,
+   "sigma_e": 0.05158147028324281,
+   "H": 16,
+   "W": 0.20632588113297123,
+   "kill_conditions": [
+    "Class-action dismissed or settled with no material penalty for Intel",
+    "Intel raises guidance, citing a recovery in PC demand",
+    "Nvidia rebuilds or increases its Intel stake"
+   ],
+   "first_reported": "2026-11-17",
+   "score": -1,
+   "cohort": "2026-11-18",
+   "entry_day": "2026-11-19",
+   "entry_close_ts": 1795120800,
+   "driving_event": "Shareholder class-action alleging Intel hid PC weakness before its $23B offering",
+   "report_session": "2027-01-21",
+   "news_session": "2026-11-17",
+   "R": 0.007377564304392237,
+   "days": 3,
+   "e": [
+    0.01288185,
+    -0.0770118,
+    0.07150751
+   ],
+   "news_until": 1795552800,
+   "w": -0.027282909183855442
+  },
+  {
+   "id": "2026-11-18|UNH",
+   "ticker": "UNH",
+   "side": -1,
+   "w0": -0.0275,
+   "beta": 0.634219573,
+   "sigma_e": 0.024962594190712842,
+   "H": 20,
+   "W": 0.11163611501035053,
+   "kill_conditions": [
+    "CMS withdraws or narrows the proposed rule, dropping retroactive Medicare Advantage overpayment clawbacks",
+    "Final rule omits retroactive recovery or caps the lookback period well short of 2018",
+    "UnitedHealth discloses a reserve or settlement that resolves the overpayment exposure"
+   ],
+   "first_reported": "2026-11-17",
+   "score": -1,
+   "cohort": "2026-11-18",
+   "entry_day": "2026-11-19",
+   "entry_close_ts": 1795120800,
+   "driving_event": "CMS proposes anti-fraud rule enabling retroactive Medicare Advantage overpayment clawbacks; Warren calls for breakup",
+   "report_session": "2027-01-26",
+   "news_session": "2026-11-17",
+   "R": -0.03273082192142173,
+   "days": 3,
+   "e": [
+    -0.05144036,
+    0.04095563,
+    -0.02224609
+   ],
+   "news_until": 1795552800,
+   "w": -0.028739741711317303
+  }
+ ],
+ "prices": {},
+ "equity": 89953.56,
+ "current_qty": {
+  "AMD": 3.0,
+  "BIIB": 10.0,
+  "BSX": -66.0,
+  "CRM": -4.0,
+  "CVS": -17.0,
+  "DIS": 8.0,
+  "EQIX": 3.0,
+  "FIS": -49.0,
+  "FOX": 22.0,
+  "INTC": -15.0,
+  "LLY": -1.0,
+  "MSFT": 5.0,
+  "NKE": -31.0,
+  "ORCL": -6.0,
+  "PANW": 4.0,
+  "SPY": 75.0,
+  "TJX": 5.0,
+  "TTWO": 11.0,
+  "UNH": -3.0,
+  "VLO": -2.0,
+  "XOM": 8.0
+ },
+ "target_weights": {},
+ "orders": [
+  {
+   "symbol": "AMD",
+   "leg": "close",
+   "side": "sell",
+   "qty": 3,
+   "target_weight": 0.0,
+   "price_ref": 413.07,
+   "client_order_id": "fund-lc-2026-11-24-AMD-close",
+   "attempts": [
+    "fund-lc-2026-11-24-AMD-close-a1"
+   ],
+   "ids": [
+    "65727c48-d9d7-4e6f-8a77-562c8425b281"
+   ],
+   "id": "65727c48-d9d7-4e6f-8a77-562c8425b281",
+   "filled_qty": 3.0,
+   "fill_price": 412.1499999999999,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 412.63,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:08.983037479Z",
+    "bid": 412.65,
+    "ask": 413.55,
+    "quote_ts": "2026-11-24T20:59:09.818608979Z"
+   }
+  },
+  {
+   "symbol": "BIIB",
+   "leg": "close",
+   "side": "sell",
+   "qty": 10,
+   "target_weight": 0.0,
+   "price_ref": 269.185,
+   "client_order_id": "fund-lc-2026-11-24-BIIB-close",
+   "attempts": [
+    "fund-lc-2026-11-24-BIIB-close-a1"
+   ],
+   "ids": [
+    "b6d0eb4f-b25c-4ad6-916a-ce3e696ab42e"
+   ],
+   "id": "b6d0eb4f-b25c-4ad6-916a-ce3e696ab42e",
+   "filled_qty": 10.0,
+   "fill_price": 269.13,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 269.12,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:06.879510959Z",
+    "bid": 268.79,
+    "ask": 278.51,
+    "quote_ts": "2026-11-24T20:59:09.279581362Z"
+   }
+  },
+  {
+   "symbol": "BSX",
+   "leg": "close",
+   "side": "buy",
+   "qty": 66,
+   "target_weight": 0.0,
+   "price_ref": 44.11,
+   "client_order_id": "fund-lc-2026-11-24-BSX-close",
+   "attempts": [
+    "fund-lc-2026-11-24-BSX-close-a1"
+   ],
+   "ids": [
+    "985e6e5e-a8ae-4953-849b-5324af2ed813"
+   ],
+   "id": "985e6e5e-a8ae-4953-849b-5324af2ed813",
+   "filled_qty": 66.0,
+   "fill_price": 44.11,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 44.095,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:09.875485188Z",
+    "bid": 44.09,
+    "ask": 44.1,
+    "quote_ts": "2026-11-24T20:59:09.813210071Z"
+   }
+  },
+  {
+   "symbol": "CRM",
+   "leg": "close",
+   "side": "buy",
+   "qty": 4,
+   "target_weight": 0.0,
+   "price_ref": 193.315,
+   "client_order_id": "fund-lc-2026-11-24-CRM-close",
+   "attempts": [
+    "fund-lc-2026-11-24-CRM-close-a1"
+   ],
+   "ids": [
+    "1d1ca111-96dd-468e-a8dd-8ed98d1248a0"
+   ],
+   "id": "1d1ca111-96dd-468e-a8dd-8ed98d1248a0",
+   "filled_qty": 4.0,
+   "fill_price": 193.16,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 193.13,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:02.245997237Z",
+    "bid": 186.8,
+    "ask": 193.31,
+    "quote_ts": "2026-11-24T20:59:03.671155869Z"
+   }
+  },
+  {
+   "symbol": "CVS",
+   "leg": "close",
+   "side": "buy",
+   "qty": 17,
+   "target_weight": 0.0,
+   "price_ref": 80.815,
+   "client_order_id": "fund-lc-2026-11-24-CVS-close",
+   "attempts": [
+    "fund-lc-2026-11-24-CVS-close-a1"
+   ],
+   "ids": [
+    "25e405f4-bc74-461f-a70f-0de91f45f30d"
+   ],
+   "id": "25e405f4-bc74-461f-a70f-0de91f45f30d",
+   "filled_qty": 17.0,
+   "fill_price": 80.803529,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 80.785,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:07.171747807Z",
+    "bid": 80.78,
+    "ask": 82.99,
+    "quote_ts": "2026-11-24T20:59:09.60644474Z"
+   }
+  },
+  {
+   "symbol": "DIS",
+   "leg": "close",
+   "side": "sell",
+   "qty": 8,
+   "target_weight": 0.0,
+   "price_ref": 122.64,
+   "client_order_id": "fund-lc-2026-11-24-DIS-close",
+   "attempts": [
+    "fund-lc-2026-11-24-DIS-close-a1"
+   ],
+   "ids": [
+    "8c03b969-df38-45bf-8acb-4dca5437617f"
+   ],
+   "id": "8c03b969-df38-45bf-8acb-4dca5437617f",
+   "filled_qty": 8.0,
+   "fill_price": 122.415,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 122.42,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:08.536027758Z",
+    "bid": 121.61,
+    "ask": 122.93,
+    "quote_ts": "2026-11-24T20:59:09.229743916Z"
+   }
+  },
+  {
+   "symbol": "EQIX",
+   "leg": "close",
+   "side": "sell",
+   "qty": 3,
+   "target_weight": 0.0,
+   "price_ref": 982.275,
+   "client_order_id": "fund-lc-2026-11-24-EQIX-close",
+   "attempts": [
+    "fund-lc-2026-11-24-EQIX-close-a1"
+   ],
+   "ids": [
+    "d4da4929-d10d-40a5-aa06-b1dcb7a01bf2"
+   ],
+   "id": "d4da4929-d10d-40a5-aa06-b1dcb7a01bf2",
+   "filled_qty": 3.0,
+   "fill_price": 981.92,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 982.13,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:09.63702947Z",
+    "bid": 981.7,
+    "ask": 982.81,
+    "quote_ts": "2026-11-24T20:59:09.637045477Z"
+   }
+  },
+  {
+   "symbol": "FIS",
+   "leg": "close",
+   "side": "buy",
+   "qty": 49,
+   "target_weight": 0.0,
+   "price_ref": 27.13,
+   "client_order_id": "fund-lc-2026-11-24-FIS-close",
+   "attempts": [
+    "fund-lc-2026-11-24-FIS-close-a1"
+   ],
+   "ids": [
+    "974e1676-b0de-4920-adf6-5388a0f35b0f"
+   ],
+   "id": "974e1676-b0de-4920-adf6-5388a0f35b0f",
+   "filled_qty": 49.0,
+   "fill_price": 27.17,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 27.165,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:08.616669088Z",
+    "bid": 27.16,
+    "ask": 27.17,
+    "quote_ts": "2026-11-24T20:59:09.917938012Z"
+   }
+  },
+  {
+   "symbol": "FOX",
+   "leg": "close",
+   "side": "sell",
+   "qty": 22,
+   "target_weight": 0.0,
+   "price_ref": 58.44,
+   "client_order_id": "fund-lc-2026-11-24-FOX-close",
+   "attempts": [
+    "fund-lc-2026-11-24-FOX-close-a1"
+   ],
+   "ids": [
+    "825fc038-03b6-4ef8-a645-4258f34f8b94"
+   ],
+   "id": "825fc038-03b6-4ef8-a645-4258f34f8b94",
+   "filled_qty": 22.0,
+   "fill_price": 58.423635999999995,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 58.43,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:08.429515239Z",
+    "bid": 58.42,
+    "ask": 58.44,
+    "quote_ts": "2026-11-24T20:59:09.102741353Z"
+   }
+  },
+  {
+   "symbol": "INTC",
+   "leg": "close",
+   "side": "buy",
+   "qty": 15,
+   "target_weight": 0.0,
+   "price_ref": 54.805,
+   "client_order_id": "fund-lc-2026-11-24-INTC-close",
+   "attempts": [
+    "fund-lc-2026-11-24-INTC-close-a1"
+   ],
+   "ids": [
+    "d211088d-3e1b-4884-a1f7-ea88588c32a6"
+   ],
+   "id": "d211088d-3e1b-4884-a1f7-ea88588c32a6",
+   "filled_qty": 15.0,
+   "fill_price": 54.756667,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 54.805,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:09.179537487Z",
+    "bid": 54.8,
+    "ask": 54.82,
+    "quote_ts": "2026-11-24T20:59:09.926837559Z"
+   }
+  },
+  {
+   "symbol": "LLY",
+   "leg": "close",
+   "side": "buy",
+   "qty": 1,
+   "target_weight": 0.0,
+   "price_ref": 1410.08,
+   "client_order_id": "fund-lc-2026-11-24-LLY-close",
+   "attempts": [
+    "fund-lc-2026-11-24-LLY-close-a1"
+   ],
+   "ids": [
+    "690c73d1-b739-4cc8-a13a-fe81553ac0c9"
+   ],
+   "id": "690c73d1-b739-4cc8-a13a-fe81553ac0c9",
+   "filled_qty": 1.0,
+   "fill_price": 1412.03,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 1411.73,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:09.121810233Z",
+    "bid": 1375,
+    "ask": 1418,
+    "quote_ts": "2026-11-24T20:59:03.282850763Z"
+   }
+  },
+  {
+   "symbol": "MSFT",
+   "leg": "close",
+   "side": "sell",
+   "qty": 5,
+   "target_weight": 0.0,
+   "price_ref": 495.99,
+   "client_order_id": "fund-lc-2026-11-24-MSFT-close",
+   "attempts": [
+    "fund-lc-2026-11-24-MSFT-close-a1"
+   ],
+   "ids": [
+    "59b34afe-7f35-4501-807a-c2a7b85a54a1"
+   ],
+   "id": "59b34afe-7f35-4501-807a-c2a7b85a54a1",
+   "filled_qty": 5.0,
+   "fill_price": 495.93,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 495.94,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:09.52579037Z",
+    "bid": 495.83,
+    "ask": 495.98,
+    "quote_ts": "2026-11-24T20:59:09.85167787Z"
+   }
+  },
+  {
+   "symbol": "NKE",
+   "leg": "close",
+   "side": "buy",
+   "qty": 31,
+   "target_weight": 0.0,
+   "price_ref": 35.705,
+   "client_order_id": "fund-lc-2026-11-24-NKE-close",
+   "attempts": [
+    "fund-lc-2026-11-24-NKE-close-a1"
+   ],
+   "ids": [
+    "6d27d248-7254-4f63-af35-1cdcbbd09d63"
+   ],
+   "id": "6d27d248-7254-4f63-af35-1cdcbbd09d63",
+   "filled_qty": 31.0,
+   "fill_price": 35.73,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 35.725,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:09.947812292Z",
+    "bid": 35.72,
+    "ask": 35.73,
+    "quote_ts": "2026-11-24T20:59:09.879683401Z"
+   }
+  },
+  {
+   "symbol": "ORCL",
+   "leg": "close",
+   "side": "buy",
+   "qty": 6,
+   "target_weight": 0.0,
+   "price_ref": 109.27,
+   "client_order_id": "fund-lc-2026-11-24-ORCL-close",
+   "attempts": [
+    "fund-lc-2026-11-24-ORCL-close-a1"
+   ],
+   "ids": [
+    "fb53f49e-bf14-42c5-a8ed-e3ca99535ee2"
+   ],
+   "id": "fb53f49e-bf14-42c5-a8ed-e3ca99535ee2",
+   "filled_qty": 6.0,
+   "fill_price": 109.26,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 109.255,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:09.051602411Z",
+    "bid": 108.27,
+    "ask": 109.34,
+    "quote_ts": "2026-11-24T20:59:09.908293268Z"
+   }
+  },
+  {
+   "symbol": "PANW",
+   "leg": "close",
+   "side": "sell",
+   "qty": 4,
+   "target_weight": 0.0,
+   "price_ref": 353.225,
+   "client_order_id": "fund-lc-2026-11-24-PANW-close",
+   "attempts": [
+    "fund-lc-2026-11-24-PANW-close-a1"
+   ],
+   "ids": [
+    "cc570d17-c9b6-4c7b-9f26-7794286a02ea"
+   ],
+   "id": "cc570d17-c9b6-4c7b-9f26-7794286a02ea",
+   "filled_qty": 4.0,
+   "fill_price": 352.72,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 352.75,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:09.394773794Z",
+    "bid": 352.69,
+    "ask": 366.81,
+    "quote_ts": "2026-11-24T20:59:09.507207651Z"
+   }
+  },
+  {
+   "symbol": "SPY",
+   "leg": "close",
+   "side": "sell",
+   "qty": 75,
+   "target_weight": 0.0,
+   "price_ref": 718.405,
+   "client_order_id": "fund-lc-2026-11-24-SPY-close",
+   "attempts": [
+    "fund-lc-2026-11-24-SPY-close-a1"
+   ],
+   "ids": [
+    "e04472e8-9f5f-404a-8dd8-c78d2694383e"
+   ],
+   "id": "e04472e8-9f5f-404a-8dd8-c78d2694383e",
+   "filled_qty": 75.0,
+   "fill_price": 718.210267,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 718.25,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:09.428047238Z",
+    "bid": 718.14,
+    "ask": 718.26,
+    "quote_ts": "2026-11-24T20:59:09.92025851Z"
+   }
+  },
+  {
+   "symbol": "TJX",
+   "leg": "close",
+   "side": "sell",
+   "qty": 5,
+   "target_weight": 0.0,
+   "price_ref": 143.64,
+   "client_order_id": "fund-lc-2026-11-24-TJX-close",
+   "attempts": [
+    "fund-lc-2026-11-24-TJX-close-a1"
+   ],
+   "ids": [
+    "80c04aa7-f0b2-4cf0-9297-bff8e2a0d1f1"
+   ],
+   "id": "80c04aa7-f0b2-4cf0-9297-bff8e2a0d1f1",
+   "filled_qty": 5.0,
+   "fill_price": 143.734,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 143.78,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:06.090800329Z",
+    "bid": 143.73,
+    "ask": 144.99,
+    "quote_ts": "2026-11-24T20:59:09.930649782Z"
+   }
+  },
+  {
+   "symbol": "TTWO",
+   "leg": "close",
+   "side": "sell",
+   "qty": 11,
+   "target_weight": 0.0,
+   "price_ref": 220.15,
+   "client_order_id": "fund-lc-2026-11-24-TTWO-close",
+   "attempts": [
+    "fund-lc-2026-11-24-TTWO-close-a1"
+   ],
+   "ids": [
+    "b9e9df7d-b004-48de-8358-70ec5900849b"
+   ],
+   "id": "b9e9df7d-b004-48de-8358-70ec5900849b",
+   "filled_qty": 11.0,
+   "fill_price": 220.231818,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 220.26,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:06.230068536Z",
+    "bid": 220.19,
+    "ask": 234.15,
+    "quote_ts": "2026-11-24T20:59:09.008179087Z"
+   }
+  },
+  {
+   "symbol": "UNH",
+   "leg": "close",
+   "side": "buy",
+   "qty": 3,
+   "target_weight": 0.0,
+   "price_ref": 342.41,
+   "client_order_id": "fund-lc-2026-11-24-UNH-close",
+   "attempts": [
+    "fund-lc-2026-11-24-UNH-close-a1"
+   ],
+   "ids": [
+    "bef5f6cc-a18a-45f0-b512-1c5ce12772fc"
+   ],
+   "id": "bef5f6cc-a18a-45f0-b512-1c5ce12772fc",
+   "filled_qty": 3.0,
+   "fill_price": 342.2766669999999,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 342.26,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:09.362572089Z",
+    "bid": 323.34,
+    "ask": 342.5,
+    "quote_ts": "2026-11-24T20:59:09.412254533Z"
+   }
+  },
+  {
+   "symbol": "VLO",
+   "leg": "close",
+   "side": "buy",
+   "qty": 2,
+   "target_weight": 0.0,
+   "price_ref": 324.82,
+   "client_order_id": "fund-lc-2026-11-24-VLO-close",
+   "attempts": [
+    "fund-lc-2026-11-24-VLO-close-a1"
+   ],
+   "ids": [
+    "fecc53e6-8052-45f0-a93a-a5c8057f365a"
+   ],
+   "id": "fecc53e6-8052-45f0-a93a-a5c8057f365a",
+   "filled_qty": 2.0,
+   "fill_price": 325.02,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 324.86,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:01.778271286Z",
+    "bid": 312,
+    "ask": 334.77,
+    "quote_ts": "2026-11-24T20:59:09.615909046Z"
+   }
+  },
+  {
+   "symbol": "XOM",
+   "leg": "close",
+   "side": "sell",
+   "qty": 8,
+   "target_weight": 0.0,
+   "price_ref": 158.315,
+   "client_order_id": "fund-lc-2026-11-24-XOM-close",
+   "attempts": [
+    "fund-lc-2026-11-24-XOM-close-a1"
+   ],
+   "ids": [
+    "d617a6c1-8a6f-428a-8c1e-c367f8d20cb6"
+   ],
+   "id": "d617a6c1-8a6f-428a-8c1e-c367f8d20cb6",
+   "filled_qty": 8.0,
+   "fill_price": 158.33375,
+   "status": "filled",
+   "quote_at_send": {
+    "px": 158.35,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:59:08.512628934Z",
+    "bid": 158.34,
+    "ask": 158.36,
+    "quote_ts": "2026-11-24T20:59:09.895714877Z"
+   }
+  }
+ ],
+ "problems": [],
+ "status": "submitted",
+ "reviews": [
+  {
+   "id": "2026-11-18|TTWO",
+   "ticker": "TTWO",
+   "day": "2026-11-24",
+   "decision": "extend",
+   "rule": 5,
+   "z": 1.0073232084815338,
+   "id_disc": -0.3333333333333333,
+   "to": 3.5302311805265534,
+   "label": "CONFIRMING",
+   "kill_hit": false,
+   "catalyst": [
+    "2027-02-01",
+    ""
+   ],
+   "catalyst_sessions": 45,
+   "sigma": 0.02934939291572406,
+   "H0": 3,
+   "held": 3,
+   "h_ext": 2,
+   "ext_no": 1,
+   "R": 0.05120691236595268,
+   "n": 7471.092378416818,
+   "W_new": 0.04150630950883381,
+   "guard": 0.08301261901766761,
+   "median_new": null,
+   "hold_cap": 37,
+   "report_within_cap": false,
+   "after_report": false,
+   "stop_R": -0.031805706651714935,
+   "target_R": 0.1757258408924541
+  },
+  {
+   "id": "2026-11-18|TJX",
+   "ticker": "TJX",
+   "day": "2026-11-24",
+   "decision": "exit",
+   "rule": 1,
+   "z": 0.9940446244818417,
+   "id_disc": -0.3333333333333333,
+   "to": 1.610624329491931,
+   "label": "CONTRADICTING",
+   "kill_hit": false,
+   "catalyst": [
+    "2027-02-24",
+    "amc"
+   ],
+   "catalyst_sessions": null,
+   "sigma": 0.015949630678495107,
+   "H0": 3,
+   "held": 3,
+   "h_ext": 0,
+   "ext_no": 0,
+   "R": 0.027461050049708054,
+   "n": 2443.3040783511583,
+   "W_new": 0.022556184020369772,
+   "guard": 0.022556184020369772,
+   "median_new": null,
+   "hold_cap": 37,
+   "report_within_cap": false,
+   "after_report": false,
+   "stop_R": null,
+   "target_R": null
+  },
+  {
+   "id": "2026-11-18|LLY",
+   "ticker": "LLY",
+   "day": "2026-11-24",
+   "decision": "exit",
+   "rule": 2,
+   "z": -1.2240487358392222,
+   "id_disc": -0.3333333333333333,
+   "to": 1.2918465371704304,
+   "label": "CONFIRMING",
+   "kill_hit": false,
+   "catalyst": [
+    "2027-02-02",
+    "bmo"
+   ],
+   "catalyst_sessions": 46,
+   "sigma": 0.01887838471066765,
+   "H0": 3,
+   "held": 3,
+   "h_ext": 0,
+   "ext_no": 0,
+   "R": -0.04002433907619707,
+   "n": -3026.71343037893,
+   "W_new": 0.02669806769352307,
+   "guard": 0.02669806769352307,
+   "median_new": null,
+   "hold_cap": 37,
+   "report_within_cap": false,
+   "after_report": false,
+   "stop_R": null,
+   "target_R": null
+  }
+ ],
+ "prices_meta": {
+  "news": {
+   "BSX": {
+    "px": 44.015,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:56.800947703Z",
+    "bid": 44.01,
+    "ask": 44.02,
+    "quote_ts": "2026-11-24T20:40:01.364652358Z"
+   },
+   "XOM": {
+    "px": 158.53,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:51.046600201Z",
+    "bid": 158.31,
+    "ask": 158.58,
+    "quote_ts": "2026-11-24T20:40:01.730963698Z"
+   },
+   "PANW": {
+    "px": 350.53,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.200986693Z",
+    "bid": 350.49,
+    "ask": 350.66,
+    "quote_ts": "2026-11-24T20:40:01.386122246Z"
+   },
+   "CEG": {
+    "px": 244.025,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:52.908831761Z",
+    "bid": 234,
+    "ask": 246.08,
+    "quote_ts": "2026-11-24T20:40:00.114798604Z"
+   },
+   "TT": {
+    "px": 402.91,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:55.13517982Z",
+    "bid": 380.28,
+    "ask": 407.12,
+    "quote_ts": "2026-11-24T20:40:01.602042637Z"
+   },
+   "STX": {
+    "px": 480.9,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:58.439813013Z",
+    "bid": 475,
+    "ask": 506.56,
+    "quote_ts": "2026-11-24T20:40:01.063829091Z"
+   },
+   "LLY": {
+    "px": 1410.24,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.133963617Z",
+    "bid": 1348.2,
+    "ask": 1418,
+    "quote_ts": "2026-11-24T20:39:57.455474845Z"
+   },
+   "MRNA": {
+    "px": 225.72,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:51.018853016Z",
+    "bid": 225.66,
+    "ask": 226.14,
+    "quote_ts": "2026-11-24T20:40:00.864306054Z"
+   },
+   "PEP": {
+    "px": 142.635,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:57.379419431Z",
+    "bid": 137.08,
+    "ask": 142.99,
+    "quote_ts": "2026-11-24T20:39:50.2548621Z"
+   },
+   "DIS": {
+    "px": 122.08,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.736441135Z",
+    "bid": 121.61,
+    "ask": 122.1,
+    "quote_ts": "2026-11-24T20:40:01.511201731Z"
+   },
+   "LULU": {
+    "px": 106.41,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.361208799Z",
+    "bid": 101.6,
+    "ask": 113.4,
+    "quote_ts": "2026-11-24T20:40:01.487758376Z"
+   },
+   "CDNS": {
+    "px": 295.44,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:49.493741564Z",
+    "bid": 295.41,
+    "ask": 298.27,
+    "quote_ts": "2026-11-24T20:39:57.715251693Z"
+   },
+   "FOX": {
+    "px": 58.45,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:33:18.519052687Z",
+    "bid": 58.39,
+    "ask": 58.47,
+    "quote_ts": "2026-11-24T20:40:00.927703655Z"
+   },
+   "MCD": {
+    "px": 280.43,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:52.739842262Z",
+    "bid": 267.27,
+    "ask": 280.47,
+    "quote_ts": "2026-11-24T20:40:00.577483011Z"
+   },
+   "TJX": {
+    "px": 143.865,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:53.671980563Z",
+    "bid": 139.25,
+    "ask": 144.52,
+    "quote_ts": "2026-11-24T20:40:01.409388564Z"
+   },
+   "UNH": {
+    "px": 343.285,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:40.086489551Z",
+    "bid": 342.92,
+    "ask": 343.38,
+    "quote_ts": "2026-11-24T20:40:00.997838098Z"
+   },
+   "HCA": {
+    "px": 481.36,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:38:50.527302799Z",
+    "bid": 481.05,
+    "ask": 490,
+    "quote_ts": "2026-11-24T20:39:57.677564415Z"
+   },
+   "SPY": {
+    "px": 716.19,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.236760581Z",
+    "bid": 716.15,
+    "ask": 716.19,
+    "quote_ts": "2026-11-24T20:40:01.778526443Z"
+   },
+   "INTC": {
+    "px": 54.615,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.020710254Z",
+    "bid": 54.6,
+    "ask": 54.61,
+    "quote_ts": "2026-11-24T20:40:01.784955115Z"
+   },
+   "FOXA": {
+    "px": 65.17,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:58.784529118Z",
+    "bid": 65.13,
+    "ask": 65.16,
+    "quote_ts": "2026-11-24T20:40:01.295325318Z"
+   },
+   "META": {
+    "px": 588.25,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:55.117710225Z",
+    "bid": 588.08,
+    "ask": 588.65,
+    "quote_ts": "2026-11-24T20:40:01.718579734Z"
+   },
+   "BRO": {
+    "px": 75.48,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:37:49.089069857Z",
+    "bid": 75.05,
+    "ask": 77.32,
+    "quote_ts": "2026-11-24T20:40:00.464604916Z"
+   },
+   "LRCX": {
+    "px": 195.72,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:56.597158057Z",
+    "bid": 195.44,
+    "ask": 195.8,
+    "quote_ts": "2026-11-24T20:40:01.686862125Z"
+   },
+   "HAS": {
+    "px": 111.92,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:38:37.619104697Z",
+    "bid": 111.67,
+    "ask": 118.94,
+    "quote_ts": "2026-11-24T20:40:00.646628584Z"
+   },
+   "AVGO": {
+    "px": 301.18,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.018977214Z",
+    "bid": 300.85,
+    "ask": 301.23,
+    "quote_ts": "2026-11-24T20:40:01.75911074Z"
+   },
+   "TRGP": {
+    "px": 282.15,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:38:55.905771998Z",
+    "bid": 282.16,
+    "ask": 291.12,
+    "quote_ts": "2026-11-24T20:40:01.758575518Z"
+   },
+   "CVS": {
+    "px": 81.395,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:41.417481954Z",
+    "bid": 81.39,
+    "ask": 81.7,
+    "quote_ts": "2026-11-24T20:40:00.88031672Z"
+   },
+   "ORCL": {
+    "px": 108.7,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:59.190494615Z",
+    "bid": 108.57,
+    "ask": 108.82,
+    "quote_ts": "2026-11-24T20:40:01.734973339Z"
+   },
+   "MRVL": {
+    "px": 130.91,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:51.08652959Z",
+    "bid": 130.79,
+    "ask": 134,
+    "quote_ts": "2026-11-24T20:40:01.734894993Z"
+   },
+   "AMZN": {
+    "px": 251.1,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.323253497Z",
+    "bid": 251.06,
+    "ask": 251.12,
+    "quote_ts": "2026-11-24T20:40:01.775704342Z"
+   },
+   "SBAC": {
+    "px": 172.315,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.596223251Z",
+    "bid": 172.03,
+    "ask": 172.41,
+    "quote_ts": "2026-11-24T20:39:59.292382836Z"
+   },
+   "VRT": {
+    "px": 173.28,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.867402143Z",
+    "bid": 171.5,
+    "ask": 181.91,
+    "quote_ts": "2026-11-24T20:40:01.452230155Z"
+   },
+   "MMM": {
+    "px": 186.395,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:05.103080551Z",
+    "bid": 186,
+    "ask": 193.69,
+    "quote_ts": "2026-11-24T20:40:01.569784951Z"
+   },
+   "NRG": {
+    "px": 91.215,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:31.086087016Z",
+    "bid": 91.17,
+    "ask": 95,
+    "quote_ts": "2026-11-24T20:40:01.178533995Z"
+   },
+   "IDXX": {
+    "px": 710.59,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:51.683556904Z",
+    "bid": 667.97,
+    "ask": 744.78,
+    "quote_ts": "2026-11-24T20:40:00.500554058Z"
+   },
+   "WMB": {
+    "px": 65.88,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:56.320604084Z",
+    "bid": 65.86,
+    "ask": 65.9,
+    "quote_ts": "2026-11-24T20:40:00.58460517Z"
+   },
+   "ON": {
+    "px": 61.75,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.018750566Z",
+    "bid": 61.36,
+    "ask": 61.82,
+    "quote_ts": "2026-11-24T20:40:01.034031894Z"
+   },
+   "FIS": {
+    "px": 27.04,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:37:48.622302866Z",
+    "bid": 27.05,
+    "ask": 27.06,
+    "quote_ts": "2026-11-24T20:40:01.677212676Z"
+   },
+   "AMD": {
+    "px": 409.83,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:52.934316449Z",
+    "bid": 409.81,
+    "ask": 410.17,
+    "quote_ts": "2026-11-24T20:40:01.77638496Z"
+   },
+   "MCHP": {
+    "px": 56.18,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.576052454Z",
+    "bid": 56.13,
+    "ask": 57.66,
+    "quote_ts": "2026-11-24T20:40:00.526594153Z"
+   },
+   "BRK.B": {
+    "px": 576.17,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:36.646329979Z",
+    "bid": 576.11,
+    "ask": 576.37,
+    "quote_ts": "2026-11-24T20:40:01.731390394Z"
+   },
+   "LITE": {
+    "px": 482.29,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:52.189100813Z",
+    "bid": 458.67,
+    "ask": 483.18,
+    "quote_ts": "2026-11-24T20:40:01.530604603Z"
+   },
+   "ZBRA": {
+    "px": 315.47,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.338709112Z",
+    "bid": 315.25,
+    "ask": 331.77,
+    "quote_ts": "2026-11-24T20:40:00.377808303Z"
+   },
+   "TTWO": {
+    "px": 220.57,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:54.066463773Z",
+    "bid": 219,
+    "ask": 220.74,
+    "quote_ts": "2026-11-24T20:40:00.177299487Z"
+   },
+   "TTD": {
+    "px": 14.155,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.400446585Z",
+    "bid": 14.15,
+    "ask": 14.16,
+    "quote_ts": "2026-11-24T20:40:01.731091283Z"
+   },
+   "TSLA": {
+    "px": 382.78,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.215845729Z",
+    "bid": 382.64,
+    "ask": 382.89,
+    "quote_ts": "2026-11-24T20:40:01.643403723Z"
+   },
+   "JPM": {
+    "px": 316.135,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.025524177Z",
+    "bid": 314.75,
+    "ask": 316.2,
+    "quote_ts": "2026-11-24T20:40:01.158069121Z"
+   },
+   "GOOGL": {
+    "px": 277.65,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.423621365Z",
+    "bid": 277.46,
+    "ask": 277.6,
+    "quote_ts": "2026-11-24T20:40:01.778486541Z"
+   },
+   "TAP": {
+    "px": 40.13,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:30.796189461Z",
+    "bid": 40.12,
+    "ask": 40.14,
+    "quote_ts": "2026-11-24T20:40:01.127126161Z"
+   },
+   "LOW": {
+    "px": 230.25,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:38:10.029822418Z",
+    "bid": 230.2,
+    "ask": 239,
+    "quote_ts": "2026-11-24T20:40:00.505710186Z"
+   },
+   "AEP": {
+    "px": 127.365,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:45.580774174Z",
+    "bid": 127.31,
+    "ask": 127.36,
+    "quote_ts": "2026-11-24T20:40:00.922262165Z"
+   },
+   "WMT": {
+    "px": 131.67,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:59.185010436Z",
+    "bid": 131.63,
+    "ask": 131.66,
+    "quote_ts": "2026-11-24T20:40:01.456324064Z"
+   },
+   "SNDK": {
+    "px": 76.63,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.041032657Z",
+    "bid": 76.37,
+    "ask": 76.68,
+    "quote_ts": "2026-11-24T20:40:01.752290738Z"
+   },
+   "VEEV": {
+    "px": 273.1,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:57.780079879Z",
+    "bid": 257.17,
+    "ask": 273.33,
+    "quote_ts": "2026-11-24T20:40:01.113483837Z"
+   },
+   "ROL": {
+    "px": 38.155,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.951223257Z",
+    "bid": 38.15,
+    "ask": 38.16,
+    "quote_ts": "2026-11-24T20:40:01.735340072Z"
+   },
+   "LH": {
+    "px": 377.0,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:29.800466669Z",
+    "bid": 376.88,
+    "ask": 377.33,
+    "quote_ts": "2026-11-24T20:39:59.895246229Z"
+   },
+   "CMG": {
+    "px": 37.205,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:58.794850809Z",
+    "bid": 37.2,
+    "ask": 37.21,
+    "quote_ts": "2026-11-24T20:40:01.763566034Z"
+   },
+   "BA": {
+    "px": 163.81,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:45.17910403Z",
+    "bid": 161.5,
+    "ask": 166.64,
+    "quote_ts": "2026-11-24T20:40:01.785048109Z"
+   },
+   "AME": {
+    "px": 227.02,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:51.168891394Z",
+    "bid": 226.76,
+    "ask": 236,
+    "quote_ts": "2026-11-24T20:40:01.233036933Z"
+   },
+   "SMCI": {
+    "px": 22.56,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.320150182Z",
+    "bid": 22.55,
+    "ask": 22.56,
+    "quote_ts": "2026-11-24T20:40:01.736247106Z"
+   },
+   "NFLX": {
+    "px": 58.68,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:56.315598325Z",
+    "bid": 58.68,
+    "ask": 58.69,
+    "quote_ts": "2026-11-24T20:40:01.734989426Z"
+   },
+   "NKE": {
+    "px": 35.5,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.517670506Z",
+    "bid": 35.49,
+    "ask": 35.5,
+    "quote_ts": "2026-11-24T20:40:01.735874511Z"
+   },
+   "FCX": {
+    "px": 47.53,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.554622147Z",
+    "bid": 47.47,
+    "ask": 47.53,
+    "quote_ts": "2026-11-24T20:40:01.777722467Z"
+   },
+   "STT": {
+    "px": 160.33,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:24.666355613Z",
+    "bid": 150.78,
+    "ask": 169.8,
+    "quote_ts": "2026-11-24T20:40:01.233908236Z"
+   },
+   "HUM": {
+    "px": 404.02,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:49.850623632Z",
+    "bid": 403.74,
+    "ask": 404.68,
+    "quote_ts": "2026-11-24T20:40:00.004434527Z"
+   },
+   "ETN": {
+    "px": 318.86,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:55.102011033Z",
+    "bid": 318.21,
+    "ask": 320.74,
+    "quote_ts": "2026-11-24T20:40:01.270246276Z"
+   },
+   "KHC": {
+    "px": 25.6,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:43.53152662Z",
+    "bid": 25.59,
+    "ask": 25.6,
+    "quote_ts": "2026-11-24T20:40:01.697112979Z"
+   },
+   "CSX": {
+    "px": 50.065,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:59.269421314Z",
+    "bid": 50.06,
+    "ask": 50.07,
+    "quote_ts": "2026-11-24T20:40:01.457123911Z"
+   },
+   "EQT": {
+    "px": 49.16,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:56.481652877Z",
+    "bid": 49.14,
+    "ask": 49.16,
+    "quote_ts": "2026-11-24T20:40:01.595462536Z"
+   },
+   "VLO": {
+    "px": 325.065,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:40.664638645Z",
+    "bid": 325.07,
+    "ask": 334.77,
+    "quote_ts": "2026-11-24T20:40:01.334234254Z"
+   },
+   "DAL": {
+    "px": 84.005,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:51.401847716Z",
+    "bid": 84.02,
+    "ask": 88.25,
+    "quote_ts": "2026-11-24T20:39:59.67164791Z"
+   },
+   "EQIX": {
+    "px": 981.96,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:42.954587691Z",
+    "bid": 981.42,
+    "ask": 1025.1,
+    "quote_ts": "2026-11-24T20:39:59.311264045Z"
+   },
+   "EL": {
+    "px": 107.095,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:43.889846265Z",
+    "bid": 100.45,
+    "ask": 107.19,
+    "quote_ts": "2026-11-24T20:40:01.429587656Z"
+   },
+   "NVDA": {
+    "px": 152.595,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.722260509Z",
+    "bid": 152.58,
+    "ask": 152.6,
+    "quote_ts": "2026-11-24T20:40:01.777771678Z"
+   },
+   "CRM": {
+    "px": 192.22,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:35.673415073Z",
+    "bid": 190.74,
+    "ask": 192.68,
+    "quote_ts": "2026-11-24T20:40:00.253074104Z"
+   },
+   "AAPL": {
+    "px": 352.3,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.642192901Z",
+    "bid": 352.24,
+    "ask": 352.29,
+    "quote_ts": "2026-11-24T20:40:01.723283388Z"
+   },
+   "MSFT": {
+    "px": 494.17,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:57.301100543Z",
+    "bid": 493.88,
+    "ask": 494.16,
+    "quote_ts": "2026-11-24T20:40:01.237485243Z"
+   },
+   "BAC": {
+    "px": 48.405,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.715313882Z",
+    "bid": 48.4,
+    "ask": 48.41,
+    "quote_ts": "2026-11-24T20:40:01.778126609Z"
+   },
+   "QCOM": {
+    "px": 165.035,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:01.378627119Z",
+    "bid": 164.99,
+    "ask": 165.31,
+    "quote_ts": "2026-11-24T20:40:01.540188978Z"
+   },
+   "HPE": {
+    "px": 39.62,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.803142189Z",
+    "bid": 39.6,
+    "ask": 39.64,
+    "quote_ts": "2026-11-24T20:40:01.73968589Z"
+   },
+   "BIIB": {
+    "px": 268.755,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:33.125778637Z",
+    "bid": 268.42,
+    "ask": 270.2,
+    "quote_ts": "2026-11-24T20:40:01.490686327Z"
+   },
+   "CRL": {
+    "px": 338.0,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:39:20.434826906Z",
+    "bid": 337.94,
+    "ask": 357.11,
+    "quote_ts": "2026-11-24T20:40:00.882838818Z"
+   },
+   "WDC": {
+    "px": 273.355,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:40:00.683975864Z",
+    "bid": 273.25,
+    "ask": 273.98,
+    "quote_ts": "2026-11-24T20:40:01.284878328Z"
+   }
+  },
+  "decision": {
+   "VRT": {
+    "px": 173.65,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.216231394Z",
+    "bid": 173.52,
+    "ask": 181.91,
+    "quote_ts": "2026-11-24T20:57:01.251308142Z"
+   },
+   "UNH": {
+    "px": 342.41,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:47.372875992Z",
+    "bid": 342.39,
+    "ask": 358.05,
+    "quote_ts": "2026-11-24T20:57:01.136312304Z"
+   },
+   "CVS": {
+    "px": 80.815,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.375268415Z",
+    "bid": 80.17,
+    "ask": 80.84,
+    "quote_ts": "2026-11-24T20:57:01.543402666Z"
+   },
+   "AVGO": {
+    "px": 300.56,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.817340194Z",
+    "bid": 300.37,
+    "ask": 300.63,
+    "quote_ts": "2026-11-24T20:57:01.548437332Z"
+   },
+   "BAC": {
+    "px": 48.575,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.659999157Z",
+    "bid": 48.57,
+    "ask": 48.58,
+    "quote_ts": "2026-11-24T20:57:01.687326647Z"
+   },
+   "TT": {
+    "px": 404.18,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:56.798357084Z",
+    "bid": 380.28,
+    "ask": 404.27,
+    "quote_ts": "2026-11-24T20:57:01.171004929Z"
+   },
+   "META": {
+    "px": 589.43,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.256605622Z",
+    "bid": 589.34,
+    "ask": 589.55,
+    "quote_ts": "2026-11-24T20:57:00.883501155Z"
+   },
+   "MMM": {
+    "px": 186.55,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:46.06893321Z",
+    "bid": 174.3,
+    "ask": 193.69,
+    "quote_ts": "2026-11-24T20:57:00.060393367Z"
+   },
+   "PEP": {
+    "px": 142.87,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:55.589939164Z",
+    "bid": 142.88,
+    "ask": 142.91,
+    "quote_ts": "2026-11-24T20:57:00.055479584Z"
+   },
+   "FIS": {
+    "px": 27.13,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:54.822140844Z",
+    "bid": 27.12,
+    "ask": 27.13,
+    "quote_ts": "2026-11-24T20:57:01.821773528Z"
+   },
+   "IDXX": {
+    "px": 712.65,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:56.720989402Z",
+    "bid": 712.26,
+    "ask": 744.78,
+    "quote_ts": "2026-11-24T20:56:48.838159647Z"
+   },
+   "DAL": {
+    "px": 84.57,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.116746206Z",
+    "bid": 84.54,
+    "ask": 86.7,
+    "quote_ts": "2026-11-24T20:57:00.867415448Z"
+   },
+   "HCA": {
+    "px": 482.4,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:58.557752558Z",
+    "bid": 452.43,
+    "ask": 490,
+    "quote_ts": "2026-11-24T20:57:01.122570522Z"
+   },
+   "CDNS": {
+    "px": 296.58,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.471410704Z",
+    "bid": 296.48,
+    "ask": 312.78,
+    "quote_ts": "2026-11-24T20:56:58.113236097Z"
+   },
+   "BSX": {
+    "px": 44.11,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:58.990373738Z",
+    "bid": 44.11,
+    "ask": 44.12,
+    "quote_ts": "2026-11-24T20:57:00.337618669Z"
+   },
+   "BIIB": {
+    "px": 269.185,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:33.877744224Z",
+    "bid": 255.53,
+    "ask": 278.51,
+    "quote_ts": "2026-11-24T20:56:54.040085039Z"
+   },
+   "TAP": {
+    "px": 40.295,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:49.921268086Z",
+    "bid": 40.3,
+    "ask": 41.39,
+    "quote_ts": "2026-11-24T20:57:01.204093778Z"
+   },
+   "ON": {
+    "px": 61.445,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.040498913Z",
+    "bid": 61.43,
+    "ask": 61.48,
+    "quote_ts": "2026-11-24T20:57:01.767928815Z"
+   },
+   "KHC": {
+    "px": 25.68,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:57.096634772Z",
+    "bid": 25.67,
+    "ask": 25.68,
+    "quote_ts": "2026-11-24T20:57:01.650717237Z"
+   },
+   "SNDK": {
+    "px": 77.955,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.827189765Z",
+    "bid": 77.95,
+    "ask": 77.97,
+    "quote_ts": "2026-11-24T20:57:01.798681526Z"
+   },
+   "AEP": {
+    "px": 127.28,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:43.564458268Z",
+    "bid": 127.32,
+    "ask": 127.34,
+    "quote_ts": "2026-11-24T20:57:01.483706161Z"
+   },
+   "MSFT": {
+    "px": 495.99,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.684482531Z",
+    "bid": 495.96,
+    "ask": 496.02,
+    "quote_ts": "2026-11-24T20:57:01.642881913Z"
+   },
+   "AME": {
+    "px": 226.81,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:58.551950611Z",
+    "bid": 226.48,
+    "ask": 236,
+    "quote_ts": "2026-11-24T20:56:58.669484494Z"
+   },
+   "NRG": {
+    "px": 91.045,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.630230992Z",
+    "bid": 87.83,
+    "ask": 96.62,
+    "quote_ts": "2026-11-24T20:57:01.66026153Z"
+   },
+   "MCHP": {
+    "px": 56.275,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.504486437Z",
+    "bid": 56.27,
+    "ask": 56.33,
+    "quote_ts": "2026-11-24T20:57:01.505709929Z"
+   },
+   "CRM": {
+    "px": 193.315,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:59.971453297Z",
+    "bid": 181.74,
+    "ask": 193.7,
+    "quote_ts": "2026-11-24T20:56:56.68396936Z"
+   },
+   "QCOM": {
+    "px": 165.29,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.214704676Z",
+    "bid": 165.13,
+    "ask": 172.58,
+    "quote_ts": "2026-11-24T20:57:01.796177112Z"
+   },
+   "CMG": {
+    "px": 37.075,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.167271813Z",
+    "bid": 37.07,
+    "ask": 37.08,
+    "quote_ts": "2026-11-24T20:57:01.237352016Z"
+   },
+   "HPE": {
+    "px": 40.11,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.110647828Z",
+    "bid": 40.1,
+    "ask": 40.13,
+    "quote_ts": "2026-11-24T20:57:00.881732007Z"
+   },
+   "HAS": {
+    "px": 112.26,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:36.1110404Z",
+    "bid": 106.59,
+    "ask": 112.26,
+    "quote_ts": "2026-11-24T20:56:59.416952246Z"
+   },
+   "CRL": {
+    "px": 337.45,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:32.023010674Z",
+    "bid": 322.58,
+    "ask": 357.11,
+    "quote_ts": "2026-11-24T20:56:56.706838814Z"
+   },
+   "CSX": {
+    "px": 50.105,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.0406262Z",
+    "bid": 50.1,
+    "ask": 50.11,
+    "quote_ts": "2026-11-24T20:57:00.608628036Z"
+   },
+   "MRNA": {
+    "px": 227.86,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.522367537Z",
+    "bid": 214.7,
+    "ask": 237.67,
+    "quote_ts": "2026-11-24T20:57:00.522831566Z"
+   },
+   "FOXA": {
+    "px": 65.2,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:55.96186889Z",
+    "bid": 65.19,
+    "ask": 65.21,
+    "quote_ts": "2026-11-24T20:57:00.146632278Z"
+   },
+   "LLY": {
+    "px": 1410.08,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:59.525387849Z",
+    "bid": 1375,
+    "ask": 1418,
+    "quote_ts": "2026-11-24T20:57:01.011830499Z"
+   },
+   "LOW": {
+    "px": 230.8,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:55.915770086Z",
+    "bid": 216.66,
+    "ask": 243.46,
+    "quote_ts": "2026-11-24T20:57:01.818892834Z"
+   },
+   "NVDA": {
+    "px": 155.435,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.791008266Z",
+    "bid": 155.44,
+    "ask": 155.45,
+    "quote_ts": "2026-11-24T20:57:01.841998261Z"
+   },
+   "LULU": {
+    "px": 106.53,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:59.802091171Z",
+    "bid": 106.53,
+    "ask": 113.4,
+    "quote_ts": "2026-11-24T20:57:00.35201933Z"
+   },
+   "NKE": {
+    "px": 35.705,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.329011762Z",
+    "bid": 35.7,
+    "ask": 35.71,
+    "quote_ts": "2026-11-24T20:57:01.628763949Z"
+   },
+   "XOM": {
+    "px": 158.315,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:56.53761471Z",
+    "bid": 158.3,
+    "ask": 158.33,
+    "quote_ts": "2026-11-24T20:57:01.669162607Z"
+   },
+   "TSLA": {
+    "px": 384.78,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.479806254Z",
+    "bid": 376.2,
+    "ask": 390,
+    "quote_ts": "2026-11-24T20:57:00.991426921Z"
+   },
+   "FCX": {
+    "px": 47.61,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:59.967689093Z",
+    "bid": 47.62,
+    "ask": 47.63,
+    "quote_ts": "2026-11-24T20:57:00.956974253Z"
+   },
+   "NFLX": {
+    "px": 58.825,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.549501759Z",
+    "bid": 58.82,
+    "ask": 58.83,
+    "quote_ts": "2026-11-24T20:57:01.346231731Z"
+   },
+   "EQIX": {
+    "px": 982.275,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.568124127Z",
+    "bid": 927.21,
+    "ask": 1025.1,
+    "quote_ts": "2026-11-24T20:56:33.696612831Z"
+   },
+   "BA": {
+    "px": 163.625,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:31.962830992Z",
+    "bid": 161.5,
+    "ask": 163.72,
+    "quote_ts": "2026-11-24T20:57:01.184048593Z"
+   },
+   "SPY": {
+    "px": 718.405,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.78128093Z",
+    "bid": 718.39,
+    "ask": 718.44,
+    "quote_ts": "2026-11-24T20:57:01.827156778Z"
+   },
+   "FOX": {
+    "px": 58.44,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:53.212007064Z",
+    "bid": 58.43,
+    "ask": 58.45,
+    "quote_ts": "2026-11-24T20:57:00.91780327Z"
+   },
+   "HUM": {
+    "px": 403.57,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.100618962Z",
+    "bid": 383.38,
+    "ask": 424.13,
+    "quote_ts": "2026-11-24T20:57:01.059926347Z"
+   },
+   "DIS": {
+    "px": 122.64,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.00714703Z",
+    "bid": 122.62,
+    "ask": 122.65,
+    "quote_ts": "2026-11-24T20:57:01.168962391Z"
+   },
+   "TJX": {
+    "px": 143.64,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.098170563Z",
+    "bid": 143.58,
+    "ask": 143.66,
+    "quote_ts": "2026-11-24T20:57:01.587096404Z"
+   },
+   "SBAC": {
+    "px": 172.515,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:33.443752493Z",
+    "bid": 172.43,
+    "ask": 182.58,
+    "quote_ts": "2026-11-24T20:57:01.681072844Z"
+   },
+   "VEEV": {
+    "px": 273.81,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.599060846Z",
+    "bid": 273.67,
+    "ask": 273.82,
+    "quote_ts": "2026-11-24T20:57:01.087613483Z"
+   },
+   "LRCX": {
+    "px": 195.93,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.732347797Z",
+    "bid": 195.69,
+    "ask": 201,
+    "quote_ts": "2026-11-24T20:57:01.25531367Z"
+   },
+   "MCD": {
+    "px": 281.01,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.126656728Z",
+    "bid": 280.87,
+    "ask": 282.5,
+    "quote_ts": "2026-11-24T20:57:01.509480666Z"
+   },
+   "SMCI": {
+    "px": 22.61,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.847047646Z",
+    "bid": 22.61,
+    "ask": 22.62,
+    "quote_ts": "2026-11-24T20:57:01.757076327Z"
+   },
+   "MRVL": {
+    "px": 131.16,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.202916171Z",
+    "bid": 129,
+    "ask": 134,
+    "quote_ts": "2026-11-24T20:57:00.396239296Z"
+   },
+   "AMZN": {
+    "px": 252.065,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.50201339Z",
+    "bid": 251.99,
+    "ask": 252.08,
+    "quote_ts": "2026-11-24T20:57:01.515790176Z"
+   },
+   "BRO": {
+    "px": 76.035,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:56.513453006Z",
+    "bid": 72.82,
+    "ask": 78.71,
+    "quote_ts": "2026-11-24T20:57:01.206897978Z"
+   },
+   "BRK.B": {
+    "px": 577.44,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.142340934Z",
+    "bid": 560,
+    "ask": 579.99,
+    "quote_ts": "2026-11-24T20:57:01.683697952Z"
+   },
+   "VLO": {
+    "px": 324.82,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:55.894287493Z",
+    "bid": 324.72,
+    "ask": 324.94,
+    "quote_ts": "2026-11-24T20:57:00.024803862Z"
+   },
+   "ETN": {
+    "px": 318.53,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.367794872Z",
+    "bid": 318.4,
+    "ask": 333.3,
+    "quote_ts": "2026-11-24T20:57:01.429006011Z"
+   },
+   "EL": {
+    "px": 108.19,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:45.097177958Z",
+    "bid": 108.13,
+    "ask": 108.22,
+    "quote_ts": "2026-11-24T20:57:00.356841373Z"
+   },
+   "TRGP": {
+    "px": 282.835,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.060749431Z",
+    "bid": 282.63,
+    "ask": 296.8,
+    "quote_ts": "2026-11-24T20:57:00.734981087Z"
+   },
+   "JPM": {
+    "px": 316.99,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:59.782349922Z",
+    "bid": 300,
+    "ask": 317.53,
+    "quote_ts": "2026-11-24T20:57:00.300877013Z"
+   },
+   "WMB": {
+    "px": 66.06,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.721936302Z",
+    "bid": 66.05,
+    "ask": 66.07,
+    "quote_ts": "2026-11-24T20:57:01.043869338Z"
+   },
+   "AAPL": {
+    "px": 353.8,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.548250992Z",
+    "bid": 353.79,
+    "ask": 353.82,
+    "quote_ts": "2026-11-24T20:57:01.689345134Z"
+   },
+   "TTWO": {
+    "px": 220.15,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.816501027Z",
+    "bid": 219.98,
+    "ask": 220.29,
+    "quote_ts": "2026-11-24T20:57:01.538552995Z"
+   },
+   "ROL": {
+    "px": 38.06,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.161145557Z",
+    "bid": 38.05,
+    "ask": 38.07,
+    "quote_ts": "2026-11-24T20:57:01.264720501Z"
+   },
+   "ZBRA": {
+    "px": 314.97,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.769045736Z",
+    "bid": 314.89,
+    "ask": 315.23,
+    "quote_ts": "2026-11-24T20:57:00.768951445Z"
+   },
+   "GOOGL": {
+    "px": 278.895,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.815310327Z",
+    "bid": 278.8,
+    "ask": 280.34,
+    "quote_ts": "2026-11-24T20:57:01.553708239Z"
+   },
+   "PANW": {
+    "px": 353.225,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.445877316Z",
+    "bid": 352.97,
+    "ask": 366.81,
+    "quote_ts": "2026-11-24T20:56:58.479621354Z"
+   },
+   "INTC": {
+    "px": 54.805,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.566854094Z",
+    "bid": 54.84,
+    "ask": 54.85,
+    "quote_ts": "2026-11-24T20:57:01.841532156Z"
+   },
+   "STT": {
+    "px": 160.8,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:56.027810684Z",
+    "bid": 160.73,
+    "ask": 160.9,
+    "quote_ts": "2026-11-24T20:56:57.886882846Z"
+   },
+   "LITE": {
+    "px": 485.91,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.511351037Z",
+    "bid": 486.16,
+    "ask": 495.31,
+    "quote_ts": "2026-11-24T20:57:01.711635479Z"
+   },
+   "WDC": {
+    "px": 273.625,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.481638737Z",
+    "bid": 269.78,
+    "ask": 282.4,
+    "quote_ts": "2026-11-24T20:57:01.476938951Z"
+   },
+   "AMD": {
+    "px": 413.07,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.673476515Z",
+    "bid": 412.66,
+    "ask": 413.52,
+    "quote_ts": "2026-11-24T20:57:01.729563581Z"
+   },
+   "STX": {
+    "px": 481.07,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.525312804Z",
+    "bid": 463.17,
+    "ask": 506.56,
+    "quote_ts": "2026-11-24T20:57:00.546944433Z"
+   },
+   "LH": {
+    "px": 376.46,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:59.664631582Z",
+    "bid": 357.1,
+    "ask": 397.21,
+    "quote_ts": "2026-11-24T20:56:56.602467854Z"
+   },
+   "CEG": {
+    "px": 244.63,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:59.332078109Z",
+    "bid": 244.68,
+    "ask": 246.08,
+    "quote_ts": "2026-11-24T20:57:00.740546585Z"
+   },
+   "WMT": {
+    "px": 132.17,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:01.602745484Z",
+    "bid": 132.17,
+    "ask": 132.21,
+    "quote_ts": "2026-11-24T20:57:01.684776499Z"
+   },
+   "ORCL": {
+    "px": 109.27,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.594388687Z",
+    "bid": 108.25,
+    "ask": 109.34,
+    "quote_ts": "2026-11-24T20:57:00.678068967Z"
+   },
+   "EQT": {
+    "px": 49.305,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:57:00.671188296Z",
+    "bid": 49.3,
+    "ask": 49.31,
+    "quote_ts": "2026-11-24T20:57:01.817603621Z"
+   },
+   "TTD": {
+    "px": 14.065,
+    "src": "latestTrade",
+    "trade_ts": "2026-11-24T20:56:59.557168817Z",
+    "bid": 14.07,
+    "ask": 14.08,
+    "quote_ts": "2026-11-24T20:57:00.976023541Z"
+   }
+  }
+ },
+ "entry_check": {},
+ "a2": null,
+ "a3": null,
+ "halt": "{\"at\": \"2026-11-24T01:11:51\", \"drawdown\": 0.12622972721612913, \"week\": -0.0836818085886647}",
+ "margin": {
+  "gross": 0.0,
+  "multiplier": 4.0,
+  "shorting_enabled": true,
+  "regt_buying_power": 96517.66,
+  "problems": []
+ },
+ "p9": {
+  "day": "2026-11-24",
+  "state": {
+   "spy": 722.29,
+   "ma": 730.467,
+   "up": false,
+   "sleeve": 0.7,
+   "session": "2026-11-23"
+  },
+  "core_w": 0.7,
+  "overlay_k": 0.0,
+  "lambda": 0.3333333333333333,
+  "model_target": {},
+  "account_target": {},
+  "gross": 0.0,
+  "problems": [],
+  "halted": true
+ },
+ "submitted_at": "2026-11-24T21:00:09+00:00",
+ "control_early": "9 own lots checked at the live time"
+}
