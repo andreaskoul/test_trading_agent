@@ -97,5 +97,46 @@ for S_true in (0.2, 0.4, 0.7):
     best = max(grid, key=lambda g: combined(S_true, g))
     if abs(best - tangency_gross(S_true)) > 0.002:
         raise SystemExit(f"tangency check failed at S={S_true}: grid {best} vs formula {tangency_gross(S_true):.4f}")
+# ---- Amendment 1 (2026-11-25): the book's Sharpe at the measured trading cost.
+# The figures above are at 5 bp a side. The construction study also ran the same incumbent book (S0) at 1 bp
+# (RESULT_CONSTRUCT.json "1bp"."S0"), and the execution reconciliation measured 1.10 bp against arrival and 1.57 bp
+# against the official close, notional-weighted, on 294 paper orders (research/exec_recon/RESULT.json, branch
+# research/exec-recon-20261124). The book's mean falls linearly in the cost per unit traded at fixed turnover, so its
+# Sharpe is linear in the cost between the two runs. Approximations, labelled: the survivorship repair (R3, at 5 bp)
+# and the 2026 figure (5 bp only) are shifted by the same amounts at every cost.
+con = show(REV_MAIN, "research/sharpe/RESULT_CONSTRUCT.json")
+s5 = {p: con["5bp"]["S0"][p]["book_sharpe"] for p in ("2013-19", "2020-25")}
+s1 = {p: con["1bp"]["S0"][p]["book_sharpe"] for p in ("2013-19", "2020-25")}
+if abs(s5["2013-19"] - dev["S_hat"]) > 0.002 or abs(s5["2020-25"] - s25_unrep) > 0.002:
+    raise SystemExit("RESULT_CONSTRUCT 5bp S0 does not match the figures used above")
+repair = s25 - s25_unrep                                    # R3: repaired minus unrepaired, 2020-25
+slope26 = (s1["2020-25"] - s5["2020-25"]) / 4              # 2026 shifted as 2020-25 per bp (no 2026 run at 1 bp)
+
+
+def at_cost(c):
+    f = (5 - c) / 4
+    rows = [("2013-2019", s5["2013-19"] + f * (s1["2013-19"] - s5["2013-19"]), 7.0),
+            ("2020-2025 repaired", s5["2020-25"] + f * (s1["2020-25"] - s5["2020-25"]) + repair, 6.0),
+            ("2026", s26 + (5 - c) * slope26, y26)]
+    T_ = sum(y for _, _, y in rows)
+    S_ = sum(s * y for _, s, y in rows) / T_
+    se_ = math.sqrt((1 + S_ ** 2 / 2) / T_)
+    m, sd = posterior(S_, se_)
+    return {"cost_bp": c, "samples": {l: round(s, 3) for l, s, _ in rows}, "pooled": S_, "se": se_,
+            "posterior_mean": m, "posterior_sd": sd, "tangency_gross": tangency_gross(m),
+            "combined_sharpe_at_tangency_if_posterior_true": combined(m, tangency_gross(m)),
+            "combined_sharpe_at_0.6_if_posterior_true": combined(m, 0.6)}
+
+
+out["amendment_1_cost"] = {
+    "construct_S0_book_sharpe": {"5bp": s5, "1bp": s1}, "repair_shift_2020_25": repair, "slope_2026_per_bp": slope26,
+    "measured_cost_bp": {"vs_arrival": 1.10, "vs_official_close": 1.57,
+                         "source": "research/exec_recon/RESULT.json 4_costs.all (notional-weighted), 294 paper orders"},
+    "by_cost": [at_cost(c) for c in (1.0, 1.57, 2.5, 5.0)],
+    "break_test_2013_19_vs_2020_25_at_5bp": {"diff": s5["2020-25"] - s5["2013-19"],
+                                              "z": (s5["2020-25"] - s5["2013-19"]) / math.sqrt(1 / 7 + 1 / 6)},
+}
+if abs(out["amendment_1_cost"]["by_cost"][3]["pooled"] - S_pool) > 0.01:      # the 5 bp row must equal the original
+    raise SystemExit("cost interpolation does not reproduce the 5 bp pooled figure")
 json.dump(out, open("research/allocation/PRIOR.json", "w"), indent=1)
 print(json.dumps(out, indent=1))

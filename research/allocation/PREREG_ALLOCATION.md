@@ -102,3 +102,43 @@ never re-estimated on forward weeks.
   2020–25 fund had a stronger core (excess Sharpe about 0.8). It is a sizing argument, not a forecast.
 * The 2026 book Sharpe uses the 2020–25 book volatility, not 2026's own, because no 2026 volatility field is on file.
 * A normal prior with sd 0.5 is a choice. With sd 1.0 the posterior mean is 0.18 (sd 0.26; `PRIOR.json` posterior_prior_sd_1.0_all_evidence).
+
+## Amendment 1 (2026-11-25, before any forward week is computed): cost, estimation, and the multi-book criterion
+
+**Why.** Two facts arrived after registration:
+* the execution reconciliation measured the account's realised cost on 294 paper orders: 1.10 bp against arrival,
+  1.57 bp against the official close, notional-weighted (branch `research/exec-recon-20261124`);
+* the construction study had also run the incumbent book at 1 bp a side (`RESULT_CONSTRUCT.json` "1bp"."S0"),
+  and the book's Sharpe there is much higher: 2013–19 0.20 (−0.16 at 5 bp), 2020–25 1.01 (0.77).
+
+The figures above were all at 5 bp. Book Sharpe is linear in the cost at fixed turnover, so `prior.py` now
+interpolates between the two runs (`PRIOR.json` amendment_1_cost). It is checked: the 5 bp row reproduces the pooled
+0.20. Approximations, labelled there: the survivorship-repair shift and the 2026 figure (5 bp only) are moved by the
+same amounts at every cost.
+
+| Cost a side | 2013–19 | 2020–25 repaired | 2026 | Pooled (SE) | Posterior mean (sd) | Tangency gross | Fund excess Sharpe: tangency vs today's 0.6 |
+|---:|---:|---:|---:|---:|---:|---:|---|
+| 1.57 bp (measured) | 0.15 | 0.92 | −0.23 | 0.46 (0.28) | 0.35 (0.25) | 0.97 | 0.657 vs 0.645 |
+| **2.5 bp (registered)** | 0.06 | 0.86 | −0.29 | 0.39 (0.28) | **0.30** (0.24) | **0.83** | 0.631 vs 0.627 |
+| 5 bp (as registered before) | −0.16 | 0.70 | −0.44 | 0.20 (0.27) | 0.15 (0.24) | 0.43 | 0.579 vs 0.576 |
+
+**Changes to the rule** (nothing else changes):
+1. **Cost.** The posterior behind A3 and A4 is computed at **2.5 bp a side**: the measured 1.57 bp plus 1 bp,
+   because paper fills carry no market impact or adverse selection. 1.57 and 5 bp are reported beside it. Every 13
+   forward weeks the measured cost is re-read from `fills.csv` (official-close benchmark, notional-weighted); the 1 bp
+   allowance stays. A3's gross at registration is therefore **0.83**, not 0.43.
+2. **Estimation.** At the first 13-week report, the period-weighted pooling is replaced by the Sharpe of the
+   concatenated weekly book series, 2013 to date: re-simulated at the registered cost on the survivorship-repaired
+   panel, with a Newey-West (4 lags) standard error. Its result replaces both approximations above. The prior is
+   unchanged.
+3. **No time-varying expected-return model.** The two long periods differ by 0.93 in book Sharpe at 5 bp (z 1.67):
+   a constant mean is not rejected. With about 14 years and an SE of 0.27, a regime or state-space mean is not
+   identified, and fitting one would add a selection step this rule exists to avoid.
+4. **A second book** is valued by its appraisal ratio against the sleeves already held. With correlation vector r
+   to those sleeves, R their correlation matrix and S their Sharpes, it adds
+   ΔS² = (S_new − rᵀR⁻¹S)² / (1 − rᵀR⁻¹r) to the fund's squared maximum Sharpe. The core is held at its policy
+   weight, never shorted. A tangency that would short the core is reported as not admissible.
+
+**What this does not change.** The allocation optimum is flat. At any cost here, the gain from tangency over today's
+0.6 is at most 0.012 of fund Sharpe, and no allocation of this book reaches 1. Cost, not allocation, moved the
+estimate.

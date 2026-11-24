@@ -98,5 +98,90 @@
  "posterior_prior_sd_1.0_all_evidence": {
   "mean": 0.1844281898688494,
   "sd": 0.26206198927825586
+ },
+ "amendment_1_cost": {
+  "construct_S0_book_sharpe": {
+   "5bp": {
+    "2013-19": -0.16029062510947756,
+    "2020-25": 0.7685991481506125
+   },
+   "1bp": {
+    "2013-19": 0.19842824535138312,
+    "2020-25": 1.0144605033214402
+   }
+  },
+  "repair_shift_2020_25": -0.06334792500299313,
+  "slope_2026_per_bp": 0.061465338792706936,
+  "measured_cost_bp": {
+   "vs_arrival": 1.1,
+   "vs_official_close": 1.57,
+   "source": "research/exec_recon/RESULT.json 4_costs.all (notional-weighted), 294 paper orders"
+  },
+  "by_cost": [
+   {
+    "cost_bp": 1.0,
+    "samples": {
+     "2013-2019": 0.198,
+     "2020-2025 repaired": 0.951,
+     "2026": -0.193
+    },
+    "pooled": 0.5016436337770006,
+    "se": 0.2853463471912716,
+    "posterior_mean": 0.37840187108508117,
+    "posterior_sd": 0.24782853089067,
+    "tangency_gross": 1.057706545920714,
+    "combined_sharpe_at_tangency_if_posterior_true": 0.6740398152999706,
+    "combined_sharpe_at_0.6_if_posterior_true": 0.6564868056299924
+   },
+   {
+    "cost_bp": 1.57,
+    "samples": {
+     "2013-2019": 0.147,
+     "2020-2025 repaired": 0.916,
+     "2026": -0.228
+    },
+    "pooled": 0.45846663917963043,
+    "se": 0.2827074130952262,
+    "posterior_mean": 0.3474037655699541,
+    "posterior_sd": 0.24609375205006548,
+    "tangency_gross": 0.9710608350512797,
+    "combined_sharpe_at_tangency_if_posterior_true": 0.6571385492429369,
+    "combined_sharpe_at_0.6_if_posterior_true": 0.6453539198978613
+   },
+   {
+    "cost_bp": 2.5,
+    "samples": {
+     "2013-2019": 0.064,
+     "2020-2025 repaired": 0.859,
+     "2026": -0.285
+    },
+    "pooled": 0.38801996378392145,
+    "se": 0.2788675360132399,
+    "posterior_mean": 0.2959570687968179,
+    "posterior_sd": 0.24354840105387734,
+    "tangency_gross": 0.8272573496538481,
+    "combined_sharpe_at_tangency_if_posterior_true": 0.6314525185156304,
+    "combined_sharpe_at_0.6_if_posterior_true": 0.626876977937927
+   },
+   {
+    "cost_bp": 5.0,
+    "samples": {
+     "2013-2019": -0.16,
+     "2020-2025 repaired": 0.705,
+     "2026": -0.439
+    },
+    "pooled": 0.19864718046212282,
+    "se": 0.27156881643210995,
+    "posterior_mean": 0.15339568522054384,
+    "posterior_sd": 0.2386411146160392,
+    "tangency_gross": 0.42877066096029487,
+    "combined_sharpe_at_tangency_if_posterior_true": 0.57850836883593,
+    "combined_sharpe_at_0.6_if_posterior_true": 0.5756764427182937
+   }
+  ],
+  "break_test_2013_19_vs_2020_25_at_5bp": {
+   "diff": 0.92888977326009,
+   "z": 1.669618124381501
+  }
  }
 }
