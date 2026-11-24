@@ -27,7 +27,7 @@ REPO_HOME="${REPO_HOME:-/Users/apollogodofthesun/test_trading_agent}"
 JOB_WT="${JOB_WT:-$REPO_HOME/.claude/worktrees/tree-forward-job}"     # dedicated; never a shared worktree
 DATA="${DATA:-$REPO_HOME/.claude/worktrees/tree-search/.cache}"        # the research data cache (.cache)
 BRANCH="${BRANCH:-research/tree-layer3}"
-PY="${PY:-/usr/local/bin/python3}"
+PY="${PY:-$REPO_HOME/.venv/bin/python3}"                                 # the research venv (pandas, scipy, sklearn, lightgbm); /usr/local/bin/python3 has no pandas (2026-11-24 dry run)
 QT_PY="${QT_PY:-$HOME/.cache/quant-tf-venv/bin/python}"
 WRAP="${WRAP:-$HOME/.claude/hooks/with_secrets.py}"
 STATE_DIR="${STATE_DIR:-$HOME/.fund-runner/tree-forward}"
@@ -96,6 +96,7 @@ free=$(df -g "$Y26" | awk 'NR==2 {print $4}')
 [ "$free" -ge "$MIN_FREE_GB" ] || fail "only ${free} GB free on the data volume (need $MIN_FREE_GB)"
 [ -d "$(dirname "$CODE")/quant-tf" ] || fail "$(dirname "$CODE")/quant-tf missing (panel400 and sp_panel need it)"
 for f in "$QT_PY" "$PY" "$WRAP"; do [ -e "$f" ] || fail "missing $f"; done
+"$PY" -c "import numpy, pandas, pyarrow, scipy, sklearn, lightgbm" 2>>"$LOG" || fail "$PY lacks a required package (numpy, pandas, pyarrow, scipy, sklearn, lightgbm)"
 if [ "$PUSH" = 1 ]; then
   if [ ! -d "$CODE/.git" ] && [ ! -f "$CODE/.git" ]; then
     run git -C "$REPO_HOME" fetch -q origin "$BRANCH"
