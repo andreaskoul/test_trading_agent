@@ -38,10 +38,16 @@ from broker import ET, api
 from common import MODE, P7_START, STATE, week_dir
 
 def sip_close_query(syms, day):
-    """Daily-bar request for the session `day` only. Alpaca reads a date-only `end` as the whole of that day, so an
-    end of day + 1 reached into the future and was refused (403 "recent SIP data"): end is the session's own date."""
+    """Daily-bar request for the session `day` only, ending at 16:00 New York time of that session, given in UTC.
+    Alpaca reads a date-only `end` as the end of that day in New York, which is still in the future at the 20:10 New
+    York (01:10 UTC) reconcile, and its plan refuses SIP data newer than 15 minutes (403 "recent SIP data"). Observed
+    2026-11-24 21:34 UTC: end 2026-11-24 and 2026-11-24T23:00:00Z refused; 2026-11-24T21:05:00Z answered with the
+    session's bar (t = 05:00Z, the New York midnight), equal to the yfinance close. The bar's t is the session's New
+    York midnight, so any end from then on includes it; the close at 16:00 is hours in the past at the reconcile."""
     d = pd.Timestamp(day).date()
-    return f"/v2/stocks/bars?symbols={','.join(syms)}&timeframe=1Day&feed=sip&adjustment=raw&start={d}&end={d}"
+    end = (pd.Timestamp(d).tz_localize("America/New_York") + pd.Timedelta(hours=16)).tz_convert("UTC")
+    return (f"/v2/stocks/bars?symbols={','.join(syms)}&timeframe=1Day&feed=sip&adjustment=raw&start={d}"
+            f"&end={end.strftime('%Y-%m-%dT%H:%M:%SZ')}")
 
 
 def alpaca_closes(syms, day):
