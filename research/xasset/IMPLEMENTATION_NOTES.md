@@ -238,3 +238,37 @@ after a check statistic was seen.
     held contract than the nearest-expiry contract that choice A3 assumed.
   * The §3.2 drops therefore reflect both the sources' disagreement and the A3 calendar. Separating the two needs a
     new, dated rule. That is the owner's decision; it is not taken here.
+
+## D. Amendment 1 (604f77c): how it is implemented
+
+Implementation choices, made before the gate was rerun under the amendment and before the read. Only the commodity
+checks and the gate rule change. Everything else is as above.
+
+1. **The gate.** The registered breadth gate replaces A11's "each asset class keeps at least one market". The gate
+   passes if there are no errors and at least 10 commodities enter the read (pass every check and have a pre-2003
+   month).
+2. **Convention.**
+   * Common sessions of pysystemtrade and the mirror on 2003-01-01..2019-12-31 (2003+ only, through the guard).
+   * The share within 0.5% is computed for each of PRICE, CARRY and FORWARD. The highest is the convention, ties
+     going in that order.
+   * Below 80%: "no usable mirror", and the market is dropped.
+   * The convention is a single column name. `level_agreement` and `mirror_pair` raise on anything else, such as a
+     per-date series or list (tested with a deliberate fault).
+3. **Roll days.** Sessions within ±5 calendar days of a change in the convention column's contract label (the
+   session where the label differs from the previous session's).
+4. **§3.2.**
+   * Compared sessions: pre-2003 common sessions with a positive convention-column price and mirror settlement, not
+     roll days.
+   * A market passes with ≥ 95% within 0.5%.
+   * A market with no compared pre-2003 session is "not applicable", and is not dropped on this ground (as in A3).
+5. **Identical to 4 significant digits.** Both settlements are rounded to 4 significant digits, on the same compared
+   pre-2003 sessions. The count is reported per market and decade.
+6. **§3.1.**
+   * Daily returns over consecutive common sessions: the mirror is Δ settlement / settlement; pysystemtrade is the
+     registered Δ back-adjusted / held price.
+   * A session is used only if neither it nor the previous common session is a roll day, on both series.
+   * Monthly compounding as before; VALIDATE thresholds; 37-month minimum.
+   * The yfinance comparison is kept, as a diagnostic only.
+7. **Doubt.** As registered:
+   * fewer than 15 commodities enter; or
+   * among those, at least half have ≥ 99% of compared pre-2003 sessions identical to 4 significant digits.

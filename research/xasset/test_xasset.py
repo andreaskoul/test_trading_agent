@@ -119,6 +119,38 @@ def test_read_mode_lock_first_and_once():
         assert not os.path.exists(os.path.join(d, "other.lock"))
 
 
+# ------------------------------------------------------------------ Amendment 1: fixed mirror convention
+def _mirror_fixture():
+    """Synthetic: the mirror equals PRICE on even sessions and CARRY (2 % away) on odd ones."""
+    d = pd.bdate_range("2010-01-01", periods=200)
+    px = pd.Series(100.0 + np.arange(200) * 0.01, index=d)
+    j = pd.DataFrame({"PRICE": px, "PRICE_CONTRACT": 20100300, "CARRY": px * 1.02, "CARRY_CONTRACT": 20100600,
+                      "FORWARD": px * 1.04, "FORWARD_CONTRACT": 20100900}, index=d)
+    j["CH"] = np.where(np.arange(200) % 2 == 0, j.PRICE, j.CARRY)
+    return j
+
+
+def test_deliberate_fault_per_date_convention_is_rejected():
+    """Fault: choosing, per date, whichever column is nearest makes every session 'agree' (100 %). The level check
+    must refuse a per-date convention and, with the fixed column, count only the true agreement (50 %)."""
+    j = _mirror_fixture()
+    per_date = pd.Series(np.where(np.arange(len(j)) % 2 == 0, "PRICE", "CARRY"), index=j.index)
+    assert _raises(lambda: C.level_agreement(j, per_date), ValueError)
+    assert _raises(lambda: C.level_agreement(j, ["PRICE"] * len(j)), ValueError)
+    assert _raises(lambda: C.mirror_pair("GOLD", per_date), ValueError)
+    comp, agree, ident, _ = C.level_agreement(j, "PRICE")
+    assert comp.all() and abs(agree.mean() - 0.5) < 1e-9 and abs(ident.mean() - 0.5) < 1e-9
+
+
+def test_roll_days_around_convention_contract_changes():
+    d = pd.bdate_range("2010-01-01", periods=40)
+    lab = pd.Series([1] * 20 + [2] * 20, index=d)
+    roll = C._roll_days(lab)
+    change = d[20]
+    assert roll[20] and not roll[0] and not roll[-1]
+    assert all(roll[i] == (abs((d[i] - change).days) <= C.ROLL_WINDOW_DAYS) for i in range(40))
+
+
 # ------------------------------------------------------------------ the read script
 def test_read_refuses_without_a_passing_committed_gate():
     keep = L.CHECKS_OUT
@@ -171,11 +203,14 @@ def test_checks_file_holds_no_pre2003_statistic():
         if "window" in v:
             assert v["window"][0] >= "2003-01-01", k
     for k, v in d["level_checks_pre2003"].items():                   # counts only, keyed by decade
-        assert set(v) <= {"applicable", "mirror", "by_decade_pre2003", "spent_2003_2019", "reason", "input_defect",
-                          "pre2003_same_contract_sessions", "pre2003_agree", "pre2003_share_agree", "passes"}, k
+        assert set(v) <= {"applicable", "mirror", "convention", "by_decade_pre2003", "reason", "input_defect",
+                          "pre2003_compared_sessions", "pre2003_agree", "pre2003_identical_4sd",
+                          "pre2003_share_agree", "pre2003_share_identical_4sd", "passes"}, k
+        assert v.get("convention") in (None, "PRICE", "CARRY", "FORWARD"), k        # one fixed column
         for dec, c in v.get("by_decade_pre2003", {}).items():
-            assert dec.endswith("0s") and set(c) == {"common_sessions", "same_contract_sessions",
-                                                     "agree_within_0.5pct"}
+            assert dec.endswith("0s") and set(c) == {"common_sessions", "compared_sessions", "agree_within_0.5pct",
+                                                     "identical_4_sig_digits"}
+    assert "doubt" in d and "breadth_gate" in d
 
 
 if __name__ == "__main__":

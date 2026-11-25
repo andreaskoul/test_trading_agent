@@ -9,12 +9,15 @@ What is computed, and on which dates (every non-equity series goes through xasse
   VALIDATE.md thresholds in proxy.THRESHOLDS) on 2003-01 or later only:
   - JPY (BoJ call rate) vs FXY, CHF (SNB call money) vs FXF, DEM (BIS spot, OECD German 3m) vs the euro proxy;
   - UK, DE, JP, CA, CH 10-year par-bond proxies vs the same-country pysystemtrade bond futures;
-  - pysystemtrade commodity excess returns vs yfinance continuous futures (front contract, roll days excluded);
+  - pysystemtrade commodity excess returns vs the CHRIS-style mirror on its convention contract (Amendment 1: the
+    convention is the PRICE / CARRY / FORWARD column the mirror matches most often within 0.5 % on 2003-2019, fixed for
+    all dates; below 80 % no usable mirror), roll days excluded on both; yfinance continuous: diagnostic only;
   - the already-validated US 5y/10y and GBP/AUD/CAD constructions, re-run through proxy.py and compared with
     VALIDATE.json.
-* §3.2 pre-2003 LEVEL checks: per market and decade, the count of sessions where the pysystemtrade settlement of the
-  contract the CHRIS-style mirror holds agrees with the mirror within 0.5 %. Counts only (`pre2003_level_counts`, the
-  one caller the guard admits to pre-2003 levels).
+* §3.2 pre-2003 LEVEL checks: per market and decade, the count of sessions where the mirror agrees within 0.5 % with
+  the fixed convention column (never matched per date), roll days excluded, and the count identical to 4 significant
+  digits. Counts only (`pre2003_level_counts`, the one caller the guard admits to pre-2003 levels).
+* Breadth gate (Amendment 1): the read needs at least 10 commodities; "doubt" evaluated and recorded.
 * §3.3 splice / variant exclusions; §3.4 content contracts and coverage (presence counts on all dates).
 A market that fails is dropped and the drop recorded; nothing is re-scoped.
 """
@@ -182,76 +185,123 @@ def commodity_pair(market, ticker):
     return r
 
 
-# ===================================================================================== §3.2 level counts (pre-2003)
-def _front_calendar(market, dates):
-    """Contract the CHRIS-style mirror holds at each date (Quandl CHRIS #1 convention: the nearest contract of the
-    priced roll cycle not yet expired), from typed rollconfig fields; and whether the date is a roll day (within
-    ROLL_WINDOW_DAYS calendar days of an inferred expiry)."""
-    roll, _ = L.pst_cfg()
-    cyc, off = str(roll.loc[market, "PricedRollCycle"]), int(roll.loc[market, "ExpiryOffset"])
-    code = {c: i + 1 for i, c in enumerate("FGHJKMNQUVXZ")}
-    months = sorted(code[c] for c in cyc)
-    exp = []
-    for y in range(dates.min().year - 1, dates.max().year + 3):
-        for mo in months:
-            exp.append((pd.Timestamp(y, mo, 1) + pd.Timedelta(days=off), y * 10000 + mo * 100))
-    exp.sort()
-    ex_d = pd.DatetimeIndex([e[0] for e in exp])
-    ex_l = np.array([e[1] for e in exp])
-    pos = ex_d.searchsorted(dates, side="left")                        # first expiry on or after the date
-    label = ex_l[pos]
-    dist = np.minimum(np.abs((dates - ex_d[np.clip(pos, 0, len(ex_d) - 1)]).days),
-                      np.abs((dates - ex_d[np.clip(pos - 1, 0, len(ex_d) - 1)]).days))
-    return label, dist <= ROLL_WINDOW_DAYS
+# ===================================================================================== Amendment 1: mirror convention
+CONV_COLUMNS = ("PRICE", "CARRY", "FORWARD")
+CONV_START, CONV_END = pd.Timestamp("2003-01-01"), pd.Timestamp("2019-12-31")
+CONV_MIN_SHARE = 0.80           # Amendment 1 (1): below 80 % the market has no usable mirror
+BREADTH_MIN = 10                # Amendment 1 (6): the read runs only if at least 10 commodities pass
+DOUBT_MIN_PASS, DOUBT_IDENTICAL, DOUBT_HALF = 15, 0.99, 0.5
 
 
-def pre2003_level_counts(markets):
-    """§3.2: per market and decade, sessions where the mirror and pysystemtrade hold the same contract (by the
-    calendar above, roll days excluded) and the count of those whose settlements agree within 0.5 %. Counts only:
-    nothing dated is returned, saved or printed. 2003-2019 counts are given alongside as a spent diagnostic."""
+def _fixed_convention(convention):
+    """A convention is ONE column name for all dates (Amendment 1: never matched per date)."""
+    if not isinstance(convention, str) or convention not in CONV_COLUMNS:
+        raise ValueError(f"convention must be one fixed column of {CONV_COLUMNS}, not {type(convention).__name__}"
+                         " (per-date matching is not allowed)")
+    return convention
+
+
+def _roll_days(labels, window=ROLL_WINDOW_DAYS):
+    """Sessions within +-window calendar days of a change of the convention column's contract label."""
+    lab = pd.Series(labels)
+    ch = lab.ne(lab.shift(1)) & lab.shift(1).notna()
+    cd = lab.index[ch.values]
+    if not len(cd):
+        return np.zeros(len(lab), bool)
+    idx = lab.index
+    pos = cd.searchsorted(idx)
+    after = np.abs((cd[np.clip(pos, 0, len(cd) - 1)] - idx).days)
+    before = np.abs((idx - cd[np.clip(pos - 1, 0, len(cd) - 1)]).days)
+    return np.minimum(after, before) <= window
+
+
+def level_agreement(j, convention):
+    """j: pysystemtrade frame joined with the mirror settlement `CH` on common sessions. Returns boolean arrays
+    (compared, agree within 0.5 %, identical to 4 significant digits) against the FIXED convention column."""
+    c = _fixed_convention(convention)
+    px, lab, ch = j[c].values.astype(float), j[f"{c}_CONTRACT"], j.CH.values.astype(float)
+    roll = _roll_days(lab)
+    comp = np.isfinite(px) & np.isfinite(ch) & (px > 0) & (ch > 0) & ~roll & lab.notna().values
+    agree = comp & (np.abs(ch / np.where(comp, px, 1.0) - 1) <= LEVEL_TOL)
+
+    def sig4(x):
+        with np.errstate(divide="ignore", invalid="ignore"):
+            e = np.floor(np.log10(np.abs(np.where(comp, x, 1.0))))
+        return np.round(np.where(comp, x, 1.0) / 10.0 ** (e - 3))
+    ident = comp & (sig4(px) == sig4(ch))
+    return comp, agree, ident, roll
+
+
+def mirror_convention(market):
+    """Amendment 1 (1): on 2003-01..2019-12 only, the column (PRICE / CARRY / FORWARD) with the highest share of
+    common sessions within 0.5 % of the mirror's settlement; fixed for all dates."""
+    f = L.pst_frame(market)
+    c = L.chris_settle(L.CHRIS[market])
+    j = f.join(c.rename("CH"), how="inner")
+    j = j[(j.index >= CONV_START) & (j.index <= CONV_END)]
+    if not len(j):
+        return {"common_sessions_2003_2019": 0, "convention": None, "usable": False}
+    sh = {k: float((np.abs(j.CH / j[k] - 1) <= LEVEL_TOL).mean()) for k in CONV_COLUMNS}
+    best = max(CONV_COLUMNS, key=lambda k: sh[k])
+    return {"common_sessions_2003_2019": int(len(j)), "share_within_0.5pct": {k: round(v, 4) for k, v in sh.items()},
+            "convention": best, "convention_share": round(sh[best], 4), "usable": bool(sh[best] >= CONV_MIN_SHARE)}
+
+
+def mirror_pair(market, convention):
+    """Amendment 1 (3): 2003+ monthly excess returns, pysystemtrade (registered construction) vs the mirror's
+    settlement changes on its convention contract, the same roll days excluded from both, thresholds unchanged."""
+    _fixed_convention(convention)
+    f = L.pst_frame(market)
+    c = L.chris_settle(L.CHRIS[market])
+    j = f.join(c.rename("CH"), how="inner")
+    j = j[j.PRICE.notna() & j.ADJ.notna() & j.CH.notna()]
+    roll = _roll_days(j[f"{convention}_CONTRACT"])
+    use = ~roll & ~pd.Series(roll, index=j.index).shift(1, fill_value=True).values   # both ends outside roll days
+    r_m = (j.CH / j.CH.shift(1) - 1)[use]
+    r_p = (j.ADJ.diff() / j.PRICE.shift(1))[use]
+    G.derived(r_m, f"mirror_d_{market}")
+    G.derived(r_p, f"pst_dmirror_{market}")
+    r = _pair(L.compound_monthly(r_p, f"pst_mm_{market}"), L.compound_monthly(r_m, f"mirror_m_{market}"),
+              f"mir_{market}")
+    r["second_source"] = f"CHRIS-style mirror {L.CHRIS[market]} on its convention contract ({convention}), roll days excluded"
+    r["common_sessions"], r["sessions_used"] = int(len(j)), int(use.sum())
+    return r
+
+
+def pre2003_level_counts(conventions):
+    """Amendment 1 (2) and (5): per market and decade, pre-2003 common sessions compared with the FIXED convention
+    column (roll days excluded), the count agreeing within 0.5 %, and the count identical to 4 significant digits.
+    Counts only: nothing dated is returned, saved or printed."""
     out = {}
     with G.level_check():
-        for m in markets:
-            sym = L.CHRIS.get(m)
-            if sym is None:
-                out[m] = {"applicable": False, "reason": "no CHRIS-style mirror file for this market"}
-                continue
+        for m, conv in conventions.items():
             try:
                 f = L.pst_frame(m)
-                c = L.chris_settle(sym)
+                c = L.chris_settle(L.CHRIS[m])
             except L.InputDefect as e:
                 out[m] = {"applicable": False, "input_defect": str(e)}
                 continue
             j = f.join(c.rename("CH"), how="inner")
-            label, rollday = _front_calendar(m, j.index)
-            cols = [("PRICE", "PRICE_CONTRACT"), ("CARRY", "CARRY_CONTRACT"), ("FORWARD", "FORWARD_CONTRACT")]
-            px = np.full(len(j), np.nan)
-            for c_, lc in cols:
-                hit = (j[lc].values == label) & np.isnan(px)
-                px = np.where(hit, j[c_].values, px)
-            same = ~np.isnan(px) & ~rollday & np.isfinite(j.CH.values)
-            agree = same & (np.abs(j.CH.values / np.where(same, px, 1.0) - 1) <= LEVEL_TOL)
+            comp, agree, ident, _ = level_agreement(j, conv)
+            pre = np.asarray(j.index < L.VALID_START)
             dec = (j.index.year // 10) * 10
-            pre = j.index < L.VALID_START
-            res = {"applicable": True, "mirror": sym, "by_decade_pre2003": {}, "spent_2003_2019": {}}
+            res = {"applicable": True, "mirror": L.CHRIS[m], "convention": conv, "by_decade_pre2003": {}}
             for d in sorted(set(dec[pre])):
                 k = pre & (dec == d)
                 res["by_decade_pre2003"][f"{d}s"] = {"common_sessions": int(k.sum()),
-                                                     "same_contract_sessions": int((k & same).sum()),
-                                                     "agree_within_0.5pct": int((k & agree).sum())}
-            n_same, n_agree = int((pre & same).sum()), int((pre & agree).sum())
-            post = ~pre
-            res["spent_2003_2019"] = {"same_contract_sessions": int((post & same).sum()),
-                                      "agree_within_0.5pct": int((post & agree).sum())}
-            res["pre2003_same_contract_sessions"] = n_same
-            res["pre2003_agree"] = n_agree
-            res["pre2003_share_agree"] = round(n_agree / n_same, 4) if n_same else None
-            if n_same == 0:
+                                                     "compared_sessions": int((k & comp).sum()),
+                                                     "agree_within_0.5pct": int((k & agree).sum()),
+                                                     "identical_4_sig_digits": int((k & ident).sum())}
+            n, na, ni = int((pre & comp).sum()), int((pre & agree).sum()), int((pre & ident).sum())
+            res.update({"pre2003_compared_sessions": n, "pre2003_agree": na, "pre2003_identical_4sd": ni,
+                        "pre2003_share_agree": round(na / n, 4) if n else None,
+                        "pre2003_share_identical_4sd": round(ni / n, 4) if n else None})
+            if n == 0:
                 res["applicable"] = False
-                res["reason"] = "no pre-2003 session on which both hold the same contract"
+                res["reason"] = "no pre-2003 common session outside roll days"
             else:
-                res["passes"] = bool(n_agree / n_same >= LEVEL_MIN_SHARE)
-            del f, c, j, px, same, agree
+                res["passes"] = bool(na / n >= LEVEL_MIN_SHARE)
+            del f, c, j, comp, agree, ident
             out[m] = res
     return out
 
@@ -403,35 +453,54 @@ def run():
         except L.InputDefect as e:
             markets[key] = {"class": "bonds", "check": "§3.1", "evaluated": False, "pass": False,
                             "drop_reason": f"input_defect: {e}"}
-    # ---- commodities vs second source
+    # ---- commodities (Amendment 1): mirror convention from 2003-2019, then the 2003+ mirror return check
+    conventions, conv_rec, yahoo = {}, {}, {}
     for m in com_keep:
-        t = L.YF.get(m)
-        if t is None:
-            markets[m] = {"class": "commodities", "check": "§3.1", "evaluated": False, "pass": False,
-                          "drop_reason": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)"}
-            continue
-        try:
-            r = commodity_pair(m, t)
-            markets[m] = {"class": "commodities", "check": "§3.1", **r, "pass": bool(r["validates"]),
-                          "drop_reason": None if r["validates"] else _reasons(r)}
-        except L.InputDefect as e:
-            markets[m] = {"class": "commodities", "check": "§3.1", "evaluated": False, "pass": False,
-                          "drop_reason": f"input_defect: {e}"}
+        base = {"class": "commodities", "check": "§3.1 (Amendment 1: mirror on its convention contract)"}
+        if m not in L.CHRIS:
+            markets[m] = {**base, "evaluated": False, "pass": False,
+                          "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)"}
+        else:
+            try:
+                cv = mirror_convention(m)
+                conv_rec[m] = cv
+                if not cv["usable"]:
+                    markets[m] = {**base, "evaluated": False, "pass": False, "convention": cv,
+                                  "drop_reason": (f"no usable mirror: best column {cv['convention']} within 0.5 % on "
+                                                  f"{cv.get('convention_share', 0):.1%} of 2003-2019 sessions < 80 %")}
+                else:
+                    conventions[m] = cv["convention"]
+                    r = mirror_pair(m, cv["convention"])
+                    markets[m] = {**base, **r, "convention": cv, "pass": bool(r["validates"]),
+                                  "drop_reason": None if r["validates"] else _reasons(r)}
+            except L.InputDefect as e:
+                markets[m] = {**base, "evaluated": False, "pass": False, "drop_reason": f"input_defect: {e}"}
+        if m in L.YF:                                                # diagnostic only (Amendment 1 (3))
+            try:
+                y = commodity_pair(m, L.YF[m])
+                yahoo[m] = {k: y.get(k) for k in ("months", "corr", "te_share_of_etf_vol", "mean_diff_pct_per_year",
+                                                  "signal_agreement", "switch_diff_per_year", "validates", "reason")}
+            except Exception as e:                                   # noqa: BLE001
+                yahoo[m] = {"error": repr(e)[:200]}
+    res["mirror_conventions_2003_2019"] = conv_rec
+    res["diagnostic_yahoo_continuous_2003_on"] = yahoo
     G.assert_clean()
     res["mask_check"] = {"registered_series": len(G.registry),
                          "earliest_date": str(min(v.index.min() for v in G.registry.values() if len(v)).date()),
                          "proxy_computed_series": len(P.COMPUTED)}
-    # ---- §3.2 pre-2003 level counts (commodities kept after §3.3)
-    lv = pre2003_level_counts(com_keep)
+    # ---- §3.2 pre-2003 level counts against the fixed convention (Amendment 1 (2), (5))
+    lv = pre2003_level_counts(conventions)
     res["level_checks_pre2003"] = lv
     for m, r in lv.items():
         if r.get("passes") is False and markets[m]["pass"]:
             markets[m]["pass"] = False
-            markets[m]["drop_reason"] = (f"§3.2 level check: {r['pre2003_agree']}/{r['pre2003_same_contract_sessions']}"
+            markets[m]["drop_reason"] = (f"§3.2 level check: {r['pre2003_agree']}/{r['pre2003_compared_sessions']}"
                                          f" = {r['pre2003_share_agree']:.1%} < 95 % agreeing")
         elif r.get("passes") is False:
             markets[m]["drop_reason"] += f"; also §3.2 level check {r['pre2003_share_agree']:.1%} < 95 %"
-        markets[m]["level_check"] = {k: r.get(k) for k in ("applicable", "pre2003_share_agree", "passes", "reason")}
+        markets[m]["level_check"] = {k: r.get(k) for k in ("applicable", "pre2003_compared_sessions",
+                                                          "pre2003_share_agree", "pre2003_share_identical_4sd",
+                                                          "passes", "reason")}
     # ---- §3.4 coverage
     cov = coverage_counts({k: (v["class"], None) for k, v in markets.items()})
     res["coverage"] = cov
@@ -459,11 +528,24 @@ def run():
     res["loader_notes"] = L.LOADER_NOTES
     res["diagnostic_mirror_convention_spent_2003_2019"] = mirror_convention_spent(com_keep)
     res["errors"] = errors
-    empty = [c for c, v in res["entering_read"].items() if v["n"] == 0]
+    n_com = res["entering_read"]["commodities"]["n"]
     res["gate_evaluable"] = not errors
-    res["gate"] = "cannot be evaluated" if errors else ("fail" if empty else "pass")
-    res["gate_fail_reasons"] = [f"no {c} market survives the checks (IMPLEMENTATION_NOTES A11: each asset class "
-                                "must keep at least one market)" for c in empty]
+    res["breadth_gate"] = {"rule": "Amendment 1 (6): at least 10 commodities pass", "commodities_entering": n_com,
+                           "passes": n_com >= BREADTH_MIN}
+    res["gate"] = "cannot be evaluated" if errors else ("pass" if n_com >= BREADTH_MIN else "fail")
+    res["gate_fail_reasons"] = [] if n_com >= BREADTH_MIN else [
+        f"only {n_com} commodities pass (Amendment 1 (6): the read needs at least {BREADTH_MIN})"]
+    # Amendment 1 "doubt"
+    passing = [m for m in res["entering_read"]["commodities"]["markets"]]
+    ident = {m: lv.get(m, {}).get("pre2003_share_identical_4sd") for m in passing}
+    n_hi = sum(1 for v in ident.values() if v is not None and v >= DOUBT_IDENTICAL)
+    c1 = len(passing) < DOUBT_MIN_PASS
+    c2 = bool(passing) and n_hi >= DOUBT_HALF * len(passing)
+    res["doubt"] = {"definition": ("doubt if fewer than 15 commodities pass, or on at least half the passing markets "
+                                   ">= 99 % of pre-2003 sessions are identical to 4 significant digits"),
+                    "commodities_passing": len(passing), "fewer_than_15_pass": c1,
+                    "identical_share_by_passing_market": ident, "markets_with_identical_share_ge_0.99": n_hi,
+                    "half_or_more_not_independent": c2, "doubt": bool(c1 or c2)}
     return res
 
 
