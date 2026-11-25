@@ -129,6 +129,38 @@ def test_hold_is_set_by_the_fallback_and_applied_by_the_trade_path():
     assert "never late" not in src                                   # the fallback is conservative, not guaranteed
 
 
+def test_every_order_path_is_held_in_broker_send():
+    """Owner acceptance check (2026-11-25): the hold applies to every order-producing path. All orders (weekly
+    execution and reviews, the lifecycle book, the SPY core and hedge, the fill test) go through broker.send."""
+    import glob
+    import re
+    fund = os.path.dirname(SRC)
+    callers = sorted(os.path.basename(f) for f in glob.glob(os.path.join(fund, "*.py"))
+                     if re.search(r"broker\.send\(|\bsend\(orders", open(f).read()) and not f.endswith("broker.py"))
+    assert callers == ["execute.py", "lifecycle.py"], callers
+    posts = [f for f in glob.glob(os.path.join(fund, "*.py")) if '"POST", "/v2/orders"' in open(f).read()]
+    assert [os.path.basename(f) for f in posts] == ["broker.py"], posts       # no order bypasses send
+    b = open(os.path.join(fund, "broker.py")).read()
+    i = b.index("def send(")
+    assert b.index("hold = valuation_hold()", i) < b.index("def submit(", i)   # before any submission
+
+
+def test_hold_filter_on_a_day_of_orders():
+    import sys
+    sys.path.insert(0, os.path.dirname(SRC))
+    from lifecycle_rules import hold_filter
+    cur = {"SPY": 120, "AAPL": 10, "XOM": -20}
+    orders = [{"symbol": "SPY", "leg": "rebalance", "side": "buy", "qty": 30},     # core up: blocked
+              {"symbol": "AAPL", "leg": "open", "side": "sell", "qty": 5},        # flip, open leg: blocked
+              {"symbol": "AAPL", "leg": "flatten", "side": "sell", "qty": 10},    # flip, flatten leg: passes
+              {"symbol": "XOM", "leg": "rebalance", "side": "buy", "qty": 8},     # short shrinks: passes
+              {"symbol": "MSFT", "leg": "rebalance", "side": "buy", "qty": 4},    # new name: blocked
+              {"symbol": "SPY", "leg": "close", "side": "sell", "qty": 50}]       # core down: passes
+    hold_filter(orders, cur)
+    assert [o["qty"] for o in orders] == [0, 0, 10, 8, 0, 50], [o["qty"] for o in orders]
+    assert [bool(o.get("hold")) for o in orders] == [True, True, False, False, True, False]
+
+
 if __name__ == "__main__":
     for k, v in list(globals().items()):
         if k.startswith("test_"):

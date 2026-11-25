@@ -168,6 +168,11 @@ def send(orders, close_at, clock, log=print):
     """
     for o in orders:
         o.setdefault("attempts", [])
+    hold = valuation_hold()                         # 2026-11-25: every order path passes here
+    if hold:
+        from lifecycle_rules import hold_filter
+        hold_filter(orders, positions())
+        log(f"  valuation hold ({hold}): {sum(1 for o in orders if o.get('hold'))} order(s) cut to shrink-or-close only")
     since = datetime.fromtimestamp(close_at - 16 * 3600, timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     seen = {}                                       # client order id -> latest broker state
 
@@ -273,7 +278,17 @@ def send(orders, close_at, clock, log=print):
     snapper.join(timeout=5)
     for o in orders:
         o["quote_at_send"] = (snap.get("q") or {}).get(o["symbol"])
+        if o.get("hold") and o["qty"] == 0:
+            o["status"] = "skipped: valuation hold"
     return orders
+
+
+def valuation_hold():
+    """The VALUATION_HOLD file's content, or None. The reconcile writes it when a session could not be valued at its
+    official close and removes it when one is again (fund/execute.py); while it exists no order adds exposure."""
+    from common import MODE, STATE
+    p = os.path.join(STATE, MODE, "VALUATION_HOLD")
+    return open(p).read().strip() or "set" if os.path.exists(p) else None
 
 
 def problems_of(orders):
