@@ -119,3 +119,31 @@ def navs_match(first, second, tol=0.005):
     1.5e-11 dollar difference with identical events: summation order, not a different book."""
     a, b = first["rows"], second["rows"]
     return len(a) == len(b) and all(x["date"] == y["date"] and abs(x["nav"] - y["nav"]) <= tol for x, y in zip(a, b))
+
+
+def hold_qty(cq, tq):
+    """Valuation hold (2026-11-25): while the reconcile could not value the last session at its official close
+    (`fund_state/<mode>/VALUATION_HOLD`), no new exposure. A target may shrink a position or close it; it never opens,
+    enlarges or flips one. Existing positions are not liquidated for a missing price."""
+    cq, tq = int(cq), int(tq)
+    if cq == 0 or tq == 0 or np.sign(tq) != np.sign(cq):
+        return 0
+    return int(np.sign(cq)) * min(abs(tq), abs(cq))
+
+
+def hold_filter(orders, cur):
+    """The valuation hold applied to orders, in the order broker.send submits them (flatten legs, then the rest, then
+    open legs): each order's quantity is cut so that no position opens, grows or flips (hold_qty against the running
+    position). Mutates the orders: `qty` is the allowed quantity, `qty_planned` the original, `hold` True when cut."""
+    run = {k: int(v) for k, v in cur.items()}
+    rank = {"flatten": 0, "open": 2}
+    for o in sorted(orders, key=lambda o: rank.get(o["leg"], 1)):
+        q = run.get(o["symbol"], 0)
+        want = q + (1 if o["side"] == "buy" else -1) * int(o["qty"])
+        new = hold_qty(q, want)
+        allowed = abs(new - q)
+        if allowed != int(o["qty"]):
+            o["qty_planned"], o["qty"], o["hold"] = int(o["qty"]), allowed, True
+        run[o["symbol"]] = new                       # = want when the order is not cut; the cut never reverses a side
+    return orders
+

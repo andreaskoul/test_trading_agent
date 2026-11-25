@@ -38,10 +38,16 @@ from broker import ET, api
 from common import MODE, P7_START, STATE, week_dir
 
 def sip_close_query(syms, day):
-    """Daily-bar request for the session `day` only. Alpaca reads a date-only `end` as the whole of that day, so an
-    end of day + 1 reached into the future and was refused (403 "recent SIP data"): end is the session's own date."""
+    """Daily-bar request for the session `day` only, ending at 16:00 New York time of that session, given in UTC.
+    Alpaca reads a date-only `end` as the end of that day in New York, which is still in the future at the 20:10 New
+    York (01:10 UTC) reconcile, and its plan refuses SIP data newer than 15 minutes (403 "recent SIP data"). Observed
+    2026-11-24 21:34 UTC: end 2026-11-24 and 2026-11-24T23:00:00Z refused; 2026-11-24T21:05:00Z answered with the
+    session's bar (t = 05:00Z, the New York midnight), equal to the yfinance close. The bar's t is the session's New
+    York midnight, so any end from then on includes it; the close at 16:00 is hours in the past at the reconcile."""
     d = pd.Timestamp(day).date()
-    return f"/v2/stocks/bars?symbols={','.join(syms)}&timeframe=1Day&feed=sip&adjustment=raw&start={d}&end={d}"
+    end = (pd.Timestamp(d).tz_localize("America/New_York") + pd.Timedelta(hours=16)).tz_convert("UTC")
+    return (f"/v2/stocks/bars?symbols={','.join(syms)}&timeframe=1Day&feed=sip&adjustment=raw&start={d}"
+            f"&end={end.strftime('%Y-%m-%dT%H:%M:%SZ')}")
 
 
 def alpaca_closes(syms, day):
@@ -60,6 +66,38 @@ def alpaca_closes(syms, day):
                         out[k] = float(b["c"])
     except Exception as exc:
         print(f"reconcile: Alpaca closes unavailable ({exc!r})")
+    return out
+
+
+def session_equity(cash, qty, closes):
+    """Equity at the official close of a session: cash + signed shares x the session's close. None if any held name
+    has no close (then the halt falls back to the broker's own history and says so)."""
+    held = {k: v for k, v in qty.items() if v}
+    if any(k not in closes for k in held):
+        return None
+    return float(cash) + sum(v * float(closes[k]) for k, v in held.items())
+
+
+HALT_FALLBACK_HAIRCUT = 0.01   # > the largest gap seen between the 01:10 UTC live mark and the close equity (+0.92%)
+
+
+def halt_fallback_equity(account_equity, haircut=HALT_FALLBACK_HAIRCUT):
+    """Session equity when a close is missing: the account's live (after-hours) equity less a haircut larger than its
+    worst observed overstatement of the close equity (+91.8 bp on 2026-11-18, research/exec_recon). Empirically
+    conservative: below the close equity on every reconcile observed 2026-10-01..11-23; not a guarantee, since a
+    future gap can exceed 1%. So a fallback also sets the valuation hold (no new exposure; fund/lifecycle_rules.py
+    hold_qty). Never the stale history: that is a session old."""
+    return float(account_equity) * (1 - haircut)
+
+
+def halt_series(hist, session, eq_session):
+    """The equity series the risk halts read: the broker's daily history [(New York date, equity)] plus the session
+    just closed when the broker does not serve it yet. At the 01:10 UTC reconcile the broker's history ends at the
+    session before (2026-11-21: it ended at 11-19, so the halt that tripped on 11-20 was written only after 11-23 and
+    the account went flat a session late, at the 11-24 close)."""
+    out = [(d, float(e)) for d, e in hist if e and e > 0]
+    if eq_session is not None and session is not None and (not out or out[-1][0] < session):
+        out.append((session, float(eq_session)))
     return out
 
 
@@ -204,14 +242,49 @@ if mode == "reconcile":
         N = pd.DataFrame({"date": pd.to_datetime(ph["timestamp"], unit="s").date, "equity": ph["equity"]}).dropna()
         N = N[N["equity"] > 0]
         N.to_csv(os.path.join(EXEC, "nav.csv"), index=False)
-        if len(N) > 1:
-            e = N["equity"].to_numpy()
+        # the session just closed (calendar), valued at its official close, if the broker has not served it yet
+        now_et = datetime.now(ET)
+        s_c, cal = api("GET", f"/v2/calendar?start={(now_et - timedelta(days=10)).date()}&end={now_et.date()}")
+        closed = [pd.Timestamp(c["date"]).date() for c in (cal or []) if s_c == 200 and datetime.combine(
+            pd.Timestamp(c["date"]).date(), datetime.strptime(c["close"], "%H:%M").time(), ET) + timedelta(minutes=45) <= now_et]
+        session = closed[-1] if closed else None
+        hist = list(zip(pd.to_datetime(ph["timestamp"], unit="s", utc=True).tz_convert("America/New_York").date, ph["equity"]))
+        eq_s, src = None, "broker history"
+        if session is not None and (not hist or hist[-1][0] < session):
+            qty = broker.positions()
+            acct = broker.account()
+            eq_s = session_equity(acct["cash"], qty, alpaca_closes(sorted(k for k, v in qty.items() if v), session))
+            src = "broker history + session close"
+            if eq_s is None:                       # conservative: the live mark less more than its worst observed gap
+                eq_s = halt_fallback_equity(acct["equity"])
+                src = f"broker history + account equity less {HALT_FALLBACK_HAIRCUT:.0%} (session close unavailable)"
+                problems.append(f"halt: equity at the {session} close unavailable (a held name has no SIP close); "
+                                f"the halt used the account's live equity less {HALT_FALLBACK_HAIRCUT:.0%}; valuation hold set (no new exposure)")
+        hold_p = os.path.join(STATE, MODE, "VALUATION_HOLD")
+        if src.startswith("broker history + account equity"):      # the session could not be valued at its close
+            # the hold governs submissions only. Fund orders are market/day and expire at the close, hours before this
+            # reconcile, but an order placed outside the fund (or a GTC order) could still fill: list them, loudly.
+            s_o, live = api("GET", "/v2/orders?status=open&limit=500")
+            live = [{"symbol": x.get("symbol"), "side": x.get("side"), "qty": x.get("qty"), "tif": x.get("time_in_force"),
+                     "client_order_id": x.get("client_order_id")} for x in (live if s_o == 200 and isinstance(live, list) else [])]
+            open(hold_p, "w").write(json.dumps({"at": datetime.utcnow().isoformat(timespec="seconds"), "session": str(session),
+                                                "reason": "a held name has no SIP close", "open_orders": live,
+                                                "open_orders_status": s_o}) + "\n")
+            if s_o != 200 or live:
+                problems.append(f"valuation hold: {len(live)} order(s) open at the broker (HTTP {s_o}); the hold cannot stop "
+                                "an accepted order from filling: review or cancel by hand")
+        elif os.path.exists(hold_p) and (eq_s is not None or (hist and session is not None and hist[-1][0] >= session)):
+            os.remove(hold_p)                                       # valued again at the close (or served by the broker)
+        H = halt_series(hist, session, eq_s)
+        if len(H) > 1:
+            e = np.array([x for _, x in H])
             dd = 1 - e[-1] / e.max()
             wk = e[-1] / e[max(0, len(e) - 6)] - 1                     # ~5 trading days
-            print(f"broker NAV {e[-1]:,.0f}, drawdown from peak {dd:.1%}, last 5 sessions {wk:+.1%}")
+            print(f"halt series to {H[-1][0]} ({src}): NAV {e[-1]:,.0f}, drawdown from peak {dd:.1%}, last 5 sessions {wk:+.1%}")
             if (dd >= HALT_DD or wk <= -HALT_WEEK) and not os.path.exists(HALT):
                 open(HALT, "w").write(json.dumps({"at": datetime.utcnow().isoformat(timespec="seconds"),
-                                                  "drawdown": dd, "week": wk}) + "\n")
+                                                  "drawdown": dd, "week": wk, "session": str(H[-1][0]),
+                                                  "source": src}) + "\n")
                 problems.append(f"HALT: drawdown {dd:.1%}, week {wk:+.1%}. The next execution goes flat until resumed.")
     print("reconcile:", done or "nothing to reconcile")
     if problems:
