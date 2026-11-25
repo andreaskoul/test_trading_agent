@@ -1,0 +1,590 @@
+{
+ "title": "Cross-asset information flow, contagion and nonlinear dependence: literature for an amendment to the 1962-2002 read",
+ "date": "2026-11-25",
+ "status": "literature memo; no project data read or computed; power figures are design arithmetic",
+ "access_labels": [
+  "read-directly",
+  "fetch-extract",
+  "abstract-only",
+  "search-summary",
+  "repository",
+  "reasoning"
+ ],
+ "cut_short": "Elicit unavailable (api_access_denied); searched via web instead",
+ "claims": [
+  {
+   "claim": "For jointly Gaussian processes Granger causality F equals twice transfer entropy; no extra for nonlinear extensions under Gaussianity; no general TE significance distribution known",
+   "access": "read-directly",
+   "source": "Barnett, Barrett, Seth 2009, arXiv 0910.4514, eq. 13, pp. 6-8",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Plug-in TE null bias approx C^l (C^k-1)(C-1)/(2N); strong positive bias at T=100, visible at T=1000",
+   "access": "read-directly",
+   "source": "Kirkley, arXiv 2506.16215 v3, eq. S34, Figs. 2-3",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Transfer entropy defined as KL deviation from the generalized Markov property; finite sample deflects estimates",
+   "access": "read-directly",
+   "source": "Schreiber 2000, arXiv nlin/0001042, eq. 4",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Kernel Granger: linear Granger in feature space via Gram matrix projection; Bonferroni-filtered eigenvectors; critical coupling scales N^-0.5",
+   "access": "read-directly",
+   "source": "Marinazzo, Pellicoro, Stramaglia 2008, arXiv 0711.2643, eqs. 2-5, Fig. 2",
+   "not_claimed": ""
+  },
+  {
+   "claim": "PCMCI controls false positives under autocorrelation; i.i.d. permutation and pre-whitening fail in multivariate case; climate example T=468 months partial corr ~0.10 p~0.036; finite-sample power for nonlinear tests mostly impossible to derive",
+   "access": "read-directly",
+   "source": "Runge et al. 2019, arXiv 1702.07007 v2, pp. 3, 7-9, 22",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Neural Granger evaluated by AUROC over penalty sweep, no p-value; VAR(1) coef 0.1 AUROC 91.6 at T=250",
+   "access": "read-directly",
+   "source": "Tank et al., arXiv 1802.05842 v2, Tables 1-2",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Hiemstra-Jones test over-rejects, reject rate tends to 1 as sample grows (citing Diks-Panchenko 2005)",
+   "access": "read-directly",
+   "source": "Bai et al., arXiv 1701.03992, intro",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Diks-Panchenko 2006 replace the HJ global statistic with local measures and shrinking bandwidth; size near nominal",
+   "access": "search-summary",
+   "source": "JEDC 30(9-10) 1647-1669",
+   "not_claimed": "bandwidth constants not read (PDF blocked)"
+  },
+  {
+   "claim": "Oil price change predicts US monthly equity return: slope -0.086, t -3.57, 1973-10..2003-04, 355 months; world -0.081 t -2.90; with world returns as regressor only 5 developed markets significant, US not among them",
+   "access": "read-directly",
+   "source": "Driesprong, Jacobsen, Maat, ERIM WP ERS-2003-082, pp. 8-9, Table I",
+   "not_claimed": "published JFE 2008 version not read"
+  },
+  {
+   "claim": "Industries lead the market by up to two months (metal coefficient -0.106; 2-sd shock = 1.39% = 32% of market vol), 1972-2001",
+   "access": "read-directly",
+   "source": "Hong, Torous, Valkanov WP 2002-11-13, pp. 1, 13-14",
+   "not_claimed": "published JFE 2007 version not read"
+  },
+  {
+   "claim": "Correlation bias under heteroskedasticity: rho = rho* sqrt(1+delta)/sqrt(1+delta rho*^2); adjustment requires no endogeneity and no omitted aggregate shock; contagion incidence falls dramatically after adjustment",
+   "access": "read-directly",
+   "source": "Forbes, Rigobon NBER WP 7267, pp. 1-2, 11-12, fn 7 (OCR text layer)",
+   "not_claimed": ""
+  },
+  {
+   "claim": "H.10 rates are noon buying rates in New York",
+   "access": "fetch-extract",
+   "source": "federalreserve.gov/releases/h10/about.htm",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Past bond returns predict equity positively, equity predicts bonds negatively, 20 countries 1980-2016; cross-asset TSMOM Sharpe 45% higher",
+   "access": "search-summary",
+   "source": "Pitkajarvi, Suominen, Vaittinen JFE 2020",
+   "not_claimed": "coefficients and lookback not read"
+  },
+  {
+   "claim": "Lagged US returns predict non-US returns, not the reverse, 1980:02-2010:12",
+   "access": "search-summary",
+   "source": "Rapach, Strauss, Zhou JF 2013",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Commodity-currency exchange rates forecast commodity prices out of sample; reverse less robust",
+   "access": "search-summary",
+   "source": "Chen, Rogoff, Rossi QJE 2010",
+   "not_claimed": "horizon and sample not read"
+  },
+  {
+   "claim": "Industrial metal returns predict stock returns, sign depends on business cycle",
+   "access": "search-summary",
+   "source": "Jacobsen, Marshall, Visaltanachoti, Mgmt Sci 2019",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Over a third of post-2008 predictors fail in-sample; half of the rest poor out-of-sample",
+   "access": "search-summary",
+   "source": "Goyal, Welch, Zafirov RFS 2024",
+   "not_claimed": ""
+  },
+  {
+   "claim": "No popular predictor beats the historical mean out of sample",
+   "access": "search-summary",
+   "source": "Welch, Goyal RFS 2008",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Sign restrictions give small but economically meaningful OOS R2",
+   "access": "search-summary",
+   "source": "Campbell, Thompson RFS 2008",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Anomaly returns 26% lower out of sample, 58% lower post publication",
+   "access": "repository",
+   "source": "LIT_PRIOR.md s1.5 (McLean-Pontiff 2016)",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Overlapping long-horizon estimators almost perfectly correlated under null with persistent regressors",
+   "access": "search-summary",
+   "source": "Boudoukh, Richardson, Whitelaw RFS 2008",
+   "not_claimed": ""
+  },
+  {
+   "claim": "i.i.d. bootstrap for HSIC fails for random processes; wild bootstrap consistent for time series",
+   "access": "search-summary",
+   "source": "Chwialkowski-Gretton 2014 (arXiv 1402.4501); Chwialkowski-Sejdinovic-Gretton 2014 (arXiv 1408.5404)",
+   "not_claimed": ""
+  },
+  {
+   "claim": "CCM convergence limited by noise and data length; fails under synchronisation",
+   "access": "search-summary",
+   "source": "Sugihara et al. 2012 supplement; Monster et al. 2016",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Absorption-ratio spikes preceded most significant US drawdowns",
+   "access": "search-summary",
+   "source": "Kritzman, Li, Page, Rigobon JPM 2011",
+   "not_claimed": "spike definition not read"
+  },
+  {
+   "claim": "Ridgeless random-feature market timing gain is mechanical volatility-timed momentum",
+   "access": "search-summary",
+   "source": "Nagel 2025 BFI WP 2025-104 on Kelly-Malamud-Zhou JF 2024",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Generalized-FEVD spillovers across US stock, bond, FX, commodity volatility 1999-2010 limited until 2007",
+   "access": "search-summary",
+   "source": "Diebold, Yilmaz IJF 2012",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Frequency-domain connectedness (short/medium/long cycles)",
+   "access": "search-summary",
+   "source": "Barunik, Krehlik JFEc 2018",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Tail spillovers stronger than at the median",
+   "access": "search-summary",
+   "source": "Ando, Greenwood-Nimmo, Shin Mgmt Sci 2022",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Correlation rises in bear markets, not with volatility per se",
+   "access": "search-summary",
+   "source": "Longin, Solnik JF 2001",
+   "not_claimed": ""
+  },
+  {
+   "claim": "Most published cross-asset predictability evidence read here is estimated inside 1962-2002",
+   "access": "reasoning",
+   "source": "samples of DJM, HTV, PSV, RSZ",
+   "not_claimed": ""
+  }
+ ],
+ "power_design": {
+  "computed_by": "lit_flow_power.py (reads no data)",
+  "output": {
+   "z": {
+    "5%": 1.645,
+    "0.10/40": 2.807,
+    "family_holm_0.10/6": 2.128
+   },
+   "regression": {
+    "H1_T480_R2_0.0025": {
+     "nc": 1.1,
+     "5%": 0.29,
+     "0.10/40": 0.04,
+     "family_holm_0.10/6": 0.15
+    },
+    "H1_T480_R2_0.005": {
+     "nc": 1.55,
+     "5%": 0.46,
+     "0.10/40": 0.1,
+     "family_holm_0.10/6": 0.28
+    },
+    "H1_T480_R2_0.01": {
+     "nc": 2.2,
+     "5%": 0.71,
+     "0.10/40": 0.27,
+     "family_holm_0.10/6": 0.53
+    },
+    "H1_T480_R2_0.02": {
+     "nc": 3.13,
+     "5%": 0.93,
+     "0.10/40": 0.63,
+     "family_holm_0.10/6": 0.84
+    },
+    "H1_T480_R2_0.035": {
+     "nc": 4.17,
+     "5%": 0.99,
+     "0.10/40": 0.91,
+     "family_holm_0.10/6": 0.98
+    },
+    "H2_T264_R2_0.0025": {
+     "nc": 0.81,
+     "5%": 0.2,
+     "0.10/40": 0.02,
+     "family_holm_0.10/6": 0.09
+    },
+    "H2_T264_R2_0.005": {
+     "nc": 1.15,
+     "5%": 0.31,
+     "0.10/40": 0.05,
+     "family_holm_0.10/6": 0.16
+    },
+    "H2_T264_R2_0.01": {
+     "nc": 1.63,
+     "5%": 0.5,
+     "0.10/40": 0.12,
+     "family_holm_0.10/6": 0.31
+    },
+    "H2_T264_R2_0.02": {
+     "nc": 2.32,
+     "5%": 0.75,
+     "0.10/40": 0.31,
+     "family_holm_0.10/6": 0.58
+    },
+    "H2_T264_R2_0.035": {
+     "nc": 3.09,
+     "5%": 0.93,
+     "0.10/40": 0.61,
+     "family_holm_0.10/6": 0.83
+    },
+    "H3_T348_R2_0.0025": {
+     "nc": 0.93,
+     "5%": 0.24,
+     "0.10/40": 0.03,
+     "family_holm_0.10/6": 0.12
+    },
+    "H3_T348_R2_0.005": {
+     "nc": 1.32,
+     "5%": 0.37,
+     "0.10/40": 0.07,
+     "family_holm_0.10/6": 0.21
+    },
+    "H3_T348_R2_0.01": {
+     "nc": 1.87,
+     "5%": 0.59,
+     "0.10/40": 0.18,
+     "family_holm_0.10/6": 0.4
+    },
+    "H3_T348_R2_0.02": {
+     "nc": 2.66,
+     "5%": 0.85,
+     "0.10/40": 0.44,
+     "family_holm_0.10/6": 0.7
+    },
+    "H3_T348_R2_0.035": {
+     "nc": 3.55,
+     "5%": 0.97,
+     "0.10/40": 0.77,
+     "family_holm_0.10/6": 0.92
+    },
+    "daily_T10000_R2_0.0002": {
+     "nc": 1.41,
+     "5%": 0.41,
+     "0.10/40": 0.08,
+     "family_holm_0.10/6": 0.24
+    },
+    "daily_T10000_R2_0.0005": {
+     "nc": 2.24,
+     "5%": 0.72,
+     "0.10/40": 0.28,
+     "family_holm_0.10/6": 0.54
+    },
+    "daily_T10000_R2_0.001": {
+     "nc": 3.16,
+     "5%": 0.94,
+     "0.10/40": 0.64,
+     "family_holm_0.10/6": 0.85
+    }
+   },
+   "spike": {
+    "T480_n1_48_d_0.005": {
+     "se": 0.0067,
+     "nc": 0.75,
+     "5%": 0.18,
+     "0.10/40": 0.02,
+     "family_holm_0.10/6": 0.08
+    },
+    "T480_n1_48_d_0.01": {
+     "se": 0.0067,
+     "nc": 1.49,
+     "5%": 0.44,
+     "0.10/40": 0.09,
+     "family_holm_0.10/6": 0.26
+    },
+    "T480_n1_48_d_0.015": {
+     "se": 0.0067,
+     "nc": 2.24,
+     "5%": 0.72,
+     "0.10/40": 0.29,
+     "family_holm_0.10/6": 0.54
+    },
+    "T480_n1_77_d_0.005": {
+     "se": 0.0055,
+     "nc": 0.91,
+     "5%": 0.23,
+     "0.10/40": 0.03,
+     "family_holm_0.10/6": 0.11
+    },
+    "T480_n1_77_d_0.01": {
+     "se": 0.0055,
+     "nc": 1.83,
+     "5%": 0.57,
+     "0.10/40": 0.16,
+     "family_holm_0.10/6": 0.38
+    },
+    "T480_n1_77_d_0.015": {
+     "se": 0.0055,
+     "nc": 2.74,
+     "5%": 0.86,
+     "0.10/40": 0.47,
+     "family_holm_0.10/6": 0.73
+    },
+    "T312_n1_48_d_0.005": {
+     "se": 0.0069,
+     "nc": 0.72,
+     "5%": 0.18,
+     "0.10/40": 0.02,
+     "family_holm_0.10/6": 0.08
+    },
+    "T312_n1_48_d_0.01": {
+     "se": 0.0069,
+     "nc": 1.45,
+     "5%": 0.42,
+     "0.10/40": 0.09,
+     "family_holm_0.10/6": 0.25
+    },
+    "T312_n1_48_d_0.015": {
+     "se": 0.0069,
+     "nc": 2.17,
+     "5%": 0.7,
+     "0.10/40": 0.26,
+     "family_holm_0.10/6": 0.52
+    }
+   },
+   "te": {
+    "bias_bits_C2_N480": 0.00208,
+    "bias_bits_C2_N10000": 0.0001,
+    "bias_bits_C3_N480": 0.0125,
+    "bias_bits_C3_N10000": 0.0006,
+    "bias_bits_C5_N480": 0.08333,
+    "bias_bits_C5_N10000": 0.004,
+    "gauss_te_bits_R2_0.001": 0.00072,
+    "gauss_te_bits_R2_0.005": 0.00362,
+    "gauss_te_bits_R2_0.01": 0.00725,
+    "gauss_te_bits_R2_0.02": 0.01457
+   },
+   "timed_sharpe": {
+    "R2_0.0025": {
+     "monthly": 0.131,
+     "annual": 0.45
+    },
+    "R2_0.005": {
+     "monthly": 0.141,
+     "annual": 0.49
+    },
+    "R2_0.01": {
+     "monthly": 0.158,
+     "annual": 0.55
+    },
+    "R2_0.02": {
+     "monthly": 0.188,
+     "annual": 0.65
+    },
+    "base_annual": 0.42
+   }
+  }
+ },
+ "family": [
+  {
+   "id": "H1",
+   "name": "bonds -> equity",
+   "horizon": "monthly",
+   "sample": "1963-2002",
+   "T": 480,
+   "statistic": "OLS t of x1 in r_e(t+1) ~ 1 + Z_t + x1_t; x1 = 12-month excess return of US 10y proxy; one-sided +",
+   "null": "beta=0; restricted-model residual bootstrap, paired stationary blocks mean 12, 10000 draws, seed 20261125",
+   "power": {
+    "R2_0.005": [
+     0.46,
+     0.28,
+     0.1
+    ],
+    "R2_0.01": [
+     0.71,
+     0.53,
+     0.27
+    ],
+    "levels": [
+     "5%",
+     "0.10/6",
+     "0.10/40"
+    ]
+   },
+   "why": "linear: sign prior, slow-rebalancing mechanism; lookback is our registered choice"
+  },
+  {
+   "id": "H2",
+   "name": "energy -> equity",
+   "horizon": "monthly",
+   "sample": "1981-2002",
+   "T": 264,
+   "statistic": "as H1 with x2 = last-month excess return of equal-weight energy futures composite; one-sided -",
+   "null": "as H1",
+   "power": {
+    "R2_0.035": [
+     0.93,
+     0.83,
+     0.61
+    ],
+    "R2_0.005": [
+     0.31,
+     0.16,
+     0.05
+    ]
+   },
+   "why": "linear as in Driesprong et al.; labelled replication (in-window overlap)"
+  },
+  {
+   "id": "H3",
+   "name": "commodity currencies -> commodities (second book)",
+   "horizon": "monthly",
+   "sample": "1974-2002",
+   "T": 348,
+   "statistic": "OLS t of x3 in rc(t+1) ~ 1 + rc_t + x3_t; x3 = equal-weight AUD, CAD excess return; one-sided +",
+   "null": "as H1",
+   "power": {
+    "R2_0.01": [
+     0.59,
+     0.4,
+     0.18
+    ]
+   },
+   "why": "linear (Chen-Rogoff-Rossi)"
+  },
+  {
+   "id": "H4",
+   "name": "Gram-matrix absorption-ratio spike -> equity",
+   "horizon": "daily-built, monthly read",
+   "sample": "1977-2002",
+   "T": 312,
+   "statistic": "coefficient of Spike_t (AR 15d - AR 252d >= 1 sd of 252d) of 5 composites in H1-form regression; one-sided -",
+   "null": "as H1, AR rebuilt per draw from block-resampled daily composites",
+   "power": {
+    "d_0.01_n1_48": [
+     0.42,
+     0.25,
+     0.09
+    ]
+   },
+   "why": "nonlinear (threshold on second-moment state); out-of-window prior on equity sectors, extrapolated"
+  },
+  {
+   "id": "H5",
+   "name": "nonlinear information beyond linear (kernel)",
+   "horizon": "weekly with one-day skip",
+   "sample": "1974-2002",
+   "T": 1500,
+   "statistic": "HSIC(linear residual, X_t), Gaussian kernels, median-heuristic bandwidth fixed at registration",
+   "null": "independence; wild bootstrap for time series",
+   "power": "unknown; simulate before read on synthetic data; expected low",
+   "why": "omnibus nonlinear check; monthly T too small for TE/MI"
+  },
+  {
+   "id": "H6",
+   "name": "tail (quantile) Granger",
+   "horizon": "monthly",
+   "sample": "1981-2002 (fallback 1974-2002 without energy)",
+   "T": [
+    264,
+    348
+   ],
+   "statistic": "rank-score/Wald test that bond, energy, FX slopes jointly 0 in tau=0.10 quantile regression of r_e(t+1) on Z_t and one-month returns",
+   "null": "as H1 with restricted quantile model",
+   "power": "simulate before read; below mean-regression power",
+   "why": "distributional (drawdown) form of contagion"
+  }
+ ],
+ "family_rules": {
+  "controls": "Z_t = equity month-t return, core state at end of month t",
+  "multiplicity": "Holm at family 0.10; programme 0.10/N reported; N += 6",
+  "verdict": {
+   "supported": "Holm-adjusted p <= 0.10 and OOS R2 > 0",
+   "rejected": "90% upper bound implied R2 < 0.25%",
+   "inconclusive": "otherwise"
+  },
+  "oos": "recursive OOS R2 from 1980-01 with Campbell-Thompson restrictions, reported",
+  "type": "precision estimate (design rule 6)",
+  "owner_ruling_needed": "H1, H2, H4, H6 are exposure-timing research on a spent target (US equity 1962-2002); CLAUDE.md rule 17"
+ },
+ "diagnostics_outside_family": [
+  "daily equity(t)->FX(t+1) failure control for stamps",
+  "Forbes-Rigobon adjusted correlations in core worst 10% months",
+  "Diebold-Yilmaz and Barunik-Krehlik connectedness by decade",
+  "reverse directions of H1 and H3"
+ ],
+ "search_log": {
+  "opened_read_directly": [
+   "nlin/0001042",
+   "0711.2643",
+   "0910.4514",
+   "1802.05842",
+   "1702.07007",
+   "2506.16215",
+   "1701.03992",
+   "HTV WP escholarship qt6x49x543",
+   "DJM ERIM ERS-2003-082",
+   "Forbes-Rigobon NBER w7267"
+  ],
+  "fetch_extract": [
+   "Fed H.10 About page",
+   "repub.eur.nl/pub/1017 landing"
+  ],
+  "blocked": [
+   "Elicit (api_access_denied, 4 queries)",
+   "core.ac.uk/download/18510526.pdf (403)",
+   "alphaarchitect.com Pitkajarvi summary (403)",
+   "lem.sssup.it Diks-Panchenko PDF (TLS certificate error; insecure retry refused by session permission check)",
+   "alphaXiv title lookup for PCMCI (resolved by ID)"
+  ],
+  "nothing_returned": [
+   "Boyer-Gibson-Loretan 1999",
+   "Lo-MacKinlay 1990",
+   "Diebold-Yilmaz 2014",
+   "Lustig-Roussanov-Verdelhan",
+   "post-2003 OOS of oil effect",
+   "Diks-Panchenko bandwidth constants"
+  ],
+  "not_searched": [
+   "Hong-Stein 1999",
+   "Patton copulas",
+   "random forests / boosted trees / reservoir computing lead-lag",
+   "Laloux et al. RMT",
+   "Clark-West",
+   "Inoue-Kilian",
+   "Hodrick 1992",
+   "Zhang et al. KCI"
+  ],
+  "stopped": "Elicit only"
+ },
+ "not_claimed": [
+  "no project statistic computed",
+  "no claim nonlinear dependence absent",
+  "search-summary numbers must be copied from papers before registration",
+  "no novelty claim"
+ ]
+}
