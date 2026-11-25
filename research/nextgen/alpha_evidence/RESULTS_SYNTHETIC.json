@@ -1,0 +1,88 @@
+{
+  "design": "synthetic correlated Gaussian matched-pair increments with fixed clipped e-process family gate",
+  "seed": 20261119,
+  "replicates": 1200,
+  "weeks": 156,
+  "candidate_family_size": 7,
+  "candidate_weekly_correlation": 0.8,
+  "noise_sigma_weekly_nav": 0.006,
+  "weak_increment_weekly_nav": 0.001,
+  "strong_increment_weekly_nav": 0.004,
+  "evidence_policy": {
+    "clip_bound_nav": 0.01,
+    "hurdle_nav": 0.0005,
+    "lambda_grid": [
+      0.025,
+      0.05,
+      0.1,
+      0.2,
+      0.4,
+      0.8
+    ],
+    "alpha_family": 0.05,
+    "min_weeks": 26
+  },
+  "scenarios": {
+    "null_family": {
+      "family_false_review_rate": 0,
+      "true_candidate_review_rate": null,
+      "true_candidate_ever_crossing_rate": null,
+      "true_candidate_lapsed_evidence_rate": null,
+      "conditional_null_valid_in_design": true,
+      "unconditional_null_false_review_warning": null,
+      "mean_final_clipped_increment_candidate_0": -0.045624717754226336,
+      "mean_max_log_e_candidate_0": 0.0041092898901857805
+    },
+    "conditional_heteroskedastic_null": {
+      "family_false_review_rate": 0,
+      "true_candidate_review_rate": 0,
+      "true_candidate_ever_crossing_rate": 0,
+      "true_candidate_lapsed_evidence_rate": 0,
+      "conditional_null_valid_in_design": true,
+      "unconditional_null_false_review_warning": null,
+      "mean_final_clipped_increment_candidate_0": -0.04835828376352975,
+      "mean_max_log_e_candidate_0": -0.01892899636966462
+    },
+    "one_weak": {
+      "family_false_review_rate": 0,
+      "true_candidate_review_rate": 0,
+      "true_candidate_ever_crossing_rate": 0,
+      "true_candidate_lapsed_evidence_rate": 0,
+      "conditional_null_valid_in_design": false,
+      "unconditional_null_false_review_warning": null,
+      "mean_final_clipped_increment_candidate_0": 0.0455710320080108,
+      "mean_max_log_e_candidate_0": 0.16966804362454244
+    },
+    "one_strong": {
+      "family_false_review_rate": 0,
+      "true_candidate_review_rate": 0.6483333333333333,
+      "true_candidate_ever_crossing_rate": 0.6991666666666667,
+      "true_candidate_lapsed_evidence_rate": 0.050833333333333335,
+      "conditional_null_valid_in_design": false,
+      "unconditional_null_false_review_warning": null,
+      "mean_final_clipped_increment_candidate_0": 0.3114760521359052,
+      "mean_max_log_e_candidate_0": 6.16612176407418
+    },
+    "regime_break": {
+      "family_false_review_rate": 0,
+      "true_candidate_review_rate": 0,
+      "true_candidate_ever_crossing_rate": 0.06666666666666667,
+      "true_candidate_lapsed_evidence_rate": 0.06666666666666667,
+      "conditional_null_valid_in_design": false,
+      "unconditional_null_false_review_warning": null,
+      "mean_final_clipped_increment_candidate_0": 0.08535586494250638,
+      "mean_max_log_e_candidate_0": 2.7847089537608123
+    },
+    "latent_regime_zero_unconditional": {
+      "family_false_review_rate": 0,
+      "true_candidate_review_rate": 0.3333333333333333,
+      "true_candidate_ever_crossing_rate": 0.3641666666666667,
+      "true_candidate_lapsed_evidence_rate": 0.030833333333333334,
+      "conditional_null_valid_in_design": false,
+      "unconditional_null_false_review_warning": 0.3333333333333333,
+      "mean_final_clipped_increment_candidate_0": -0.02885147113634931,
+      "mean_max_log_e_candidate_0": 3.135896956096092
+    }
+  },
+  "limitations": "persistent latent regime violates conditional null although unconditional mean is zero; no Sharpe or real fund backtest"
+}
