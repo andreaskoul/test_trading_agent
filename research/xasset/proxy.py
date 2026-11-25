@@ -575,7 +575,7 @@ def switches_per_year(sig):
 
 
 def pair_stats(proxy, etf, label):
-    j = pd.concat([validation_window(proxy).rename("p"), validation_window(etf).rename("e")], axis=1).dropna()
+    j = pd.concat([validation_window(proxy).rename("p"), validation_window(etf).rename("e")], axis=1, sort=True).dropna()
     T = len(j)
     d = j.p - j.e
     L = nw_lags(T)
@@ -615,7 +615,7 @@ def pair_stats(proxy, etf, label):
 
 
 def daily_diag(proxy_d, etf_d):
-    j = pd.concat([validation_window(proxy_d).rename("p"), validation_window(etf_d).rename("e")], axis=1).dropna()
+    j = pd.concat([validation_window(proxy_d).rename("p"), validation_window(etf_d).rename("e")], axis=1, sort=True).dropna()
     return {"days": int(len(j)), "corr_daily": round(float(j.p.corr(j.e)), 4),
             "vol_ratio_proxy_over_etf": round(float(j.p.std() / j.e.std()), 3)}
 
