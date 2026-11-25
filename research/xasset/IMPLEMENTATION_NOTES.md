@@ -110,6 +110,9 @@ after a check statistic was seen.
     reproduced `RESULT_CAPITAL.json` to 1e-6, the VALIDATE reruns matched, and each asset class keeps at least one
     market. Markets that fail are dropped and recorded; that does not fail the gate. `xasset_checks.py` exits
     non-zero if the gate cannot be evaluated.
+    * Wording fixed after the first run, with no rule changed: an evaluated gate that misses the last condition is
+      labelled "fail" (exit 1), not "cannot be evaluated" (exit 2). The rerun reproduced the first run's markets,
+      level counts and coverage exactly.
 
 ## B. The read (§4–6)
 
@@ -187,13 +190,51 @@ after a check statistic was seen.
     * σ̂_mkt is the same EWMA estimator on the French daily market.
     * Reported: the core and fund Sharpe ratios, their difference, w*, the mean w_t, the share of months capped, and
       the largest notional under (ii).
-15. **The synthetic dry run** (`--synthetic`) runs the same sleeve, cost, regression, bootstrap and verdict code on
-    generated data. No real file is opened and no lock is written.
+15. **The synthetic dry run** (`--synthetic`) runs the same `run_all` → sleeve, cost, regression, bootstrap and
+    verdict code on generated data. No real file is opened and no lock is written.
     * The generated data:
       * business-day random walks for 1962–2002;
       * 12 markets (bonds 4, of which 2 month-end-only; currencies 4; commodities 4);
       * a core built by capital.py's 200-day rule on an independent random-walk index.
-    * The planted trend adds, each month, κ·sign(past 12-month return)·(monthly sd) to the drift, with κ chosen so
-      that the sleeve's AR is 0.3.
-    * The "true" AR of each planted world is measured with the same code on a 2,000-year sample.
+    * The planted trend adds, each month, κ·sign(past 12-month return)·(monthly sd) to the drift. κ = 0.3/12 is
+      chosen so that the sleeve's gross AR is 0.3.
     * A null world has κ = 0.
+    * The "true" AR of each world is the mean over 100 independent same-design replications (seeds 1001–1100), net of
+      costs and gross. The dry-run estimate uses seed 20261125. Both worlds share that seed's noise draws, so their
+      errors are correlated.
+16. **Currency leg start.** Currency data are used from 1972-01 (the §2 table's "From 1972"), whatever a source's
+    first date. Otherwise DEM (BIS spot with the OECD rates from 1964) would enter under the Bretton Woods pegs, where
+    σ̂ ≈ 0 and positions explode. Other legs start at their data.
+17. **Room for amended tests.** `ADDITIONAL_TESTS` in `xasset_read.py` takes functions `f(panel)` registered by a
+    later dated amendment. Each reads the same guarded panel (monthly and daily returns per market, the core, the US
+    10y) inside the same lock, without touching the primary path. It is empty now.
+
+## C. What the gate found (first run, fda0b87; rerun identical)
+
+* **Gate: fail.** No commodity survives, so A11 is not met, and `xasset_read.py` refuses to run. Nothing was re-scoped.
+* **Pass:**
+  * US5 and US10;
+  * GBP, AUD, CAD (VALIDATE reproduced exactly);
+  * JPY with the BoJ call rate against FXY: ρ 0.995, bias +0.15%/yr, agreement 100%;
+  * DEM against the euro proxy: ρ 0.984, bias −0.07%/yr, agreement 97.6%;
+  * NOK, SEK and DKK (no comparator registered).
+* **Fail:**
+  * CHF and the Swiss bond: the SNB call-money range defect.
+  * The UK bond: bias −1.37%/yr.
+  * DE: bias −1.06%/yr and agreement 86.9%.
+  * JP: ρ 0.932, TE 0.47, agreement 86.0%.
+  * CA: ρ 0.927, TE 0.42.
+  * All 28 commodities:
+    * 7 have no second source;
+    * 16 of the 21 compared with yfinance fail §3.1 (most often bias above 1%/yr or a switch difference above 0.5
+      a year);
+    * every market with a mirror and pre-2003 overlap fails §3.2: 6–40% agreement, with SILVER 93.5%, COPPER
+      89.8% and PLAT 75% (on 8 sessions) the closest.
+* **Diagnostic on spent 2003–2019 levels**, added after the run; it decides nothing (`CHECKS_XASSET.json`,
+  `diagnostic_mirror_convention_spent_2003_2019`).
+  * The mirror is within 0.5% of pysystemtrade's *held* contract on 33–91% of sessions, and within 0.01% on only
+    7–58%.
+  * So the two free sources disagree on levels even where returns may be read. The mirror also more often carries the
+    held contract than the nearest-expiry contract that choice A3 assumed.
+  * The §3.2 drops therefore reflect both the sources' disagreement and the A3 calendar. Separating the two needs a
+    new, dated rule. That is the owner's decision; it is not taken here.

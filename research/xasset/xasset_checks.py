@@ -1,8 +1,8 @@
 """§3 gate of PREREG_XASSET.md: checks before the read, on spent 2003+ data and pre-2003 levels only.
 
     python -I research/xasset/xasset_checks.py fetch   # freeze the files the checks add (XASSET_MANIFEST.json)
-    python -I research/xasset/xasset_checks.py run     # -> research/xasset/CHECKS_XASSET.json; non-zero if the gate
-                                                       #    cannot be evaluated
+    python -I research/xasset/xasset_checks.py run     # -> research/xasset/CHECKS_XASSET.json; exit 0 pass,
+                                                       #    1 fail (evaluated, not passed), 2 cannot be evaluated
 
 What is computed, and on which dates (every non-equity series goes through xasset_lib.PRE2003_GUARD):
 * §3.1 validation statistics (correlation, tracking error, bias, 12-month sign agreement, switch difference; the
@@ -457,10 +457,37 @@ def run():
     res["entering_read"] = {c: {"n": len(v), "markets": v} for c, v in ent.items()}
     res["dropped"] = {k: v["drop_reason"] for k, v in markets.items() if not v["pass"]}
     res["loader_notes"] = L.LOADER_NOTES
+    res["diagnostic_mirror_convention_spent_2003_2019"] = mirror_convention_spent(com_keep)
     res["errors"] = errors
-    res["gate_evaluable"] = not errors and all(c["n"] > 0 for c in res["entering_read"].values())
-    res["gate"] = "pass" if res["gate_evaluable"] else "cannot be evaluated"
+    empty = [c for c, v in res["entering_read"].items() if v["n"] == 0]
+    res["gate_evaluable"] = not errors
+    res["gate"] = "cannot be evaluated" if errors else ("fail" if empty else "pass")
+    res["gate_fail_reasons"] = [f"no {c} market survives the checks (IMPLEMENTATION_NOTES A11: each asset class "
+                                "must keep at least one market)" for c in empty]
     return res
+
+
+def mirror_convention_spent(markets):
+    """Diagnostic on spent 2003-2019 levels, added after the first gate run; it decides nothing. Share of common
+    sessions on which the CHRIS-style mirror's settlement is within 0.5 % (and within 0.01 %) of pysystemtrade's
+    PRICE (held), CARRY and FORWARD contracts: which contract the mirror actually carries."""
+    out = {}
+    for m in markets:
+        sym = L.CHRIS.get(m)
+        if sym is None:
+            continue
+        f = L.pst_frame(m)
+        c = L.chris_settle(sym)
+        j = f.join(c.rename("CH"), how="inner")
+        if not len(j):
+            out[m] = {"common_sessions": 0}
+            continue
+        out[m] = {"common_sessions": int(len(j)), "first": str(j.index.min().date()),
+                  "within_0.5pct": {k: round(float((np.abs(j.CH / j[k] - 1) <= LEVEL_TOL).mean()), 3)
+                                    for k in ("PRICE", "CARRY", "FORWARD")},
+                  "within_0.01pct": {k: round(float((np.abs(j.CH / j[k] - 1) <= 1e-4).mean()), 3)
+                                     for k in ("PRICE", "CARRY", "FORWARD")}}
+    return out
 
 
 def main(argv):
@@ -479,9 +506,9 @@ def main(argv):
         print(json.dumps(res, indent=1))
         return 2
     json.dump(res, open(L.CHECKS_OUT, "w"), indent=1, default=str)
-    print(json.dumps({"gate": res["gate"], "errors": res["errors"], "entering_read": res["entering_read"],
-                      "dropped": res["dropped"]}, indent=1))
-    return 0 if res["gate_evaluable"] else 1
+    print(json.dumps({"gate": res["gate"], "gate_fail_reasons": res["gate_fail_reasons"], "errors": res["errors"],
+                      "entering_read": res["entering_read"], "dropped": res["dropped"]}, indent=1))
+    return {"pass": 0, "fail": 1}.get(res["gate"], 2)
 
 
 if __name__ == "__main__":

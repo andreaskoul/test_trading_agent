@@ -1,5 +1,5 @@
 {
- "written_utc": "2026-11-25T12:38:59Z",
+ "written_utc": "2026-11-25T12:45:31Z",
  "prereg": "research/xasset/PREREG_XASSET.md (dd2a819)",
  "notes": "research/xasset/IMPLEMENTATION_NOTES.md",
  "kind": "\u00a73 gate: validation statistics of constructions on spent 2003+ data; pre-2003 level-agreement counts and coverage counts only; no sleeve return, signal or statistic on any date",
@@ -2984,7 +2984,264 @@
    "intraday_rows_collapsed_adjusted": 25149
   }
  },
+ "diagnostic_mirror_convention_spent_2003_2019": {
+  "OJ": {
+   "common_sessions": 4232,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.775,
+    "CARRY": 0.343,
+    "FORWARD": 0.343
+   },
+   "within_0.01pct": {
+    "PRICE": 0.505,
+    "CARRY": 0.107,
+    "FORWARD": 0.107
+   }
+  },
+  "SOYOIL": {
+   "common_sessions": 4235,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.483,
+    "CARRY": 0.354,
+    "FORWARD": 0.005
+   },
+   "within_0.01pct": {
+    "PRICE": 0.232,
+    "CARRY": 0.127,
+    "FORWARD": 0.004
+   }
+  },
+  "SUGAR11": {
+   "common_sessions": 4002,
+   "first": "2003-01-08",
+   "within_0.5pct": {
+    "PRICE": 0.89,
+    "CARRY": 0.117,
+    "FORWARD": 0.115
+   },
+   "within_0.01pct": {
+    "PRICE": 0.579,
+    "CARRY": 0.022,
+    "FORWARD": 0.01
+   }
+  },
+  "COTTON2": {
+   "common_sessions": 3938,
+   "first": "2003-01-08",
+   "within_0.5pct": {
+    "PRICE": 0.584,
+    "CARRY": 0.242,
+    "FORWARD": 0.11
+   },
+   "within_0.01pct": {
+    "PRICE": 0.405,
+    "CARRY": 0.136,
+    "FORWARD": 0.002
+   }
+  },
+  "COCOA": {
+   "common_sessions": 4220,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.912,
+    "CARRY": 0.281,
+    "FORWARD": 0.39
+   },
+   "within_0.01pct": {
+    "PRICE": 0.578,
+    "CARRY": 0.036,
+    "FORWARD": 0.021
+   }
+  },
+  "OATIES": {
+   "common_sessions": 4236,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.331,
+    "CARRY": 0.021,
+    "FORWARD": 0.012
+   },
+   "within_0.01pct": {
+    "PRICE": 0.245,
+    "CARRY": 0.005,
+    "FORWARD": 0.011
+   }
+  },
+  "SOYMEAL": {
+   "common_sessions": 4226,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.394,
+    "CARRY": 0.295,
+    "FORWARD": 0.004
+   },
+   "within_0.01pct": {
+    "PRICE": 0.199,
+    "CARRY": 0.113,
+    "FORWARD": 0.003
+   }
+  },
+  "SILVER": {
+   "common_sessions": 3769,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.484,
+    "CARRY": 0.303,
+    "FORWARD": 0.034
+   },
+   "within_0.01pct": {
+    "PRICE": 0.065,
+    "CARRY": 0.081,
+    "FORWARD": 0.001
+   }
+  },
+  "PLAT": {
+   "common_sessions": 2708,
+   "first": "2007-12-12",
+   "within_0.5pct": {
+    "PRICE": 0.833,
+    "CARRY": 0.789,
+    "FORWARD": 0.789
+   },
+   "within_0.01pct": {
+    "PRICE": 0.242,
+    "CARRY": 0.134,
+    "FORWARD": 0.134
+   }
+  },
+  "LIVECOW": {
+   "common_sessions": 4227,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.41,
+    "CARRY": 0.211,
+    "FORWARD": 0.063
+   },
+   "within_0.01pct": {
+    "PRICE": 0.164,
+    "CARRY": 0.112,
+    "FORWARD": 0.001
+   }
+  },
+  "LEANHOG": {
+   "common_sessions": 4019,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.226,
+    "CARRY": 0.237,
+    "FORWARD": 0.02
+   },
+   "within_0.01pct": {
+    "PRICE": 0.069,
+    "CARRY": 0.106,
+    "FORWARD": 0.0
+   }
+  },
+  "GOLD": {
+   "common_sessions": 4220,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.845,
+    "CARRY": 0.819,
+    "FORWARD": 0.819
+   },
+   "within_0.01pct": {
+    "PRICE": 0.325,
+    "CARRY": 0.354,
+    "FORWARD": 0.354
+   }
+  },
+  "FEEDCOW": {
+   "common_sessions": 4232,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.476,
+    "CARRY": 0.506,
+    "FORWARD": 0.005
+   },
+   "within_0.01pct": {
+    "PRICE": 0.139,
+    "CARRY": 0.165,
+    "FORWARD": 0.004
+   }
+  },
+  "PALLAD": {
+   "common_sessions": 2478,
+   "first": "2005-02-09",
+   "within_0.5pct": {
+    "PRICE": 0.825,
+    "CARRY": 0.81,
+    "FORWARD": 0.81
+   },
+   "within_0.01pct": {
+    "PRICE": 0.171,
+    "CARRY": 0.036,
+    "FORWARD": 0.036
+   }
+  },
+  "HEATOIL": {
+   "common_sessions": 4221,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.478,
+    "CARRY": 0.477,
+    "FORWARD": 0.116
+   },
+   "within_0.01pct": {
+    "PRICE": 0.261,
+    "CARRY": 0.231,
+    "FORWARD": 0.001
+   }
+  },
+  "RICE": {
+   "common_sessions": 4236,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.471,
+    "CARRY": 0.042,
+    "FORWARD": 0.008
+   },
+   "within_0.01pct": {
+    "PRICE": 0.279,
+    "CARRY": 0.003,
+    "FORWARD": 0.008
+   }
+  },
+  "GAS_US": {
+   "common_sessions": 4228,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.667,
+    "CARRY": 0.162,
+    "FORWARD": 0.115
+   },
+   "within_0.01pct": {
+    "PRICE": 0.406,
+    "CARRY": 0.05,
+    "FORWARD": 0.003
+   }
+  },
+  "COPPER": {
+   "common_sessions": 4187,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.711,
+    "CARRY": 0.568,
+    "FORWARD": 0.334
+   },
+   "within_0.01pct": {
+    "PRICE": 0.227,
+    "CARRY": 0.034,
+    "FORWARD": 0.007
+   }
+  }
+ },
  "errors": [],
- "gate_evaluable": false,
- "gate": "cannot be evaluated"
+ "gate_evaluable": true,
+ "gate": "fail",
+ "gate_fail_reasons": [
+  "no commodities market survives the checks (IMPLEMENTATION_NOTES A11: each asset class must keep at least one market)"
+ ]
 }
