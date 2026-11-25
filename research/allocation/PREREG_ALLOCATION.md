@@ -142,3 +142,27 @@ same amounts at every cost.
 **What this does not change.** The allocation optimum is flat. At any cost here, the gain from tangency over today's
 0.6 is at most 0.012 of fund Sharpe, and no allocation of this book reaches 1. Cost, not allocation, moved the
 estimate.
+
+## Amendment 2 (2026-11-25, before any forward week is computed): admission of a second book; what the cost is
+
+**Admission.** A squared appraisal ratio adds to the *unrestricted* frontier whatever its sign. A negative AR helps
+only through a short position in the candidate book. All sleeves here are held non-negative, and the core at its
+policy weight. So a candidate book is admitted only if all four hold:
+1. its appraisal ratio against the sleeves held, AR = (S_n − rᵀR⁻¹S) / √(1 − rᵀR⁻¹r), is positive, with its
+   one-sided 90% lower bound above 0. The bound comes from a block bootstrap of the weekly series of the book's
+   own out-of-sample test;
+2. its residual alpha after costs (the intercept of its weekly return on the held sleeves) is positive on the same
+   weeks;
+3. the **constrained** marginal contribution is positive: the maximum fund excess Sharpe with the book, all
+   weights ≥ 0, core at its policy weight and the 1.9× gross cap, minus the same without it;
+4. its correlation with the core in the core's worst 10% of weeks is reported, and does not decide.
+
+**What the registered cost is.** The 2.5 bp a side is an assumption: the 1.57 bp measured on this paper account's
+fills, plus 1 bp. Those fills were the 7B news book and the SPY core, not MASTER. MASTER's book trades about 60×
+a year in the same S&P 500 names. Its turnover, concentration, order sizes and short side can make its real cost
+different, and paper fills carry no impact. It is not a measured real-money cost.
+
+**The linear interpolation in cost is exact only at fixed weekly turnover.** Turnover varies week to week, and the
+mean is linear in the cost each week, but the volatility is not exactly unchanged. The interpolation is a planning
+approximation. It is replaced, together with the other two, by the joined weekly simulation at the first 13-week
+report (Amendment 1, item 2).
