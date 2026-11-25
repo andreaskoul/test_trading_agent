@@ -1,0 +1,618 @@
+{
+ "written": "2026-11-25",
+ "kind": "inventory and design memo; no return statistic computed",
+ "companion": [
+  "SCOPE.md",
+  "power.py",
+  "POWER.json"
+ ],
+ "access_labels": [
+  "repo",
+  "read",
+  "fetch-summary",
+  "search-summary",
+  "reasoning"
+ ],
+ "disclosures": [
+  "one row (1899-12) of AQR Commodities for the Long Run values printed by a structure script; unused",
+  "first three Cboe VIX9D levels (2011-01) and first rows of VX contract files K04 and F13 shown in shell previews; unused",
+  "published MOP/HOP tables visible while reading method sections"
+ ],
+ "spent_samples": [
+  {
+   "id": "S1",
+   "study": "X1 cross-asset trend sleeve",
+   "where": "origin/research/tree-layer3:research/tree/L4_explore",
+   "instruments": [
+    "IEF",
+    "TLT",
+    "GLD",
+    "DBC",
+    "UUP"
+   ],
+   "dates": {
+    "development": "2003-07-31..2019-12-19",
+    "test": "2020..2025"
+   },
+   "frequency": "daily prices, weekly sleeve",
+   "read": "test once, READ_X1.lock 2026-11-19T14:32:08Z",
+   "outcome": "fail: dSharpe +0.115 SE 0.113 p 0.154; DSR 0.617",
+   "access": "repo"
+  },
+  {
+   "id": "S2",
+   "study": "leveraged 200-day core",
+   "where": "origin/main:research/exposure",
+   "instruments": [
+    "French daily US market + RF",
+    "SPY"
+   ],
+   "dates": "1926-07-01..2026-09-30; SPY 2016-03..2026-11",
+   "frequency": "daily",
+   "read": "once 2026-11-04",
+   "outcome": "pass; became the core",
+   "access": "repo"
+  },
+  {
+   "id": "S3",
+   "study": "adaptive exposure rules incl. equity-index TSMOM 1-12m",
+   "where": "origin/main:research/sharpe (READ, READ_US, READ_NN locks); origin/research/adaptive-core",
+   "instruments": [
+    "French Europe, Japan, Asia Pacific ex Japan market",
+    "US century"
+   ],
+   "dates": "1990-07..2025-12 (evaluated 1993-06..); US 1926-2026",
+   "frequency": "daily",
+   "read": "once 2026-11-09/10",
+   "outcome": "fail vs 200-day rule; regions closed to further exposure rules",
+   "access": "repo"
+  },
+  {
+   "id": "S4",
+   "study": "regime edge",
+   "where": "origin/main:research/regime",
+   "instruments": [
+    "S&P 500 factor books",
+    "French 49 industries, UMD",
+    "regional momentum"
+   ],
+   "dates": "US dev<=2019, OOS 2020-2025; long dev 1927-1999, OOS 2000-2025; intl 1992-2025",
+   "frequency": "weekly",
+   "read": "once (INT_READ.lock 2026-11-07, OOS_READ.lock)",
+   "outcome": "H16 momentum-off-in-panic survived",
+   "access": "repo"
+  },
+  {
+   "id": "S5",
+   "study": "capital-efficient core",
+   "where": "origin/main:research/sharpe/PREREG_CAPITAL.md",
+   "instruments": [
+    "synthetic 2x fund on French market",
+    "SSO",
+    "SPY",
+    "fund ledger"
+   ],
+   "dates": "1927-2026; 2006-07..2026; fund 2020-2025",
+   "frequency": "daily/weekly",
+   "read": "once 2026-11-21",
+   "outcome": "+0.25 %/yr vs margin",
+   "access": "repo"
+  },
+  {
+   "id": "S6",
+   "study": "cross-sectional FX",
+   "where": "origin/research/cross-sectional:reports/research/PROTOCOL_fx*.md, fx/README.md",
+   "instruments": [
+    "17 currencies vs USD (H.10 12, Yahoo 5)",
+    "OECD 3m rates"
+   ],
+   "dates": {
+    "development": "2004-01..2015-12",
+    "holdout": "2016-01..2026-03",
+    "confirmation": "1990-01..2003-12"
+   },
+   "frequency": "weekly",
+   "read": "holdout and confirmation once each (2026-09)",
+   "outcome": "0/16 pass; carry failed only DSR; reversal not confirmed",
+   "access": "repo"
+  },
+  {
+   "id": "S7",
+   "study": "daily gold incl. tsmom12",
+   "where": "origin/research/daily-horizon:reports/research/PROTOCOL_daily.md",
+   "instruments": [
+    "GC futures",
+    "GLD",
+    "COT",
+    "VIX",
+    "DXY",
+    "real rates"
+   ],
+   "dates": {
+    "development": "2006-06-13..2018-12-31",
+    "holdout": "2019-01-01..2026-03-31"
+   },
+   "frequency": "daily",
+   "read": "holdout once",
+   "outcome": "0/14 pass",
+   "access": "repo"
+  },
+  {
+   "id": "S8",
+   "study": "intraday gold ML ladder",
+   "where": "origin/research/baseline-ladder",
+   "instruments": [
+    "XAUUSD",
+    "GC=F"
+   ],
+   "dates": {
+    "development": "2012-05..2022-03",
+    "holdout": "2023-01..2026-03"
+   },
+   "frequency": "60m",
+   "read": "holdout once",
+   "access": "repo"
+  },
+  {
+   "id": "S9",
+   "study": "complexity timing of MASTER (states)",
+   "where": "origin/research/tree-layer3:research/tree/L6_complexity",
+   "instruments": [
+    "^VIX level 2008-2025",
+    "DTB3",
+    "DGS10",
+    "BAA-AAA"
+   ],
+   "dates": "development 2015-2019",
+   "read": "development only; gate failed; no read",
+   "access": "repo"
+  },
+  {
+   "id": "S10",
+   "study": "TrendSpider SSO critique",
+   "where": "origin/main:research/trendspider",
+   "instruments": [
+    "SPY",
+    "SSO"
+   ],
+   "dates": "2016-2026",
+   "frequency": "15m",
+   "read": "spent 2026-11-04",
+   "outcome": "fail",
+   "access": "repo"
+  },
+  {
+   "id": "S11",
+   "study": "risk-field round 10 options",
+   "where": "origin/research/f2-forward-book:research/riskfield",
+   "instruments": [
+    "Alpaca single-stock option bars"
+   ],
+   "dates": "dev 2024-03..2024-12; OOS 2025",
+   "read": "yes",
+   "outcome": "option signals failed development",
+   "access": "repo"
+  },
+  {
+   "id": "S12",
+   "study": "event risk macro days",
+   "where": "origin/main:research/eventrisk",
+   "dates": "2016-2025",
+   "outcome": "macro days fail",
+   "access": "repo"
+  },
+  {
+   "id": "S13",
+   "study": "fund window",
+   "dates": "2020-2025 reused; 2026 sealed",
+   "access": "repo"
+  }
+ ],
+ "sources": {
+  "etf": {
+   "inception_source": "Yahoo chart meta firstTradeDate, 2026-11-25",
+   "tickers": {
+    "SHY": "2002-07-30",
+    "IEF": "2002-07-30",
+    "TLT": "2002-07-30",
+    "IEI": "2007-01-11",
+    "AGG": "2003-09-29",
+    "BND": "2007-04-10",
+    "TIP": "2003-12-05",
+    "LQD": "2002-07-30",
+    "HYG": "2007-04-11",
+    "JNK": "2007-12-04",
+    "EMB": "2007-12-19",
+    "BWX": "2007-10-11",
+    "GLD": "2004-11-18",
+    "IAU": "2005-01-28",
+    "SLV": "2006-04-28",
+    "DBC": "2006-02-06",
+    "GSG": "2006-07-21",
+    "DBA": "2007-01-05",
+    "DBB": "2007-01-05",
+    "USO": "2006-04-10",
+    "UNG": "2007-04-18",
+    "PDBC": "2014-11-07",
+    "UUP": "2007-03-01",
+    "UDN": "2007-03-01",
+    "FXE": "2005-12-12",
+    "FXY": "2007-02-13",
+    "FXB": "2006-06-26",
+    "FXF": "2006-06-26",
+    "FXA": "2006-06-26",
+    "FXC": "2006-06-26",
+    "CEW": "2009-06-02",
+    "VIXY": "2011-01-04",
+    "VIXM": "2011-01-04",
+    "SVXY": "2011-10-04",
+    "VXX": "2018-01-25",
+    "EFA": "2001-08-27",
+    "EEM": "2003-04-14",
+    "VEU": "2007-03-08",
+    "DBMF": "2019-05-08",
+    "KMLM": "2020-12-02",
+    "CTA": "2022-03-08",
+    "BTAL": "2011-09-13",
+    "SPY": "1993-01-29"
+   },
+   "tradability": "executable",
+   "independence": {
+    "IEF,TLT,GLD,DBC,UUP": "not independent (S1)",
+    "FX ETFs": "not independent (S1 UUP, S6)",
+    "credit, BWX, sector commodities, VIX ETPs": "partly overlapping",
+    "EFA,EEM,VEU": "not independent (S3,S4)",
+    "managed-futures funds": "not independent (S13)"
+   }
+  },
+  "proxies_fred": {
+   "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=<ID>",
+   "access": "read (coverage)",
+   "series": {
+    "DGS1": "1962-01-02..2026-11-23 daily",
+    "DGS5": "1962-01-02.. daily",
+    "DGS10": "1962-01-02.. daily",
+    "DGS20": "1962-01-02.. daily, 2411 missing",
+    "DGS2": "1976-06-01.. daily",
+    "DGS7": "1969-07-01.. daily",
+    "DGS30": "1977-02-15.. daily",
+    "DTB3": "1954-01-04.. daily",
+    "TB3MS": "1934-01.. monthly average",
+    "DGS3MO": "1981-09-01.. daily",
+    "GS10": "1953-04.. monthly average",
+    "AAA": "1919-01.. monthly average",
+    "BAA": "1919-01.. monthly average",
+    "DBAA": "1986-01-02.. daily",
+    "BAMLCC0A0CMTRIV": "2023-11-27.. (truncated to ~3y)",
+    "BAMLHYH0A0HYM2TRIV": "2023-11-27..",
+    "BAMLH0A0HYM2": "2023-11-27..",
+    "IRLTLT01DEM156N": "1956-05.. monthly",
+    "IRLTLT01GBM156N": "1960-01..",
+    "IRLTLT01FRM156N": "1960-01..",
+    "IRLTLT01CAM156N": "1955-01..",
+    "IRLTLT01AUM156N": "1969-07..",
+    "IRLTLT01JPM156N": "1989-01..",
+    "IRLTLT01ITM156N": "1991-03..",
+    "DEXJPUS": "1971-01-04..2026-11-20 daily",
+    "DEXUSUK": "1971-01-04..",
+    "DEXSZUS": "1971-01-04..",
+    "DEXCAUS": "1971-01-04..",
+    "DEXUSAL": "1971-01-04..",
+    "DEXSDUS": "1971-01-04..",
+    "DEXNOUS": "1971-01-04..",
+    "DEXDNUS": "1971-01-04..",
+    "DEXUSEU": "1999-01-04..",
+    "EXGEUS": "1971-01..2001-12 monthly",
+    "IR3TIB01GBM156N": "1957-01..",
+    "IR3TIB01DEM156N": "1960-01..",
+    "IR3TIB01CAM156N": "1956-01..",
+    "IR3TIB01AUM156N": "1968-01..",
+    "IR3TIB01FRM156N": "1970-01..",
+    "IR3TIB01CHM156N": "1999-07..",
+    "IR3TIB01JPM156N": "2002-04..",
+    "DTWEXBGS": "2006-01-02.. daily",
+    "TWEXBMTH": "1973-01..2019-12 monthly",
+    "DCOILWTICO": "1986-01-02.. daily",
+    "WTISPLC": "1946-01.. monthly",
+    "VIXCLS": "1990-01-02.. daily"
+   },
+   "blocked_or_missing": [
+    "GOLDAMGBD228NLBM 404",
+    "GOLDPMGBD228NLBM 404",
+    "DEXGEUS 404",
+    "DEXFRUS 404",
+    "DEXITUS 404",
+    "DEXNEUS 404",
+    "DEXBEUS 404",
+    "LTGOV 404"
+   ],
+   "independence": "pre-2003 rates and pre-1990 FX independent of spent reads; 1990+ FX spent (S6)",
+   "tradability": "proxy"
+  },
+  "other_proxies": [
+   {
+    "name": "World Bank Pink Sheet monthly",
+    "url": "https://thedocs.worldbank.org/en/doc/5d903e848db1d1b83e0ec8f744e55570-0350012021/related/CMO-Historical-Data-Monthly.xlsx",
+    "access": "read (structure)",
+    "coverage": "1960M01..2024M12, 71 commodities incl. gold",
+    "issue": "monthly AVERAGE spot prices: fail momentum content contract; old vintage URL",
+    "tradability": "benchmark/proxy"
+   },
+   {
+    "name": "Jorda-Schularick-Taylor R6",
+    "url": "https://www.macrohistory.net/app/download/9834512469/JSTdatasetR6.xlsx",
+    "access": "read (structure)",
+    "coverage": "1870-2020 annual, 18 countries; bond_tr, eq_tr, bill_rate, xrusd, ltrate",
+    "issue": "Stata file; annual; ends 2020",
+    "tradability": "benchmark"
+   },
+   {
+    "name": "Shiller ie_data.xls",
+    "url": "http://www.econ.yale.edu/~shiller/data/ie_data.xls",
+    "access": "downloaded, not inspected"
+   }
+  ],
+  "futures": [
+   {
+    "name": "AQR Time Series Momentum Factors Monthly",
+    "url": "https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Time-Series-Momentum-Factors-Monthly.xlsx",
+    "access": "read (structure)",
+    "coverage": "1985-01-31..2026-05-29, 497 months",
+    "columns": [
+     "TSMOM",
+     "TSMOM^CM",
+     "TSMOM^EQ",
+     "TSMOM^FI",
+     "TSMOM^FX"
+    ],
+    "signal": "12-month TSMOM, 1-month hold",
+    "issues": [
+     "full history reconstructed at each update: freeze at first use",
+     "definitions tabs are images, not read"
+    ],
+    "tradability": "benchmark",
+    "independence": "not independent"
+   },
+   {
+    "name": "AQR Century of Factor Premia Monthly",
+    "url": "https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Century-of-Factor-Premia-Monthly.xlsx",
+    "access": "read (structure)",
+    "coverage": "1926-07..2026-02, 1196 months; currencies from 1974-02; commodities 1123 months",
+    "content": "cross-sectional value, momentum, carry, defensive per asset class + market",
+    "tradability": "benchmark",
+    "independence": "partly overlapping"
+   },
+   {
+    "name": "AQR Value and Momentum Everywhere",
+    "url": "https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Value-and-Momentum-Everywhere-Factors-Monthly.xlsx",
+    "access": "read (structure)",
+    "coverage": "1972-01..2026-08, 656 months",
+    "tradability": "benchmark",
+    "independence": "partly overlapping"
+   },
+   {
+    "name": "AQR Commodities for the Long Run",
+    "url": "https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Commodities-for-the-Long-Run-Index-Level-Data-Monthly.xlsx",
+    "access": "read (structure)",
+    "coverage": "1877-02..2025-05 portfolio-level only",
+    "tradability": "benchmark",
+    "independence": "pre-2003 independent in dates"
+   },
+   {
+    "name": "AQR terms",
+    "url": "https://www.aqr.com/Terms-of-Use",
+    "access": "fetch-summary",
+    "note": "citation 'AQR Capital Management, LLC'; redistribution prohibited without consent: keep files in .cache with sha256, do not commit"
+   },
+   {
+    "name": "Hurst-Ooi-Pedersen 2017",
+    "url": "https://fairmodel.econ.yale.edu/ec439/hurst.pdf",
+    "access": "read (method, Appendix B)",
+    "note": "67 markets 1880-2016; 1/3/12m combo, 10% vol target; costs x2 1993-2002, x6 1880-1992; roll costs omitted; no dataset published (search-summary)"
+   },
+   {
+    "name": "Yahoo continuous futures",
+    "url": "https://query1.finance.yahoo.com/v8/finance/chart/<SYM>",
+    "access": "read (metadata)",
+    "coverage": "most from 2000; DX-Y.NYB 1971; ^SPGSCI 1984",
+    "issue": "front-month splice, no roll adjustment",
+    "tradability": "executable markets, defective series",
+    "independence": "not independent"
+   },
+   {
+    "name": "Cboe VIX futures per contract",
+    "url": "https://www.cboe.com/us/futures/market_statistics/historical_data/product/list/VX/ ; https://cdn.cboe.com/data/us/futures/market_statistics/historical_data/VX/VX_<expiry>.csv ; https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_<MYY>_VX.csv",
+    "access": "read",
+    "coverage": "listing 2013-01..2027-01 expiries (635 contracts, M and W); archive verified K04 from 2004-03-26",
+    "issue": "pre-2007 old x10 scale (reasoning)",
+    "tradability": "executable",
+    "independence": "partly overlapping"
+   },
+   {
+    "name": "Stooq",
+    "url": "https://stooq.com/q/d/l/?s=gc.f&i=d",
+    "access": "blocked (JS challenge)"
+   },
+   {
+    "name": "Nasdaq Data Link CHRIS",
+    "url": "https://data.nasdaq.com/api/v3/datasets/CHRIS/CME_CL1.csv",
+    "access": "blocked (403); status unsettled (search-summary)"
+   },
+   {
+    "name": "Pinnacle, CSI, Norgate, CME DataMine",
+    "access": "not attempted (paid)"
+   }
+  ],
+  "options": {
+   "url": "https://cdn.cboe.com/api/global/us_indices/daily_prices/<SYM>_History.csv",
+   "access": "read (coverage)",
+   "series": {
+    "PUT": "daily from 2007 (7 stray rows 1991-2004)",
+    "BXM": "2002-03-22..2026-11-24",
+    "BXMD": "1986-06-20..2026-11-23",
+    "CNDR": "1986-06-20..2026-11-24",
+    "BFLY": "1986-06-20..2026-11-23",
+    "PPUT": "1986-06-30..2026-11-24",
+    "CLL": "2008-08-26..",
+    "VXTH": "2006-03-31..",
+    "VIX": "1990-01-02..2026-11-23",
+    "VIX3M": "2009-09-18..",
+    "VIX9D": "2011-01-04..",
+    "VVIX": "2006-03-06.. (sparse 2006)",
+    "SKEW": "1990-01-02.."
+   },
+   "blocked": [
+    "cdn.cboe.com/resources/spx/putdailyprice.csv 403",
+    "bxmarchive.csv 403",
+    "bxmcurrent.csv 403",
+    "SPVXSTR_History.csv 403",
+    "VXST_History.csv 403"
+   ],
+   "methodology": "search-summary only (PUT: T-bills + short ATM SPX puts, monthly, SOQ settlement)",
+   "tradability": "benchmark (indices); option prices: none free beyond Alpaca 2024-02+",
+   "independence": "partly overlapping (S&P 500 exposure; VIX level in S9)"
+  }
+ },
+ "costs_by_universe": {
+  "etf": {
+   "spread": "1-3 bp liquid; wider DBC/UUP/FX (reasoning); measured 1.57 bp/side on 7B+SPY fills (repo)",
+   "expense_ratios_reasoning_unverified": {
+    "IEF": 0.0015,
+    "TLT": 0.0015,
+    "GLD": 0.004,
+    "DBC": 0.0085,
+    "UUP": 0.0077,
+    "VIXY": 0.0085
+   },
+   "financing": "rf+2.43% on longs above 1x (repo)",
+   "short": "rebate below rf + borrow; some ETFs hard to borrow (reasoning)",
+   "roll": "embedded in commodity/VIX ETPs",
+   "margin": "Reg T 50% initial"
+  },
+  "futures": {
+   "spread_commission": "~1 tick + $1-2.5/contract (reasoning); HOP cost multipliers x2 1993-2002, x6 pre-1993 (read)",
+   "roll": "quarterly rates/FX/equity, monthly energy/VIX; 2 trades per roll + calendar slippage; HOP omit roll costs (read)",
+   "collateral": "T-bills earn rf; futures return is excess",
+   "margin": "exchange initial ~2-15% notional (reasoning); maintenance ~90%; daily variation",
+   "settlement": "rates/FX physical (roll before first notice); equity/VIX cash; VX on VRO (reasoning)",
+   "account": "futures access not checked"
+  },
+  "options": {
+   "spread": "wide relative to premium, esp. OTM puts (reasoning)",
+   "collateral": "cash-secured: T-bills = strike (search-summary)",
+   "margin": "Reg T or portfolio margin; jumps in crashes",
+   "settlement": "SPX European cash, AM SOQ monthlies, PM weeklies; SPY American physical, early exercise/dividend assignment",
+   "granularity": "SPX contract = $100 x index"
+  }
+ },
+ "power": {
+  "file": "POWER.json",
+  "method": "Lo 2002 iid SE sqrt((1+S^2/2)/T) for appraisal ratio; lower bounds on years",
+  "years_needed_80pct": {
+   "5%": {
+    "0.3": 71.8,
+    "0.4": 41.7,
+    "0.6": 20.3
+   },
+   "0.10/40": {
+    "0.3": 154.6,
+    "0.4": 89.9,
+    "0.6": 43.6
+   },
+   "0.10/60": {
+    "0.3": 165.6,
+    "0.4": 96.3,
+    "0.6": 46.8
+   }
+  },
+  "years_needed_50pct": {
+   "5%": {
+    "0.3": 31.4,
+    "0.4": 18.3,
+    "0.6": 8.9
+   },
+   "0.10/40": {
+    "0.3": 91.5,
+    "0.4": 53.2,
+    "0.6": 25.8
+   }
+  }
+ },
+ "exposure_definitions": {
+  "X_N": "sum |q m F| / NAV (ETF market value; leveraged ETF x leverage)",
+  "X_Delta": "sum |Delta q m S| / NAV",
+  "X_sigma": "sum |Delta-notional| sigma_i/sigma_SPY / NAV (same ex-ante EWMA as signal)",
+  "X_M": "sum initial margin / NAV",
+  "X_S": "max over fixed scenario grid of -dNAV/NAV, options fully revalued",
+  "proposal": "1.9x cap binds on X_Delta(equity) + sum X_sigma(non-equity); hard limits X_M<=0.25, X_S<=owner level (e.g. 0.30); X_N reported",
+  "decision": "owner"
+ },
+ "mechanisms_ranked_by_expected_AR_vs_fund": [
+  "multi-asset TSMOM (non-equity legs)",
+  "cross-asset value",
+  "cross-asset carry",
+  "macro-conditioned allocation",
+  "volatility risk premium",
+  "defensive convexity"
+ ],
+ "mechanism_rank_basis": "reasoning and literature priors; no data",
+ "recommended_test": {
+  "name": "non-equity TSMOM on a never-read pre-2003 proxy sample, residual alpha vs the trend core",
+  "universe": {
+   "rates": "US Treasuries 2/5/10/30y synthetic CMT total returns from FRED daily end-of-month (DGS2 from 1976, DGS30 from 1977)",
+   "fx": "JPY GBP CHF CAD AUD SEK NOK DKK vs USD from H.10 daily end-of-month + interest differential, 1972-01..1989-12 only",
+   "intl_bonds": "only if an end-of-month series is found",
+   "excluded": [
+    "equity indices (duplicate core)",
+    "commodities and gold (no free end-of-month long series)"
+   ]
+  },
+  "sample": "1962-01..2002-06 (rates), FX inside 1972-1989; 3-year vol warm-up; nothing after 2002-06",
+  "signal": "MOP 2012 eq.5: sign(12-month excess return) x 40%/sigma_{t-1}; sigma^2 = 261 x EWMA squared daily excess returns, centre of mass 60 days (eq.1, §2.4); monthly, 1-month hold; equal weight; sleeve 10% ex-ante vol. Note: k=12, not 12-1",
+  "costs": "1 bp/side notional modern, x6 pre-1993, x2 1993-2002 (HOP); quarterly roll trades; sensitivity 0.5x/2x reported; collateral at DTB3",
+  "held_sleeves": "200-day 1.3x/0.7x core on French daily market + cash; MASTER book has no pre-2013 history (stated limit)",
+  "admission": {
+   "allocation_amendment_2": [
+    "AR>0 with one-sided 90% block-bootstrap lower bound >0",
+    "residual alpha after costs >0",
+    "constrained marginal contribution >0 (weights>=0, core at policy, 1.9x cap on the measure above)",
+    "worst-10%-core-months correlation reported, not decisive"
+   ],
+   "design_rules": [
+    "one-sided p <= 0.10/N (N recounted from DATA_USE.md)",
+    "rule 3 power P>=0.5 at delta = half literature AR; else rule-6 precision estimate",
+    "both cost hurdles in AR units"
+   ]
+  },
+  "pass_earns": "forward shadow record in futures (ZT/ZF/ZN/ZB, 6J/6B/6S/6C/6A/6E) or ETFs (SHY/IEI/IEF/TLT, FXY/FXB/FXF/FXC/FXA/FXE), sized by the allocation posterior rule; trading is an owner decision",
+  "owner_must_authorise": [
+   "Treasury and currency instruments long/short as a sleeve beside the core (research only)",
+   "the derivative exposure definition for the 1.9x cap",
+   "that a proxy sample built from prices of tradable instruments may serve as the test, with executable instruments only in the forward record"
+  ]
+ },
+ "universe_ranking_evidence_per_effort": [
+  {
+   "rank": 1,
+   "universe": "futures via pre-2003 yield/spot proxies (+ AQR as priors)",
+   "why": "longest never-read independent history (~40y rates, 18y FX), moderate effort; limited breadth; proxy not executable"
+  },
+  {
+   "rank": 2,
+   "universe": "options/volatility",
+   "why": "VX contracts 2004-2026 executable and free, Cboe indices from 1986 as priors; exposure overlaps the core's market; mechanisms rank lowest on AR"
+  },
+  {
+   "rank": 3,
+   "universe": "ETF-only",
+   "why": "executable history 2002-2025 spent or overlapping; only forward data independent, <35% power at 5 years"
+  }
+ ],
+ "not_claimed": [
+  "no return, Sharpe, AR or correlation computed",
+  "proxy is not executable",
+  "absence of free long futures data not established (Stooq, Nasdaq blocked; paid vendors not tried)",
+  "costs, margins, expense ratios, VX settlement and account access are reasoning, to verify",
+  "mechanism ranks are priors"
+ ]
+}
