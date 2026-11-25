@@ -161,6 +161,18 @@ def test_hold_filter_on_a_day_of_orders():
     assert [bool(o.get("hold")) for o in orders] == [True, True, False, False, True, False]
 
 
+def test_open_orders_are_listed_when_the_hold_is_set():
+    """Owner, 2026-11-25: an order already accepted at the broker can fill whatever the hold says. Fund orders are
+    market/day (expire at the close, hours before the 01:10 UTC reconcile); the reconcile lists any open order when
+    it sets the hold, and raises a problem if there is one or the list is unavailable."""
+    src = open(SRC).read()
+    b = open(os.path.join(os.path.dirname(SRC), "broker.py")).read()
+    assert '"/v2/orders?status=open&limit=500"' in src and '"open_orders": live' in src
+    assert "if s_o != 200 or live:" in src
+    tifs = set(__import__("re").findall(r'submit\(o, "(\w+)"\)', b))
+    assert tifs == {"day"}, tifs                                        # no GTC or extended-hours order from the fund
+
+
 if __name__ == "__main__":
     for k, v in list(globals().items()):
         if k.startswith("test_"):

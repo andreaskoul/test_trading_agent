@@ -262,8 +262,17 @@ if mode == "reconcile":
                                 f"the halt used the account's live equity less {HALT_FALLBACK_HAIRCUT:.0%}; valuation hold set (no new exposure)")
         hold_p = os.path.join(STATE, MODE, "VALUATION_HOLD")
         if src.startswith("broker history + account equity"):      # the session could not be valued at its close
-            open(hold_p, "w").write(json.dumps({"at": datetime.utcnow().isoformat(timespec="seconds"),
-                                                "session": str(session), "reason": "a held name has no SIP close"}) + "\n")
+            # the hold governs submissions only. Fund orders are market/day and expire at the close, hours before this
+            # reconcile, but an order placed outside the fund (or a GTC order) could still fill: list them, loudly.
+            s_o, live = api("GET", "/v2/orders?status=open&limit=500")
+            live = [{"symbol": x.get("symbol"), "side": x.get("side"), "qty": x.get("qty"), "tif": x.get("time_in_force"),
+                     "client_order_id": x.get("client_order_id")} for x in (live if s_o == 200 and isinstance(live, list) else [])]
+            open(hold_p, "w").write(json.dumps({"at": datetime.utcnow().isoformat(timespec="seconds"), "session": str(session),
+                                                "reason": "a held name has no SIP close", "open_orders": live,
+                                                "open_orders_status": s_o}) + "\n")
+            if s_o != 200 or live:
+                problems.append(f"valuation hold: {len(live)} order(s) open at the broker (HTTP {s_o}); the hold cannot stop "
+                                "an accepted order from filling: review or cancel by hand")
         elif os.path.exists(hold_p) and (eq_s is not None or (hist and session is not None and hist[-1][0] >= session)):
             os.remove(hold_p)                                       # valued again at the close (or served by the broker)
         H = halt_series(hist, session, eq_s)
