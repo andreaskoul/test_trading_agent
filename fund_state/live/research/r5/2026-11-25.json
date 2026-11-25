@@ -1,0 +1,283 @@
+{
+ "records": {
+  "DE": {
+   "ticker": "DE",
+   "index": "SP500",
+   "sector": "Industrials",
+   "sub_industry": "Agricultural & Farm Machinery",
+   "last_release": "2026-08-20 10:00:40+00:00",
+   "release_url": "https://www.sec.gov/Archives/edgar/data/315189/000110465926098904/de-20260820xex99d1.htm",
+   "release_doc": "type EX-99.1",
+   "status": "ok",
+   "card": {
+    "drivers": [
+     {
+      "id": "D1",
+      "name": "Production & Precision Ag",
+      "last_report": "Q3 net sales -6% to $3.998B; op profit -9%, margin 13.2%. 9M sales -7%, op profit -34%. Lower volumes, higher production costs.",
+      "guidance": "FY2026 net sales down ~10%; currency +2.5%, price realization ~+1.0%."
+     },
+     {
+      "id": "D2",
+      "name": "Small Ag & Turf",
+      "last_report": "Q3 net sales +12% to $3.383B; op profit +28%, margin 18.4%. Higher volumes and price realization offset higher production costs.",
+      "guidance": "FY2026 net sales up ~15%; currency +0.5%, price realization ~+1.5%."
+     },
+     {
+      "id": "D3",
+      "name": "Construction & Forestry",
+      "last_report": "Q3 net sales +18% to $3.618B; op profit +84%, margin 12.1%. Higher volumes and price realization, partly offset by higher SA&G/R&D.",
+      "guidance": "FY2026 net sales up ~20%; currency +1.5%, price realization ~+3.0%."
+     },
+     {
+      "id": "D4",
+      "name": "Financial Services",
+      "last_report": "Q3 net income $219M, +7%, on favorable financing spreads, partly offset by lower average portfolio. 9M op profit $823M, +11%.",
+      "guidance": "FY2026 net income ~$870M."
+     },
+     {
+      "id": "D5",
+      "name": "Tariff recoveries / production costs",
+      "last_report": "Q3 tariff recoveries $110M; 9M $382M, primarily in Production Costs. Recoveries boosted results; absence would pressure margins.",
+      "guidance": null
+     }
+    ],
+    "guidance": "FY2026 net income $4.75B-$5.00B; PPA net sales down ~10%, SAT up ~15%, C&F up ~20%; FS net income ~$870M. Implies Q4 net income ~$0.94B-$1.19B.",
+    "kill_conditions": [
+     "Deere lowers FY2026 net income guidance below $4.75B.",
+     "Deere says 2026 is not the ag cycle bottom or order book weakens.",
+     "Production & Precision Ag Q4 sales decline exceeds ~10% or margins contract further."
+    ]
+   },
+   "card_provider": "DigitalOcean",
+   "card_log": {
+    "attempts": [],
+    "repaired": false
+   },
+   "grounding": {
+    "numbers": 28,
+    "found": 23,
+    "share": 0.8214285714285714,
+    "missing": [
+     "0.94",
+     "1.19",
+     "3.383",
+     "3.618",
+     "3.998"
+    ]
+   },
+   "peer_defects": {},
+   "news_raw": 351,
+   "news_used": 60,
+   "own_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Trump urged Congress to pass a Farm Bill in the remaining session.",
+        "date": "2026-11-19",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       },
+       {
+        "what": "Deere acquired Orchard Robotics, an AI crop monitoring startup, adding precision-agriculture capabilities.",
+        "date": "2026-11-21",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.7
+     },
+     "error": null,
+     "provider": "OpenInference",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Deere acquires Orchard Robotics, AI crop monitoring startup for precision agriculture",
+        "date": "2026-11-21",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump urges Congress to pass Farm Bill in remaining session",
+        "date": "2026-11-19",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Together",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "events": [
+       {
+        "what": "Deere acquires Orchard Robotics, AI crop monitoring startup",
+        "date": "2026-11-21",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": true,
+        "new": true
+       },
+       {
+        "what": "Trump urges Congress to pass Farm Bill",
+        "date": "2026-11-19",
+        "driver": "D1",
+        "direction": 0,
+        "size": 1,
+        "hard": false,
+        "new": true
+       }
+      ],
+      "overall": "inline",
+      "confidence": 0.8
+     },
+     "error": null,
+     "provider": "Parasail",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "peers": [
+    "AGCO"
+   ],
+   "peer_passes": [
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "AGCO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "AGCO cites weakest global ag demand in a decade, lower farm income, and elevated input costs, pressuring Deere's Production & Precision Ag."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Novita",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "AGCO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "Weak global ag demand, lower farm income, EME/LATAM softness signal shared headwinds for Deere's Production & Precision Ag."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "Wafer",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    },
+    {
+     "status": "ok",
+     "out": {
+      "peers": [
+       {
+        "peer": "AGCO",
+        "channel": "contagion",
+        "direction": -1,
+        "size": 2,
+        "driver": "D1",
+        "why": "AGCO flags weakest global ag demand in decade, lower farm income and soft EME/LATAM, pressuring Deere's Production & Precision Ag volumes."
+       }
+      ]
+     },
+     "error": null,
+     "provider": "InferenceNet",
+     "log": {
+      "attempts": [],
+      "repaired": false
+     }
+    }
+   ],
+   "score_own": 0.0,
+   "score_peer": -1.414213562373095,
+   "score_combined": -0.7071067811865475,
+   "overall_votes": [
+    "inline",
+    "inline",
+    "inline"
+   ],
+   "overall": "inline",
+   "hour": "bmo",
+   "eps_estimate": 4.1688,
+   "revenue_estimate": 10677445374,
+   "fiscal": "2026Q4",
+   "report_date": "2026-11-25",
+   "cutoff": "2026-11-24 22:00:00+00:00",
+   "decided_at": "2026-11-25T02:33:08.621727+00:00",
+   "model": "deepseek/deepseek-v4.1-flash",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "sha256": "d96960df67e58da3dbcd4ca8b464721d0d1fb50936c3c0000454ffc789f68d3a"
+  }
+ },
+ "report_date": "2026-11-25",
+ "cutoff": "2026-11-24 22:00:00+00:00",
+ "version": "r5-v2",
+ "batch_sha256": "343d8d3de031b10aa294f94af0b1b0d810514470916ddba5402f53c9c12c7053",
+ "runs": [
+  {
+   "at": "2026-11-25T02:33:08.625546+00:00",
+   "version": "r5-v2",
+   "code": "e6d31def5ccb536b519f0778175d46b719213990",
+   "quality": {
+    "counts": {
+     "ok": 1
+    },
+    "attempted": 1,
+    "bad": 0,
+    "bad_share": 0.0,
+    "threshold": 0.25
+   }
+  }
+ ]
+}
