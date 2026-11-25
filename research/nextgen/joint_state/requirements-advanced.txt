@@ -1,0 +1,7 @@
+# Resolve all optional heavy frameworks together in a fresh environment.
+# GPU/MPS backends are optional and depend on local platform.
+torch>=2.2
+cvxpy>=1.5
+pymc>=5.20,<6
+pytensor>=2.20
+arviz>=0.18
