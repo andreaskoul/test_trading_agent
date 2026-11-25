@@ -1,0 +1,398 @@
+{
+ "asof": "2026-11-25",
+ "status": "ok",
+ "error": null,
+ "meta": {
+  "model": "deepseek/deepseek-v4.1-flash",
+  "provider": "OpenInference",
+  "usage": {
+   "prompt_tokens": 41343,
+   "completion_tokens": 33604,
+   "total_tokens": 74947,
+   "cost": 0.026597455,
+   "is_byok": false,
+   "prompt_tokens_details": {
+    "cached_tokens": 17567,
+    "cache_write_tokens": 0,
+    "audio_tokens": 0,
+    "video_tokens": 0
+   },
+   "cost_details": {
+    "upstream_inference_cost": 0.026597455,
+    "upstream_inference_prompt_cost": 0.001394455,
+    "upstream_inference_completions_cost": 0.025203
+   },
+   "completion_tokens_details": {
+    "reasoning_tokens": 32861,
+    "image_tokens": 0,
+    "audio_tokens": 0
+   }
+  },
+  "raw": "{\"long_ideas\":[{\"ticker\":\"PODD\",\"hypothesis\":\"CFO hire and Omnipod 6 launch could catalyze re-rating after 56% drawdown; attention is elevated.\"},{\"ticker\":\"TPL\",\"hypothesis\":\"EagleRock deal and post-pullback valuation could spark rebound after 21% monthly drop.\"},{\"ticker\":\"ADI\",\"hypothesis\":\"Earnings plunge looks overdone; dividend-bargain narrative may draw buyers after 22% monthly fall.\"},{\"ticker\":\"JBL\",\"hypothesis\":\"India AI MoU and cheap valuation could spark rebound after 22% monthly selloff.\"},{\"ticker\":\"COHR\",\"hypothesis\":\"Director buy and 2B buyback may support shares after AI-driven selloff.\"},{\"ticker\":\"DASH\",\"hypothesis\":\"Bernstein 250 target argues selloff went too far; positive analyst catalyst.\"},{\"ticker\":\"PLTR\",\"hypothesis\":\"Goldman mega-customer note and NYC demo could revive interest after 17% monthly drop.\"},{\"ticker\":\"NOW\",\"hypothesis\":\"AI selloff overdone; megadeals and mispricing narrative could support rebound.\"},{\"ticker\":\"FSLR\",\"hypothesis\":\"2027 backlog and policy-reform narrative could catalyze rebound from 53% below high.\"},{\"ticker\":\"CTSH\",\"hypothesis\":\"Capital IQ sale report and UBS conference could drive re-rating after 9% weekly jump.\"},{\"ticker\":\"HUM\",\"hypothesis\":\"TrumpCare comments and defensive Medicare positioning could lift shares after recent gains.\"},{\"ticker\":\"QCOM\",\"hypothesis\":\"Qualcomm momentum and auto-chip leadership narrative could extend after 5.5% weekly gain.\"}],\"short_ideas\":[{\"ticker\":\"PANW\",\"hypothesis\":\"Accounting-fraud lawsuit creates headline risk after stock's 4.8% weekly gain.\"},{\"ticker\":\"IFF\",\"hypothesis\":\"EU antitrust fine overhang could pressure shares after 7.5% weekly bounce.\"},{\"ticker\":\"TSN\",\"hypothesis\":\"Beef losses and 75-year herd low pressure margins; negative earnings narrative.\"},{\"ticker\":\"VRTX\",\"hypothesis\":\"PDUFA delay adds regulatory uncertainty after 5.2% weekly rally.\"},{\"ticker\":\"ALL\",\"hypothesis\":\"Multi-day tech outage ahead of Thanksgiving raises operational risk after weekly gain.\"},{\"ticker\":\"MAA\",\"hypothesis\":\"BMO downgrade and soft apartment outlook weigh after 1.9% weekly gain.\"},{\"ticker\":\"PSX\",\"hypothesis\":\"Refining margin and falling crude outlook pressure shares; sector momentum negative.\"},{\"ticker\":\"COP\",\"hypothesis\":\"Goldman sees Brent falling 10; energy earnings risk after flat week.\"},{\"ticker\":\"UNH\",\"hypothesis\":\"Managed-care losses and negative headlines could extend 15% monthly decline.\"},{\"ticker\":\"CVS\",\"hypothesis\":\"Next-fall narrative and retail pharmacy pressure could extend 10% monthly decline.\"},{\"ticker\":\"WMT\",\"hypothesis\":\"Tariff rhetoric and Apple Pay reversal could pressure high-flying Walmart.\"},{\"ticker\":\"INTU\",\"hypothesis\":\"One-thing-left-to-prove scrutiny and 13% weekly drop may extend.\"}],\"themes\":[\"AI/semiconductor selloff creates oversold rebound candidates with specific catalysts.\",\"Negative headlines: lawsuits, antitrust fines, regulatory delays, outages.\",\"Holiday retail and consumer news flow drives near-term dispersion.\",\"Energy refiners and managed care face negative sector headlines.\",\"M&A, buybacks and analyst actions support idiosyncratic reversals.\"]}"
+ },
+ "llm": {
+  "long_ideas": [
+   {
+    "ticker": "PODD",
+    "hypothesis": "CFO hire and Omnipod 6 launch could catalyze re-rating after 56% drawdown; attention is elevated."
+   },
+   {
+    "ticker": "TPL",
+    "hypothesis": "EagleRock deal and post-pullback valuation could spark rebound after 21% monthly drop."
+   },
+   {
+    "ticker": "ADI",
+    "hypothesis": "Earnings plunge looks overdone; dividend-bargain narrative may draw buyers after 22% monthly fall."
+   },
+   {
+    "ticker": "JBL",
+    "hypothesis": "India AI MoU and cheap valuation could spark rebound after 22% monthly selloff."
+   },
+   {
+    "ticker": "COHR",
+    "hypothesis": "Director buy and 2B buyback may support shares after AI-driven selloff."
+   },
+   {
+    "ticker": "DASH",
+    "hypothesis": "Bernstein 250 target argues selloff went too far; positive analyst catalyst."
+   },
+   {
+    "ticker": "PLTR",
+    "hypothesis": "Goldman mega-customer note and NYC demo could revive interest after 17% monthly drop."
+   },
+   {
+    "ticker": "NOW",
+    "hypothesis": "AI selloff overdone; megadeals and mispricing narrative could support rebound."
+   },
+   {
+    "ticker": "FSLR",
+    "hypothesis": "2027 backlog and policy-reform narrative could catalyze rebound from 53% below high."
+   },
+   {
+    "ticker": "CTSH",
+    "hypothesis": "Capital IQ sale report and UBS conference could drive re-rating after 9% weekly jump."
+   },
+   {
+    "ticker": "HUM",
+    "hypothesis": "TrumpCare comments and defensive Medicare positioning could lift shares after recent gains."
+   },
+   {
+    "ticker": "QCOM",
+    "hypothesis": "Qualcomm momentum and auto-chip leadership narrative could extend after 5.5% weekly gain."
+   }
+  ],
+  "short_ideas": [
+   {
+    "ticker": "PANW",
+    "hypothesis": "Accounting-fraud lawsuit creates headline risk after stock's 4.8% weekly gain."
+   },
+   {
+    "ticker": "IFF",
+    "hypothesis": "EU antitrust fine overhang could pressure shares after 7.5% weekly bounce."
+   },
+   {
+    "ticker": "TSN",
+    "hypothesis": "Beef losses and 75-year herd low pressure margins; negative earnings narrative."
+   },
+   {
+    "ticker": "VRTX",
+    "hypothesis": "PDUFA delay adds regulatory uncertainty after 5.2% weekly rally."
+   },
+   {
+    "ticker": "ALL",
+    "hypothesis": "Multi-day tech outage ahead of Thanksgiving raises operational risk after weekly gain."
+   },
+   {
+    "ticker": "MAA",
+    "hypothesis": "BMO downgrade and soft apartment outlook weigh after 1.9% weekly gain."
+   },
+   {
+    "ticker": "PSX",
+    "hypothesis": "Refining margin and falling crude outlook pressure shares; sector momentum negative."
+   },
+   {
+    "ticker": "COP",
+    "hypothesis": "Goldman sees Brent falling 10; energy earnings risk after flat week."
+   },
+   {
+    "ticker": "UNH",
+    "hypothesis": "Managed-care losses and negative headlines could extend 15% monthly decline."
+   },
+   {
+    "ticker": "CVS",
+    "hypothesis": "Next-fall narrative and retail pharmacy pressure could extend 10% monthly decline."
+   },
+   {
+    "ticker": "WMT",
+    "hypothesis": "Tariff rhetoric and Apple Pay reversal could pressure high-flying Walmart."
+   },
+   {
+    "ticker": "INTU",
+    "hypothesis": "One-thing-left-to-prove scrutiny and 13% weekly drop may extend."
+   }
+  ],
+  "themes": [
+   "AI/semiconductor selloff creates oversold rebound candidates with specific catalysts.",
+   "Negative headlines: lawsuits, antitrust fines, regulatory delays, outages.",
+   "Holiday retail and consumer news flow drives near-term dispersion.",
+   "Energy refiners and managed care face negative sector headlines.",
+   "M&A, buybacks and analyst actions support idiosyncratic reversals."
+  ]
+ },
+ "core": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM"
+ ],
+ "nominated": [
+  "PODD",
+  "TPL",
+  "ADI",
+  "JBL",
+  "COHR",
+  "DASH",
+  "PLTR",
+  "NOW",
+  "FSLR",
+  "CTSH",
+  "HUM",
+  "QCOM",
+  "PANW",
+  "IFF",
+  "TSN",
+  "VRTX",
+  "ALL",
+  "MAA",
+  "PSX",
+  "COP",
+  "UNH",
+  "CVS",
+  "WMT",
+  "INTU"
+ ],
+ "rule_based": [
+  "SNDK",
+  "AMD",
+  "LITE",
+  "MRVL",
+  "MU",
+  "CIEN",
+  "DOC",
+  "F",
+  "AES",
+  "INVH",
+  "MSI",
+  "CSGP",
+  "BRK.B",
+  "DLTR",
+  "BBY",
+  "BF.B",
+  "J",
+  "TTWO"
+ ],
+ "coverage": [
+  "NVDA",
+  "AAPL",
+  "MSFT",
+  "GOOGL",
+  "AMZN",
+  "META",
+  "AVGO",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "TSM",
+  "JPM",
+  "LLY",
+  "WMT",
+  "BRK.B",
+  "ORCL",
+  "CRM",
+  "NFLX",
+  "BA",
+  "XOM",
+  "PODD",
+  "TPL",
+  "ADI",
+  "JBL",
+  "COHR",
+  "DASH",
+  "PLTR",
+  "NOW",
+  "FSLR",
+  "CTSH",
+  "HUM",
+  "QCOM",
+  "PANW",
+  "IFF",
+  "TSN",
+  "VRTX",
+  "ALL",
+  "MAA",
+  "PSX",
+  "COP",
+  "UNH",
+  "CVS",
+  "INTU",
+  "SNDK",
+  "LITE"
+ ],
+ "why": {
+  "NVDA": [
+   "core"
+  ],
+  "AAPL": [
+   "core"
+  ],
+  "MSFT": [
+   "core"
+  ],
+  "GOOGL": [
+   "core"
+  ],
+  "AMZN": [
+   "core"
+  ],
+  "META": [
+   "core"
+  ],
+  "AVGO": [
+   "core"
+  ],
+  "TSLA": [
+   "core"
+  ],
+  "AMD": [
+   "core",
+   "rule"
+  ],
+  "INTC": [
+   "core"
+  ],
+  "TSM": [
+   "core"
+  ],
+  "JPM": [
+   "core"
+  ],
+  "LLY": [
+   "core"
+  ],
+  "WMT": [
+   "core",
+   "nominated"
+  ],
+  "BRK.B": [
+   "core",
+   "rule"
+  ],
+  "ORCL": [
+   "core"
+  ],
+  "CRM": [
+   "core"
+  ],
+  "NFLX": [
+   "core"
+  ],
+  "BA": [
+   "core"
+  ],
+  "XOM": [
+   "core"
+  ],
+  "PODD": [
+   "nominated"
+  ],
+  "TPL": [
+   "nominated"
+  ],
+  "ADI": [
+   "nominated"
+  ],
+  "JBL": [
+   "nominated"
+  ],
+  "COHR": [
+   "nominated"
+  ],
+  "DASH": [
+   "nominated"
+  ],
+  "PLTR": [
+   "nominated"
+  ],
+  "NOW": [
+   "nominated"
+  ],
+  "FSLR": [
+   "nominated"
+  ],
+  "CTSH": [
+   "nominated"
+  ],
+  "HUM": [
+   "nominated"
+  ],
+  "QCOM": [
+   "nominated"
+  ],
+  "PANW": [
+   "nominated"
+  ],
+  "IFF": [
+   "nominated"
+  ],
+  "TSN": [
+   "nominated"
+  ],
+  "VRTX": [
+   "nominated"
+  ],
+  "ALL": [
+   "nominated"
+  ],
+  "MAA": [
+   "nominated"
+  ],
+  "PSX": [
+   "nominated"
+  ],
+  "COP": [
+   "nominated"
+  ],
+  "UNH": [
+   "nominated"
+  ],
+  "CVS": [
+   "nominated"
+  ],
+  "INTU": [
+   "nominated"
+  ],
+  "SNDK": [
+   "rule"
+  ],
+  "LITE": [
+   "rule"
+  ]
+ },
+ "prompt_chars": 114719
+}
