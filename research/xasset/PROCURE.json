@@ -1,0 +1,1446 @@
+{
+ "date": "2026-11-25",
+ "status": "procurement assessment; no vendor contacted; no purchase; no return statistic computed",
+ "access_labels": [
+  "read-directly",
+  "search-summary",
+  "blocked",
+  "reasoning"
+ ],
+ "columns": [
+  "individual_contracts (Essential)",
+  "roll_methodology (Essential)",
+  "markets_40_50 (High)",
+  "history_1980s (High)",
+  "volume_oi_settlement (High)",
+  "contract_specs_and_changes (Essential)",
+  "python_access (High)",
+  "cost_one_off_and_recurring (Essential)"
+ ],
+ "vendors": [
+  {
+   "vendor": "Portara (CQG Data Factory reseller)",
+   "rank": 1,
+   "pages": [
+    "https://portaracqg.com/pricing/",
+    "https://portaracqg.com/license/",
+    "https://portaracqg.com/historical-daily-futures-data/",
+    "https://portaracqg.com/continuous-futures-data/"
+   ],
+   "scores": {
+    "individual_contracts (Essential)": {
+     "grade": "yes",
+     "note": "'Purchase individual or continuous daily data'; actual contracts are called 'Tenors' and carry a 'higher INITIAL licensing cost' on the subscription route",
+     "access": "read-directly"
+    },
+    "roll_methodology (Essential)": {
+     "grade": "yes",
+     "note": "zero, back, forward or ratio adjustment; per-market roll rules with a published roll audit log (e.g. coffee 27 days before expiry)",
+     "access": "read-directly"
+    },
+    "markets_40_50 (High)": {
+     "grade": "yes",
+     "note": "446 futures symbols in the daily table, about 276 distinct markets after merging session variants (procure_coverage.json); 'over 10,000' instruments on request",
+     "access": "read-directly"
+    },
+    "history_1980s (High)": {
+     "grade": "yes",
+     "note": "grains 1968, softs and metals 1971-74, currencies 1975-77, T-bond 1977, 10-year 1982, gilts and short sterling 1982; 52 non-equity markets live by 1989",
+     "access": "read-directly"
+    },
+    "volume_oi_settlement (High)": {
+     "grade": "partial",
+     "note": "settlement is one of five daily price points; a 'Volume Start Dates' table exists (not opened); open interest not confirmed on the pages read",
+     "access": "read-directly"
+    },
+    "contract_specs_and_changes (Essential)": {
+     "grade": "partial",
+     "note": "states that tick sizes change through history and that its continuous data are kept homogeneous; no contract-specification history table was read",
+     "access": "read-directly"
+    },
+    "python_access (High)": {
+     "grade": "yes",
+     "note": "one-off delivery as CSV/ASCII by download link",
+     "access": "read-directly"
+    },
+    "cost_one_off_and_recurring (Essential)": {
+     "grade": "partial",
+     "note": "one-off: $330 per commodity for its full history ('on special: $220'); daily sold as the last 30 years or the full history; pre-1960 index histories $795. The $330 line sits under 1-minute wording: its application to daily data is to be confirmed in the quote. Subscription: price on request; individual-contract ('Tenor') daily: price on request; portfolio discounts: price on request",
+     "access": "read-directly"
+    }
+   },
+   "licence": {
+    "grade": "best fit",
+    "note": "one-off licence is perpetual; use by up to five people in the organisation on own computers, servers or cloud; research, backtesting and trading allowed; 'You may publish results, charts, signals and performance figures derived from the Data'; may not pass the data, or anything from which it could be substantially reconstructed, outside the organisation",
+    "access": "read-directly"
+   },
+   "survivorship": {
+    "grade": "yes",
+    "note": "delisted markets are listed with end dates: Eurodollar to 2023-06-16, pork bellies to 2011-07-15, 10-year swap to 2013-09-16, MGE spring wheat to 2025-06-27",
+    "access": "read-directly"
+   },
+   "verdict": "Only vendor read whose licence lets the raw history be frozen permanently (rule 4) and derived results kept and published; deepest pre-1980 history. Most expensive retail option at list prices."
+  },
+  {
+   "vendor": "Pinnacle Data (CLC and Deep History)",
+   "rank": 2,
+   "pages": [
+    "http://www.pinnacledata.com/clc.html",
+    "http://www.pinnacledata.com/extended-clc.html",
+    "http://www.pinnacledata.com/orderDB.asp",
+    "http://www.pinnacledata.com/disclaimer.asp"
+   ],
+   "scores": {
+    "individual_contracts (Essential)": {
+     "grade": "yes",
+     "note": "Deep History: 'ALL of the historical contracts for the 70 commodities we follow', 'approximately 8,000', 'some back to 1969' (the summary on the same page says about 10,000)",
+     "access": "read-directly"
+    },
+    "roll_methodology (Essential)": {
+     "grade": "yes",
+     "note": "CLC roll day published per market (e.g. 8th day of the delivery month for currencies, 22nd of the prior month for grains); back, ratio or non-adjusted linking in its DataMaker software; individual contracts allow the project's own roll",
+     "access": "read-directly"
+    },
+    "markets_40_50 (High)": {
+     "grade": "yes",
+     "note": "CLC: '98 most popular commodities'; 65 distinct markets in the published start-date table",
+     "access": "read-directly"
+    },
+    "history_1980s (High)": {
+     "grade": "yes",
+     "note": "grains and meats 1969-71, softs and metals 1973-75, currencies 1975-78, T-bond 1978; Bund, gilt, short sterling 1989; mostly US exchanges",
+     "access": "read-directly"
+    },
+    "volume_oi_settlement (High)": {
+     "grade": "yes",
+     "note": "CLC fields: open, high, low, settle, open interest, total volume, total open interest; Deep: OHLC, total volume, contract open interest",
+     "access": "read-directly"
+    },
+    "contract_specs_and_changes (Essential)": {
+     "grade": "no",
+     "note": "no contract specifications or their history were found on the site",
+     "access": "read-directly"
+    },
+    "python_access (High)": {
+     "grade": "yes",
+     "note": "ASCII and MetaStock files",
+     "access": "read-directly"
+    },
+    "cost_one_off_and_recurring (Essential)": {
+     "grade": "yes",
+     "note": "Deep History $149, Light History $49, CLC $99 (one-off); updates $20/month (3-month minimum) or $216/year for one database",
+     "access": "read-directly"
+    }
+   },
+   "licence": {
+    "grade": "unknown",
+    "note": "no licence text published; the site carries only a disclaimer of warranties. Terms must be obtained in writing before purchase",
+    "access": "read-directly"
+   },
+   "survivorship": {
+    "grade": "partial",
+    "note": "pork bellies (delisted) is in the CLC list; the Deutsche mark is spliced into the euro series; markets that died earlier are not listed",
+    "access": "read-directly"
+   },
+   "vendor_risk": {
+    "grade": "high",
+    "note": "HTTPS certificate failed verification; the order page still warns Netscape users; whether the data are maintained to date was not verified",
+    "access": "read-directly"
+   },
+   "verdict": "Cheapest route to individual contracts back to 1969 (about $250 one-off). US-centric; licence unknown; best used as a second source to reconcile against the primary vendor."
+  },
+  {
+   "vendor": "Norgate Data (Futures package)",
+   "rank": 3,
+   "pages": [
+    "https://norgatedata.com/futurespackage.php",
+    "https://norgatedata.com/data-content-tables.php",
+    "https://norgatedata.com/faq.php",
+    "https://norgatedata.com/system-requirements.php"
+   ],
+   "scores": {
+    "individual_contracts (Essential)": {
+     "grade": "yes",
+     "note": "'Along with individual futures contracts, the service provides spot-month continuous contracts'",
+     "access": "read-directly"
+    },
+    "roll_methodology (Essential)": {
+     "grade": "yes",
+     "note": "arithmetic back-adjustment; roll on the business day before last trade (cash-settled) or before first notice (deliverable), major cycle only where minor months are thin",
+     "access": "read-directly"
+    },
+    "markets_40_50 (High)": {
+     "grade": "yes",
+     "note": "'around 100 Futures markets drawn from 11 worldwide exchanges'; 94 distinct markets in the content table, about 70 non-equity",
+     "access": "read-directly"
+    },
+    "history_1980s (High)": {
+     "grade": "partial",
+     "note": "'back to around 1980': 27 non-equity markets by 1980, 43 by 1989; nothing before 1977; Eurex bonds only from 1999 (Bund 1999-01-04)",
+     "access": "read-directly"
+    },
+    "volume_oi_settlement (High)": {
+     "grade": "yes",
+     "note": "close is the official settlement unless stated; volume and open interest, total-market on continuous series",
+     "access": "read-directly"
+    },
+    "contract_specs_and_changes (Essential)": {
+     "grade": "partial",
+     "note": "a contract-details spreadsheet is linked (not opened); metadata include the 'lowest ever minimum price change increment'; no history of specification changes found",
+     "access": "read-directly"
+    },
+    "python_access (High)": {
+     "grade": "partial",
+     "note": "Python package listed; the updater needs .NET Framework 4.8, i.e. Windows (a VM counts as an installation); the database cannot be queried from another machine",
+     "access": "read-directly"
+    },
+    "cost_one_off_and_recurring (Essential)": {
+     "grade": "yes",
+     "note": "USD 148.50 for 6 months, USD 270 for 12 months; recurring for as long as the data are kept",
+     "access": "read-directly"
+    }
+   },
+   "licence": {
+    "grade": "poor fit",
+    "note": "personal use by individuals only, 'no alternative business/commercial licensing'; derived results (trading results, model parameters, statistics) may be kept; all exported data, snapshots and backups must be deleted when the subscription ends; not in a shared repository",
+    "access": "read-directly"
+   },
+   "survivorship": {
+    "grade": "no (market level)",
+    "note": "expired contracts of live markets are included, but no delisted market (Eurodollar, Deutsche mark, pork bellies) appears in the table",
+    "access": "read-directly (absence) / reasoning"
+   },
+   "verdict": "Best maintained low-cost subscription with a clear roll rule, but the delete-on-expiry rule conflicts with freezing inputs at first use unless the subscription is kept indefinitely; no 1970s; market-level survivorship; Windows only."
+  },
+  {
+   "vendor": "CSI Data (Unfair Advantage)",
+   "rank": 4,
+   "pages": [
+    "https://apps.csidata.com/OrderUA",
+    "https://csidata.com/?page_id=14",
+    "https://www.csidata.com/?page_id=824"
+   ],
+   "scores": {
+    "individual_contracts (Essential)": {
+     "grade": "yes",
+     "note": "contract-level data of active markets; continuous series computed from them",
+     "access": "read-directly"
+    },
+    "roll_methodology (Essential)": {
+     "grade": "yes",
+     "note": "user-defined rolls: calendar, days before expiry, volume or open-interest rules; back-adjusted, ratio, Nth nearest, perpetual, Gann",
+     "access": "read-directly"
+    },
+    "markets_40_50 (High)": {
+     "grade": "yes",
+     "note": "World Futures 'nearly 1,000+ futures'; 150 markets processed per day on Gold",
+     "access": "read-directly"
+    },
+    "history_1980s (High)": {
+     "grade": "partial",
+     "note": "Gold: 30 years included plus up to 10 extra years ($30 a year) = 40 years, about 1986; 'Full History options': price on request",
+     "access": "read-directly"
+    },
+    "volume_oi_settlement (High)": {
+     "grade": "yes",
+     "note": "OHLC, volume and open interest, market totals; RTH settlements",
+     "access": "read-directly"
+    },
+    "contract_specs_and_changes (Essential)": {
+     "grade": "partial",
+     "note": "'Listings & Specifications' factsheets exist; the listing pages returned 403",
+     "access": "read-directly / blocked"
+    },
+    "python_access (High)": {
+     "grade": "partial",
+     "note": "export to CSI, MetaStock, ASCII or Excel from the Windows UA program; no API found",
+     "access": "read-directly"
+    },
+    "cost_one_off_and_recurring (Essential)": {
+     "grade": "yes",
+     "note": "Gold World Futures: $200 one-time licensing fee + $899/year + extra history up to $300; Silver World Futures: $120 + $689/year (10 years) or $79.50/month (5 years); history only, World Futures: 20 years $500; full history: price on request",
+     "access": "read-directly"
+    }
+   },
+   "licence": {
+    "grade": "poor fit",
+    "note": "'personal and private use'; may not 'create derivative works from' the data; 'creating derivative(s), publication ... redistribution' counts as commercial; exports are encoded to identify the account; licence revoked if updates lapse two months",
+    "access": "read-directly"
+   },
+   "survivorship": {
+    "grade": "no",
+    "note": "'Inactive futures not included' (every package)",
+    "access": "read-directly"
+   },
+   "verdict": "Broad and flexible, but excludes inactive markets, caps published history at about 40 years, and its licence forbids derived works."
+  },
+  {
+   "vendor": "CME DataMine (exchange, end of day)",
+   "rank": 5,
+   "pages": [
+    "https://www.cmegroup.com/market-data/datamine-historical-data.html"
+   ],
+   "scores": {
+    "individual_contracts (Essential)": {
+     "grade": "yes",
+     "note": "contract-level end-of-day settlement, volume, open interest",
+     "access": "search-summary"
+    },
+    "roll_methodology (Essential)": {
+     "grade": "n/a",
+     "note": "raw exchange data; the project builds its own roll",
+     "access": "reasoning"
+    },
+    "markets_40_50 (High)": {
+     "grade": "partial",
+     "note": "CME, CBOT, NYMEX, COMEX products only: no ICE, Eurex, LIFFE or Asian markets",
+     "access": "reasoning"
+    },
+    "history_1980s (High)": {
+     "grade": "yes",
+     "note": "end of day from 1982-01-01 or contract inception",
+     "access": "search-summary"
+    },
+    "volume_oi_settlement (High)": {
+     "grade": "yes",
+     "note": "official settlement, volume, open interest",
+     "access": "search-summary"
+    },
+    "contract_specs_and_changes (Essential)": {
+     "grade": "partial",
+     "note": "exchange product definitions; history not checked",
+     "access": "reasoning"
+    },
+    "python_access (High)": {
+     "grade": "partial",
+     "note": "CSV delivery",
+     "access": "search-summary"
+    },
+    "cost_one_off_and_recurring (Essential)": {
+     "grade": "price on request",
+     "note": "'varies based upon data type and duration'",
+     "access": "search-summary"
+    }
+   },
+   "licence": {
+    "grade": "unknown",
+    "note": "not read",
+    "access": "blocked"
+   },
+   "survivorship": {
+    "grade": "yes",
+    "note": "exchange archive includes expired contracts",
+    "access": "reasoning"
+   },
+   "verdict": "Authoritative for US markets from 1982; too narrow alone; price on request; site blocked automated access."
+  },
+  {
+   "vendor": "LSEG Datastream / Refinitiv",
+   "rank": 6,
+   "pages": [
+    "https://www.lseg.com/en/data-catalogue/derivatives/reference/futures-reference-data"
+   ],
+   "scores": {
+    "individual_contracts (Essential)": {
+     "grade": "yes",
+     "note": "individual futures and continuous series",
+     "access": "search-summary"
+    },
+    "roll_methodology (Essential)": {
+     "grade": "partial",
+     "note": "'34,000 continuous series' with six calculation methods",
+     "access": "search-summary"
+    },
+    "markets_40_50 (High)": {
+     "grade": "yes",
+     "note": "global",
+     "access": "search-summary"
+    },
+    "history_1980s (High)": {
+     "grade": "yes",
+     "note": "futures time series from 1973",
+     "access": "search-summary"
+    },
+    "volume_oi_settlement (High)": {
+     "grade": "yes",
+     "note": "settlement, open, high, low; volume and open interest per series",
+     "access": "search-summary"
+    },
+    "contract_specs_and_changes (Essential)": {
+     "grade": "partial",
+     "note": "reference data product exists",
+     "access": "search-summary"
+    },
+    "python_access (High)": {
+     "grade": "partial",
+     "note": "Excel add-in (Windows) or Workspace; API terms not read",
+     "access": "search-summary"
+    },
+    "cost_one_off_and_recurring (Essential)": {
+     "grade": "price on request",
+     "note": "no published price; usually institutional or academic",
+     "access": "search-summary"
+    }
+   },
+   "licence": {
+    "grade": "unknown",
+    "note": "academic licences are 'non-commercial research purposes only' (university pages)",
+    "access": "search-summary"
+   },
+   "survivorship": {
+    "grade": "yes",
+    "note": "dead series retained",
+    "access": "reasoning"
+   },
+   "verdict": "Moskowitz-Ooi-Pedersen's main source ('mainly Datastream, Bloomberg, and various exchanges', read); not priced publicly; institutional."
+  },
+  {
+   "vendor": "Bloomberg (upper bound)",
+   "rank": 7,
+   "pages": [],
+   "scores": {
+    "individual_contracts (Essential)": {
+     "grade": "yes",
+     "note": "",
+     "access": "reasoning"
+    },
+    "roll_methodology (Essential)": {
+     "grade": "price on request",
+     "note": "",
+     "access": "reasoning"
+    },
+    "markets_40_50 (High)": {
+     "grade": "yes",
+     "note": "",
+     "access": "reasoning"
+    },
+    "history_1980s (High)": {
+     "grade": "yes",
+     "note": "",
+     "access": "reasoning"
+    },
+    "volume_oi_settlement (High)": {
+     "grade": "yes",
+     "note": "",
+     "access": "reasoning"
+    },
+    "contract_specs_and_changes (Essential)": {
+     "grade": "yes",
+     "note": "",
+     "access": "reasoning"
+    },
+    "python_access (High)": {
+     "grade": "yes",
+     "note": "",
+     "access": "reasoning"
+    },
+    "cost_one_off_and_recurring (Essential)": {
+     "grade": "price on request",
+     "note": "",
+     "access": "reasoning"
+    }
+   },
+   "cost_note": {
+    "grade": "~$31,980 a year per single terminal (third-party reports; Bloomberg publishes no price)",
+    "note": "",
+    "access": "search-summary"
+   },
+   "licence": {
+    "grade": "poor fit",
+    "note": "terminal data are licensed for the subscriber's display use; bulk extraction and redistribution are restricted",
+    "access": "reasoning"
+   },
+   "survivorship": {
+    "grade": "yes",
+    "note": "expired contracts retrievable",
+    "access": "reasoning"
+   },
+   "verdict": "Upper bound on cost; not justified for one historical read."
+  },
+  {
+   "vendor": "Barchart / cmdty",
+   "rank": 8,
+   "pages": [
+    "https://www.barchart.com/ondemand/futures-end-of-day-data-api"
+   ],
+   "scores": {
+    "individual_contracts (Essential)": {
+     "grade": "unknown",
+     "note": "",
+     "access": "blocked"
+    },
+    "roll_methodology (Essential)": {
+     "grade": "unknown",
+     "note": "",
+     "access": "blocked"
+    },
+    "markets_40_50 (High)": {
+     "grade": "unknown",
+     "note": "",
+     "access": "blocked"
+    },
+    "history_1980s (High)": {
+     "grade": "unknown",
+     "note": "",
+     "access": "blocked"
+    },
+    "volume_oi_settlement (High)": {
+     "grade": "unknown",
+     "note": "",
+     "access": "blocked"
+    },
+    "contract_specs_and_changes (Essential)": {
+     "grade": "unknown",
+     "note": "",
+     "access": "blocked"
+    },
+    "python_access (High)": {
+     "grade": "unknown",
+     "note": "",
+     "access": "blocked"
+    },
+    "cost_one_off_and_recurring (Essential)": {
+     "grade": "unknown",
+     "note": "",
+     "access": "blocked"
+    }
+   },
+   "notes": [
+    {
+     "grade": "no",
+     "note": "retail Premier downloads: daily data back to 2000-01-01; weekly/monthly from 1980; 250 CSV files a day",
+     "access": "search-summary"
+    },
+    {
+     "grade": "price on request",
+     "note": "enterprise historical data via sales",
+     "access": "search-summary"
+    }
+   ],
+   "licence": {
+    "grade": "unknown",
+    "note": "",
+    "access": "blocked"
+   },
+   "survivorship": {
+    "grade": "unknown",
+    "note": "",
+    "access": "blocked"
+   },
+   "verdict": "Retail daily history starts in 2000 (spent era); enterprise product unpriced; pages blocked (HTTP 202 challenge)."
+  },
+  {
+   "vendor": "Databento (CME, ICE, Eurex)",
+   "rank": 9,
+   "pages": [
+    "https://databento.com/pricing",
+    "https://databento.com/docs/venues-and-datasets/glbx-mdp3"
+   ],
+   "scores": {
+    "individual_contracts (Essential)": {
+     "grade": "yes",
+     "note": "all CME futures and options; instrument definitions",
+     "access": "read-directly"
+    },
+    "roll_methodology (Essential)": {
+     "grade": "partial",
+     "note": "raw contracts; continuous symbology not read",
+     "access": "reasoning"
+    },
+    "markets_40_50 (High)": {
+     "grade": "yes",
+     "note": "CME Globex all products; 45+ venues",
+     "access": "read-directly"
+    },
+    "history_1980s (High)": {
+     "grade": "no",
+     "note": "CME 'beginning in June 2010'; ICE datasets from 2018-07-02 (constant in the site's script, inferred to be the ICE start)",
+     "access": "read-directly"
+    },
+    "volume_oi_settlement (High)": {
+     "grade": "yes",
+     "note": "statistics schema: settlement price, open interest, cleared volume",
+     "access": "read-directly"
+    },
+    "contract_specs_and_changes (Essential)": {
+     "grade": "yes",
+     "note": "definition schema",
+     "access": "read-directly"
+    },
+    "python_access (High)": {
+     "grade": "yes",
+     "note": "Python, C++ and Rust clients",
+     "access": "read-directly"
+    },
+    "cost_one_off_and_recurring (Essential)": {
+     "grade": "partial",
+     "note": "usage-based $/GB, $125 sign-up credit; per-GB rates are rendered by script (search: 'from $0.50/GB')",
+     "access": "read-directly / search-summary"
+    }
+   },
+   "licence": {
+    "grade": "partial",
+    "note": "personal use with Databento as vendor of record; external distribution only on the Unlimited plan",
+    "access": "read-directly"
+   },
+   "survivorship": {
+    "grade": "yes",
+    "note": "expired instruments in definitions",
+    "access": "reasoning"
+   },
+   "verdict": "Excellent for the executable forward record; useless for the pre-2003 never-read window."
+  },
+  {
+   "vendor": "Nasdaq Data Link (paid futures)",
+   "rank": null,
+   "pages": [
+    "https://data.nasdaq.com/databases/SCF",
+    "https://data.nasdaq.com/data/CHRIS-wiki-continuous-futures"
+   ],
+   "scores": {},
+   "licence": {
+    "grade": "n/a",
+    "note": "",
+    "access": "blocked"
+   },
+   "survivorship": {
+    "grade": "n/a",
+    "note": "",
+    "access": "blocked"
+   },
+   "verdict": "No paid futures product located: both pages returned 404 (the scoping memo recorded CHRIS as 403)."
+  },
+  {
+   "vendor": "Tick Data LLC",
+   "rank": null,
+   "pages": [
+    "https://www.tickdata.com/product/historical-futures-data/"
+   ],
+   "scores": {},
+   "licence": {
+    "grade": "unknown",
+    "note": "",
+    "access": "read-directly"
+   },
+   "survivorship": {
+    "grade": "unknown",
+    "note": "",
+    "access": "read-directly"
+   },
+   "verdict": "Intraday specialist ('over 280 global futures contracts'); price on request; not needed for monthly trend."
+  },
+  {
+   "vendor": "WRDS (academic)",
+   "rank": null,
+   "pages": [],
+   "scores": {},
+   "licence": {
+    "grade": "n/a",
+    "note": "institutional subscription only",
+    "access": "reasoning"
+   },
+   "survivorship": {
+    "grade": "n/a",
+    "note": "",
+    "access": "reasoning"
+   },
+   "verdict": "Gives Datastream to subscribing institutions; OptionMetrics (options) is not relevant to non-equity trend; not available to this fund."
+  }
+ ],
+ "costs": {
+  "basis": "Published prices only, USD, excluding tax, before any unpublished discount. 'markets' = the supplement list (commodities and non-US rates) of the recommended design; 40 is a liquid core, 75 is every such market Portara lists by 2002.",
+  "Pinnacle Deep + CLC": {
+   "one_off": 248,
+   "recurring": 0,
+   "five_year": 248,
+   "access": "read-directly"
+  },
+  "Norgate (12-month renewals to keep the frozen copy)": {
+   "one_off": 0,
+   "recurring_per_year": 270,
+   "five_year": 1350,
+   "plus": "a Windows licence for a VM (not costed)",
+   "access": "read-directly"
+  },
+  "CSI Gold World Futures + 10 extra years": {
+   "one_off": 500,
+   "recurring_per_year": 899,
+   "first_year": 1399,
+   "five_year": 4995,
+   "note": "history before ~1986: price on request",
+   "access": "read-directly"
+  },
+  "Portara one-off, 40 markets": {
+   "list": 13200,
+   "special": 8800,
+   "access": "read-directly"
+  },
+  "Portara one-off, 75 markets": {
+   "list": 24750,
+   "special": 16500,
+   "access": "read-directly"
+  },
+  "Portara individual-contract daily ('Tenors')": "price on request",
+  "CME DataMine": "price on request",
+  "LSEG Datastream": "price on request",
+  "Barchart enterprise": "price on request",
+  "Bloomberg": {
+   "per_year": 31980,
+   "access": "search-summary (third-party)"
+  }
+ },
+ "independence_by_segment": [
+  {
+   "segment": "Commodities ex gold, 1968-2002",
+   "grade": "independent",
+   "why": "never read before 2003; DBC (S1) starts 2006, WTI was a check only"
+  },
+  {
+   "segment": "Gold, 1974-2002",
+   "grade": "independent",
+   "why": "gold reads S7 (2006+), S8 (2012+), GLD in S1 (2004+)"
+  },
+  {
+   "segment": "US Treasury futures, 1977-2002",
+   "grade": "independent of spent reads; same markets and dates as the proxy",
+   "why": "if the proxy is read first, these become spent; in a single combined read they are one leg, not two"
+  },
+  {
+   "segment": "Non-US bond and STIR futures, 1980-2002",
+   "grade": "independent",
+   "why": "never read"
+  },
+  {
+   "segment": "Currency futures, 1975-1989",
+   "grade": "independent; same exposure as the proxy's H.10 leg",
+   "why": "as for US rates"
+  },
+  {
+   "segment": "Currency futures, 1990-2003",
+   "grade": "partly overlapping",
+   "why": "same currencies and dates as the cross-sectional FX confirmation read (S6, 1990-01..2003-12); time-series signals never read"
+  },
+  {
+   "segment": "Commodities and non-US rates, 2003-2019",
+   "grade": "partly overlapping",
+   "why": "S1 development (DBC, GLD, IEF, TLT, UUP; open, examined) and S7 gold development 2006-2018 share exposures and dates"
+  },
+  {
+   "segment": "US rates, gold, broad commodities, dollar, 2003-2019",
+   "grade": "not independent",
+   "why": "S1 instruments in S1 dates"
+  },
+  {
+   "segment": "Currencies, 2004-2026",
+   "grade": "not independent",
+   "why": "S6 development and holdout; UUP in S1"
+  },
+  {
+   "segment": "Everything, 2020-2025",
+   "grade": "not independent",
+   "why": "S1 test read once; the fund window S13"
+  },
+  {
+   "segment": "Everything, 2026",
+   "grade": "not independent",
+   "why": "sealed fund window"
+  },
+  {
+   "segment": "Equity-index futures, all years",
+   "grade": "not independent",
+   "why": "S2-S4: the US market 1926-2026 and three regions 1990-2025, including equity time-series momentum (S3)"
+  },
+  {
+   "segment": "VIX futures, 2004-2026",
+   "grade": "partly overlapping",
+   "why": "VIX level used as a state in S9; free from Cboe anyway"
+  }
+ ],
+ "power_headline": {
+  "proxy": {
+   "MOP (US curve rho 0.38)": {
+    "0.1": {
+     "AR_eff": 0.182,
+     "power_0.10/40": 0.049,
+     "power_5%": 0.311
+    },
+    "0.2": {
+     "AR_eff": 0.365,
+     "power_0.10/40": 0.288,
+     "power_5%": 0.727
+    },
+    "0.3": {
+     "AR_eff": 0.547,
+     "power_0.10/40": 0.67,
+     "power_5%": 0.946
+    }
+   },
+   "uniform rho 0.1": {
+    "0.1": {
+     "AR_eff": 0.193,
+     "power_0.10/40": 0.056,
+     "power_5%": 0.333
+    },
+    "0.2": {
+     "AR_eff": 0.385,
+     "power_0.10/40": 0.329,
+     "power_5%": 0.764
+    },
+    "0.3": {
+     "AR_eff": 0.578,
+     "power_0.10/40": 0.725,
+     "power_5%": 0.961
+    }
+   },
+   "uniform rho 0.2": {
+    "0.1": {
+     "AR_eff": 0.166,
+     "power_0.10/40": 0.04,
+     "power_5%": 0.276
+    },
+    "0.2": {
+     "AR_eff": 0.332,
+     "power_0.10/40": 0.227,
+     "power_5%": 0.661
+    },
+    "0.3": {
+     "AR_eff": 0.499,
+     "power_0.10/40": 0.574,
+     "power_5%": 0.911
+    }
+   },
+   "uniform rho 0.3": {
+    "0.1": {
+     "AR_eff": 0.149,
+     "power_0.10/40": 0.031,
+     "power_5%": 0.242
+    },
+    "0.2": {
+     "AR_eff": 0.299,
+     "power_0.10/40": 0.172,
+     "power_5%": 0.585
+    },
+    "0.3": {
+     "AR_eff": 0.448,
+     "power_0.10/40": 0.465,
+     "power_5%": 0.858
+    }
+   },
+   "years": 40.5
+  },
+  "replace_1975": {
+   "MOP (US curve rho 0.38)": {
+    "0.1": {
+     "AR_eff": 0.332,
+     "power_0.10/40": 0.133,
+     "power_5%": 0.52
+    },
+    "0.2": {
+     "AR_eff": 0.665,
+     "power_0.10/40": 0.636,
+     "power_5%": 0.934
+    },
+    "0.3": {
+     "AR_eff": 0.997,
+     "power_0.10/40": 0.929,
+     "power_5%": 0.996
+    }
+   },
+   "uniform rho 0.1": {
+    "0.1": {
+     "AR_eff": 0.287,
+     "power_0.10/40": 0.092,
+     "power_5%": 0.433
+    },
+    "0.2": {
+     "AR_eff": 0.575,
+     "power_0.10/40": 0.494,
+     "power_5%": 0.874
+    },
+    "0.3": {
+     "AR_eff": 0.862,
+     "power_0.10/40": 0.854,
+     "power_5%": 0.987
+    }
+   },
+   "uniform rho 0.2": {
+    "0.1": {
+     "AR_eff": 0.214,
+     "power_0.10/40": 0.045,
+     "power_5%": 0.296
+    },
+    "0.2": {
+     "AR_eff": 0.427,
+     "power_0.10/40": 0.254,
+     "power_5%": 0.692
+    },
+    "0.3": {
+     "AR_eff": 0.641,
+     "power_0.10/40": 0.6,
+     "power_5%": 0.922
+    }
+   },
+   "uniform rho 0.3": {
+    "0.1": {
+     "AR_eff": 0.178,
+     "power_0.10/40": 0.03,
+     "power_5%": 0.236
+    },
+    "0.2": {
+     "AR_eff": 0.355,
+     "power_0.10/40": 0.159,
+     "power_5%": 0.565
+    },
+    "0.3": {
+     "AR_eff": 0.533,
+     "power_0.10/40": 0.424,
+     "power_5%": 0.834
+    }
+   },
+   "years": 27.5
+  },
+  "replace_1980_norgate": {
+   "MOP (US curve rho 0.38)": {
+    "0.1": {
+     "AR_eff": 0.342,
+     "power_0.10/40": 0.11,
+     "power_5%": 0.473
+    },
+    "0.2": {
+     "AR_eff": 0.685,
+     "power_0.10/40": 0.546,
+     "power_5%": 0.899
+    },
+    "0.3": {
+     "AR_eff": 1.027,
+     "power_0.10/40": 0.872,
+     "power_5%": 0.989
+    }
+   },
+   "uniform rho 0.1": {
+    "0.1": {
+     "AR_eff": 0.285,
+     "power_0.10/40": 0.069,
+     "power_5%": 0.374
+    },
+    "0.2": {
+     "AR_eff": 0.569,
+     "power_0.10/40": 0.381,
+     "power_5%": 0.805
+    },
+    "0.3": {
+     "AR_eff": 0.854,
+     "power_0.10/40": 0.746,
+     "power_5%": 0.966
+    }
+   },
+   "uniform rho 0.2": {
+    "0.1": {
+     "AR_eff": 0.213,
+     "power_0.10/40": 0.035,
+     "power_5%": 0.259
+    },
+    "0.2": {
+     "AR_eff": 0.426,
+     "power_0.10/40": 0.191,
+     "power_5%": 0.613
+    },
+    "0.3": {
+     "AR_eff": 0.638,
+     "power_0.10/40": 0.481,
+     "power_5%": 0.868
+    }
+   },
+   "uniform rho 0.3": {
+    "0.1": {
+     "AR_eff": 0.177,
+     "power_0.10/40": 0.024,
+     "power_5%": 0.209
+    },
+    "0.2": {
+     "AR_eff": 0.355,
+     "power_0.10/40": 0.12,
+     "power_5%": 0.495
+    },
+    "0.3": {
+     "AR_eff": 0.532,
+     "power_0.10/40": 0.328,
+     "power_5%": 0.763
+    }
+   },
+   "years": 22.5
+  },
+  "combined_portara": {
+   "MOP (US curve rho 0.38)": {
+    "0.1": {
+     "AR_eff": 0.305,
+     "power_0.10/40": 0.181,
+     "power_5%": 0.599
+    },
+    "0.2": {
+     "AR_eff": 0.61,
+     "power_0.10/40": 0.775,
+     "power_5%": 0.972
+    },
+    "0.3": {
+     "AR_eff": 0.915,
+     "power_0.10/40": 0.981,
+     "power_5%": 0.999
+    }
+   },
+   "uniform rho 0.1": {
+    "0.1": {
+     "AR_eff": 0.259,
+     "power_0.10/40": 0.118,
+     "power_5%": 0.49
+    },
+    "0.2": {
+     "AR_eff": 0.518,
+     "power_0.10/40": 0.613,
+     "power_5%": 0.926
+    },
+    "0.3": {
+     "AR_eff": 0.776,
+     "power_0.10/40": 0.936,
+     "power_5%": 0.996
+    }
+   },
+   "uniform rho 0.2": {
+    "0.1": {
+     "AR_eff": 0.199,
+     "power_0.10/40": 0.06,
+     "power_5%": 0.347
+    },
+    "0.2": {
+     "AR_eff": 0.397,
+     "power_0.10/40": 0.354,
+     "power_5%": 0.785
+    },
+    "0.3": {
+     "AR_eff": 0.596,
+     "power_0.10/40": 0.754,
+     "power_5%": 0.968
+    }
+   },
+   "uniform rho 0.3": {
+    "0.1": {
+     "AR_eff": 0.168,
+     "power_0.10/40": 0.041,
+     "power_5%": 0.281
+    },
+    "0.2": {
+     "AR_eff": 0.337,
+     "power_0.10/40": 0.235,
+     "power_5%": 0.67
+    },
+    "0.3": {
+     "AR_eff": 0.505,
+     "power_0.10/40": 0.587,
+     "power_5%": 0.916
+    }
+   },
+   "years": 40.5
+  },
+  "combined_norgate": {
+   "MOP (US curve rho 0.38)": {
+    "0.1": {
+     "AR_eff": 0.281,
+     "power_0.10/40": 0.146,
+     "power_5%": 0.542
+    },
+    "0.2": {
+     "AR_eff": 0.561,
+     "power_0.10/40": 0.696,
+     "power_5%": 0.953
+    },
+    "0.3": {
+     "AR_eff": 0.842,
+     "power_0.10/40": 0.964,
+     "power_5%": 0.998
+    }
+   },
+   "uniform rho 0.1": {
+    "0.1": {
+     "AR_eff": 0.24,
+     "power_0.10/40": 0.097,
+     "power_5%": 0.445
+    },
+    "0.2": {
+     "AR_eff": 0.48,
+     "power_0.10/40": 0.534,
+     "power_5%": 0.894
+    },
+    "0.3": {
+     "AR_eff": 0.72,
+     "power_0.10/40": 0.899,
+     "power_5%": 0.993
+    }
+   },
+   "uniform rho 0.2": {
+    "0.1": {
+     "AR_eff": 0.189,
+     "power_0.10/40": 0.053,
+     "power_5%": 0.325
+    },
+    "0.2": {
+     "AR_eff": 0.378,
+     "power_0.10/40": 0.314,
+     "power_5%": 0.751
+    },
+    "0.3": {
+     "AR_eff": 0.567,
+     "power_0.10/40": 0.705,
+     "power_5%": 0.956
+    }
+   },
+   "uniform rho 0.3": {
+    "0.1": {
+     "AR_eff": 0.162,
+     "power_0.10/40": 0.037,
+     "power_5%": 0.268
+    },
+    "0.2": {
+     "AR_eff": 0.325,
+     "power_0.10/40": 0.214,
+     "power_5%": 0.644
+    },
+    "0.3": {
+     "AR_eff": 0.487,
+     "power_0.10/40": 0.549,
+     "power_5%": 0.901
+    }
+   },
+   "years": 40.5
+  },
+  "combined_pinnacle": {
+   "MOP (US curve rho 0.38)": {
+    "0.1": {
+     "AR_eff": 0.301,
+     "power_0.10/40": 0.175,
+     "power_5%": 0.59
+    },
+    "0.2": {
+     "AR_eff": 0.602,
+     "power_0.10/40": 0.763,
+     "power_5%": 0.97
+    },
+    "0.3": {
+     "AR_eff": 0.903,
+     "power_0.10/40": 0.979,
+     "power_5%": 0.999
+    }
+   },
+   "uniform rho 0.1": {
+    "0.1": {
+     "AR_eff": 0.25,
+     "power_0.10/40": 0.108,
+     "power_5%": 0.47
+    },
+    "0.2": {
+     "AR_eff": 0.501,
+     "power_0.10/40": 0.578,
+     "power_5%": 0.913
+    },
+    "0.3": {
+     "AR_eff": 0.751,
+     "power_0.10/40": 0.921,
+     "power_5%": 0.995
+    }
+   },
+   "uniform rho 0.2": {
+    "0.1": {
+     "AR_eff": 0.195,
+     "power_0.10/40": 0.057,
+     "power_5%": 0.338
+    },
+    "0.2": {
+     "AR_eff": 0.39,
+     "power_0.10/40": 0.338,
+     "power_5%": 0.772
+    },
+    "0.3": {
+     "AR_eff": 0.584,
+     "power_0.10/40": 0.736,
+     "power_5%": 0.963
+    }
+   },
+   "uniform rho 0.3": {
+    "0.1": {
+     "AR_eff": 0.166,
+     "power_0.10/40": 0.039,
+     "power_5%": 0.276
+    },
+    "0.2": {
+     "AR_eff": 0.332,
+     "power_0.10/40": 0.227,
+     "power_5%": 0.661
+    },
+    "0.3": {
+     "AR_eff": 0.499,
+     "power_0.10/40": 0.573,
+     "power_5%": 0.911
+    }
+   },
+   "years": 40.5
+  },
+  "supplement_only_portara": {
+   "MOP (US curve rho 0.38)": {
+    "0.1": {
+     "AR_eff": 0.316,
+     "power_0.10/40": 0.148,
+     "power_5%": 0.546
+    },
+    "0.2": {
+     "AR_eff": 0.633,
+     "power_0.10/40": 0.687,
+     "power_5%": 0.95
+    },
+    "0.3": {
+     "AR_eff": 0.949,
+     "power_0.10/40": 0.954,
+     "power_5%": 0.998
+    }
+   },
+   "uniform rho 0.1": {
+    "0.1": {
+     "AR_eff": 0.276,
+     "power_0.10/40": 0.103,
+     "power_5%": 0.46
+    },
+    "0.2": {
+     "AR_eff": 0.552,
+     "power_0.10/40": 0.549,
+     "power_5%": 0.901
+    },
+    "0.3": {
+     "AR_eff": 0.827,
+     "power_0.10/40": 0.897,
+     "power_5%": 0.992
+    }
+   },
+   "uniform rho 0.2": {
+    "0.1": {
+     "AR_eff": 0.209,
+     "power_0.10/40": 0.052,
+     "power_5%": 0.32
+    },
+    "0.2": {
+     "AR_eff": 0.418,
+     "power_0.10/40": 0.301,
+     "power_5%": 0.739
+    },
+    "0.3": {
+     "AR_eff": 0.627,
+     "power_0.10/40": 0.677,
+     "power_5%": 0.948
+    }
+   },
+   "uniform rho 0.3": {
+    "0.1": {
+     "AR_eff": 0.175,
+     "power_0.10/40": 0.035,
+     "power_5%": 0.257
+    },
+    "0.2": {
+     "AR_eff": 0.35,
+     "power_0.10/40": 0.193,
+     "power_5%": 0.616
+    },
+    "0.3": {
+     "AR_eff": 0.526,
+     "power_0.10/40": 0.501,
+     "power_5%": 0.878
+    }
+   },
+   "years": 32.5
+  }
+ },
+ "mop_calibration": {
+  "cross_class_instrument_rho": {
+   "COM-EQ": 0.0437,
+   "COM-FI": 0.0151,
+   "COM-FX": 0.0179,
+   "EQ-FI": 0.0911,
+   "EQ-FX": 0.0555,
+   "FI-FX": 0.0137
+  },
+  "multiplier_58_markets": 3.517,
+  "implied_uniform_rho_58": 0.065,
+  "non_equity_45_markets_multiplier": 3.475,
+  "check": "MOP report a diversified 58-market Sharpe ratio 'greater than one' (gross, 1985-2009) and an average per-market Sharpe that HOP put at about 0.4 (1880-2016). Multiplier x 0.4 should be near or above 1.",
+  "predicted_portfolio_SR_at_AR1_0.4": 1.41
+ },
+ "market_years": [
+  {
+   "N": 50,
+   "T": 40,
+   "rho": 0.1,
+   "naive": 2000,
+   "effective": 339.0
+  },
+  {
+   "N": 50,
+   "T": 40,
+   "rho": 0.2,
+   "naive": 2000,
+   "effective": 185.2
+  },
+  {
+   "N": 50,
+   "T": 40,
+   "rho": 0.3,
+   "naive": 2000,
+   "effective": 127.4
+  },
+  {
+   "N": 9,
+   "T": 40.5,
+   "rho": 0.1,
+   "naive": 364.5,
+   "effective": 202.5
+  },
+  {
+   "N": 9,
+   "T": 40.5,
+   "rho": 0.2,
+   "naive": 364.5,
+   "effective": 140.2
+  },
+  {
+   "N": 9,
+   "T": 40.5,
+   "rho": 0.3,
+   "naive": 364.5,
+   "effective": 107.2
+  }
+ ],
+ "decision": {
+  "question": "Does procurement add enough incremental evidence to replace or supplement the 1962-2002 yield-and-FX proxy experiment?",
+  "answer": "Supplement, not replace, and only conditionally. One combined read 1962-2002 (proxy rates and FX plus vendor commodities and non-US rates from their first trade) is the only design whose power at the programme level clears 0.5 at a single-market AR of 0.2, and only if trend-return correlations are near the 1985-2009 levels Moskowitz-Ooi-Pedersen report (uniform rho about 0.1 or less). At rho 0.2-0.3 the gain is small and neither design is an admission test. Replacing the proxy with vendor data alone (1975 or 1980 to 2002) is dominated by the combined read.",
+  "recommended_quotes": [
+   "Portara: one-off daily, individual contracts and back-adjusted series, for a pre-registered list of about 40 commodity and non-US rate markets, with open interest; licence for a single-owner paper fund",
+   "Pinnacle: written licence terms for Deep History and confirmation that the data are maintained"
+  ]
+ },
+ "sources": {
+  "pages_sha256_prefix": {
+   "norgate_futurespackage": "e8291a1a44dd3965",
+   "norgate_data_content_tables": "76450ab047e18b70",
+   "norgate_faq": "75042f4ea5679378",
+   "csi_orderua": "e38fcd029a533a68",
+   "csi_licence": "21b06302d8150be8",
+   "pinnacle_clc": "4c09c7073bb84230",
+   "pinnacle_extended_clc": "abf08a3cd431149b",
+   "pinnacle_order": "e3ae08486965d682",
+   "portara_pricing": "d9bbc4c5e0676043",
+   "portara_license": "896a1bd6a50080c6",
+   "portara_daily": "642e83ba1e0329d0",
+   "portara_continuous": "a8da28959d3d54ef",
+   "databento_glbx_docs": "885ed1880c4f375c",
+   "mop_2012_pdf": "7682f8e97eb4b775",
+   "hop_2017_pdf": "7b286a9f6cf6925a"
+  },
+  "access_log": [
+   {
+    "what": "Norgate futurespackage.php, data-content-tables.php, faq.php, system-requirements.php",
+    "label": "read-directly",
+    "status": "200"
+   },
+   {
+    "what": "Norgate licensing-agreement.php, python-package.php, data-faq.php (guessed paths)",
+    "label": "blocked",
+    "status": "404"
+   },
+   {
+    "what": "pypi.org/project/norgatedata",
+    "label": "blocked",
+    "status": "JavaScript challenge"
+   },
+   {
+    "what": "CSI apps.csidata.com/OrderUA (prices in the page's script), csidata.com page 14, licence page 824",
+    "label": "read-directly",
+    "status": "200"
+   },
+   {
+    "what": "CSI apps.csidata.com/factsheets.php (CME, CBT)",
+    "label": "blocked",
+    "status": "403"
+   },
+   {
+    "what": "pinnacledata.com over HTTPS",
+    "label": "blocked",
+    "status": "certificate failed verification"
+   },
+   {
+    "what": "pinnacledatacorp.yolasite.com",
+    "label": "blocked",
+    "status": "403"
+   },
+   {
+    "what": "pinnacledata.com over HTTP: index, clc, extended-clc, products, orderDB, disclaimer",
+    "label": "read-directly",
+    "status": "200"
+   },
+   {
+    "what": "portaracqg.com: home, pricing, license, historical-daily-futures-data, continuous-futures-data",
+    "label": "read-directly",
+    "status": "200"
+   },
+   {
+    "what": "databento.com/pricing",
+    "label": "read-directly (script bundle text); prices rendered client-side not obtained",
+    "status": "200"
+   },
+   {
+    "what": "databento.com/docs/venues-and-datasets/glbx-mdp3, ifus-impact, xeur-eobi",
+    "label": "read-directly",
+    "status": "200"
+   },
+   {
+    "what": "databento.com/licensing, /terms (guessed paths)",
+    "label": "blocked",
+    "status": "404"
+   },
+   {
+    "what": "barchart.com ondemand, web-services historical, my/price-history",
+    "label": "blocked",
+    "status": "HTTP 202 empty (bot challenge)"
+   },
+   {
+    "what": "cmegroup.com DataMine pages",
+    "label": "blocked",
+    "status": "403 / timeout"
+   },
+   {
+    "what": "data.nasdaq.com/databases/SCF, CHRIS page",
+    "label": "blocked",
+    "status": "404"
+   },
+   {
+    "what": "wrds-www.wharton.upenn.edu Datastream vendor page (guessed path)",
+    "label": "blocked",
+    "status": "404"
+   },
+   {
+    "what": "tickdata.com historical futures",
+    "label": "read-directly",
+    "status": "200"
+   },
+   {
+    "what": "firstratedata.com futures page",
+    "label": "not used",
+    "status": "served an unrelated stock listing"
+   },
+   {
+    "what": "Moskowitz-Ooi-Pedersen 2012 PDF (pages.stern.nyu.edu), Hurst-Ooi-Pedersen 2017 PDF (fairmodel.econ.yale.edu)",
+    "label": "read-directly",
+    "status": "200"
+   },
+   {
+    "what": "Searches: Norgate pricing; CSI price list; Pinnacle CLC price; Databento GLBX history and plan price; Barchart history and Premier limits; Nasdaq Data Link SCF/OWF; CME DataMine price; LSEG Datastream futures; Bloomberg terminal cost",
+    "label": "search-summary",
+    "status": "used only where labelled"
+   }
+  ]
+ }
+}
