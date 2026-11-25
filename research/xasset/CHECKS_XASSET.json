@@ -1,5 +1,5 @@
 {
- "written_utc": "2026-11-25T12:45:31Z",
+ "written_utc": "2026-11-25T12:54:13Z",
  "prereg": "research/xasset/PREREG_XASSET.md (dd2a819)",
  "notes": "research/xasset/IMPLEMENTATION_NOTES.md",
  "kind": "\u00a73 gate: validation statistics of constructions on spent 2003+ data; pre-2003 level-agreement counts and coverage counts only; no sleeve return, signal or statistic on any date",
@@ -39,602 +39,565 @@
   "minis_and_micros": "never used: each market's history is its full-size file only (variants listed in free_coverage.PST_MARKETS)",
   "US rate futures, STIRs, pysystemtrade FX futures": "not in the registered universe: the US curve and the currencies are the proxy legs (one leg, never two)"
  },
- "mask_check": {
-  "registered_series": 100,
-  "earliest_date": "2003-01-03",
-  "proxy_computed_series": 153
- },
- "level_checks_pre2003": {
+ "mirror_conventions_2003_2019": {
   "OJ": {
-   "applicable": true,
-   "mirror": "OJ",
-   "by_decade_pre2003": {
-    "1960s": {
-     "common_sessions": 20,
-     "same_contract_sessions": 0,
-     "agree_within_0.5pct": 0
-    },
-    "1970s": {
-     "common_sessions": 2345,
-     "same_contract_sessions": 625,
-     "agree_within_0.5pct": 150
-    },
-    "1980s": {
-     "common_sessions": 2357,
-     "same_contract_sessions": 623,
-     "agree_within_0.5pct": 164
-    },
-    "1990s": {
-     "common_sessions": 2503,
-     "same_contract_sessions": 658,
-     "agree_within_0.5pct": 140
-    },
-    "2000s": {
-     "common_sessions": 743,
-     "same_contract_sessions": 195,
-     "agree_within_0.5pct": 44
-    }
+   "common_sessions_2003_2019": 4232,
+   "share_within_0.5pct": {
+    "PRICE": 0.7753,
+    "CARRY": 0.3426,
+    "FORWARD": 0.3426
    },
-   "spent_2003_2019": {
-    "same_contract_sessions": 1083,
-    "agree_within_0.5pct": 521
-   },
-   "pre2003_same_contract_sessions": 2101,
-   "pre2003_agree": 498,
-   "pre2003_share_agree": 0.237,
-   "passes": false
+   "convention": "PRICE",
+   "convention_share": 0.7753,
+   "usable": false
   },
   "SOYOIL": {
-   "applicable": true,
-   "mirror": "ZL",
-   "by_decade_pre2003": {
-    "1970s": {
-     "common_sessions": 2490,
-     "same_contract_sessions": 1309,
-     "agree_within_0.5pct": 248
-    },
-    "1980s": {
-     "common_sessions": 2524,
-     "same_contract_sessions": 1328,
-     "agree_within_0.5pct": 100
-    },
-    "1990s": {
-     "common_sessions": 2517,
-     "same_contract_sessions": 1329,
-     "agree_within_0.5pct": 259
-    },
-    "2000s": {
-     "common_sessions": 751,
-     "same_contract_sessions": 401,
-     "agree_within_0.5pct": 55
-    }
+   "common_sessions_2003_2019": 4235,
+   "share_within_0.5pct": {
+    "PRICE": 0.4831,
+    "CARRY": 0.354,
+    "FORWARD": 0.0054
    },
-   "spent_2003_2019": {
-    "same_contract_sessions": 2122,
-    "agree_within_0.5pct": 570
-   },
-   "pre2003_same_contract_sessions": 4367,
-   "pre2003_agree": 662,
-   "pre2003_share_agree": 0.1516,
-   "passes": false
+   "convention": "PRICE",
+   "convention_share": 0.4831,
+   "usable": false
   },
+  "SUGAR11": {
+   "common_sessions_2003_2019": 4002,
+   "share_within_0.5pct": {
+    "PRICE": 0.8901,
+    "CARRY": 0.1169,
+    "FORWARD": 0.1149
+   },
+   "convention": "PRICE",
+   "convention_share": 0.8901,
+   "usable": true
+  },
+  "COTTON2": {
+   "common_sessions_2003_2019": 3938,
+   "share_within_0.5pct": {
+    "PRICE": 0.5841,
+    "CARRY": 0.2417,
+    "FORWARD": 0.1097
+   },
+   "convention": "PRICE",
+   "convention_share": 0.5841,
+   "usable": false
+  },
+  "COCOA": {
+   "common_sessions_2003_2019": 4220,
+   "share_within_0.5pct": {
+    "PRICE": 0.9116,
+    "CARRY": 0.2806,
+    "FORWARD": 0.3898
+   },
+   "convention": "PRICE",
+   "convention_share": 0.9116,
+   "usable": true
+  },
+  "OATIES": {
+   "common_sessions_2003_2019": 4236,
+   "share_within_0.5pct": {
+    "PRICE": 0.3314,
+    "CARRY": 0.0212,
+    "FORWARD": 0.0118
+   },
+   "convention": "PRICE",
+   "convention_share": 0.3314,
+   "usable": false
+  },
+  "SOYMEAL": {
+   "common_sessions_2003_2019": 4226,
+   "share_within_0.5pct": {
+    "PRICE": 0.3938,
+    "CARRY": 0.2953,
+    "FORWARD": 0.0043
+   },
+   "convention": "PRICE",
+   "convention_share": 0.3938,
+   "usable": false
+  },
+  "SILVER": {
+   "common_sessions_2003_2019": 3769,
+   "share_within_0.5pct": {
+    "PRICE": 0.4845,
+    "CARRY": 0.3033,
+    "FORWARD": 0.0337
+   },
+   "convention": "PRICE",
+   "convention_share": 0.4845,
+   "usable": false
+  },
+  "PLAT": {
+   "common_sessions_2003_2019": 2708,
+   "share_within_0.5pct": {
+    "PRICE": 0.8331,
+    "CARRY": 0.7891,
+    "FORWARD": 0.7891
+   },
+   "convention": "PRICE",
+   "convention_share": 0.8331,
+   "usable": true
+  },
+  "LIVECOW": {
+   "common_sessions_2003_2019": 4227,
+   "share_within_0.5pct": {
+    "PRICE": 0.41,
+    "CARRY": 0.2106,
+    "FORWARD": 0.0632
+   },
+   "convention": "PRICE",
+   "convention_share": 0.41,
+   "usable": false
+  },
+  "LEANHOG": {
+   "common_sessions_2003_2019": 4019,
+   "share_within_0.5pct": {
+    "PRICE": 0.2262,
+    "CARRY": 0.2374,
+    "FORWARD": 0.0202
+   },
+   "convention": "CARRY",
+   "convention_share": 0.2374,
+   "usable": false
+  },
+  "GOLD": {
+   "common_sessions_2003_2019": 4220,
+   "share_within_0.5pct": {
+    "PRICE": 0.8448,
+    "CARRY": 0.8194,
+    "FORWARD": 0.8194
+   },
+   "convention": "PRICE",
+   "convention_share": 0.8448,
+   "usable": true
+  },
+  "FEEDCOW": {
+   "common_sessions_2003_2019": 4232,
+   "share_within_0.5pct": {
+    "PRICE": 0.4764,
+    "CARRY": 0.5059,
+    "FORWARD": 0.0054
+   },
+   "convention": "CARRY",
+   "convention_share": 0.5059,
+   "usable": false
+  },
+  "PALLAD": {
+   "common_sessions_2003_2019": 2478,
+   "share_within_0.5pct": {
+    "PRICE": 0.8249,
+    "CARRY": 0.8095,
+    "FORWARD": 0.8095
+   },
+   "convention": "PRICE",
+   "convention_share": 0.8249,
+   "usable": true
+  },
+  "HEATOIL": {
+   "common_sessions_2003_2019": 4221,
+   "share_within_0.5pct": {
+    "PRICE": 0.4783,
+    "CARRY": 0.4771,
+    "FORWARD": 0.1163
+   },
+   "convention": "PRICE",
+   "convention_share": 0.4783,
+   "usable": false
+  },
+  "RICE": {
+   "common_sessions_2003_2019": 4236,
+   "share_within_0.5pct": {
+    "PRICE": 0.4714,
+    "CARRY": 0.042,
+    "FORWARD": 0.008
+   },
+   "convention": "PRICE",
+   "convention_share": 0.4714,
+   "usable": false
+  },
+  "GAS_US": {
+   "common_sessions_2003_2019": 4228,
+   "share_within_0.5pct": {
+    "PRICE": 0.6675,
+    "CARRY": 0.1618,
+    "FORWARD": 0.1149
+   },
+   "convention": "PRICE",
+   "convention_share": 0.6675,
+   "usable": false
+  },
+  "COPPER": {
+   "common_sessions_2003_2019": 4187,
+   "share_within_0.5pct": {
+    "PRICE": 0.711,
+    "CARRY": 0.5682,
+    "FORWARD": 0.3337
+   },
+   "convention": "PRICE",
+   "convention_share": 0.711,
+   "usable": false
+  }
+ },
+ "diagnostic_yahoo_continuous_2003_on": {
+  "OJ": {
+   "months": 208,
+   "corr": 0.9967,
+   "te_share_of_etf_vol": 0.081,
+   "mean_diff_pct_per_year": -0.04,
+   "signal_agreement": 0.9667,
+   "switch_diff_per_year": -0.5,
+   "validates": true,
+   "reason": null
+  },
+  "SOYOIL": {
+   "months": 218,
+   "corr": 0.987,
+   "te_share_of_etf_vol": 0.161,
+   "mean_diff_pct_per_year": -0.951,
+   "signal_agreement": 0.931,
+   "switch_diff_per_year": 1.171,
+   "validates": false,
+   "reason": null
+  },
+  "SUGAR11": {
+   "months": 255,
+   "corr": 0.9649,
+   "te_share_of_etf_vol": 0.275,
+   "mean_diff_pct_per_year": 1.208,
+   "signal_agreement": 0.9426,
+   "switch_diff_per_year": -0.296,
+   "validates": false,
+   "reason": null
+  },
+  "COTTON2": {
+   "months": 221,
+   "corr": 0.9571,
+   "te_share_of_etf_vol": 0.29,
+   "mean_diff_pct_per_year": 1.033,
+   "signal_agreement": 0.9111,
+   "switch_diff_per_year": 0.9,
+   "validates": false,
+   "reason": null
+  },
+  "COCOA": {
+   "months": 255,
+   "corr": 0.9841,
+   "te_share_of_etf_vol": 0.181,
+   "mean_diff_pct_per_year": -0.627,
+   "signal_agreement": 0.959,
+   "switch_diff_per_year": -0.099,
+   "validates": true,
+   "reason": null
+  },
+  "OATIES": {
+   "months": 233,
+   "corr": 0.9561,
+   "te_share_of_etf_vol": 0.293,
+   "mean_diff_pct_per_year": -3.249,
+   "signal_agreement": 0.9027,
+   "switch_diff_per_year": 0.0,
+   "validates": false,
+   "reason": null
+  },
+  "SOYMEAL": {
+   "months": 193,
+   "corr": 0.9665,
+   "te_share_of_etf_vol": 0.257,
+   "mean_diff_pct_per_year": 0.158,
+   "signal_agreement": 1.0,
+   "switch_diff_per_year": 0.0,
+   "validates": true,
+   "reason": null
+  },
+  "SILVER": {
+   "months": 223,
+   "corr": 0.9919,
+   "te_share_of_etf_vol": 0.127,
+   "mean_diff_pct_per_year": -0.881,
+   "signal_agreement": 0.9434,
+   "switch_diff_per_year": -0.12,
+   "validates": true,
+   "reason": null
+  },
+  "PLAT": {
+   "months": 219,
+   "corr": 0.993,
+   "te_share_of_etf_vol": 0.119,
+   "mean_diff_pct_per_year": -0.466,
+   "signal_agreement": 0.9664,
+   "switch_diff_per_year": -0.522,
+   "validates": false,
+   "reason": null
+  },
+  "LIVECOW": {
+   "months": 195,
+   "corr": 0.8987,
+   "te_share_of_etf_vol": 0.439,
+   "mean_diff_pct_per_year": -7.439,
+   "signal_agreement": 0.75,
+   "switch_diff_per_year": 0.126,
+   "validates": false,
+   "reason": null
+  },
+  "LEANHOG": {
+   "months": 146,
+   "corr": null,
+   "te_share_of_etf_vol": null,
+   "mean_diff_pct_per_year": null,
+   "signal_agreement": null,
+   "switch_diff_per_year": null,
+   "validates": false,
+   "reason": "statistics not computable on 2003+ (TypeError: too few consecutive months)"
+  },
+  "GOLD": {
+   "months": 253,
+   "corr": 0.9977,
+   "te_share_of_etf_vol": 0.068,
+   "mean_diff_pct_per_year": -1.092,
+   "signal_agreement": 0.9738,
+   "switch_diff_per_year": 0.106,
+   "validates": false,
+   "reason": null
+  },
+  "FEEDCOW": {
+   "months": 198,
+   "corr": 0.9281,
+   "te_share_of_etf_vol": 0.38,
+   "mean_diff_pct_per_year": 0.546,
+   "signal_agreement": 1.0,
+   "switch_diff_per_year": 0.0,
+   "validates": false,
+   "reason": null
+  },
+  "PALLAD": {
+   "months": 207,
+   "corr": 0.9951,
+   "te_share_of_etf_vol": 0.1,
+   "mean_diff_pct_per_year": 0.372,
+   "signal_agreement": 0.9213,
+   "switch_diff_per_year": -1.065,
+   "validates": false,
+   "reason": null
+  },
+  "HEATOIL": {
+   "months": 204,
+   "corr": 0.9917,
+   "te_share_of_etf_vol": 0.13,
+   "mean_diff_pct_per_year": 0.508,
+   "signal_agreement": 0.9375,
+   "switch_diff_per_year": -0.545,
+   "validates": false,
+   "reason": null
+  },
+  "RICE": {
+   "months": 230,
+   "corr": 0.9448,
+   "te_share_of_etf_vol": 0.328,
+   "mean_diff_pct_per_year": -1.805,
+   "signal_agreement": 0.7468,
+   "switch_diff_per_year": 0.48,
+   "validates": false,
+   "reason": null
+  },
+  "BRENT_W": {
+   "months": 151,
+   "corr": 0.9924,
+   "te_share_of_etf_vol": 0.123,
+   "mean_diff_pct_per_year": -1.618,
+   "signal_agreement": 0.931,
+   "switch_diff_per_year": 0.421,
+   "validates": false,
+   "reason": null
+  },
+  "GAS_US": {
+   "months": 234,
+   "corr": 0.9504,
+   "te_share_of_etf_vol": 0.339,
+   "mean_diff_pct_per_year": -0.792,
+   "signal_agreement": 0.94,
+   "switch_diff_per_year": -0.333,
+   "validates": true,
+   "reason": null
+  },
+  "COPPER": {
+   "months": 228,
+   "corr": 0.9731,
+   "te_share_of_etf_vol": 0.232,
+   "mean_diff_pct_per_year": -1.137,
+   "signal_agreement": 0.8515,
+   "switch_diff_per_year": 0.387,
+   "validates": false,
+   "reason": null
+  },
+  "REDWHEAT": {
+   "months": 206,
+   "corr": 0.9778,
+   "te_share_of_etf_vol": 0.211,
+   "mean_diff_pct_per_year": -0.367,
+   "signal_agreement": 0.9474,
+   "switch_diff_per_year": 0.667,
+   "validates": false,
+   "reason": null
+  },
+  "MILK": {
+   "months": 89,
+   "corr": null,
+   "te_share_of_etf_vol": null,
+   "mean_diff_pct_per_year": null,
+   "signal_agreement": null,
+   "switch_diff_per_year": null,
+   "validates": false,
+   "reason": "statistics not computable on 2003+ (TypeError: too few consecutive months)"
+  }
+ },
+ "mask_check": {
+  "registered_series": 120,
+  "earliest_date": "2003-01-03",
+  "proxy_computed_series": 163
+ },
+ "level_checks_pre2003": {
   "SUGAR11": {
    "applicable": true,
    "mirror": "SB",
+   "convention": "PRICE",
    "by_decade_pre2003": {
     "1970s": {
      "common_sessions": 2450,
-     "same_contract_sessions": 2124,
-     "agree_within_0.5pct": 224
+     "compared_sessions": 2163,
+     "agree_within_0.5pct": 2093,
+     "identical_4_sig_digits": 1750
     },
     "1980s": {
      "common_sessions": 2510,
-     "same_contract_sessions": 2209,
-     "agree_within_0.5pct": 192
+     "compared_sessions": 2221,
+     "agree_within_0.5pct": 2221,
+     "identical_4_sig_digits": 2217
     },
     "1990s": {
      "common_sessions": 2419,
-     "same_contract_sessions": 2120,
-     "agree_within_0.5pct": 387
+     "compared_sessions": 2135,
+     "agree_within_0.5pct": 2134,
+     "identical_4_sig_digits": 2127
     },
     "2000s": {
      "common_sessions": 614,
-     "same_contract_sessions": 531,
-     "agree_within_0.5pct": 38
+     "compared_sessions": 537,
+     "agree_within_0.5pct": 537,
+     "identical_4_sig_digits": 534
     }
    },
-   "spent_2003_2019": {
-    "same_contract_sessions": 3470,
-    "agree_within_0.5pct": 367
-   },
-   "pre2003_same_contract_sessions": 6984,
-   "pre2003_agree": 841,
-   "pre2003_share_agree": 0.1204,
-   "passes": false
-  },
-  "COTTON2": {
-   "applicable": true,
-   "mirror": "CT",
-   "by_decade_pre2003": {
-    "1970s": {
-     "common_sessions": 1772,
-     "same_contract_sessions": 1228,
-     "agree_within_0.5pct": 246
-    },
-    "1980s": {
-     "common_sessions": 1899,
-     "same_contract_sessions": 1365,
-     "agree_within_0.5pct": 233
-    },
-    "1990s": {
-     "common_sessions": 2482,
-     "same_contract_sessions": 1766,
-     "agree_within_0.5pct": 255
-    },
-    "2000s": {
-     "common_sessions": 717,
-     "same_contract_sessions": 499,
-     "agree_within_0.5pct": 16
-    }
-   },
-   "spent_2003_2019": {
-    "same_contract_sessions": 2383,
-    "agree_within_0.5pct": 412
-   },
-   "pre2003_same_contract_sessions": 4858,
-   "pre2003_agree": 750,
-   "pre2003_share_agree": 0.1544,
-   "passes": false
+   "pre2003_compared_sessions": 7056,
+   "pre2003_agree": 6985,
+   "pre2003_identical_4sd": 6628,
+   "pre2003_share_agree": 0.9899,
+   "pre2003_share_identical_4sd": 0.9393,
+   "passes": true
   },
   "COCOA": {
    "applicable": true,
    "mirror": "CC",
+   "convention": "PRICE",
    "by_decade_pre2003": {
     "1970s": {
      "common_sessions": 2430,
-     "same_contract_sessions": 2043,
-     "agree_within_0.5pct": 100
+     "compared_sessions": 2079,
+     "agree_within_0.5pct": 1532,
+     "identical_4_sig_digits": 1482
     },
     "1980s": {
      "common_sessions": 2496,
-     "same_contract_sessions": 2104,
-     "agree_within_0.5pct": 162
+     "compared_sessions": 2125,
+     "agree_within_0.5pct": 2124,
+     "identical_4_sig_digits": 2117
     },
     "1990s": {
      "common_sessions": 2473,
-     "same_contract_sessions": 2085,
-     "agree_within_0.5pct": 69
+     "compared_sessions": 2105,
+     "agree_within_0.5pct": 2099,
+     "identical_4_sig_digits": 2093
     },
     "2000s": {
      "common_sessions": 729,
-     "same_contract_sessions": 615,
-     "agree_within_0.5pct": 115
+     "compared_sessions": 619,
+     "agree_within_0.5pct": 619,
+     "identical_4_sig_digits": 610
     }
    },
-   "spent_2003_2019": {
-    "same_contract_sessions": 3155,
-    "agree_within_0.5pct": 902
-   },
-   "pre2003_same_contract_sessions": 6847,
-   "pre2003_agree": 446,
-   "pre2003_share_agree": 0.0651,
-   "passes": false
-  },
-  "OATIES": {
-   "applicable": true,
-   "mirror": "ZO",
-   "by_decade_pre2003": {
-    "1970s": {
-     "common_sessions": 2451,
-     "same_contract_sessions": 2066,
-     "agree_within_0.5pct": 139
-    },
-    "1980s": {
-     "common_sessions": 2524,
-     "same_contract_sessions": 2134,
-     "agree_within_0.5pct": 155
-    },
-    "1990s": {
-     "common_sessions": 2519,
-     "same_contract_sessions": 2127,
-     "agree_within_0.5pct": 135
-    },
-    "2000s": {
-     "common_sessions": 752,
-     "same_contract_sessions": 631,
-     "agree_within_0.5pct": 26
-    }
-   },
-   "spent_2003_2019": {
-    "same_contract_sessions": 3341,
-    "agree_within_0.5pct": 227
-   },
-   "pre2003_same_contract_sessions": 6958,
-   "pre2003_agree": 455,
-   "pre2003_share_agree": 0.0654,
-   "passes": false
-  },
-  "SOYMEAL": {
-   "applicable": true,
-   "mirror": "ZM",
-   "by_decade_pre2003": {
-    "1970s": {
-     "common_sessions": 2428,
-     "same_contract_sessions": 1255,
-     "agree_within_0.5pct": 262
-    },
-    "1980s": {
-     "common_sessions": 2524,
-     "same_contract_sessions": 1328,
-     "agree_within_0.5pct": 320
-    },
-    "1990s": {
-     "common_sessions": 2519,
-     "same_contract_sessions": 1323,
-     "agree_within_0.5pct": 287
-    },
-    "2000s": {
-     "common_sessions": 751,
-     "same_contract_sessions": 400,
-     "agree_within_0.5pct": 63
-    }
-   },
-   "spent_2003_2019": {
-    "same_contract_sessions": 2114,
-    "agree_within_0.5pct": 472
-   },
-   "pre2003_same_contract_sessions": 4306,
-   "pre2003_agree": 932,
-   "pre2003_share_agree": 0.2164,
-   "passes": false
-  },
-  "SILVER": {
-   "applicable": true,
-   "mirror": "SI",
-   "by_decade_pre2003": {
-    "1970s": {
-     "common_sessions": 612,
-     "same_contract_sessions": 2,
-     "agree_within_0.5pct": 1
-    },
-    "1980s": {
-     "common_sessions": 630,
-     "same_contract_sessions": 1,
-     "agree_within_0.5pct": 0
-    },
-    "1990s": {
-     "common_sessions": 1568,
-     "same_contract_sessions": 311,
-     "agree_within_0.5pct": 304
-    },
-    "2000s": {
-     "common_sessions": 746,
-     "same_contract_sessions": 179,
-     "agree_within_0.5pct": 156
-    }
-   },
-   "spent_2003_2019": {
-    "same_contract_sessions": 431,
-    "agree_within_0.5pct": 293
-   },
-   "pre2003_same_contract_sessions": 493,
-   "pre2003_agree": 461,
-   "pre2003_share_agree": 0.9351,
+   "pre2003_compared_sessions": 6928,
+   "pre2003_agree": 6374,
+   "pre2003_identical_4sd": 6302,
+   "pre2003_share_agree": 0.92,
+   "pre2003_share_identical_4sd": 0.9096,
    "passes": false
   },
   "PLAT": {
    "applicable": true,
    "mirror": "PL",
+   "convention": "PRICE",
    "by_decade_pre2003": {
     "2000s": {
      "common_sessions": 8,
-     "same_contract_sessions": 8,
-     "agree_within_0.5pct": 6
+     "compared_sessions": 8,
+     "agree_within_0.5pct": 6,
+     "identical_4_sig_digits": 6
     }
    },
-   "spent_2003_2019": {
-    "same_contract_sessions": 1666,
-    "agree_within_0.5pct": 1398
-   },
-   "pre2003_same_contract_sessions": 8,
+   "pre2003_compared_sessions": 8,
    "pre2003_agree": 6,
+   "pre2003_identical_4sd": 6,
    "pre2003_share_agree": 0.75,
-   "passes": false
-  },
-  "LIVECOW": {
-   "applicable": true,
-   "mirror": "LE",
-   "by_decade_pre2003": {
-    "1970s": {
-     "common_sessions": 2060,
-     "same_contract_sessions": 532,
-     "agree_within_0.5pct": 16
-    },
-    "1980s": {
-     "common_sessions": 2527,
-     "same_contract_sessions": 664,
-     "agree_within_0.5pct": 51
-    },
-    "1990s": {
-     "common_sessions": 2526,
-     "same_contract_sessions": 701,
-     "agree_within_0.5pct": 98
-    },
-    "2000s": {
-     "common_sessions": 753,
-     "same_contract_sessions": 213,
-     "agree_within_0.5pct": 5
-    }
-   },
-   "spent_2003_2019": {
-    "same_contract_sessions": 1741,
-    "agree_within_0.5pct": 153
-   },
-   "pre2003_same_contract_sessions": 2110,
-   "pre2003_agree": 170,
-   "pre2003_share_agree": 0.0806,
-   "passes": false
-  },
-  "LEANHOG": {
-   "applicable": true,
-   "mirror": "HE",
-   "by_decade_pre2003": {
-    "1970s": {
-     "common_sessions": 1165,
-     "same_contract_sessions": 73,
-     "agree_within_0.5pct": 5
-    },
-    "1980s": {
-     "common_sessions": 2116,
-     "same_contract_sessions": 131,
-     "agree_within_0.5pct": 14
-    },
-    "1990s": {
-     "common_sessions": 2108,
-     "same_contract_sessions": 130,
-     "agree_within_0.5pct": 20
-    },
-    "2000s": {
-     "common_sessions": 630,
-     "same_contract_sessions": 57,
-     "agree_within_0.5pct": 0
-    }
-   },
-   "spent_2003_2019": {
-    "same_contract_sessions": 687,
-    "agree_within_0.5pct": 31
-   },
-   "pre2003_same_contract_sessions": 391,
-   "pre2003_agree": 39,
-   "pre2003_share_agree": 0.0997,
+   "pre2003_share_identical_4sd": 0.75,
    "passes": false
   },
   "GOLD": {
    "applicable": true,
    "mirror": "GC",
+   "convention": "PRICE",
    "by_decade_pre2003": {
     "1970s": {
      "common_sessions": 1192,
-     "same_contract_sessions": 524,
-     "agree_within_0.5pct": 43
+     "compared_sessions": 996,
+     "agree_within_0.5pct": 484,
+     "identical_4_sig_digits": 439
     },
     "1980s": {
      "common_sessions": 2478,
-     "same_contract_sessions": 1116,
-     "agree_within_0.5pct": 0
+     "compared_sessions": 2064,
+     "agree_within_0.5pct": 888,
+     "identical_4_sig_digits": 888
     },
     "1990s": {
      "common_sessions": 2512,
-     "same_contract_sessions": 1135,
-     "agree_within_0.5pct": 239
+     "compared_sessions": 2103,
+     "agree_within_0.5pct": 1195,
+     "identical_4_sig_digits": 945
     },
     "2000s": {
      "common_sessions": 747,
-     "same_contract_sessions": 334,
-     "agree_within_0.5pct": 169
+     "compared_sessions": 625,
+     "agree_within_0.5pct": 466,
+     "identical_4_sig_digits": 284
     }
    },
-   "spent_2003_2019": {
-    "same_contract_sessions": 1870,
-    "agree_within_0.5pct": 1390
-   },
-   "pre2003_same_contract_sessions": 3109,
-   "pre2003_agree": 451,
-   "pre2003_share_agree": 0.1451,
-   "passes": false
-  },
-  "FEEDCOW": {
-   "applicable": true,
-   "mirror": "FC",
-   "by_decade_pre2003": {
-    "1970s": {
-     "common_sessions": 712,
-     "same_contract_sessions": 317,
-     "agree_within_0.5pct": 82
-    },
-    "1980s": {
-     "common_sessions": 2507,
-     "same_contract_sessions": 1133,
-     "agree_within_0.5pct": 372
-    },
-    "1990s": {
-     "common_sessions": 2522,
-     "same_contract_sessions": 1150,
-     "agree_within_0.5pct": 530
-    },
-    "2000s": {
-     "common_sessions": 746,
-     "same_contract_sessions": 350,
-     "agree_within_0.5pct": 186
-    }
-   },
-   "spent_2003_2019": {
-    "same_contract_sessions": 1823,
-    "agree_within_0.5pct": 725
-   },
-   "pre2003_same_contract_sessions": 2950,
-   "pre2003_agree": 1170,
-   "pre2003_share_agree": 0.3966,
+   "pre2003_compared_sessions": 5788,
+   "pre2003_agree": 3033,
+   "pre2003_identical_4sd": 2556,
+   "pre2003_share_agree": 0.524,
+   "pre2003_share_identical_4sd": 0.4416,
    "passes": false
   },
   "PALLAD": {
    "applicable": false,
    "mirror": "PA",
+   "convention": "PRICE",
    "by_decade_pre2003": {},
-   "spent_2003_2019": {
-    "same_contract_sessions": 1585,
-    "agree_within_0.5pct": 1288
-   },
-   "pre2003_same_contract_sessions": 0,
+   "pre2003_compared_sessions": 0,
    "pre2003_agree": 0,
+   "pre2003_identical_4sd": 0,
    "pre2003_share_agree": null,
-   "reason": "no pre-2003 session on which both hold the same contract"
-  },
-  "CANOLA": {
-   "applicable": false,
-   "reason": "no CHRIS-style mirror file for this market"
-  },
-  "HEATOIL": {
-   "applicable": false,
-   "mirror": "HO",
-   "by_decade_pre2003": {
-    "1980s": {
-     "common_sessions": 2478,
-     "same_contract_sessions": 0,
-     "agree_within_0.5pct": 0
-    },
-    "1990s": {
-     "common_sessions": 2510,
-     "same_contract_sessions": 0,
-     "agree_within_0.5pct": 0
-    },
-    "2000s": {
-     "common_sessions": 746,
-     "same_contract_sessions": 0,
-     "agree_within_0.5pct": 0
-    }
-   },
-   "spent_2003_2019": {
-    "same_contract_sessions": 0,
-    "agree_within_0.5pct": 0
-   },
-   "pre2003_same_contract_sessions": 0,
-   "pre2003_agree": 0,
-   "pre2003_share_agree": null,
-   "reason": "no pre-2003 session on which both hold the same contract"
-  },
-  "GASOIL": {
-   "applicable": false,
-   "reason": "no CHRIS-style mirror file for this market"
-  },
-  "RICE": {
-   "applicable": true,
-   "mirror": "ZR",
-   "by_decade_pre2003": {
-    "1980s": {
-     "common_sessions": 336,
-     "same_contract_sessions": 274,
-     "agree_within_0.5pct": 15
-    },
-    "1990s": {
-     "common_sessions": 2525,
-     "same_contract_sessions": 2054,
-     "agree_within_0.5pct": 237
-    },
-    "2000s": {
-     "common_sessions": 749,
-     "same_contract_sessions": 612,
-     "agree_within_0.5pct": 20
-    }
-   },
-   "spent_2003_2019": {
-    "same_contract_sessions": 3014,
-    "agree_within_0.5pct": 233
-   },
-   "pre2003_same_contract_sessions": 2940,
-   "pre2003_agree": 272,
-   "pre2003_share_agree": 0.0925,
-   "passes": false
-  },
-  "SUGAR_WHITE": {
-   "applicable": false,
-   "reason": "no CHRIS-style mirror file for this market"
-  },
-  "COCOA_LDN": {
-   "applicable": false,
-   "reason": "no CHRIS-style mirror file for this market"
-  },
-  "BRENT_W": {
-   "applicable": false,
-   "reason": "no CHRIS-style mirror file for this market"
-  },
-  "GAS_US": {
-   "applicable": true,
-   "mirror": "NG",
-   "by_decade_pre2003": {
-    "1990s": {
-     "common_sessions": 2367,
-     "same_contract_sessions": 1022,
-     "agree_within_0.5pct": 101
-    },
-    "2000s": {
-     "common_sessions": 746,
-     "same_contract_sessions": 324,
-     "agree_within_0.5pct": 37
-    }
-   },
-   "spent_2003_2019": {
-    "same_contract_sessions": 2062,
-    "agree_within_0.5pct": 272
-   },
-   "pre2003_same_contract_sessions": 1346,
-   "pre2003_agree": 138,
-   "pre2003_share_agree": 0.1025,
-   "passes": false
-  },
-  "WHEAT_ICE": {
-   "applicable": false,
-   "reason": "no CHRIS-style mirror file for this market"
-  },
-  "COPPER": {
-   "applicable": true,
-   "mirror": "HG",
-   "by_decade_pre2003": {
-    "1990s": {
-     "common_sessions": 1086,
-     "same_contract_sessions": 259,
-     "agree_within_0.5pct": 223
-    },
-    "2000s": {
-     "common_sessions": 747,
-     "same_contract_sessions": 173,
-     "agree_within_0.5pct": 165
-    }
-   },
-   "spent_2003_2019": {
-    "same_contract_sessions": 979,
-    "agree_within_0.5pct": 832
-   },
-   "pre2003_same_contract_sessions": 432,
-   "pre2003_agree": 388,
-   "pre2003_share_agree": 0.8981,
-   "passes": false
-  },
-  "REDWHEAT": {
-   "applicable": false,
-   "reason": "no CHRIS-style mirror file for this market"
-  },
-  "MILK": {
-   "applicable": false,
-   "reason": "no CHRIS-style mirror file for this market"
-  },
-  "MILKWET": {
-   "applicable": false,
-   "reason": "no CHRIS-style mirror file for this market"
-  },
-  "MILLWHEAT": {
-   "applicable": false,
-   "reason": "no CHRIS-style mirror file for this market"
+   "pre2003_share_identical_4sd": null,
+   "reason": "no pre-2003 common session outside roll days"
   }
  },
  "coverage": {
@@ -1544,47 +1507,21 @@
   },
   "OJ": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-01-31",
-    "2024-03-31"
-   ],
-   "months": 208,
-   "corr": 0.9967,
-   "tracking_error_pct_per_year": 1.522,
-   "te_share_of_etf_vol": 0.081,
-   "mean_diff_pct_per_year": -0.04,
-   "mean_diff_hac_se_pct_per_year": 0.379,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 18.77,
-   "vol_etf_pct_per_year": 18.76,
-   "beta_etf_on_proxy": 0.996,
-   "signal_months": 30,
-   "signal_agreement": 0.9667,
-   "switches_per_year_proxy": 1.5,
-   "switches_per_year_etf": 2.0,
-   "switch_diff_per_year": -0.5,
-   "checks": {
-    "corr": true,
-    "tracking_error": true,
-    "bias": true,
-    "signal_agreement": true,
-    "turnover": true
-   },
-   "validates": true,
-   "evaluated": true,
-   "second_source": "yfinance OJ=F (front contract, roll days excluded)",
-   "common_sessions": 5333,
-   "sessions_contract_identified": 2393,
-   "sessions_used_no_roll": 1621,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "\u00a73.2 level check: 498/2101 = 23.7% < 95 % agreeing",
-   "level_check": {
-    "applicable": true,
-    "pre2003_share_agree": 0.237,
-    "passes": false,
-    "reason": null
+   "convention": {
+    "common_sessions_2003_2019": 4232,
+    "share_within_0.5pct": {
+     "PRICE": 0.7753,
+     "CARRY": 0.3426,
+     "FORWARD": 0.3426
+    },
+    "convention": "PRICE",
+    "convention_share": 0.7753,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 77.5% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1969-12",
     "expected_months_to_2002_12": 397,
@@ -1598,47 +1535,21 @@
   },
   "SOYOIL": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-01-31",
-    "2024-03-31"
-   ],
-   "months": 218,
-   "corr": 0.987,
-   "tracking_error_pct_per_year": 2.684,
-   "te_share_of_etf_vol": 0.161,
-   "mean_diff_pct_per_year": -0.951,
-   "mean_diff_hac_se_pct_per_year": 0.533,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 16.32,
-   "vol_etf_pct_per_year": 16.66,
-   "beta_etf_on_proxy": 1.008,
-   "signal_months": 87,
-   "signal_agreement": 0.931,
-   "switches_per_year_proxy": 2.049,
-   "switches_per_year_etf": 0.878,
-   "switch_diff_per_year": 1.171,
-   "checks": {
-    "corr": true,
-    "tracking_error": true,
-    "bias": true,
-    "signal_agreement": true,
-    "turnover": false
-   },
-   "validates": false,
-   "evaluated": true,
-   "second_source": "yfinance ZL=F (front contract, roll days excluded)",
-   "common_sessions": 5342,
-   "sessions_contract_identified": 2927,
-   "sessions_used_no_roll": 1824,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "failed: turnover; also \u00a73.2 level check 15.2% < 95 %",
-   "level_check": {
-    "applicable": true,
-    "pre2003_share_agree": 0.1516,
-    "passes": false,
-    "reason": null
+   "convention": {
+    "common_sessions_2003_2019": 4235,
+    "share_within_0.5pct": {
+     "PRICE": 0.4831,
+     "CARRY": 0.354,
+     "FORWARD": 0.0054
+    },
+    "convention": "PRICE",
+    "convention_share": 0.4831,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 48.3% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1970-02",
     "expected_months_to_2002_12": 395,
@@ -1652,45 +1563,57 @@
   },
   "SUGAR11": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "window": [
     "2003-01-31",
-    "2024-03-31"
+    "2019-11-30"
    ],
-   "months": 255,
-   "corr": 0.9649,
-   "tracking_error_pct_per_year": 8.183,
-   "te_share_of_etf_vol": 0.275,
-   "mean_diff_pct_per_year": 1.208,
-   "mean_diff_hac_se_pct_per_year": 1.88,
+   "months": 203,
+   "corr": 0.9984,
+   "tracking_error_pct_per_year": 1.471,
+   "te_share_of_etf_vol": 0.057,
+   "mean_diff_pct_per_year": -0.215,
+   "mean_diff_hac_se_pct_per_year": 0.247,
    "hac_lags": 4,
-   "vol_proxy_pct_per_year": 26.35,
-   "vol_etf_pct_per_year": 29.79,
-   "beta_etf_on_proxy": 1.091,
-   "signal_months": 244,
-   "signal_agreement": 0.9426,
-   "switches_per_year_proxy": 1.432,
-   "switches_per_year_etf": 1.728,
-   "switch_diff_per_year": -0.296,
+   "vol_proxy_pct_per_year": 25.93,
+   "vol_etf_pct_per_year": 25.99,
+   "beta_etf_on_proxy": 1.001,
+   "signal_months": 192,
+   "signal_agreement": 0.9896,
+   "switches_per_year_proxy": 1.257,
+   "switches_per_year_etf": 1.382,
+   "switch_diff_per_year": -0.126,
    "checks": {
     "corr": true,
     "tracking_error": true,
-    "bias": false,
+    "bias": true,
     "signal_agreement": true,
     "turnover": true
    },
-   "validates": false,
+   "validates": true,
    "evaluated": true,
-   "second_source": "yfinance SB=F (front contract, roll days excluded)",
-   "common_sessions": 5333,
-   "sessions_contract_identified": 4836,
-   "sessions_used_no_roll": 4337,
-   "pass": false,
-   "drop_reason": "failed: bias; also \u00a73.2 level check 12.0% < 95 %",
+   "second_source": "CHRIS-style mirror SB on its convention contract (PRICE), roll days excluded",
+   "common_sessions": 3830,
+   "sessions_used": 3290,
+   "convention": {
+    "common_sessions_2003_2019": 4002,
+    "share_within_0.5pct": {
+     "PRICE": 0.8901,
+     "CARRY": 0.1169,
+     "FORWARD": 0.1149
+    },
+    "convention": "PRICE",
+    "convention_share": 0.8901,
+    "usable": true
+   },
+   "pass": true,
+   "drop_reason": null,
    "level_check": {
     "applicable": true,
-    "pre2003_share_agree": 0.1204,
-    "passes": false,
+    "pre2003_compared_sessions": 7056,
+    "pre2003_share_agree": 0.9899,
+    "pre2003_share_identical_4sd": 0.9393,
+    "passes": true,
     "reason": null
    },
    "coverage": {
@@ -1702,51 +1625,25 @@
     "passes": true,
     "months_present_2003_on": 255
    },
-   "enters_read": false
+   "enters_read": true
   },
   "COTTON2": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-01-31",
-    "2024-03-31"
-   ],
-   "months": 221,
-   "corr": 0.9571,
-   "tracking_error_pct_per_year": 6.282,
-   "te_share_of_etf_vol": 0.29,
-   "mean_diff_pct_per_year": 1.033,
-   "mean_diff_hac_se_pct_per_year": 1.117,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 20.85,
-   "vol_etf_pct_per_year": 21.67,
-   "beta_etf_on_proxy": 0.995,
-   "signal_months": 45,
-   "signal_agreement": 0.9111,
-   "switches_per_year_proxy": 2.4,
-   "switches_per_year_etf": 1.5,
-   "switch_diff_per_year": 0.9,
-   "checks": {
-    "corr": true,
-    "tracking_error": true,
-    "bias": false,
-    "signal_agreement": true,
-    "turnover": false
-   },
-   "validates": false,
-   "evaluated": true,
-   "second_source": "yfinance CT=F (front contract, roll days excluded)",
-   "common_sessions": 5333,
-   "sessions_contract_identified": 3228,
-   "sessions_used_no_roll": 2382,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "failed: bias, turnover; also \u00a73.2 level check 15.4% < 95 %",
-   "level_check": {
-    "applicable": true,
-    "pre2003_share_agree": 0.1544,
-    "passes": false,
-    "reason": null
+   "convention": {
+    "common_sessions_2003_2019": 3938,
+    "share_within_0.5pct": {
+     "PRICE": 0.5841,
+     "CARRY": 0.2417,
+     "FORWARD": 0.1097
+    },
+    "convention": "PRICE",
+    "convention_share": 0.5841,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 58.4% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1970-03",
     "expected_months_to_2002_12": 394,
@@ -1760,26 +1657,26 @@
   },
   "COCOA": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "window": [
     "2003-01-31",
-    "2024-03-31"
+    "2019-11-30"
    ],
-   "months": 255,
-   "corr": 0.9841,
-   "tracking_error_pct_per_year": 4.94,
-   "te_share_of_etf_vol": 0.181,
-   "mean_diff_pct_per_year": -0.627,
-   "mean_diff_hac_se_pct_per_year": 0.891,
+   "months": 203,
+   "corr": 0.9986,
+   "tracking_error_pct_per_year": 1.396,
+   "te_share_of_etf_vol": 0.054,
+   "mean_diff_pct_per_year": -0.019,
+   "mean_diff_hac_se_pct_per_year": 0.236,
    "hac_lags": 4,
-   "vol_proxy_pct_per_year": 25.88,
-   "vol_etf_pct_per_year": 27.29,
-   "beta_etf_on_proxy": 1.038,
-   "signal_months": 244,
-   "signal_agreement": 0.959,
-   "switches_per_year_proxy": 1.827,
-   "switches_per_year_etf": 1.926,
-   "switch_diff_per_year": -0.099,
+   "vol_proxy_pct_per_year": 26.1,
+   "vol_etf_pct_per_year": 26.08,
+   "beta_etf_on_proxy": 0.998,
+   "signal_months": 192,
+   "signal_agreement": 0.9948,
+   "switches_per_year_proxy": 2.262,
+   "switches_per_year_etf": 2.387,
+   "switch_diff_per_year": -0.126,
    "checks": {
     "corr": true,
     "tracking_error": true,
@@ -1789,15 +1686,27 @@
    },
    "validates": true,
    "evaluated": true,
-   "second_source": "yfinance CC=F (front contract, roll days excluded)",
-   "common_sessions": 5333,
-   "sessions_contract_identified": 4508,
-   "sessions_used_no_roll": 3536,
+   "second_source": "CHRIS-style mirror CC on its convention contract (PRICE), roll days excluded",
+   "common_sessions": 4213,
+   "sessions_used": 3506,
+   "convention": {
+    "common_sessions_2003_2019": 4220,
+    "share_within_0.5pct": {
+     "PRICE": 0.9116,
+     "CARRY": 0.2806,
+     "FORWARD": 0.3898
+    },
+    "convention": "PRICE",
+    "convention_share": 0.9116,
+    "usable": true
+   },
    "pass": false,
-   "drop_reason": "\u00a73.2 level check: 446/6847 = 6.5% < 95 % agreeing",
+   "drop_reason": "\u00a73.2 level check: 6374/6928 = 92.0% < 95 % agreeing",
    "level_check": {
     "applicable": true,
-    "pre2003_share_agree": 0.0651,
+    "pre2003_compared_sessions": 6928,
+    "pre2003_share_agree": 0.92,
+    "pre2003_share_identical_4sd": 0.9096,
     "passes": false,
     "reason": null
    },
@@ -1814,47 +1723,21 @@
   },
   "OATIES": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-01-31",
-    "2024-03-31"
-   ],
-   "months": 233,
-   "corr": 0.9561,
-   "tracking_error_pct_per_year": 7.959,
-   "te_share_of_etf_vol": 0.293,
-   "mean_diff_pct_per_year": -3.249,
-   "mean_diff_hac_se_pct_per_year": 1.714,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 26.23,
-   "vol_etf_pct_per_year": 27.14,
-   "beta_etf_on_proxy": 0.989,
-   "signal_months": 113,
-   "signal_agreement": 0.9027,
-   "switches_per_year_proxy": 1.333,
-   "switches_per_year_etf": 1.333,
-   "switch_diff_per_year": 0.0,
-   "checks": {
-    "corr": true,
-    "tracking_error": true,
-    "bias": false,
-    "signal_agreement": true,
-    "turnover": true
-   },
-   "validates": false,
-   "evaluated": true,
-   "second_source": "yfinance ZO=F (front contract, roll days excluded)",
-   "common_sessions": 5338,
-   "sessions_contract_identified": 3466,
-   "sessions_used_no_roll": 2882,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "failed: bias; also \u00a73.2 level check 6.5% < 95 %",
-   "level_check": {
-    "applicable": true,
-    "pre2003_share_agree": 0.0654,
-    "passes": false,
-    "reason": null
+   "convention": {
+    "common_sessions_2003_2019": 4236,
+    "share_within_0.5pct": {
+     "PRICE": 0.3314,
+     "CARRY": 0.0212,
+     "FORWARD": 0.0118
+    },
+    "convention": "PRICE",
+    "convention_share": 0.3314,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 33.1% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1970-04",
     "expected_months_to_2002_12": 393,
@@ -1868,47 +1751,21 @@
   },
   "SOYMEAL": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-01-31",
-    "2024-03-31"
-   ],
-   "months": 193,
-   "corr": 0.9665,
-   "tracking_error_pct_per_year": 3.834,
-   "te_share_of_etf_vol": 0.257,
-   "mean_diff_pct_per_year": 0.158,
-   "mean_diff_hac_se_pct_per_year": 0.922,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 14.38,
-   "vol_etf_pct_per_year": 14.94,
-   "beta_etf_on_proxy": 1.004,
-   "signal_months": 49,
-   "signal_agreement": 1.0,
-   "switches_per_year_proxy": 0.783,
-   "switches_per_year_etf": 0.783,
-   "switch_diff_per_year": 0.0,
-   "checks": {
-    "corr": true,
-    "tracking_error": true,
-    "bias": true,
-    "signal_agreement": true,
-    "turnover": true
-   },
-   "validates": true,
-   "evaluated": true,
-   "second_source": "yfinance ZM=F (front contract, roll days excluded)",
-   "common_sessions": 5319,
-   "sessions_contract_identified": 2327,
-   "sessions_used_no_roll": 1349,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "\u00a73.2 level check: 932/4306 = 21.6% < 95 % agreeing",
-   "level_check": {
-    "applicable": true,
-    "pre2003_share_agree": 0.2164,
-    "passes": false,
-    "reason": null
+   "convention": {
+    "common_sessions_2003_2019": 4226,
+    "share_within_0.5pct": {
+     "PRICE": 0.3938,
+     "CARRY": 0.2953,
+     "FORWARD": 0.0043
+    },
+    "convention": "PRICE",
+    "convention_share": 0.3938,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 39.4% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1970-05",
     "expected_months_to_2002_12": 392,
@@ -1922,47 +1779,21 @@
   },
   "SILVER": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-01-31",
-    "2024-03-31"
-   ],
-   "months": 223,
-   "corr": 0.9919,
-   "tracking_error_pct_per_year": 2.229,
-   "te_share_of_etf_vol": 0.127,
-   "mean_diff_pct_per_year": -0.881,
-   "mean_diff_hac_se_pct_per_year": 0.585,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 17.47,
-   "vol_etf_pct_per_year": 17.49,
-   "beta_etf_on_proxy": 0.993,
-   "signal_months": 106,
-   "signal_agreement": 0.9434,
-   "switches_per_year_proxy": 2.16,
-   "switches_per_year_etf": 2.28,
-   "switch_diff_per_year": -0.12,
-   "checks": {
-    "corr": true,
-    "tracking_error": true,
-    "bias": true,
-    "signal_agreement": true,
-    "turnover": true
-   },
-   "validates": true,
-   "evaluated": true,
-   "second_source": "yfinance SI=F (front contract, roll days excluded)",
-   "common_sessions": 5332,
-   "sessions_contract_identified": 3089,
-   "sessions_used_no_roll": 1935,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "\u00a73.2 level check: 461/493 = 93.5% < 95 % agreeing",
-   "level_check": {
-    "applicable": true,
-    "pre2003_share_agree": 0.9351,
-    "passes": false,
-    "reason": null
+   "convention": {
+    "common_sessions_2003_2019": 3769,
+    "share_within_0.5pct": {
+     "PRICE": 0.4845,
+     "CARRY": 0.3033,
+     "FORWARD": 0.0337
+    },
+    "convention": "PRICE",
+    "convention_share": 0.4845,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 48.4% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1970-06",
     "expected_months_to_2002_12": 391,
@@ -1976,44 +1807,56 @@
   },
   "PLAT": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "window": [
-    "2003-01-31",
-    "2024-03-31"
+    "2009-02-28",
+    "2019-11-30"
    ],
-   "months": 219,
-   "corr": 0.993,
-   "tracking_error_pct_per_year": 1.906,
-   "te_share_of_etf_vol": 0.119,
-   "mean_diff_pct_per_year": -0.466,
-   "mean_diff_hac_se_pct_per_year": 0.404,
+   "months": 130,
+   "corr": 0.9941,
+   "tracking_error_pct_per_year": 2.0,
+   "te_share_of_etf_vol": 0.109,
+   "mean_diff_pct_per_year": -1.133,
+   "mean_diff_hac_se_pct_per_year": 0.329,
    "hac_lags": 4,
-   "vol_proxy_pct_per_year": 16.17,
-   "vol_etf_pct_per_year": 16.08,
-   "beta_etf_on_proxy": 0.987,
+   "vol_proxy_pct_per_year": 18.03,
+   "vol_etf_pct_per_year": 18.34,
+   "beta_etf_on_proxy": 1.011,
    "signal_months": 119,
-   "signal_agreement": 0.9664,
-   "switches_per_year_proxy": 1.461,
-   "switches_per_year_etf": 1.983,
-   "switch_diff_per_year": -0.522,
+   "signal_agreement": 0.958,
+   "switches_per_year_proxy": 1.627,
+   "switches_per_year_etf": 2.034,
+   "switch_diff_per_year": -0.407,
    "checks": {
     "corr": true,
     "tracking_error": true,
-    "bias": true,
+    "bias": false,
     "signal_agreement": true,
-    "turnover": false
+    "turnover": true
    },
    "validates": false,
    "evaluated": true,
-   "second_source": "yfinance PL=F (front contract, roll days excluded)",
-   "common_sessions": 4690,
-   "sessions_contract_identified": 3445,
-   "sessions_used_no_roll": 2525,
+   "second_source": "CHRIS-style mirror PL on its convention contract (PRICE), roll days excluded",
+   "common_sessions": 2650,
+   "sessions_used": 2323,
+   "convention": {
+    "common_sessions_2003_2019": 2708,
+    "share_within_0.5pct": {
+     "PRICE": 0.8331,
+     "CARRY": 0.7891,
+     "FORWARD": 0.7891
+    },
+    "convention": "PRICE",
+    "convention_share": 0.8331,
+    "usable": true
+   },
    "pass": false,
-   "drop_reason": "failed: turnover; also \u00a73.2 level check 75.0% < 95 %",
+   "drop_reason": "failed: bias; also \u00a73.2 level check 75.0% < 95 %",
    "level_check": {
     "applicable": true,
+    "pre2003_compared_sessions": 8,
     "pre2003_share_agree": 0.75,
+    "pre2003_share_identical_4sd": 0.75,
     "passes": false,
     "reason": null
    },
@@ -2030,47 +1873,21 @@
   },
   "LIVECOW": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-07-31",
-    "2024-03-31"
-   ],
-   "months": 195,
-   "corr": 0.8987,
-   "tracking_error_pct_per_year": 6.567,
-   "te_share_of_etf_vol": 0.439,
-   "mean_diff_pct_per_year": -7.439,
-   "mean_diff_hac_se_pct_per_year": 1.547,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 13.18,
-   "vol_etf_pct_per_year": 14.96,
-   "beta_etf_on_proxy": 1.02,
-   "signal_months": 96,
-   "signal_agreement": 0.75,
-   "switches_per_year_proxy": 0.758,
-   "switches_per_year_etf": 0.632,
-   "switch_diff_per_year": 0.126,
-   "checks": {
-    "corr": false,
-    "tracking_error": false,
-    "bias": false,
-    "signal_agreement": false,
-    "turnover": true
-   },
-   "validates": false,
-   "evaluated": true,
-   "second_source": "yfinance LE=F (front contract, roll days excluded)",
-   "common_sessions": 5301,
-   "sessions_contract_identified": 3251,
-   "sessions_used_no_roll": 2830,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "failed: corr, tracking_error, bias, signal_agreement; also \u00a73.2 level check 8.1% < 95 %",
-   "level_check": {
-    "applicable": true,
-    "pre2003_share_agree": 0.0806,
-    "passes": false,
-    "reason": null
+   "convention": {
+    "common_sessions_2003_2019": 4227,
+    "share_within_0.5pct": {
+     "PRICE": 0.41,
+     "CARRY": 0.2106,
+     "FORWARD": 0.0632
+    },
+    "convention": "PRICE",
+    "convention_share": 0.41,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 41.0% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1971-10",
     "expected_months_to_2002_12": 375,
@@ -2084,23 +1901,21 @@
   },
   "LEANHOG": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "evaluated": false,
-   "months": 146,
-   "validates": false,
-   "reason": "statistics not computable on 2003+ (TypeError: too few consecutive months)",
-   "second_source": "yfinance HE=F (front contract, roll days excluded)",
-   "common_sessions": 5317,
-   "sessions_contract_identified": 1821,
-   "sessions_used_no_roll": 1517,
    "pass": false,
-   "drop_reason": "statistics not computable on 2003+ (TypeError: too few consecutive months); also \u00a73.2 level check 10.0% < 95 %",
-   "level_check": {
-    "applicable": true,
-    "pre2003_share_agree": 0.0997,
-    "passes": false,
-    "reason": null
+   "convention": {
+    "common_sessions_2003_2019": 4019,
+    "share_within_0.5pct": {
+     "PRICE": 0.2262,
+     "CARRY": 0.2374,
+     "FORWARD": 0.0202
+    },
+    "convention": "CARRY",
+    "convention_share": 0.2374,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column CARRY within 0.5 % on 23.7% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1974-07",
     "expected_months_to_2002_12": 342,
@@ -2114,26 +1929,26 @@
   },
   "GOLD": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "window": [
     "2003-01-31",
-    "2024-03-31"
+    "2019-11-30"
    ],
-   "months": 253,
-   "corr": 0.9977,
-   "tracking_error_pct_per_year": 1.054,
-   "te_share_of_etf_vol": 0.068,
-   "mean_diff_pct_per_year": -1.092,
-   "mean_diff_hac_se_pct_per_year": 0.232,
+   "months": 203,
+   "corr": 0.9956,
+   "tracking_error_pct_per_year": 1.548,
+   "te_share_of_etf_vol": 0.094,
+   "mean_diff_pct_per_year": -1.848,
+   "mean_diff_hac_se_pct_per_year": 0.373,
    "hac_lags": 4,
-   "vol_proxy_pct_per_year": 15.46,
-   "vol_etf_pct_per_year": 15.46,
-   "beta_etf_on_proxy": 0.997,
-   "signal_months": 229,
-   "signal_agreement": 0.9738,
-   "switches_per_year_proxy": 1.533,
-   "switches_per_year_etf": 1.427,
-   "switch_diff_per_year": 0.106,
+   "vol_proxy_pct_per_year": 16.44,
+   "vol_etf_pct_per_year": 16.52,
+   "beta_etf_on_proxy": 1.0,
+   "signal_months": 192,
+   "signal_agreement": 0.9531,
+   "switches_per_year_proxy": 1.759,
+   "switches_per_year_etf": 1.634,
+   "switch_diff_per_year": 0.126,
    "checks": {
     "corr": true,
     "tracking_error": true,
@@ -2143,15 +1958,27 @@
    },
    "validates": false,
    "evaluated": true,
-   "second_source": "yfinance GC=F (front contract, roll days excluded)",
-   "common_sessions": 5316,
-   "sessions_contract_identified": 4637,
-   "sessions_used_no_roll": 3820,
+   "second_source": "CHRIS-style mirror GC on its convention contract (PRICE), roll days excluded",
+   "common_sessions": 4192,
+   "sessions_used": 3394,
+   "convention": {
+    "common_sessions_2003_2019": 4220,
+    "share_within_0.5pct": {
+     "PRICE": 0.8448,
+     "CARRY": 0.8194,
+     "FORWARD": 0.8194
+    },
+    "convention": "PRICE",
+    "convention_share": 0.8448,
+    "usable": true
+   },
    "pass": false,
-   "drop_reason": "failed: bias; also \u00a73.2 level check 14.5% < 95 %",
+   "drop_reason": "failed: bias; also \u00a73.2 level check 52.4% < 95 %",
    "level_check": {
     "applicable": true,
-    "pre2003_share_agree": 0.1451,
+    "pre2003_compared_sessions": 5788,
+    "pre2003_share_agree": 0.524,
+    "pre2003_share_identical_4sd": 0.4416,
     "passes": false,
     "reason": null
    },
@@ -2168,47 +1995,21 @@
   },
   "FEEDCOW": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-01-31",
-    "2024-03-31"
-   ],
-   "months": 198,
-   "corr": 0.9281,
-   "tracking_error_pct_per_year": 4.215,
-   "te_share_of_etf_vol": 0.38,
-   "mean_diff_pct_per_year": 0.546,
-   "mean_diff_hac_se_pct_per_year": 1.051,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 11.13,
-   "vol_etf_pct_per_year": 11.11,
-   "beta_etf_on_proxy": 0.927,
-   "signal_months": 25,
-   "signal_agreement": 1.0,
-   "switches_per_year_proxy": 1.565,
-   "switches_per_year_etf": 1.565,
-   "switch_diff_per_year": 0.0,
-   "checks": {
-    "corr": false,
-    "tracking_error": false,
-    "bias": true,
-    "signal_agreement": true,
-    "turnover": true
-   },
-   "validates": false,
-   "evaluated": true,
-   "second_source": "yfinance GF=F (front contract, roll days excluded)",
-   "common_sessions": 5322,
-   "sessions_contract_identified": 2602,
-   "sessions_used_no_roll": 1865,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "failed: corr, tracking_error; also \u00a73.2 level check 39.7% < 95 %",
-   "level_check": {
-    "applicable": true,
-    "pre2003_share_agree": 0.3966,
-    "passes": false,
-    "reason": null
+   "convention": {
+    "common_sessions_2003_2019": 4232,
+    "share_within_0.5pct": {
+     "PRICE": 0.4764,
+     "CARRY": 0.5059,
+     "FORWARD": 0.0054
+    },
+    "convention": "CARRY",
+    "convention_share": 0.5059,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column CARRY within 0.5 % on 50.6% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1977-02",
     "expected_months_to_2002_12": 311,
@@ -2222,46 +2023,58 @@
   },
   "PALLAD": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "window": [
-    "2003-01-31",
-    "2024-03-31"
+    "2008-11-30",
+    "2019-11-30"
    ],
-   "months": 207,
-   "corr": 0.9951,
-   "tracking_error_pct_per_year": 2.296,
-   "te_share_of_etf_vol": 0.1,
-   "mean_diff_pct_per_year": 0.372,
-   "mean_diff_hac_se_pct_per_year": 0.51,
+   "months": 121,
+   "corr": 0.9983,
+   "tracking_error_pct_per_year": 1.511,
+   "te_share_of_etf_vol": 0.058,
+   "mean_diff_pct_per_year": -0.211,
+   "mean_diff_hac_se_pct_per_year": 0.307,
    "hac_lags": 4,
-   "vol_proxy_pct_per_year": 23.12,
-   "vol_etf_pct_per_year": 22.99,
-   "beta_etf_on_proxy": 0.989,
-   "signal_months": 127,
-   "signal_agreement": 0.9213,
-   "switches_per_year_proxy": 1.355,
-   "switches_per_year_etf": 2.419,
-   "switch_diff_per_year": -1.065,
+   "vol_proxy_pct_per_year": 25.88,
+   "vol_etf_pct_per_year": 25.87,
+   "beta_etf_on_proxy": 0.998,
+   "signal_months": 95,
+   "signal_agreement": 0.9789,
+   "switches_per_year_proxy": 1.935,
+   "switches_per_year_etf": 1.677,
+   "switch_diff_per_year": 0.258,
    "checks": {
     "corr": true,
     "tracking_error": true,
     "bias": true,
     "signal_agreement": true,
-    "turnover": false
+    "turnover": true
    },
-   "validates": false,
+   "validates": true,
    "evaluated": true,
-   "second_source": "yfinance PA=F (front contract, roll days excluded)",
-   "common_sessions": 4848,
-   "sessions_contract_identified": 3410,
-   "sessions_used_no_roll": 2326,
-   "pass": false,
-   "drop_reason": "failed: turnover",
+   "second_source": "CHRIS-style mirror PA on its convention contract (PRICE), roll days excluded",
+   "common_sessions": 2478,
+   "sessions_used": 2159,
+   "convention": {
+    "common_sessions_2003_2019": 2478,
+    "share_within_0.5pct": {
+     "PRICE": 0.8249,
+     "CARRY": 0.8095,
+     "FORWARD": 0.8095
+    },
+    "convention": "PRICE",
+    "convention_share": 0.8249,
+    "usable": true
+   },
+   "pass": true,
+   "drop_reason": null,
    "level_check": {
     "applicable": false,
+    "pre2003_compared_sessions": 0,
     "pre2003_share_agree": null,
+    "pre2003_share_identical_4sd": null,
     "passes": null,
-    "reason": "no pre-2003 session on which both hold the same contract"
+    "reason": "no pre-2003 common session outside roll days"
    },
    "coverage": {
     "first_month_all_inputs": "1977-06",
@@ -2272,20 +2085,14 @@
     "passes": true,
     "months_present_2003_on": 255
    },
-   "enters_read": false
+   "enters_read": true
   },
   "CANOLA": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "evaluated": false,
    "pass": false,
-   "drop_reason": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-   "level_check": {
-    "applicable": false,
-    "pre2003_share_agree": null,
-    "passes": null,
-    "reason": "no CHRIS-style mirror file for this market"
-   },
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
    "coverage": {
     "first_month_all_inputs": "1978-01",
     "expected_months_to_2002_12": 300,
@@ -2299,47 +2106,21 @@
   },
   "HEATOIL": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-01-31",
-    "2024-03-31"
-   ],
-   "months": 204,
-   "corr": 0.9917,
-   "tracking_error_pct_per_year": 2.687,
-   "te_share_of_etf_vol": 0.13,
-   "mean_diff_pct_per_year": 0.508,
-   "mean_diff_hac_se_pct_per_year": 0.644,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 20.31,
-   "vol_etf_pct_per_year": 20.75,
-   "beta_etf_on_proxy": 1.013,
-   "signal_months": 112,
-   "signal_agreement": 0.9375,
-   "switches_per_year_proxy": 0.873,
-   "switches_per_year_etf": 1.418,
-   "switch_diff_per_year": -0.545,
-   "checks": {
-    "corr": true,
-    "tracking_error": true,
-    "bias": true,
-    "signal_agreement": true,
-    "turnover": false
-   },
-   "validates": false,
-   "evaluated": true,
-   "second_source": "yfinance HO=F (front contract, roll days excluded)",
-   "common_sessions": 5335,
-   "sessions_contract_identified": 2594,
-   "sessions_used_no_roll": 1590,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "failed: turnover",
-   "level_check": {
-    "applicable": false,
-    "pre2003_share_agree": null,
-    "passes": null,
-    "reason": "no pre-2003 session on which both hold the same contract"
+   "convention": {
+    "common_sessions_2003_2019": 4221,
+    "share_within_0.5pct": {
+     "PRICE": 0.4783,
+     "CARRY": 0.4771,
+     "FORWARD": 0.1163
+    },
+    "convention": "PRICE",
+    "convention_share": 0.4783,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 47.8% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1980-02",
     "expected_months_to_2002_12": 275,
@@ -2353,16 +2134,10 @@
   },
   "GASOIL": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "evaluated": false,
    "pass": false,
-   "drop_reason": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-   "level_check": {
-    "applicable": false,
-    "pre2003_share_agree": null,
-    "passes": null,
-    "reason": "no CHRIS-style mirror file for this market"
-   },
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
    "coverage": {
     "first_month_all_inputs": "1986-06",
     "expected_months_to_2002_12": 199,
@@ -2376,47 +2151,21 @@
   },
   "RICE": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-01-31",
-    "2024-03-31"
-   ],
-   "months": 230,
-   "corr": 0.9448,
-   "tracking_error_pct_per_year": 5.555,
-   "te_share_of_etf_vol": 0.328,
-   "mean_diff_pct_per_year": -1.805,
-   "mean_diff_hac_se_pct_per_year": 1.392,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 15.88,
-   "vol_etf_pct_per_year": 16.94,
-   "beta_etf_on_proxy": 1.008,
-   "signal_months": 79,
-   "signal_agreement": 0.7468,
-   "switches_per_year_proxy": 1.44,
-   "switches_per_year_etf": 0.96,
-   "switch_diff_per_year": 0.48,
-   "checks": {
-    "corr": false,
-    "tracking_error": true,
-    "bias": false,
-    "signal_agreement": false,
-    "turnover": true
-   },
-   "validates": false,
-   "evaluated": true,
-   "second_source": "yfinance ZR=F (front contract, roll days excluded)",
-   "common_sessions": 5328,
-   "sessions_contract_identified": 2938,
-   "sessions_used_no_roll": 2267,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "failed: corr, bias, signal_agreement; also \u00a73.2 level check 9.2% < 95 %",
-   "level_check": {
-    "applicable": true,
-    "pre2003_share_agree": 0.0925,
-    "passes": false,
-    "reason": null
+   "convention": {
+    "common_sessions_2003_2019": 4236,
+    "share_within_0.5pct": {
+     "PRICE": 0.4714,
+     "CARRY": 0.042,
+     "FORWARD": 0.008
+    },
+    "convention": "PRICE",
+    "convention_share": 0.4714,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 47.1% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1988-08",
     "expected_months_to_2002_12": 173,
@@ -2430,16 +2179,10 @@
   },
   "SUGAR_WHITE": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "evaluated": false,
    "pass": false,
-   "drop_reason": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-   "level_check": {
-    "applicable": false,
-    "pre2003_share_agree": null,
-    "passes": null,
-    "reason": "no CHRIS-style mirror file for this market"
-   },
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
    "coverage": {
     "first_month_all_inputs": "1989-02",
     "expected_months_to_2002_12": 167,
@@ -2453,16 +2196,10 @@
   },
   "COCOA_LDN": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "evaluated": false,
    "pass": false,
-   "drop_reason": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-   "level_check": {
-    "applicable": false,
-    "pre2003_share_agree": null,
-    "passes": null,
-    "reason": "no CHRIS-style mirror file for this market"
-   },
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
    "coverage": {
     "first_month_all_inputs": "1989-03",
     "expected_months_to_2002_12": 166,
@@ -2476,47 +2213,10 @@
   },
   "BRENT_W": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2007-07-31",
-    "2024-03-31"
-   ],
-   "months": 151,
-   "corr": 0.9924,
-   "tracking_error_pct_per_year": 2.593,
-   "te_share_of_etf_vol": 0.123,
-   "mean_diff_pct_per_year": -1.618,
-   "mean_diff_hac_se_pct_per_year": 0.914,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 20.69,
-   "vol_etf_pct_per_year": 21.04,
-   "beta_etf_on_proxy": 1.009,
-   "signal_months": 58,
-   "signal_agreement": 0.931,
-   "switches_per_year_proxy": 1.684,
-   "switches_per_year_etf": 1.263,
-   "switch_diff_per_year": 0.421,
-   "checks": {
-    "corr": true,
-    "tracking_error": true,
-    "bias": false,
-    "signal_agreement": true,
-    "turnover": true
-   },
-   "validates": false,
-   "evaluated": true,
-   "second_source": "yfinance BZ=F (front contract, roll days excluded)",
-   "common_sessions": 4142,
-   "sessions_contract_identified": 2395,
-   "sessions_used_no_roll": 1468,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "failed: bias",
-   "level_check": {
-    "applicable": false,
-    "pre2003_share_agree": null,
-    "passes": null,
-    "reason": "no CHRIS-style mirror file for this market"
-   },
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
    "coverage": {
     "first_month_all_inputs": "1989-08",
     "expected_months_to_2002_12": 161,
@@ -2530,47 +2230,21 @@
   },
   "GAS_US": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-01-31",
-    "2024-03-31"
-   ],
-   "months": 234,
-   "corr": 0.9504,
-   "tracking_error_pct_per_year": 11.891,
-   "te_share_of_etf_vol": 0.339,
-   "mean_diff_pct_per_year": -0.792,
-   "mean_diff_hac_se_pct_per_year": 1.746,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 28.62,
-   "vol_etf_pct_per_year": 35.09,
-   "beta_etf_on_proxy": 1.165,
-   "signal_months": 150,
-   "signal_agreement": 0.94,
-   "switches_per_year_proxy": 1.0,
-   "switches_per_year_etf": 1.333,
-   "switch_diff_per_year": -0.333,
-   "checks": {
-    "corr": true,
-    "tracking_error": true,
-    "bias": true,
-    "signal_agreement": true,
-    "turnover": true
-   },
-   "validates": true,
-   "evaluated": true,
-   "second_source": "yfinance NG=F (front contract, roll days excluded)",
-   "common_sessions": 5322,
-   "sessions_contract_identified": 3323,
-   "sessions_used_no_roll": 2490,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "\u00a73.2 level check: 138/1346 = 10.2% < 95 % agreeing",
-   "level_check": {
-    "applicable": true,
-    "pre2003_share_agree": 0.1025,
-    "passes": false,
-    "reason": null
+   "convention": {
+    "common_sessions_2003_2019": 4228,
+    "share_within_0.5pct": {
+     "PRICE": 0.6675,
+     "CARRY": 0.1618,
+     "FORWARD": 0.1149
+    },
+    "convention": "PRICE",
+    "convention_share": 0.6675,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 66.8% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1990-07",
     "expected_months_to_2002_12": 150,
@@ -2584,16 +2258,10 @@
   },
   "WHEAT_ICE": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "evaluated": false,
    "pass": false,
-   "drop_reason": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-   "level_check": {
-    "applicable": false,
-    "pre2003_share_agree": null,
-    "passes": null,
-    "reason": "no CHRIS-style mirror file for this market"
-   },
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
    "coverage": {
     "first_month_all_inputs": "1994-01",
     "expected_months_to_2002_12": 108,
@@ -2607,47 +2275,21 @@
   },
   "COPPER": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-01-31",
-    "2024-02-29"
-   ],
-   "months": 228,
-   "corr": 0.9731,
-   "tracking_error_pct_per_year": 4.44,
-   "te_share_of_etf_vol": 0.232,
-   "mean_diff_pct_per_year": -1.137,
-   "mean_diff_hac_se_pct_per_year": 1.217,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 19.13,
-   "vol_etf_pct_per_year": 19.17,
-   "beta_etf_on_proxy": 0.975,
-   "signal_months": 101,
-   "signal_agreement": 0.8515,
-   "switches_per_year_proxy": 1.548,
-   "switches_per_year_etf": 1.161,
-   "switch_diff_per_year": 0.387,
-   "checks": {
-    "corr": true,
-    "tracking_error": true,
-    "bias": false,
-    "signal_agreement": false,
-    "turnover": true
-   },
-   "validates": false,
-   "evaluated": true,
-   "second_source": "yfinance HG=F (front contract, roll days excluded)",
-   "common_sessions": 5317,
-   "sessions_contract_identified": 3565,
-   "sessions_used_no_roll": 2214,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "failed: bias, signal_agreement; also \u00a73.2 level check 89.8% < 95 %",
-   "level_check": {
-    "applicable": true,
-    "pre2003_share_agree": 0.8981,
-    "passes": false,
-    "reason": null
+   "convention": {
+    "common_sessions_2003_2019": 4187,
+    "share_within_0.5pct": {
+     "PRICE": 0.711,
+     "CARRY": 0.5682,
+     "FORWARD": 0.3337
+    },
+    "convention": "PRICE",
+    "convention_share": 0.711,
+    "usable": false
    },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 71.1% of 2003-2019 sessions < 80 %",
    "coverage": {
     "first_month_all_inputs": "1995-09",
     "expected_months_to_2002_12": 88,
@@ -2661,47 +2303,10 @@
   },
   "REDWHEAT": {
    "class": "commodities",
-   "check": "\u00a73.1",
-   "window": [
-    "2003-01-31",
-    "2024-03-31"
-   ],
-   "months": 206,
-   "corr": 0.9778,
-   "tracking_error_pct_per_year": 3.86,
-   "te_share_of_etf_vol": 0.211,
-   "mean_diff_pct_per_year": -0.367,
-   "mean_diff_hac_se_pct_per_year": 0.869,
-   "hac_lags": 4,
-   "vol_proxy_pct_per_year": 18.28,
-   "vol_etf_pct_per_year": 18.32,
-   "beta_etf_on_proxy": 0.98,
-   "signal_months": 76,
-   "signal_agreement": 0.9474,
-   "switches_per_year_proxy": 1.667,
-   "switches_per_year_etf": 1.0,
-   "switch_diff_per_year": 0.667,
-   "checks": {
-    "corr": true,
-    "tracking_error": true,
-    "bias": true,
-    "signal_agreement": true,
-    "turnover": false
-   },
-   "validates": false,
-   "evaluated": true,
-   "second_source": "yfinance KE=F (front contract, roll days excluded)",
-   "common_sessions": 5336,
-   "sessions_contract_identified": 2858,
-   "sessions_used_no_roll": 2087,
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
    "pass": false,
-   "drop_reason": "failed: turnover",
-   "level_check": {
-    "applicable": false,
-    "pre2003_share_agree": null,
-    "passes": null,
-    "reason": "no CHRIS-style mirror file for this market"
-   },
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
    "coverage": {
     "first_month_all_inputs": "1995-09",
     "expected_months_to_2002_12": 88,
@@ -2715,23 +2320,10 @@
   },
   "MILK": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "evaluated": false,
-   "months": 89,
-   "validates": false,
-   "reason": "statistics not computable on 2003+ (TypeError: too few consecutive months)",
-   "second_source": "yfinance DC=F (front contract, roll days excluded)",
-   "common_sessions": 4394,
-   "sessions_contract_identified": 683,
-   "sessions_used_no_roll": 268,
    "pass": false,
-   "drop_reason": "statistics not computable on 2003+ (TypeError: too few consecutive months)",
-   "level_check": {
-    "applicable": false,
-    "pre2003_share_agree": null,
-    "passes": null,
-    "reason": "no CHRIS-style mirror file for this market"
-   },
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
    "coverage": {
     "first_month_all_inputs": "1996-04",
     "expected_months_to_2002_12": 81,
@@ -2747,16 +2339,10 @@
   },
   "MILKWET": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "evaluated": false,
    "pass": false,
-   "drop_reason": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-   "level_check": {
-    "applicable": false,
-    "pre2003_share_agree": null,
-    "passes": null,
-    "reason": "no CHRIS-style mirror file for this market"
-   },
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
    "coverage": {
     "first_month_all_inputs": "2000-08",
     "expected_months_to_2002_12": 29,
@@ -2770,16 +2356,10 @@
   },
   "MILLWHEAT": {
    "class": "commodities",
-   "check": "\u00a73.1",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
    "evaluated": false,
    "pass": false,
-   "drop_reason": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-   "level_check": {
-    "applicable": false,
-    "pre2003_share_agree": null,
-    "passes": null,
-    "reason": "no CHRIS-style mirror file for this market"
-   },
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
    "coverage": {
     "first_month_all_inputs": "2002-03",
     "expected_months_to_2002_12": 10,
@@ -2814,8 +2394,11 @@
    ]
   },
   "commodities": {
-   "n": 0,
-   "markets": []
+   "n": 2,
+   "markets": [
+    "PALLAD",
+    "SUGAR11"
+   ]
   }
  },
  "dropped": {
@@ -2825,34 +2408,32 @@
   "BOND_JP": "failed: corr, tracking_error, signal_agreement",
   "BOND_CA": "failed: corr, tracking_error",
   "BOND_CH": "input_defect: SNB zimoma 1TGT: 1 values outside the plausible range [-2%, 60%]",
-  "OJ": "\u00a73.2 level check: 498/2101 = 23.7% < 95 % agreeing",
-  "SOYOIL": "failed: turnover; also \u00a73.2 level check 15.2% < 95 %",
-  "SUGAR11": "failed: bias; also \u00a73.2 level check 12.0% < 95 %",
-  "COTTON2": "failed: bias, turnover; also \u00a73.2 level check 15.4% < 95 %",
-  "COCOA": "\u00a73.2 level check: 446/6847 = 6.5% < 95 % agreeing",
-  "OATIES": "failed: bias; also \u00a73.2 level check 6.5% < 95 %",
-  "SOYMEAL": "\u00a73.2 level check: 932/4306 = 21.6% < 95 % agreeing",
-  "SILVER": "\u00a73.2 level check: 461/493 = 93.5% < 95 % agreeing",
-  "PLAT": "failed: turnover; also \u00a73.2 level check 75.0% < 95 %",
-  "LIVECOW": "failed: corr, tracking_error, bias, signal_agreement; also \u00a73.2 level check 8.1% < 95 %",
-  "LEANHOG": "statistics not computable on 2003+ (TypeError: too few consecutive months); also \u00a73.2 level check 10.0% < 95 %",
-  "GOLD": "failed: bias; also \u00a73.2 level check 14.5% < 95 %",
-  "FEEDCOW": "failed: corr, tracking_error; also \u00a73.2 level check 39.7% < 95 %",
-  "PALLAD": "failed: turnover",
-  "CANOLA": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-  "HEATOIL": "failed: turnover",
-  "GASOIL": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-  "RICE": "failed: corr, bias, signal_agreement; also \u00a73.2 level check 9.2% < 95 %",
-  "SUGAR_WHITE": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-  "COCOA_LDN": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-  "BRENT_W": "failed: bias",
-  "GAS_US": "\u00a73.2 level check: 138/1346 = 10.2% < 95 % agreeing",
-  "WHEAT_ICE": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-  "COPPER": "failed: bias, signal_agreement; also \u00a73.2 level check 89.8% < 95 %",
-  "REDWHEAT": "failed: turnover",
-  "MILK": "statistics not computable on 2003+ (TypeError: too few consecutive months)",
-  "MILKWET": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)",
-  "MILLWHEAT": "no second source on 2003+ (not listed on yfinance; no CHRIS-style mirror)"
+  "OJ": "no usable mirror: best column PRICE within 0.5 % on 77.5% of 2003-2019 sessions < 80 %",
+  "SOYOIL": "no usable mirror: best column PRICE within 0.5 % on 48.3% of 2003-2019 sessions < 80 %",
+  "COTTON2": "no usable mirror: best column PRICE within 0.5 % on 58.4% of 2003-2019 sessions < 80 %",
+  "COCOA": "\u00a73.2 level check: 6374/6928 = 92.0% < 95 % agreeing",
+  "OATIES": "no usable mirror: best column PRICE within 0.5 % on 33.1% of 2003-2019 sessions < 80 %",
+  "SOYMEAL": "no usable mirror: best column PRICE within 0.5 % on 39.4% of 2003-2019 sessions < 80 %",
+  "SILVER": "no usable mirror: best column PRICE within 0.5 % on 48.4% of 2003-2019 sessions < 80 %",
+  "PLAT": "failed: bias; also \u00a73.2 level check 75.0% < 95 %",
+  "LIVECOW": "no usable mirror: best column PRICE within 0.5 % on 41.0% of 2003-2019 sessions < 80 %",
+  "LEANHOG": "no usable mirror: best column CARRY within 0.5 % on 23.7% of 2003-2019 sessions < 80 %",
+  "GOLD": "failed: bias; also \u00a73.2 level check 52.4% < 95 %",
+  "FEEDCOW": "no usable mirror: best column CARRY within 0.5 % on 50.6% of 2003-2019 sessions < 80 %",
+  "CANOLA": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "HEATOIL": "no usable mirror: best column PRICE within 0.5 % on 47.8% of 2003-2019 sessions < 80 %",
+  "GASOIL": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "RICE": "no usable mirror: best column PRICE within 0.5 % on 47.1% of 2003-2019 sessions < 80 %",
+  "SUGAR_WHITE": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "COCOA_LDN": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "BRENT_W": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "GAS_US": "no usable mirror: best column PRICE within 0.5 % on 66.8% of 2003-2019 sessions < 80 %",
+  "WHEAT_ICE": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "COPPER": "no usable mirror: best column PRICE within 0.5 % on 71.1% of 2003-2019 sessions < 80 %",
+  "REDWHEAT": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "MILK": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "MILKWET": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "MILLWHEAT": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)"
  },
  "loader_notes": {
   "pst GILT": {
@@ -3240,8 +2821,25 @@
  },
  "errors": [],
  "gate_evaluable": true,
+ "breadth_gate": {
+  "rule": "Amendment 1 (6): at least 10 commodities pass",
+  "commodities_entering": 2,
+  "passes": false
+ },
  "gate": "fail",
  "gate_fail_reasons": [
-  "no commodities market survives the checks (IMPLEMENTATION_NOTES A11: each asset class must keep at least one market)"
- ]
+  "only 2 commodities pass (Amendment 1 (6): the read needs at least 10)"
+ ],
+ "doubt": {
+  "definition": "doubt if fewer than 15 commodities pass, or on at least half the passing markets >= 99 % of pre-2003 sessions are identical to 4 significant digits",
+  "commodities_passing": 2,
+  "fewer_than_15_pass": true,
+  "identical_share_by_passing_market": {
+   "PALLAD": null,
+   "SUGAR11": 0.9393
+  },
+  "markets_with_identical_share_ge_0.99": 0,
+  "half_or_more_not_independent": false,
+  "doubt": true
+ }
 }
