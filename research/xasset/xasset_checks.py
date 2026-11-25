@@ -128,8 +128,15 @@ def _pair(proxy_m, inst_m, label):
     if len(j) < 37:
         return {"evaluated": False, "reason": f"only {len(j)} common months on 2003+", "months": int(len(j)),
                 "validates": False}
-    r = P.pair_stats(proxy_m, inst_m, label)
+    try:
+        r = P.pair_stats(proxy_m, inst_m, label)
+    except (TypeError, ValueError, ZeroDivisionError) as e:      # e.g. no 12-month run of consecutive common months
+        return {"evaluated": False, "months": int(len(j)), "validates": False,
+                "reason": f"statistics not computable on 2003+ ({type(e).__name__}: too few consecutive months)"}
     r["evaluated"] = True
+    if not np.isfinite(r["signal_agreement"]) or r["signal_months"] < 12:
+        r["evaluated"], r["validates"] = False, False
+        r["reason"] = f"only {r['signal_months']} months with a 12-month signal on both"
     return r
 
 
@@ -465,7 +472,9 @@ def main(argv):
     try:
         res = run()
     except Exception as e:                                           # noqa: BLE001
-        res = {"gate": "cannot be evaluated", "gate_evaluable": False, "exception": repr(e)[:500]}
+        import traceback
+        res = {"gate": "cannot be evaluated", "gate_evaluable": False, "exception": repr(e)[:500],
+               "traceback": traceback.format_exc()[-3000:]}
         json.dump(res, open(L.CHECKS_OUT, "w"), indent=1, default=str)
         print(json.dumps(res, indent=1))
         return 2
