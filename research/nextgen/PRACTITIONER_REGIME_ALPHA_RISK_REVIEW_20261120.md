@@ -1,0 +1,75 @@
+# Practitioner research: regimes, changing alpha, variance and trade decisions
+**As of 2026-11-20. Evidence synthesis for existing whole-fund decision board, not a new alpha model or backtest.** Research PR #186 only. All 2020–2026 historical strategy outcomes have been viewed repeatedly and cannot become fresh OOS.
+
+## Evidence hierarchy and decision
+
+Professional disclosures and peer-reviewed empirical work are stronger evidence of general investment process than anonymous quant forum posts. YC materials offer **research/process discipline**, not specialised alpha. The key distinction is **risk-state forecasting ≠ alpha-state forecasting ≠ optimal trading after costs**. A successful classifier of calm/crisis periods does not itself justify switching MASTER exposure. First prove incremental forecast content; then prove a decision-level net-fund return improvement.
+
+| Decision layer | Institutional or academic source | Supported conclusion | Specific limitation here |
+| --- | --- | --- | --- |
+| Forecast **variance and covariance** | Man AHL, *Volatility is Back: Better to Target Returns or Target Risk?* https://www.man.com/insights/volatility-is-back-better-to-target-returns-or-target-risk ; *Let's Admit It* https://www.man.com/insights/lets-admit-it | Risk has persistence; fast/slow sensitivity to volatility shocks and equity/bond correlation are risk overlays, not forecasts of return direction | Q10 vol targeting and Q4 volatility-managed scaling failed to improve MASTER net returns; forecast risk first, not weights |
+| Characterise probabilistic risk regimes | Two Sigma, *A Machine Learning Approach to Regime Modeling* https://www.twosigma.com/articles/a-machine-learning-approach-to-regime-modeling/ | GMM on 17 factors produces risk-cluster probabilities; best used initially for scenario stress tests; clusters may switch suddenly | GMM conditions are not necessarily causal regime-return forecasts; fit training only through historical timestamp, never use full-sample smoothed labels for real decisions |
+| Contextual / analog regime methods | Man Group, *Regimes, Systematic Models and the Power of Prediction* https://www.man.com/insights/regimes-systematic-models-power-of-prediction | Distance between prior economic-variable states can condition subsequent long/short factor returns; historical factor results show value in some applications | Choice of factors, z-score windows, analog count and lookback can overfit. This fund has **one** validated alpha; don't copy six-factor timing |
+| Factor timing negative evidence | AQR, *The Siren Song of Factor Timing* https://www.aqr.com/Insights/Research/Journal-Article/The-Siren-Song-of-Factor-Timing ; Robeco, *A prudent route to effective factor timing* https://www.robeco.com/en-int/insights/2023/07/a-prudent-route-to-effective-factor-timing | Predictive states can fail after implementation, and simple low-turnover diversified controls are hard to beat | Avoid HMM on/off MASTER rule without a specific prospective economic edge |
+| Alpha persistence and optimal trade | Gârleanu and Pedersen (2013), *Dynamic Trading with Predictable Returns and Transaction Costs* https://w4.stern.nyu.edu/facdir/lpederse/papers/DynamicTrading.pdf | Trade partway towards a cost-aware aim, with more weight for persistent vs rapidly decaying alpha predictors | M1/Q6 implementations already tested, none showed robust improvement for MASTER; **do not** rerun an unregistered GP trading-rate grid |
+| Short-term signals/costs | Robeco, *Beyond Fama-French: Alpha from Short-Term Signals* https://www.robeco.com/en-uk/insights/2022/05/beyond-fama-french-alpha-from-short-term-signals ; AQR, *Trading Costs of Asset Pricing Anomalies* https://www.aqr.com/insights/research/working-paper/trading-costs-of-asset-pricing-anomalies | Decide whether forecast gains justify turnover and impact; no-trade thresholds, liquidity restrictions and capacity are integral to capture | Existing no-trade band succeeded on development fast signals; longer horizon/hysteresis did not improve MASTER in reused tests |
+| Practical forum caution | QuantConnect, *Rage Against the Regimes* https://www.quantconnect.com/forum/discussion/14818/rage-against-the-regimes-the-illusion-of-market-specific-strategies/ ; Quant SE, *Optimal rebalancing with asynchronous alpha* https://quant.stackexchange.com/questions/2029/optimal-re-balancing-strategy-with-asynchronous-alpha-signal ; Reddit r/quant alpha blending https://www.reddit.com/r/quant/comments/1ljs8hf | Practitioners warn that the hard part is selecting when a regime should change trading behaviour, and correlated signals are not independent opportunities | Forum claims are anecdotal design warnings, not reproducible evidence or a reason to admit a second alpha |
+| How to trade systematic signals | Hacker News practitioner, *Anyone making money through algorithmic trading?* https://news.ycombinator.com/item?id=16922538 | Experienced participant distinguishes alpha, execution, portfolio risk and infrastructure; the whole pipeline determines realised P&L | Anonymous practitioner discussion is not an audited fund track record |
+| How to govern experiments | Y Combinator, *How to maintain engineering velocity as you scale* https://www.ycombinator.com/blog/how-to-maintain-engineering-velocity-as-you-scale ; *How to measure your product* https://www.ycombinator.com/library/8C-how-to-measure-your-product | Measure one relevant downstream KPI, log experiments, predefine hypotheses and stop conditions, avoid fake progress | Startup product experiments are not randomized trading trials; adapt process discipline, not their treatment-effect assumptions |
+
+## What existing code has already falsified (do not retry)
+
+- Q9_horizon: longer predictions increased rank persistence but after rank hysteresis saved only 4–7 weekly-turnover percentage points; lost IC, all longer-horizon hysteresis variants underperformed the control net of costs. No new horizon ensemble search.
+- X3_online: 13/14 weekly-versus-annual retraining comparisons had nonpositive IC increments; no credible rapidly adapting alpha benefit.
+- Q10_timing: liquidity-dispersion and SPY-volatility-dependent position rules both failed development gates.
+- M1_dyntrade / Q6_trade: Gârleanu-Pedersen partial trading and most dynamic cost rules failed; no-trade controls remain.
+- Q4_portfolio / L4_exploit: covariance optimiser improved book Sharpe yet lost whole-fund performance. Matching the actual capital and financing convention dominates.
+- Master architecture variants on Nov 20: +~0.008 IC, paired t <0.53, none pass.
+- The multi-alpha engine has ONE admitted equity alpha, MASTER; keep others shadow until a true incremental, after-cost edge is demonstrated.
+
+## Ordered research protocol — ONE diagnostic hypothesis, no strategy search
+
+**RISK-01: does causal 5-session whole-fund variance forecasting outperform a fixed historical-risk benchmark?**
+
+1. Before a trading rule, compare a **pre-fixed simple baseline** (e.g. trailing 20-day variance or current ex-ante risk model) with ONE transparent adaptive candidate (EWMA or fixed HAR daily/weekly/monthly realized variance, choice made using <=2019 data). No HMM/GMM model-family scan. Use only market data and holdings known at each actual decision cutoff; estimates cannot use returns from the holding period. Target the actual fund-weighted next-five-session variance including SPY and beta hedge, not just the unconditional SPY variance.
+2. **Diagnostic only:** score next-week variance with out-of-sample QLIKE (or squared prediction error) using a defensible realized variance proxy, plus volatility calibration, frequency of risk-limit breach, crisis/2022 behavior and forecast drift. Properly distinguish a more accurate risk forecast from improving return Sharpe. 2020–2026 = reused descriptive, forward evaluation is prospective.
+3. If variance forecast is not materially better or is less reliable in stress, STOP. If it is better, keep it as **shadow risk telemetry** before ANY reallocation. Changing exposure still demands a *separate* matched-risk, cost/finance-aware performance test. Needn't wait for risk model to start financing audit.
+4. If a complex cluster detector is ever considered, evaluate **filtered at time t** probabilities, stability/churn, future risk losses and information relative to a low-dimensional variance baseline; never interpret hindsight GMM/HMM **smoothed states** as executable live signals.
+
+**ALPHA-01: dynamic MASTER signal strength is unproven.** Measure, without switching weights, signal IC and held-book net incremental return by predeclared past-known environment (e.g. volatility, dispersion, factor correlations). Existing 5/10/20-day MASTER scores allow descriptive term-structure/decay checks only, not automatic sizing. Cold-start, low-sample shrinkage, label maturity and year-to-year sign stability are hard gates. Given MASTER 2013–2019 book Sharpe ≈−0.16 yet 2020–2025 positive, a trailing-IC zeroing rule is particularly dangerous. Stop if distinctions cannot be established prospectively.
+
+**TRADING-01: preserve alpha conditional on verified costs.** Do not modify timing or no-trade boundaries yet. Use two weeks of prospective quote/close reference coverage after SIP PR #187, actual achievable half spread, impact/ADV and partial fills. Existing Gârleanu-Pedersen and hysteresis searches did not pass; choosing a new turnover parameter using already-tested returns is unacceptable. Marginal trade: expected prospective net utility from an adjustment must exceed **spread + impact + financing + factor-risk/gross opportunity cost**.
+
+**FIN-01 and P1 own the next investment decision.** The 2026-11-21 owner financing study runs net debit / segregated proceeds / 2x daily-reset on identical exposures; do not duplicate. Then one owner-approved, preregistered SPY trend core + MASTER allocation comparison under **identical** capital/hedge/financing/risk policies, with no oracle calibration. Label 2020–2026 reused; leave H9 broad-book 104-week locked read untouched; separately register P9 fund-shadow before any result matures.
+
+## Mathematical decision rule, not an implemented strategy
+
+For a frozen core SPY exposure s and residual equity weights w with holding-period calibrated expected excess alpha mu_t, risk covariance Sigma_t, alpha-execution cost C_t(Δw) and financing F_t(w):
+
+    maximise_w   mu_t'w − (gamma/2) w'Sigma_t w − C_t(w−w_prev) − F_t(w)
+    subject to   |s − beta_t'w| + ||w||_1 <= APPROVED FUND GROSS RULE
+                 book/name/sector/beta, liquidity, borrow and cash constraints
+
+The fixed core alpha is accounted for consistently in whole-fund expected return/risk; **a hard 1.9 cap is not equivalent to the historic soft 1.9 incumbent exception**. Critical missing inputs are trusted mu_t *in return units* and broker-credible financing. A better risk predictor must not be passed off as better expected excess return. Dual variables of gross, beta and financing may diagnose a bottleneck, but no realised economic uplift is inferred from a solver's predicted objective.
+
+## Measurable scoreboard for further decisions
+
+**Baseline, reused 2020–2025:** 302 weeks, 21.6913% CAGR, 0.936946 legacy total-return/vol ratio, **0.813782 cash-excess Sharpe** under historical modeled financing. Margin sensitivity: 0.75715 (segregated) to 0.87497 (zero modeled margin), **not executable improvements**. Target economic materiality for future net-fund comparator: +0.15 excess Sharpe **or** +2 percentage points annualised net return at matched ex-ante risk; include paired HAC/block inference and family selection. In 2026, previously examined, MASTER IC decline is not statistically enough to justify a shutoff.
+
+**Status:** financial improvement **NOT YET ESTABLISHED**. E1 incumbent reproduction complete; E2 funding/cost sensitivities complete but live economics pending; P9 shadow registration and genuinely new return comparison not yet achieved. No code beyond this research memorandum, no new synthetic experiments, no automation changes, no new strategy/alpha admission.
+
+**How to use this memo:** A source-guided *decision hierarchy*, NOT a claim that the quoted institutions publicly disclose their complete proprietary live trading systems or have demonstrated performance on this fund.
+
+
+## Compute-allocation amendment — owner directive, 2026-11-20
+
+**Computational expense is not a methodological exclusion criterion.** Earlier language advising against HMM/GMM or more expensive models is a prohibition against *uncontrolled model-family fishing on reused returns*, not a blanket preference for cheap models. The research must seek the **best economically justified method**, including intensive GPU/CPU training when evidence warrants it.
+
+**Required two-stage progression:**
+
+1. **Test the economic hypothesis first** on a modest, fixed, causally constructed development experiment. Establish whether point-in-time state features predict *future* risk, signal decay or incremental net alpha, relative to a prespecified baseline. Verify label maturity, cross-sectional ID integrity, leakage resistance, regime stability, usable signal horizon and sampling uncertainty. A synthetic experiment may verify software and algorithmic behavior, but cannot substantiate investable alpha.
+2. **If positive, enhance the methodology without an arbitrary compute ceiling:** richer HAR/GARCH/realised-volatility methods, switching state-space/HMM and probabilistic mixtures, ML forecasting, factor risk, ensembles or nonlinear models can be compared with nested walk-forward validation on development data. Invest in repeated fits, careful hyperparameter search, model calibration, stability and robustness testing. Track *all* trials and tuning decisions. The outcome must beat simple methods on held-back development origins and show a plausible route to fund-level performance **after** financing, turnover, market impact and binding gross constraints.
+3. Separate (a) forecasting improvement (e.g., QLIKE, conditional calibration, 5-day risk error) from (b) **economic decision improvement** (paired net whole-fund cash-excess Sharpe/return under matched approved capital/risk policy). Progress on (a) permits further computational investment; it does **not** authorize trading changes.
+4. Keep 2020–2026 previously reused performance windows descriptive; no fresh model selection against them. Use explicitly registered, unseen forward periods for final investment claims. Stop investment promotion if forecast evidence disappears, costs dominate or capital comparability fails.
+
+**Resource policy:** allow significant computation when justified by pre-test expected value of information. Never constrain research to an inferior cheap heuristic for budget optics. Never use unlimited compute as a substitute for a valid hypothesis, a clean validation protocol or access to trustworthy data. Existing owner financing and MASTER workstreams remain separate and are not to be duplicated.
