@@ -180,3 +180,48 @@ No return, signal or statistic of the pre-2003 sleeve has been computed. The non
 
 Whatever the result, the search for an independent free source of pre-2003 commodity futures goes on. Pinnacle
 ($248) is proposed only if doubt remains after that search.
+
+## Amendment 2 (2026-11-25, before the read; owner: "Register"): cross-asset information flow, six hypotheses
+
+**Ruling.** Under CLAUDE.md rule 17 the owner allows H1, H2, H4 and H6 to be registered. They are exposure-timing
+research for the US-equity core, tested once on long history and never tuned; any adoption is a separate protocol
+decision. H3 concerns a second (commodity) book. The family is a precision estimate, like the primary read.
+
+**Specification: `LIT_FLOW.md` §7 (commit 1453c3d), adopted verbatim.** That covers the common design, the table of
+H1–H6, the diagnostics outside the family and the exclusions:
+* control set Zₜ = {equity excess return in month t; the core's state at the end of month t};
+* restricted-model residual bootstrap, stationary blocks with mean 12 months, 10,000 draws, seed 20261125;
+* the wild bootstrap for H5;
+* recursive out-of-sample R² from 1980-01 with Campbell–Thompson restrictions, reported and not decisive;
+* Holm across the evaluable hypotheses at family level 0.10, with the programme-level p reported (N += the
+  number evaluated);
+* verdict per hypothesis:
+  * **supported:** Holm p ≤ 0.10 and out-of-sample R² > 0;
+  * **rejected:** 90% upper bound of the implied R² < 0.25%;
+  * **inconclusive:** otherwise;
+* posterior shrunk towards an out-of-window prior R² ≈ 0.5%.
+
+The choices the memo marks as registered choices are fixed here:
+* H1's 12-month lookback;
+* H4's 15/252-day spike rule;
+* H5's median-heuristic bandwidth, computed on the 2003+ weekly data and frozen;
+* H6's τ = 0.10, and its registered fallback without energy (1974–2002).
+
+**Data conditions (decided at the gate, before the read; never after):**
+* **H2** runs only if at least two energy markets pass the §3 checks, as amended. The current mirror checks pass
+  none; an independent free source, e.g. EIA NYMEX contract prices, may qualify them by a further dated amendment.
+* **H3** runs only if the commodity composite has at least 10 passing markets.
+* **H4** runs only if the commodity composite (≥ 10 markets) and gold pass.
+* **H6** uses its registered fallback without energy if H2's condition fails.
+* A hypothesis that cannot run is recorded as "not evaluable" and is excluded from Holm. The evaluable set is
+  written to `CHECKS_XASSET.json` before the lock.
+
+**Before the read:**
+* the power of H5 and H6 is simulated on synthetic data matched in T and autocorrelation, and the result is
+  committed;
+* the daily failure control of LIT_FLOW §5.4 is run on 2003+ data only.
+
+**Relation to the primary read.** The six hypotheses run inside the same one read (`READ_XASSET.lock`), on the same
+frozen and guarded panel. They are a separate family: Holm is not shared with the primary appraisal-ratio
+estimate, which keeps its own verdict. The primary read's 10-commodity breadth gate (Amendment 1) still governs
+whether the read runs at all.
