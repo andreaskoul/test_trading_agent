@@ -106,6 +106,29 @@ def test_reconcile_uses_the_session_series():
     assert "eq_s = halt_fallback_equity(acct[\"equity\"])" in src    # a missing close never leaves the stale history
 
 
+def test_valuation_hold_never_adds_exposure():
+    """No new exposure while a session is unvalued: shrink or close only (owner, 2026-11-25)."""
+    import sys
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+    from lifecycle_rules import hold_qty
+    cases = {(0, 10): 0, (0, -10): 0,            # no opening
+             (10, 15): 10, (-10, -15): -10,      # no enlarging
+             (10, 4): 4, (-10, -4): -4,          # shrinking passes
+             (10, 0): 0, (-10, 0): 0,            # closing passes
+             (10, -5): 0, (-10, 5): 0}           # a flip only closes
+    for (cq, tq), want in cases.items():
+        assert hold_qty(cq, tq) == want, (cq, tq, hold_qty(cq, tq))
+        assert abs(hold_qty(cq, tq)) <= abs(cq)
+
+
+def test_hold_is_set_by_the_fallback_and_applied_by_the_trade_path():
+    src = open(SRC).read()
+    lc = open(os.path.join(os.path.dirname(SRC), "lifecycle.py")).read()
+    assert 'if src.startswith("broker history + account equity"):' in src and '"VALUATION_HOLD"' in src
+    assert "if vhold:\n            tq = LR.hold_qty(cq, tq)" in lc and '"VALUATION_HOLD"' in lc
+    assert "never late" not in src                                   # the fallback is conservative, not guaranteed
+
+
 if __name__ == "__main__":
     for k, v in list(globals().items()):
         if k.startswith("test_"):

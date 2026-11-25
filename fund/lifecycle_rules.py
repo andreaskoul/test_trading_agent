@@ -119,3 +119,14 @@ def navs_match(first, second, tol=0.005):
     1.5e-11 dollar difference with identical events: summation order, not a different book."""
     a, b = first["rows"], second["rows"]
     return len(a) == len(b) and all(x["date"] == y["date"] and abs(x["nav"] - y["nav"]) <= tol for x, y in zip(a, b))
+
+
+def hold_qty(cq, tq):
+    """Valuation hold (2026-11-25): while the reconcile could not value the last session at its official close
+    (`fund_state/<mode>/VALUATION_HOLD`), no new exposure. A target may shrink a position or close it; it never opens,
+    enlarges or flips one. Existing positions are not liquidated for a missing price."""
+    cq, tq = int(cq), int(tq)
+    if cq == 0 or tq == 0 or np.sign(tq) != np.sign(cq):
+        return 0
+    return int(np.sign(cq)) * min(abs(tq), abs(cq))
+

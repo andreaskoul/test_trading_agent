@@ -100,6 +100,7 @@ LABELS = ("CONFIRMING", "CONTRADICTING", "STALE", "NONE")
 # ---- Protocol 7B (owner, 2026-10-27): R1-R3 and their constants live in fund/lifecycle_rules.py (contract-tested)
 from lifecycle_rules import (P10, hedge_beta, navs_match, P7B, P7B_ASOF, A7B1, P7B2, P7B2_ASOF, A7B2_FIX_ASOF, A7B3, soft_view, STRUCT_MAX, STRUCT_DEFAULT, STRUCT_CHECK, STRUCT_Z,  # noqa: E402
                              may_increase, checkpoint_exit, slots, structural_h, structural_mean)
+import lifecycle_rules as LR  # noqa: E402  (valuation hold, 2026-11-25)
 DESK_SAMPLES, DESK_DRAWS = 5, 8
 
 
@@ -1610,12 +1611,18 @@ def trade(plan_only):
             json.dump(p9, open(os.path.join(CORE, "shadow", f"{day.date()}{'.plan' if plan_only else ''}.json"), "w"), indent=1)
     margin = ops_stats.margin_check(acct, target)
     equity, cur = float(acct["equity"]), broker.positions()
+    hold_p = os.path.join(STATE, MODE, "VALUATION_HOLD")    # 2026-11-25: no new exposure while a session is unvalued
+    vhold = open(hold_p).read().strip() if os.path.exists(hold_p) and not halt else None
+    if vhold and not plan_only:
+        print(f"lifecycle trade: valuation hold ({vhold}); positions may shrink or close, none opens or grows", flush=True)
     orders = []
     for sym in sorted(set(target) | set(cur)):
         cq = int(cur.get(sym, 0))
         if sym in target and sym not in px:
             continue
         tq = int(round(target.get(sym, 0.0) * equity / px[sym])) if sym in target else 0
+        if vhold:
+            tq = LR.hold_qty(cq, tq)
         if tq == cq:
             continue
         if cq and tq and np.sign(tq) != np.sign(cq):
@@ -1635,7 +1642,7 @@ def trade(plan_only):
            "prices": {t: px.get(t) for t in target}, "equity": equity, "current_qty": cur, "target_weights": target,
            "orders": orders, "problems": [], "status": "planned" if plan_only else "sending", "reviews": lv.get("reviews", []),
            "prices_meta": {"news": meta_news, "decision": meta_dec}, "entry_check": entry_check, "a2": lv.get("a2"), "a3": lv.get("a3"),
-           "halt": halt, "margin": margin, "p9": p9}
+           "halt": halt, "valuation_hold": vhold, "margin": margin, "p9": p9}
     json.dump(rec, open(log_p, "w"), indent=1, default=str)
     print(f"lifecycle {day.date()}: {len(lv['lots'])} lots, actions "
           f"{[(e['ticker'], e['action']) for e in lv['actions']]}; {len(orders)} orders", flush=True)

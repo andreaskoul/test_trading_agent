@@ -83,8 +83,10 @@ HALT_FALLBACK_HAIRCUT = 0.01   # > the largest gap seen between the 01:10 UTC li
 
 def halt_fallback_equity(account_equity, haircut=HALT_FALLBACK_HAIRCUT):
     """Session equity when a close is missing: the account's live (after-hours) equity less a haircut larger than its
-    worst observed overstatement of the close equity (+91.8 bp on 2026-11-18, research/exec_recon), so the halt can
-    trip early but never late. Never the stale history: that is a session old."""
+    worst observed overstatement of the close equity (+91.8 bp on 2026-11-18, research/exec_recon). Empirically
+    conservative: below the close equity on every reconcile observed 2026-10-01..11-23; not a guarantee, since a
+    future gap can exceed 1%. So a fallback also sets the valuation hold (no new exposure; fund/lifecycle_rules.py
+    hold_qty). Never the stale history: that is a session old."""
     return float(account_equity) * (1 - haircut)
 
 
@@ -257,7 +259,13 @@ if mode == "reconcile":
                 eq_s = halt_fallback_equity(acct["equity"])
                 src = f"broker history + account equity less {HALT_FALLBACK_HAIRCUT:.0%} (session close unavailable)"
                 problems.append(f"halt: equity at the {session} close unavailable (a held name has no SIP close); "
-                                f"the halt used the account's live equity less {HALT_FALLBACK_HAIRCUT:.0%}")
+                                f"the halt used the account's live equity less {HALT_FALLBACK_HAIRCUT:.0%}; valuation hold set (no new exposure)")
+        hold_p = os.path.join(STATE, MODE, "VALUATION_HOLD")
+        if src.startswith("broker history + account equity"):      # the session could not be valued at its close
+            open(hold_p, "w").write(json.dumps({"at": datetime.utcnow().isoformat(timespec="seconds"),
+                                                "session": str(session), "reason": "a held name has no SIP close"}) + "\n")
+        elif os.path.exists(hold_p) and (eq_s is not None or (hist and session is not None and hist[-1][0] >= session)):
+            os.remove(hold_p)                                       # valued again at the close (or served by the broker)
         H = halt_series(hist, session, eq_s)
         if len(H) > 1:
             e = np.array([x for _, x in H])
