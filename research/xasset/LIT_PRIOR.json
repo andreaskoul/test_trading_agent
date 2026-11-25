@@ -1,0 +1,393 @@
+{
+ "inputs_copied": {
+  "HOP_ex2_12m_gross_SR": {
+   "full_1880_2016": 1.32,
+   "1880s": 1.03,
+   "1890s": 1.35,
+   "1900s": 1.52,
+   "1910s": 0.99,
+   "1920s": 1.77,
+   "1930s": 1.09,
+   "1940s": 1.54,
+   "1950s": 1.55,
+   "1960s": 1.01,
+   "1970s": 1.91,
+   "1980s": 1.46,
+   "1990s": 1.38,
+   "2000s": 1.1,
+   "2010_2016": 0.73
+  },
+  "HOP_ex1_full": {
+   "gross_fee_gross_cost_excess": 0.18,
+   "gross_fee_net_cost_excess": 0.11,
+   "net_2_20_net_cost_excess": 0.073,
+   "realized_vol": 0.097,
+   "SR_net_fees_costs": 0.76,
+   "corr_US_equity": -0.01,
+   "corr_US_10y": -0.03
+  },
+  "HOP_B1_oneway_cost": {
+   "bonds": {
+    "1880_1992": 0.0006,
+    "1993_2002": 0.0002,
+    "2003_2016": 0.0001
+   },
+   "currencies": {
+    "1880_1992": 0.0018,
+    "1993_2002": 0.0006,
+    "2003_2016": 0.0003
+   }
+  },
+  "MOP_t1_vol": {
+   "US2": 0.0186,
+   "US5": 0.0425,
+   "US10": 0.093,
+   "US30": 0.1856,
+   "AUD": 0.1086,
+   "EUR": 0.1121,
+   "CAD": 0.0629,
+   "JPY": 0.1166,
+   "NOK": 0.1056,
+   "NZD": 0.1201,
+   "SEK": 0.1106,
+   "CHF": 0.1233,
+   "GBP": 0.1032
+  },
+  "MOP_t4": {
+   "within_FI": 0.38,
+   "within_FX": 0.1,
+   "FI_vs_FX": 0.05,
+   "FI_vs_EQ": 0.21,
+   "FX_vs_EQ": 0.2
+  },
+  "MOP_t2_alpha_t_k12_h1": {
+   "all": 6.61,
+   "bonds": 3.53,
+   "currencies": 3.41
+  },
+  "MP": {
+   "decline_out_of_sample": 0.26,
+   "decline_post_publication": 0.58,
+   "publication_effect": 0.32,
+   "mean_in_sample_monthly_pct": 0.582,
+   "mean_oos_monthly_pct": 0.402,
+   "mean_post_pub_monthly_pct": 0.264,
+   "coef_post_sample": -0.15,
+   "coef_post_publication": -0.337
+  },
+  "HLWZ_t9_TSM_SR_monthly": {
+   "AU3": 0.24,
+   "AU10": 0.15,
+   "EU2": 0.13,
+   "EU5": 0.06,
+   "EU10": 0.02,
+   "EU30": 0.05,
+   "CA10": 0.11,
+   "JP10": 0.06,
+   "UK10": 0.14,
+   "US2": 0.28,
+   "US5": 0.15,
+   "US10": 0.09,
+   "US30": 0.12,
+   "AUD": 0.02,
+   "EUR": 0.03,
+   "CAD": 0.11,
+   "JPY": 0.14,
+   "NOK": 0.02,
+   "NZD": 0.07,
+   "SEK": 0.01,
+   "CHF": 0.05,
+   "GBP": 0.0
+  },
+  "HLWZ_t9_TSH_SR_monthly": {
+   "AU3": 0.28,
+   "AU10": 0.21,
+   "EU2": 0.1,
+   "EU5": 0.11,
+   "EU10": 0.09,
+   "EU30": 0.19,
+   "CA10": 0.17,
+   "JP10": 0.02,
+   "UK10": 0.12,
+   "US2": 0.26,
+   "US5": 0.19,
+   "US10": 0.13,
+   "US30": 0.2,
+   "AUD": -0.05,
+   "EUR": 0.03,
+   "CAD": -0.04,
+   "JPY": 0.03,
+   "NOK": -0.02,
+   "NZD": 0.01,
+   "SEK": -0.02,
+   "CHF": 0.06,
+   "GBP": -0.01
+  }
+ },
+ "core_P3_full_sample": {
+  "sharpe": 0.5784592451895857,
+  "years": 103.4,
+  "label": "repository: research/exposure/results.json"
+ },
+ "class_means_gross_SR": {
+  "MOP_fig2_1985_2009": {
+   "years": [
+    1985.0,
+    2010.0
+   ],
+   "FI": 0.449,
+   "FX": 0.321
+  },
+  "HOP_ex3_1880_2016": {
+   "years": [
+    1880.0,
+    2017.0
+   ],
+   "FI": 0.551,
+   "FX": 0.35
+  },
+  "HOP_ex4_1880_1984": {
+   "years": [
+    1880.0,
+    1985.0
+   ],
+   "FI": 0.707,
+   "FX": 0.664
+  },
+  "TE_fig2A_1985_2017": {
+   "years": [
+    1985.0,
+    2018.0
+   ],
+   "FI": 0.406,
+   "FX": 0.293
+  },
+  "TE_fig2B_new_markets": {
+   "FI_swaps": 0.567,
+   "EM_FX": 0.178
+  },
+  "HLWZ_t9_1986_2015_annualized": {
+   "FI": 0.426,
+   "FX": 0.173,
+   "FI_TSH": 0.552,
+   "FX_TSH": -0.004
+  },
+  "implied_2010_2017": {
+   "FI": 0.272,
+   "FX": 0.205
+  }
+ },
+ "US_treasuries_gross_SR": {
+  "MOP_fig2_1985_2009": {
+   "2 Yr US Treasury Note": 1.05,
+   "5 Yr US Treasury Note": 0.568,
+   "10 Yr US Treasury Note": 0.432,
+   "30 Yr US Treasury Bond": 0.139
+  },
+  "HOP_ex3_1880_2016": {
+   "U.S. 2-Yr Treasury Note": 0.543,
+   "U.S. 5-Yr Treasury Note": 0.642,
+   "U.S. 10-Yr Treasury Note": 0.672,
+   "U.S. 20-Yr Treasury Bond": 0.44
+  },
+  "HOP_ex4_1880_1984": {
+   "U.S. 2-Yr Treasury Note": 0.404,
+   "U.S. 5-Yr Treasury Note": 0.68,
+   "U.S. 10-Yr Treasury Note": 0.744,
+   "U.S. 20-Yr Treasury Bond": 0.514
+  },
+  "TE_fig2A_1985_2017": {
+   "U.S. 2 Yr Treasury Note": 0.82,
+   "U.S. 5 Yr Treasury Note": 0.62,
+   "U.S. 10 Yr Treasury Note": 0.41,
+   "U.S. 30 Yr Treasury Bond": 0.03
+  }
+ },
+ "overlap_share_with_proxy_dates": {
+  "MOP_fig2_1985_2009": {
+   "FI_share": 0.7,
+   "FX_share": 0.2
+  },
+  "HOP_ex3_1880_2016": {
+   "FI_share": 0.296,
+   "FX_share": 0.391
+  },
+  "HOP_ex4_1880_1984": {
+   "FI_share": 0.219,
+   "FX_share": 0.929
+  },
+  "TE_fig2A_1985_2017": {
+   "FI_share": 0.53,
+   "FX_share": 0.152
+  }
+ },
+ "window_premium": {
+  "inside_mean": 1.44,
+  "outside_mean": 1.288,
+  "k": 1.118
+ },
+ "centre_construction": {
+  "FI": {
+   "HOP_pre1985_stripped": 0.683,
+   "MOP_stripped": 0.415,
+   "centre": 0.549,
+   "half_era_difference": 0.134,
+   "sampling_se_inflated": {
+    "HOP_pre1985": 0.103,
+    "MOP": 0.239
+   },
+   "centre_sd_used": 0.134,
+   "oos_haircut": 0.87,
+   "per_asset_hist": 0.478
+  },
+  "FX": {
+   "HOP_pre1985_stripped": 0.599,
+   "MOP_stripped": 0.314,
+   "weights": [
+    6.0,
+    240.0
+   ],
+   "centre": 0.321,
+   "centre_sd_used_sampling_se_inflated": 0.094,
+   "oos_haircut": 0.746,
+   "per_asset_hist": 0.239
+  },
+  "FI_heterogeneity_MOP": {
+   "true_sd": 0.0,
+   "observed_sd": 0.233,
+   "sampling_sd": 0.247
+  }
+ },
+ "decay": {
+  "MP_post_pub_ratio": 0.42,
+  "MP_oos_ratio": 0.74,
+  "trend_FI_2010_17_over_1985_09": 0.606,
+  "trend_FX_2010_17_over_1985_09": 0.639,
+  "HOP_ex2_2010_16_over_1980s_2000s": 0.556,
+  "forward_factor_centre": 0.555,
+  "forward_factor_sd": 0.1
+ },
+ "cost_SR_units": {
+  "turnover_multiple_assumed": 3.5,
+  "rates_pre1993": {
+   "US2": 0.1129,
+   "US5": 0.0494,
+   "US10": 0.0226,
+   "US30": 0.0113
+  },
+  "fx_pre1993": {
+   "JPY": 0.054,
+   "GBP": 0.061,
+   "CHF": 0.0511,
+   "CAD": 0.1002,
+   "AUD": 0.058,
+   "SEK": 0.057,
+   "NOK": 0.0597,
+   "DKK": 0.063
+  },
+  "rates_2003_on": {
+   "US2": 0.0188,
+   "US5": 0.0082,
+   "US10": 0.0038,
+   "US30": 0.0019
+  },
+  "fx_2003_on": {
+   "JPY": 0.009,
+   "GBP": 0.0102,
+   "CHF": 0.0085,
+   "CAD": 0.0167,
+   "AUD": 0.0097,
+   "SEK": 0.0095,
+   "NOK": 0.0099
+  }
+ },
+ "prior_AR_vs_core": {
+  "single_US10_hist": {
+   "mean": 0.454,
+   "sd": 0.154,
+   "p05": 0.209,
+   "p50": 0.45,
+   "p95": 0.714,
+   "P_gt_0": 0.999
+  },
+  "single_generic_hist": {
+   "mean": 0.421,
+   "sd": 0.155,
+   "p05": 0.174,
+   "p50": 0.417,
+   "p95": 0.681,
+   "P_gt_0": 0.997
+  },
+  "sleeve_hist": {
+   "mean": 0.481,
+   "sd": 0.154,
+   "p05": 0.236,
+   "p50": 0.478,
+   "p95": 0.74,
+   "P_gt_0": 0.999
+  },
+  "sleeve_fwd": {
+   "mean": 0.356,
+   "sd": 0.117,
+   "p05": 0.17,
+   "p50": 0.352,
+   "p95": 0.555,
+   "P_gt_0": 0.999
+  },
+  "single_US10_fwd": {
+   "mean": 0.248,
+   "sd": 0.101,
+   "p05": 0.088,
+   "p50": 0.245,
+   "p95": 0.42,
+   "P_gt_0": 0.993
+  }
+ },
+ "literature_value_gross_rho0": {
+  "single_FI_mean_MOP": 0.449,
+  "sleeve_MOP_level": 0.664
+ },
+ "power_rule3_Lo_iid": {
+  "half_literature_single": {
+   "delta": 0.225,
+   "P_T30.5_z_0.05": 0.337,
+   "P_T30.5_z_0.10/40": 0.057,
+   "P_T30.5_z_0.10/60": 0.044,
+   "P_T40.5_z_0.05": 0.408,
+   "P_T40.5_z_0.10/40": 0.081,
+   "P_T40.5_z_0.10/60": 0.064
+  },
+  "half_literature_sleeve": {
+   "delta": 0.332,
+   "P_T30.5_z_0.05": 0.556,
+   "P_T30.5_z_0.10/40": 0.153,
+   "P_T30.5_z_0.10/60": 0.125,
+   "P_T40.5_z_0.05": 0.66,
+   "P_T40.5_z_0.10/40": 0.227,
+   "P_T40.5_z_0.10/60": 0.19
+  },
+  "prior_centre_single_US10": {
+   "delta": 0.454,
+   "P_T30.5_z_0.05": 0.771,
+   "P_T30.5_z_0.10/40": 0.337,
+   "P_T30.5_z_0.10/60": 0.292,
+   "P_T40.5_z_0.05": 0.866,
+   "P_T40.5_z_0.10/40": 0.478,
+   "P_T40.5_z_0.10/60": 0.427
+  },
+  "prior_centre_sleeve": {
+   "delta": 0.481,
+   "P_T30.5_z_0.05": 0.808,
+   "P_T30.5_z_0.10/40": 0.385,
+   "P_T30.5_z_0.10/60": 0.337,
+   "P_T40.5_z_0.05": 0.895,
+   "P_T40.5_z_0.10/40": 0.536,
+   "P_T40.5_z_0.10/60": 0.485
+  }
+ },
+ "combination": {
+  "proxy_SE_Lo_iid_T40.5_at_prior_centre": 0.166,
+  "prior_sd_sleeve_hist": 0.154,
+  "weight_on_proxy_if_combined": 0.463
+ }
+}
