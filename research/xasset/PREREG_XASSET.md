@@ -137,3 +137,46 @@ statistics are computed on 2003-01 or later (spent).
   not ours.
 * 1962–2002 is unread by this programme, but the field has read it (HOP, MOP). The verdict describes how much
   independent residual return non-equity trend plausibly offers, not the rediscovery of a known anomaly.
+
+## Amendment 1 (2026-11-25, before the read; owner: "register the free gate fix"): the commodity checks compare the right contracts
+
+**What went wrong.** The first run of the §3 gate (commit 9c61596, `CHECKS_XASSET.json`) dropped all 28 commodities.
+The diagnostics on spent 2003–2019 data and the pre-2003 level counts show the check, not the data, at fault:
+* **§3.2 assumed the mirror carries the nearest-expiry contract.** On 2003–2019 it mostly carries pysystemtrade's
+  held contract. Sessions labelled "same contract" were therefore often adjacent contracts. Their prices differ by
+  the carry, which explains the pattern: for gold, 0% of sessions agree within 0.5% in the 1980s (high rates, wide
+  carry), 21% in the 1990s, and about 50% in the 2000s.
+* **§3.1 compared against Yahoo continuous front-month series.** Their roll jumps, and the exclusion of roll days,
+  bias the comparison. For example, gold has ρ 0.998 and 97% sign agreement, but a −1.09 %/yr bias.
+
+No return, signal or statistic of the pre-2003 sleeve has been computed. The non-commodity results stand unchanged:
+* US 5y, 10y and 8 currencies enter;
+* CHF and the five non-US bond proxies stay dropped.
+
+**Changes (mechanical, commodities only):**
+1. **Mirror convention, fixed from spent data.** For each market with a mirror, on 2003-01..2019-12 only, count the
+   share of sessions on which the mirror's settlement is within 0.5% of pysystemtrade's PRICE, CARRY or FORWARD
+   column. The column with the highest share is that market's **convention**, fixed for all dates. If its share is
+   below 80%, the market has no usable mirror.
+2. **§3.2 pre-2003 level check, revised.** The mirror is compared with the convention column on every common
+   pre-2003 session except roll days (±`ROLL_WINDOW_DAYS` around a change of the convention column's contract). A
+   market needs ≥ 95% agreeing within 0.5%. The comparison is never matched per date to whichever column is nearest.
+3. **§3.1 2003+ return check, revised.** The second source is the mirror on its convention contract. Monthly excess
+   returns come from its settlement changes, with the same roll-day exclusion applied to both series. Thresholds
+   unchanged. Yahoo continuous series are reported as a diagnostic only.
+4. **Markets with no mirror stay dropped** unless a further free source is validated by a dated amendment before
+   the read.
+5. **Independence is recorded.** pysystemtrade's older history probably shares an upstream with the mirror (Quandl).
+   For each passing market, the share of pre-2003 sessions on which the two settlements are identical to 4
+   significant digits is reported. Agreement between the two shows consistent processing, not independent
+   confirmation.
+6. **Breadth gate for the read.** The read runs only if at least 10 commodities pass. With fewer, the sample is not
+   spent; the search for another free source continues.
+
+**"Doubt", defined now (owner: buy Pinnacle only if the free fix leaves doubt).** Doubt exists if either holds:
+* fewer than 15 commodities pass;
+* on at least half the passing markets, ≥ 99% of pre-2003 sessions are identical to 4 significant digits, meaning
+  the second source is not independent.
+
+Whatever the result, the search for an independent free source of pre-2003 commodity futures goes on. Pinnacle
+($248) is proposed only if doubt remains after that search.
