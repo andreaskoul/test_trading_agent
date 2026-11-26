@@ -1,0 +1,1859 @@
+{
+ "written_utc": "2026-11-25T01:08:22Z",
+ "kind": "validation statistics of proxy constructions vs executable ETFs on the spent 2003+ period; no trend-strategy return or Sharpe computed; 1962-2002 returns unread",
+ "manifest": "research/xasset/MANIFEST.json",
+ "coverage": {
+  "contracts": {
+   "DGS1": {
+    "first": "1962-01-02",
+    "last": "2026-11-23",
+    "values": 16208,
+    "blank_rows": 722,
+    "max_gap_days": 5,
+    "units": "Percent",
+    "frequency": "Daily",
+    "title": "Market Yield on U.S. Treasury Securities at 1-Year Constant Maturity, Quoted on an Investment Basis",
+    "maturity_years": 1
+   },
+   "DGS2": {
+    "first": "1976-06-01",
+    "last": "2026-11-23",
+    "values": 12616,
+    "blank_rows": 554,
+    "max_gap_days": 5,
+    "units": "Percent",
+    "frequency": "Daily",
+    "title": "Market Yield on U.S. Treasury Securities at 2-Year Constant Maturity, Quoted on an Investment Basis",
+    "maturity_years": 2
+   },
+   "DGS3": {
+    "first": "1962-01-02",
+    "last": "2026-11-23",
+    "values": 16208,
+    "blank_rows": 722,
+    "max_gap_days": 5,
+    "units": "Percent",
+    "frequency": "Daily",
+    "title": "Market Yield on U.S. Treasury Securities at 3-Year Constant Maturity, Quoted on an Investment Basis",
+    "maturity_years": 3
+   },
+   "DGS5": {
+    "first": "1962-01-02",
+    "last": "2026-11-23",
+    "values": 16208,
+    "blank_rows": 722,
+    "max_gap_days": 5,
+    "units": "Percent",
+    "frequency": "Daily",
+    "title": "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis",
+    "maturity_years": 5
+   },
+   "DGS7": {
+    "first": "1969-07-01",
+    "last": "2026-11-23",
+    "values": 14338,
+    "blank_rows": 637,
+    "max_gap_days": 5,
+    "units": "Percent",
+    "frequency": "Daily",
+    "title": "Market Yield on U.S. Treasury Securities at 7-Year Constant Maturity, Quoted on an Investment Basis",
+    "maturity_years": 7
+   },
+   "DGS10": {
+    "first": "1962-01-02",
+    "last": "2026-11-23",
+    "values": 16208,
+    "blank_rows": 722,
+    "max_gap_days": 5,
+    "units": "Percent",
+    "frequency": "Daily",
+    "title": "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis",
+    "maturity_years": 10
+   },
+   "DGS20": {
+    "first": "1962-01-02",
+    "last": "2026-11-23",
+    "values": 14519,
+    "blank_rows": 2411,
+    "max_gap_days": 2466,
+    "units": "Percent",
+    "frequency": "Daily",
+    "title": "Market Yield on U.S. Treasury Securities at 20-Year Constant Maturity, Quoted on an Investment Basis",
+    "maturity_years": 20
+   },
+   "DGS30": {
+    "first": "1977-02-15",
+    "last": "2026-11-23",
+    "values": 12438,
+    "blank_rows": 547,
+    "max_gap_days": 5,
+    "units": "Percent",
+    "frequency": "Daily",
+    "title": "Market Yield on U.S. Treasury Securities at 30-Year Constant Maturity, Quoted on an Investment Basis",
+    "maturity_years": 30,
+    "declared_discontinuation": [
+     "2002-02-18",
+     "2006-02-09"
+    ],
+    "values_inside_discontinuation_removed": 994
+   },
+   "DTB3": {
+    "first": "1954-01-04",
+    "last": "2026-11-23",
+    "values": 18214,
+    "blank_rows": 802,
+    "max_gap_days": 5,
+    "units": "Percent",
+    "frequency": "Daily",
+    "title": "3-Month Treasury Bill Secondary Market Rate, Discount Basis",
+    "conversion": "discount basis -> bond-equivalent 365 d / (360 - 91 d) (from the title)"
+   },
+   "GS1": {
+    "first": "1953-04-01",
+    "last": "2026-10-01",
+    "values": 883,
+    "frequency": "Monthly",
+    "title": "Market Yield on U.S. Treasury Securities at 1-Year Constant Maturity, Quoted on an Investment Basis",
+    "averaging_declared": true,
+    "verdict": "excluded: monthly frequency (not a point-in-time month-end)"
+   },
+   "GS3": {
+    "first": "1953-04-01",
+    "last": "2026-10-01",
+    "values": 883,
+    "frequency": "Monthly",
+    "title": "Market Yield on U.S. Treasury Securities at 3-Year Constant Maturity, Quoted on an Investment Basis",
+    "averaging_declared": true,
+    "verdict": "excluded: monthly frequency (not a point-in-time month-end)"
+   },
+   "GS5": {
+    "first": "1953-04-01",
+    "last": "2026-10-01",
+    "values": 883,
+    "frequency": "Monthly",
+    "title": "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis",
+    "averaging_declared": true,
+    "verdict": "excluded: monthly frequency (not a point-in-time month-end)"
+   },
+   "GS10": {
+    "first": "1953-04-01",
+    "last": "2026-10-01",
+    "values": 883,
+    "frequency": "Monthly",
+    "title": "Market Yield on U.S. Treasury Securities at 10-Year Constant Maturity, Quoted on an Investment Basis",
+    "averaging_declared": true,
+    "verdict": "excluded: monthly frequency (not a point-in-time month-end)"
+   },
+   "TB3MS": {
+    "first": "1934-01-01",
+    "last": "2026-10-01",
+    "values": 1114,
+    "frequency": "Monthly",
+    "title": "3-Month Treasury Bill Secondary Market Rate, Discount Basis",
+    "averaging_declared": true,
+    "verdict": "excluded: monthly frequency (not a point-in-time month-end)"
+   },
+   "EXGEUS": {
+    "first": "1971-01-01",
+    "last": "2001-12-01",
+    "values": 372,
+    "frequency": "Monthly",
+    "title": "Germany / U.S. Foreign Exchange Rate (DISCONTINUED)",
+    "averaging_declared": true,
+    "verdict": "excluded: monthly frequency (not a point-in-time month-end)"
+   },
+   "IR3TIB01USM156N": {
+    "first": "1964-06-01",
+    "last": "2026-10-01",
+    "values": 748,
+    "blank_rows": 1,
+    "max_gap_days": 61,
+    "units": "Percent",
+    "frequency": "Monthly",
+    "title": "Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank Rates: Total for United States",
+    "averaging_declared": false
+   },
+   "IR3TIB01DEM156N": {
+    "first": "1960-01-01",
+    "last": "2026-10-01",
+    "values": 802,
+    "blank_rows": 0,
+    "max_gap_days": 31,
+    "units": "Percent",
+    "frequency": "Monthly",
+    "title": "Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank Rates: Total for Germany",
+    "averaging_declared": false
+   },
+   "IR3TIB01EZM156N": {
+    "first": "1994-01-01",
+    "last": "2026-01-01",
+    "values": 385,
+    "blank_rows": 0,
+    "max_gap_days": 31,
+    "units": "Percent",
+    "frequency": "Monthly",
+    "title": "Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank Rates: Total for Euro Area (19 Countries)",
+    "averaging_declared": false
+   },
+   "IR3TIB01JPM156N": {
+    "first": "2002-04-01",
+    "last": "2026-09-01",
+    "values": 294,
+    "blank_rows": 0,
+    "max_gap_days": 31,
+    "units": "Percent",
+    "frequency": "Monthly",
+    "title": "Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank Rates: Total for Japan",
+    "averaging_declared": false
+   },
+   "IR3TIB01GBM156N": {
+    "first": "1957-01-01",
+    "last": "2026-01-01",
+    "values": 829,
+    "blank_rows": 0,
+    "max_gap_days": 31,
+    "units": "Percent",
+    "frequency": "Monthly",
+    "title": "Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank Rates: Total for United Kingdom",
+    "averaging_declared": false
+   },
+   "IR3TIB01CHM156N": {
+    "first": "1999-07-01",
+    "last": "2026-10-01",
+    "values": 328,
+    "blank_rows": 0,
+    "max_gap_days": 31,
+    "units": "Percent",
+    "frequency": "Monthly",
+    "title": "Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank Rates: Total for Switzerland",
+    "averaging_declared": false
+   },
+   "IR3TIB01AUM156N": {
+    "first": "1968-01-01",
+    "last": "2026-10-01",
+    "values": 706,
+    "blank_rows": 0,
+    "max_gap_days": 31,
+    "units": "Percent",
+    "frequency": "Monthly",
+    "title": "Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank Rates: Total for Australia",
+    "averaging_declared": false
+   },
+   "IR3TIB01CAM156N": {
+    "first": "1956-01-01",
+    "last": "2026-10-01",
+    "values": 850,
+    "blank_rows": 0,
+    "max_gap_days": 31,
+    "units": "Percent",
+    "frequency": "Monthly",
+    "title": "Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank Rates: Total for Canada",
+    "averaging_declared": false
+   },
+   "IR3TIB01SEM156N": {
+    "first": "1982-01-01",
+    "last": "2026-10-01",
+    "values": 538,
+    "blank_rows": 0,
+    "max_gap_days": 31,
+    "units": "Percent",
+    "frequency": "Monthly",
+    "title": "Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank Rates: Total for Sweden",
+    "averaging_declared": false
+   },
+   "IR3TIB01NOM156N": {
+    "first": "1979-01-01",
+    "last": "2026-10-01",
+    "values": 574,
+    "blank_rows": 0,
+    "max_gap_days": 31,
+    "units": "Percent",
+    "frequency": "Monthly",
+    "title": "Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank Rates: Total for Norway",
+    "averaging_declared": false
+   },
+   "IR3TIB01DKM156N": {
+    "first": "1987-01-01",
+    "last": "2026-10-01",
+    "values": 478,
+    "blank_rows": 0,
+    "max_gap_days": 31,
+    "units": "Percent",
+    "frequency": "Monthly",
+    "title": "Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank Rates: Total for Denmark",
+    "averaging_declared": false
+   },
+   "IRSTCI01JPM156N": {
+    "first": "1985-07-01",
+    "last": "2026-10-01",
+    "values": 496,
+    "blank_rows": 0,
+    "max_gap_days": 31,
+    "units": "Percent",
+    "frequency": "Monthly",
+    "title": "Interest Rates: Immediate Rates (< 24 Hours): Call Money/Interbank Rate: Total for Japan",
+    "averaging_declared": false
+   },
+   "DEXUSEU": {
+    "first": "1999-01-04",
+    "last": "2026-11-20",
+    "values": 6993,
+    "blank_rows": 282,
+    "max_gap_days": 5,
+    "units": "U.S. Dollars to One Euro",
+    "frequency": "Daily",
+    "title": "U.S. Dollars to Euro Spot Exchange Rate",
+    "direction": "USD per foreign"
+   },
+   "DEXJPUS": {
+    "first": "1971-01-04",
+    "last": "2026-11-20",
+    "values": 14008,
+    "blank_rows": 572,
+    "max_gap_days": 18,
+    "units": "Japanese Yen to One U.S. Dollar",
+    "frequency": "Daily",
+    "title": "Japanese Yen to U.S. Dollar Spot Exchange Rate",
+    "direction": "foreign per USD -> inverted"
+   },
+   "DEXUSUK": {
+    "first": "1971-01-04",
+    "last": "2026-11-20",
+    "values": 14014,
+    "blank_rows": 566,
+    "max_gap_days": 10,
+    "units": "U.S. Dollars to One U.K. Pound Sterling",
+    "frequency": "Daily",
+    "title": "U.S. Dollars to U.K. Pound Sterling Spot Exchange Rate",
+    "direction": "USD per foreign"
+   },
+   "DEXSZUS": {
+    "first": "1971-01-04",
+    "last": "2026-11-20",
+    "values": 14014,
+    "blank_rows": 566,
+    "max_gap_days": 10,
+    "units": "Swiss Francs to One U.S. Dollar",
+    "frequency": "Daily",
+    "title": "Swiss Francs to U.S. Dollar Spot Exchange Rate",
+    "direction": "foreign per USD -> inverted"
+   },
+   "DEXUSAL": {
+    "first": "1971-01-04",
+    "last": "2026-11-20",
+    "values": 14007,
+    "blank_rows": 573,
+    "max_gap_days": 10,
+    "units": "U.S. Dollars to One Australian Dollar",
+    "frequency": "Daily",
+    "title": "U.S. Dollars to Australian Dollar Spot Exchange Rate",
+    "direction": "USD per foreign"
+   },
+   "DEXCAUS": {
+    "first": "1971-01-04",
+    "last": "2026-11-20",
+    "values": 14020,
+    "blank_rows": 560,
+    "max_gap_days": 5,
+    "units": "Canadian Dollars to One U.S. Dollar",
+    "frequency": "Daily",
+    "title": "Canadian Dollars to U.S. Dollar Spot Exchange Rate",
+    "direction": "foreign per USD -> inverted"
+   },
+   "DEXSDUS": {
+    "first": "1971-01-04",
+    "last": "2026-11-20",
+    "values": 14013,
+    "blank_rows": 567,
+    "max_gap_days": 10,
+    "units": "Swedish Kronor to One U.S. Dollar",
+    "frequency": "Daily",
+    "title": "Swedish Kronor to U.S. Dollar Spot Exchange Rate",
+    "direction": "foreign per USD -> inverted"
+   },
+   "DEXNOUS": {
+    "first": "1971-01-04",
+    "last": "2026-11-20",
+    "values": 14013,
+    "blank_rows": 567,
+    "max_gap_days": 10,
+    "units": "Norwegian Kroner to One U.S. Dollar",
+    "frequency": "Daily",
+    "title": "Norwegian Kroner to U.S. Dollar Spot Exchange Rate",
+    "direction": "foreign per USD -> inverted"
+   },
+   "DEXDNUS": {
+    "first": "1971-01-04",
+    "last": "2026-11-20",
+    "values": 14013,
+    "blank_rows": 567,
+    "max_gap_days": 10,
+    "units": "Danish Kroner to One U.S. Dollar",
+    "frequency": "Daily",
+    "title": "Danish Kroner to U.S. Dollar Spot Exchange Rate",
+    "direction": "foreign per USD -> inverted"
+   },
+   "SHY": {
+    "first": "2002-07-30",
+    "last": "2026-11-23",
+    "rows": 6120,
+    "rows_per_business_day": 0.9645,
+    "incomplete_last_row_dropped": true,
+    "dividend_rows": 291,
+    "adjustment_check_2003+": {
+     "months": 286,
+     "months_dev_over_5bp": 0,
+     "max_abs_dev_bp": 0.19
+    }
+   },
+   "IEI": {
+    "first": "2007-01-11",
+    "last": "2026-11-23",
+    "rows": 4999,
+    "rows_per_business_day": 0.9645,
+    "incomplete_last_row_dropped": true,
+    "dividend_rows": 237,
+    "adjustment_check_2003+": {
+     "months": 238,
+     "months_dev_over_5bp": 0,
+     "max_abs_dev_bp": 0.31
+    }
+   },
+   "IEF": {
+    "first": "2002-07-30",
+    "last": "2026-11-23",
+    "rows": 6120,
+    "rows_per_business_day": 0.9645,
+    "incomplete_last_row_dropped": true,
+    "dividend_rows": 292,
+    "adjustment_check_2003+": {
+     "months": 286,
+     "months_dev_over_5bp": 0,
+     "max_abs_dev_bp": 1.06
+    }
+   },
+   "TLT": {
+    "first": "2002-07-30",
+    "last": "2026-11-23",
+    "rows": 6120,
+    "rows_per_business_day": 0.9645,
+    "incomplete_last_row_dropped": true,
+    "dividend_rows": 290,
+    "adjustment_check_2003+": {
+     "months": 286,
+     "months_dev_over_5bp": 0,
+     "max_abs_dev_bp": 1.46
+    }
+   },
+   "FXE": {
+    "first": "2005-12-12",
+    "last": "2026-11-23",
+    "rows": 5270,
+    "rows_per_business_day": 0.9641,
+    "incomplete_last_row_dropped": true,
+    "dividend_rows": 101,
+    "adjustment_check_2003+": {
+     "months": 251,
+     "months_dev_over_5bp": 0,
+     "max_abs_dev_bp": 0.35
+    }
+   },
+   "FXY": {
+    "first": "2007-02-13",
+    "last": "2026-11-23",
+    "rows": 4977,
+    "rows_per_business_day": 0.9645,
+    "incomplete_last_row_dropped": true,
+    "dividend_rows": 0,
+    "adjustment_check_2003+": {
+     "months": 237,
+     "months_dev_over_5bp": 0,
+     "max_abs_dev_bp": 0.0
+    }
+   },
+   "FXB": {
+    "first": "2006-06-26",
+    "last": "2026-11-23",
+    "rows": 5136,
+    "rows_per_business_day": 0.9643,
+    "incomplete_last_row_dropped": true,
+    "dividend_rows": 83,
+    "adjustment_check_2003+": {
+     "months": 245,
+     "months_dev_over_5bp": 0,
+     "max_abs_dev_bp": 0.83
+    }
+   },
+   "FXF": {
+    "first": "2006-06-26",
+    "last": "2026-11-23",
+    "rows": 5136,
+    "rows_per_business_day": 0.9643,
+    "incomplete_last_row_dropped": true,
+    "dividend_rows": 36,
+    "adjustment_check_2003+": {
+     "months": 245,
+     "months_dev_over_5bp": 0,
+     "max_abs_dev_bp": 0.26
+    }
+   },
+   "FXA": {
+    "first": "2006-06-26",
+    "last": "2026-11-23",
+    "rows": 5136,
+    "rows_per_business_day": 0.9643,
+    "incomplete_last_row_dropped": true,
+    "dividend_rows": 209,
+    "adjustment_check_2003+": {
+     "months": 245,
+     "months_dev_over_5bp": 0,
+     "max_abs_dev_bp": 1.29
+    }
+   },
+   "FXC": {
+    "first": "2006-06-26",
+    "last": "2026-11-23",
+    "rows": 5136,
+    "rows_per_business_day": 0.9643,
+    "incomplete_last_row_dropped": true,
+    "dividend_rows": 165,
+    "adjustment_check_2003+": {
+     "months": 245,
+     "months_dev_over_5bp": 0,
+     "max_abs_dev_bp": 0.3
+    }
+   },
+   "UUP": {
+    "first": "2007-03-01",
+    "last": "2026-11-23",
+    "rows": 4966,
+    "rows_per_business_day": 0.9646,
+    "incomplete_last_row_dropped": true,
+    "dividend_rows": 9,
+    "adjustment_check_2003+": {
+     "months": 236,
+     "months_dev_over_5bp": 0,
+     "max_abs_dev_bp": 1.58
+    }
+   }
+  },
+  "defects": [
+   {
+    "kind": "input_defect",
+    "source": "IRSTCI01CHM156N",
+    "detail": "IRSTCI01CHM156N: 1 values outside the plausible range [-2.0, 60.0]"
+   }
+  ],
+  "treasury": {
+   "DGS1": {
+    "1962-01..2002-12": {
+     "expected_months": 492,
+     "months_present": 492,
+     "missing_spans": []
+    },
+    "2003-01..2026-10": {
+     "expected_months": 286,
+     "months_present": 286,
+     "missing_spans": []
+    }
+   },
+   "DGS2": {
+    "1962-01..2002-12": {
+     "expected_months": 492,
+     "months_present": 319,
+     "missing_spans": [
+      "1962-01..1976-05"
+     ]
+    },
+    "2003-01..2026-10": {
+     "expected_months": 286,
+     "months_present": 286,
+     "missing_spans": []
+    }
+   },
+   "DGS3": {
+    "1962-01..2002-12": {
+     "expected_months": 492,
+     "months_present": 492,
+     "missing_spans": []
+    },
+    "2003-01..2026-10": {
+     "expected_months": 286,
+     "months_present": 286,
+     "missing_spans": []
+    }
+   },
+   "DGS5": {
+    "1962-01..2002-12": {
+     "expected_months": 492,
+     "months_present": 492,
+     "missing_spans": []
+    },
+    "2003-01..2026-10": {
+     "expected_months": 286,
+     "months_present": 286,
+     "missing_spans": []
+    }
+   },
+   "DGS7": {
+    "1962-01..2002-12": {
+     "expected_months": 492,
+     "months_present": 402,
+     "missing_spans": [
+      "1962-01..1969-06"
+     ]
+    },
+    "2003-01..2026-10": {
+     "expected_months": 286,
+     "months_present": 286,
+     "missing_spans": []
+    }
+   },
+   "DGS10": {
+    "1962-01..2002-12": {
+     "expected_months": 492,
+     "months_present": 492,
+     "missing_spans": []
+    },
+    "2003-01..2026-10": {
+     "expected_months": 286,
+     "months_present": 286,
+     "missing_spans": []
+    }
+   },
+   "DGS20": {
+    "1962-01..2002-12": {
+     "expected_months": 492,
+     "months_present": 411,
+     "missing_spans": [
+      "1987-01..1993-09"
+     ]
+    },
+    "2003-01..2026-10": {
+     "expected_months": 286,
+     "months_present": 286,
+     "missing_spans": []
+    }
+   },
+   "DGS30": {
+    "1962-01..2002-12": {
+     "expected_months": 492,
+     "months_present": 300,
+     "missing_spans": [
+      "1962-01..1977-01",
+      "2002-02..2002-12"
+     ]
+    },
+    "2003-01..2026-10": {
+     "expected_months": 286,
+     "months_present": 249,
+     "missing_spans": [
+      "2003-01..2006-01"
+     ]
+    }
+   },
+   "DTB3": {
+    "1962-01..2002-12": {
+     "expected_months": 492,
+     "months_present": 492,
+     "missing_spans": []
+    }
+   }
+  },
+  "fx": {
+   "EUR": {
+    "spot_1972-01..2002-12": {
+     "expected_months": 372,
+     "months_present": 48,
+     "missing_spans": [
+      "1972-01..1998-12"
+     ]
+    },
+    "differential_1972-01..2002-12": {
+     "periods_with_spot": 47,
+     "periods_complete": 47,
+     "missing_differential": 0,
+     "missing_foreign_rate": 0,
+     "missing_us_rate": 0,
+     "missing_differential_by_year": {}
+    },
+    "differential_all_dates": {
+     "periods_with_spot": 333,
+     "periods_complete": 324,
+     "missing_differential": 9,
+     "missing_foreign_rate": 8,
+     "missing_us_rate": 1,
+     "missing_differential_by_year": {
+      "2020": 1,
+      "2026": 8
+     }
+    }
+   },
+   "JPY": {
+    "spot_1972-01..2002-12": {
+     "expected_months": 372,
+     "months_present": 372,
+     "missing_spans": []
+    },
+    "differential_1972-01..2002-12": {
+     "periods_with_spot": 371,
+     "periods_complete": 8,
+     "missing_differential": 363,
+     "missing_foreign_rate": 363,
+     "missing_us_rate": 0,
+     "missing_differential_by_year": {
+      "1972": 11,
+      "1973": 12,
+      "1974": 12,
+      "1975": 12,
+      "1976": 12,
+      "1977": 12,
+      "1978": 12,
+      "1979": 12,
+      "1980": 12,
+      "1981": 12,
+      "1982": 12,
+      "1983": 12,
+      "1984": 12,
+      "1985": 12,
+      "1986": 12,
+      "1987": 12,
+      "1988": 12,
+      "1989": 12,
+      "1990": 12,
+      "1991": 12,
+      "1992": 12,
+      "1993": 12,
+      "1994": 12,
+      "1995": 12,
+      "1996": 12,
+      "1997": 12,
+      "1998": 12,
+      "1999": 12,
+      "2000": 12,
+      "2001": 12,
+      "2002": 4
+     }
+    },
+    "differential_all_dates": {
+     "periods_with_spot": 669,
+     "periods_complete": 293,
+     "missing_differential": 376,
+     "missing_foreign_rate": 375,
+     "missing_us_rate": 1,
+     "missing_differential_by_year": {
+      "1971": 11,
+      "1972": 12,
+      "1973": 12,
+      "1974": 12,
+      "1975": 12,
+      "1976": 12,
+      "1977": 12,
+      "1978": 12,
+      "1979": 12,
+      "1980": 12,
+      "1981": 12,
+      "1982": 12,
+      "1983": 12,
+      "1984": 12,
+      "1985": 12,
+      "1986": 12,
+      "1987": 12,
+      "1988": 12,
+      "1989": 12,
+      "1990": 12,
+      "1991": 12,
+      "1992": 12,
+      "1993": 12,
+      "1994": 12,
+      "1995": 12,
+      "1996": 12,
+      "1997": 12,
+      "1998": 12,
+      "1999": 12,
+      "2000": 12,
+      "2001": 12,
+      "2002": 4,
+      "2020": 1
+     }
+    },
+    "differential_1972-01..2002-12_call_money_fallback": {
+     "periods_with_spot": 371,
+     "periods_complete": 209,
+     "missing_differential": 162,
+     "missing_foreign_rate": 162,
+     "missing_us_rate": 0,
+     "missing_differential_by_year": {
+      "1972": 11,
+      "1973": 12,
+      "1974": 12,
+      "1975": 12,
+      "1976": 12,
+      "1977": 12,
+      "1978": 12,
+      "1979": 12,
+      "1980": 12,
+      "1981": 12,
+      "1982": 12,
+      "1983": 12,
+      "1984": 12,
+      "1985": 7
+     }
+    }
+   },
+   "GBP": {
+    "spot_1972-01..2002-12": {
+     "expected_months": 372,
+     "months_present": 372,
+     "missing_spans": []
+    },
+    "differential_1972-01..2002-12": {
+     "periods_with_spot": 371,
+     "periods_complete": 371,
+     "missing_differential": 0,
+     "missing_foreign_rate": 0,
+     "missing_us_rate": 0,
+     "missing_differential_by_year": {}
+    },
+    "differential_all_dates": {
+     "periods_with_spot": 669,
+     "periods_complete": 660,
+     "missing_differential": 9,
+     "missing_foreign_rate": 8,
+     "missing_us_rate": 1,
+     "missing_differential_by_year": {
+      "2020": 1,
+      "2026": 8
+     }
+    }
+   },
+   "CHF": {
+    "spot_1972-01..2002-12": {
+     "expected_months": 372,
+     "months_present": 372,
+     "missing_spans": []
+    },
+    "differential_1972-01..2002-12": {
+     "periods_with_spot": 371,
+     "periods_complete": 41,
+     "missing_differential": 330,
+     "missing_foreign_rate": 330,
+     "missing_us_rate": 0,
+     "missing_differential_by_year": {
+      "1972": 11,
+      "1973": 12,
+      "1974": 12,
+      "1975": 12,
+      "1976": 12,
+      "1977": 12,
+      "1978": 12,
+      "1979": 12,
+      "1980": 12,
+      "1981": 12,
+      "1982": 12,
+      "1983": 12,
+      "1984": 12,
+      "1985": 12,
+      "1986": 12,
+      "1987": 12,
+      "1988": 12,
+      "1989": 12,
+      "1990": 12,
+      "1991": 12,
+      "1992": 12,
+      "1993": 12,
+      "1994": 12,
+      "1995": 12,
+      "1996": 12,
+      "1997": 12,
+      "1998": 12,
+      "1999": 7
+     }
+    },
+    "differential_all_dates": {
+     "periods_with_spot": 669,
+     "periods_complete": 326,
+     "missing_differential": 343,
+     "missing_foreign_rate": 342,
+     "missing_us_rate": 1,
+     "missing_differential_by_year": {
+      "1971": 11,
+      "1972": 12,
+      "1973": 12,
+      "1974": 12,
+      "1975": 12,
+      "1976": 12,
+      "1977": 12,
+      "1978": 12,
+      "1979": 12,
+      "1980": 12,
+      "1981": 12,
+      "1982": 12,
+      "1983": 12,
+      "1984": 12,
+      "1985": 12,
+      "1986": 12,
+      "1987": 12,
+      "1988": 12,
+      "1989": 12,
+      "1990": 12,
+      "1991": 12,
+      "1992": 12,
+      "1993": 12,
+      "1994": 12,
+      "1995": 12,
+      "1996": 12,
+      "1997": 12,
+      "1998": 12,
+      "1999": 7,
+      "2020": 1
+     }
+    }
+   },
+   "AUD": {
+    "spot_1972-01..2002-12": {
+     "expected_months": 372,
+     "months_present": 372,
+     "missing_spans": []
+    },
+    "differential_1972-01..2002-12": {
+     "periods_with_spot": 371,
+     "periods_complete": 371,
+     "missing_differential": 0,
+     "missing_foreign_rate": 0,
+     "missing_us_rate": 0,
+     "missing_differential_by_year": {}
+    },
+    "differential_all_dates": {
+     "periods_with_spot": 669,
+     "periods_complete": 668,
+     "missing_differential": 1,
+     "missing_foreign_rate": 0,
+     "missing_us_rate": 1,
+     "missing_differential_by_year": {
+      "2020": 1
+     }
+    }
+   },
+   "CAD": {
+    "spot_1972-01..2002-12": {
+     "expected_months": 372,
+     "months_present": 372,
+     "missing_spans": []
+    },
+    "differential_1972-01..2002-12": {
+     "periods_with_spot": 371,
+     "periods_complete": 371,
+     "missing_differential": 0,
+     "missing_foreign_rate": 0,
+     "missing_us_rate": 0,
+     "missing_differential_by_year": {}
+    },
+    "differential_all_dates": {
+     "periods_with_spot": 669,
+     "periods_complete": 668,
+     "missing_differential": 1,
+     "missing_foreign_rate": 0,
+     "missing_us_rate": 1,
+     "missing_differential_by_year": {
+      "2020": 1
+     }
+    }
+   },
+   "SEK": {
+    "spot_1972-01..2002-12": {
+     "expected_months": 372,
+     "months_present": 372,
+     "missing_spans": []
+    },
+    "differential_1972-01..2002-12": {
+     "periods_with_spot": 371,
+     "periods_complete": 251,
+     "missing_differential": 120,
+     "missing_foreign_rate": 120,
+     "missing_us_rate": 0,
+     "missing_differential_by_year": {
+      "1972": 11,
+      "1973": 12,
+      "1974": 12,
+      "1975": 12,
+      "1976": 12,
+      "1977": 12,
+      "1978": 12,
+      "1979": 12,
+      "1980": 12,
+      "1981": 12,
+      "1982": 1
+     }
+    },
+    "differential_all_dates": {
+     "periods_with_spot": 669,
+     "periods_complete": 536,
+     "missing_differential": 133,
+     "missing_foreign_rate": 132,
+     "missing_us_rate": 1,
+     "missing_differential_by_year": {
+      "1971": 11,
+      "1972": 12,
+      "1973": 12,
+      "1974": 12,
+      "1975": 12,
+      "1976": 12,
+      "1977": 12,
+      "1978": 12,
+      "1979": 12,
+      "1980": 12,
+      "1981": 12,
+      "1982": 1,
+      "2020": 1
+     }
+    }
+   },
+   "NOK": {
+    "spot_1972-01..2002-12": {
+     "expected_months": 372,
+     "months_present": 372,
+     "missing_spans": []
+    },
+    "differential_1972-01..2002-12": {
+     "periods_with_spot": 371,
+     "periods_complete": 287,
+     "missing_differential": 84,
+     "missing_foreign_rate": 84,
+     "missing_us_rate": 0,
+     "missing_differential_by_year": {
+      "1972": 11,
+      "1973": 12,
+      "1974": 12,
+      "1975": 12,
+      "1976": 12,
+      "1977": 12,
+      "1978": 12,
+      "1979": 1
+     }
+    },
+    "differential_all_dates": {
+     "periods_with_spot": 669,
+     "periods_complete": 572,
+     "missing_differential": 97,
+     "missing_foreign_rate": 96,
+     "missing_us_rate": 1,
+     "missing_differential_by_year": {
+      "1971": 11,
+      "1972": 12,
+      "1973": 12,
+      "1974": 12,
+      "1975": 12,
+      "1976": 12,
+      "1977": 12,
+      "1978": 12,
+      "1979": 1,
+      "2020": 1
+     }
+    }
+   },
+   "DKK": {
+    "spot_1972-01..2002-12": {
+     "expected_months": 372,
+     "months_present": 372,
+     "missing_spans": []
+    },
+    "differential_1972-01..2002-12": {
+     "periods_with_spot": 371,
+     "periods_complete": 191,
+     "missing_differential": 180,
+     "missing_foreign_rate": 180,
+     "missing_us_rate": 0,
+     "missing_differential_by_year": {
+      "1972": 11,
+      "1973": 12,
+      "1974": 12,
+      "1975": 12,
+      "1976": 12,
+      "1977": 12,
+      "1978": 12,
+      "1979": 12,
+      "1980": 12,
+      "1981": 12,
+      "1982": 12,
+      "1983": 12,
+      "1984": 12,
+      "1985": 12,
+      "1986": 12,
+      "1987": 1
+     }
+    },
+    "differential_all_dates": {
+     "periods_with_spot": 669,
+     "periods_complete": 476,
+     "missing_differential": 193,
+     "missing_foreign_rate": 192,
+     "missing_us_rate": 1,
+     "missing_differential_by_year": {
+      "1971": 11,
+      "1972": 12,
+      "1973": 12,
+      "1974": 12,
+      "1975": 12,
+      "1976": 12,
+      "1977": 12,
+      "1978": 12,
+      "1979": 12,
+      "1980": 12,
+      "1981": 12,
+      "1982": 12,
+      "1983": 12,
+      "1984": 12,
+      "1985": 12,
+      "1986": 12,
+      "1987": 1,
+      "2020": 1
+     }
+    }
+   }
+  }
+ },
+ "validation": {
+  "window_rule": "every series masked to dates >= 2003-01-01 by validation_window()",
+  "thresholds": {
+   "corr_min": 0.95,
+   "te_max_share_of_etf_vol": 0.35,
+   "abs_bias_max_pct_per_year": 1.0,
+   "signal_agreement_min": 0.9,
+   "abs_switch_diff_max_per_year": 0.5
+  },
+  "treasury": [
+   {
+    "window": [
+     "2003-02-28",
+     "2026-10-31"
+    ],
+    "months": 285,
+    "corr": 0.9822,
+    "tracking_error_pct_per_year": 0.308,
+    "te_share_of_etf_vol": 0.216,
+    "mean_diff_pct_per_year": -0.086,
+    "mean_diff_hac_se_pct_per_year": 0.082,
+    "hac_lags": 5,
+    "vol_proxy_pct_per_year": 1.55,
+    "vol_etf_pct_per_year": 1.42,
+    "beta_etf_on_proxy": 0.902,
+    "signal_months": 274,
+    "signal_agreement": 0.9015,
+    "switches_per_year_proxy": 1.275,
+    "switches_per_year_etf": 0.835,
+    "switch_diff_per_year": 0.44,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true,
+    "etf": "SHY",
+    "proxy": "2y par bond (DGS2)",
+    "role": "primary",
+    "daily_diagnostic": {
+     "days": 5966,
+     "corr_daily": 0.9057,
+     "vol_ratio_proxy_over_etf": 1.056
+    }
+   },
+   {
+    "window": [
+     "2003-02-28",
+     "2026-10-31"
+    ],
+    "months": 285,
+    "corr": 0.8668,
+    "tracking_error_pct_per_year": 0.914,
+    "te_share_of_etf_vol": 0.641,
+    "mean_diff_pct_per_year": -0.114,
+    "mean_diff_hac_se_pct_per_year": 0.179,
+    "hac_lags": 5,
+    "vol_proxy_pct_per_year": 0.66,
+    "vol_etf_pct_per_year": 1.42,
+    "beta_etf_on_proxy": 1.87,
+    "signal_months": 274,
+    "signal_agreement": 0.8321,
+    "switches_per_year_proxy": 0.923,
+    "switches_per_year_etf": 0.835,
+    "switch_diff_per_year": 0.088,
+    "checks": {
+     "corr": false,
+     "tracking_error": false,
+     "bias": true,
+     "signal_agreement": false,
+     "turnover": true
+    },
+    "validates": false,
+    "etf": "SHY",
+    "proxy": "1y par bond (DGS1)",
+    "role": "alternate"
+   },
+   {
+    "window": [
+     "2003-02-28",
+     "2026-10-31"
+    ],
+    "months": 285,
+    "corr": 0.9697,
+    "tracking_error_pct_per_year": 1.147,
+    "te_share_of_etf_vol": 0.805,
+    "mean_diff_pct_per_year": 0.008,
+    "mean_diff_hac_se_pct_per_year": 0.237,
+    "hac_lags": 5,
+    "vol_proxy_pct_per_year": 2.47,
+    "vol_etf_pct_per_year": 1.42,
+    "beta_etf_on_proxy": 0.558,
+    "signal_months": 274,
+    "signal_agreement": 0.8577,
+    "switches_per_year_proxy": 1.451,
+    "switches_per_year_etf": 0.835,
+    "switch_diff_per_year": 0.615,
+    "checks": {
+     "corr": true,
+     "tracking_error": false,
+     "bias": true,
+     "signal_agreement": false,
+     "turnover": false
+    },
+    "validates": false,
+    "etf": "SHY",
+    "proxy": "3y par bond (DGS3)",
+    "role": "alternate"
+   },
+   {
+    "window": [
+     "2007-02-28",
+     "2026-10-31"
+    ],
+    "months": 237,
+    "corr": 0.994,
+    "tracking_error_pct_per_year": 0.521,
+    "te_share_of_etf_vol": 0.133,
+    "mean_diff_pct_per_year": -0.478,
+    "mean_diff_hac_se_pct_per_year": 0.121,
+    "hac_lags": 4,
+    "vol_proxy_pct_per_year": 4.19,
+    "vol_etf_pct_per_year": 3.92,
+    "beta_etf_on_proxy": 0.93,
+    "signal_months": 226,
+    "signal_agreement": 0.9646,
+    "switches_per_year_proxy": 1.12,
+    "switches_per_year_etf": 0.907,
+    "switch_diff_per_year": 0.213,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true,
+    "etf": "IEI",
+    "proxy": "5y par bond (DGS5)",
+    "role": "primary",
+    "daily_diagnostic": {
+     "days": 4960,
+     "corr_daily": 0.9625,
+     "vol_ratio_proxy_over_etf": 1.075
+    }
+   },
+   {
+    "window": [
+     "2007-02-28",
+     "2026-10-31"
+    ],
+    "months": 237,
+    "corr": 0.9775,
+    "tracking_error_pct_per_year": 2.065,
+    "te_share_of_etf_vol": 0.526,
+    "mean_diff_pct_per_year": -0.156,
+    "mean_diff_hac_se_pct_per_year": 0.446,
+    "hac_lags": 4,
+    "vol_proxy_pct_per_year": 5.73,
+    "vol_etf_pct_per_year": 3.92,
+    "beta_etf_on_proxy": 0.67,
+    "signal_months": 226,
+    "signal_agreement": 0.9779,
+    "switches_per_year_proxy": 1.013,
+    "switches_per_year_etf": 0.907,
+    "switch_diff_per_year": 0.107,
+    "checks": {
+     "corr": true,
+     "tracking_error": false,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": false,
+    "etf": "IEI",
+    "proxy": "7y par bond (DGS7)",
+    "role": "alternate"
+   },
+   {
+    "window": [
+     "2003-02-28",
+     "2026-10-31"
+    ],
+    "months": 285,
+    "corr": 0.9898,
+    "tracking_error_pct_per_year": 1.381,
+    "te_share_of_etf_vol": 0.208,
+    "mean_diff_pct_per_year": -0.492,
+    "mean_diff_hac_se_pct_per_year": 0.277,
+    "hac_lags": 5,
+    "vol_proxy_pct_per_year": 7.57,
+    "vol_etf_pct_per_year": 6.63,
+    "beta_etf_on_proxy": 0.867,
+    "signal_months": 274,
+    "signal_agreement": 0.9635,
+    "switches_per_year_proxy": 1.275,
+    "switches_per_year_etf": 1.099,
+    "switch_diff_per_year": 0.176,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true,
+    "etf": "IEF",
+    "proxy": "10y par bond (DGS10)",
+    "role": "primary",
+    "daily_diagnostic": {
+     "days": 5966,
+     "corr_daily": 0.9656,
+     "vol_ratio_proxy_over_etf": 1.133
+    }
+   },
+   {
+    "window": [
+     "2003-02-28",
+     "2026-10-31"
+    ],
+    "months": 285,
+    "corr": 0.9842,
+    "tracking_error_pct_per_year": 1.402,
+    "te_share_of_etf_vol": 0.211,
+    "mean_diff_pct_per_year": -0.827,
+    "mean_diff_hac_se_pct_per_year": 0.284,
+    "hac_lags": 5,
+    "vol_proxy_pct_per_year": 5.76,
+    "vol_etf_pct_per_year": 6.63,
+    "beta_etf_on_proxy": 1.133,
+    "signal_months": 274,
+    "signal_agreement": 0.9854,
+    "switches_per_year_proxy": 1.099,
+    "switches_per_year_etf": 1.099,
+    "switch_diff_per_year": 0.0,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true,
+    "etf": "IEF",
+    "proxy": "7y par bond (DGS7)",
+    "role": "alternate"
+   },
+   {
+    "window": [
+     "2003-02-28",
+     "2026-10-31"
+    ],
+    "months": 285,
+    "corr": 0.9872,
+    "tracking_error_pct_per_year": 2.587,
+    "te_share_of_etf_vol": 0.191,
+    "mean_diff_pct_per_year": -0.176,
+    "mean_diff_hac_se_pct_per_year": 0.457,
+    "hac_lags": 5,
+    "vol_proxy_pct_per_year": 11.96,
+    "vol_etf_pct_per_year": 13.55,
+    "beta_etf_on_proxy": 1.119,
+    "signal_months": 274,
+    "signal_agreement": 0.9672,
+    "switches_per_year_proxy": 1.538,
+    "switches_per_year_etf": 1.275,
+    "switch_diff_per_year": 0.264,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true,
+    "etf": "TLT",
+    "proxy": "20y par bond (DGS20)",
+    "role": "primary",
+    "daily_diagnostic": {
+     "days": 5966,
+     "corr_daily": 0.9548,
+     "vol_ratio_proxy_over_etf": 0.862
+    }
+   },
+   {
+    "window": [
+     "2006-03-31",
+     "2026-10-31"
+    ],
+    "months": 248,
+    "corr": 0.993,
+    "tracking_error_pct_per_year": 2.122,
+    "te_share_of_etf_vol": 0.153,
+    "mean_diff_pct_per_year": 0.05,
+    "mean_diff_hac_se_pct_per_year": 0.459,
+    "hac_lags": 4,
+    "vol_proxy_pct_per_year": 15.13,
+    "vol_etf_pct_per_year": 13.88,
+    "beta_etf_on_proxy": 0.911,
+    "signal_months": 237,
+    "signal_agreement": 0.9916,
+    "switches_per_year_proxy": 1.322,
+    "switches_per_year_etf": 1.22,
+    "switch_diff_per_year": 0.102,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true,
+    "etf": "TLT",
+    "proxy": "30y par bond (DGS30)",
+    "role": "alternate"
+   }
+  ],
+  "fx": [
+   {
+    "window": [
+     "2006-01-31",
+     "2026-02-28"
+    ],
+    "months": 241,
+    "corr": 0.9946,
+    "tracking_error_pct_per_year": 0.946,
+    "te_share_of_etf_vol": 0.104,
+    "mean_diff_pct_per_year": 0.465,
+    "mean_diff_hac_se_pct_per_year": 0.12,
+    "hac_lags": 4,
+    "vol_proxy_pct_per_year": 9.08,
+    "vol_etf_pct_per_year": 9.11,
+    "beta_etf_on_proxy": 0.998,
+    "signal_months": 219,
+    "signal_agreement": 0.9726,
+    "switches_per_year_proxy": 1.604,
+    "switches_per_year_etf": 1.493,
+    "switch_diff_per_year": 0.111,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true,
+    "etf": "FXE",
+    "proxy": "EUR",
+    "role": "primary",
+    "daily_diagnostic": {
+     "days": 5016,
+     "corr_daily": 0.8432,
+     "vol_ratio_proxy_over_etf": 0.991
+    }
+   },
+   {
+    "window": [
+     "2007-03-31",
+     "2026-10-31"
+    ],
+    "months": 235,
+    "corr": 0.9947,
+    "tracking_error_pct_per_year": 0.988,
+    "te_share_of_etf_vol": 0.103,
+    "mean_diff_pct_per_year": 0.301,
+    "mean_diff_hac_se_pct_per_year": 0.129,
+    "hac_lags": 4,
+    "vol_proxy_pct_per_year": 9.6,
+    "vol_etf_pct_per_year": 9.62,
+    "beta_etf_on_proxy": 0.997,
+    "signal_months": 213,
+    "signal_agreement": 0.9765,
+    "switches_per_year_proxy": 0.91,
+    "switches_per_year_etf": 1.024,
+    "switch_diff_per_year": -0.114,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true,
+    "etf": "FXY",
+    "proxy": "JPY",
+    "role": "primary",
+    "daily_diagnostic": {
+     "days": 4893,
+     "corr_daily": 0.8586,
+     "vol_ratio_proxy_over_etf": 0.991
+    }
+   },
+   {
+    "window": [
+     "2006-07-31",
+     "2026-02-28"
+    ],
+    "months": 235,
+    "corr": 0.9917,
+    "tracking_error_pct_per_year": 1.133,
+    "te_share_of_etf_vol": 0.131,
+    "mean_diff_pct_per_year": 0.802,
+    "mean_diff_hac_se_pct_per_year": 0.125,
+    "hac_lags": 4,
+    "vol_proxy_pct_per_year": 8.79,
+    "vol_etf_pct_per_year": 8.63,
+    "beta_etf_on_proxy": 0.974,
+    "signal_months": 213,
+    "signal_agreement": 0.9531,
+    "switches_per_year_proxy": 1.422,
+    "switches_per_year_etf": 1.649,
+    "switch_diff_per_year": -0.227,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true,
+    "etf": "FXB",
+    "proxy": "GBP",
+    "role": "primary",
+    "daily_diagnostic": {
+     "days": 4882,
+     "corr_daily": 0.8751,
+     "vol_ratio_proxy_over_etf": 1.015
+    }
+   },
+   {
+    "window": [
+     "2006-07-31",
+     "2026-10-31"
+    ],
+    "months": 243,
+    "corr": 0.9944,
+    "tracking_error_pct_per_year": 1.039,
+    "te_share_of_etf_vol": 0.106,
+    "mean_diff_pct_per_year": 0.157,
+    "mean_diff_hac_se_pct_per_year": 0.136,
+    "hac_lags": 4,
+    "vol_proxy_pct_per_year": 9.62,
+    "vol_etf_pct_per_year": 9.78,
+    "beta_etf_on_proxy": 1.011,
+    "signal_months": 221,
+    "signal_agreement": 0.9819,
+    "switches_per_year_proxy": 1.973,
+    "switches_per_year_etf": 2.082,
+    "switch_diff_per_year": -0.11,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true,
+    "etf": "FXF",
+    "proxy": "CHF",
+    "role": "primary",
+    "daily_diagnostic": {
+     "days": 5064,
+     "corr_daily": 0.8594,
+     "vol_ratio_proxy_over_etf": 0.964
+    }
+   },
+   {
+    "window": [
+     "2006-07-31",
+     "2026-10-31"
+    ],
+    "months": 243,
+    "corr": 0.9918,
+    "tracking_error_pct_per_year": 1.572,
+    "te_share_of_etf_vol": 0.128,
+    "mean_diff_pct_per_year": 0.64,
+    "mean_diff_hac_se_pct_per_year": 0.221,
+    "hac_lags": 4,
+    "vol_proxy_pct_per_year": 12.26,
+    "vol_etf_pct_per_year": 12.31,
+    "beta_etf_on_proxy": 0.996,
+    "signal_months": 221,
+    "signal_agreement": 0.9683,
+    "switches_per_year_proxy": 1.26,
+    "switches_per_year_etf": 1.37,
+    "switch_diff_per_year": -0.11,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true,
+    "etf": "FXA",
+    "proxy": "AUD",
+    "role": "primary",
+    "daily_diagnostic": {
+     "days": 5064,
+     "corr_daily": 0.8263,
+     "vol_ratio_proxy_over_etf": 0.997
+    }
+   },
+   {
+    "window": [
+     "2006-07-31",
+     "2026-10-31"
+    ],
+    "months": 243,
+    "corr": 0.9896,
+    "tracking_error_pct_per_year": 1.261,
+    "te_share_of_etf_vol": 0.144,
+    "mean_diff_pct_per_year": 0.722,
+    "mean_diff_hac_se_pct_per_year": 0.18,
+    "hac_lags": 4,
+    "vol_proxy_pct_per_year": 8.71,
+    "vol_etf_pct_per_year": 8.75,
+    "beta_etf_on_proxy": 0.994,
+    "signal_months": 221,
+    "signal_agreement": 0.9638,
+    "switches_per_year_proxy": 1.534,
+    "switches_per_year_etf": 1.096,
+    "switch_diff_per_year": 0.438,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true,
+    "etf": "FXC",
+    "proxy": "CAD",
+    "role": "primary",
+    "daily_diagnostic": {
+     "days": 5064,
+     "corr_daily": 0.8118,
+     "vol_ratio_proxy_over_etf": 1.016
+    }
+   },
+   {
+    "window": [
+     "2007-04-30",
+     "2026-02-28"
+    ],
+    "months": 226,
+    "corr": 0.992,
+    "tracking_error_pct_per_year": 0.98,
+    "te_share_of_etf_vol": 0.126,
+    "mean_diff_pct_per_year": 1.436,
+    "mean_diff_hac_se_pct_per_year": 0.136,
+    "hac_lags": 4,
+    "vol_proxy_pct_per_year": 7.7,
+    "vol_etf_pct_per_year": 7.77,
+    "beta_etf_on_proxy": 1.001,
+    "signal_months": 204,
+    "signal_agreement": 0.902,
+    "switches_per_year_proxy": 1.96,
+    "switches_per_year_etf": 1.96,
+    "switch_diff_per_year": 0.0,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": false,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": false,
+    "etf": "UUP",
+    "proxy": "-DXY",
+    "role": "primary"
+   }
+  ],
+  "diagnostics": {
+   "DGS1_taylor_vs_exact_monthly": {
+    "months": 285,
+    "corr": 0.999869,
+    "abs_diff_pct_per_year_mean": 0.1186
+   },
+   "DGS2_taylor_vs_exact_monthly": {
+    "months": 285,
+    "corr": 0.99998,
+    "abs_diff_pct_per_year_mean": 0.1505
+   },
+   "DGS3_taylor_vs_exact_monthly": {
+    "months": 285,
+    "corr": 0.999993,
+    "abs_diff_pct_per_year_mean": 0.1659
+   },
+   "DGS5_taylor_vs_exact_monthly": {
+    "months": 285,
+    "corr": 0.999998,
+    "abs_diff_pct_per_year_mean": 0.1725
+   },
+   "DGS7_taylor_vs_exact_monthly": {
+    "months": 285,
+    "corr": 0.999999,
+    "abs_diff_pct_per_year_mean": 0.162
+   },
+   "DGS10_taylor_vs_exact_monthly": {
+    "months": 285,
+    "corr": 0.999999,
+    "abs_diff_pct_per_year_mean": 0.1379
+   },
+   "DGS20_taylor_vs_exact_monthly": {
+    "months": 285,
+    "corr": 0.999999,
+    "abs_diff_pct_per_year_mean": 0.0793
+   },
+   "DGS30_taylor_vs_exact_monthly": {
+    "months": 248,
+    "corr": 0.999996,
+    "abs_diff_pct_per_year_mean": 0.0662
+   },
+   "JPY_call_money_fallback_vs_FXY": {
+    "window": [
+     "2007-03-31",
+     "2026-10-31"
+    ],
+    "months": 235,
+    "corr": 0.9947,
+    "tracking_error_pct_per_year": 0.986,
+    "te_share_of_etf_vol": 0.102,
+    "mean_diff_pct_per_year": 0.121,
+    "mean_diff_hac_se_pct_per_year": 0.126,
+    "hac_lags": 4,
+    "vol_proxy_pct_per_year": 9.6,
+    "vol_etf_pct_per_year": 9.62,
+    "beta_etf_on_proxy": 0.998,
+    "signal_months": 213,
+    "signal_agreement": 0.9812,
+    "switches_per_year_proxy": 1.024,
+    "switches_per_year_etf": 1.024,
+    "switch_diff_per_year": 0.0,
+    "checks": {
+     "corr": true,
+     "tracking_error": true,
+     "bias": true,
+     "signal_agreement": true,
+     "turnover": true
+    },
+    "validates": true
+   },
+   "JPY_call_money_vs_3m_proxy": {
+    "months": 284,
+    "corr": 0.99999,
+    "mean_diff_pct_per_year": -0.17
+   },
+   "CHF_call_money_fallback": {
+    "input_defect": "IRSTCI01CHM156N: 1 values outside the plausible range [-2.0, 60.0]"
+   }
+  },
+  "defects": [
+   {
+    "kind": "missing_interest_differential",
+    "currency": "EUR",
+    "by_year": {
+     "2020": 1,
+     "2026": 8
+    },
+    "total": 9
+   },
+   {
+    "kind": "missing_interest_differential",
+    "currency": "JPY",
+    "by_year": {
+     "2020": 1
+    },
+    "total": 1
+   },
+   {
+    "kind": "missing_interest_differential",
+    "currency": "GBP",
+    "by_year": {
+     "2020": 1,
+     "2026": 8
+    },
+    "total": 9
+   },
+   {
+    "kind": "missing_interest_differential",
+    "currency": "CHF",
+    "by_year": {
+     "2020": 1
+    },
+    "total": 1
+   },
+   {
+    "kind": "missing_interest_differential",
+    "currency": "AUD",
+    "by_year": {
+     "2020": 1
+    },
+    "total": 1
+   },
+   {
+    "kind": "missing_interest_differential",
+    "currency": "CAD",
+    "by_year": {
+     "2020": 1
+    },
+    "total": 1
+   },
+   {
+    "kind": "missing_interest_differential",
+    "currency": "SEK",
+    "by_year": {
+     "2020": 1
+    },
+    "total": 1
+   },
+   {
+    "kind": "missing_interest_differential",
+    "currency": "NOK",
+    "by_year": {
+     "2020": 1
+    },
+    "total": 1
+   },
+   {
+    "kind": "missing_interest_differential",
+    "currency": "DKK",
+    "by_year": {
+     "2020": 1
+    },
+    "total": 1
+   },
+   {
+    "kind": "basket_incomplete",
+    "currency": "-DXY",
+    "by_year": {
+     "2026": 8
+    },
+    "total": 8
+   }
+  ],
+  "mask_check": {
+   "computed_series": 92,
+   "earliest_date": "2003-01-03"
+  }
+ }
+}

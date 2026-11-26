@@ -1,0 +1,578 @@
+{
+ "kind": "SYNTHETIC dry run: generated data only; no real data loaded; no READ_XASSET.lock",
+ "written_utc": "2026-11-25T12:46:42+00:00",
+ "planted_AR_0.3": {
+  "kappa": 0.024999999999999998,
+  "true_AR_mean_of_replications": 0.18871691841317786,
+  "true_AR_mc_se": 0.017071622603708887,
+  "replications": 100,
+  "replication_sd": 0.17071622603708886,
+  "mean_nw_se_over_replications": 0.1587815656630553,
+  "true_gross_AR_before_costs": 0.2960181783645626,
+  "share_replications_within_1se": 0.64,
+  "dry_run_seed": 20261125,
+  "estimate": 0.4534024536721483,
+  "estimate_nw_se": 0.15885690552037987,
+  "estimate_90pct_bootstrap": [
+   0.2280873699111756,
+   0.6838446226784853
+  ],
+  "within_one_se_of_truth": false,
+  "truth_inside_90pct_interval": false,
+  "verdict_on_synthetic": "supported",
+  "window": [
+   "1963-02-28",
+   "2002-12-31"
+  ],
+  "full_output": {
+   "label": "against the core only; proxy and futures instruments",
+   "markets": {
+    "B1": "bonds",
+    "B2": "bonds",
+    "B3": "bonds",
+    "B4": "bonds",
+    "C1": "currencies",
+    "C2": "currencies",
+    "C3": "currencies",
+    "C4": "currencies",
+    "K1": "commodities",
+    "K2": "commodities",
+    "K3": "commodities",
+    "K4": "commodities"
+   },
+   "window": [
+    "1963-02-28",
+    "2002-12-31"
+   ],
+   "AR": {
+    "registered_costs__core": {
+     "alpha_pct_per_year": 5.0739543791783035,
+     "alpha_nw_se_pct_per_year": 1.7777422351813763,
+     "betas": [
+      -0.01537499175279425
+     ],
+     "resid_sd_pct_per_year": 11.190840142314796,
+     "AR": 0.4534024536721483,
+     "AR_se_nw": 0.15885690552037987,
+     "months": 479,
+     "AR_90pct_bootstrap": [
+      0.2280873699111756,
+      0.6838446226784853
+     ]
+    },
+    "registered_costs__core+US10": {
+     "alpha_pct_per_year": 5.076192338630001,
+     "alpha_nw_se_pct_per_year": 1.782395663937701,
+     "betas": [
+      -0.015571296861264072,
+      -0.029008206639678086
+     ],
+     "resid_sd_pct_per_year": 11.197262358725206,
+     "AR": 0.4533422702804223,
+     "AR_se_nw": 0.15918137905814186,
+     "months": 479,
+     "AR_90pct_bootstrap": [
+      0.22233624083416603,
+      0.6816518712680684
+     ]
+    },
+    "2x_costs__core": {
+     "alpha_pct_per_year": 3.583658136083268,
+     "alpha_nw_se_pct_per_year": 1.796956380901592,
+     "betas": [
+      -0.01775746680159227
+     ],
+     "resid_sd_pct_per_year": 11.225781208234284,
+     "AR": 0.31923463228150206,
+     "AR_se_nw": 0.1600740605547787,
+     "months": 479,
+     "AR_90pct_bootstrap": [
+      0.09227982490189404,
+      0.5504399147858242
+     ]
+    },
+    "2x_costs__core+US10": {
+     "alpha_pct_per_year": 3.5861412994660538,
+     "alpha_nw_se_pct_per_year": 1.8018993409904547,
+     "betas": [
+      -0.01797528024626233,
+      -0.03218651547654687
+     ],
+     "resid_sd_pct_per_year": 11.231028978340735,
+     "AR": 0.3193065663335033,
+     "AR_se_nw": 0.1604393813305489,
+     "months": 479,
+     "AR_90pct_bootstrap": [
+      0.08672146527751537,
+      0.5492038142848982
+     ]
+    }
+   },
+   "corr_with_core_all_months": -0.02559699022002131,
+   "corr_with_core_worst_10pct_core_months": {
+    "months": 48,
+    "corr": -0.06920196057555723
+   },
+   "sleeve_gross_net": {
+    "gross_pct_per_year": 6.527891889095107,
+    "net_pct_per_year": 5.030928440825234,
+    "cost_pct_per_year": 1.496963448269872,
+    "mean_active_markets": 12.0
+   },
+   "diagnostics": {
+    "rates_only": {
+     "alpha_pct_per_year": 7.336538868917688,
+     "alpha_nw_se_pct_per_year": 3.459418440313286,
+     "betas": [
+      -0.07315927421031913
+     ],
+     "resid_sd_pct_per_year": 20.249535159150835,
+     "AR": 0.3623065325330335,
+     "AR_se_nw": 0.17083940017012997,
+     "months": 479
+    },
+    "rates_and_fx_1972_2002": {
+     "alpha_pct_per_year": 1.9663098395100633,
+     "alpha_nw_se_pct_per_year": 2.469936353785376,
+     "betas": [
+      -0.03230581243565481
+     ],
+     "resid_sd_pct_per_year": 13.533771317732828,
+     "AR": 0.14528912845850114,
+     "AR_se_nw": 0.1825017059767446,
+     "months": 372
+    },
+    "commodities_only": {
+     "alpha_pct_per_year": 5.643728806136967,
+     "alpha_nw_se_pct_per_year": 3.214978121684475,
+     "betas": [
+      0.0211761366921704
+     ],
+     "resid_sd_pct_per_year": 20.081849854311656,
+     "AR": 0.28103630129100055,
+     "AR_se_nw": 0.1600937236862273,
+     "months": 479
+    },
+    "decade_1960s": {
+     "alpha_pct_per_year": 8.760372861252359,
+     "alpha_nw_se_pct_per_year": 4.2288568335586,
+     "betas": [
+      0.001506103640041186
+     ],
+     "resid_sd_pct_per_year": 11.881524541246373,
+     "AR": 0.7373105051326514,
+     "AR_se_nw": 0.3559187054555368,
+     "months": 83
+    },
+    "decade_1970s": {
+     "alpha_pct_per_year": 7.4510732953467675,
+     "alpha_nw_se_pct_per_year": 3.025010611322856,
+     "betas": [
+      -0.07352291189740338
+     ],
+     "resid_sd_pct_per_year": 11.66167076428698,
+     "AR": 0.6389370310612043,
+     "AR_se_nw": 0.2593977031650328,
+     "months": 120
+    },
+    "decade_1980s": {
+     "alpha_pct_per_year": 1.144014456942793,
+     "alpha_nw_se_pct_per_year": 3.7511370328958553,
+     "betas": [
+      0.06295105558154067
+     ],
+     "resid_sd_pct_per_year": 10.290940830594906,
+     "AR": 0.11116713969840783,
+     "AR_se_nw": 0.3645086581144988,
+     "months": 120
+    },
+    "decade_1990s": {
+     "alpha_pct_per_year": 3.8068356647099035,
+     "alpha_nw_se_pct_per_year": 3.059739604265975,
+     "betas": [
+      -0.0050335698647944625
+     ],
+     "resid_sd_pct_per_year": 11.071128692815334,
+     "AR": 0.3438525348531418,
+     "AR_se_nw": 0.27637106289366936,
+     "months": 120
+    },
+    "decade_2000s": {
+     "alpha_pct_per_year": 6.502840903244018,
+     "alpha_nw_se_pct_per_year": 6.653977802947765,
+     "betas": [
+      -0.16350519537763392
+     ],
+     "resid_sd_pct_per_year": 11.31642404852314,
+     "AR": 0.5746374362926666,
+     "AR_se_nw": 0.5879929714913915,
+     "months": 36
+    }
+   },
+   "realised_cross_market_correlation": {
+    "mean_pairwise_all": -0.00834454217647568,
+    "pairs": 66,
+    "by_class_pair": {
+     "bonds-bonds": {
+      "mean": 0.0027841637319146947,
+      "pairs": 6
+     },
+     "bonds-commodities": {
+      "mean": -0.014662171780591962,
+      "pairs": 16
+     },
+     "bonds-currencies": {
+      "mean": -0.010509392636608042,
+      "pairs": 16
+     },
+     "commodities-commodities": {
+      "mean": -0.0076360251168226916,
+      "pairs": 6
+     },
+     "commodities-currencies": {
+      "mean": 0.003497914198343335,
+      "pairs": 16
+     },
+     "currencies-currencies": {
+      "mean": -0.0291417019727067,
+      "pairs": 6
+     }
+    },
+    "planning_value_rho": 0.1,
+    "MOP_table4": {
+     "within bonds": 0.38,
+     "within FX": 0.1,
+     "bonds-FX": 0.05
+    }
+   },
+   "constrained_contribution": {
+    "months": 443,
+    "window": [
+     "1966-02-28",
+     "2002-12-31"
+    ],
+    "core_sharpe": 0.1951368200417198,
+    "w_star_unconstrained": 3.3298325245198495,
+    "ideal_unconstrained_fund_sharpe": 0.42170668630325586,
+    "i_notional_1.9": {
+     "fund_sharpe": 0.2447937227143455,
+     "delta_sharpe_vs_core": 0.04965690267262568,
+     "mean_w": 0.23019073411488788,
+     "share_months_capped": 1.0,
+     "max_notional": 1.9000000000000001
+    },
+    "ii_vol_equivalent": {
+     "fund_sharpe": 0.2656938049303089,
+     "delta_sharpe_vs_core": 0.07055698488858911,
+     "mean_w": 0.32091149831359944,
+     "share_months_capped": 1.0,
+     "max_notional": 2.6175394572929154
+    },
+    "largest_notional_under_ii": 2.6175394572929154
+   },
+   "verdict": "supported",
+   "posterior": {
+    "prior": [
+     0.48,
+     0.2
+    ],
+    "estimate": [
+     0.4534024536721483,
+     0.15885690552037987
+    ],
+    "posterior_mean": 0.46369137072393635,
+    "posterior_sd": 0.12439245572914426,
+    "decay": 0.555,
+    "forward_planning_AR": 0.25734871075178467,
+    "forward_planning_AR_sd": 0.06903781292967506
+   }
+  }
+ },
+ "null": {
+  "kappa": 0.0,
+  "true_AR_mean_of_replications": -0.12252435502831553,
+  "true_AR_mc_se": 0.016707437392775158,
+  "replications": 100,
+  "replication_sd": 0.16707437392775157,
+  "mean_nw_se_over_replications": 0.15923668441851138,
+  "true_gross_AR_before_costs": -0.009263992107902554,
+  "share_replications_within_1se": 0.7,
+  "dry_run_seed": 20261125,
+  "estimate": 0.10010760629447234,
+  "estimate_nw_se": 0.1523338139253634,
+  "estimate_90pct_bootstrap": [
+   -0.11196740178213797,
+   0.3131410893825389
+  ],
+  "within_one_se_of_truth": false,
+  "truth_inside_90pct_interval": false,
+  "verdict_on_synthetic": "inconclusive",
+  "window": [
+   "1963-02-28",
+   "2002-12-31"
+  ],
+  "full_output": {
+   "label": "against the core only; proxy and futures instruments",
+   "markets": {
+    "B1": "bonds",
+    "B2": "bonds",
+    "B3": "bonds",
+    "B4": "bonds",
+    "C1": "currencies",
+    "C2": "currencies",
+    "C3": "currencies",
+    "C4": "currencies",
+    "K1": "commodities",
+    "K2": "commodities",
+    "K3": "commodities",
+    "K4": "commodities"
+   },
+   "window": [
+    "1963-02-28",
+    "2002-12-31"
+   ],
+   "AR": {
+    "registered_costs__core": {
+     "alpha_pct_per_year": 1.1189121541495695,
+     "alpha_nw_se_pct_per_year": 1.7026494009622497,
+     "betas": [
+      -0.020095868653799333
+     ],
+     "resid_sd_pct_per_year": 11.177094284506456,
+     "AR": 0.10010760629447234,
+     "AR_se_nw": 0.1523338139253634,
+     "months": 479,
+     "AR_90pct_bootstrap": [
+      -0.11196740178213797,
+      0.3131410893825389
+     ]
+    },
+    "registered_costs__core+US10": {
+     "alpha_pct_per_year": 1.1242797750615545,
+     "alpha_nw_se_pct_per_year": 1.7074636710175752,
+     "betas": [
+      -0.02027574711916802,
+      -0.025043821725982015
+     ],
+     "resid_sd_pct_per_year": 11.184864119064093,
+     "AR": 0.10051796455401463,
+     "AR_se_nw": 0.15265841880969128,
+     "months": 479,
+     "AR_90pct_bootstrap": [
+      -0.11791560904162605,
+      0.31202555582639707
+     ]
+    },
+    "2x_costs__core": {
+     "alpha_pct_per_year": -0.4885080678256207,
+     "alpha_nw_se_pct_per_year": 1.7254403184339644,
+     "betas": [
+      -0.02163554519163262
+     ],
+     "resid_sd_pct_per_year": 11.218850711884631,
+     "AR": -0.04354350373056681,
+     "AR_se_nw": 0.15379831345880446,
+     "months": 479,
+     "AR_90pct_bootstrap": [
+      -0.26089948577968264,
+      0.17248597686435374
+     ]
+    },
+    "2x_costs__core+US10": {
+     "alpha_pct_per_year": -0.48286443960475844,
+     "alpha_nw_se_pct_per_year": 1.7301796808338512,
+     "betas": [
+      -0.021824673149833478,
+      -0.026331594829171374
+     ],
+     "resid_sd_pct_per_year": 11.22626240902755,
+     "AR": -0.04301203927109926,
+     "AR_se_nw": 0.15411894162054635,
+     "months": 479,
+     "AR_90pct_bootstrap": [
+      -0.2653874372868436,
+      0.1692206399669846
+     ]
+    }
+   },
+   "corr_with_core_all_months": -0.033489850773231224,
+   "corr_with_core_worst_10pct_core_months": {
+    "months": 48,
+    "corr": -0.025680581990064965
+   },
+   "sleeve_gross_net": {
+    "gross_pct_per_year": 2.6744040505109172,
+    "net_pct_per_year": 1.0626751414895415,
+    "cost_pct_per_year": 1.6117289090213751,
+    "mean_active_markets": 12.0
+   },
+   "diagnostics": {
+    "rates_only": {
+     "alpha_pct_per_year": 4.573449232317363,
+     "alpha_nw_se_pct_per_year": 3.4305702449339885,
+     "betas": [
+      -0.08290480263144377
+     ],
+     "resid_sd_pct_per_year": 20.164155069872486,
+     "AR": 0.22681085403626006,
+     "AR_se_nw": 0.17013210982788196,
+     "months": 479
+    },
+    "rates_and_fx_1972_2002": {
+     "alpha_pct_per_year": -1.3287471777666513,
+     "alpha_nw_se_pct_per_year": 2.32666664224325,
+     "betas": [
+      -0.036203878349061025
+     ],
+     "resid_sd_pct_per_year": 13.514369366058272,
+     "AR": -0.09832106417809164,
+     "AR_se_nw": 0.17216242794774725,
+     "months": 372
+    },
+    "commodities_only": {
+     "alpha_pct_per_year": 1.6745858275220034,
+     "alpha_nw_se_pct_per_year": 3.1338742330800087,
+     "betas": [
+      0.018223018627171784
+     ],
+     "resid_sd_pct_per_year": 20.14038028775144,
+     "AR": 0.08314569057767088,
+     "AR_se_nw": 0.15560154219063596,
+     "months": 479
+    },
+    "decade_1960s": {
+     "alpha_pct_per_year": 3.1878898209855766,
+     "alpha_nw_se_pct_per_year": 3.9708474312115793,
+     "betas": [
+      -0.010341424248389252
+     ],
+     "resid_sd_pct_per_year": 11.62208251640972,
+     "AR": 0.27429592041567913,
+     "AR_se_nw": 0.34166401981787414,
+     "months": 83
+    },
+    "decade_1970s": {
+     "alpha_pct_per_year": 3.637048401578079,
+     "alpha_nw_se_pct_per_year": 3.1416336381535435,
+     "betas": [
+      -0.09162387285411261
+     ],
+     "resid_sd_pct_per_year": 12.117289941942946,
+     "AR": 0.3001536167743871,
+     "AR_se_nw": 0.25926866924914055,
+     "months": 120
+    },
+    "decade_1980s": {
+     "alpha_pct_per_year": -2.2165607654751787,
+     "alpha_nw_se_pct_per_year": 3.411973134924164,
+     "betas": [
+      0.05946598372000788
+     ],
+     "resid_sd_pct_per_year": 10.022289691663973,
+     "AR": -0.22116311079281617,
+     "AR_se_nw": 0.34043848660272397,
+     "months": 120
+    },
+    "decade_1990s": {
+     "alpha_pct_per_year": 0.20090106433065272,
+     "alpha_nw_se_pct_per_year": 3.060468475310378,
+     "betas": [
+      0.02260207299417571
+     ],
+     "resid_sd_pct_per_year": 11.075507064234738,
+     "AR": 0.018139220458755035,
+     "AR_se_nw": 0.27632761710687787,
+     "months": 120
+    },
+    "decade_2000s": {
+     "alpha_pct_per_year": 3.9216030877009462,
+     "alpha_nw_se_pct_per_year": 6.1510334129684106,
+     "betas": [
+      -0.18931938435064258
+     ],
+     "resid_sd_pct_per_year": 10.763227731937855,
+     "AR": 0.3643519569937487,
+     "AR_se_nw": 0.5714859488400839,
+     "months": 36
+    }
+   },
+   "realised_cross_market_correlation": {
+    "mean_pairwise_all": -0.008538367218232734,
+    "pairs": 66,
+    "by_class_pair": {
+     "bonds-bonds": {
+      "mean": 0.0010994762842548918,
+      "pairs": 6
+     },
+     "bonds-commodities": {
+      "mean": -0.014010145662866857,
+      "pairs": 16
+     },
+     "bonds-currencies": {
+      "mean": -0.01127418497865778,
+      "pairs": 16
+     },
+     "commodities-commodities": {
+      "mean": -0.005015896263283988,
+      "pairs": 6
+     },
+     "commodities-currencies": {
+      "mean": 0.00167989867362378,
+      "pairs": 16
+     },
+     "currencies-currencies": {
+      "mean": -0.02706046750712869,
+      "pairs": 6
+     }
+    },
+    "planning_value_rho": 0.1,
+    "MOP_table4": {
+     "within bonds": 0.38,
+     "within FX": 0.1,
+     "bonds-FX": 0.05
+    }
+   },
+   "constrained_contribution": {
+    "months": 443,
+    "window": [
+     "1966-02-28",
+     "2002-12-31"
+    ],
+    "core_sharpe": 0.1951368200417198,
+    "w_star_unconstrained": 0.2786386364729698,
+    "ideal_unconstrained_fund_sharpe": 0.19742469584497052,
+    "i_notional_1.9": {
+     "fund_sharpe": 0.20012661071127175,
+     "delta_sharpe_vs_core": 0.004989790669551936,
+     "mean_w": 0.20982813521110683,
+     "share_months_capped": 0.6975169300225733,
+     "max_notional": 1.9000000000000001
+    },
+    "ii_vol_equivalent": {
+     "fund_sharpe": 0.20107739631369084,
+     "delta_sharpe_vs_core": 0.005940576271971032,
+     "mean_w": 0.24220911212224205,
+     "share_months_capped": 0.582392776523702,
+     "max_notional": 2.2373747189738076
+    },
+    "largest_notional_under_ii": 2.2373747189738076
+   },
+   "verdict": "inconclusive",
+   "posterior": {
+    "prior": [
+     0.48,
+     0.2
+    ],
+    "estimate": [
+     0.10010760629447234,
+     0.1523338139253634
+    ],
+    "posterior_mean": 0.2395830441540205,
+    "posterior_sd": 0.12118491521925014,
+    "decay": 0.555,
+    "forward_planning_AR": 0.1329685895054814,
+    "forward_planning_AR_sd": 0.06725762794668383
+   }
+  }
+ }
+}

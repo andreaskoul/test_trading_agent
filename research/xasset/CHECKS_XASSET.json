@@ -1,0 +1,2907 @@
+{
+ "written_utc": "2026-11-25T23:54:57Z",
+ "prereg": "research/xasset/PREREG_XASSET.md (dd2a819)",
+ "notes": "research/xasset/IMPLEMENTATION_NOTES.md",
+ "kind": "\u00a73 gate: validation statistics of constructions on spent 2003+ data; pre-2003 level-agreement counts and coverage counts only; no sleeve return, signal or statistic on any date",
+ "thresholds": {
+  "corr_min": 0.95,
+  "te_max_share_of_etf_vol": 0.35,
+  "abs_bias_max_pct_per_year": 1.0,
+  "signal_agreement_min": 0.9,
+  "abs_switch_diff_max_per_year": 0.5
+ },
+ "level_tolerance": 0.005,
+ "level_min_share": 0.95,
+ "roll_window_days": 5,
+ "coverage_min_share": 0.95,
+ "frozen_files": {
+  "proxy": 85,
+  "free": 184,
+  "checks": 24,
+  "defects": []
+ },
+ "core_reproduction": {
+  "compared_fields": 38,
+  "max_abs_diff": 3.552713678800501e-15,
+  "match_1e-6": true,
+  "period": [
+   "1927-03-04",
+   "2026-09-30"
+  ],
+  "M_R_excess_sharpe": 0.5578007678095541
+ },
+ "exclusions": {
+  "WHEAT": "single-month hold cycle 'Z' in the shipped rollconfig.csv (December-only rule; deferred contract, not MOP's front)",
+  "CORN": "single-month hold cycle 'Z' in the shipped rollconfig.csv (December-only rule; deferred contract, not MOP's front)",
+  "SOYBEAN": "single-month hold cycle 'X' in the shipped rollconfig.csv (December-only rule; deferred contract, not MOP's front)",
+  "GASOILINE": "splice: RBOB file holds unleaded gasoline from 1985 (FREE_DATA.md \u00a72 defect 2)",
+  "CRUDE_W": "single-month hold cycle 'Z' in the shipped rollconfig.csv (December-only rule; deferred contract, not MOP's front)",
+  "minis_and_micros": "never used: each market's history is its full-size file only (variants listed in free_coverage.PST_MARKETS)",
+  "US rate futures, STIRs, pysystemtrade FX futures": "not in the registered universe: the US curve and the currencies are the proxy legs (one leg, never two)"
+ },
+ "mirror_conventions_2003_2019": {
+  "OJ": {
+   "common_sessions_2003_2019": 4232,
+   "share_within_0.5pct": {
+    "PRICE": 0.7753,
+    "CARRY": 0.3426,
+    "FORWARD": 0.3426
+   },
+   "convention": "PRICE",
+   "convention_share": 0.7753,
+   "usable": false
+  },
+  "SOYOIL": {
+   "common_sessions_2003_2019": 4235,
+   "share_within_0.5pct": {
+    "PRICE": 0.4831,
+    "CARRY": 0.354,
+    "FORWARD": 0.0054
+   },
+   "convention": "PRICE",
+   "convention_share": 0.4831,
+   "usable": false
+  },
+  "SUGAR11": {
+   "common_sessions_2003_2019": 4002,
+   "share_within_0.5pct": {
+    "PRICE": 0.8901,
+    "CARRY": 0.1169,
+    "FORWARD": 0.1149
+   },
+   "convention": "PRICE",
+   "convention_share": 0.8901,
+   "usable": true
+  },
+  "COTTON2": {
+   "common_sessions_2003_2019": 3938,
+   "share_within_0.5pct": {
+    "PRICE": 0.5841,
+    "CARRY": 0.2417,
+    "FORWARD": 0.1097
+   },
+   "convention": "PRICE",
+   "convention_share": 0.5841,
+   "usable": false
+  },
+  "COCOA": {
+   "common_sessions_2003_2019": 4220,
+   "share_within_0.5pct": {
+    "PRICE": 0.9116,
+    "CARRY": 0.2806,
+    "FORWARD": 0.3898
+   },
+   "convention": "PRICE",
+   "convention_share": 0.9116,
+   "usable": true
+  },
+  "OATIES": {
+   "common_sessions_2003_2019": 4236,
+   "share_within_0.5pct": {
+    "PRICE": 0.3314,
+    "CARRY": 0.0212,
+    "FORWARD": 0.0118
+   },
+   "convention": "PRICE",
+   "convention_share": 0.3314,
+   "usable": false
+  },
+  "SOYMEAL": {
+   "common_sessions_2003_2019": 4226,
+   "share_within_0.5pct": {
+    "PRICE": 0.3938,
+    "CARRY": 0.2953,
+    "FORWARD": 0.0043
+   },
+   "convention": "PRICE",
+   "convention_share": 0.3938,
+   "usable": false
+  },
+  "SILVER": {
+   "common_sessions_2003_2019": 3769,
+   "share_within_0.5pct": {
+    "PRICE": 0.4845,
+    "CARRY": 0.3033,
+    "FORWARD": 0.0337
+   },
+   "convention": "PRICE",
+   "convention_share": 0.4845,
+   "usable": false
+  },
+  "PLAT": {
+   "common_sessions_2003_2019": 2708,
+   "share_within_0.5pct": {
+    "PRICE": 0.8331,
+    "CARRY": 0.7891,
+    "FORWARD": 0.7891
+   },
+   "convention": "PRICE",
+   "convention_share": 0.8331,
+   "usable": true
+  },
+  "LIVECOW": {
+   "common_sessions_2003_2019": 4227,
+   "share_within_0.5pct": {
+    "PRICE": 0.41,
+    "CARRY": 0.2106,
+    "FORWARD": 0.0632
+   },
+   "convention": "PRICE",
+   "convention_share": 0.41,
+   "usable": false
+  },
+  "LEANHOG": {
+   "common_sessions_2003_2019": 4019,
+   "share_within_0.5pct": {
+    "PRICE": 0.2262,
+    "CARRY": 0.2374,
+    "FORWARD": 0.0202
+   },
+   "convention": "CARRY",
+   "convention_share": 0.2374,
+   "usable": false
+  },
+  "GOLD": {
+   "common_sessions_2003_2019": 4220,
+   "share_within_0.5pct": {
+    "PRICE": 0.8448,
+    "CARRY": 0.8194,
+    "FORWARD": 0.8194
+   },
+   "convention": "PRICE",
+   "convention_share": 0.8448,
+   "usable": true
+  },
+  "FEEDCOW": {
+   "common_sessions_2003_2019": 4232,
+   "share_within_0.5pct": {
+    "PRICE": 0.4764,
+    "CARRY": 0.5059,
+    "FORWARD": 0.0054
+   },
+   "convention": "CARRY",
+   "convention_share": 0.5059,
+   "usable": false
+  },
+  "PALLAD": {
+   "common_sessions_2003_2019": 2478,
+   "share_within_0.5pct": {
+    "PRICE": 0.8249,
+    "CARRY": 0.8095,
+    "FORWARD": 0.8095
+   },
+   "convention": "PRICE",
+   "convention_share": 0.8249,
+   "usable": true
+  },
+  "HEATOIL": {
+   "common_sessions_2003_2019": 4221,
+   "share_within_0.5pct": {
+    "PRICE": 0.4783,
+    "CARRY": 0.4771,
+    "FORWARD": 0.1163
+   },
+   "convention": "PRICE",
+   "convention_share": 0.4783,
+   "usable": false
+  },
+  "RICE": {
+   "common_sessions_2003_2019": 4236,
+   "share_within_0.5pct": {
+    "PRICE": 0.4714,
+    "CARRY": 0.042,
+    "FORWARD": 0.008
+   },
+   "convention": "PRICE",
+   "convention_share": 0.4714,
+   "usable": false
+  },
+  "GAS_US": {
+   "common_sessions_2003_2019": 4228,
+   "share_within_0.5pct": {
+    "PRICE": 0.6675,
+    "CARRY": 0.1618,
+    "FORWARD": 0.1149
+   },
+   "convention": "PRICE",
+   "convention_share": 0.6675,
+   "usable": false
+  },
+  "COPPER": {
+   "common_sessions_2003_2019": 4187,
+   "share_within_0.5pct": {
+    "PRICE": 0.711,
+    "CARRY": 0.5682,
+    "FORWARD": 0.3337
+   },
+   "convention": "PRICE",
+   "convention_share": 0.711,
+   "usable": false
+  }
+ },
+ "diagnostic_yahoo_continuous_2003_on": {
+  "OJ": {
+   "months": 208,
+   "corr": 0.9967,
+   "te_share_of_etf_vol": 0.081,
+   "mean_diff_pct_per_year": -0.04,
+   "signal_agreement": 0.9667,
+   "switch_diff_per_year": -0.5,
+   "validates": true,
+   "reason": null
+  },
+  "SOYOIL": {
+   "months": 218,
+   "corr": 0.987,
+   "te_share_of_etf_vol": 0.161,
+   "mean_diff_pct_per_year": -0.951,
+   "signal_agreement": 0.931,
+   "switch_diff_per_year": 1.171,
+   "validates": false,
+   "reason": null
+  },
+  "SUGAR11": {
+   "months": 255,
+   "corr": 0.9649,
+   "te_share_of_etf_vol": 0.275,
+   "mean_diff_pct_per_year": 1.208,
+   "signal_agreement": 0.9426,
+   "switch_diff_per_year": -0.296,
+   "validates": false,
+   "reason": null
+  },
+  "COTTON2": {
+   "months": 221,
+   "corr": 0.9571,
+   "te_share_of_etf_vol": 0.29,
+   "mean_diff_pct_per_year": 1.033,
+   "signal_agreement": 0.9111,
+   "switch_diff_per_year": 0.9,
+   "validates": false,
+   "reason": null
+  },
+  "COCOA": {
+   "months": 255,
+   "corr": 0.9841,
+   "te_share_of_etf_vol": 0.181,
+   "mean_diff_pct_per_year": -0.627,
+   "signal_agreement": 0.959,
+   "switch_diff_per_year": -0.099,
+   "validates": true,
+   "reason": null
+  },
+  "OATIES": {
+   "months": 233,
+   "corr": 0.9561,
+   "te_share_of_etf_vol": 0.293,
+   "mean_diff_pct_per_year": -3.249,
+   "signal_agreement": 0.9027,
+   "switch_diff_per_year": 0.0,
+   "validates": false,
+   "reason": null
+  },
+  "SOYMEAL": {
+   "months": 193,
+   "corr": 0.9665,
+   "te_share_of_etf_vol": 0.257,
+   "mean_diff_pct_per_year": 0.158,
+   "signal_agreement": 1.0,
+   "switch_diff_per_year": 0.0,
+   "validates": true,
+   "reason": null
+  },
+  "SILVER": {
+   "months": 223,
+   "corr": 0.9919,
+   "te_share_of_etf_vol": 0.127,
+   "mean_diff_pct_per_year": -0.881,
+   "signal_agreement": 0.9434,
+   "switch_diff_per_year": -0.12,
+   "validates": true,
+   "reason": null
+  },
+  "PLAT": {
+   "months": 219,
+   "corr": 0.993,
+   "te_share_of_etf_vol": 0.119,
+   "mean_diff_pct_per_year": -0.466,
+   "signal_agreement": 0.9664,
+   "switch_diff_per_year": -0.522,
+   "validates": false,
+   "reason": null
+  },
+  "LIVECOW": {
+   "months": 195,
+   "corr": 0.8987,
+   "te_share_of_etf_vol": 0.439,
+   "mean_diff_pct_per_year": -7.439,
+   "signal_agreement": 0.75,
+   "switch_diff_per_year": 0.126,
+   "validates": false,
+   "reason": null
+  },
+  "LEANHOG": {
+   "months": 146,
+   "corr": 0.7178,
+   "te_share_of_etf_vol": 0.721,
+   "mean_diff_pct_per_year": -0.177,
+   "signal_agreement": NaN,
+   "switch_diff_per_year": NaN,
+   "validates": false,
+   "reason": "only 0 months with a 12-month signal on both"
+  },
+  "GOLD": {
+   "months": 253,
+   "corr": 0.9977,
+   "te_share_of_etf_vol": 0.068,
+   "mean_diff_pct_per_year": -1.092,
+   "signal_agreement": 0.9738,
+   "switch_diff_per_year": 0.106,
+   "validates": false,
+   "reason": null
+  },
+  "FEEDCOW": {
+   "months": 198,
+   "corr": 0.9281,
+   "te_share_of_etf_vol": 0.38,
+   "mean_diff_pct_per_year": 0.546,
+   "signal_agreement": 1.0,
+   "switch_diff_per_year": 0.0,
+   "validates": false,
+   "reason": null
+  },
+  "PALLAD": {
+   "months": 207,
+   "corr": 0.9951,
+   "te_share_of_etf_vol": 0.1,
+   "mean_diff_pct_per_year": 0.372,
+   "signal_agreement": 0.9213,
+   "switch_diff_per_year": -1.065,
+   "validates": false,
+   "reason": null
+  },
+  "HEATOIL": {
+   "months": 204,
+   "corr": 0.9917,
+   "te_share_of_etf_vol": 0.13,
+   "mean_diff_pct_per_year": 0.508,
+   "signal_agreement": 0.9375,
+   "switch_diff_per_year": -0.545,
+   "validates": false,
+   "reason": null
+  },
+  "RICE": {
+   "months": 230,
+   "corr": 0.9448,
+   "te_share_of_etf_vol": 0.328,
+   "mean_diff_pct_per_year": -1.805,
+   "signal_agreement": 0.7468,
+   "switch_diff_per_year": 0.48,
+   "validates": false,
+   "reason": null
+  },
+  "BRENT_W": {
+   "months": 151,
+   "corr": 0.9924,
+   "te_share_of_etf_vol": 0.123,
+   "mean_diff_pct_per_year": -1.618,
+   "signal_agreement": 0.931,
+   "switch_diff_per_year": 0.421,
+   "validates": false,
+   "reason": null
+  },
+  "GAS_US": {
+   "months": 234,
+   "corr": 0.9504,
+   "te_share_of_etf_vol": 0.339,
+   "mean_diff_pct_per_year": -0.792,
+   "signal_agreement": 0.94,
+   "switch_diff_per_year": -0.333,
+   "validates": true,
+   "reason": null
+  },
+  "COPPER": {
+   "months": 228,
+   "corr": 0.9731,
+   "te_share_of_etf_vol": 0.232,
+   "mean_diff_pct_per_year": -1.137,
+   "signal_agreement": 0.8515,
+   "switch_diff_per_year": 0.387,
+   "validates": false,
+   "reason": null
+  },
+  "REDWHEAT": {
+   "months": 206,
+   "corr": 0.9778,
+   "te_share_of_etf_vol": 0.211,
+   "mean_diff_pct_per_year": -0.367,
+   "signal_agreement": 0.9474,
+   "switch_diff_per_year": 0.667,
+   "validates": false,
+   "reason": null
+  },
+  "MILK": {
+   "months": 89,
+   "corr": 0.3314,
+   "te_share_of_etf_vol": 2.187,
+   "mean_diff_pct_per_year": -4.221,
+   "signal_agreement": NaN,
+   "switch_diff_per_year": NaN,
+   "validates": false,
+   "reason": "only 0 months with a 12-month signal on both"
+  }
+ },
+ "mask_check": {
+  "registered_series": 120,
+  "earliest_date": "2003-01-03",
+  "proxy_computed_series": 163
+ },
+ "level_checks_pre2003": {
+  "SUGAR11": {
+   "applicable": true,
+   "mirror": "SB",
+   "convention": "PRICE",
+   "by_decade_pre2003": {
+    "1970s": {
+     "common_sessions": 2450,
+     "compared_sessions": 2163,
+     "agree_within_0.5pct": 2093,
+     "identical_4_sig_digits": 1750
+    },
+    "1980s": {
+     "common_sessions": 2510,
+     "compared_sessions": 2221,
+     "agree_within_0.5pct": 2221,
+     "identical_4_sig_digits": 2217
+    },
+    "1990s": {
+     "common_sessions": 2419,
+     "compared_sessions": 2135,
+     "agree_within_0.5pct": 2134,
+     "identical_4_sig_digits": 2127
+    },
+    "2000s": {
+     "common_sessions": 614,
+     "compared_sessions": 537,
+     "agree_within_0.5pct": 537,
+     "identical_4_sig_digits": 534
+    }
+   },
+   "pre2003_compared_sessions": 7056,
+   "pre2003_agree": 6985,
+   "pre2003_identical_4sd": 6628,
+   "pre2003_share_agree": 0.9899,
+   "pre2003_share_identical_4sd": 0.9393,
+   "passes": true
+  },
+  "COCOA": {
+   "applicable": true,
+   "mirror": "CC",
+   "convention": "PRICE",
+   "by_decade_pre2003": {
+    "1970s": {
+     "common_sessions": 2430,
+     "compared_sessions": 2079,
+     "agree_within_0.5pct": 1532,
+     "identical_4_sig_digits": 1482
+    },
+    "1980s": {
+     "common_sessions": 2496,
+     "compared_sessions": 2125,
+     "agree_within_0.5pct": 2124,
+     "identical_4_sig_digits": 2117
+    },
+    "1990s": {
+     "common_sessions": 2473,
+     "compared_sessions": 2105,
+     "agree_within_0.5pct": 2099,
+     "identical_4_sig_digits": 2093
+    },
+    "2000s": {
+     "common_sessions": 729,
+     "compared_sessions": 619,
+     "agree_within_0.5pct": 619,
+     "identical_4_sig_digits": 610
+    }
+   },
+   "pre2003_compared_sessions": 6928,
+   "pre2003_agree": 6374,
+   "pre2003_identical_4sd": 6302,
+   "pre2003_share_agree": 0.92,
+   "pre2003_share_identical_4sd": 0.9096,
+   "passes": false
+  },
+  "PLAT": {
+   "applicable": true,
+   "mirror": "PL",
+   "convention": "PRICE",
+   "by_decade_pre2003": {
+    "2000s": {
+     "common_sessions": 8,
+     "compared_sessions": 8,
+     "agree_within_0.5pct": 6,
+     "identical_4_sig_digits": 6
+    }
+   },
+   "pre2003_compared_sessions": 8,
+   "pre2003_agree": 6,
+   "pre2003_identical_4sd": 6,
+   "pre2003_share_agree": 0.75,
+   "pre2003_share_identical_4sd": 0.75,
+   "passes": false
+  },
+  "GOLD": {
+   "applicable": true,
+   "mirror": "GC",
+   "convention": "PRICE",
+   "by_decade_pre2003": {
+    "1970s": {
+     "common_sessions": 1192,
+     "compared_sessions": 996,
+     "agree_within_0.5pct": 484,
+     "identical_4_sig_digits": 439
+    },
+    "1980s": {
+     "common_sessions": 2478,
+     "compared_sessions": 2064,
+     "agree_within_0.5pct": 888,
+     "identical_4_sig_digits": 888
+    },
+    "1990s": {
+     "common_sessions": 2512,
+     "compared_sessions": 2103,
+     "agree_within_0.5pct": 1195,
+     "identical_4_sig_digits": 945
+    },
+    "2000s": {
+     "common_sessions": 747,
+     "compared_sessions": 625,
+     "agree_within_0.5pct": 466,
+     "identical_4_sig_digits": 284
+    }
+   },
+   "pre2003_compared_sessions": 5788,
+   "pre2003_agree": 3033,
+   "pre2003_identical_4sd": 2556,
+   "pre2003_share_agree": 0.524,
+   "pre2003_share_identical_4sd": 0.4416,
+   "passes": false
+  },
+  "PALLAD": {
+   "applicable": false,
+   "mirror": "PA",
+   "convention": "PRICE",
+   "by_decade_pre2003": {},
+   "pre2003_compared_sessions": 0,
+   "pre2003_agree": 0,
+   "pre2003_identical_4sd": 0,
+   "pre2003_share_agree": null,
+   "pre2003_share_identical_4sd": null,
+   "reason": "no pre-2003 common session outside roll days"
+  }
+ },
+ "coverage": {
+  "US5": {
+   "first_month_all_inputs": "1962-01",
+   "expected_months_to_2002_12": 492,
+   "months_present": 492,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 286
+  },
+  "US10": {
+   "first_month_all_inputs": "1962-01",
+   "expected_months_to_2002_12": 492,
+   "months_present": 492,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 286
+  },
+  "GBP": {
+   "first_month_all_inputs": "1971-01",
+   "expected_months_to_2002_12": 384,
+   "months_present": 384,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 277
+  },
+  "AUD": {
+   "first_month_all_inputs": "1971-01",
+   "expected_months_to_2002_12": 384,
+   "months_present": 384,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 285
+  },
+  "CAD": {
+   "first_month_all_inputs": "1971-01",
+   "expected_months_to_2002_12": 384,
+   "months_present": 384,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 285
+  },
+  "JPY": {
+   "first_month_all_inputs": "1971-01",
+   "expected_months_to_2002_12": 384,
+   "months_present": 384,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 184
+  },
+  "CHF": {
+   "input_defect": "SNB zimoma 1TGT: 1 values outside the plausible range [-2%, 60%]"
+  },
+  "DEM": {
+   "first_month_all_inputs": "1964-07",
+   "expected_months_to_2002_12": 462,
+   "months_present": 462,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 285
+  },
+  "NOK": {
+   "first_month_all_inputs": "1979-02",
+   "expected_months_to_2002_12": 287,
+   "months_present": 287,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 285
+  },
+  "SEK": {
+   "first_month_all_inputs": "1982-02",
+   "expected_months_to_2002_12": 251,
+   "months_present": 251,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 285
+  },
+  "DKK": {
+   "first_month_all_inputs": "1987-02",
+   "expected_months_to_2002_12": 191,
+   "months_present": 191,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 285
+  },
+  "BOND_UK": {
+   "first_month_all_inputs": "1970-01",
+   "expected_months_to_2002_12": 396,
+   "months_present": 396,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 277
+  },
+  "BOND_DE": {
+   "first_month_all_inputs": "1972-09",
+   "expected_months_to_2002_12": 364,
+   "months_present": 364,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 286
+  },
+  "BOND_JP": {
+   "first_month_all_inputs": "1986-07",
+   "expected_months_to_2002_12": 198,
+   "months_present": 198,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 184
+  },
+  "BOND_CA": {
+   "first_month_all_inputs": "1982-06",
+   "expected_months_to_2002_12": 247,
+   "months_present": 247,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 286
+  },
+  "BOND_CH": {
+   "input_defect": "SNB zimoma 1TGT: 1 values outside the plausible range [-2%, 60%]"
+  },
+  "OJ": {
+   "first_month_all_inputs": "1969-12",
+   "expected_months_to_2002_12": 397,
+   "months_present": 397,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "SOYOIL": {
+   "first_month_all_inputs": "1970-02",
+   "expected_months_to_2002_12": 395,
+   "months_present": 395,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "SUGAR11": {
+   "first_month_all_inputs": "1970-02",
+   "expected_months_to_2002_12": 395,
+   "months_present": 395,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "COTTON2": {
+   "first_month_all_inputs": "1970-03",
+   "expected_months_to_2002_12": 394,
+   "months_present": 394,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "COCOA": {
+   "first_month_all_inputs": "1970-03",
+   "expected_months_to_2002_12": 394,
+   "months_present": 394,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "OATIES": {
+   "first_month_all_inputs": "1970-04",
+   "expected_months_to_2002_12": 393,
+   "months_present": 393,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 253
+  },
+  "SOYMEAL": {
+   "first_month_all_inputs": "1970-05",
+   "expected_months_to_2002_12": 392,
+   "months_present": 392,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "SILVER": {
+   "first_month_all_inputs": "1970-06",
+   "expected_months_to_2002_12": 391,
+   "months_present": 391,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "PLAT": {
+   "first_month_all_inputs": "1970-06",
+   "expected_months_to_2002_12": 391,
+   "months_present": 391,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "LIVECOW": {
+   "first_month_all_inputs": "1971-10",
+   "expected_months_to_2002_12": 375,
+   "months_present": 375,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 254
+  },
+  "LEANHOG": {
+   "first_month_all_inputs": "1974-07",
+   "expected_months_to_2002_12": 342,
+   "months_present": 342,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "GOLD": {
+   "first_month_all_inputs": "1975-04",
+   "expected_months_to_2002_12": 333,
+   "months_present": 333,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "FEEDCOW": {
+   "first_month_all_inputs": "1977-02",
+   "expected_months_to_2002_12": 311,
+   "months_present": 311,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "PALLAD": {
+   "first_month_all_inputs": "1977-06",
+   "expected_months_to_2002_12": 307,
+   "months_present": 307,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "CANOLA": {
+   "first_month_all_inputs": "1978-01",
+   "expected_months_to_2002_12": 300,
+   "months_present": 300,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "HEATOIL": {
+   "first_month_all_inputs": "1980-02",
+   "expected_months_to_2002_12": 275,
+   "months_present": 275,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "GASOIL": {
+   "first_month_all_inputs": "1986-06",
+   "expected_months_to_2002_12": 199,
+   "months_present": 199,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "RICE": {
+   "first_month_all_inputs": "1988-08",
+   "expected_months_to_2002_12": 173,
+   "months_present": 173,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "SUGAR_WHITE": {
+   "first_month_all_inputs": "1989-02",
+   "expected_months_to_2002_12": 167,
+   "months_present": 167,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 253
+  },
+  "COCOA_LDN": {
+   "first_month_all_inputs": "1989-03",
+   "expected_months_to_2002_12": 166,
+   "months_present": 166,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "BRENT_W": {
+   "first_month_all_inputs": "1989-08",
+   "expected_months_to_2002_12": 161,
+   "months_present": 161,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "GAS_US": {
+   "first_month_all_inputs": "1990-07",
+   "expected_months_to_2002_12": 150,
+   "months_present": 150,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "WHEAT_ICE": {
+   "first_month_all_inputs": "1994-01",
+   "expected_months_to_2002_12": 108,
+   "months_present": 108,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "COPPER": {
+   "first_month_all_inputs": "1995-09",
+   "expected_months_to_2002_12": 88,
+   "months_present": 88,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "REDWHEAT": {
+   "first_month_all_inputs": "1995-09",
+   "expected_months_to_2002_12": 88,
+   "months_present": 88,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "MILK": {
+   "first_month_all_inputs": "1996-04",
+   "expected_months_to_2002_12": 81,
+   "months_present": 80,
+   "share": 0.9877,
+   "missing_spans": [
+    "1997-06..1997-06"
+   ],
+   "passes": true,
+   "months_present_2003_on": 255
+  },
+  "MILKWET": {
+   "first_month_all_inputs": "2000-08",
+   "expected_months_to_2002_12": 29,
+   "months_present": 29,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 252
+  },
+  "MILLWHEAT": {
+   "first_month_all_inputs": "2002-03",
+   "expected_months_to_2002_12": 10,
+   "months_present": 10,
+   "share": 1.0,
+   "missing_spans": [],
+   "passes": true,
+   "months_present_2003_on": 253
+  }
+ },
+ "markets": {
+  "US5": {
+   "class": "bonds",
+   "check": "\u00a73.1 (VALIDATE.md, re-run)",
+   "comparator": "IEI",
+   "values": {
+    "months": 237,
+    "corr": 0.994,
+    "te_share_of_etf_vol": 0.133,
+    "mean_diff_pct_per_year": -0.478,
+    "signal_agreement": 0.9646,
+    "switch_diff_per_year": 0.213
+   },
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": true,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": true,
+   "reproduces_VALIDATE_json": true,
+   "pass": true,
+   "drop_reason": null,
+   "coverage": {
+    "first_month_all_inputs": "1962-01",
+    "expected_months_to_2002_12": 492,
+    "months_present": 492,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 286
+   },
+   "enters_read": true
+  },
+  "US10": {
+   "class": "bonds",
+   "check": "\u00a73.1 (VALIDATE.md, re-run)",
+   "comparator": "IEF",
+   "values": {
+    "months": 285,
+    "corr": 0.9898,
+    "te_share_of_etf_vol": 0.208,
+    "mean_diff_pct_per_year": -0.492,
+    "signal_agreement": 0.9635,
+    "switch_diff_per_year": 0.176
+   },
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": true,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": true,
+   "reproduces_VALIDATE_json": true,
+   "pass": true,
+   "drop_reason": null,
+   "coverage": {
+    "first_month_all_inputs": "1962-01",
+    "expected_months_to_2002_12": 492,
+    "months_present": 492,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 286
+   },
+   "enters_read": true
+  },
+  "GBP": {
+   "class": "currencies",
+   "check": "\u00a73.1 (VALIDATE.md, re-run)",
+   "comparator": "FXB",
+   "values": {
+    "months": 235,
+    "corr": 0.9917,
+    "te_share_of_etf_vol": 0.131,
+    "mean_diff_pct_per_year": 0.802,
+    "signal_agreement": 0.9531,
+    "switch_diff_per_year": -0.227
+   },
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": true,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": true,
+   "reproduces_VALIDATE_json": true,
+   "pass": true,
+   "drop_reason": null,
+   "coverage": {
+    "first_month_all_inputs": "1971-01",
+    "expected_months_to_2002_12": 384,
+    "months_present": 384,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 277
+   },
+   "enters_read": true
+  },
+  "AUD": {
+   "class": "currencies",
+   "check": "\u00a73.1 (VALIDATE.md, re-run)",
+   "comparator": "FXA",
+   "values": {
+    "months": 243,
+    "corr": 0.9918,
+    "te_share_of_etf_vol": 0.128,
+    "mean_diff_pct_per_year": 0.64,
+    "signal_agreement": 0.9683,
+    "switch_diff_per_year": -0.11
+   },
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": true,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": true,
+   "reproduces_VALIDATE_json": true,
+   "pass": true,
+   "drop_reason": null,
+   "coverage": {
+    "first_month_all_inputs": "1971-01",
+    "expected_months_to_2002_12": 384,
+    "months_present": 384,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 285
+   },
+   "enters_read": true
+  },
+  "CAD": {
+   "class": "currencies",
+   "check": "\u00a73.1 (VALIDATE.md, re-run)",
+   "comparator": "FXC",
+   "values": {
+    "months": 243,
+    "corr": 0.9896,
+    "te_share_of_etf_vol": 0.144,
+    "mean_diff_pct_per_year": 0.722,
+    "signal_agreement": 0.9638,
+    "switch_diff_per_year": 0.438
+   },
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": true,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": true,
+   "reproduces_VALIDATE_json": true,
+   "pass": true,
+   "drop_reason": null,
+   "coverage": {
+    "first_month_all_inputs": "1971-01",
+    "expected_months_to_2002_12": 384,
+    "months_present": 384,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 285
+   },
+   "enters_read": true
+  },
+  "JPY": {
+   "class": "currencies",
+   "check": "\u00a73.1",
+   "window": [
+    "2007-03-31",
+    "2026-10-31"
+   ],
+   "months": 134,
+   "corr": 0.9946,
+   "tracking_error_pct_per_year": 1.019,
+   "te_share_of_etf_vol": 0.104,
+   "mean_diff_pct_per_year": 0.147,
+   "mean_diff_hac_se_pct_per_year": 0.177,
+   "hac_lags": 4,
+   "vol_proxy_pct_per_year": 9.73,
+   "vol_etf_pct_per_year": 9.79,
+   "beta_etf_on_proxy": 1.0,
+   "signal_months": 112,
+   "signal_agreement": 1.0,
+   "switches_per_year_proxy": 0.873,
+   "switches_per_year_etf": 0.873,
+   "switch_diff_per_year": 0.0,
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": true,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": true,
+   "evaluated": true,
+   "comparator": "FXY",
+   "rate": "BoJ collateralised overnight call rate, end of month",
+   "missing_differential_2003_on": 102,
+   "pass": true,
+   "drop_reason": null,
+   "coverage": {
+    "first_month_all_inputs": "1971-01",
+    "expected_months_to_2002_12": 384,
+    "months_present": 384,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 184
+   },
+   "enters_read": true
+  },
+  "CHF": {
+   "class": "currencies",
+   "check": "\u00a73.1",
+   "evaluated": false,
+   "pass": false,
+   "input_defect": "SNB zimoma 1TGT: 1 values outside the plausible range [-2%, 60%]",
+   "drop_reason": "input_defect: SNB zimoma 1TGT: 1 values outside the plausible range [-2%, 60%]",
+   "coverage": {
+    "input_defect": "SNB zimoma 1TGT: 1 values outside the plausible range [-2%, 60%]"
+   },
+   "enters_read": false
+  },
+  "DEM": {
+   "class": "currencies",
+   "check": "\u00a73.1",
+   "window": [
+    "2003-02-28",
+    "2026-02-28"
+   ],
+   "months": 276,
+   "corr": 0.9835,
+   "tracking_error_pct_per_year": 1.656,
+   "te_share_of_etf_vol": 0.183,
+   "mean_diff_pct_per_year": -0.072,
+   "mean_diff_hac_se_pct_per_year": 0.153,
+   "hac_lags": 5,
+   "vol_proxy_pct_per_year": 9.16,
+   "vol_etf_pct_per_year": 9.05,
+   "beta_etf_on_proxy": 0.972,
+   "signal_months": 254,
+   "signal_agreement": 0.9764,
+   "switches_per_year_proxy": 1.476,
+   "switches_per_year_etf": 1.571,
+   "switch_diff_per_year": -0.095,
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": true,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": true,
+   "evaluated": true,
+   "comparator": "euro proxy (H.10 DEXUSEU + OECD euro-area 3m, proxy.py; validated against FXE)",
+   "pass": true,
+   "drop_reason": null,
+   "coverage": {
+    "first_month_all_inputs": "1964-07",
+    "expected_months_to_2002_12": 462,
+    "months_present": 462,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 285
+   },
+   "enters_read": true
+  },
+  "NOK": {
+   "class": "currencies",
+   "check": "none registered (no executable comparator)",
+   "pass": true,
+   "drop_reason": null,
+   "note": "same H.10 + OECD 3m construction as the six validated currencies; enters where the differential is covered (\u00a72 'where covered')",
+   "coverage": {
+    "first_month_all_inputs": "1979-02",
+    "expected_months_to_2002_12": 287,
+    "months_present": 287,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 285
+   },
+   "enters_read": true
+  },
+  "SEK": {
+   "class": "currencies",
+   "check": "none registered (no executable comparator)",
+   "pass": true,
+   "drop_reason": null,
+   "note": "same H.10 + OECD 3m construction as the six validated currencies; enters where the differential is covered (\u00a72 'where covered')",
+   "coverage": {
+    "first_month_all_inputs": "1982-02",
+    "expected_months_to_2002_12": 251,
+    "months_present": 251,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 285
+   },
+   "enters_read": true
+  },
+  "DKK": {
+   "class": "currencies",
+   "check": "none registered (no executable comparator)",
+   "pass": true,
+   "drop_reason": null,
+   "note": "same H.10 + OECD 3m construction as the six validated currencies; enters where the differential is covered (\u00a72 'where covered')",
+   "coverage": {
+    "first_month_all_inputs": "1987-02",
+    "expected_months_to_2002_12": 191,
+    "months_present": 191,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 285
+   },
+   "enters_read": true
+  },
+  "BOND_UK": {
+   "class": "bonds",
+   "check": "\u00a73.1",
+   "window": [
+    "2003-02-28",
+    "2024-03-31"
+   ],
+   "months": 254,
+   "corr": 0.9801,
+   "tracking_error_pct_per_year": 1.445,
+   "te_share_of_etf_vol": 0.203,
+   "mean_diff_pct_per_year": -1.374,
+   "mean_diff_hac_se_pct_per_year": 0.341,
+   "hac_lags": 4,
+   "vol_proxy_pct_per_year": 7.28,
+   "vol_etf_pct_per_year": 7.11,
+   "beta_etf_on_proxy": 0.957,
+   "signal_months": 243,
+   "signal_agreement": 0.9588,
+   "switches_per_year_proxy": 0.992,
+   "switches_per_year_etf": 0.992,
+   "switch_diff_per_year": 0.0,
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": false,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": false,
+   "evaluated": true,
+   "comparator": "pysystemtrade GILT (back-adjusted, held contract)",
+   "pass": false,
+   "drop_reason": "failed: bias",
+   "coverage": {
+    "first_month_all_inputs": "1970-01",
+    "expected_months_to_2002_12": 396,
+    "months_present": 396,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 277
+   },
+   "enters_read": false
+  },
+  "BOND_DE": {
+   "class": "bonds",
+   "check": "\u00a73.1",
+   "window": [
+    "2006-12-31",
+    "2024-03-31"
+   ],
+   "months": 205,
+   "corr": 0.9606,
+   "tracking_error_pct_per_year": 1.886,
+   "te_share_of_etf_vol": 0.308,
+   "mean_diff_pct_per_year": -1.062,
+   "mean_diff_hac_se_pct_per_year": 0.348,
+   "hac_lags": 4,
+   "vol_proxy_pct_per_year": 6.7,
+   "vol_etf_pct_per_year": 6.13,
+   "beta_etf_on_proxy": 0.879,
+   "signal_months": 183,
+   "signal_agreement": 0.8689,
+   "switches_per_year_proxy": 1.392,
+   "switches_per_year_etf": 1.193,
+   "switch_diff_per_year": 0.199,
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": false,
+    "signal_agreement": false,
+    "turnover": true
+   },
+   "validates": false,
+   "evaluated": true,
+   "comparator": "pysystemtrade BUND (back-adjusted, held contract)",
+   "pass": false,
+   "drop_reason": "failed: bias, signal_agreement",
+   "coverage": {
+    "first_month_all_inputs": "1972-09",
+    "expected_months_to_2002_12": 364,
+    "months_present": 364,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 286
+   },
+   "enters_read": false
+  },
+  "BOND_JP": {
+   "class": "bonds",
+   "check": "\u00a73.1",
+   "window": [
+    "2003-02-28",
+    "2024-03-31"
+   ],
+   "months": 254,
+   "corr": 0.9316,
+   "tracking_error_pct_per_year": 1.162,
+   "te_share_of_etf_vol": 0.473,
+   "mean_diff_pct_per_year": -0.561,
+   "mean_diff_hac_se_pct_per_year": 0.269,
+   "hac_lags": 4,
+   "vol_proxy_pct_per_year": 3.03,
+   "vol_etf_pct_per_year": 2.46,
+   "beta_etf_on_proxy": 0.754,
+   "signal_months": 243,
+   "signal_agreement": 0.8601,
+   "switches_per_year_proxy": 1.091,
+   "switches_per_year_etf": 1.24,
+   "switch_diff_per_year": -0.149,
+   "checks": {
+    "corr": false,
+    "tracking_error": false,
+    "bias": true,
+    "signal_agreement": false,
+    "turnover": true
+   },
+   "validates": false,
+   "evaluated": true,
+   "comparator": "pysystemtrade JGB (back-adjusted, held contract)",
+   "pass": false,
+   "drop_reason": "failed: corr, tracking_error, signal_agreement",
+   "coverage": {
+    "first_month_all_inputs": "1986-07",
+    "expected_months_to_2002_12": 198,
+    "months_present": 198,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 184
+   },
+   "enters_read": false
+  },
+  "BOND_CA": {
+   "class": "bonds",
+   "check": "\u00a73.1",
+   "window": [
+    "2003-02-28",
+    "2024-03-31"
+   ],
+   "months": 253,
+   "corr": 0.9268,
+   "tracking_error_pct_per_year": 2.448,
+   "te_share_of_etf_vol": 0.42,
+   "mean_diff_pct_per_year": -0.373,
+   "mean_diff_hac_se_pct_per_year": 0.311,
+   "hac_lags": 4,
+   "vol_proxy_pct_per_year": 6.5,
+   "vol_etf_pct_per_year": 5.83,
+   "beta_etf_on_proxy": 0.832,
+   "signal_months": 233,
+   "signal_agreement": 0.9614,
+   "switches_per_year_proxy": 0.983,
+   "switches_per_year_etf": 0.879,
+   "switch_diff_per_year": 0.103,
+   "checks": {
+    "corr": false,
+    "tracking_error": false,
+    "bias": true,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": false,
+   "evaluated": true,
+   "comparator": "pysystemtrade CAD10 (back-adjusted, held contract)",
+   "pass": false,
+   "drop_reason": "failed: corr, tracking_error",
+   "coverage": {
+    "first_month_all_inputs": "1982-06",
+    "expected_months_to_2002_12": 247,
+    "months_present": 247,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 286
+   },
+   "enters_read": false
+  },
+  "BOND_CH": {
+   "class": "bonds",
+   "check": "\u00a73.1",
+   "evaluated": false,
+   "pass": false,
+   "drop_reason": "input_defect: SNB zimoma 1TGT: 1 values outside the plausible range [-2%, 60%]",
+   "coverage": {
+    "input_defect": "SNB zimoma 1TGT: 1 values outside the plausible range [-2%, 60%]"
+   },
+   "enters_read": false
+  },
+  "OJ": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 4232,
+    "share_within_0.5pct": {
+     "PRICE": 0.7753,
+     "CARRY": 0.3426,
+     "FORWARD": 0.3426
+    },
+    "convention": "PRICE",
+    "convention_share": 0.7753,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 77.5% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1969-12",
+    "expected_months_to_2002_12": 397,
+    "months_present": 397,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "SOYOIL": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 4235,
+    "share_within_0.5pct": {
+     "PRICE": 0.4831,
+     "CARRY": 0.354,
+     "FORWARD": 0.0054
+    },
+    "convention": "PRICE",
+    "convention_share": 0.4831,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 48.3% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1970-02",
+    "expected_months_to_2002_12": 395,
+    "months_present": 395,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "SUGAR11": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "window": [
+    "2003-01-31",
+    "2019-11-30"
+   ],
+   "months": 203,
+   "corr": 0.9984,
+   "tracking_error_pct_per_year": 1.471,
+   "te_share_of_etf_vol": 0.057,
+   "mean_diff_pct_per_year": -0.215,
+   "mean_diff_hac_se_pct_per_year": 0.247,
+   "hac_lags": 4,
+   "vol_proxy_pct_per_year": 25.93,
+   "vol_etf_pct_per_year": 25.99,
+   "beta_etf_on_proxy": 1.001,
+   "signal_months": 192,
+   "signal_agreement": 0.9896,
+   "switches_per_year_proxy": 1.257,
+   "switches_per_year_etf": 1.382,
+   "switch_diff_per_year": -0.126,
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": true,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": true,
+   "evaluated": true,
+   "second_source": "CHRIS-style mirror SB on its convention contract (PRICE), roll days excluded",
+   "common_sessions": 3830,
+   "sessions_used": 3290,
+   "convention": {
+    "common_sessions_2003_2019": 4002,
+    "share_within_0.5pct": {
+     "PRICE": 0.8901,
+     "CARRY": 0.1169,
+     "FORWARD": 0.1149
+    },
+    "convention": "PRICE",
+    "convention_share": 0.8901,
+    "usable": true
+   },
+   "pass": true,
+   "drop_reason": null,
+   "level_check": {
+    "applicable": true,
+    "pre2003_compared_sessions": 7056,
+    "pre2003_share_agree": 0.9899,
+    "pre2003_share_identical_4sd": 0.9393,
+    "passes": true,
+    "reason": null
+   },
+   "coverage": {
+    "first_month_all_inputs": "1970-02",
+    "expected_months_to_2002_12": 395,
+    "months_present": 395,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": true
+  },
+  "COTTON2": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 3938,
+    "share_within_0.5pct": {
+     "PRICE": 0.5841,
+     "CARRY": 0.2417,
+     "FORWARD": 0.1097
+    },
+    "convention": "PRICE",
+    "convention_share": 0.5841,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 58.4% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1970-03",
+    "expected_months_to_2002_12": 394,
+    "months_present": 394,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "COCOA": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "window": [
+    "2003-01-31",
+    "2019-11-30"
+   ],
+   "months": 203,
+   "corr": 0.9986,
+   "tracking_error_pct_per_year": 1.396,
+   "te_share_of_etf_vol": 0.054,
+   "mean_diff_pct_per_year": -0.019,
+   "mean_diff_hac_se_pct_per_year": 0.236,
+   "hac_lags": 4,
+   "vol_proxy_pct_per_year": 26.1,
+   "vol_etf_pct_per_year": 26.08,
+   "beta_etf_on_proxy": 0.998,
+   "signal_months": 192,
+   "signal_agreement": 0.9948,
+   "switches_per_year_proxy": 2.262,
+   "switches_per_year_etf": 2.387,
+   "switch_diff_per_year": -0.126,
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": true,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": true,
+   "evaluated": true,
+   "second_source": "CHRIS-style mirror CC on its convention contract (PRICE), roll days excluded",
+   "common_sessions": 4213,
+   "sessions_used": 3506,
+   "convention": {
+    "common_sessions_2003_2019": 4220,
+    "share_within_0.5pct": {
+     "PRICE": 0.9116,
+     "CARRY": 0.2806,
+     "FORWARD": 0.3898
+    },
+    "convention": "PRICE",
+    "convention_share": 0.9116,
+    "usable": true
+   },
+   "pass": false,
+   "drop_reason": "\u00a73.2 level check: 6374/6928 = 92.0% < 95 % agreeing",
+   "level_check": {
+    "applicable": true,
+    "pre2003_compared_sessions": 6928,
+    "pre2003_share_agree": 0.92,
+    "pre2003_share_identical_4sd": 0.9096,
+    "passes": false,
+    "reason": null
+   },
+   "coverage": {
+    "first_month_all_inputs": "1970-03",
+    "expected_months_to_2002_12": 394,
+    "months_present": 394,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "OATIES": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 4236,
+    "share_within_0.5pct": {
+     "PRICE": 0.3314,
+     "CARRY": 0.0212,
+     "FORWARD": 0.0118
+    },
+    "convention": "PRICE",
+    "convention_share": 0.3314,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 33.1% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1970-04",
+    "expected_months_to_2002_12": 393,
+    "months_present": 393,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 253
+   },
+   "enters_read": false
+  },
+  "SOYMEAL": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 4226,
+    "share_within_0.5pct": {
+     "PRICE": 0.3938,
+     "CARRY": 0.2953,
+     "FORWARD": 0.0043
+    },
+    "convention": "PRICE",
+    "convention_share": 0.3938,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 39.4% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1970-05",
+    "expected_months_to_2002_12": 392,
+    "months_present": 392,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "SILVER": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 3769,
+    "share_within_0.5pct": {
+     "PRICE": 0.4845,
+     "CARRY": 0.3033,
+     "FORWARD": 0.0337
+    },
+    "convention": "PRICE",
+    "convention_share": 0.4845,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 48.4% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1970-06",
+    "expected_months_to_2002_12": 391,
+    "months_present": 391,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "PLAT": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "window": [
+    "2009-02-28",
+    "2019-11-30"
+   ],
+   "months": 130,
+   "corr": 0.9941,
+   "tracking_error_pct_per_year": 2.0,
+   "te_share_of_etf_vol": 0.109,
+   "mean_diff_pct_per_year": -1.133,
+   "mean_diff_hac_se_pct_per_year": 0.329,
+   "hac_lags": 4,
+   "vol_proxy_pct_per_year": 18.03,
+   "vol_etf_pct_per_year": 18.34,
+   "beta_etf_on_proxy": 1.011,
+   "signal_months": 119,
+   "signal_agreement": 0.958,
+   "switches_per_year_proxy": 1.627,
+   "switches_per_year_etf": 2.034,
+   "switch_diff_per_year": -0.407,
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": false,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": false,
+   "evaluated": true,
+   "second_source": "CHRIS-style mirror PL on its convention contract (PRICE), roll days excluded",
+   "common_sessions": 2650,
+   "sessions_used": 2323,
+   "convention": {
+    "common_sessions_2003_2019": 2708,
+    "share_within_0.5pct": {
+     "PRICE": 0.8331,
+     "CARRY": 0.7891,
+     "FORWARD": 0.7891
+    },
+    "convention": "PRICE",
+    "convention_share": 0.8331,
+    "usable": true
+   },
+   "pass": false,
+   "drop_reason": "failed: bias; also \u00a73.2 level check 75.0% < 95 %",
+   "level_check": {
+    "applicable": true,
+    "pre2003_compared_sessions": 8,
+    "pre2003_share_agree": 0.75,
+    "pre2003_share_identical_4sd": 0.75,
+    "passes": false,
+    "reason": null
+   },
+   "coverage": {
+    "first_month_all_inputs": "1970-06",
+    "expected_months_to_2002_12": 391,
+    "months_present": 391,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "LIVECOW": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 4227,
+    "share_within_0.5pct": {
+     "PRICE": 0.41,
+     "CARRY": 0.2106,
+     "FORWARD": 0.0632
+    },
+    "convention": "PRICE",
+    "convention_share": 0.41,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 41.0% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1971-10",
+    "expected_months_to_2002_12": 375,
+    "months_present": 375,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 254
+   },
+   "enters_read": false
+  },
+  "LEANHOG": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 4019,
+    "share_within_0.5pct": {
+     "PRICE": 0.2262,
+     "CARRY": 0.2374,
+     "FORWARD": 0.0202
+    },
+    "convention": "CARRY",
+    "convention_share": 0.2374,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column CARRY within 0.5 % on 23.7% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1974-07",
+    "expected_months_to_2002_12": 342,
+    "months_present": 342,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "GOLD": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "window": [
+    "2003-01-31",
+    "2019-11-30"
+   ],
+   "months": 203,
+   "corr": 0.9956,
+   "tracking_error_pct_per_year": 1.548,
+   "te_share_of_etf_vol": 0.094,
+   "mean_diff_pct_per_year": -1.848,
+   "mean_diff_hac_se_pct_per_year": 0.373,
+   "hac_lags": 4,
+   "vol_proxy_pct_per_year": 16.44,
+   "vol_etf_pct_per_year": 16.52,
+   "beta_etf_on_proxy": 1.0,
+   "signal_months": 192,
+   "signal_agreement": 0.9531,
+   "switches_per_year_proxy": 1.759,
+   "switches_per_year_etf": 1.634,
+   "switch_diff_per_year": 0.126,
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": false,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": false,
+   "evaluated": true,
+   "second_source": "CHRIS-style mirror GC on its convention contract (PRICE), roll days excluded",
+   "common_sessions": 4192,
+   "sessions_used": 3394,
+   "convention": {
+    "common_sessions_2003_2019": 4220,
+    "share_within_0.5pct": {
+     "PRICE": 0.8448,
+     "CARRY": 0.8194,
+     "FORWARD": 0.8194
+    },
+    "convention": "PRICE",
+    "convention_share": 0.8448,
+    "usable": true
+   },
+   "pass": false,
+   "drop_reason": "failed: bias; also \u00a73.2 level check 52.4% < 95 %",
+   "level_check": {
+    "applicable": true,
+    "pre2003_compared_sessions": 5788,
+    "pre2003_share_agree": 0.524,
+    "pre2003_share_identical_4sd": 0.4416,
+    "passes": false,
+    "reason": null
+   },
+   "coverage": {
+    "first_month_all_inputs": "1975-04",
+    "expected_months_to_2002_12": 333,
+    "months_present": 333,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "FEEDCOW": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 4232,
+    "share_within_0.5pct": {
+     "PRICE": 0.4764,
+     "CARRY": 0.5059,
+     "FORWARD": 0.0054
+    },
+    "convention": "CARRY",
+    "convention_share": 0.5059,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column CARRY within 0.5 % on 50.6% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1977-02",
+    "expected_months_to_2002_12": 311,
+    "months_present": 311,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "PALLAD": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "window": [
+    "2008-11-30",
+    "2019-11-30"
+   ],
+   "months": 121,
+   "corr": 0.9983,
+   "tracking_error_pct_per_year": 1.511,
+   "te_share_of_etf_vol": 0.058,
+   "mean_diff_pct_per_year": -0.211,
+   "mean_diff_hac_se_pct_per_year": 0.307,
+   "hac_lags": 4,
+   "vol_proxy_pct_per_year": 25.88,
+   "vol_etf_pct_per_year": 25.87,
+   "beta_etf_on_proxy": 0.998,
+   "signal_months": 95,
+   "signal_agreement": 0.9789,
+   "switches_per_year_proxy": 1.935,
+   "switches_per_year_etf": 1.677,
+   "switch_diff_per_year": 0.258,
+   "checks": {
+    "corr": true,
+    "tracking_error": true,
+    "bias": true,
+    "signal_agreement": true,
+    "turnover": true
+   },
+   "validates": true,
+   "evaluated": true,
+   "second_source": "CHRIS-style mirror PA on its convention contract (PRICE), roll days excluded",
+   "common_sessions": 2478,
+   "sessions_used": 2159,
+   "convention": {
+    "common_sessions_2003_2019": 2478,
+    "share_within_0.5pct": {
+     "PRICE": 0.8249,
+     "CARRY": 0.8095,
+     "FORWARD": 0.8095
+    },
+    "convention": "PRICE",
+    "convention_share": 0.8249,
+    "usable": true
+   },
+   "pass": true,
+   "drop_reason": null,
+   "level_check": {
+    "applicable": false,
+    "pre2003_compared_sessions": 0,
+    "pre2003_share_agree": null,
+    "pre2003_share_identical_4sd": null,
+    "passes": null,
+    "reason": "no pre-2003 common session outside roll days"
+   },
+   "coverage": {
+    "first_month_all_inputs": "1977-06",
+    "expected_months_to_2002_12": 307,
+    "months_present": 307,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": true
+  },
+  "CANOLA": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+   "coverage": {
+    "first_month_all_inputs": "1978-01",
+    "expected_months_to_2002_12": 300,
+    "months_present": 300,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "HEATOIL": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 4221,
+    "share_within_0.5pct": {
+     "PRICE": 0.4783,
+     "CARRY": 0.4771,
+     "FORWARD": 0.1163
+    },
+    "convention": "PRICE",
+    "convention_share": 0.4783,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 47.8% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1980-02",
+    "expected_months_to_2002_12": 275,
+    "months_present": 275,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "GASOIL": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+   "coverage": {
+    "first_month_all_inputs": "1986-06",
+    "expected_months_to_2002_12": 199,
+    "months_present": 199,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "RICE": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 4236,
+    "share_within_0.5pct": {
+     "PRICE": 0.4714,
+     "CARRY": 0.042,
+     "FORWARD": 0.008
+    },
+    "convention": "PRICE",
+    "convention_share": 0.4714,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 47.1% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1988-08",
+    "expected_months_to_2002_12": 173,
+    "months_present": 173,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "SUGAR_WHITE": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+   "coverage": {
+    "first_month_all_inputs": "1989-02",
+    "expected_months_to_2002_12": 167,
+    "months_present": 167,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 253
+   },
+   "enters_read": false
+  },
+  "COCOA_LDN": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+   "coverage": {
+    "first_month_all_inputs": "1989-03",
+    "expected_months_to_2002_12": 166,
+    "months_present": 166,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "BRENT_W": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+   "coverage": {
+    "first_month_all_inputs": "1989-08",
+    "expected_months_to_2002_12": 161,
+    "months_present": 161,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "GAS_US": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 4228,
+    "share_within_0.5pct": {
+     "PRICE": 0.6675,
+     "CARRY": 0.1618,
+     "FORWARD": 0.1149
+    },
+    "convention": "PRICE",
+    "convention_share": 0.6675,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 66.8% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1990-07",
+    "expected_months_to_2002_12": 150,
+    "months_present": 150,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "WHEAT_ICE": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+   "coverage": {
+    "first_month_all_inputs": "1994-01",
+    "expected_months_to_2002_12": 108,
+    "months_present": 108,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "COPPER": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "convention": {
+    "common_sessions_2003_2019": 4187,
+    "share_within_0.5pct": {
+     "PRICE": 0.711,
+     "CARRY": 0.5682,
+     "FORWARD": 0.3337
+    },
+    "convention": "PRICE",
+    "convention_share": 0.711,
+    "usable": false
+   },
+   "drop_reason": "no usable mirror: best column PRICE within 0.5 % on 71.1% of 2003-2019 sessions < 80 %",
+   "coverage": {
+    "first_month_all_inputs": "1995-09",
+    "expected_months_to_2002_12": 88,
+    "months_present": 88,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "REDWHEAT": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+   "coverage": {
+    "first_month_all_inputs": "1995-09",
+    "expected_months_to_2002_12": 88,
+    "months_present": 88,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "MILK": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+   "coverage": {
+    "first_month_all_inputs": "1996-04",
+    "expected_months_to_2002_12": 81,
+    "months_present": 80,
+    "share": 0.9877,
+    "missing_spans": [
+     "1997-06..1997-06"
+    ],
+    "passes": true,
+    "months_present_2003_on": 255
+   },
+   "enters_read": false
+  },
+  "MILKWET": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+   "coverage": {
+    "first_month_all_inputs": "2000-08",
+    "expected_months_to_2002_12": 29,
+    "months_present": 29,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 252
+   },
+   "enters_read": false
+  },
+  "MILLWHEAT": {
+   "class": "commodities",
+   "check": "\u00a73.1 (Amendment 1: mirror on its convention contract)",
+   "evaluated": false,
+   "pass": false,
+   "drop_reason": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+   "coverage": {
+    "first_month_all_inputs": "2002-03",
+    "expected_months_to_2002_12": 10,
+    "months_present": 10,
+    "share": 1.0,
+    "missing_spans": [],
+    "passes": true,
+    "months_present_2003_on": 253
+   },
+   "enters_read": false
+  }
+ },
+ "entering_read": {
+  "bonds": {
+   "n": 2,
+   "markets": [
+    "US10",
+    "US5"
+   ]
+  },
+  "currencies": {
+   "n": 8,
+   "markets": [
+    "AUD",
+    "CAD",
+    "DEM",
+    "DKK",
+    "GBP",
+    "JPY",
+    "NOK",
+    "SEK"
+   ]
+  },
+  "commodities": {
+   "n": 2,
+   "markets": [
+    "PALLAD",
+    "SUGAR11"
+   ]
+  }
+ },
+ "dropped": {
+  "CHF": "input_defect: SNB zimoma 1TGT: 1 values outside the plausible range [-2%, 60%]",
+  "BOND_UK": "failed: bias",
+  "BOND_DE": "failed: bias, signal_agreement",
+  "BOND_JP": "failed: corr, tracking_error, signal_agreement",
+  "BOND_CA": "failed: corr, tracking_error",
+  "BOND_CH": "input_defect: SNB zimoma 1TGT: 1 values outside the plausible range [-2%, 60%]",
+  "OJ": "no usable mirror: best column PRICE within 0.5 % on 77.5% of 2003-2019 sessions < 80 %",
+  "SOYOIL": "no usable mirror: best column PRICE within 0.5 % on 48.3% of 2003-2019 sessions < 80 %",
+  "COTTON2": "no usable mirror: best column PRICE within 0.5 % on 58.4% of 2003-2019 sessions < 80 %",
+  "COCOA": "\u00a73.2 level check: 6374/6928 = 92.0% < 95 % agreeing",
+  "OATIES": "no usable mirror: best column PRICE within 0.5 % on 33.1% of 2003-2019 sessions < 80 %",
+  "SOYMEAL": "no usable mirror: best column PRICE within 0.5 % on 39.4% of 2003-2019 sessions < 80 %",
+  "SILVER": "no usable mirror: best column PRICE within 0.5 % on 48.4% of 2003-2019 sessions < 80 %",
+  "PLAT": "failed: bias; also \u00a73.2 level check 75.0% < 95 %",
+  "LIVECOW": "no usable mirror: best column PRICE within 0.5 % on 41.0% of 2003-2019 sessions < 80 %",
+  "LEANHOG": "no usable mirror: best column CARRY within 0.5 % on 23.7% of 2003-2019 sessions < 80 %",
+  "GOLD": "failed: bias; also \u00a73.2 level check 52.4% < 95 %",
+  "FEEDCOW": "no usable mirror: best column CARRY within 0.5 % on 50.6% of 2003-2019 sessions < 80 %",
+  "CANOLA": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "HEATOIL": "no usable mirror: best column PRICE within 0.5 % on 47.8% of 2003-2019 sessions < 80 %",
+  "GASOIL": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "RICE": "no usable mirror: best column PRICE within 0.5 % on 47.1% of 2003-2019 sessions < 80 %",
+  "SUGAR_WHITE": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "COCOA_LDN": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "BRENT_W": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "GAS_US": "no usable mirror: best column PRICE within 0.5 % on 66.8% of 2003-2019 sessions < 80 %",
+  "WHEAT_ICE": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "COPPER": "no usable mirror: best column PRICE within 0.5 % on 71.1% of 2003-2019 sessions < 80 %",
+  "REDWHEAT": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "MILK": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "MILKWET": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)",
+  "MILLWHEAT": "no mirror (Amendment 1 (4): markets with no mirror stay dropped)"
+ },
+ "loader_notes": {
+  "pst GILT": {
+   "intraday_rows_collapsed_multiple": 26418,
+   "intraday_rows_collapsed_adjusted": 26418
+  },
+  "pst BUND": {
+   "intraday_rows_collapsed_multiple": 177954,
+   "intraday_rows_collapsed_adjusted": 177954
+  },
+  "pst JGB": {
+   "intraday_rows_collapsed_multiple": 12945,
+   "intraday_rows_collapsed_adjusted": 12945
+  },
+  "pst CAD10": {
+   "intraday_rows_collapsed_multiple": 31081,
+   "intraday_rows_collapsed_adjusted": 31081
+  },
+  "pst OJ": {
+   "intraday_rows_collapsed_multiple": 14905,
+   "intraday_rows_collapsed_adjusted": 14905
+  },
+  "pst SOYOIL": {
+   "intraday_rows_collapsed_multiple": 51049,
+   "intraday_rows_collapsed_adjusted": 51049
+  },
+  "pst SUGAR11": {
+   "intraday_rows_collapsed_multiple": 27945,
+   "intraday_rows_collapsed_adjusted": 27944
+  },
+  "pst COTTON2": {
+   "intraday_rows_collapsed_multiple": 47521,
+   "intraday_rows_collapsed_adjusted": 47516
+  },
+  "pst COCOA": {
+   "intraday_rows_collapsed_multiple": 26450,
+   "intraday_rows_collapsed_adjusted": 26450
+  },
+  "pst OATIES": {
+   "intraday_rows_collapsed_multiple": 30631,
+   "intraday_rows_collapsed_adjusted": 30631
+  },
+  "pst SOYMEAL": {
+   "intraday_rows_collapsed_multiple": 54269,
+   "intraday_rows_collapsed_adjusted": 54269
+  },
+  "pst SILVER": {
+   "intraday_rows_collapsed_multiple": 68017,
+   "intraday_rows_collapsed_adjusted": 68017
+  },
+  "pst PLAT": {
+   "intraday_rows_collapsed_multiple": 48359,
+   "intraday_rows_collapsed_adjusted": 48359
+  },
+  "pst LIVECOW": {
+   "intraday_rows_collapsed_multiple": 26000,
+   "intraday_rows_collapsed_adjusted": 26000
+  },
+  "pst LEANHOG": {
+   "intraday_rows_collapsed_multiple": 18976,
+   "intraday_rows_collapsed_adjusted": 18976
+  },
+  "pst GOLD": {
+   "intraday_rows_collapsed_multiple": 39425,
+   "intraday_rows_collapsed_adjusted": 39425
+  },
+  "pst FEEDCOW": {
+   "intraday_rows_collapsed_multiple": 35223,
+   "intraday_rows_collapsed_adjusted": 35223
+  },
+  "pst PALLAD": {
+   "intraday_rows_collapsed_multiple": 40379,
+   "intraday_rows_collapsed_adjusted": 40379
+  },
+  "pst HEATOIL": {
+   "intraday_rows_collapsed_multiple": 51834,
+   "intraday_rows_collapsed_adjusted": 51834
+  },
+  "pst RICE": {
+   "intraday_rows_collapsed_multiple": 37998,
+   "intraday_rows_collapsed_adjusted": 37998
+  },
+  "pst BRENT_W": {
+   "intraday_rows_collapsed_multiple": 58143,
+   "intraday_rows_collapsed_adjusted": 58143
+  },
+  "pst GAS_US": {
+   "intraday_rows_collapsed_multiple": 50529,
+   "intraday_rows_collapsed_adjusted": 50529
+  },
+  "pst COPPER": {
+   "intraday_rows_collapsed_multiple": 45374,
+   "intraday_rows_collapsed_adjusted": 45373
+  },
+  "pst REDWHEAT": {
+   "intraday_rows_collapsed_multiple": 52337,
+   "intraday_rows_collapsed_adjusted": 52337
+  },
+  "pst MILK": {
+   "intraday_rows_collapsed_multiple": 37516,
+   "intraday_rows_collapsed_adjusted": 37514
+  },
+  "pst CANOLA": {
+   "intraday_rows_collapsed_multiple": 42637,
+   "intraday_rows_collapsed_adjusted": 42608
+  },
+  "pst GASOIL": {
+   "intraday_rows_collapsed_multiple": 57344,
+   "intraday_rows_collapsed_adjusted": 57343
+  },
+  "pst SUGAR_WHITE": {
+   "intraday_rows_collapsed_multiple": 27015,
+   "intraday_rows_collapsed_adjusted": 27015
+  },
+  "pst COCOA_LDN": {
+   "intraday_rows_collapsed_multiple": 20919,
+   "intraday_rows_collapsed_adjusted": 20919
+  },
+  "pst WHEAT_ICE": {
+   "intraday_rows_collapsed_multiple": 18467,
+   "intraday_rows_collapsed_adjusted": 18463
+  },
+  "pst MILKWET": {
+   "intraday_rows_collapsed_multiple": 4657,
+   "intraday_rows_collapsed_adjusted": 4653
+  },
+  "pst MILLWHEAT": {
+   "intraday_rows_collapsed_multiple": 25149,
+   "intraday_rows_collapsed_adjusted": 25149
+  }
+ },
+ "diagnostic_mirror_convention_spent_2003_2019": {
+  "OJ": {
+   "common_sessions": 4232,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.775,
+    "CARRY": 0.343,
+    "FORWARD": 0.343
+   },
+   "within_0.01pct": {
+    "PRICE": 0.505,
+    "CARRY": 0.107,
+    "FORWARD": 0.107
+   }
+  },
+  "SOYOIL": {
+   "common_sessions": 4235,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.483,
+    "CARRY": 0.354,
+    "FORWARD": 0.005
+   },
+   "within_0.01pct": {
+    "PRICE": 0.232,
+    "CARRY": 0.127,
+    "FORWARD": 0.004
+   }
+  },
+  "SUGAR11": {
+   "common_sessions": 4002,
+   "first": "2003-01-08",
+   "within_0.5pct": {
+    "PRICE": 0.89,
+    "CARRY": 0.117,
+    "FORWARD": 0.115
+   },
+   "within_0.01pct": {
+    "PRICE": 0.579,
+    "CARRY": 0.022,
+    "FORWARD": 0.01
+   }
+  },
+  "COTTON2": {
+   "common_sessions": 3938,
+   "first": "2003-01-08",
+   "within_0.5pct": {
+    "PRICE": 0.584,
+    "CARRY": 0.242,
+    "FORWARD": 0.11
+   },
+   "within_0.01pct": {
+    "PRICE": 0.405,
+    "CARRY": 0.136,
+    "FORWARD": 0.002
+   }
+  },
+  "COCOA": {
+   "common_sessions": 4220,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.912,
+    "CARRY": 0.281,
+    "FORWARD": 0.39
+   },
+   "within_0.01pct": {
+    "PRICE": 0.578,
+    "CARRY": 0.036,
+    "FORWARD": 0.021
+   }
+  },
+  "OATIES": {
+   "common_sessions": 4236,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.331,
+    "CARRY": 0.021,
+    "FORWARD": 0.012
+   },
+   "within_0.01pct": {
+    "PRICE": 0.245,
+    "CARRY": 0.005,
+    "FORWARD": 0.011
+   }
+  },
+  "SOYMEAL": {
+   "common_sessions": 4226,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.394,
+    "CARRY": 0.295,
+    "FORWARD": 0.004
+   },
+   "within_0.01pct": {
+    "PRICE": 0.199,
+    "CARRY": 0.113,
+    "FORWARD": 0.003
+   }
+  },
+  "SILVER": {
+   "common_sessions": 3769,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.484,
+    "CARRY": 0.303,
+    "FORWARD": 0.034
+   },
+   "within_0.01pct": {
+    "PRICE": 0.065,
+    "CARRY": 0.081,
+    "FORWARD": 0.001
+   }
+  },
+  "PLAT": {
+   "common_sessions": 2708,
+   "first": "2007-12-12",
+   "within_0.5pct": {
+    "PRICE": 0.833,
+    "CARRY": 0.789,
+    "FORWARD": 0.789
+   },
+   "within_0.01pct": {
+    "PRICE": 0.242,
+    "CARRY": 0.134,
+    "FORWARD": 0.134
+   }
+  },
+  "LIVECOW": {
+   "common_sessions": 4227,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.41,
+    "CARRY": 0.211,
+    "FORWARD": 0.063
+   },
+   "within_0.01pct": {
+    "PRICE": 0.164,
+    "CARRY": 0.112,
+    "FORWARD": 0.001
+   }
+  },
+  "LEANHOG": {
+   "common_sessions": 4019,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.226,
+    "CARRY": 0.237,
+    "FORWARD": 0.02
+   },
+   "within_0.01pct": {
+    "PRICE": 0.069,
+    "CARRY": 0.106,
+    "FORWARD": 0.0
+   }
+  },
+  "GOLD": {
+   "common_sessions": 4220,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.845,
+    "CARRY": 0.819,
+    "FORWARD": 0.819
+   },
+   "within_0.01pct": {
+    "PRICE": 0.325,
+    "CARRY": 0.354,
+    "FORWARD": 0.354
+   }
+  },
+  "FEEDCOW": {
+   "common_sessions": 4232,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.476,
+    "CARRY": 0.506,
+    "FORWARD": 0.005
+   },
+   "within_0.01pct": {
+    "PRICE": 0.139,
+    "CARRY": 0.165,
+    "FORWARD": 0.004
+   }
+  },
+  "PALLAD": {
+   "common_sessions": 2478,
+   "first": "2005-02-09",
+   "within_0.5pct": {
+    "PRICE": 0.825,
+    "CARRY": 0.81,
+    "FORWARD": 0.81
+   },
+   "within_0.01pct": {
+    "PRICE": 0.171,
+    "CARRY": 0.036,
+    "FORWARD": 0.036
+   }
+  },
+  "HEATOIL": {
+   "common_sessions": 4221,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.478,
+    "CARRY": 0.477,
+    "FORWARD": 0.116
+   },
+   "within_0.01pct": {
+    "PRICE": 0.261,
+    "CARRY": 0.231,
+    "FORWARD": 0.001
+   }
+  },
+  "RICE": {
+   "common_sessions": 4236,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.471,
+    "CARRY": 0.042,
+    "FORWARD": 0.008
+   },
+   "within_0.01pct": {
+    "PRICE": 0.279,
+    "CARRY": 0.003,
+    "FORWARD": 0.008
+   }
+  },
+  "GAS_US": {
+   "common_sessions": 4228,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.667,
+    "CARRY": 0.162,
+    "FORWARD": 0.115
+   },
+   "within_0.01pct": {
+    "PRICE": 0.406,
+    "CARRY": 0.05,
+    "FORWARD": 0.003
+   }
+  },
+  "COPPER": {
+   "common_sessions": 4187,
+   "first": "2003-01-02",
+   "within_0.5pct": {
+    "PRICE": 0.711,
+    "CARRY": 0.568,
+    "FORWARD": 0.334
+   },
+   "within_0.01pct": {
+    "PRICE": 0.227,
+    "CARRY": 0.034,
+    "FORWARD": 0.007
+   }
+  }
+ },
+ "errors": [],
+ "gate_evaluable": true,
+ "breadth_gate": {
+  "rule": "Amendment 1 (6): at least 10 commodities pass",
+  "commodities_entering": 2,
+  "passes": false
+ },
+ "gate": "fail",
+ "gate_fail_reasons": [
+  "only 2 commodities pass (Amendment 1 (6): the read needs at least 10)"
+ ],
+ "flow_conditions": {
+  "H1": {
+   "evaluable": true,
+   "reason": null
+  },
+  "H2": {
+   "evaluable": false,
+   "energy_markets_passing": [],
+   "reason": "0 energy markets pass the \u00a73 checks (needs 2)"
+  },
+  "H3": {
+   "evaluable": false,
+   "commodities_passing": 2,
+   "reason": "commodity composite has 2 passing markets (needs 10)"
+  },
+  "H4": {
+   "evaluable": false,
+   "reason": "needs the commodity composite (>= 10; 2 pass) and gold (fails)"
+  },
+  "H5": {
+   "evaluable": true,
+   "reason": null
+  },
+  "H6": {
+   "evaluable": true,
+   "variant": "fallback_without_energy",
+   "reason": null
+  },
+  "H5_bandwidth": {
+   "sigma_resid": 0.7504280085849021,
+   "sigma_X": 1.955828368917294,
+   "predictors": [
+    "us10",
+    "currencies",
+    "commodities"
+   ],
+   "weeks": 1102,
+   "window": [
+    "2003-02-13",
+    "2024-04-11"
+   ],
+   "units": "Euclidean distance of standardised variables (each scaled by its sample sd)"
+  },
+  "failure_control_5_4": {
+   "window": [
+    "2003-02-04",
+    "2026-09-30"
+   ],
+   "days": 5931,
+   "corr_same_day": 0.23962920786212547,
+   "corr_equity_t_currency_t+1": 0.19928805492499996,
+   "fisher_z": 15.551999506782026,
+   "passes": true,
+   "rule": "same sign as the same-day correlation and |z| >= 1.645 (one-sided 5 %)"
+  },
+  "evaluable_set": [
+   "H1",
+   "H5",
+   "H6"
+  ],
+  "decided": "at the gate, before the lock (PREREG_XASSET.md Amendment 2)"
+ },
+ "doubt": {
+  "definition": "doubt if fewer than 15 commodities pass, or on at least half the passing markets >= 99 % of pre-2003 sessions are identical to 4 significant digits",
+  "commodities_passing": 2,
+  "fewer_than_15_pass": true,
+  "identical_share_by_passing_market": {
+   "PALLAD": null,
+   "SUGAR11": 0.9393
+  },
+  "markets_with_identical_share_ge_0.99": 0,
+  "half_or_more_not_independent": false,
+  "doubt": true
+ }
+}

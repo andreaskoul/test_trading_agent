@@ -1,0 +1,282 @@
+{
+ "method": [
+  "Lo (2002) iid standard error of an annualised Sharpe ratio (or appraisal ratio, the Sharpe ratio of the residual)",
+  "estimated over T years: SE = sqrt((1 + S^2 / 2) / T). One-sided test at level alpha with power 1 - beta needs",
+  "S / SE >= z_alpha + z_beta, so T = (z_alpha + z_beta)^2 (1 + S^2 / 2) / S^2.",
+  ""
+ ],
+ "years_needed": {
+  "5% one-sided": {
+   "S=0.3": {
+    "power_80": 71.8,
+    "power_50": 31.4
+   },
+   "S=0.4": {
+    "power_80": 41.7,
+    "power_50": 18.3
+   },
+   "S=0.6": {
+    "power_80": 20.3,
+    "power_50": 8.9
+   }
+  },
+  "programme 0.10/40": {
+   "S=0.3": {
+    "power_80": 154.6,
+    "power_50": 91.5
+   },
+   "S=0.4": {
+    "power_80": 89.9,
+    "power_50": 53.2
+   },
+   "S=0.6": {
+    "power_80": 43.6,
+    "power_50": 25.8
+   }
+  },
+  "programme 0.10/60": {
+   "S=0.3": {
+    "power_80": 165.6,
+    "power_50": 100.0
+   },
+   "S=0.4": {
+    "power_80": 96.3,
+    "power_50": 58.2
+   },
+   "S=0.6": {
+    "power_80": 46.8,
+    "power_50": 28.2
+   }
+  }
+ },
+ "power": {
+  "forward_1y": {
+   "years": 1.0,
+   "label": "forward record, 1 year",
+   "5% one-sided": {
+    "S=0.3": 0.088,
+    "S=0.4": 0.104,
+    "S=0.6": 0.137
+   },
+   "programme 0.10/40": {
+    "S=0.3": 0.006,
+    "S=0.4": 0.008,
+    "S=0.6": 0.012
+   },
+   "programme 0.10/60": {
+    "S=0.3": 0.004,
+    "S=0.4": 0.005,
+    "S=0.6": 0.009
+   }
+  },
+  "forward_3y": {
+   "years": 3.0,
+   "label": "forward record, 3 years",
+   "5% one-sided": {
+    "S=0.3": 0.128,
+    "S=0.4": 0.164,
+    "S=0.6": 0.246
+   },
+   "programme 0.10/40": {
+    "S=0.3": 0.011,
+    "S=0.4": 0.016,
+    "S=0.6": 0.032
+   },
+   "programme 0.10/60": {
+    "S=0.3": 0.008,
+    "S=0.4": 0.012,
+    "S=0.6": 0.024
+   }
+  },
+  "forward_5y": {
+   "years": 5.0,
+   "label": "forward record, 5 years",
+   "5% one-sided": {
+    "S=0.3": 0.161,
+    "S=0.4": 0.216,
+    "S=0.6": 0.341
+   },
+   "programme 0.10/40": {
+    "S=0.3": 0.016,
+    "S=0.4": 0.026,
+    "S=0.6": 0.058
+   },
+   "programme 0.10/60": {
+    "S=0.3": 0.011,
+    "S=0.4": 0.019,
+    "S=0.6": 0.045
+   }
+  },
+  "etf_unread_2007_2025": {
+   "years": 18.7,
+   "label": "ETFs not used by X1, 2007-04..2025-12",
+   "5% one-sided": {
+    "S=0.3": 0.354,
+    "S=0.4": 0.508,
+    "S=0.6": 0.771
+   },
+   "programme 0.10/40": {
+    "S=0.3": 0.062,
+    "S=0.4": 0.127,
+    "S=0.6": 0.338
+   },
+   "programme 0.10/60": {
+    "S=0.3": 0.048,
+    "S=0.4": 0.102,
+    "S=0.6": 0.292
+   }
+  },
+  "yahoo_cont_futures_2000_2026": {
+   "years": 26.2,
+   "label": "Yahoo continuous futures, 2000-09..2026-11",
+   "5% one-sided": {
+    "S=0.3": 0.443,
+    "S=0.4": 0.628,
+    "S=0.6": 0.881
+   },
+   "programme 0.10/40": {
+    "S=0.3": 0.096,
+    "S=0.4": 0.201,
+    "S=0.6": 0.508
+   },
+   "programme 0.10/60": {
+    "S=0.3": 0.076,
+    "S=0.4": 0.167,
+    "S=0.6": 0.457
+   }
+  },
+  "vx_futures_2004_2026": {
+   "years": 22.7,
+   "label": "CBOE VIX futures contracts, 2004-03..2026-11",
+   "5% one-sided": {
+    "S=0.3": 0.403,
+    "S=0.4": 0.575,
+    "S=0.6": 0.838
+   },
+   "programme 0.10/40": {
+    "S=0.3": 0.079,
+    "S=0.4": 0.165,
+    "S=0.6": 0.43
+   },
+   "programme 0.10/60": {
+    "S=0.3": 0.062,
+    "S=0.4": 0.135,
+    "S=0.6": 0.381
+   }
+  },
+  "proxy_1972_2002": {
+   "years": 30.5,
+   "label": "proxy: FRED CMT + OECD yields + H.10 FX + commodities, 1972-01..2002-06",
+   "5% one-sided": {
+    "S=0.3": 0.49,
+    "S=0.4": 0.685,
+    "S=0.6": 0.92
+   },
+   "programme 0.10/40": {
+    "S=0.3": 0.118,
+    "S=0.4": 0.248,
+    "S=0.6": 0.596
+   },
+   "programme 0.10/60": {
+    "S=0.3": 0.094,
+    "S=0.4": 0.209,
+    "S=0.6": 0.546
+   }
+  },
+  "proxy_1962_2002": {
+   "years": 40.5,
+   "label": "proxy without FX before 1972, 1962-01..2002-06",
+   "5% one-sided": {
+    "S=0.3": 0.588,
+    "S=0.4": 0.789,
+    "S=0.6": 0.969
+   },
+   "programme 0.10/40": {
+    "S=0.3": 0.174,
+    "S=0.4": 0.36,
+    "S=0.6": 0.761
+   },
+   "programme 0.10/60": {
+    "S=0.3": 0.143,
+    "S=0.4": 0.314,
+    "S=0.6": 0.719
+   }
+  },
+  "cboe_option_indices_1986_2026": {
+   "years": 40.4,
+   "label": "CBOE BXMD/CNDR/PPUT/BFLY, 1986-06..2026-11 (benchmark)",
+   "5% one-sided": {
+    "S=0.3": 0.587,
+    "S=0.4": 0.789,
+    "S=0.6": 0.969
+   },
+   "programme 0.10/40": {
+    "S=0.3": 0.173,
+    "S=0.4": 0.359,
+    "S=0.6": 0.759
+   },
+   "programme 0.10/60": {
+    "S=0.3": 0.142,
+    "S=0.4": 0.313,
+    "S=0.6": 0.718
+   }
+  },
+  "aqr_tsmom_1985_2026": {
+   "years": 41.4,
+   "label": "AQR TSMOM factors, 1985-01..2026-05 (benchmark)",
+   "5% one-sided": {
+    "S=0.3": 0.596,
+    "S=0.4": 0.797,
+    "S=0.6": 0.972
+   },
+   "programme 0.10/40": {
+    "S=0.3": 0.179,
+    "S=0.4": 0.371,
+    "S=0.6": 0.772
+   },
+   "programme 0.10/60": {
+    "S=0.3": 0.148,
+    "S=0.4": 0.323,
+    "S=0.6": 0.732
+   }
+  },
+  "aqr_century_1926_2026": {
+   "years": 99.6,
+   "label": "AQR Century of Factor Premia, 1926-07..2026-02 (benchmark)",
+   "5% one-sided": {
+    "S=0.3": 0.9,
+    "S=0.4": 0.986,
+    "S=0.6": 1.0
+   },
+   "programme 0.10/40": {
+    "S=0.3": 0.548,
+    "S=0.4": 0.849,
+    "S=0.6": 0.997
+   },
+   "programme 0.10/60": {
+    "S=0.3": 0.497,
+    "S=0.4": 0.818,
+    "S=0.6": 0.995
+   }
+  },
+  "jst_annual_1870_2020": {
+   "years": 151.0,
+   "label": "Jorda-Schularick-Taylor annual, 1870..2020 (benchmark, annual)",
+   "5% one-sided": {
+    "S=0.3": 0.975,
+    "S=0.4": 0.999,
+    "S=0.6": 1.0
+   },
+   "programme 0.10/40": {
+    "S=0.3": 0.788,
+    "S=0.4": 0.973,
+    "S=0.6": 1.0
+   },
+   "programme 0.10/60": {
+    "S=0.3": 0.749,
+    "S=0.4": 0.964,
+    "S=0.6": 1.0
+   }
+  }
+ }
+}
