@@ -46,15 +46,36 @@ def sha(p):
     return h.hexdigest()
 
 
+def _epoch_s(v):
+    """firstTradeDate as integer epoch seconds (coverage() reads it with unit='s'); None if absent/unknown.
+    yfinance serves it as an int on some versions and a pandas Timestamp on others; neither must reach json.dump raw."""
+    if v is None:
+        return None
+    if hasattr(v, "timestamp"):                                      # pandas/py Timestamp or datetime
+        return int(v.timestamp())
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return str(v)
+
+
 def fetch():
+    import pandas as pd
     import yfinance as yf
     os.makedirs(CACHE, exist_ok=True)
     man = json.load(open(MANIFEST)) if os.path.exists(MANIFEST) else {"files": {}}
     for t in TICKERS:
         p = os.path.join(CACHE, f"{t}.csv")
         if os.path.exists(p):
-            if t in man["files"] and man["files"][t]["sha256"] != sha(p):
-                sys.exit(f"{p}: sha256 differs from the manifest")
+            rec = man["files"].get(t)
+            if rec and rec.get("sha256") == sha(p):
+                continue                                             # already frozen and recorded: keep
+            if rec and rec.get("sha256") and rec["sha256"] != sha(p):
+                sys.exit(f"{p}: sha256 differs from the manifest")   # a frozen file changed: refuse
+            df0 = pd.read_csv(p, index_col=0)                        # CSV present but unrecorded (e.g. a prior
+            man["files"][t] = {"sha256": sha(p), "rows": int(len(df0)), "columns": list(df0.columns),  # crashed run):
+                               "rebuilt_from_cache_utc": datetime.now(timezone.utc).isoformat()}        # rebuild entry
+            print(f"{t}: {len(df0)} rows (manifest entry rebuilt from cache)")
             continue
         tk = yf.Ticker(t)
         df = tk.history(start=START, end="2026-11-25", auto_adjust=False, actions=True)
@@ -65,7 +86,7 @@ def fetch():
         df.index = df.index.tz_localize(None).normalize() if df.index.tz is not None else df.index
         df.to_csv(p)
         man["files"][t] = {"sha256": sha(p), "rows": int(len(df)), "fetched_utc": datetime.now(timezone.utc).isoformat(),
-                           "firstTradeDate": meta.get("firstTradeDate"), "instrumentType": meta.get("instrumentType"),
+                           "firstTradeDate": _epoch_s(meta.get("firstTradeDate")), "instrumentType": meta.get("instrumentType"),
                            "exchangeName": meta.get("exchangeName"), "columns": list(df.columns)}
         print(f"{t}: {len(df)} rows frozen")
     man["source"] = "yfinance Ticker.history(auto_adjust=False, actions=True), start " + START
