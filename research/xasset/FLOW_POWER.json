@@ -1,0 +1,176 @@
+{
+ "kind": "registered power simulation for H5 and H6 (generated data matched in T and autocorrelation)",
+ "written_utc": "2026-11-26T00:40:46+00:00",
+ "draws": 999,
+ "reps": 200,
+ "matched_moments_2003_on": {
+  "weekly": {
+   "ac1_y": -0.13279119644225468,
+   "ac1_X": [
+    -0.023672562905535356,
+    0.007179328503295456,
+    -0.05344458305346216
+   ],
+   "corr_X": [
+    [
+     1.0,
+     0.05011356577343148,
+     -0.027742532579088833
+    ],
+    [
+     0.05011356577343148,
+     0.9999999999999999,
+     0.36637272627226475
+    ],
+    [
+     -0.027742532579088833,
+     0.36637272627226475,
+     1.0
+    ]
+   ],
+   "weeks": 1102
+  },
+  "monthly": {
+   "ac1_y": 0.00757366345432771,
+   "ac1_X": [
+    0.05997494686021552,
+    0.037257761158456616
+   ],
+   "corr_X": [
+    [
+     1.0,
+     0.10298303443598313
+    ],
+    [
+     0.10298303443598313,
+     1.0
+    ]
+   ],
+   "months": 283,
+   "window": [
+    "2003-02-28",
+    "2026-09-30"
+   ]
+  }
+ },
+ "levels": {
+  "5pct": 0.05,
+  "holm_first_step_0.10/3": 0.03333333333333333,
+  "programme_0.10/43": 0.002325581395348837
+ },
+ "H5_bandwidth_frozen": {
+  "sigma_resid": 0.7504280085849021,
+  "sigma_X": 1.955828368917294,
+  "predictors": [
+   "us10",
+   "currencies",
+   "commodities"
+  ],
+  "weeks": 1102,
+  "window": [
+   "2003-02-13",
+   "2024-04-11"
+  ],
+  "units": "Euclidean distance of standardised variables (each scaled by its sample sd)"
+ },
+ "H5": {
+  "T": 1513,
+  "effect": "nonlinear (x1^2 - 1)/sqrt(2) term; size = its share of target variance",
+  "nonlinear_R2_0.0": {
+   "5pct": 0.015,
+   "holm_first_step_0.10/3": 0.015,
+   "programme_0.10/43": 0.0
+  },
+  "nonlinear_R2_0.005": {
+   "5pct": 0.025,
+   "holm_first_step_0.10/3": 0.025,
+   "programme_0.10/43": 0.0
+  },
+  "nonlinear_R2_0.01": {
+   "5pct": 0.035,
+   "holm_first_step_0.10/3": 0.03,
+   "programme_0.10/43": 0.01
+  },
+  "nonlinear_R2_0.02": {
+   "5pct": 0.19,
+   "holm_first_step_0.10/3": 0.115,
+   "programme_0.10/43": 0.025
+  }
+ },
+ "H6": {
+  "T348": {
+   "variant": "fallback_without_energy (registered now)",
+   "null_0.0": {
+    "5pct": 0.0,
+    "holm_first_step_0.10/3": 0.0,
+    "programme_0.10/43": 0.0
+   },
+   "location_0.005": {
+    "5pct": 0.0,
+    "holm_first_step_0.10/3": 0.0,
+    "programme_0.10/43": 0.0
+   },
+   "location_0.01": {
+    "5pct": 0.0,
+    "holm_first_step_0.10/3": 0.0,
+    "programme_0.10/43": 0.0
+   },
+   "tail_scale_0.005": {
+    "5pct": 0.0,
+    "holm_first_step_0.10/3": 0.0,
+    "programme_0.10/43": 0.0
+   },
+   "tail_scale_0.01": {
+    "5pct": 0.0,
+    "holm_first_step_0.10/3": 0.0,
+    "programme_0.10/43": 0.0
+   }
+  },
+  "T264": {
+   "variant": "full (if energy qualifies)",
+   "null_0.0": {
+    "5pct": 0.0,
+    "holm_first_step_0.10/3": 0.0,
+    "programme_0.10/43": 0.0
+   },
+   "location_0.005": {
+    "5pct": 0.0,
+    "holm_first_step_0.10/3": 0.0,
+    "programme_0.10/43": 0.0
+   },
+   "location_0.01": {
+    "5pct": 0.0,
+    "holm_first_step_0.10/3": 0.0,
+    "programme_0.10/43": 0.0
+   },
+   "tail_scale_0.005": {
+    "5pct": 0.0,
+    "holm_first_step_0.10/3": 0.0,
+    "programme_0.10/43": 0.0
+   },
+   "tail_scale_0.01": {
+    "5pct": 0.0,
+    "holm_first_step_0.10/3": 0.0,
+    "programme_0.10/43": 0.0
+   }
+  },
+  "T348_decoupled_comparison": {
+   "note": "SYNTHETIC-ONLY comparison under the decoupled null (not registered)",
+   "null_0.0": {
+    "5pct": 0.055,
+    "holm_first_step_0.10/3": 0.05,
+    "programme_0.10/43": 0.0
+   },
+   "location_0.01": {
+    "5pct": 0.14,
+    "holm_first_step_0.10/3": 0.105,
+    "programme_0.10/43": 0.02
+   },
+   "tail_scale_0.01": {
+    "5pct": 0.11,
+    "holm_first_step_0.10/3": 0.08,
+    "programme_0.10/43": 0.01
+   }
+  }
+ }
+}
