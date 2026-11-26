@@ -289,12 +289,304 @@ def analyse(data):
 ADDITIONAL_TESTS = []          # [(name, amendment_id, function)]
 
 
-def run_all(panel):
-    """The primary sleeve and its statistics (§4-6), then any registered additional tests over the same panel."""
+def run_all(panel, additional=True):
+    """The primary sleeve and its statistics (§4-6), then any registered additional tests over the same panel
+    (additional=False only for the primary-path synthetic dry run, whose generated panel has no flow inputs)."""
     out = {"primary": analyse(panel), "additional_tests": {}}
-    for name, amendment, fn in ADDITIONAL_TESTS:
+    for name, amendment, fn in (ADDITIONAL_TESTS if additional else []):
         out["additional_tests"][name] = {"amendment": amendment, "result": fn(panel)}
     return out
+
+
+# ===================================================================================== Amendment 2: information flow
+# LIT_FLOW.md §7 verbatim (PREREG_XASSET.md Amendment 2). Each hypothesis is its own function over the same guarded
+# panel; the family function applies the data conditions fixed at the gate (CHECKS_XASSET.json "flow_conditions"),
+# Holm at 0.10, the verdict rules and the posterior. Choices left open: IMPLEMENTATION_NOTES.md part E.
+import xasset_flow as F                                             # noqa: E402
+
+ENERGY = ("HEATOIL", "CRUDE_W", "GASOIL", "BRENT_W")
+FLOW_WINDOWS = {"H1": ("1963-01-01", "2002-12-31"), "H2": ("1981-01-01", "2002-12-31"),
+                "H3": ("1974-01-01", "2002-12-31"), "H4": ("1977-01-01", "2002-12-31"),
+                "H5": ("1974-01-01", "2002-12-31"), "H6": ("1981-01-01", "2002-12-31"),
+                "H6_fallback": ("1974-01-01", "2002-12-31")}
+H4_FROM = pd.Timestamp("1976-01-01")
+
+
+def _me(s):
+    return pd.Series(s.values, index=s.index.to_timestamp(how="end").normalize())
+
+
+def equity_base(panel):
+    """French market: daily excess, monthly excess (compounded return - compounded T-bill), the core's state (index
+    level above its 200-session average) daily and at each month end."""
+    r, rf = panel["equity"]["r"], panel["equity"]["rf"]
+    per = r.index.to_period("M")
+    em = _me(np.expm1(np.log1p(r).groupby(per).sum()) - np.expm1(np.log1p(rf).groupby(per).sum()))
+    lvl = (1 + r).cumprod()
+    ma = lvl.rolling(200).mean()
+    st = (lvl > ma).astype(float).where(ma.notna())
+    return {"ex_d": r - rf, "em": em, "state_d": st, "state_m": _me(st.groupby(per).last())}
+
+
+def _names(panel, cls):
+    return [k for k, v in panel["markets"].items() if v["class"] == cls]
+
+
+def _ew(panel, names, kind):
+    xs = [panel["markets"][n][kind] for n in names if n in panel["markets"] and panel["markets"][n][kind] is not None]
+    return pd.concat(xs, axis=1).mean(axis=1) if xs else None
+
+
+def _contiguous_tail(ok):
+    """Positions of the last contiguous run of True."""
+    pos = np.flatnonzero(ok)
+    if not len(pos):
+        return pos
+    gaps = np.flatnonzero(np.diff(pos) > 1)
+    return pos[gaps[-1] + 1:] if len(gaps) else pos
+
+
+def monthly_design(y_next, Z, innov, P, window):
+    """Rows t (month ends) with the target y_next[t] (= month t+1) inside `window`, Z[t] and the innovations of rows
+    t-P..t+1 present; the last contiguous block. Returns y, Z (with constant), innovations (P pre-sample rows, the T
+    predictor months and the last target month: P + T + 1 rows), target dates."""
+    cal = y_next.index
+    Zd = Z.reindex(cal)
+    inn = innov.reindex(cal)
+    tgt = cal + pd.offsets.MonthEnd(1)
+    have = inn.notna().all(axis=1).astype(int)
+    ok_inn = have.rolling(P + 1).sum().eq(P + 1).values & have.shift(-1).eq(1).values   # + the target month's
+    ok = (y_next.notna().values & Zd.notna().all(axis=1).values & ok_inn &
+          (tgt >= pd.Timestamp(window[0])) & (tgt <= pd.Timestamp(window[1])))
+    rows = _contiguous_tail(ok)
+    if len(rows) < 60:
+        raise ValueError(f"only {len(rows)} usable months")
+    y = y_next.values[rows]
+    Zm = np.column_stack([np.ones(len(rows)), Zd.values[rows]])
+    I = inn.values[rows[0] - P:rows[-1] + 2]                         # P pre-sample, T rows, + the last target month
+    G.derived(pd.Series(y, index=tgt[rows]), "flow_target")
+    return y, Zm, I, tgt[rows]
+
+
+def _rolling12(inn):
+    c = np.convolve(inn[:, 0], np.ones(12), "valid")
+    return np.expm1(c)
+
+
+def h1_bonds_equity(panel, draws=None):
+    """H1: OLS of r^e_{t+1} on [1, Z_t, x1_t]; x1 = 12-month excess return of the US 10-year proxy; one-sided (+)."""
+    eb = equity_base(panel)
+    Z = pd.concat([eb["em"], eb["state_m"]], axis=1)
+    inn = np.log1p(panel["us10"]).to_frame()
+    y, Zm, I, dates = monthly_design(eb["em"].shift(-1), Z, inn, 11, FLOW_WINDOWS["H1"])
+    return F.mean_granger(y, Zm, I, _rolling12, +1, draws or F.DRAWS, F.SEED, dates)
+
+
+def h2_energy_equity(panel, draws=None):
+    """H2: as H1 with x2 = last month's excess return of the equal-weight energy futures composite; one-sided (-)."""
+    eb = equity_base(panel)
+    en = _ew(panel, [n for n in ENERGY if n in panel["markets"]], "monthly")
+    Z = pd.concat([eb["em"], eb["state_m"]], axis=1)
+    y, Zm, I, dates = monthly_design(eb["em"].shift(-1), Z, en.to_frame(), 0, FLOW_WINDOWS["H2"])
+    return F.mean_granger(y, Zm, I, lambda a: a[:, 0], -1, draws or F.DRAWS, F.SEED, dates)
+
+
+def h3_ccy_commodities(panel, draws=None):
+    """H3: OLS of the next-month equal-weight commodity futures excess return on [1, its month-t return, x3_t];
+    x3 = equal-weight month-t excess return of AUD and CAD; one-sided (+)."""
+    com = _ew(panel, _names(panel, "commodities"), "monthly")
+    x3 = _ew(panel, ["AUD", "CAD"], "monthly")
+    y, Zm, I, dates = monthly_design(com.shift(-1), com.to_frame(), x3.to_frame(), 0, FLOW_WINDOWS["H3"])
+    return F.mean_granger(y, Zm, I, lambda a: a[:, 0], +1, draws or F.DRAWS, F.SEED, dates, nonneg_forecast=False)
+
+
+def h4_daily_composites(panel):
+    eb = equity_base(panel)
+    cols = {"equity": eb["ex_d"], "us10": panel["markets"]["US10"]["daily"],
+            "currencies": _ew(panel, _names(panel, "currencies"), "daily"),
+            "commodities": _ew(panel, _names(panel, "commodities"), "daily"),
+            "gold": panel["markets"]["GOLD"]["daily"]}
+    D = pd.concat(cols, axis=1).dropna()
+    return D[(D.index >= H4_FROM) & (D.index <= END)]
+
+
+def h4_absorption_spike(panel, draws=None):
+    """H4: Spike_t = 1 if (mean AR over 15 days - mean AR over 252 days) / sd of AR over 252 days >= 1 at the end of
+    month t; AR = largest-eigenvalue share of the correlation matrix of the 5 composites' trailing 252 daily returns.
+    Coefficient of Spike_t in the H1-form regression; one-sided (-). Daily data resampled in month blocks."""
+    eb = equity_base(panel)
+    D = h4_daily_composites(panel)
+    per = D.index.to_period("M")
+    months = per.unique()
+    blocks = [D.values[per == m] for m in months]
+    me = months.to_timestamp(how="end").normalize()
+
+    def build(month_idx_rows):
+        ix = month_idx_rows[:, 0].astype(int)
+        parts = [blocks[i] for i in ix]
+        lens = np.cumsum([len(b) for b in parts]) - 1
+        sp = F.spike_series(F.absorption_ratio(np.vstack(parts)))
+        return sp[lens][P:]
+    build.indices = True                                               # innovations are month indices
+    P = 25                                                             # warm-up months (252 + 252 + 15 sessions)
+    inn = pd.DataFrame({"m": np.arange(len(months), dtype=float)}, index=me)
+    Z = pd.concat([eb["em"], eb["state_m"]], axis=1)
+    y, Zm, I, dates = monthly_design(eb["em"].shift(-1), Z, inn, P, FLOW_WINDOWS["H4"])
+    res = F.mean_granger(y, Zm, I, build, -1, draws or F.DRAWS, F.SEED, dates)
+    res["spike_months"] = int(np.nansum(build(I[:-1])))
+    return res
+
+
+def weekly_design(panel, window, bandwidths=None):
+    """H5 data: target = equity excess Thursday close -> next Thursday close; predictors = the week to the preceding
+    Wednesday (a full day skipped); Z = equity excess of the week to Thursday and the core state at Thursday."""
+    eb = equity_base(panel)
+    X = {"us10": panel["markets"]["US10"]["daily"], "currencies": _ew(panel, _names(panel, "currencies"), "daily"),
+         "commodities": _ew(panel, _names(panel, "commodities"), "daily")}
+    X = {k: v for k, v in X.items() if v is not None}
+    lo, hi = pd.Timestamp(window[0]) - pd.Timedelta(days=21), pd.Timestamp(window[1]) + pd.Timedelta(days=8)
+    thu = pd.date_range(lo, hi, freq="W-THU")
+    wed = thu - pd.Timedelta(days=1)
+
+    def bucket(s, edges):
+        s = s.dropna()
+        s = s[(s.index > edges[0]) & (s.index <= edges[-1])]
+        k = edges.searchsorted(s.index, side="left")
+        g = np.log1p(s).groupby(k).sum()
+        cnt = s.groupby(k).size()
+        out = pd.Series(np.nan, index=range(len(edges)))
+        out.loc[g.index] = np.expm1(g.values)
+        out.loc[cnt.index[cnt == 0]] = np.nan
+        return out.values
+    eq = bucket(eb["ex_d"], thu)                                      # eq[k]: week (Thu_{k-1}, Thu_k]
+    st = eb["state_d"].dropna().reindex(thu, method="ffill").values
+    xs = np.column_stack([bucket(v, wed) for v in X.values()])         # x[k]: week (Wed_{k-1}, Wed_k]
+    y = np.r_[eq[1:], np.nan]
+    Z = np.column_stack([np.ones(len(thu)), eq, st])
+    ok = (np.isfinite(y) & np.isfinite(Z).all(1) & np.isfinite(xs).all(1) & (thu + pd.Timedelta(days=7) >= window[0])
+          & (thu + pd.Timedelta(days=7) <= pd.Timestamp(window[1])))
+    ok[0] = False
+    G.derived(pd.Series(y[ok], index=thu[ok] + pd.Timedelta(days=7)), "flow_weekly_target")
+    yv, Zv, Xv = y[ok], Z[ok], xs[ok]
+    b, *_ = np.linalg.lstsq(np.column_stack([Zv, Xv]), yv, rcond=None)
+    e = yv - np.column_stack([Zv, Xv]) @ b
+    return {"y": yv, "Z": Zv, "X": Xv, "resid": e, "weeks": thu[ok] + pd.Timedelta(days=7), "predictors": list(X)}
+
+
+def h5_hsic(panel, draws=None):
+    """H5: HSIC between the linear-model residual and X_t (Gaussian kernels, the frozen median-heuristic bandwidths),
+    wild bootstrap."""
+    bw = panel["flow_conditions"]["H5_bandwidth"]
+    w = weekly_design(panel, FLOW_WINDOWS["H5"])
+    if w["predictors"] != bw["predictors"]:
+        raise ValueError(f"predictors {w['predictors']} differ from the frozen bandwidth's {bw['predictors']}")
+    r = F.hsic_wild(w["resid"], w["X"], bw["sigma_resid"], bw["sigma_X"], draws or F.DRAWS, F.SEED)
+    r["predictors"] = w["predictors"]
+    return r
+
+
+def h6_tail(panel, draws=None):
+    """H6: quantile regression (tau 0.10) of r^e_{t+1} on [1, Z_t, x1_t, x2_t, x_FX,t] (one-month returns); rank-score
+    test that the cross-asset slopes are jointly 0; fallback without energy (1974-2002)."""
+    variant = panel["flow_conditions"]["H6"]["variant"]
+    eb = equity_base(panel)
+    xs = {"us10": panel["us10"], "currencies": _ew(panel, _names(panel, "currencies"), "monthly")}
+    if variant == "full":
+        xs["energy"] = _ew(panel, [n for n in ENERGY if n in panel["markets"]], "monthly")
+    win = FLOW_WINDOWS["H6" if variant == "full" else "H6_fallback"]
+    Z = pd.concat([eb["em"], eb["state_m"]], axis=1)
+    inn = pd.concat(xs, axis=1)
+    y, Zm, I, dates = monthly_design(eb["em"].shift(-1), Z, inn, 0, win)
+    r = F.quantile_granger(y, Zm, I, draws or F.DRAWS, F.SEED, F.TAU, dates)
+    r.update({"variant": variant, "predictors": list(xs)})
+    return r
+
+
+FLOW_TESTS = {"H1": h1_bonds_equity, "H2": h2_energy_equity, "H3": h3_ccy_commodities, "H4": h4_absorption_spike,
+              "H5": h5_hsic, "H6": h6_tail}
+
+
+def flow_family(panel, draws=None):
+    """Amendment 2 family: the evaluable set fixed at the gate; Holm at 0.10; programme p; verdicts; posterior."""
+    if F.NULL_SCHEME != "registered":
+        raise RuntimeError("the family runs only under the registered null scheme")
+    cond = panel["flow_conditions"]
+    res = {}
+    for h, fn in FLOW_TESTS.items():
+        if not cond[h]["evaluable"]:
+            res[h] = {"evaluable": False, "reason": cond[h]["reason"]}
+            continue
+        res[h] = {"evaluable": True, **fn(panel, draws)}
+    pv = {h: (r.get("p_one_sided", r.get("p")) if r["evaluable"] else None) for h, r in res.items()}
+    adj = F.holm(pv)
+    m = sum(v is not None for v in pv.values())
+    N = F.N_PROGRAMME_BASE + m
+    for h, r in res.items():
+        if not r["evaluable"]:
+            continue
+        r["holm_p"] = adj[h]
+        r["programme_p_bonferroni"] = min(1.0, pv[h] * N)
+        if h in ("H1", "H2", "H3", "H4"):
+            r["verdict"] = F.verdict(adj[h], r["oos"].get("R2_oos"), r["implied_R2_90pct_upper"])
+            r["posterior"] = F.posterior_r2(r["std_beta"], r["std_beta_se"], r["expected_sign"])
+        elif h == "H6":
+            r["verdict"] = F.verdict(adj[h], r["oos_check_loss_skill"].get("skill"), None)
+        else:
+            r["verdict"] = F.verdict(adj[h], None, None)
+    return {"family": "Amendment 2 (H1-H6), Holm at 0.10 over the evaluable set", "evaluable": m,
+            "programme_N": N, "results": res}
+
+
+def flow_diagnostics(panel):
+    """Outside the family: Forbes-Rigobon-adjusted correlations (core's worst 10 % months vs the rest), Diebold-Yilmaz
+    and Barunik-Krehlik connectedness on daily composites by decade, the reverse directions of H1 and H3."""
+    eb = equity_base(panel)
+    core = panel["core"]["excess"]
+    crisis = (core <= core.quantile(0.10)).astype(float)
+    comps = {"us10": panel["us10"], "currencies": _ew(panel, _names(panel, "currencies"), "monthly"),
+             "commodities": _ew(panel, _names(panel, "commodities"), "monthly"),
+             "energy": _ew(panel, [n for n in ENERGY if n in panel["markets"]], "monthly")}
+    if "GOLD" in panel["markets"]:
+        comps["gold"] = panel["markets"]["GOLD"]["monthly"]
+    out = {"forbes_rigobon": {k: F.forbes_rigobon(eb["em"], v, crisis) for k, v in comps.items() if v is not None}}
+    daily = {"equity": eb["ex_d"], "us10": panel["markets"]["US10"]["daily"],
+             "currencies": _ew(panel, _names(panel, "currencies"), "daily"),
+             "commodities": _ew(panel, _names(panel, "commodities"), "daily")}
+    D = pd.concat({k: v for k, v in daily.items() if v is not None}, axis=1).dropna()
+    D = D[D.index <= END]
+    out["connectedness"] = {}
+    for d0 in (1970, 1980, 1990, 2000):
+        sub = D[(D.index.year >= d0) & (D.index.year < d0 + 10)]
+        if len(sub) > 500:
+            Y = (sub / sub.std()).values
+            out["connectedness"][f"{d0}s"] = {"days": int(len(sub)), "diebold_yilmaz": F.diebold_yilmaz(Y, list(D)),
+                                              "barunik_krehlik": F.barunik_krehlik(Y, list(D))}
+    # reverse directions (OLS, Newey-West 6 lags; descriptive)
+    us = panel["us10"]
+    eq12 = np.expm1(np.log1p(eb["em"]).rolling(12).sum())
+    j = pd.concat([us.shift(-1).rename("y"), us.rename("own"), eq12.rename("x")], axis=1).dropna()
+    j = j[j.index <= END]
+    out["reverse_H1_equity_to_bonds"] = _nw_slope(j)
+    com = comps["commodities"]
+    if com is not None and len(_names(panel, "commodities")) >= 10:
+        fx = _ew(panel, ["AUD", "CAD"], "monthly")
+        j = pd.concat([fx.shift(-1).rename("y"), fx.rename("own"), com.rename("x")], axis=1).dropna()
+        out["reverse_H3_commodities_to_ccy"] = _nw_slope(j[j.index <= END])
+    else:
+        out["reverse_H3_commodities_to_ccy"] = {"note": "commodity composite below 10 markets: not run"}
+    return out
+
+
+def _nw_slope(j):
+    X = np.column_stack([np.ones(len(j)), j.own.values, j.x.values])
+    b, e, s = ols(j.y.values, X)
+    se = math.sqrt(nw_cov(X, e, NW_LAGS)[2, 2])
+    return {"months": int(len(j)), "slope": float(b[2]), "nw_se": float(se), "t": float(b[2] / se)}
+
+
+ADDITIONAL_TESTS.append(("flow_family", "PREREG_XASSET.md Amendment 2 (1284c08)", flow_family))
+ADDITIONAL_TESTS.append(("flow_diagnostics", "PREREG_XASSET.md Amendment 2 (1284c08), outside the family",
+                         flow_diagnostics))
 
 
 # ===================================================================================== real data (inside the lock)
@@ -321,7 +613,9 @@ def load_real(checks):
     ex, e_first, sig = L.core_monthly(r, rf, e, md)
     us10 = L.us_tsy("US10", True)
     return {"markets": mk, "core": {"excess": ex, "exposure": e_first, "sigma_mkt": sig, "reproduction": chk},
-            "us10": us10[(us10.index >= START) & (us10.index <= END)]}
+            "us10": us10[(us10.index >= START) & (us10.index <= END)],
+            "equity": {"r": r[r.index <= END], "rf": rf[rf.index <= END]},            # Amendment 2 targets
+            "flow_conditions": checks["flow_conditions"]}
 
 
 def preflight():
@@ -400,7 +694,7 @@ def run_synthetic(reps=100):
     kappa_planted = 0.3 / 12.0                                       # sleeve SR ~ kappa * sqrt(12) * sqrt(12 markets)
     with G.synthetic():
         for world, kappa in (("planted_AR_0.3", kappa_planted), ("null", 0.0)):
-            res = run_all(synthetic_world(kappa, SEED))["primary"]
+            res = run_all(synthetic_world(kappa, SEED), additional=False)["primary"]
             keep, DRAWS = DRAWS, 0
             truth = []
             try:

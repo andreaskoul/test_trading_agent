@@ -535,6 +535,7 @@ def run():
     res["gate"] = "cannot be evaluated" if errors else ("pass" if n_com >= BREADTH_MIN else "fail")
     res["gate_fail_reasons"] = [] if n_com >= BREADTH_MIN else [
         f"only {n_com} commodities pass (Amendment 1 (6): the read needs at least {BREADTH_MIN})"]
+    res["flow_conditions"] = flow_gate(res["entering_read"])
     # Amendment 1 "doubt"
     passing = [m for m in res["entering_read"]["commodities"]["markets"]]
     ident = {m: lv.get(m, {}).get("pre2003_share_identical_4sd") for m in passing}
@@ -547,6 +548,86 @@ def run():
                     "identical_share_by_passing_market": ident, "markets_with_identical_share_ge_0.99": n_hi,
                     "half_or_more_not_independent": c2, "doubt": bool(c1 or c2)}
     return res
+
+
+# ===================================================================================== Amendment 2 at the gate
+def panel_2003(entering):
+    """The read's panel layout on spent 2003+ data only (through the guard): daily and monthly per entering market,
+    the French market for the equity target."""
+    mk = {}
+    for cls, v in entering.items():
+        for n in v["markets"]:
+            if n in L.US_TSY:
+                d, m = L.us_tsy(n, False), L.us_tsy(n, True)
+            elif cls == "currencies":
+                (d, _), (m, _) = L.fx_excess(n, False), L.fx_excess(n, True)
+            elif cls == "commodities":
+                d = L.pst_excess_daily(n)
+                m = L.compound_monthly(d, f"pst_m3_{n}")
+            else:
+                d, m = None, L.intl_bond_monthly(n.split("_")[1])
+            mk[n] = {"class": cls, "daily": d, "monthly": m}
+    _, r, rf, _, _ = L.core_reproduce()
+    return {"markets": mk, "us10": mk["US10"]["monthly"], "equity": {"r": r, "rf": rf}}
+
+
+def failure_control(panel):
+    """LIT_FLOW §5.4 on 2003+ only: corr(equity day t, currency basket day t+1) must be nonzero, one-sided at 5 %, with
+    the sign of the same-day equity-currency correlation (H.10 noon stamps); otherwise H5 is void."""
+    import xasset_read as R
+    eb = R.equity_base(panel)
+    fx = R._ew(panel, R._names(panel, "currencies"), "daily")
+    j = pd.concat([eb["ex_d"].rename("e"), fx.rename("f")], axis=1).dropna()
+    j = j[j.index >= L.VALID_START]
+    G.derived(j, "failure_control_input")
+    same = float(j.e.corr(j.f))
+    lead = float(np.corrcoef(j.e.values[:-1], j.f.values[1:])[0, 1])
+    n = len(j) - 1
+    z = math.atanh(lead) * math.sqrt(n - 3)
+    ok = bool(np.sign(lead) == np.sign(same) and abs(z) >= 1.6449)
+    return {"window": [str(j.index.min().date()), str(j.index.max().date())], "days": int(n),
+            "corr_same_day": same, "corr_equity_t_currency_t+1": lead, "fisher_z": z, "passes": ok,
+            "rule": "same sign as the same-day correlation and |z| >= 1.645 (one-sided 5 %)"}
+
+
+def frozen_bandwidth(panel):
+    """H5's median-heuristic bandwidths, from the 2003+ weekly design (standardised residual and predictors)."""
+    import xasset_read as R
+    import xasset_flow as F
+    w = R.weekly_design(panel, ("2003-01-01", "2026-12-31"))
+    e = (w["resid"] - w["resid"].mean()) / w["resid"].std()
+    X = (w["X"] - w["X"].mean(0)) / w["X"].std(0)
+    return {"sigma_resid": F.median_heuristic(e[:, None]), "sigma_X": F.median_heuristic(X),
+            "predictors": w["predictors"], "weeks": int(len(e)),
+            "window": [str(w["weeks"].min().date()), str(w["weeks"].max().date())],
+            "units": "Euclidean distance of standardised variables (each scaled by its sample sd)"}
+
+
+def flow_gate(entering):
+    """Amendment 2 data conditions, decided here, before the lock; the evaluable set goes into CHECKS_XASSET.json."""
+    import xasset_read as R
+    com = entering["commodities"]["markets"]
+    energy = [m for m in com if m in R.ENERGY]
+    p03 = panel_2003(entering)
+    fc = failure_control(p03)
+    bw = frozen_bandwidth(p03)
+    us10 = "US10" in entering["bonds"]["markets"]
+    c = {"H1": {"evaluable": us10, "reason": None if us10 else "US 10-year proxy does not enter"},
+         "H2": {"evaluable": len(energy) >= 2, "energy_markets_passing": energy,
+                "reason": None if len(energy) >= 2 else f"{len(energy)} energy markets pass the §3 checks (needs 2)"},
+         "H3": {"evaluable": len(com) >= 10, "commodities_passing": len(com),
+                "reason": None if len(com) >= 10 else f"commodity composite has {len(com)} passing markets (needs 10)"},
+         "H4": {"evaluable": len(com) >= 10 and "GOLD" in com,
+                "reason": None if (len(com) >= 10 and "GOLD" in com) else
+                f"needs the commodity composite (>= 10; {len(com)} pass) and gold ({'passes' if 'GOLD' in com else 'fails'})"},
+         "H5": {"evaluable": fc["passes"], "reason": None if fc["passes"] else "§5.4 failure control fails: H5 void"},
+         "H6": {"evaluable": us10, "variant": "full" if len(energy) >= 2 else "fallback_without_energy",
+                "reason": None if us10 else "US 10-year proxy does not enter"}}
+    c["H5_bandwidth"] = bw
+    c["failure_control_5_4"] = fc
+    c["evaluable_set"] = [h for h in ("H1", "H2", "H3", "H4", "H5", "H6") if c[h]["evaluable"]]
+    c["decided"] = "at the gate, before the lock (PREREG_XASSET.md Amendment 2)"
+    return c
 
 
 def mirror_convention_spent(markets):

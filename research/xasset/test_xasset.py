@@ -169,7 +169,7 @@ def test_synthetic_path_runs_and_writes_no_lock():
     R.DRAWS = 50
     try:
         with G.synthetic():
-            res = R.run_all(R.synthetic_world(0.0, 5))["primary"]
+            res = R.run_all(R.synthetic_world(0.0, 5), additional=False)["primary"]
     finally:
         R.DRAWS = keep
     assert res["verdict"] in ("supported", "rejected", "inconclusive")

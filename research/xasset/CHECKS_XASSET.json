@@ -1,5 +1,5 @@
 {
- "written_utc": "2026-11-25T12:54:13Z",
+ "written_utc": "2026-11-25T23:54:57Z",
  "prereg": "research/xasset/PREREG_XASSET.md (dd2a819)",
  "notes": "research/xasset/IMPLEMENTATION_NOTES.md",
  "kind": "\u00a73 gate: validation statistics of constructions on spent 2003+ data; pre-2003 level-agreement counts and coverage counts only; no sleeve return, signal or statistic on any date",
@@ -22,13 +22,13 @@
  },
  "core_reproduction": {
   "compared_fields": 38,
-  "max_abs_diff": 0.0,
+  "max_abs_diff": 3.552713678800501e-15,
   "match_1e-6": true,
   "period": [
    "1927-03-04",
    "2026-09-30"
   ],
-  "M_R_excess_sharpe": 0.5578007678095542
+  "M_R_excess_sharpe": 0.5578007678095541
  },
  "exclusions": {
   "WHEAT": "single-month hold cycle 'Z' in the shipped rollconfig.csv (December-only rule; deferred contract, not MOP's front)",
@@ -342,13 +342,13 @@
   },
   "LEANHOG": {
    "months": 146,
-   "corr": null,
-   "te_share_of_etf_vol": null,
-   "mean_diff_pct_per_year": null,
-   "signal_agreement": null,
-   "switch_diff_per_year": null,
+   "corr": 0.7178,
+   "te_share_of_etf_vol": 0.721,
+   "mean_diff_pct_per_year": -0.177,
+   "signal_agreement": NaN,
+   "switch_diff_per_year": NaN,
    "validates": false,
-   "reason": "statistics not computable on 2003+ (TypeError: too few consecutive months)"
+   "reason": "only 0 months with a 12-month signal on both"
   },
   "GOLD": {
    "months": 253,
@@ -442,13 +442,13 @@
   },
   "MILK": {
    "months": 89,
-   "corr": null,
-   "te_share_of_etf_vol": null,
-   "mean_diff_pct_per_year": null,
-   "signal_agreement": null,
-   "switch_diff_per_year": null,
+   "corr": 0.3314,
+   "te_share_of_etf_vol": 2.187,
+   "mean_diff_pct_per_year": -4.221,
+   "signal_agreement": NaN,
+   "switch_diff_per_year": NaN,
    "validates": false,
-   "reason": "statistics not computable on 2003+ (TypeError: too few consecutive months)"
+   "reason": "only 0 months with a 12-month signal on both"
   }
  },
  "mask_check": {
@@ -2830,6 +2830,68 @@
  "gate_fail_reasons": [
   "only 2 commodities pass (Amendment 1 (6): the read needs at least 10)"
  ],
+ "flow_conditions": {
+  "H1": {
+   "evaluable": true,
+   "reason": null
+  },
+  "H2": {
+   "evaluable": false,
+   "energy_markets_passing": [],
+   "reason": "0 energy markets pass the \u00a73 checks (needs 2)"
+  },
+  "H3": {
+   "evaluable": false,
+   "commodities_passing": 2,
+   "reason": "commodity composite has 2 passing markets (needs 10)"
+  },
+  "H4": {
+   "evaluable": false,
+   "reason": "needs the commodity composite (>= 10; 2 pass) and gold (fails)"
+  },
+  "H5": {
+   "evaluable": true,
+   "reason": null
+  },
+  "H6": {
+   "evaluable": true,
+   "variant": "fallback_without_energy",
+   "reason": null
+  },
+  "H5_bandwidth": {
+   "sigma_resid": 0.7504280085849021,
+   "sigma_X": 1.955828368917294,
+   "predictors": [
+    "us10",
+    "currencies",
+    "commodities"
+   ],
+   "weeks": 1102,
+   "window": [
+    "2003-02-13",
+    "2024-04-11"
+   ],
+   "units": "Euclidean distance of standardised variables (each scaled by its sample sd)"
+  },
+  "failure_control_5_4": {
+   "window": [
+    "2003-02-04",
+    "2026-09-30"
+   ],
+   "days": 5931,
+   "corr_same_day": 0.23962920786212547,
+   "corr_equity_t_currency_t+1": 0.19928805492499996,
+   "fisher_z": 15.551999506782026,
+   "passes": true,
+   "rule": "same sign as the same-day correlation and |z| >= 1.645 (one-sided 5 %)"
+  },
+  "evaluable_set": [
+   "H1",
+   "H5",
+   "H6"
+  ],
+  "decided": "at the gate, before the lock (PREREG_XASSET.md Amendment 2)"
+ },
  "doubt": {
   "definition": "doubt if fewer than 15 commodities pass, or on at least half the passing markets >= 99 % of pre-2003 sessions are identical to 4 significant digits",
   "commodities_passing": 2,
