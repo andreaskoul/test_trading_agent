@@ -1,6 +1,6 @@
 # Decision ledger: what followed each decision
 
-Updated 2026-11-26T01:16:52+00:00. Reporting only. y = the position side x the stock's residual return after the decision's close; for exits, y > 0 means the stock kept moving the position's way after we left. t is clustered by week. Small samples: read n before the mean.
+Updated 2026-11-27T01:12:20+00:00. Reporting only. y = the position side x the stock's residual return after the decision's close; for exits, y > 0 means the stock kept moving the position's way after we left. t is clustered by week. Small samples: read n before the mean.
 
 ## 5 sessions after the decision
 
