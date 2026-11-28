@@ -594,6 +594,23 @@
 "hedge": 0.1547517620623724,
 "net_beta": 0.08067729819152757,
 "traded": true
+},
+{
+"date": "2026-11-27",
+"nav": 97135.83214633542,
+"pnl_lots": -422.33278074480006,
+"pnl_hedge": 244.18199624526716,
+"cash_income": 18.145578782540582,
+"cost": 25.779064883547424,
+"r_gross": -0.0018305366377837002,
+"r_cost": 0.0002648852930381594,
+"r_cash": 0.00018644962394380124,
+"n_long": 9,
+"n_short": 10,
+"stock_gross": 0.7270972791495381,
+"hedge": 0.2581773089532575,
+"net_beta": 0.10086218360888095,
+"traded": true
 }
 ],
 "lots": [
@@ -618,9 +635,9 @@
 "entry_close_ts": 1793304000,
 "driving_event": "Q3 2026 FFO beat, EPS beat, record bookings, raised 2026 guidance",
 "news_session": "2026-10-28",
-"n": 6337.795771991707,
-"R": 0.0064502553982270505,
-"days": 19,
+"n": 6380.880499234807,
+"R": 0.0003875399508429028,
+"days": 20,
 "e": [
 -0.00809431,
 -0.0159399,
@@ -640,9 +657,10 @@
 -0.0200704,
 -0.0051461,
 -0.01278525,
--0.00233433
+-0.00233433,
+-0.00606272
 ],
-"news_until": 1795639200,
+"news_until": 1795801200,
 "increased": true
 },
 {
@@ -666,9 +684,9 @@
 "entry_close_ts": 1793304000,
 "driving_event": "Microsoft Q1 FY27 earnings beat with Azure growth accelerating",
 "news_session": "2026-10-28",
-"n": 5628.460589642104,
-"R": -0.007331391143208393,
-"days": 19,
+"n": 5662.006412355053,
+"R": -0.01682822222312586,
+"days": 20,
 "e": [
 0.00137778,
 -0.02377154,
@@ -688,72 +706,36 @@
 0.00705105,
 -0.02841902,
 0.01200341,
--0.00973793
+-0.00973793,
+-0.00949683
 ],
-"news_until": 1795639200,
+"news_until": 1795801200,
 "increased": true
-},
-{
-"id": "2026-11-11|BRK.B",
-"ticker": "BRK.B",
-"side": -1,
-"w0": -0.0275,
-"beta": 0.3923514021,
-"sigma_e": 0.010567921849193909,
-"H": 25,
-"W": 0.052839609245969546,
-"kill_conditions": [
-"Berkshire Q4 operating earnings grow and insurance underwriting returns to profit",
-"Berkshire announces a new record buyback, special dividend, or major acquisition lifting shares",
-"Analysts upgrade Berkshire citing improved insurance margins and earnings momentum"
-],
-"first_reported": "2026-11-07",
-"score": -1,
-"cohort": "2026-11-11",
-"entry_day": "2026-11-12",
-"entry_close_ts": 1794517200,
-"driving_event": "Q3 operating earnings fell 5.8% with insurance underwriting weakness, offset by record $9.6B buybacks",
-"news_session": "2026-11-09",
-"n": -2623.3512806249037,
-"R": -0.003029757720968207,
-"days": 9,
-"e": [
--0.0066978,
--0.00734812,
-0.00629031,
-0.01948997,
--0.00320988,
--0.01071668,
-0.01433368,
--0.01038034,
--0.0047909
-],
-"news_until": 1795639200
 },
 {
 "id": "2026-11-11|NFLX",
 "ticker": "NFLX",
 "side": -1,
-"w0": -0.02,
+"w0": -0.029998619290670308,
 "beta": 0.5820359865,
 "sigma_e": 0.022038165773317204,
 "H": 25,
 "W": 0.11019082886658602,
 "kill_conditions": [
-"Netflix raises full-year guidance or reports accelerating subscriber growth",
-"Skydance-WBD merger cost cuts scaled back or the deal is unwound",
-"Netflix announces a large buyback or initiates a dividend"
+"Netflix announces major hiring and content investment, reversing its layoffs narrative",
+"Netflix reports Q4 subscriber growth beat and raises full-year guidance",
+"YouTube loses TV share to Netflix, easing competition concerns"
 ],
-"first_reported": "2026-11-10",
+"first_reported": "2026-11-23",
 "score": -1,
 "cohort": "2026-11-11",
 "entry_day": "2026-11-12",
 "entry_close_ts": 1794517200,
 "driving_event": "Skydance-WBD merger completes with $6B cost cuts, a competitive negative for Netflix",
 "news_session": "2026-11-10",
-"n": -2842.0018003416503,
-"R": 0.021515015575639236,
-"days": 9,
+"n": -2914.714184393482,
+"R": 0.00536676271072279,
+"days": 10,
 "e": [
 0.00649975,
 0.01140036,
@@ -763,48 +745,11 @@
 0.00840488,
 0.00325593,
 -0.01608144,
--0.01085704
+-0.01085704,
+-0.01614825
 ],
-"news_until": 1795639200,
+"news_until": 1795801200,
 "increased": true
-},
-{
-"id": "2026-11-18|TTWO",
-"ticker": "TTWO",
-"side": 1,
-"w0": 0.06005478317647425,
-"beta": 0.7077765563,
-"sigma_e": 0.031121763020270487,
-"H": 5,
-"W": 0.053904474772226714,
-"kill_conditions": [
-"GTA VI launch delayed or cancelled",
-"Initial sales data significantly miss expectations",
-"Metacritic score drops below 90 or reviews turn negative"
-],
-"first_reported": "2026-11-13",
-"score": 2,
-"cohort": "2026-11-18",
-"entry_day": "2026-11-19",
-"entry_close_ts": 1795122000,
-"driving_event": "GTA VI global launch on Nov 19 with 99 Metacritic and >$1.5B preorders",
-"news_session": "2026-11-13",
-"n": 9500.129531806395,
-"R": 0.08557089047539004,
-"days": 4,
-"e": [
-0.03223554,
--0.03637358,
-0.05621937,
-0.03348956
-],
-"news_until": 1795639200,
-"increased": true,
-"H0": 3,
-"ext": 1,
-"stop_R": -0.031011053487573777,
-"target_R": 0.1767198989829398,
-"ext_pnl": 289.59223038364604
 },
 {
 "id": "2026-11-18|DIS",
@@ -827,16 +772,17 @@
 "entry_close_ts": 1795122000,
 "driving_event": "Disney Q4 FY26 earnings beat with dividend hike, $9B buybacks, $3B cost savings, double-digit FY27 EPS guidance",
 "news_session": "2026-11-17",
-"n": 3951.38126901957,
-"R": 0.04223220473881972,
-"days": 4,
+"n": 4002.97573781887,
+"R": 0.04340037627349784,
+"days": 5,
 "e": [
 0.0078172,
 -0.01511772,
 0.02218827,
-0.02734445
+0.02734445,
+0.00116817
 ],
-"news_until": 1795639200,
+"news_until": 1795801200,
 "increased": true
 },
 {
@@ -860,48 +806,50 @@
 "entry_close_ts": 1795122000,
 "driving_event": "Lowe's Q3 2026 earnings beat; FY sales outlook raised but margin guidance trimmed",
 "news_session": "2026-11-18",
-"n": 2658.274010013065,
-"R": 0.07107852999921496,
-"days": 4,
+"n": 2667.4112981442368,
+"R": 0.06178594745417609,
+"days": 5,
 "e": [
 0.03633982,
 -0.01297011,
 0.02548349,
-0.02222533
+0.02222533,
+-0.00929258
 ],
-"news_until": 1795639200
+"news_until": 1795801200
 },
 {
 "id": "2026-11-18|ORCL",
 "ticker": "ORCL",
 "side": -1,
-"w0": -0.058,
+"w0": -0.08988755878038072,
 "beta": 1.5986451096,
 "sigma_e": 0.033828292029599694,
 "H": 21,
 "W": 0.1550207088567119,
 "kill_conditions": [
-"Oracle CDS tightens sharply and credit spreads normalize, reversing record wides.",
-"Oracle raises guidance and reports accelerating cloud growth, easing AI debt concerns.",
-"China lifts chip-access curbs and Texas ends data-center moratorium."
+"Oracle CDS spreads tighten back to pre-selloff levels",
+"Oracle raises debt at a yield well below 8.65%",
+"Microsoft reaffirms or expands its Oracle cloud partnership"
 ],
-"first_reported": "2026-11-18",
+"first_reported": "2026-11-24",
 "score": -2,
 "cohort": "2026-11-18",
 "entry_day": "2026-11-19",
 "entry_close_ts": 1795122000,
 "driving_event": "Oracle CDS hit record wides on AI-debt-bubble fears after Nvidia's beat; trader calls Oracle weak link.",
 "news_session": "2026-11-18",
-"n": -8468.668436904703,
-"R": 0.05417821817812524,
-"days": 4,
+"n": -8733.620038944944,
+"R": 0.048811270742245255,
+"days": 5,
 "e": [
 0.02663725,
 -0.04815828,
 0.02900119,
-0.04669805
+0.04669805,
+-0.00536695
 ],
-"news_until": 1795639200,
+"news_until": 1795801200,
 "reduced": true,
 "increased": true
 },
@@ -925,16 +873,17 @@
 "entry_close_ts": 1795122000,
 "driving_event": "Nike investor day guides FY27 revenue decline and 'challenging' FY28, overshadowing $5B 2031 growth target",
 "news_session": "2026-11-17",
-"n": -3636.4173354278273,
-"R": -0.06637074778704725,
-"days": 4,
+"n": -3701.88475063193,
+"R": -0.0706800458267517,
+"days": 5,
 "e": [
 0.01032507,
 0.01425284,
 -0.06304996,
--0.0278987
+-0.0278987,
+-0.0043093
 ],
-"news_until": 1795639200
+"news_until": 1795801200
 },
 {
 "id": "2026-11-18|META",
@@ -957,49 +906,302 @@
 "entry_close_ts": 1795122000,
 "driving_event": "Italy \u20ac880M photo-consent fine plus AI-capex-debt narrative keeps Meta news tone negative",
 "news_session": "2026-11-17",
-"n": -4143.633325352354,
-"R": -0.02352438399573227,
-"days": 4,
+"n": -4273.19617687389,
+"R": -0.034375309077583543,
+"days": 5,
 "e": [
 0.0134985,
 -0.00625065,
 0.0068992,
--0.03767143
+-0.03767143,
+-0.01085093
 ],
-"news_until": 1795639200,
+"news_until": 1795801200,
 "increased": true
 },
 {
 "id": "2026-11-18|INTC",
 "ticker": "INTC",
 "side": -1,
-"w0": -0.0275,
+"w0": -0.04125,
 "beta": 1.8350632566,
 "sigma_e": 0.05158147028324281,
-"H": 13,
+"H": 16,
 "W": 0.18597963597005396,
 "kill_conditions": [
-"Class-action dismissed or settled with no material penalty for Intel",
-"Intel raises guidance, citing a recovery in PC demand",
-"Nvidia rebuilds or increases its Intel stake"
+"Court dismisses Intel shareholder lawsuit over PC-demand and AI disclosures",
+"Intel raises Q4 guidance or reports Q4 results above guidance",
+"Intel names 18A external customer with quantified multibillion-dollar order"
 ],
-"first_reported": "2026-11-17",
+"first_reported": "2026-11-25",
 "score": -1,
 "cohort": "2026-11-18",
 "entry_day": "2026-11-19",
 "entry_close_ts": 1795122000,
 "driving_event": "Shareholder class-action alleging Intel hid PC weakness before its $23B offering",
 "news_session": "2026-11-17",
-"n": -2615.567782465203,
-"R": 0.009125710410512041,
-"days": 4,
+"n": -4008.979817092826,
+"R": -0.014913120781598148,
+"days": 5,
 "e": [
 0.01288185,
 -0.0770118,
 0.07254405,
-0.00071161
+0.00071161,
+-0.02403883
 ],
-"news_until": 1795639200
+"news_until": 1795801200,
+"increased": true
+},
+{
+"id": "2026-11-25|BA",
+"ticker": "BA",
+"side": 1,
+"w0": 0.03,
+"beta": 0.9996795403,
+"sigma_e": 0.021183259193836068,
+"H": 5,
+"W": 0.047367207542414844,
+"kill_conditions": [
+"Xiamen Airlines cancels or cuts the 50-jet 737-8 order",
+"China order talks collapse or new tariffs halt Boeing jet purchases",
+"Malaysia Aviation Group cancels or reduces its 787 Dreamliner commitment"
+],
+"first_reported": "2026-11-24",
+"score": 1,
+"cohort": "2026-11-25",
+"entry_day": "2026-11-27",
+"entry_close_ts": 1795802400,
+"driving_event": "Xiamen Airlines orders 50 Boeing 737-8 jets in $7.4B deal",
+"news_session": "2026-11-24",
+"n": 2915.6216851584186,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-25|COP",
+"ticker": "COP",
+"side": 1,
+"w0": 0.03,
+"beta": 0.03474049,
+"sigma_e": 0.020217479513995804,
+"H": 7,
+"W": 0.053490422930575904,
+"kill_conditions": [
+"Norway sale to V\u00e5r Energi is terminated or blocked by regulators.",
+"ConocoPhillips announces sale proceeds will not fund share buybacks.",
+"ConocoPhillips cuts dividend or issues profit warning."
+],
+"first_reported": "2026-11-23",
+"score": 1,
+"cohort": "2026-11-25",
+"entry_day": "2026-11-27",
+"entry_close_ts": 1795802400,
+"driving_event": "ConocoPhillips sells Norway business and Teesside interest to V\u00e5r Energi for $4.425B, enabling buybacks.",
+"news_session": "2026-11-23",
+"n": 2915.6216851584186,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-25|TSLA",
+"ticker": "TSLA",
+"side": 1,
+"w0": 0.0275,
+"beta": 1.6238515586,
+"sigma_e": 0.021976238129529178,
+"H": 9,
+"W": 0.06592871438858754,
+"kill_conditions": [
+"Tesla and SpaceX formally terminate merger talks or deny the deal.",
+"Tesla board rejects the merger proposal or SpaceX pursues an IPO instead.",
+"Regulators block the merger or Tesla shareholders vote against it."
+],
+"first_reported": "2026-11-24",
+"score": 1,
+"cohort": "2026-11-25",
+"entry_day": "2026-11-27",
+"entry_close_ts": 1795802400,
+"driving_event": "Tesla and SpaceX name five directors to negotiate a ~$3.5T all-stock merger, with Dec 3 meeting as possible announcement.",
+"news_session": "2026-11-24",
+"n": 2672.653211395217,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-25|JBL",
+"ticker": "JBL",
+"side": 1,
+"w0": 0.0275,
+"beta": 1.6066241364,
+"sigma_e": 0.02626141097350532,
+"H": 4,
+"W": 0.05252282194701064,
+"kill_conditions": [
+"Adani MoU is terminated, abandoned or scrapped",
+"Jabil cuts or withdraws its FY guidance",
+"MoU fails to convert into a binding contract or firm orders"
+],
+"first_reported": "2026-11-25",
+"score": 1,
+"cohort": "2026-11-25",
+"entry_day": "2026-11-27",
+"entry_close_ts": 1795802400,
+"driving_event": "Jabil signs non-binding India AI/data-center equipment MoU with Adani",
+"news_session": "2026-11-25",
+"n": 2672.653211395217,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-25|NOW",
+"ticker": "NOW",
+"side": 1,
+"w0": 0.0225,
+"beta": 0.7882894607,
+"sigma_e": 0.044126295091811485,
+"H": 3,
+"W": 0.07642898504879467,
+"kill_conditions": [
+"ServiceNow cuts FY subscription revenue guidance",
+"ServiceNow reports renewal rate below 98% or backlog decline",
+"ServiceNow discontinues or delays Autonomous CRM Engine"
+],
+"first_reported": "2026-11-22",
+"score": 1,
+"cohort": "2026-11-25",
+"entry_day": "2026-11-27",
+"entry_close_ts": 1795802400,
+"driving_event": "Autonomous CRM Engine AI product launch",
+"news_session": "2026-11-23",
+"n": 2186.716263868814,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-25|NVDA",
+"ticker": "NVDA",
+"side": -1,
+"w0": -0.0325,
+"beta": 1.7165153522,
+"sigma_e": 0.050036820160179664,
+"H": 8,
+"W": 0.14152549937709918,
+"kill_conditions": [
+"SEC drops accounting probe without enforcement action",
+"California AG withdraws subpoena or clears Nvidia",
+"Congressional China-chip scrutiny ends with no new restrictions"
+],
+"first_reported": "2026-11-20",
+"score": -1,
+"cohort": "2026-11-25",
+"entry_day": "2026-11-27",
+"entry_close_ts": 1795802400,
+"driving_event": "SEC accounting probe, California AG subpoena, congressional China-chip scrutiny create governance overhang",
+"news_session": "2026-11-20",
+"n": -3158.590158921621,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-25|INTU",
+"ticker": "INTU",
+"side": -1,
+"w0": -0.031,
+"beta": 0.6483131963,
+"sigma_e": 0.03294077122391641,
+"H": 3,
+"W": 0.057055089400326046,
+"kill_conditions": [
+"Intuit raises FY2027 revenue guidance or reports accelerating revenue growth",
+"Mailchimp revenue returns to positive year-over-year growth",
+"Intuit announces a large share buyback or special dividend"
+],
+"first_reported": "2026-11-20",
+"score": -1,
+"cohort": "2026-11-25",
+"entry_day": "2026-11-27",
+"entry_close_ts": 1795802400,
+"driving_event": "Mailchimp sale to Bending Spoons for $3.68B and Q1 FY2027 revenue outlook cut.",
+"news_session": "2026-11-20",
+"n": -3012.8090746636994,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-25|JPM",
+"ticker": "JPM",
+"side": -1,
+"w0": -0.03,
+"beta": 0.849617338,
+"sigma_e": 0.011167391081152207,
+"H": 4,
+"W": 0.022334782162304414,
+"kill_conditions": [
+"JPMorgan explains Chase outage and confirms no material customer impact or regulatory action",
+"Vendor data breach investigation closes with no regulatory penalties or customer harm",
+"JPMorgan reports no customer attrition or financial impact from outage and breach"
+],
+"first_reported": "2026-11-24",
+"score": -1,
+"cohort": "2026-11-25",
+"entry_day": "2026-11-27",
+"entry_close_ts": 1795802400,
+"driving_event": "Chase outage and vendor data breach exposing JPMorgan customer emails",
+"news_session": "2026-11-24",
+"n": -2915.6216851584186,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-25|UNH",
+"ticker": "UNH",
+"side": -1,
+"w0": -0.03,
+"beta": 0.5676174247,
+"sigma_e": 0.026873962745753974,
+"H": 8,
+"W": 0.07601104517950914,
+"kill_conditions": [
+"CMS withdraws or substantially waters down its proposed Medicare Advantage star-ratings overhaul and $107 billion bonus cuts.",
+"Court rules in favor of UnitedHealth in its lawsuit challenging CMS's 2027 Medicare Advantage star ratings.",
+"Final CMS rule omits or reverses the $107 billion Medicare Advantage bonus cuts."
+],
+"first_reported": "2026-11-21",
+"score": -1,
+"cohort": "2026-11-25",
+"entry_day": "2026-11-27",
+"entry_close_ts": 1795802400,
+"driving_event": "CMS proposes Medicare Advantage star-ratings overhaul and $107B bonus cuts, negative regulatory overhang on UNH.",
+"news_session": "2026-11-23",
+"n": -2915.6216851584186,
+"R": 0.0,
+"days": 0
+},
+{
+"id": "2026-11-25|CVS",
+"ticker": "CVS",
+"side": -1,
+"w0": -0.03,
+"beta": 0.3819346779,
+"sigma_e": 0.02782732468384604,
+"H": 8,
+"W": 0.07870755994490934,
+"kill_conditions": [
+"CMS withdraws or significantly softens the $107B Medicare Advantage bonus cut proposal",
+"CMS finalizes Medicare Advantage audit rules without the proposed expansion",
+"CVS raises FY guidance on Aetna Medicare Advantage strength"
+],
+"first_reported": "2026-11-23",
+"score": -1,
+"cohort": "2026-11-25",
+"entry_day": "2026-11-27",
+"entry_close_ts": 1795802400,
+"driving_event": "CMS proposes $107B Medicare Advantage bonus cuts and wider MA audits, pressuring CVS's Aetna.",
+"news_session": "2026-11-23",
+"n": -2915.6216851584186,
+"R": 0.0,
+"days": 0
 }
 ],
 "events": [
@@ -3996,6 +4198,159 @@
 "action": "hedge",
 "from": 2878.4,
 "to": 15060.69
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-11|BRK.B",
+"ticker": "BRK.B",
+"action": "capacity",
+"from": -2630.01,
+"to": 0.0,
+"R": 0.000794,
+"W": 0.05284,
+"days_held": 10
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-18|TTWO",
+"ticker": "TTWO",
+"action": "horizon",
+"from": 9620.48,
+"to": 0.0,
+"R": 0.086764,
+"W": 0.053904,
+"days_held": 5,
+"stop_R": -0.031011053487573777,
+"target_R": 0.1767198989829398
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-18|INTC",
+"ticker": "INTC",
+"action": "news_increase",
+"from": -2756.26,
+"to": -4008.98,
+"R": -0.014913,
+"W": 0.18598,
+"days_held": 5
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-25|BA",
+"ticker": "BA",
+"action": "entry",
+"from": 0.0,
+"to": 2915.62,
+"R": 0.0,
+"W": 0.047367,
+"days_held": 0
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-25|COP",
+"ticker": "COP",
+"action": "entry",
+"from": 0.0,
+"to": 2915.62,
+"R": 0.0,
+"W": 0.05349,
+"days_held": 0
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-25|TSLA",
+"ticker": "TSLA",
+"action": "entry",
+"from": 0.0,
+"to": 2672.65,
+"R": 0.0,
+"W": 0.065929,
+"days_held": 0
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-25|JBL",
+"ticker": "JBL",
+"action": "entry",
+"from": 0.0,
+"to": 2672.65,
+"R": 0.0,
+"W": 0.052523,
+"days_held": 0
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-25|NOW",
+"ticker": "NOW",
+"action": "entry",
+"from": 0.0,
+"to": 2186.72,
+"R": 0.0,
+"W": 0.076429,
+"days_held": 0
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-25|NVDA",
+"ticker": "NVDA",
+"action": "entry",
+"from": 0.0,
+"to": -3158.59,
+"R": 0.0,
+"W": 0.141525,
+"days_held": 0
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-25|INTU",
+"ticker": "INTU",
+"action": "entry",
+"from": 0.0,
+"to": -3012.81,
+"R": 0.0,
+"W": 0.057055,
+"days_held": 0
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-25|JPM",
+"ticker": "JPM",
+"action": "entry",
+"from": 0.0,
+"to": -2915.62,
+"R": 0.0,
+"W": 0.022335,
+"days_held": 0
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-25|UNH",
+"ticker": "UNH",
+"action": "entry",
+"from": 0.0,
+"to": -2915.62,
+"R": 0.0,
+"W": 0.076011,
+"days_held": 0
+},
+{
+"day": "2026-11-27",
+"id": "2026-11-25|CVS",
+"ticker": "CVS",
+"action": "entry",
+"from": 0.0,
+"to": -2915.62,
+"R": 0.0,
+"W": 0.078708,
+"days_held": 0
+},
+{
+"day": "2026-11-27",
+"id": "SPY",
+"ticker": "SPY",
+"action": "hedge",
+"from": 15304.87,
+"to": 25078.27
 }
 ],
 "cohorts": [
@@ -5221,6 +5576,38 @@
 "after_report": false,
 "stop_R": null,
 "target_R": null
+},
+{
+"id": "2026-11-18|TTWO",
+"ticker": "TTWO",
+"day": "2026-11-27",
+"decision": "exit",
+"rule": "slot",
+"z": 1.3657803297936886,
+"id_disc": -0.6000000000000001,
+"to": 2.8907923457357727,
+"label": "CONFIRMING",
+"kill_hit": false,
+"catalyst": [
+"2027-02-01",
+""
+],
+"catalyst_sessions": 43,
+"sigma": 0.028410102466935063,
+"H0": 3,
+"held": 5,
+"h_ext": 0,
+"ext_no": 1,
+"R": 0.08676381824524991,
+"n": 9620.47954962817,
+"W_new": 0.028410102466935063,
+"guard": 0.056820204933870126,
+"median_new": 0.06592871438858754,
+"hold_cap": 35,
+"report_within_cap": false,
+"after_report": false,
+"stop_R": null,
+"target_R": null
 }
 ],
 "ext_done": [
@@ -5263,9 +5650,17 @@
 "ext_pnl": -119.93449035197237,
 "exit": "horizon",
 "ext": 1
+},
+{
+"id": "2026-11-18|TTWO",
+"ticker": "TTWO",
+"closed": "2026-11-27",
+"ext_pnl": 409.94224820542036,
+"exit": "horizon",
+"ext": 1
 }
 ],
 "variant": "control",
 "p7b": "2026-10-28",
-"updated": "2026-11-27T01:11:51+00:00"
+"updated": "2026-11-28T01:12:04+00:00"
 }
